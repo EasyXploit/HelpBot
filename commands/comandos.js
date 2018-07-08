@@ -1,57 +1,36 @@
-const config = require ("../config.json");        
-exports.run = (bot, message, args) => {
-    message.channel.send ({embed: {
-        "title": "Comandos para bots",
-        "color": 16762967,
-        "description": "Aquí tienes los comandos de ayuda para usar a los bots. Recuerda escribirlos en el canal de texto correspondiente:",
+exports.run = (discord, fs, config, token, bot, message, args) => {
 
-        "author": {
-            "name": "Pilko Bot",
-            "url": "https://discord.gg/j4y9xcY",
-            "icon_url": bot.user.avatarURL,
-        },
+    const pokeball = bot.emojis.find("name", "pokeball");   
+    
+    console.log (new Date() + " 》" + message.author.username + " introdujo el comando:  " + message.content + "  en  " + message.guild.name)
 
-        "fields": [
-          {
-            "name": ":zap: !salas",
-            "value": "Muestra la ayuda para crear salas personalizadas.",
-            "inline": true,
-          },
-          {
-            "name": ":ticket: !tickets",
-            "value": "Muestra la ayuda para el sistema de tickets de soporte.",
-            "inline": true,
-          },
-          {
-            "name": ":musical_note: !musica",
-            "value": "Muestra la ayuda para reproducir música en las salas de voz.",
-            "inline": true,
-          },
-          {
-            "name": "🎶 !dj",
-            "value": "Muestra los comandos para controlar la música (solo DJs).",
-            "inline": true,
-          },
-          {
-            "name": ":fire: !tatsumaki",
-            "value": "Muestra la ayuda para @Tatsumaki.",
-            "inline": true,
-          },
-          {
-            "name": ":performing_arts: !memes",
-            "value": "Muestra la ayuda para enviar memes y efectos sonoros.",
-            "inline": true,
-          },
-          {
-            "name": ":first_place: !rank",
-            "value": "Muestra tu rango en el servidor.",
-            "inline": true,
-          },
-        ],
-        footer: {
-            icon_url: bot.user.avatarURL,
-            text: "© 2018 República Gamer",
-        }
-    }}).catch(console.error);
-    console.log ("》" + message.author.username + " introdujo el comando:  " + message.content + "  en  " + message.guild.name);
+    let embed = new discord.RichEmbed()
+        .setAuthor("COMANDOS", "http://i.imgur.com/E3nPnZY.png")
+        .setTitle("Comandos de los bots del servidor")
+
+        .setColor(16762967)
+        .setFooter("© 2018 República Gamer LLC", bot.user.avatarURL)
+        .setThumbnail("http://i.imgur.com/g31RYSS.png")
+        
+        .addField(':robot: !pilko', 'Muestra los comandos de <@446041159853408257> ', true)
+        .addField(':zap: !salas', 'Muestra la ayuda para crear salas personalizadas.', true)
+        .addField(':musical_note: !musica', 'Muestra la ayuda para reproducir música en las salas de voz.', true)
+        .addField('🎶 !dj', 'Muestra los comandos para controlar la música (solo DJs).', true)
+        .addField(':fire: !tatsumaki', 'Muestra la ayuda para <@172002275412279296>.', true)
+        .addField(':performing_arts: !memes', 'Muestra la ayuda para enviar memes y efectos sonoros.', true)
+        .addField(':package: !boxbot', 'Muestra la ayuda para jugar a <@413728456942288896> en <#433376010688397312> y <#435495241840328705>', true)
+        .addField(pokeball + ' !pokecord', 'Muestra la ayuda para <@365975655608745985> en <#433376047833022513> ', true)
+
+    message.channel.send({embed})
+
+    .catch ((err) => {
+        console.error(new Date() + " 》" + err);
+
+        let embed = new discord.RichEmbed()
+            .setColor(15806281)
+            .setTitle("❌ Ocurrió un error")
+            .setDescription("Ocurrió un error durante la ejecución del comando")
+        message.channel.send({embed})
+
+    })
 }

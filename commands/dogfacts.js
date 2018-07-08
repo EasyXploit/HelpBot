@@ -1,13 +1,46 @@
-const config = require ("../config.json");
+exports.run = (discord, fs, config, token, bot, message, args) => {
 
-var datos = ["¡Puedes reducir tu presión arterial al simplemente acariciar a tu cachorro!","Corgi significa perro enano en galés...","La razón por la que los perros se acurrucan es debido a un instinto ancestral a fin de mantenerse calientes y proteger los órganos vitales mientras duermen...","A pesar de que todas esas cosas apestosas en las que tu perro se revuelca te parecen asquerosas, para él son DELICIOSAS...","Los perros tienen narices húmedas porque les ayuda a absorber el olor de los estímulos químicos...","Si le dejas a tu perro alguna prenda de vestir que huela a ti, el olor lo reconfortará y le ayudará a reducir su ansiedad por separación...","Los Basenji son la única raza de perros que no puede ladrar, ¡pero puede cantar al estilo tirolés!","Cuando los perros hacen popó, lo hacen en alineación con el campo magnético de la Tierra...","Un hombre acompañado de un perro tiene el triple de probabilidades de conseguir el teléfono de una chica...","El sentido del olfato de los perros es 10,000 veces más fuerte que el de los humanos...","¡El Norwegian Lundehund es el único perro que tiene seis dedos en cada pata!","Un perro llamado Duke es el alcalde de Cormorant, Minnesota...","Los Labradores son la raza más popular en Estados Unidos...","Un estudio hecho por científicos de la Universidad de California reveló que los perros pueden sentirse celosos si ven a sus humanos demostrando afecto hacia algo o alguien más...","Los perros no SÓLO ven el blanco y el negro, ¡también pueden ver el azul y el amarillo!","Los sabuesos son capaces de rastrear olores de hace más de 300 horas...","Los perros pueden ser entrenados para detectar cambios en el cuerpo humano; incluso hay perros que detectan cuando un paciente está apunto de tener una convulsión...","También hay perros que alertan a los diabéticos y les avisan a sus dueños cuando distinguen un aroma especial que se libera cuando los niveles de insulina bajan en los humanos...","¡Cuando tu perro da vueltas en círculo antes de sentarse para acurrucarse es porque está haciéndose sentir como en casa! Este es un rasgo de anidación que tu perro heredó de sus ancestros salvajes...","Un perro pastor alemán guía llamado Orient dirigió a su dueño, Bill Irwin, en el sendero de más de 3,300 kilómetros de los Apalaches. Irwin fue el primer humano ciego en hacer ese viaje...","Los terranova son excelentes nadadores porque tienen patas palmeadas...","¡Los cachorros de dálmata nacen completamente blancos y sus manchas les salen con el tiempo!","Un perro de servicio llamado Kirsch recibió el título honorario de maestría en consejería de salud mental por asistir a todas las clases de su dueño...","Si las patas de tu perro huelen como a chips de maíz, ¡probablemente es porque los perros solo tienen glándulas sudorípadas en sus patas! Ese olor es su olor corporal ~natural~...","¡Los perros tienen al menos dieciocho músculos en cada oreja!","Estados Unidos es el país con la mayor población de mascotas ya que cuenta con alrededor de 75 millones de mascotas...","Los perros ven mucho mejor por la noche que los humanos...","Y pueden oír tan lejos como cuatro veces la distancia que un humano puede oír...","Los Beatles incluyeron un silbido que únicamente los perros pueden percibir en la canción A Day In The Life...","Los perros pueden reconocer más de 150 palabras..."]
+    console.log (new Date() + " 》" + message.author.username + " introdujo el comando:  " + message.content + "  en  " + message.guild.name);
 
-exports.run = (bot, message, args) => {
-    message.channel.send ({embed: {
-        "color": 16754772,
-        "title": "Datos sobre perros  🐕",
-        "description": datos[Math.floor(Math.random() * datos.length)],
+    const texts = require("../resources/texts/dogfacts.json");
+    const images = require("../resources/images/dogs/dogs.json");
 
-    }}).catch(console.error);
-    console.log ("》" + message.author.username + " introdujo el comando:  " + message.content + "  en  " + message.guild.name);
+    function randomTexts () {
+
+        let factsKeys = Object.keys(texts)
+        let random = Math.floor(Math.random() * factsKeys.length)
+        let randomFact = factsKeys[random]
+        let path = texts[randomFact]
+
+        return path;
+    }
+
+    function randomImages () {
+
+        let imagesKeys = Object.keys(images)
+        let random = Math.floor(Math.random() * imagesKeys.length)
+        let randomImage = imagesKeys[random]
+        let image = images[randomImage]
+
+        return image;
+    }
+
+    let embed = new discord.RichEmbed()
+        .setTitle("Datos sobre perros  🐕")
+
+        .setColor(16754772)
+        .setDescription(randomTexts())
+        .setFooter("© 2018 República Gamer LLC", bot.user.avatarURL)
+        .setImage(randomImages())
+    message.channel.send({embed})
+
+    .catch ((err) => {
+        console.error(new Date() + " 》" + err);
+
+        let embed = new discord.RichEmbed()
+            .setColor(15806281)
+            .setTitle("❌ Ocurrió un error")
+            .setDescription("Ocurrió un error durante la ejecución del comando")
+        message.channel.send({embed})
+    })
 }

@@ -1,6 +1,7 @@
 exports.run = (discord, fs, config, token, bot, message, args) => {
 
     let loggingChannel = bot.channels.get(config.loggingChannel);
+    let welcomeChannel = bot.channels.get(config.welcomeChannel);
 
     if(message.author.id == config.botOwner) {
         if(args.length >= 1) {
@@ -11,7 +12,7 @@ exports.run = (discord, fs, config, token, bot, message, args) => {
                     channelMention = channelMention.substring(2, channelMention.length - 1);
 
                     //const newLoggingChannel = message.content.split(" ").slice(1, 2)[0];
-                    config.loggingChannel = channelMention;
+                    config.welcomeChannel = channelMention;
 
                     fs.writeFile("./config.json", JSON.stringify(config), (err) => console.error);
 
@@ -20,7 +21,7 @@ exports.run = (discord, fs, config, token, bot, message, args) => {
                     let embed = new discord.RichEmbed()
                         .setColor(12118406)
                         .setTitle("✅ Operación completada")
-                        .setDescription("Cambiaste el canal de logging a " + args[0])
+                        .setDescription("Cambiaste el canal de bienvenida a " + args[0])
                     message.channel.send({embed});
 
                     embed = new discord.RichEmbed()
@@ -28,7 +29,7 @@ exports.run = (discord, fs, config, token, bot, message, args) => {
                         .setTimestamp()
                         .setFooter("© 2018 República Gamer LLC", bot.user.avatarURL)
                         .setTitle("📑 Auditoría")
-                        .setDescription(message.author.username + " cambió el canal de logging a " + args[0]);
+                        .setDescription(message.author.username + " cambió el canal de bienvenida a " + args[0]);
                     loggingChannel.send({embed})
 
                     .catch ((err) => {

@@ -2,14 +2,12 @@ exports.run = (discord, fs, config, token, bot, message, args) => {
 
     console.log (new Date() + " 》" + message.author.username + " introdujo el comando:  " + message.content + "  en  " + message.guild.name);
 
-    const coin = bot.emojis.find("name", "coin");
-    const datos = ["1", "2", "3", "4", "5", "6"];
-    
-    const embed = new discord.RichEmbed()
-        .setTitle("Lanzaste un dado ...  🎲")
+    message.delete();
 
-        .setColor(10197915)
-        .setDescription("¡Salió **" + datos[Math.floor(Math.random() * datos.length)] + "**!")
+    let embed = new discord.RichEmbed()
+        .setColor(16762967)
+        .setAuthor("El Pilko", "https://cdn.discordapp.com/avatars/223945607662927872/1b2170a1d14e3d46d97254e999a98431.png?")
+        .setTitle("¡HERMANO, QUE ME DA LA PUTA RISA!")
     message.channel.send({embed})
 
     .catch ((err) => {

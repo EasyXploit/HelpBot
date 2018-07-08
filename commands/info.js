@@ -1,32 +1,26 @@
-const discord = require ("discord.js"); 
-const config = require ("../config.json");
-        
-exports.run = (bot, message, args) => {
-    message.channel.send ({embed: {
-        "title": "Propiedad de la República Gamer",
-        "description": "Pilko Bot es un bot para uso exclusivo de los usuarios de la República Gamer",
-        "url": "https://discord.gg/j4y9xcY",
-        "color": 16762967,
-        "timestamp": new Date(),
-        "footer": {
-          "icon_url": bot.user.avatarURL,
-          "text": "©2018 República Gamer"
-        },
+exports.run = (discord, fs, config, token, bot, message, args) => {
 
-        "fields": [
-          {
-            "name": ":link: Únete al servidor:",
-            "value": config.serverInvite,
-            "inline": true,
-          },
-        ],
-        
-        "author": {
-          "name": "Pilko Bot",
-          "url": "https://discord.gg/j4y9xcY",
-          "icon_url": bot.user.avatarURL,
-        },
-        }
-    }).catch(console.error);
-    console.log ("》" + message.author.username + " introdujo el comando:  " + message.content + "  en  " + message.guild.name);
+    console.log (new Date() + " 》" + message.author.username + " introdujo el comando:  " + message.content + "  en  " + message.guild.name);
+
+    let embed = new discord.RichEmbed()
+      .setTitle("Propiedad de la República Gamer")
+      .setAuthor(bot.user.username, bot.user.avatarURL)
+
+      .setColor(16762967)
+      .setDescription("**" + bot.user.username + "** es un bot multifuncional desarrollado por el Staff de la comunidad, cuyo uso es exclusivo de los usuarios de la **República Gamer**, por lo que no está permitido su uso fuera de los servidores administrador por la **República Gamer LLC**.\n\n_Para más información relativa a las funcionalidades de este bot, escribe `!ayuda`_")
+      .setFooter("©2018 República Gamer LLC", bot.user.avatarURL)
+      .setThumbnail("https://i.imgur.com/cTW63kf.png")
+
+      .setURL("https://discord.gg/j4y9xcY")
+    message.channel.send({embed})
+
+    .catch ((err) => {
+        console.error(new Date() + " 》" + err);
+
+        let embed = new discord.RichEmbed()
+            .setColor(15806281)
+            .setTitle("❌ Ocurrió un error")
+            .setDescription("Ocurrió un error durante la ejecución del comando")
+        message.channel.send({embed})
+    })
 }

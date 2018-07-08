@@ -1,14 +1,46 @@
+exports.run = (discord, fs, config, token, bot, message, args) => {
 
-const config = require ("../config.json");
+    console.log (new Date() + " 》" + message.author.username + " introdujo el comando:  " + message.content + "  en  " + message.guild.name);
 
-var datos = ["Los gatos son las mascotas más populares en los Estados Unidos: hay 88 millones de gatos y 74 millones de perros.", "Hay gatos que han sobrevivido caídas de más de 32 pisos (320 metros).", "Un grupo de gatos se llama una manada.", "Los gatos tienen más de 20 músculos que controlan sus orejas.", "Los gatos duermen el 70 % de sus vidas.", "Un gato fue alcalde de Talkeetna, Alaska, durante 15 años. Su nombre es Stubbs.", "Un gato se postuló para alcalde de la Ciudad de México en 2013.", "Los tigres y los gatos atigrados tienen la mitad de la lengua cubierta por espinas que apuntan hacia atrás, que usan para partir y agarrar la carne.", "Cuando los gatos hacen muecas generalmente es porque están olfateando sabores. Tienen un órgano extra, que con algo de control en la respiración, les permite sentir los aromas del aire.", "Los gatos no pueden saborear lo dulce.", "Tener un gato puede reducir en un tercio el riesgo de derrame cerebral y de ataques al corazón.","Wikipedia tiene una grabación de un gato maullando porque... ¿Por qué no?","El gato más largo del mundo medía 123 de largo.","La evidencia demuestra que los gatos domésticos han existido desde el año 3,600 A.C., 2,000 años antes que los faraones de Egipto.","El ronroneo de un gato puede ser una forma de autosanación, así como también puede ser un signo de nerviosismo y de alegría.","Del mismo modo, la frecuencia del ronroneo de un gato doméstico es la misma en la cuál los músculos y los huesos se reparan a sí mismos.","Los gatos adultos sólo maúllan para comunicarse con los humanos.","El gato más rico del mundo obtuvo una fortuna de 13 millones de dólares después de que su dueño falleciera y le heredara su fortuna.","Tu gato reconoce tu voz pero actúa como si no la hubiera oído.","La mayoría de gatos son intolerantes a la lactosa así que ¡deja de darles leche!","Básicamente todas las caricaturas de gatos nos mintieron: el pescado crudo también está descartado para los gatos.","El vídeo más viejo de gatos en YouTube se remonta a 1894 (cuando se grabó, no cuando lo publicaron).","En la década de los años 1960, la CIA intentó convertir a una gata en una espía al implantarle un micrófono en la oreja y un transmisor de radio en la base del cráneo. Ella logró sobrevivir a la cirugía pero fue atropellada por un taxi en su primera misión.","Por lo general las gatas son diestras, mientras que los gatos tienden a ser zurdos.","Los gatos hacen más de 100 sonidos diferentes mientras que los perros solo hacen alrededor de 10.","El cerebro de un gato es similar al de los seres humanos en un 90 % - más similar que al de un perro.","Los gatos y humanos tienen prácticamente idénticas las secciones del cerebro que controlan la emoción.", "La corteza cerebral de un gato (la parte del cerebro a cargo de procesar la informacion cognitiva) tiene 300 millones de neuronas, comparadas con los 160 millones de los perros", "Los gatos tienen más memoria a largo plazo que los perros, especialmente cuando aprenden haciendo cosas en lugar de solo observando.", "Basicamente, los gatos tienen un coeficiente intelectual social menor que el de los perros, pero pueden resolver más problemas cognitivos difíciles cuando quieren."]
+    const texts = require("../resources/texts/catfacts.json");
+    const images = require("../resources/images/cats/cats.json");
 
-exports.run = (bot, message, args) => {
-    message.channel.send ({embed: {
-        "color": 2866040,
-        "title": "Datos sobre gatos  🐈",
-        "description": datos[Math.floor(Math.random() * datos.length)],
+    function randomTexts () {
 
-    }}).catch(console.error);
-    console.log ("》" + message.author.username + " introdujo el comando:  " + message.content + "  en  " + message.guild.name);
+        let factsKeys = Object.keys(texts)
+        let random = Math.floor(Math.random() * factsKeys.length)
+        let randomFact = factsKeys[random]
+        let path = texts[randomFact]
+
+        return path;
+    }
+
+    function randomImages () {
+
+        let imagesKeys = Object.keys(images)
+        let random = Math.floor(Math.random() * imagesKeys.length)
+        let randomImage = imagesKeys[random]
+        let image = images[randomImage]
+
+        return image;
+    }
+
+    let embed = new discord.RichEmbed()
+        .setTitle("Datos sobre gatos  🐈")
+
+        .setColor(12118406)
+        .setDescription(randomTexts())
+        .setFooter("© 2018 República Gamer LLC", bot.user.avatarURL)
+        .setImage(randomImages())
+    message.channel.send({embed})
+
+    .catch ((err) => {
+        console.error(new Date() + " 》" + err);
+
+        let embed = new discord.RichEmbed()
+            .setColor(15806281)
+            .setTitle("❌ Ocurrió un error")
+            .setDescription("Ocurrió un error durante la ejecución del comando")
+        message.channel.send({embed})
+    })
 }

@@ -1,8 +1,6 @@
-const config = require("../config.json");
-
-exports.run = (bot, message, args) => {
+exports.run = (discord, fs, config, token, bot, message, args) => {
     
-    let staffRole = message.guild.roles.find("name","STAFF");
+    let staffRole = message.guild.roles.get(config.botStaff);
     if(message.member.roles.has(staffRole.id)) {
         
         // Introduce los argumentos separados por " en el array 'fields'
@@ -15,7 +13,7 @@ exports.run = (bot, message, args) => {
 
         if (fields.length >= 2) {
             if (fields.length <= 11) {
-                console.log ("》" + message.author.username + " introdujo el comando:  " + message.content + "  en  " + message.guild.name);
+                console.log (new Date() + " 》" + message.author.username + " introdujo el comando:  " + message.content + "  en  " + message.guild.name);
                 
                 message.delete();
 
@@ -29,42 +27,85 @@ exports.run = (bot, message, args) => {
                     count = count + 1;
                 }
 
-                message.channel.send ({embed: {
-                    "color": 9854346,
-                    "description": ":bar_chart:  **" + fields[0] + "** \n\n:one: " + lines,
-                    footer: {
-                        icon_url: bot.user.avatarURL,
-                        text: "©2018 República Gamer LLC"
-                    }
-                }})
+                let embed = new discord.RichEmbed()
+                    .setColor(4895458)
+                    .setTitle(":bar_chart:  **" + fields[0] + "** \n\n")
+                    .setDescription(":one: " + lines)
+                    .setFooter("© 2018 República Gamer LLC", bot.user.avatarURL)
+                message.channel.send({embed})
+                
                 .then(async function (message) {
                     for (c = 1; c < fields.length; c++) {
                         await message.react(UTFemojis[c]);
                     }
                 })
+                
                 .catch ((err) => {
-                    console.error(err);
+                    console.error(new Date() + " 》" + err);
+
+                    let embed = new discord.RichEmbed()
+                        .setColor(15806281)
+                        .setTitle("❌ Ocurrió un error")
+                        .setDescription("Ocurrió un error durante la ejecución del comando")
+                    message.channel.send({embed})
                 })
+                
                 count = 0;
             } else {
-                console.log (message.author.username + " proporcionó demasiados argumentos para ejecutar el comando:  " + message.content + "  en  " + message.guild.name);
-                message.channel.send ({embed: {
-                    "color": 15806281,
-                    "title": message.author.username + ", tan solo puedes añadir un máximo de 10 opciones",
-                }});
+                console.log (new Date() + " 》" + message.author.username + " proporcionó demasiados argumentos para ejecutar el comando:  " + message.content + "  en  " + message.guild.name);
+                
+                let embed = new discord.RichEmbed()
+                    .setColor(15806281)
+                    .setTitle("❌ Ocurrió un error")
+                    .setDescription(message.author.username + ", tan solo puedes añadir un máximo de 10 opciones")
+                message.channel.send({embed})
+
+                .catch ((err) => {
+                    console.error(new Date() + " 》" + err);
+
+                    let embed = new discord.RichEmbed()
+                        .setColor(15806281)
+                        .setTitle("❌ Ocurrió un error")
+                        .setDescription("Ocurrió un error durante la ejecución del comando")
+                    message.channel.send({embed})
+                })
             }
         } else {
-            console.log (message.author.username + " no proporcionó suficientes argumentos para ejecutar el comando:  " + message.content + "  en  " + message.guild.name);
-            message.channel.send ({embed: {
-                "color": 15806281,
-                "title": message.author.username + ", debes proporcionar un título para la encuesta y al menos una opción \n(asegúrate de que no haya más de un espacio en blanco entre los campos)",
-            }});
+            console.log (new Date() + " 》" + message.author.username + " no proporcionó suficientes argumentos para ejecutar el comando:  " + message.content + "  en  " + message.guild.name);
+            
+            let embed = new discord.RichEmbed()
+                .setColor(15806281)
+                .setTitle("❌ Ocurrió un error")
+                .setDescription(message.author.username + ", debes proporcionar un título para la encuesta y al menos una opción \n(asegúrate de que no haya más de un espacio en blanco entre los campos)")
+            message.channel.send({embed})
+
+            .catch ((err) => {
+                console.error(new Date() + " 》" + err);
+
+                let embed = new discord.RichEmbed()
+                    .setColor(15806281)
+                    .setTitle("❌ Ocurrió un error")
+                    .setDescription("Ocurrió un error durante la ejecución del comando")
+                message.channel.send({embed})
+            })
         }
     } else {
-        console.log (message.author.username + " no dispone de privilegios suficientes para ejecutar el comando:  " + message.content + "  en  " + message.guild.name);
-        message.channel.send ({embed: {
-            "color": 15806281,
-            "title": message.author.username + ", no dispones de privilegios suficientes para ejecutar este comando",
-        }})
+        console.log (new Date() + " 》" + message.author.username + " no dispone de privilegios suficientes para ejecutar el comando:  " + message.content + "  en  " + message.guild.name);
+        
+        let embed = new discord.RichEmbed()
+            .setColor(15806281)
+            .setTitle("❌ Ocurrió un error")
+            .setDescription(message.author.username + ", no dispones de privilegios suficientes para ejecutar este comando")
+        message.channel.send({embed})
+
+        .catch ((err) => {
+            console.error(new Date() + " 》" + err);
+
+            let embed = new discord.RichEmbed()
+                .setColor(15806281)
+                .setTitle("❌ Ocurrió un error")
+                .setDescription("Ocurrió un error durante la ejecución del comando")
+            message.channel.send({embed})
+        })
     }
 }

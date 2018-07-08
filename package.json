@@ -1,0 +1,23 @@
+{
+  "name": "pilkobot",
+  "version": "1.0.0",
+  "description": "PilkoBot es un bot para uso exclusivo de los usuario de la República Gamer",
+  "main": "bot.js",
+  "dependencies": {
+    "discord.js": "^11.3.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielperales555/PilkoBot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danielperales555/PilkoBot/issues"
+  },
+  "homepage": "https://github.com/danielperales555/PilkoBot#readme"
+}

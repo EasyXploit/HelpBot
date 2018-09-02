@@ -1,79 +1,155 @@
-console.log("» Iniciando aplicación «\n―――――――――――――――――――――――― \n");
+console.log('》Iniciando aplicación «\n―――――――――――――――――――――――― \n' + new Date().toUTCString() + '\n');
 
-const discord = require("discord.js"); 
-const newUsers = new discord.Collection();     //En desarrollo
-const fs = require("fs");
-const config = require("./config.json");
-const token = require("./token.json");
-
+const discord = require('discord.js');
+const fs = require('fs');
+const config = require('./config.json');
+const roles = require('./roles.json');
+const token = require('./token.json');
+const package = require('./package.json');
 const bot = new discord.Client();
+const talkedRecently = new Set();
+bot.mutes = require('./mutes.json');
 
-// Verificación de inicio de sesión y presencia
-bot.on("ready", () => {
-    console.log(new Date() + " 》" + bot.user.username + " iniciado correctamente \n");
-
+// COMPROBACIÓN DE INICIO DE SESIÓN Y PRESENCIA
+bot.on('ready', async () => {
     let loggingChannel = bot.channels.get(config.loggingChannel);
-
-    let embed = new discord.RichEmbed()
-        .setTitle("📑 Estado de ejecución")
-        .setColor(16762967)
-        .setDescription(bot.user.username + " iniciado correctamente")
-        .setFooter(bot.user.username, bot.user.avatarURL)
-        .setTimestamp()
-    loggingChannel.send({embed});
-
-    bot.user.setPresence( {
-        status: "online",
-        game: {
-            name: "!ayuda | ¡A tu servicio!",
-            type: "PLAYING"
-        }
-    });
+    try {
+        await bot.user.setPresence({status: config.status, game: {name: config.game, type: config.type}});
+        
+        console.log(' 》' + bot.user.username + ' iniciado correctamente \n  ● Estatus: ' + config.status + '\n  ● Tipo de actividad: ' + config.type + '\n  ● Actividad: ' + config.game + '\n\n');
+        
+        let statusEmbed = new discord.RichEmbed()
+            .setTitle('📑 Estado de ejecución')
+            .setColor(0xFFC857)
+            .setDescription(bot.user.username + ' iniciado correctamente')
+            .addField('Estatus:', config.status, true)
+            .addField('Tipo de actividad:', config.type, true)
+            .addField('Actividad:', config.game, true)
+            .addField('Versión:', package.version, true)
+            .setFooter(bot.user.username, bot.user.avatarURL)
+            .setTimestamp();
+        loggingChannel.send(statusEmbed);
+    } catch (e) {
+        console.error(new Date().toUTCString() + ' 》' + e.stack);
+    }
 });
 
-// EVENTOS
-
-// Este loop lee la carpeta /events/ y adjunta cada evento a su archivo de evento apropiado
-fs.readdir("./events/", (err, files) => {
-    if (err) return console.error(new Date() + " 》" + err);
+// MANEJADOR DE EVENTOS
+fs.readdir('./events/', async (err, files) => {
+    
+    if (err) return console.error(new Date().toUTCString() + ' 》' + err.stack);
     files.forEach(file => {
         let eventFunction = require(`./events/${file}`);
-        let eventName = file.split(".")[0]; 
-        console.log(" - Evento [" + eventName + "] cargado");
+        let eventName = file.split('.')[0];
+        console.log(' - Evento [' + eventName + '] cargado');
 
-        // Llama a los eventos con sus propios argumentos después de la variable "bot"
         bot.on(eventName, event => {
             eventFunction.run(event, discord, fs, config, token, bot);
         });
     });
-    console.log("\n");
+    console.log('\n');
 });
 
+// MANEJADOR DE COMANDOS
+bot.on('message', message => {
 
-// COMANDOS
+    let debuggingChannel = bot.channels.get(config.debuggingChannel);
+    let loggingChannel = bot.channels.get(config.loggingChannel);
+    
 
-// Función para comprobar si los menesajes son un comandos
-bot.on("message", message => {
     if (message.author.bot) return;
-    if(message.content.indexOf(config.prefix) !== 0) return;
-    // indexOf !== buscará el prefijo desde la posición 0 [String.prototype.indexOf()]
-
-    // Función para eliminar el prefijo, extraer el comando y sus argumentos (en caso de tenerlos)    
+    if (message.channel.type === "dm") {
+         const noDMEmbed = new discord.RichEmbed()
+            .setColor(0xFFC857)
+            .setTitle('❕ Función no disponible')
+            .setDescription('Por el momento, ' + bot.user.username + ' solo está disponible en la República Gamer.');
+        message.author.send(noDMEmbed);
+        return;
+    };
+    let waitEmbed = new discord.RichEmbed().setColor(0xF12F49).setDescription('❌ Debes esperar 3 segundos antes de usar este comando');
+    if (talkedRecently.has(message.author.id)) return message.channel.send(waitEmbed);
+    //if(message.content.startsWith(config.prefix) || message.content.startsWith(config.staffPrefix) !== 0) return; // indexOf !== buscará el prefijo desde la posición 0
+    
+    const prefix = message.content.slice(0, 1);
+    // Función para eliminar el prefijo, extraer el comando y sus argumentos (en caso de tenerlos)
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-    const command = args.shift().toLowerCase();
-
+    const command = args.shift().toLowerCase() + '.js';
+    
+    if (command.length <= 0) return console.error(new Date() + ' 》No hubo ningún comando a cargar');
+    
     // Función para ejecutar el comando
     try {
-        let commandFile = require(`./commands/${command}.js`);
-        commandFile.run(discord, fs, config, token, bot, message, args);
-    } catch (err) {
-        console.log(new Date() + " 》" + message.author.username + " intentó ejecutar el comando  " + message.content + "  en  " + message.guild.name + ", pero el comando no existe, ocurrió un error en su ejecución o está siendo procesado por otra aplicación que utiliza el mismo prefijo\n");
-        console.error(new Date() + " 》" + err);
+        
+        let commandImput = new Date().toUTCString() + ' 》' + message.author.username + ' introdujo el comando: ' + message.content + ' en ' + message.guild.name;
+        
+        if (prefix === config.prefix) { // EVERYONE
+            let commandFile = require(`./commands/${command}`);
+            commandFile.run(discord, fs, config, token, bot, message, args, command, roles, loggingChannel);
+            console.log(commandImput);
+            
+            talkedRecently.add(message.author.id);
+            setTimeout(() => {
+              talkedRecently.delete(message.author.id);
+            }, 3000);
+            
+        } else if (prefix === config.staffPrefix) { // STAFF
+            const staffRole = message.guild.roles.get(config.botStaff);
+            const noPrivilegesEmbed = new discord.RichEmbed()
+                .setColor(0xF12F49)
+                .setDescription('❌ ' + message.author.username + ', no dispones de privilegios suficientes para ejecutar este comando');
+            
+            if(!message.member.roles.has(staffRole.id)) return message.channel.send(noPrivilegesEmbed)
+            
+            let commandFile = require(`./commands/staffCommands/${command}`);
+            commandFile.run(discord, fs, config, token, bot, message, args, command, roles, loggingChannel);
+            console.log(commandImput);
+        } else if (prefix === config.supervisorsPrefix) { // SUPERVISORES
+            const supervisorsRole = message.guild.roles.get(config.botSupervisor);
+            const noPrivilegesEmbed = new discord.RichEmbed()
+                .setColor(0xF12F49)
+                .setDescription('❌ ' + message.author.username + ', no dispones de privilegios suficientes para ejecutar este comando');
+            
+            if(message.author.id == config.botOwner || message.member.roles.has(supervisorsRole.id)) {
+                let commandFile = require(`./commands/supervisorsCommands/${command}`);
+                commandFile.run(discord, fs, config, token, bot, message, args, command, roles, loggingChannel);
+                console.log(commandImput);
+            } else {
+                return message.channel.send(noPrivilegesEmbed)
+            }
+        }  else if (prefix === config.ownerPrefix) { // OWNER
+            const noPrivilegesEmbed = new discord.RichEmbed()
+                .setColor(0xF12F49)
+                .setDescription('❌ ' + message.author.username + ', no dispones de privilegios suficientes para ejecutar este comando');
+            
+            if (message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed);
+            let commandFile = require(`./commands/ownerCommands/${command}`);
+            commandFile.run(discord, fs, config, token, bot, message, args, command, roles, loggingChannel);
+            console.log(commandImput);
+        } else {
+            return
+        }
+    } catch (e) {
+        console.error(new Date() + ' 》' + e);
+
+        let debuggEmbed = new discord.RichEmbed()
+            .setColor(0xCBAC88)
+            .setTimestamp()
+            .setFooter('© 2018 República Gamer LLC', bot.user.avatarURL)
+            .setTitle('📋 Depuración')
+            .setDescription('Se declaró un error durante la ejecución de un comando')
+            .addField('Comando:', message.content, true)
+            .addField('Origen:', message.guild.name, true)
+            .addField('Canal:', message.channel, true)
+            .addField('Autor:', '<@' + message.author.id + '>', true)
+            .addField('Fecha:', new Date().toUTCString(), true)
+            .addField('Error:', e, true);
+        debuggingChannel.send(debuggEmbed);
     }
 });
 
-bot.on("error", (e) => console.error(new Date() + " 》" + e));
-bot.on("warn", (e) => console.warn(new Date() + " 》" + e));
+// Debugging
+bot.on('error', (e) => console.error(new Date() + ' 》' + e.stack));
+bot.on('warn', (e) => console.warn(new Date() + ' 》' + e.stack));
 
 // Inicio de sesión del bot
 bot.login(token.token);

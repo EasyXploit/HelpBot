@@ -1,6 +1,6 @@
 {
   "name": "pilkobot",
-  "version": "1.0.0",
+  "version": "1.4.1",
   "description": "PilkoBot es un bot para uso exclusivo de los usuario de la República Gamer",
   "main": "bot.js",
   "dependencies": {
@@ -14,8 +14,8 @@
     "type": "git",
     "url": "git+https://github.com/danielperales555/PilkoBot.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Daniel Perales Mauriz",
+  "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/danielperales555/PilkoBot/issues"
   },

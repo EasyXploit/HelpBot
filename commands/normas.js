@@ -1,30 +1,18 @@
-exports.run = (discord, fs, config, token, bot, message, args) => {
+exports.run = (discord, fs, config, token, bot, message, args, command) => {
 
-    console.log (new Date() + " 》" + message.author.username + " introdujo el comando:  " + message.content + "  en  " + message.guild.name);
+    let successEmbed = new discord.RichEmbed()
+        .setAuthor('NORMAS', 'http://i.imgur.com/jAiDAvR.png')
+        .setTitle('Normas del servidor')
 
-    let embed = new discord.RichEmbed()
-        .setAuthor("NORMAS", "http://i.imgur.com/jAiDAvR.png")
-        .setTitle("Normas del servidor")
-
-        .setColor(16762967)
-        .setFooter("© 2018 República Gamer LLC", bot.user.avatarURL)
-        .setThumbnail("http://i.imgur.com/jAiDAvR.png")
+        .setColor(0xFFC857)
+        .setFooter('© 2018 República Gamer LLC', bot.user.avatarURL)
+        .setThumbnail('http://i.imgur.com/jAiDAvR.png')
         
         .setDescription('Este servidor se apoya en los **Términos de Servicio** y las **Directivas de la comunidad de Discord**. Puedes encontrarlos en __https://discordapp.com/terms__ y en __https://discordapp.com/guidelines__ respectivamente.')
-        .addField(":one: **No está permitido publicar contenido inadecuado:**", "Es decir, todo lo relacionado con pornografía, drogas y apuestas. Tampoco contenido que pueda alentar el odio hacia una etnia, religión o cualquier otro colectivo/individuo. De la misma forma están prohibidas las actitudes tóxicas, faltas de respeto, el acoso, el gore y/o crueldad animal y el envío de pornografía infantil.", true)
-        .addField(":two: Está prohibido hacer spam:", "No puedes enviar links hacia otros servidores de Discord _(tanto invitaciones como URL redireccionadas o spam relacionado)_, ni links de afiliado. Tampoco puedes abusar de las menciones a los demás usuarios y también está prohibido hacer _flood_ de chat. __Si deseas que te promocionemos, contáctanos.__", true)
-        .addField(":three: No abuses de las menciones:", "No está permitido excederse utilizando las menciones a personas, a __roles__, o a `@everyone` y `@here`. _Las menciones abusivas pueden ser realmente molestas y pueden llevar a los usuario a silenciar el servidor._", true)
+        .addField(':one: **No está permitido publicar contenido inadecuado:**', 'Es decir, todo lo relacionado con pornografía, drogas y apuestas. Tampoco contenido que pueda alentar el odio hacia una etnia, religión o cualquier otro colectivo/individuo. De la misma forma están prohibidas las actitudes tóxicas, faltas de respeto, el acoso, el gore y/o crueldad animal y el envío de pornografía infantil.', true)
+        .addField(':two: Está prohibido hacer spam:', 'No puedes enviar links hacia otros servidores de Discord _(tanto invitaciones como URL redireccionadas o spam relacionado)_, ni links de afiliado. Tampoco puedes abusar de las menciones a los demás usuarios y también está prohibido hacer _flood_ de chat. __Si deseas que te promocionemos, contáctanos.__', true)
+        .addField(':three: No abuses de las menciones:', 'No está permitido excederse utilizando las menciones a personas, a __roles__, o a `@everyone` y `@here`. _Las menciones abusivas pueden ser realmente molestas y pueden llevar a los usuario a silenciar el servidor._', true)
         .addField(':four: Respeta las temáticas:', 'Has de usar los canales de texto/voz adecuados en cada caso. Lee los temas de los canales para más información.', true)
-        .addField(':five: No busques vacíos legales:', 'No intentes hacer algo que obviamente pueda resultar inadecuado tanto para el staff como para el resto de usuarios de la comunidad.', true)
-    message.channel.send({embed})
-
-    .catch ((err) => {
-        console.error(new Date() + " 》" + err);
-
-        let embed = new discord.RichEmbed()
-            .setColor(15806281)
-            .setTitle("❌ Ocurrió un error")
-            .setDescription("Ocurrió un error durante la ejecución del comando")
-        message.channel.send({embed})
-    })
+        .addField(':five: No busques vacíos legales:', 'No intentes hacer algo que obviamente pueda resultar inadecuado tanto para el staff como para el resto de usuarios de la comunidad.', true);
+    message.channel.send(successEmbed);
 }

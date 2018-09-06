@@ -23,7 +23,7 @@ exports.run = (discord, fs, config, token, bot, message, args, command, roles, l
         .addField('⚖ !infractions <@usuario>', 'Comprueba el historial de infracciones de un usuario', true)
         .addField('🔄 !clear <@canal>', 'Borra los mensajes de un canal :key:', true)
         .addField('🚥 !slowmode <@canal>', 'Habilita el cooldown de mensajería de un canal :key:', true)
-        .addField('🙍 !user-info <@usuario>', 'Muestra información acerca de un usuario', true)
+        .addField('🙍 ~~!user-info <@usuario>~~', '~~Muestra información acerca de un usuario~~', true)
         .addField('📃 !server-info', 'Muestra información acerca de este servidor :key:', true)
         .addField('🔖 !role-info <@rol>', 'Muestra información acerca de un rol :key:', true)
     message.author.send(successEmbed);

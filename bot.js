@@ -51,7 +51,7 @@ fs.readdir('./events/', async (err, files) => {
 });
 
 // MANEJADOR DE COMANDOS
-bot.on('message', message => {
+bot.on('message', async message => {
 
     let debuggingChannel = bot.channels.get(config.debuggingChannel);
     let loggingChannel = bot.channels.get(config.loggingChannel);
@@ -63,7 +63,8 @@ bot.on('message', message => {
             .setColor(0xFFC857)
             .setTitle('❕ Función no disponible')
             .setDescription('Por el momento, ' + bot.user.username + ' solo está disponible en la República Gamer.');
-        message.author.send(noDMEmbed);
+        await message.author.send(noDMEmbed);
+        await console.log(message.author.username + ' intentó comunicarse con ' + bot.user.username + ' vía MD, pero esta característica aún no está disponible.\n Este era el contenido del mensaje:\n' + message.content)
         return;
     };
     let waitEmbed = new discord.RichEmbed().setColor(0xF12F49).setDescription('❌ Debes esperar 3 segundos antes de usar este comando');

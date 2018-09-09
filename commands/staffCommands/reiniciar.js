@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, token, bot, message, args, command, roles, loggingChannel) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel) => {
 
     let restartingEmbed = new discord.RichEmbed()
         .setColor(12118406)
@@ -19,7 +19,7 @@ exports.run = (discord, fs, config, token, bot, message, args, command, roles, l
         console.log(new Date().toUTCString() + ' 》Deteniendo ' + bot.user.username + ' . . .');
         try {
              // Inicio de sesión del bot
-            bot.login(config.token);
+            bot.login(keys.token);
             console.log(new Date() + ' 》Iniciando ' + bot.user.username + ' . . .\n');
             loggingChannel.send(loggingEmbed);
         } catch (e) {

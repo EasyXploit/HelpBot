@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, token, bot, message, args, command, roles, loggingChannel) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel) => {
     
     let experimentalEmbed = new discord.RichEmbed()
         .setColor(0xC6C9C6)

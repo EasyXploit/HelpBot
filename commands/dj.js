@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, token, bot, message, args, command) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel) => {
     
     if(message.member.roles.find("name", "DJ")) {
 

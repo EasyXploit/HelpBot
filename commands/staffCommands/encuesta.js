@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, token, bot, message, args, command, roles, loggingChannel) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel) => {
      
     // Introduce los argumentos separados por " en el array 'fields'
     let fields = message.content.slice(11).split('" "');

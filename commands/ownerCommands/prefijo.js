@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, token, bot, message, args, command, roles, loggingChannel) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel) => {
 
     if(args.length >= 2) {
         if (args.length <= 2) {

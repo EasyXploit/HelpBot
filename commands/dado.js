@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, token, bot, message, args, command) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel) => {
 
     const coin = bot.emojis.find('name', 'coin');
     const datos = ['1', '2', '3', '4', '5', '6'];

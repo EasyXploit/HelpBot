@@ -4,7 +4,7 @@ const discord = require('discord.js');
 const fs = require('fs');
 const config = require('./config.json');
 const roles = require('./roles.json');
-const token = require('./token.json');
+const keys = require('./keys.json');
 const package = require('./package.json');
 const bot = new discord.Client();
 const talkedRecently = new Set();
@@ -44,7 +44,7 @@ fs.readdir('./events/', async (err, files) => {
         console.log(' - Evento [' + eventName + '] cargado');
 
         bot.on(eventName, event => {
-            eventFunction.run(event, discord, fs, config, token, bot);
+            eventFunction.run(event, discord, fs, config, keys, bot);
         });
     });
     console.log('\n');
@@ -134,7 +134,7 @@ bot.on('message', async message => {
         
         if (prefix === config.prefix) { // EVERYONE
             let commandFile = require(`./commands/${command}`);
-            commandFile.run(discord, fs, config, token, bot, message, args, command, roles, loggingChannel);
+            commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel);
             console.log(commandImput);
             
             talkedRecently.add(message.author.id);
@@ -151,7 +151,7 @@ bot.on('message', async message => {
             if(!message.member.roles.has(staffRole.id)) return message.channel.send(noPrivilegesEmbed)
             
             let commandFile = require(`./commands/staffCommands/${command}`);
-            commandFile.run(discord, fs, config, token, bot, message, args, command, roles, loggingChannel);
+            commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel);
             console.log(commandImput);
         } else if (prefix === config.supervisorsPrefix) { // SUPERVISORES
             const supervisorsRole = message.guild.roles.get(config.botSupervisor);
@@ -161,7 +161,7 @@ bot.on('message', async message => {
             
             if(message.author.id == config.botOwner || message.member.roles.has(supervisorsRole.id)) {
                 let commandFile = require(`./commands/supervisorsCommands/${command}`);
-                commandFile.run(discord, fs, config, token, bot, message, args, command, roles, loggingChannel);
+                commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel);
                 console.log(commandImput);
             } else {
                 return message.channel.send(noPrivilegesEmbed)
@@ -173,7 +173,7 @@ bot.on('message', async message => {
             
             if (message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed);
             let commandFile = require(`./commands/ownerCommands/${command}`);
-            commandFile.run(discord, fs, config, token, bot, message, args, command, roles, loggingChannel);
+            commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel);
             console.log(commandImput);
         } else {
             return
@@ -202,4 +202,4 @@ bot.on('error', (e) => console.error(new Date() + ' 》' + e.stack));
 bot.on('warn', (e) => console.warn(new Date() + ' 》' + e.stack));
 
 // Inicio de sesión del bot
-bot.login(token.token);
+bot.login(keys.token);

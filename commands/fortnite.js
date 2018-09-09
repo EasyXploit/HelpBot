@@ -40,7 +40,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, roles, lo
                 .setAuthor('Estadísticas de Fortnite', 'http://s2.googleusercontent.com/s2/favicons?domain_url=https://www.epicgames.com/fortnite/')
                 .setTitle('Modo de juego: SOLO')
                 .setDescription('Mostrando las estadísticas de ' + data.username)
-                .setThumbnail('https://static-assets-prod.epicgames.com/fortnite/static/webpack/86f5554fe9ea1398ff9009dcea6c156e.png')
+                .setThumbnail('https://fortnitetracker.com/Images/General/logo.png')
                 .addField('Puntuación', score, true)
                 .addField('Partidas jugadas', matches, true) 
                 .addField('Victorias', wins, true)
@@ -63,7 +63,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, roles, lo
                 .setAuthor('Estadísticas de Fortnite', 'http://s2.googleusercontent.com/s2/favicons?domain_url=https://www.epicgames.com/fortnite/')
                 .setTitle('Modo de juego: DUO')
                 .setDescription('Mostrando las estadísticas de ' + data.username)
-                .setThumbnail('https://static-assets-prod.epicgames.com/fortnite/static/webpack/86f5554fe9ea1398ff9009dcea6c156e.png')
+                .setThumbnail('https://fortnitetracker.com/Images/General/logo.png')
                 .addField('Puntuación', score, true)
                 .addField('Partidas jugadas', matches, true) 
                 .addField('Victorias', wins, true)
@@ -86,7 +86,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, roles, lo
                 .setAuthor('Estadísticas de Fortnite', 'http://s2.googleusercontent.com/s2/favicons?domain_url=https://www.epicgames.com/fortnite/')
                 .setTitle('Modo de juego: SQUAD')
                 .setDescription('Mostrando las estadísticas de ' + data.username)
-                .setThumbnail('https://static-assets-prod.epicgames.com/fortnite/static/webpack/86f5554fe9ea1398ff9009dcea6c156e.png')
+                .setThumbnail('https://fortnitetracker.com/Images/General/logo.png')
                 .addField('Puntuación', score, true)
                 .addField('Partidas jugadas', matches, true) 
                 .addField('Victorias', wins, true)
@@ -109,7 +109,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, roles, lo
                 .setAuthor('Estadísticas de Fortnite', 'http://s2.googleusercontent.com/s2/favicons?domain_url=https://www.epicgames.com/fortnite/')
                 .setTitle('Modo de juego: LIFETIME')
                 .setDescription('Mostrando las estadísticas de ' + data.username)
-                .setThumbnail('https://static-assets-prod.epicgames.com/fortnite/static/webpack/86f5554fe9ea1398ff9009dcea6c156e.png')
+                .setThumbnail('https://fortnitetracker.com/Images/General/logo.png')
                 .addField('Puntuación', score, true)
                 .addField('Partidas jugadas', matches, true) 
                 .addField('Victorias', wins, true)
@@ -124,7 +124,10 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, roles, lo
         console.log(e.stack);
         let errorEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription('❌ No hemos podido encontrar al usuario `' + username + '` en la plataforma `' + platform + '`');
+            .setTitle('❌ Ocurrió un error')
+            .setDescription('No hemos podido encontrar al usuario `' + username + '` en la plataforma `' + platform + '`.')
+            .addField('Posible causa', '`' + username + '` no ha jugado todavía al modo de juego `' + gamemode + '`',true)
+            .addField('Error', e, true)
         message.channel.send(errorEmbed);
     });
 }

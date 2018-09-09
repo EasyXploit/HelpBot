@@ -44,10 +44,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, rol
         
         if (!user) return message.channel.send(noMentionEmbed);
         if (user.bot) return message.channel.send(noBotsEmbed);
-        if (!args[0].startsWith('<@!')) return message.channel.send(noCorrectSyntaxEmbed);
+        if (!args[0].startsWith('<@')) return message.channel.send(noCorrectSyntaxEmbed);
         
         let resultEmbed = 'null';
-        let privilegesCheck;
+        let privilegesCheck = 'true';
         
         switch (args[1]) {
             case 'autor':
@@ -58,7 +58,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, rol
                 break;
             case 'anonimo':
                 const supervisorsRole = message.guild.roles.get(config.botSupervisor);
-                if (message.author.id !== config.botOwner || message.member.roles.has(supervisorsRole.id)) return privilegesCheck = 'false';
+                if (message.author.id !== config.botOwner || message.member.roles.has(supervisorsRole.id)) {
+                    privilegesCheck = 'false';
+                }
                 resultEmbed = new discord.RichEmbed()
                     .setColor(0xFFC857)
                     .setDescription(toDM);
@@ -69,9 +71,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, rol
         }
         
         try {
-            if (privilegesCheck) return message.channel.send(noPrivilegesEmbed);
-            await user.send(resultEmbed);
-            await message.channel.send(confirmEmbed);
+            if (privilegesCheck === 'true') {
+                await user.send(resultEmbed);
+                await message.channel.send(confirmEmbed);
+            } else {
+                message.channel.send(noPrivilegesEmbed);
+            }
         } catch (e) {
             console.error(new Date().toUTCString() + ' 》' + e);
             let errorEmbed = new discord.RichEmbed()

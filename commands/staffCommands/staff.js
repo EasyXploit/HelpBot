@@ -17,6 +17,7 @@ exports.run = (discord, fs, config, token, bot, message, args, command, roles, l
         .addField(':stop_button: ' + config.supervisorsPrefix + 'detener', 'Detiene a ' + bot.user.username + ' :key:', true)
         .addField('🕐 ' + config.staffPrefix + 'uptime', 'Muestra el tiempo que ' + bot.user.username + ' ha permanecido en línea', true)
         .addField('🙍 ' + config.staffPrefix + 'infousuario <@usuario>', 'Muestra información acerca del usuario mencionado', true)
+        .addField('🖥 ' + config.staffPrefix + 'infoservidor', 'Muestra información acerca de la guild actual', true)
         .addField('🔧 ' + config.staffPrefix + 'herramientas', 'Muestra las herramientas de moderación que proporciona <@159985870458322944>', true)
         .addField('🔖 ' + config.supervisorsPrefix + 'añadir-rol <@rol> <@usuario>', 'Añade un determinado rol a un determinado usuario :key:', true)
         .addField('🔖 ' + config.supervisorsPrefix + 'quitar-rol <@rol> <@usuario>', 'Retira un determinado rol a un determinado usuario :key:', true)

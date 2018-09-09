@@ -56,9 +56,8 @@ bot.on('message', async message => {
     let debuggingChannel = bot.channels.get(config.debuggingChannel);
     let loggingChannel = bot.channels.get(config.loggingChannel);
     
-
     if (message.author.bot) return;
-    if (message.channel.type === "dm") {
+    if (message.channel.type === 'dm') {
          const noDMEmbed = new discord.RichEmbed()
             .setColor(0xFFC857)
             .setTitle('❕ Función no disponible')
@@ -66,7 +65,57 @@ bot.on('message', async message => {
         await message.author.send(noDMEmbed);
         await console.log(message.author.username + ' intentó comunicarse con ' + bot.user.username + ' vía MD, pero esta característica aún no está disponible.\n Este era el contenido del mensaje:\n' + message.content)
         return;
-    };
+    }
+
+    //COMPROBACIÓN DEL CONTENIDO DEL MENSAJE
+    async function checkBadWords() {
+        
+        let staffRole = message.guild.roles.get(config.botStaff);
+        let reason;
+        
+        const swearWords = ['hijo de puta', 'me cago en tu puta madre', 'me cago en tus muertos', 'tu puta madre', 'gilipollas']; //Palabras prohibidas
+        const invites = ['discord.gg', '.gg/', '.gg /', '. gg /', '. gg/','discord .gg /', 'discord.gg /', 'discord .gg/','discord .gg', 'discord . gg', 'discord. gg', 'discord gg', 'discordgg', 'discord gg /'] //Invitaciones prohibidas
+        
+        try {
+            
+            if(swearWords.some(word => message.content.toLowerCase().includes(word)) ) {
+                await message.delete();
+                reason = 'Palabras ofensivas'
+            }
+
+            if(invites.some(word => message.content.toLowerCase().includes(word)) ) {
+                if (message.member.roles.has(staffRole.id)) return;
+                await message.delete();
+                reason = 'Invitaciones no permitidas';
+            }
+
+            if (!reason) return;
+
+            let noBadWordsEmbed = new discord.RichEmbed()
+                .setColor(0xF7A71C)
+                .setAuthor('[ADVERTENCIA] ' + message.author.username, message.author.displayAvatarURL)
+                .addField('Usuario', '<@' + message.author.id + '>', true)
+                .addField('Moderador', '<@' + bot.user.id + '>', true)
+                .addField('Razón', reason, true)
+
+            let loggingEmbed = new discord.RichEmbed()
+                .setColor(0xF7A71C)
+                .setAuthor('[ADVERTENCIA] ' + message.author.username, message.author.displayAvatarURL)
+                .addField('Usuario', '<@' + message.author.id + '>', true)
+                .addField('Moderador', '<@' + bot.user.id + '>', true)
+                .addField('Razón', reason, true)
+                .addField('Canal', message.channel, true)
+                .addField('Mensaje', message.content, true)
+
+            await message.author.send(noBadWordsEmbed);
+            await loggingChannel.send(loggingEmbed);
+            
+        } catch (e) {
+            console.log('Ocurrió un error');
+        }
+    }
+    checkBadWords();
+
     let waitEmbed = new discord.RichEmbed().setColor(0xF12F49).setDescription('❌ Debes esperar 3 segundos antes de usar este comando');
     if (talkedRecently.has(message.author.id)) return message.channel.send(waitEmbed);
     //if(message.content.startsWith(config.prefix) || message.content.startsWith(config.staffPrefix) !== 0) return; // indexOf !== buscará el prefijo desde la posición 0
@@ -94,7 +143,7 @@ bot.on('message', async message => {
             }, 3000);
             
         } else if (prefix === config.staffPrefix) { // STAFF
-            const staffRole = message.guild.roles.get(config.botStaff);
+            let staffRole = message.guild.roles.get(config.botStaff);
             const noPrivilegesEmbed = new discord.RichEmbed()
                 .setColor(0xF12F49)
                 .setDescription('❌ ' + message.author.username + ', no dispones de privilegios suficientes para ejecutar este comando');

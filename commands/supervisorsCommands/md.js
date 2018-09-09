@@ -7,25 +7,29 @@ exports.run = async (discord, fs, config, token, bot, message, args, command, ro
     
     try {
         let noMentionEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
+            .setColor(0xF04647)
             .setDescription('❌ No has mencionado un usuario válido');
         
         let noTypeAndToDMEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
+            .setColor(0xF04647)
             .setDescription('❌ No has proporcionado ni el tipo de mensaje ni contenido del mensaje');
         
         let noToDMEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
+            .setColor(0xF04647)
             .setDescription('❌ No has proporcionado el contenido del mensaje');
         
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
+            .setColor(0xF04647)
             .setTitle('❌ Ocurrió un error')
             .setDescription('La sintaxis del comando es `' + config.ownerPrefix + 'md (@usuario) (autor/anonimo) (mensaje a enviar)`');
         
         let noBotsEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
+            .setColor(0xF04647)
             .setDescription('❌ No puedes entablar una conversación con un bot');
+        
+        let noPrivilegesEmbed = new discord.RichEmbed()
+            .setColor(0xF12F49)
+            .setDescription('❌ ' + message.author.username + ', no dispones de privilegios suficientes para ejecutar este comando');
         
         let confirmEmbed = new discord.RichEmbed()
             .setColor(0xB8E986)
@@ -43,6 +47,7 @@ exports.run = async (discord, fs, config, token, bot, message, args, command, ro
         if (!args[0].startsWith('<@!')) return message.channel.send(noCorrectSyntaxEmbed);
         
         let resultEmbed = 'null';
+        let privilegesCheck = true;
         
         switch (args[1]) {
             case 'autor':
@@ -52,6 +57,7 @@ exports.run = async (discord, fs, config, token, bot, message, args, command, ro
                     .setDescription(toDM);
                 break;
             case 'anonimo':
+                if (message.author.id !== config.botOwner) return privilegesCheck = false;
                 resultEmbed = new discord.RichEmbed()
                     .setColor(0xFFC857)
                     .setDescription(toDM);
@@ -62,12 +68,16 @@ exports.run = async (discord, fs, config, token, bot, message, args, command, ro
         }
         
         try {
+            if (privilegesCheck === false) {
+                message.channel.send(noPrivilegesEmbed);
+                return;
+            }
             await user.send(resultEmbed);
             await message.channel.send(confirmEmbed);
         } catch (e) {
             console.error(new Date().toUTCString() + ' 》' + e);
             let errorEmbed = new discord.RichEmbed()
-                .setColor(0xF12F49)
+                .setColor(0xF04647)
                 .setTitle('❌ Ocurrió un error')
                 .addField('Se declaró el siguiente error durante la ejecución del comando:', e, true);
             message.channel.send(errorEmbed);
@@ -75,7 +85,7 @@ exports.run = async (discord, fs, config, token, bot, message, args, command, ro
     } catch (e) {
         console.error(new Date().toUTCString() + ' 》' + e);
         let errorEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
+            .setColor(0xF04647)
             .setTitle('❌ Ocurrió un error')
             .addField('Se declaró el siguiente error durante la ejecución del comando:', e, true);
         message.channel.send(errorEmbed);

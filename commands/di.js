@@ -11,7 +11,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, roles, lo
             .setDescription(text);
         message.channel.send(successEmbed);
     } else {
-        console.log (new Date().toUTCString() + ' 》' + message.author.username + ' no proporcionó suficientes argumentos para ejecutar el comando: ' + message.content + ' en ' + message.guild.name);
+        console.log(new Date().toUTCString() + ' 》' + message.author.username + ' no proporcionó suficientes argumentos para ejecutar el comando: ' + message.content + ' en ' + message.guild.name);
         
         let errorEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)

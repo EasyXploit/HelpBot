@@ -5,12 +5,18 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, roles, lo
 
     let successEmbed = new discord.RichEmbed()
         .setAuthor(bot.user.username, bot.user.avatarURL)
-        .setDescription('Comandos de ' + bot.user.username)
+        .setDescription('Comandos sociales de ' + bot.user.username)
 
         .setColor(0xFFC857)
         .setFooter('© 2018 República Gamer LLC', bot.user.avatarURL)
         .setThumbnail('https://i.imgur.com/cTW63kf.png')
 
-        .addField('Comandos sociales', '👦  **' + config.prefix + 'avatar** _muestra tu avatar o el de cualquier usuario._\n🐈  **' + config.prefix + 'catfacts** _muestra un dato curioso sobre los gatos._\n🐕  **' + config.prefix + 'dogfacts** _muestra un dato curioso sobre los perros._\n:game_die:  **' + config.prefix + 'dado** _lanzará un dado._\n' + coin + '  **' + config.prefix + 'moneda** _lanzará una moneda._\n💭  **' + config.prefix + 'di** _hará que ' + bot.user.username + ' repita lo que escribas._\n👁  **' + config.prefix + 'registra [ms]** _hará que ' + bot.user.username + ' registre los mensajes enviados durante el tiempo especificado_ ' + beta + '.', true);
+        .addField('👦 ' + config.prefix + 'avatar',  'Muestra tu avatar o el de cualquier usuario.')
+        .addField('🐈 ' + config.prefix + 'catfacts', 'Muestra un dato curioso sobre los gatos.')
+        .addField('🐕 ' + config.prefix + 'dogfacts', 'Muestra un dato curioso sobre los perros.')
+        .addField(':game_die: ' + config.prefix + 'dado', 'Lanzará un dado.')
+        .addField(coin + ' ' + config.prefix + 'moneda', 'Lanzará una moneda.')
+        .addField('💭 ' + config.prefix + 'di', 'Hará que ' + bot.user.username + ' repita lo que escribas.')
+        .addField('👁 ' + config.prefix + 'registra [ms]', 'Hará que ' + bot.user.username + ' registre los mensajes enviados durante el tiempo especificado.' + beta + '.')
     message.channel.send(successEmbed);
 }

@@ -1,71 +1,78 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel) => {
 
-    let experimentalEmbed = new discord.RichEmbed()
-        .setColor(0xC6C9C6)
-        .setDescription('❕ **Función experimental**\nEstá ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
-    await message.channel.send(experimentalEmbed);
-    return;
-        
-    function changePresence() {
-        let presence = 'dev status';
-        let ifError = false;
-        let errorCount = 0;
+    //$presencia (estatus/actividad) (online/offline/idle/dnd - nombreDeLaAtividad)
+    
+    let fields = message.content.slice(12).split('" "');
+    let lastField = fields.slice(-1).join();
 
-        try {
-            if (args[0] === 'estado') {
-                if (args[1] === 'online' || args[1] === 'offline' || args[1] === 'idk') {
-                    bot.user.setStatus(args[1])
-                } else {
-                    let errorEmbed = new discord.RichEmbed()
-                        .setColor(0xF12F49)
-                        .setDescription('❌ Debes especificar el tipo de estado a modificar');
-                    message.channel.send(errorEmbed);
-                }
-            } else if (args[0] === 'juego') {
-                bot.user.setGame(args[1])
-            } else {
-                let embed = new discord.RichEmbed()
-                    .setColor(0xF12F49)
-                    .setDescription('❌ Debes especificar el tipo de presencia a modificar');
-                message.channel.send(errorEmbed);
-            }
-        } catch (e) {
-            ifError = true
-            errorCount = errorCount + 1
-            console.error(new Date().toUTCString() + " 》" + e)
+    lastField = lastField.substring(0, lastField.length - 1);
+    fields.splice(-1);
+    fields.push(lastField);
 
+    let toModify = fields[0].toLowerCase();
+    let content = fields[1];
+    let changed;
+    
+    let noCorrectSyntaxEmbed = new discord.RichEmbed()
+        .setColor(0xF04647)
+        .setTitle('❌ Ocurrió un error')
+        .setDescription('La sintaxis del comando es `' + config.ownerPrefix + 'presencia ("estatus/actividad") ("online/invisible/idle/dnd" o "nombreDeLaActividad")`');
+    
+    let actuallyConfiguredEmbed = new discord.RichEmbed()
+        .setColor(0xF12F49)
+        .setDescription('❌ Esta configuración ya ha sido aplicada');
+    
+    if (!args[0] || !args[1]) return message.channel.send(noCorrectSyntaxEmbed);
+    if (toModify !== 'estatus' && toModify !== 'actividad') return message.channel.send(noCorrectSyntaxEmbed);
+
+    try {
+        if (toModify === 'estatus') {
+            if (content !== 'online' && content !== 'invisible' && content !== 'idle' && content !== 'dnd') return message.channel.send(noCorrectSyntaxEmbed);
+            if (content === config.status) return message.channel.send(actuallyConfiguredEmbed);
+            config.status = content;
+
+            await fs.writeFile('./config.json', JSON.stringify(config), (err) => console.error);
+            await bot.user.setStatus(config.status);
+
+            changed = 'el estado';
+        } else if (toModify === 'actividad') {
+            if (content === config.game) return message.channel.send(actuallyConfiguredEmbed);
+            config.game = content;
+
+            await fs.writeFile('./config.json', JSON.stringify(config), (err) => console.error);
+            await bot.user.setPresence({game: {name: config.game, type: config.type}});
+
+            changed = 'la actividad';   
+        } else {
             let errorEmbed = new discord.RichEmbed()
                 .setColor(0xF12F49)
-                .addField('❌ Se declaró el siguiente error durante la ejecución del comando:', e, true);
-            message.channel.send(errorEmbed);
-        } try {
-            if ( ifError = true) {
-                let embed = new discord.RichEmbed()
-                    .setColor(0xB8E986)
-                    .setTitle('✅ Operación completada')
-                    .setDescription('Cambiaste el estado del bot a ' + presence)
-                message.channel.send({embed})
-
-                embed = new discord.RichEmbed()
-                    .setColor(0x4A90E2)
-                    .setTimestamp()
-                    .setFooter('© 2018 República Gamer LLC', bot.user.avatarURL)
-                    .setTitle('📑 Auditoría')
-                    .setDescription(message.author.username + ' cambió el estado del bot a ' + presence);
-                loggingChannel.send({embed})
-            } else {
-                return
-            }
-        } catch (e) {
-            ifError = true
-            errorCount = errorCount + 1
-            console.error(new Date().toUTCString() + " 》" + e)
-
-            let errorEmbed = new discord.RichEmbed()
-                .setColor(0xF12F49)
-                .addField('❌ Se declaró el siguiente error durante la ejecución del comando:', e, true);
+                .setTitle('❌ Ocurrió un error')
+                .addField('Se declaró un siguiente durante la ejecución del comando:', true);
             message.channel.send(errorEmbed);
         }
+    } catch (e) {
+        console.error(new Date().toUTCString() + ' 》' + e);
+        let errorEmbed = new discord.RichEmbed()
+            .setColor(0xF12F49)
+            .setTitle('❌ Ocurrió un error')
+            .addField('Se declaró el siguiente error durante la ejecución del comando:', e, true);
+        message.channel.send(errorEmbed);
     }
-    changePresence()
+
+    let resultEmbed = new discord.RichEmbed()
+        .setColor(0xB8E986)
+        .setTitle('✅ Operación en marcha')
+        .setDescription('Cambiaste ' + changed + ' del bot a `' + content + '`.\nEsta operación podría tardar unos minutos en completarse.')
+
+    let loggingEmbed = new discord.RichEmbed()
+        .setColor(0x4A90E2)
+        .setTimestamp()
+        .setFooter('© 2018 República Gamer LLC', bot.user.avatarURL)
+        .setTitle('📑 Auditoría')
+        .setDescription(message.author.username + ' cambió ' + changed + ' del bot a `' + content + '`');
+
+    if (!changed) return;
+
+    await loggingChannel.send(loggingEmbed);
+    await message.channel.send(resultEmbed)
 }

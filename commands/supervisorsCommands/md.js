@@ -72,6 +72,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, rol
         
         try {
             if (privilegesCheck === 'true') {
+                message.delete()
                 await user.send(resultEmbed);
                 await message.channel.send(confirmEmbed);
             } else {

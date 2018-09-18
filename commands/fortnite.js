@@ -1,10 +1,5 @@
 exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel) => {
     
-    let experimentalEmbed = new discord.RichEmbed()
-        .setColor(0xC6C9C6)
-        .setDescription('❕ **Función experimental**\nEstá ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
-    message.channel.send(experimentalEmbed);
-
     const fortniteClient = require('fortnite');
     const fortnite = new fortniteClient(keys.fortniteApiKey);
     
@@ -154,13 +149,11 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, roles, lo
             message.channel.send(noCorrectSyntaxEmbed);
         }
     }).catch (e => {
-        console.log(e.stack);
         let errorEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
             .setTitle('❌ Ocurrió un error')
             .setDescription('No hemos podido encontrar al usuario `' + username + '` en la plataforma `' + platform + '`.')
-            .addField('Posible causa', '`' + username + '` no ha jugado todavía al modo de juego `' + gamemode + '`',true)
-            .addField('Error', e, true)
+            .addField('Posibles causas', '● El usuario `' + username +'` no existe o nunca ha jugado\n● `' + username + '` no ha jugado en la plataforma `' + platform +'` o al modo de juego `'+ gamemode +'`\n● El usuario ha cambiado de nombre de usuario\n● La API no tiene registrada ninguna estadística del usuario `' + username + '`',true)
         message.channel.send(errorEmbed);
     });
 }

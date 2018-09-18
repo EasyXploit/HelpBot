@@ -16,7 +16,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, roles, lo
         .addField('🕑 !tempban <@usuario> [motivo]', 'Banea a un usuario temporalmente :key:')
         .addField('🔄 !kick <@usuario> [motivo]', 'Expulsa a un usuario :key:')
         .addField('⏱ !tempkick <@usuario> [motivo]', 'Expulsa a un usuario temporalmente :key:')
-        .addField('🔇 !mute <@usuario> [motivo]', 'Silencia a un usuario :key:')
+        .addField('🔇 ~~!mute <@usuario> [motivo]~~', '~~Silencia a un usuario~~ :key:')
         .addField('🔈 !tempmute <@usuario> [motivo]', 'Silencia a un usuario temporalmente')
         .addField('🔊 !unmute <@usuario>', 'Des-silencia a un usuario :key:')
         .addField('🔔 !warn <@usuario> [advertencia]', 'Advierte a un usuario')

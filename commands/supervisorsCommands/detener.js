@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel) => {
   
     let successEmbed = new discord.RichEmbed()
         .setColor(0xB8E986)
@@ -14,10 +14,10 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, roles, lo
 
     try {
         console.log(new Date().toUTCString() + ' 》Deteniendo ' + bot.user.username + ' a petición de ' + message.author.username);
-        message.channel.send(successEmbed);
-        loggingChannel.send(loggingEmbed);
-        bot.destroy();
-        console.log(new Date().toUTCString() + ' 》' + bot.user.username + ' se encuentra detenido');
+        await message.channel.send(successEmbed);
+        await loggingChannel.send(loggingEmbed);
+        await bot.destroy();
+        process.exit();
     } catch (e) {
         console.error(new Date().toUTCString() + ' 》' + e);
     }

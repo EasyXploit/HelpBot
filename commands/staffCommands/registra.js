@@ -54,10 +54,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, rol
 
     console.log('\n 》' + bot.user.username + ' ha comenzado a registrar los mensajes del canal ' + message.mentions.channels.first().name + ' a petición de ' + message.author.username + ' durante ' + args[1] + '\n');
 
-    const msgs = await message.mentions.channels.first().awaitMessages(msg => {
-        console.log(' - ' +  msg.author.username + ' > ' + msg.content);
-        return msg.content;
-    }, {time: milliseconds});
+    const msgs = await message.mentions.channels.first().awaitMessages(msg => {return msg.content}, {time: milliseconds});
 
     let stopEmbed = new discord.RichEmbed()
         .setTitle('👁 Registro finalizado')

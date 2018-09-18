@@ -17,6 +17,5 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, roles, lo
         .addField(':game_die: ' + config.prefix + 'dado', 'Lanzará un dado.')
         .addField(coin + ' ' + config.prefix + 'moneda', 'Lanzará una moneda.')
         .addField('💭 ' + config.prefix + 'di', 'Hará que ' + bot.user.username + ' repita lo que escribas.')
-        .addField('👁 ' + config.prefix + 'registra [ms]', 'Hará que ' + bot.user.username + ' registre los mensajes enviados durante el tiempo especificado.' + beta + '.')
     message.channel.send(successEmbed);
 }

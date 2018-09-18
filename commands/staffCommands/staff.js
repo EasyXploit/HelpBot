@@ -26,6 +26,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, roles, lo
         .addField('🔖 ' + config.supervisorsPrefix + 'quitar-rol <@rol> <@usuario>', 'Retira un determinado rol a un determinado usuario :key:', true)
         .addField('💭 ' + config.staffPrefix + 'envia <mensaje>', 'Envía un mensaje desde ' + bot.user.username, true)
         .addField('📊 ' + config.staffPrefix + 'encuesta <"título"> <"campo1"> ["campo2"] ...', 'Envia una encuesta al canal actual', true)
+        .addField('👁 ' + config.staffPrefix + 'registra (#canal) (xS/xM/xH)', 'Hará que ' + bot.user.username + ' registre los mensajes enviados durante el tiempo especificado.' + beta + '.')
         .addField(pokeball + ' ' + config.staffPrefix + 'spawn <"url">', 'Spawnea un pokémon en base a la URL de imágen proporcionada', true);
     message.author.send(successEmbed);
 }

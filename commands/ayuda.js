@@ -14,7 +14,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, roles, lo
         .addField(':grey_question: ' + config.prefix + 'normas', 'Muestra las normas del servidor.', true)
         .addField(':robot: ' + config.prefix + 'comandos', 'Muestra los comandos de los bots.', true)
         .addField(':medal: ' + config.prefix + 'rangos', 'Muestra la lista de rangos ' + beta + '.', true)
-        .addField(fortnite + ' ' + config.prefix + 'fortnite ("usuario") ("solo/duo/squad/lifetime") ("pc/xbl/psn")', 'Muestra estadísticas de Fortnite Battle Royale ' + beta + '.', true)
+        .addField(fortnite + ' ' + config.prefix + 'fortnite ("usuario") ("solo/duo/squad/lifetime") ("pc/xbl/psn")', 'Muestra estadísticas de Fortnite Battle Royale.', true)
         .addField(':medal: !rank', 'Muestra tu rango en el servidor (o el de otro usuario).', true)
         .addField(':trophy: !levels', 'Muestra la tabla de clasificación del servidor.', true)
         .addField(':stopwatch: ' + config.prefix + 'ping', 'Comprueba el tiempo de respuesta entre el cliente y ' + bot.user.username, true)

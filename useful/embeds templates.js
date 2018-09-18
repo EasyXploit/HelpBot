@@ -32,7 +32,7 @@ let embed = new discord.RichEmbed()
 //Comando deshabilitado
 let disabledEmbed = new discord.RichEmbed()
     .setColor(0xC6C9C6)
-    .setDescription('❕ Comando `' + message.content + '` deshabilitado temporalmente');
+    .setDescription('❕ Comando `' + command.slice(-0, -3) + '` deshabilitado temporalmente');
 message.channel.send(disabledEmbed);
 return;
 

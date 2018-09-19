@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis) => {
 
     let embed1 = new discord.RichEmbed()
         .setAuthor('AYUDA', 'http://i.imgur.com/sYyH2IM.png')

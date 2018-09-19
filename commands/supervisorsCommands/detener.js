@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis) => {
   
     let successEmbed = new discord.RichEmbed()
         .setColor(0xB8E986)

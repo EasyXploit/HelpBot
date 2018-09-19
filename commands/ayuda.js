@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis) => {
 
     const beta = bot.emojis.find('name', 'beta');   
     const fortnite = bot.emojis.find('name', 'fortnite')

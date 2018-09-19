@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis) => {
 
     const texts = require('../resources/texts/catfacts.json');
     const images = require('../resources/images/cats/cats.json');

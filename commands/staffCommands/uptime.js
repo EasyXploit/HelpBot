@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis) => {
     
     try {
         async function convertMS( milliseconds ) {

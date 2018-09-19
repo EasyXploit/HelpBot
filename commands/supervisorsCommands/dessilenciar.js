@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis) => {
     
     //&dessilenciar (mención/id) (motivo)
 

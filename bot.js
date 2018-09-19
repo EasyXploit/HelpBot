@@ -7,6 +7,9 @@ const roles = require('./roles.json');
 const keys = require('./keys.json');
 const package = require('./package.json');
 const bot = new discord.Client();
+
+let emojis = require(`./resources/emojis.js`);
+
 const talkedRecently = new Set();
 bot.mutes = require('./mutes.json');
 
@@ -15,6 +18,9 @@ bot.on('ready', async () => {
     let loggingChannel = bot.channels.get(config.loggingChannel);
     try {
         await bot.user.setPresence({status: config.status, game: {name: config.game, type: config.type}});
+
+        await emojis.run(discord, bot);
+        emojis = require(`./resources/emojis.js`);
         
         console.log(' 》' + bot.user.username + ' iniciado correctamente \n  ● Estatus: ' + config.status + '\n  ● Tipo de actividad: ' + config.type + '\n  ● Actividad: ' + config.game + '\n\n');
         
@@ -36,8 +42,7 @@ bot.on('ready', async () => {
 
 // MANEJADOR DE EVENTOS
 fs.readdir('./events/', async (err, files) => {
-    
-    if (err) return console.error(new Date().toUTCString() + ' 》' + err.stack);
+    if (err) return console.error(new Date().toUTCString() + ' 》No se ha podido completar la carga de los eventos.\n' + err.stack);
     files.forEach(file => {
         let eventFunction = require(`./events/${file}`);
         let eventName = file.split('.')[0];
@@ -115,7 +120,7 @@ bot.on('message', async message => {
         }
     }
     checkBadWords();
-
+    
     let waitEmbed = new discord.RichEmbed().setColor(0xF12F49).setDescription('❌ Debes esperar 3 segundos antes de usar este comando');
     if (talkedRecently.has(message.author.id)) return message.channel.send(waitEmbed);
     //if(message.content.startsWith(config.prefix) || message.content.startsWith(config.staffPrefix) !== 0) return; // indexOf !== buscará el prefijo desde la posición 0
@@ -134,7 +139,7 @@ bot.on('message', async message => {
         
         if (prefix === config.prefix) { // EVERYONE
             let commandFile = require(`./commands/${command}`);
-            commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel);
+            commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis);
             console.log(commandImput);
             
             talkedRecently.add(message.author.id);
@@ -151,7 +156,7 @@ bot.on('message', async message => {
             if(!message.member.roles.has(staffRole.id)) return message.channel.send(noPrivilegesEmbed)
             
             let commandFile = require(`./commands/staffCommands/${command}`);
-            commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel);
+            commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis);
             console.log(commandImput);
         } else if (prefix === config.supervisorsPrefix) { // SUPERVISORES
             const supervisorsRole = message.guild.roles.get(config.botSupervisor);
@@ -161,7 +166,7 @@ bot.on('message', async message => {
             
             if(message.author.id == config.botOwner || message.member.roles.has(supervisorsRole.id)) {
                 let commandFile = require(`./commands/supervisorsCommands/${command}`);
-                commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel);
+                commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis);
                 console.log(commandImput);
             } else {
                 return message.channel.send(noPrivilegesEmbed)
@@ -173,27 +178,13 @@ bot.on('message', async message => {
             
             if (message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed);
             let commandFile = require(`./commands/ownerCommands/${command}`);
-            commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel);
             console.log(commandImput);
+            commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis);
         } else {
             return
         }
     } catch (e) {
-        console.error(new Date() + ' 》' + e);
-
-        let debuggEmbed = new discord.RichEmbed()
-            .setColor(0xCBAC88)
-            .setTimestamp()
-            .setFooter('© 2018 República Gamer LLC', bot.user.avatarURL)
-            .setTitle('📋 Depuración')
-            .setDescription('Se declaró un error durante la ejecución de un comando')
-            .addField('Comando:', message.content, true)
-            .addField('Origen:', message.guild.name, true)
-            .addField('Canal:', message.channel, true)
-            .addField('Autor:', '<@' + message.author.id + '>', true)
-            .addField('Fecha:', new Date().toUTCString(), true)
-            .addField('Error:', e, true);
-        debuggingChannel.send(debuggEmbed);
+        console.error(new Date() + ' 》' + e.stack);
     }
 });
 

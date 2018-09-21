@@ -16,7 +16,7 @@ exports.run = (event, discord, fs, config, keys, bot) => {
             .setColor(0xDB904D)
             .setTimestamp()
             .setFooter('© 2018 República Gamer LLC', bot.user.avatarURL)
-            .addField('📑 Auditoría', 'El **BOT** @' + event.user.username + ' fue eliminado del servidor ↗');
+            .addField('📑 Auditoría', 'El **BOT** @' + event.user.tag + ' fue eliminado del servidor ↗');
         loggingChannel.send(loggingGoodbyeBotEmbed)
         return;
     }

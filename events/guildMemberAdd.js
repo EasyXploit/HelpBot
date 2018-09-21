@@ -55,7 +55,7 @@ exports.run = (event, discord, fs, config, keys, bot) => {
                 .setColor(0x98E646)
                 .setTimestamp()
                 .setFooter('© 2018 República Gamer LLC', bot.user.avatarURL)
-                .addField('📑 Auditoría', '@' + event.user.username + ' se unió a la República Gamer ↙');
+                .addField('📑 Auditoría', '@' + event.user.tag + ' se unió a la República Gamer ↙');
             loggingChannel.send(loggingWelcomeEmbed);
 
             let dmWelcomeEmbed = new discord.RichEmbed()

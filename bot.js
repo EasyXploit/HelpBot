@@ -19,10 +19,11 @@ bot.on('ready', async () => {
     try {
         await bot.user.setPresence({status: config.status, game: {name: config.game, type: config.type}});
 
-        await emojis.run(discord, bot);
+        emojis.run(discord, bot);
         emojis = require(`./resources/emojis.js`);
         
-        console.log(' 》' + bot.user.username + ' iniciado correctamente \n  ● Estatus: ' + config.status + '\n  ● Tipo de actividad: ' + config.type + '\n  ● Actividad: ' + config.game + '\n\n');
+        console.log(' 》' + bot.user.username + ' iniciado correctamente \n  ● Estatus: ' + config.status + '\n  ● Tipo de actividad: ' + config.type + '\n  ● Actividad: ' + config.game + '\n');
+        console.log('》Tiempo de respuesta del Websocket: ' + bot.ping + 'ms\n\n');
         
         let statusEmbed = new discord.RichEmbed()
             .setTitle('📑 Estado de ejecución')
@@ -35,6 +36,7 @@ bot.on('ready', async () => {
             .setFooter(bot.user.username, bot.user.avatarURL)
             .setTimestamp();
         loggingChannel.send(statusEmbed);
+        
     } catch (e) {
         console.error(new Date().toUTCString() + ' 》' + e.stack);
     }
@@ -68,7 +70,7 @@ bot.on('message', async message => {
             .setTitle('❕ Función no disponible')
             .setDescription('Por el momento, ' + bot.user.username + ' solo está disponible en la República Gamer.');
         await message.author.send(noDMEmbed);
-        await console.log(message.author.username + ' intentó comunicarse con ' + bot.user.username + ' vía MD, pero esta característica aún no está disponible.\n Este era el contenido del mensaje:\n' + message.content)
+        await console.log('DM: ' + message.author.username + ' >' + message.content)
         return;
     }
 
@@ -82,7 +84,6 @@ bot.on('message', async message => {
         const invites = ['discord.gg', '.gg/', '.gg /', '. gg /', '. gg/','discord .gg /', 'discord.gg /', 'discord .gg/','discord .gg', 'discord . gg', 'discord. gg', 'discord gg', 'discordgg', 'discord gg /'] //Invitaciones prohibidas
         
         try {
-            
             if(swearWords.some(word => message.content.toLowerCase().includes(word)) ) {
                 await message.delete();
                 reason = 'Palabras ofensivas'
@@ -114,16 +115,13 @@ bot.on('message', async message => {
 
             await message.author.send(noBadWordsEmbed);
             await loggingChannel.send(loggingEmbed);
-            
         } catch (e) {
-            console.log('Ocurrió un error');
+            console.log('Ocurrió un error durante la ejecución de la función "checkBadWords"');
         }
     }
     checkBadWords();
     
-    let waitEmbed = new discord.RichEmbed().setColor(0xF12F49).setDescription('❌ Debes esperar 3 segundos antes de usar este comando');
-    if (talkedRecently.has(message.author.id)) return message.channel.send(waitEmbed);
-    //if(message.content.startsWith(config.prefix) || message.content.startsWith(config.staffPrefix) !== 0) return; // indexOf !== buscará el prefijo desde la posición 0
+    if(!message.content.startsWith(config.prefix) && !message.content.startsWith(config.staffPrefix) && !message.content.startsWith(config.supervisorsPrefix) && !message.content.startsWith(config.ownerPrefix)) return;
     
     const prefix = message.content.slice(0, 1);
     // Función para eliminar el prefijo, extraer el comando y sus argumentos (en caso de tenerlos)
@@ -134,8 +132,10 @@ bot.on('message', async message => {
     
     // Función para ejecutar el comando
     try {
-        
         let commandImput = new Date().toUTCString() + ' 》' + message.author.username + ' introdujo el comando: ' + message.content + ' en ' + message.guild.name;
+        
+        let waitEmbed = new discord.RichEmbed().setColor(0xF12F49).setDescription('❌ Debes esperar 3 segundos antes de usar este comando');
+        if (talkedRecently.has(message.author.id)) return message.channel.send(waitEmbed);
         
         if (prefix === config.prefix) { // EVERYONE
             let commandFile = require(`./commands/${command}`);
@@ -148,6 +148,7 @@ bot.on('message', async message => {
             }, 3000);
             
         } else if (prefix === config.staffPrefix) { // STAFF
+            console.log('Test')
             let staffRole = message.guild.roles.get(config.botStaff);
             const noPrivilegesEmbed = new discord.RichEmbed()
                 .setColor(0xF12F49)
@@ -181,7 +182,7 @@ bot.on('message', async message => {
             console.log(commandImput);
             commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis);
         } else {
-            return
+            return;
         }
     } catch (e) {
         console.error(new Date() + ' 》' + e.stack);

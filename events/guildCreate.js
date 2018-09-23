@@ -1,4 +1,6 @@
 exports.run = (event, discord, fs, config, keys, bot) => {
+    
+    event.leave();
 
     const loggingChannel = bot.channels.get(config.loggingChannel);
 

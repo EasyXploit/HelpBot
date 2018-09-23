@@ -135,7 +135,7 @@ bot.on('message', async message => {
         let commandImput = new Date().toUTCString() + ' 》' + message.author.username + ' introdujo el comando: ' + message.content + ' en ' + message.guild.name;
         
         let waitEmbed = new discord.RichEmbed().setColor(0xF12F49).setDescription('❌ Debes esperar 3 segundos antes de usar este comando');
-        if (talkedRecently.has(message.author.id)) return message.channel.send(waitEmbed);
+        if (talkedRecently.has(message.author.id)) return message.channel.send(waitEmbed).then(msg => {msg.delete(1000)});
         
         if (prefix === config.prefix) { // EVERYONE
             let commandFile = require(`./commands/${command}`);

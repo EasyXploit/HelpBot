@@ -1,9 +1,9 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
 
-    let experimentalEmbed = new discord.RichEmbed()
+    let disabledEmbed = new discord.RichEmbed()
         .setColor(0xC6C9C6)
-        .setDescription('❕ **Función experimental**\nEstá ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
-    await message.channel.send(experimentalEmbed);
+        .setDescription(emojis.GrayTick + ' Comando `' + command.slice(-0, -3) + '` deshabilitado temporalmente');
+    message.channel.send(disabledEmbed);
     return;
 
     if(args.length >= 3) {

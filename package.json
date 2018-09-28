@@ -1,6 +1,6 @@
 {
   "name": "pilkobot",
-  "version": "1.13.0",
+  "version": "1.16.8",
   "description": "PilkoBot es un bot para uso exclusivo de los usuario de la República Gamer",
   "main": "bot.js",
   "dependencies": {

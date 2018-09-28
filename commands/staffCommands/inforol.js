@@ -1,41 +1,34 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
     
     let experimentalEmbed = new discord.RichEmbed()
         .setColor(0xC6C9C6)
-        .setDescription('❕ **Función experimental**\nEstá ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
+        .setDescription(emojis.GrayTick + ' **Función experimental**\nEstá ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
     message.channel.send(experimentalEmbed);
     
+    //-inforol (@rol | "rol" | id)
+    
     try {
-        let noMentionEmbed = new discord.RichEmbed()
+        let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription('❌ No has proporcionado un rol válido');
+            .setDescription(emojis.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'inforol (@rol | "rol" | id)`');
         
         let guild = message.guild;
-        let role = message.mentions.roles.first() || message.guild.roles.find ('name', args[0]) || message.guild.roles.get(args[0]);
-        if (!role) return message.channel.send(noMentionEmbed);
+        let role = message.mentions.roles.first() || guild.roles.get(args[0]) || message.guild.roles.find('name', args[0]);
+        if (!role) {
+            let newArgs = message.content.slice(10).split('"').slice(0, 1).join();
+            role = message.guild.roles.find('name', newArgs)
+        }
+        
+        if (!role) return message.channel.send(noCorrectSyntaxEmbed);
 
         let membersWithRole = message.guild.roles.get(role.id).members.size;
-        let mentionable;
-        let hoisted;
-        let managed;
+        let mentionable = 'No';
+        let hoisted = 'Oculto';
+        let managed = 'Local';
         
-        if (role.mentionable === true) {
-            mentionable = 'Si';
-        } else if (role.mentionable === false) {
-            mentionable = 'No';
-        }
-        
-        if (role.hoist === true) {
-            hoisted = 'Visible';
-        } else if (role.hoist === false) {
-            hoisted = 'Oculto';
-        }
-        
-        if (role.managed === true) {
-            managed = 'Externa';
-        } else if (role.hoist === false) {
-            managed = 'Local';
-        }
+        if (role.mentionable === true) {mentionable = 'Si'};
+        if (role.hoist === true) {hoisted = 'Visible'};
+        if (role.managed === true) {managed = 'Externa'};
         
         let resultEmbed = new discord.RichEmbed()
             .setColor(role.hexColor)
@@ -51,13 +44,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, roles, lo
             .addField('Administración', managed, true)
 
         message.channel.send(resultEmbed);
-        
     } catch (e) {
-        console.error(new Date().toUTCString() + ' 》' + e);
-        let errorEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
-            .setTitle('❌ Ocurrió un error')
-            .addField('Se declaró el siguiente error durante la ejecución del comando:', e, true);
-        message.channel.send(errorEmbed);
+        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

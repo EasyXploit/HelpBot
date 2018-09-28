@@ -1,8 +1,15 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
     
-    const url = message.content.slice(7);
-
-    if (url.length > 0) {
+    //-spawn (url)
+    
+    try {
+        const url = message.content.slice(7);
+        
+        let noCorrectSyntaxEmbed = new discord.RichEmbed()
+            .setColor(0xF12F49)
+            .setDescription(emojis.RedTick + ' Debes escribir la URL de la imagen a Spawnear');
+            
+        if (url.length < 1) return message.channel.send(noCorrectSyntaxEmbed);
 
         message.delete();
 
@@ -16,12 +23,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, roles, lo
         //await message.channel.send('p!catch ' + args[2])
 
         //.then(message.channel.send('Congratulations '+ message.author.username +'! You caught a level ' + math.random + ' ' + args[2]))
-
-    } else {
-        console.log (new Date().toUTCString() + ' 》' + message.author.username + ' no proporcionó suficientes argumentos para ejecutar el comando: ' + message.content + ' en ' + message.guild.name);
-        let errorEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
-            .setDescription('❌ ' + message.author.username + ', debes escribir la URL de la imagen a Spawnear');
-        message.channel.send(errorEmbed);
+    } catch (e) {
+        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

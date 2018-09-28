@@ -1,21 +1,23 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
     
-    const text = message.content.slice(7);
+    //-envia (texto)
     
-        if (text.length > 0) {
+    try {
+        const text = message.content.slice(7);
+        
+        let noCorrectSyntaxEmbed = new discord.RichEmbed()
+            .setColor(0xF12F49)
+            .setDescription(emojis.RedTick + ' Debes escribir el contenido del mensaje');
+    
+        if (text.length < 1) return message.channel.send(noCorrectSyntaxEmbed);
             
-            message.delete();
+        message.delete();
 
-            let resultEmbed = new discord.RichEmbed()
-                .setColor(0xFFC857)
-                .setDescription(text);
-            message.channel.send(resultEmbed);
-        } else {
-            console.log (new Date().toUTCString() + ' 》' + message.author.username + ' no proporcionó suficientes argumentos para ejecutar el comando: ' + message.content + ' en ' + message.guild.name);
-
-            let errorEmbed = new discord.RichEmbed()
-                .setColor(0xF12F49)
-                .setDescription('❌ ' + message.author.username + ', debes escribir el contenido del mensaje');
-            message.channel.send(errorEmbed);
-        }
+        let resultEmbed = new discord.RichEmbed()
+            .setColor(0xFFC857)
+            .setDescription(text);
+        message.channel.send(resultEmbed);
+    } catch (e) {
+        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+    }
 }

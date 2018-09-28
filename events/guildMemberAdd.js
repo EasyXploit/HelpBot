@@ -1,4 +1,4 @@
-exports.run = (event, discord, fs, config, keys, bot) => {
+exports.run = async (event, discord, fs, config, keys, bot) => {
     
     const loggingChannel = bot.channels.get(config.loggingChannel);
     const welcomeChannel = bot.channels.get(config.welcomeChannel);
@@ -65,7 +65,13 @@ exports.run = (event, discord, fs, config, keys, bot) => {
                 .setTitle('Hola **' + event.user.username + '**, bienvenido a la __República Gamer__ :tada:')
                 .setDescription('**¡Nos alegra que hayas decidido unirte a nuestra comunidad!**\nA continuación, te mostramos una breve guía sobre como empezar a participar en nuestro servidor. __¡Esperamos que lo pases bien!__')
                 .addField('Guía de inicio rápido:', ':one: Entra en <#426464733764386828> y dedica unos segundos a leer las breves normas que rigen nuestra comunidad. Además, aprenderás a usar a los bots, a como obtener ayuda y a como subir de nivel.\n:two: Entra en <#440905255073349635> y elige los roles de tu preferencia. Esto desbloqueará catacterísticas especiales para determinados videojuegos. ' + beta + '\n:three: Entra en <#388699973866225676> y escribe `/create` para crear ¡tu propia sala temporal! (recuerda que desparecerá si no hay nadie en ella).\n:four: ¡Tan solo diviértete y trae a tus amigos para que nos conozcan! Mándales este enlace de invitación: https://discord.gg/eWx72Jy', true);
-            event.user.send(dmWelcomeEmbed);
+            
+            let giveawayEmbed = new discord.RichEmbed()
+                .setColor(0xFFC857)
+                .setDescription(':information_source: **NUEVO SORTEO** :tada: :confetti_ball:\n__¡Hay disponible un nuevo sorteo de 1.000 paVos de Fortnite!.__\nAverigua como participar en <#494050354418417675> ');
+            
+            await event.user.send(dmWelcomeEmbed);
+            await event.user.send(giveawayEmbed);
         }
     } else {
         let loggingWelcomeBotEmbed = new discord.RichEmbed()

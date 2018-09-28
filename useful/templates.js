@@ -1,5 +1,8 @@
 return;
 
+//ERROR HANDLER
+const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+
 //EMBED COMPLETO
 let embed = new discord.RichEmbed()
       .setTitle('Este es el título, y puede contener 256 carácteres')
@@ -32,14 +35,14 @@ let embed = new discord.RichEmbed()
 //Comando deshabilitado
 let disabledEmbed = new discord.RichEmbed()
     .setColor(0xC6C9C6)
-    .setDescription('❕ Comando `' + command.slice(-0, -3) + '` deshabilitado temporalmente');
+    .setDescription(emojis.GrayTick + ' Comando `' + command.slice(-0, -3) + '` deshabilitado temporalmente');
 message.channel.send(disabledEmbed);
 return;
 
 //Fase experimental
 let experimentalEmbed = new discord.RichEmbed()
     .setColor(0xC6C9C6)
-    .setDescription('❕ **Función experimental**\nEstá ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
+    .setDescription(emojis.GrayTick + ' **Función experimental**\nEstá ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
 message.channel.send(experimentalEmbed);
 
 //De ms a H, M o S

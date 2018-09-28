@@ -1,23 +1,25 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
     
-    let notToAnswerEmbed = new discord.RichEmbed()
-        .setColor(0xF12F49)
-        .setDescription('❌ La sintaxis de este comando es `' + config.prefix + 'ppt <piedra | papel | tijeras>`');
-    
-    if (!args[0]) return message.channel.send(notToAnswerEmbed);
-    
-    let opponent = args[0].toLowerCase();
-    if (opponent !== 'piedra' && opponent !== 'papel' && opponent !== 'tijeras') return message.channel.send(notToAnswerEmbed);
- 
-    const data = ['piedra', 'papel', 'tijeras'];
-    let choose = data[Math.floor(Math.random() * data.length)];
-    
-    let emojiOpponentChoose;
-    let emojiChoose;
-    let result;
-    let reason;
+    //!ppt <piedra | papel | tijeras>
     
     try {
+        let notToAnswerEmbed = new discord.RichEmbed()
+            .setColor(0xF12F49)
+            .setDescription(emojis.RedTick + ' La sintaxis de este comando es `' + config.prefix + 'ppt <piedra | papel | tijeras>`');
+
+        if (!args[0]) return message.channel.send(notToAnswerEmbed);
+
+        let opponent = args[0].toLowerCase();
+        if (opponent !== 'piedra' && opponent !== 'papel' && opponent !== 'tijeras') return message.channel.send(notToAnswerEmbed);
+
+        const data = ['piedra', 'papel', 'tijeras'];
+        let choose = data[Math.floor(Math.random() * data.length)];
+
+        let emojiOpponentChoose;
+        let emojiChoose;
+        let result;
+        let reason;
+
         if (choose === 'piedra') {
             emojiChoose = '💎';
             switch (opponent) {
@@ -76,20 +78,15 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, roles, lo
                     break;
             }
         }
+
+        const resultEmbed = new discord.RichEmbed()
+            .setColor(0xF74A4A)
+            .setTitle(message.member.displayName + ' ' + emojiOpponentChoose + ' VS ' + emojiChoose + ' ' + bot.user.username)
+            .setDescription('__Resultado:__ ¡' + result + '!')
+            .setFooter('| ' + reason, message.guild.iconURL);
+
+        message.channel.send(resultEmbed);
     } catch (e) {
-        console.error(new Date().toUTCString() + ' 》' + e);
-        let errorEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
-            .setTitle('❌ Ocurrió un error')
-            .addField('Se declaró el siguiente error durante la ejecución del comando:', e, true);
-        message.channel.send(errorEmbed);
+        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
-    
-    const resultEmbed = new discord.RichEmbed()
-        .setColor(0xF74A4A)
-        .setTitle(message.member.displayName + ' ' + emojiOpponentChoose + ' VS ' + emojiChoose + ' ' + bot.user.username)
-        .setDescription('__Resultado:__ ¡' + result + '!')
-        .setFooter(reason)
-    
-    message.channel.send(resultEmbed);
 }

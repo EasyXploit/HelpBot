@@ -1,4 +1,4 @@
-exports.run = (event, discord, fs, config, keys, bot) => {
+exports.run = (event, discord, fs, config, keys, bot, emojis) => {
     
     //EXPERIMENTAL
     

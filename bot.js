@@ -14,9 +14,9 @@ bot.mutes = require('./mutes.json');
 
 // COMPROBACIÓN DE INICIO DE SESIÓN Y PRESENCIA
 bot.on('ready', async () => {
-    let loggingChannel = bot.channels.get(config.loggingChannel);
+    const loggingChannel = bot.channels.get(config.loggingChannel);
     try {
-        await bot.user.setPresence({status: config.status, game: {name: config.game, type: config.type}});
+        await bot.user.setPresence({status: config.status, game: {name: bot.users.filter(u => !u.bot).size + ' usuarios | ' + config.game, type: config.type}});
 
         emojis.run(discord, bot);
         emojis = require(`./resources/emojis.js`);
@@ -43,6 +43,7 @@ bot.on('ready', async () => {
 
 // MANEJADOR DE EVENTOS
 fs.readdir('./events/', async (err, files) => {
+    
     if (err) return console.error(new Date().toUTCString() + ' 》No se ha podido completar la carga de los eventos.\n' + err.stack);
     files.forEach(file => {
         let eventFunction = require(`./events/${file}`);
@@ -50,7 +51,7 @@ fs.readdir('./events/', async (err, files) => {
         console.log(' - Evento [' + eventName + '] cargado');
 
         bot.on(eventName, event => {
-            eventFunction.run(event, discord, fs, config, keys, bot);
+            eventFunction.run(event, discord, fs, config, keys, bot, emojis);
         });
     });
     console.log('\n');

@@ -1,4 +1,4 @@
-exports.run = (event, discord, fs, config, keys, bot) => {
+exports.run = (event, discord, fs, config, keys, bot, emojis) => {
 
     const loggingChannel = bot.channels.get(config.loggingChannel);
     
@@ -12,6 +12,7 @@ exports.run = (event, discord, fs, config, keys, bot) => {
             .addField('📑 Auditoría', '@' + event.user.username + ' abandonó la República Gamer ↗');
         loggingChannel.send(embed);
     } else {
+        if (event.user.id === bot.user.id) return;
         let loggingGoodbyeBotEmbed = new discord.RichEmbed()
             .setColor(0xDB904D)
             .setTimestamp()

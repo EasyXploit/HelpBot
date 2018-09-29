@@ -97,6 +97,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             //Envia el mensaje a cada usuario
             message.guild.members.forEach( async m => {
+                if (m.user.bot) return;
                 await m.user.send(resultEmbed);
             });
             

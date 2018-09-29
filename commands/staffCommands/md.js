@@ -1,82 +1,107 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis, supervisorsRole, noPrivilegesEmbed) => {
     
-    //-md (@usuario) (autor | anonimo) (mensaje a enviar)
+    let experimentalEmbed = new discord.RichEmbed()
+        .setColor(0xC6C9C6)
+        .setDescription(emojis.GrayTick + ' **Función experimental**\nEstá ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
+    message.channel.send(experimentalEmbed);
+    
+    //-md (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)
     
     try {
         
-        if (message.author.id !== config.botOwner && !message.member.roles.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
-        
-        let noMentionEmbed = new discord.RichEmbed()
+        let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
-            .setDescription(emojis.RedTick + ' No has mencionado un usuario válido');
-        
-        let noTypeAndToDMEmbed = new discord.RichEmbed()
-            .setColor(0xF04647)
-            .setDescription(emojis.RedTick + ' No has proporcionado ni el tipo de mensaje ni contenido del mensaje');
+            .setDescription(emojis.RedTick + ' La sintaxis de este comando es `' + config.ownerPrefix + 'md (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)`');
         
         let noToDMEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
             .setDescription(emojis.RedTick + ' No has proporcionado el contenido del mensaje');
         
-        let noCorrectSyntaxEmbed = new discord.RichEmbed()
-            .setColor(0xF04647)
-            .setDescription(emojis.RedTick + ' La sintaxis de este comando es `' + config.ownerPrefix + 'md (@usuario) (autor/anonimo) (mensaje a enviar)`');
-        
-        let noBotsEmbed = new discord.RichEmbed()
-            .setColor(0xF04647)
-            .setDescription(emojis.RedTick + ' No puedes entablar una conversación con un bot');
-        
-        let noPrivilegesEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' ' + message.author.username + ', no dispones de privilegios suficientes para ejecutar este comando');
-        
         let confirmEmbed = new discord.RichEmbed()
             .setColor(0xB8E986)
             .setDescription(emojis.GreenTick + ' ¡Mensaje enviado!');
         
-        if (!args[1]) return message.channel.send(noTypeAndToDMEmbed);
-        if (!args[2]) return message.channel.send(noToDMEmbed);
+        if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
         
-        let user = message.mentions.users.first();
-        let toDeleteCount = command.length - 2 + args[0].length + 1 + args[1].length + 2; 
-        let toDM = message.content.slice(toDeleteCount)
+        if (args[0] !== 'autor' && args[0] !== 'anonimo' && args[0] !== 'broadcast') return message.channel.send(noCorrectSyntaxEmbed);
         
-        if (!user) return message.channel.send(noMentionEmbed);
-        if (user.bot) return message.channel.send(noBotsEmbed);
-        if (!args[0].startsWith('<@')) return message.channel.send(noCorrectSyntaxEmbed);
+        let type = args[0];
         
-        let resultEmbed = 'null';
-        let privilegesCheck = 'true';
-        
-        switch (args[1]) {
-            case 'autor':
-                resultEmbed = new discord.RichEmbed()
-                    .setAuthor('Mensaje de: ' + message.author.username, message.author.avatarURL)
-                    .setColor(0xFFC857)
-                    .setDescription(toDM);
-                break;
-            case 'anonimo':
-                const supervisorsRole = message.guild.roles.get(config.botSupervisor);
-                if (message.author.id !== config.botOwner || message.member.roles.has(supervisorsRole.id)) {
-                    privilegesCheck = 'false';
-                }
-                resultEmbed = new discord.RichEmbed()
-                    .setColor(0xFFC857)
-                    .setDescription(toDM);
-                break;
-            default:
-                return message.channel.send(noCorrectSyntaxEmbed);
-                break;
-        }
-
-        if (privilegesCheck === 'true') {
-            message.delete()
-            await user.send(resultEmbed);
+        if (args[0] === 'autor' || args[0] === 'anonimo') {
+            
+            let noUserEmbed = new discord.RichEmbed()
+                .setColor(0xF04647)
+                .setDescription(emojis.RedTick + ' No has proporcionado un usuario válido');
+            
+            let noBotsEmbed = new discord.RichEmbed()
+                .setColor(0xF04647)
+                .setDescription(emojis.RedTick + ' No puedes entablar una conversación con un bot');
+            
+            let member = message.mentions.members.first() || message.guild.members.get(args[1]);
+            if (!member) return message.channel.send(noUserEmbed);
+            let user = member.user
+            
+            if (user.bot) return message.channel.send(noBotsEmbed);
+            
+            let toDeleteCount = command.length - 2 + args[0].length + 1 + args[1].length + 2; 
+            let toDM = message.content.slice(toDeleteCount)
+            if (!toDM) return message.channel.send(noToDMEmbed);
+            
+            let resultEmbed;
+            
+            switch (type) {
+                case 'autor':
+                    resultEmbed = new discord.RichEmbed()
+                        .setAuthor('Mensaje de: ' + message.author.username, message.author.avatarURL)
+                        .setColor(0xFFC857)
+                        .setDescription(toDM);
+                
+                    await message.delete()
+                    await user.send(resultEmbed);
+                    await message.channel.send(confirmEmbed);
+                    break;
+                case 'anonimo':
+                    if (message.author.id !== config.botOwner && !message.member.roles.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
+                    
+                    resultEmbed = new discord.RichEmbed()
+                        .setColor(0xFFC857)
+                        .setDescription(toDM);
+                
+                    await message.delete()
+                    await user.send(resultEmbed);
+                    await message.channel.send(confirmEmbed);
+                    break;
+            }
+            
+            if (args.length < 3) return message.channel.send(noCorrectSyntaxEmbed);
+            
+        } else if (args[0] === 'broadcast') {
+            
+            if (message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed);
+            
+            //Comprueba si se ha proporcionado el cuerpo del mensaje
+            let toDeleteCount = command.length - 2 + args[0].length + 2;
+            let toDM = message.content.slice(toDeleteCount)
+            if (!toDM) return message.channel.send(noToDMEmbed);
+            
+            let resultEmbed = new discord.RichEmbed()
+                .setColor(0xFFC857)
+                .setDescription(toDM);
+            
+            let sendingEmbed = new discord.RichEmbed()
+                .setColor(0xB8E986)
+                .setDescription(emojis.GreenTick + ' El mensaje está siendo enviado');
+            
+            await message.delete()
+            await message.channel.send(sendingEmbed);
+            
+            //Envia el mensaje a cada usuario
+            message.guild.members.forEach( async m => {
+                await m.user.send(resultEmbed);
+            });
+            
             await message.channel.send(confirmEmbed);
-        } else {
-            message.channel.send(noPrivilegesEmbed);
         }
-        
     } catch (e) {
         const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }

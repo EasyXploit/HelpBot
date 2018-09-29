@@ -3,9 +3,6 @@ exports.run = async (event, discord, fs, config, keys, bot, emojis) => {
     const loggingChannel = bot.channels.get(config.loggingChannel);
     const welcomeChannel = bot.channels.get(config.welcomeChannel);
     const welcomeRole = event.guild.roles.find('name', 'NOVATOS');
-    
-    //Previene que continue la ejecución si el servidor no es la República Gamer
-    if (event.guild.id !== '374945492133740544') return;
 
     if (!event.user.bot) {
         

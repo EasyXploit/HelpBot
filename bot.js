@@ -78,8 +78,8 @@ bot.on('message', async message => {
     if (message.author.bot) return;
     if (message.channel.type === 'dm') {
          const noDMEmbed = new discord.RichEmbed()
-            .setColor(0xFFC857)
-            .setDescription('❕ | Por el momento, ' + bot.user.username + ' solo está disponible en la República Gamer.');
+            .setColor(0xC6C9C6)
+            .setDescription(emojis.GrayTick + ' | Por el momento, ' + bot.user.username + ' solo está disponible en la República Gamer.');
         await message.author.send(noDMEmbed);
         await console.log('DM: ' + message.author.username + ' >' + message.content);
         return;

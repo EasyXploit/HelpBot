@@ -1,5 +1,8 @@
 exports.run = async (discord, config, bot, message, args, command, e) => {
     
+    //Se comprueba si el error es provocado por la invocación de un comando no existente
+    if (e.toString().includes('Cannot find module')) return;
+    
     //Se declara el canal de depuración
     const debuggingChannel = bot.channels.get(config.debuggingChannel);
     

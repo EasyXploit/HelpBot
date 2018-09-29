@@ -19,6 +19,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         .addField(':ticket: +invites', 'Muestra a cuentas personas has invitado.', true)
         .addField('📈 +leaderboard', 'Muestra la tabla de clasificación de invitaciones.', true)
         .addField(':stopwatch: ' + config.prefix + 'ping', 'Comprueba el tiempo de respuesta entre el cliente y ' + bot.user.username, true)
+        .addField('ℹ ' + config.prefix + 'info', 'Muestra información acerca del proyecto', true);
     message.channel.send(embed);
     } catch (e) {
         const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);

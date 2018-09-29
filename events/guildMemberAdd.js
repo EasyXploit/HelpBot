@@ -1,4 +1,4 @@
-exports.run = async (event, discord, fs, config, keys, bot) => {
+exports.run = async (event, discord, fs, config, keys, bot, emojis) => {
     
     const loggingChannel = bot.channels.get(config.loggingChannel);
     const welcomeChannel = bot.channels.get(config.welcomeChannel);

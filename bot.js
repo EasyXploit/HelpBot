@@ -184,7 +184,7 @@ bot.on('message', async message => {
             return;
         }
     } catch (e) {
-        console.error(new Date() + ' 》' + e.stack);
+        const handler = require(`./errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 });
 

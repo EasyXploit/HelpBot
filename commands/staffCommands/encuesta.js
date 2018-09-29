@@ -13,7 +13,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' Debes proporcionar un título para la encuesta y al menos una opción (con un máximo de 10 opciones) \n(asegúrate de que no haya más de un espacio en blanco entre los campos)');
+            .setDescription(emojis.RedTick + ' La sintaxis de este comando es ' + config.staffPrefix + 'encuesta "título" "campo1" "campo2" ...');
         
         if (fields.length < 2 || fields.length > 11) return message.channel.send(noCorrectSyntaxEmbed);
 

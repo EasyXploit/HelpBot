@@ -40,7 +40,7 @@ exports.run = async (event, discord, fs, config, keys, bot, emojis) => {
             .addField('⚙ Configuración', '`!configurar`', true)
             .addField('📊 Estadísticas', bot.guilds.size + ' servidores\n' + bot.users.size + ' usuarios', true)
             .addField('🔗 Añádeme', 'https://goo.gl/QAvgsQ', true)
-            .addField('💬 Servidor', 'https://discord.gg/eWx72Jy', true)
+            .addField('💬 Servidor', config.serverInvite, true)
             .addField('📣 Twitter', '___Aún no disponible___', true)
             .setFooter('© 2018 República Gamer LLC', bot.user.avatarURL)
         

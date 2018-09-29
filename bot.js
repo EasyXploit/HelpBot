@@ -3,7 +3,6 @@ console.log('》Iniciando aplicación «\n――――――――――――�
 const discord = require('discord.js');
 const fs = require('fs');
 const config = require('./config.json');
-const roles = require('./roles.json');
 const keys = require('./keys.json');
 const package = require('./package.json');
 const bot = new discord.Client();
@@ -57,20 +56,32 @@ fs.readdir('./events/', async (err, files) => {
     console.log('\n');
 });
 
+/*bot.on('messageReactionAdd', (reaction, user) => {
+    if(reaction.emoji.name === "✅") {
+        let reactionEmoji = reaction.emoji;
+        let reactionUsers = reaction.users;
+        
+        console.log(reactionEmoji);
+        console.log(reactionUsers);
+        
+        let messageId = reactionUsers['ReactionEmoji'][0]['MessageReaction'][0]['Message'][1];
+        console.log(messageId);
+    }
+});*/
+
 // MANEJADOR DE COMANDOS
 bot.on('message', async message => {
 
-    let debuggingChannel = bot.channels.get(config.debuggingChannel);
-    let loggingChannel = bot.channels.get(config.loggingChannel);
+    const debuggingChannel = bot.channels.get(config.debuggingChannel);
+    const loggingChannel = bot.channels.get(config.loggingChannel);
     
     if (message.author.bot) return;
     if (message.channel.type === 'dm') {
          const noDMEmbed = new discord.RichEmbed()
             .setColor(0xFFC857)
-            .setTitle('❕ Función no disponible')
-            .setDescription('Por el momento, ' + bot.user.username + ' solo está disponible en la República Gamer.');
+            .setDescription('❕ | Por el momento, ' + bot.user.username + ' solo está disponible en la República Gamer.');
         await message.author.send(noDMEmbed);
-        await console.log('DM: ' + message.author.username + ' >' + message.content)
+        await console.log('DM: ' + message.author.username + ' >' + message.content);
         return;
     }
 
@@ -121,7 +132,7 @@ bot.on('message', async message => {
     }
     checkBadWords();
     
-    if(!message.content.startsWith(config.prefix) && !message.content.startsWith(config.staffPrefix) && !message.content.startsWith(config.supervisorsPrefix) && !message.content.startsWith(config.ownerPrefix)) return;
+    if(!message.content.startsWith(config.prefix) && !message.content.startsWith(config.staffPrefix) && !message.content.startsWith(config.ownerPrefix)) return;
     
     const prefix = message.content.slice(0, 1);
     // Función para eliminar el prefijo, extraer el comando y sus argumentos (en caso de tenerlos)
@@ -132,47 +143,35 @@ bot.on('message', async message => {
     
     // Función para ejecutar el comando
     try {
-        let commandImput = new Date().toUTCString() + ' 》' + message.author.username + ' introdujo el comando: ' + message.content + ' en ' + message.guild.name;
+        let commandImput = new Date().toUTCString() + ' 》' + message.author.username + ' introdujo el comando: ' + command.slice(-0, -3) + ' en ' + message.guild.name;
         
-        let waitEmbed = new discord.RichEmbed().setColor(0xF12F49).setDescription('❌ Debes esperar 3 segundos antes de usar este comando');
+        let waitEmbed = new discord.RichEmbed().setColor(0xF12F49).setDescription(emojis.RedTick + ' Debes esperar 2 segundos antes de usar este comando');
         if (talkedRecently.has(message.author.id)) return message.channel.send(waitEmbed).then(msg => {msg.delete(1000)});
         
         if (prefix === config.prefix) { // EVERYONE
             let commandFile = require(`./commands/${command}`);
-            commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis);
+            commandFile.run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis);
             console.log(commandImput);
             
             talkedRecently.add(message.author.id);
             setTimeout(() => {
               talkedRecently.delete(message.author.id);
-            }, 3000);
+            }, 2000);
             
         } else if (prefix === config.staffPrefix) { // STAFF
-            console.log('Test')
+            const supervisorsRole = message.guild.roles.get(config.botSupervisor);
             let staffRole = message.guild.roles.get(config.botStaff);
+            
             const noPrivilegesEmbed = new discord.RichEmbed()
                 .setColor(0xF12F49)
-                .setDescription('❌ ' + message.author.username + ', no dispones de privilegios suficientes para ejecutar este comando');
+                .setDescription(emojis.RedTick + ' ' + message.author.username + ', no dispones de privilegios suficientes para realizar esta operación');
             
-            if(!message.member.roles.has(staffRole.id)) return message.channel.send(noPrivilegesEmbed)
+            if(!message.member.roles.has(staffRole.id) && message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed)
             
             let commandFile = require(`./commands/staffCommands/${command}`);
-            commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis);
+            commandFile.run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis, supervisorsRole, noPrivilegesEmbed);
             console.log(commandImput);
-        } else if (prefix === config.supervisorsPrefix) { // SUPERVISORES
-            const supervisorsRole = message.guild.roles.get(config.botSupervisor);
-            const noPrivilegesEmbed = new discord.RichEmbed()
-                .setColor(0xF12F49)
-                .setDescription('❌ ' + message.author.username + ', no dispones de privilegios suficientes para ejecutar este comando');
-            
-            if(message.author.id == config.botOwner || message.member.roles.has(supervisorsRole.id)) {
-                let commandFile = require(`./commands/supervisorsCommands/${command}`);
-                commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis);
-                console.log(commandImput);
-            } else {
-                return message.channel.send(noPrivilegesEmbed)
-            }
-        }  else if (prefix === config.ownerPrefix) { // OWNER
+        } else if (prefix === config.ownerPrefix) { // OWNER
             const noPrivilegesEmbed = new discord.RichEmbed()
                 .setColor(0xF12F49)
                 .setDescription('❌ ' + message.author.username + ', no dispones de privilegios suficientes para ejecutar este comando');
@@ -180,7 +179,7 @@ bot.on('message', async message => {
             if (message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed);
             let commandFile = require(`./commands/ownerCommands/${command}`);
             console.log(commandImput);
-            commandFile.run(discord, fs, config, keys, bot, message, args, command, roles, loggingChannel, emojis);
+            commandFile.run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis);
         } else {
             return;
         }

@@ -29,6 +29,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField('🔖 ' + config.staffPrefix + 'añadir-rol (@rol | "rol" | id) (@usuario | id)', 'Añade un determinado rol a un determinado usuario ' + emojis.beta, true)
             .addField('🔖 ' + config.staffPrefix + 'quitar-rol (@rol | "rol" | id) (@usuario | id)', 'Retira un determinado rol a un determinado usuario ' + emojis.beta, true)
             .addField('💭 ' + config.staffPrefix + 'envia <mensaje>', 'Envía un mensaje desde ' + bot.user.username, true)
+            .addField('📬 ' + config.staffPrefix + 'md (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)', 'Envio de mensajes directos ' + emojis.beta, true)
             .addField('📊 ' + config.staffPrefix + 'encuesta "título" "campo1" "campo2" ...', 'Envia una encuesta al canal actual', true)
             .addField('👁 ' + config.staffPrefix + 'registra (#canal) (xS/xM/xH)', 'Hará que ' + bot.user.username + ' registre los mensajes enviados durante el tiempo especificado.' + emojis.beta + '.')
             .addField(emojis.pokeball + ' ' + config.staffPrefix + 'spawn <"url">', 'Spawnea un pokémon en base a la URL de imágen proporcionada', true);

@@ -15,7 +15,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         
         let isNaNEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
-            .setDescription(emojis.RedTick + ' Debes proporcionar números, no texto');
+            .setDescription(emojis.RedTick + ' Debes proporcionar números enteros);
         
         if (isNaN(args[0])) return message.channel.send(isNaNEmbed);
         let N1 = parseInt(args[0]);

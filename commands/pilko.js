@@ -19,7 +19,8 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .addField('🎯 ' + config.prefix + 'elige "opción1" "opción2" ...', bot.user.username + ' elegirá por ti de entre las opciones que le facilites.', true)
             .addField('📝 ' + config.prefix + 'reves <texto>', bot.user.username + ' le dará la vuelta al texto que especifiques.', true)
             .addField('💭 ' + config.prefix + 'di <texto>', 'Hará que ' + bot.user.username + ' repita lo que escribas.', true)
-            .addField(':gun: ' + config.prefix + 'psychopass (@usuario | nada)', 'Hará que el sistema Sibyl diga el coeficiente criminal.', true);
+            .addField(':gun: ' + config.prefix + 'psychopass <@usuario | nada>', 'Hará que el sistema Sibyl diga el coeficiente criminal.', true)
+            .addField('🔢 ' + config.prefix + 'calcula <número 1> <+ | - | * | / | round | pow | sqrt | abs | ceil | floor | sin | cos> <número 2 si procede>', 'Resolverá la operación matemática expresada', true);
         message.channel.send(helpEmbed);
     } catch (e) {
         const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);

@@ -17,6 +17,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setFooter('© 2018 República Gamer LLC', message.guild.iconURL);
         message.channel.send(helpEmbed);
     } catch (e) {
-        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

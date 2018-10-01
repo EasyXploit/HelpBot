@@ -19,6 +19,6 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .addField(emojis.pokeball +  ' ' + config.prefix + 'pokecord', 'Muestra la ayuda para jugar a <@365975655608745985> en <#433376047833022513> ', true);
         message.channel.send(helpEmbed);
     } catch (e) {
-        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

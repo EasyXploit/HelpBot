@@ -23,6 +23,6 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .addField('🔢 ' + config.prefix + 'calcula <número 1> <+ | - | * | / | round | pow | sqrt | abs | ceil | floor | sin | cos> <número 2 si procede>', 'Resolverá la operación matemática expresada', true);
         message.channel.send(helpEmbed);
     } catch (e) {
-        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

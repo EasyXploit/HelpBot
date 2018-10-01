@@ -159,6 +159,6 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             message.channel.send(errorEmbed);
         });
     } catch (e) {
-        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

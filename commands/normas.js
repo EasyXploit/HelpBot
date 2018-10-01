@@ -16,6 +16,6 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .addField(':five: No busques vacíos legales:', 'No intentes hacer algo que obviamente pueda resultar inadecuado tanto para el staff como para el resto de usuarios de la comunidad.', true);
         message.channel.send(helpEmbed);
     } catch (e) {
-        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

@@ -97,11 +97,13 @@ bot.on('message', async message => {
         
         try {
             if(swearWords.some(word => message.content.toLowerCase().includes(word)) ) {
+                if (message.author.id === message.guild.ownerID) return;
                 await message.delete();
                 reason = 'Palabras ofensivas'
             }
 
             if(invites.some(word => message.content.toLowerCase().includes(word)) ) {
+                if (message.author.id === message.guild.ownerID) return;
                 if (message.member.roles.has(staffRole.id)) return;
                 await message.delete();
                 reason = 'Invitaciones no permitidas';
@@ -112,9 +114,12 @@ bot.on('message', async message => {
             let noBadWordsEmbed = new discord.RichEmbed()
                 .setColor(0xF7A71C)
                 .setAuthor('[ADVERTENCIA] ' + message.author.username, message.author.displayAvatarURL)
-                .addField('Usuario', '<@' + message.author.id + '>', true)
                 .addField('Moderador', '<@' + bot.user.id + '>', true)
                 .addField('Razón', reason, true)
+            
+            const infractionChannelEmbed = new discord.RichEmbed()
+                .setColor(0XFFC857)
+                .setDescription('<@' + message.author.id + '> ha sido advertido debido a "**' + reason + '**"');
 
             let loggingEmbed = new discord.RichEmbed()
                 .setColor(0xF7A71C)
@@ -126,6 +131,7 @@ bot.on('message', async message => {
                 .addField('Mensaje', message.content, true)
 
             await message.author.send(noBadWordsEmbed);
+            await message.channel.send(infractionChannelEmbed);
             await loggingChannel.send(loggingEmbed);
         } catch (e) {
             console.log('Ocurrió un error durante la ejecución de la función "checkBadWords"');
@@ -175,7 +181,7 @@ bot.on('message', async message => {
         } else if (prefix === config.ownerPrefix) { // OWNER
             const noPrivilegesEmbed = new discord.RichEmbed()
                 .setColor(0xF12F49)
-                .setDescription('❌ ' + message.author.username + ', no dispones de privilegios suficientes para ejecutar este comando');
+                .setDescription(emojis.RedTick + ' ' + message.author.username + ', no dispones de privilegios suficientes para ejecutar este comando');
             
             if (message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed);
             let commandFile = require(`./commands/ownerCommands/${command}`);

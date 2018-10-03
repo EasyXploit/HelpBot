@@ -171,7 +171,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .setColor(0x00AFC4)
             .setTitle(message.member.displayName + ' ' + emojiOpponentChoose + ' VS ' + emojiChoose + ' ' + bot.user.username)
             .setDescription('__Resultado:__ ¡' + result + '!')
-            .setFooter('| ' + reason, message.guild.iconURL);
+            .setFooter('| ' + reason, resources.server.iconURL);
 
         message.channel.send(resultEmbed);
     } catch (e) {

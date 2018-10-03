@@ -27,7 +27,6 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .setImage(randomImages())
             .setTitle('Datos sobre gatos  🐈')
             .setDescription(randomTexts())
-            .setFooter('© 2018 República Gamer LLC', message.guild.iconURL);
         message.channel.send(resultEmbed);
     } catch (e) {
         const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);

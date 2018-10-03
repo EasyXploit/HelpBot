@@ -13,7 +13,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let helpEmbed2 = new discord.RichEmbed()
             .setColor(0xFFC857)
             .setDescription('**2/2:**\n\n__**Utilidades:**__  :triangular_ruler:\n• `t!youtube <texto>` _busca un vídeo en YouTube_\n• `t!vote <start | check | end>` _comience, vote o verifica una votación_\n• `t!urban <texto>` _busca en el diccionario urbano_\n• `t!strawpoll <opción1> <opción2> < ... >` _crea un Strawpoll_\n• `t!wiki <texto>` _busca artículos de Wikipedia_\n• `t!weather <ciudad/código postal>`   _obtiene el clima_\n• `t!shorten <URL>` _acorta un enlace_\n• `t!todo [ add | remove | clear | list ]`   _lista de tareas personales_\n\n__**Anime/memes:**__  :anger:\n• `t!anime <texto>` _obtiene detalles de un anime de MAL_\n• `t!manga <texto>` _obtiene detalles de un manga de MAL_\n• `t!schoolidol <texto>`   _obtiene las tarjetas LLSIF_\n• `t!osu` _busca en osu! perfiles, juegos y firmas_\n• `t!beautiful [alguien]` _dice que algo es bonito_')
-            .setFooter('© 2018 República Gamer LLC', message.guild.iconURL);
+            .setFooter('© 2018 República Gamer LLC', resources.server.iconURL);
         
         await message.channel.send(helpEmbed1);
         await message.channel.send(helpEmbed2);

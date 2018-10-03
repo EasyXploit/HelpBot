@@ -57,6 +57,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                     .addField('Bajas por partida', kills_per_match, true)
                     .addField('Puntuación por partida', score_per_match, true)
                     .addField('Top 5', top_5 + ' veces', true)
+                    .setFooter('© 2018 República Gamer LLC', resources.server.iconURL);
                 message.channel.send(resultEmbed);
             } else if (gamemode === 'duo') {
                 let duostats = stats.duo;
@@ -84,6 +85,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                     .addField('Bajas por partida', kills_per_match, true)
                     .addField('Puntuación por partida', score_per_match, true)
                     .addField('Top 5', top_5 + ' veces', true)
+                    .setFooter('© 2018 República Gamer LLC', resources.server.iconURL);
                 message.channel.send(resultEmbed);
             } else if (gamemode === 'squad') {
                 let squadstats = stats.squad;
@@ -111,6 +113,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                     .addField('Bajas por partida', kills_per_match, true)
                     .addField('Puntuación por partida', score_per_match, true)
                     .addField('Top 3', top3 + ' veces', true)
+                    .setFooter('© 2018 República Gamer LLC', resources.server.iconURL);
                 message.channel.send(resultEmbed);
             } else if (gamemode === 'lifetime') {
                 let lifetime = stats.lifetime;
@@ -144,6 +147,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                     .addField('Bajas', kills, true)
                     .addField('Ratio B/M', kd, true)
                     .addField('Top 3', top3 + ' veces', true)
+                    .setFooter('© 2018 República Gamer LLC', resources.server.iconURL);
                 message.channel.send(resultEmbed);
             } else {
                 message.channel.send(noCorrectSyntaxEmbed);

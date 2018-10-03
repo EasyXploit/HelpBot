@@ -10,7 +10,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         .setAuthor('AYUDA', 'http://i.imgur.com/sYyH2IM.png')
         .setTitle('Sistema de ayuda del servidor')
         .setThumbnail('http://i.imgur.com/sYyH2IM.png')
-        .setFooter('© 2018 República Gamer LLC', message.guild.iconURL)
+        .setFooter('© 2018 República Gamer LLC', resources.server.iconURL)
 
         .addField(':grey_question: ' + config.prefix + 'normas', 'Muestra las normas del servidor.', true)
         .addField(resources.pilkobot + ' ' + config.prefix + 'pilko', 'Muestra los comandos de <@446041159853408257> ', true)

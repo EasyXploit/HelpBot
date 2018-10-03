@@ -1,9 +1,10 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
     let disabledEmbed = new discord.RichEmbed()
         .setColor(0xC6C9C6)
-        .setDescription(emojis.GrayTick + ' Comando `' + command.slice(-0, -3) + '` deshabilitado temporalmente');
-    message.channel.send(disabledEmbed);
+        .setDescription(resources.GrayTick + ' Comando `' + command.slice(-0, -3) + '` deshabilitado temporalmente');
+    await message.delete()
+    await message.channel.send(disabledEmbed).then(msg => {msg.delete(5000)});
     return;
 
     if(args.length >= 3) {

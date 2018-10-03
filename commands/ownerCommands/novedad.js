@@ -1,9 +1,10 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     let disabledEmbed = new discord.RichEmbed()
         .setColor(0xC6C9C6)
-        .setDescription(emojis.GrayTick + ' Comando `' + command.slice(-0, -3) + '` deshabilitado temporalmente');
-    message.channel.send(disabledEmbed);
+        .setDescription(resources.GrayTick + ' Comando `' + command.slice(-0, -3) + '` deshabilitado temporalmente');
+    await message.delete()
+    await message.channel.send(disabledEmbed).then(msg => {msg.delete(5000)});
     return;
     
     //$novedad "título" "contenido"
@@ -19,7 +20,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
 
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' La sintaxis de este comando es `' + config.ownerPrefix + 'novedad "título" "contenido"`');
+            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.ownerPrefix + 'novedad "título" "contenido"`');
 
         if (fields.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
 

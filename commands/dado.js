@@ -1,9 +1,8 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!dado
     
     try {
-        const coin = bot.emojis.find('name', 'coin');
         const datos = ['1', '2', '3', '4', '5', '6'];
 
         const resultEmbed = new discord.RichEmbed()

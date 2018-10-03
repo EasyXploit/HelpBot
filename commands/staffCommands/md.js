@@ -1,9 +1,9 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
     let experimentalEmbed = new discord.RichEmbed()
         .setColor(0xC6C9C6)
-        .setDescription(emojis.GrayTick + ' **Función experimental**\nEstá ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
-    message.channel.send(experimentalEmbed);
+        .setDescription(resources.GrayTick + ' **Función experimental**\nEstás ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
+    await message.channel.send(experimentalEmbed).then(msg => {msg.delete(5000)});
     
     //-md (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)
     
@@ -11,15 +11,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
-            .setDescription(emojis.RedTick + ' La sintaxis de este comando es `' + config.ownerPrefix + 'md (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)`');
+            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.ownerPrefix + 'md (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)`');
         
         let noToDMEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
-            .setDescription(emojis.RedTick + ' No has proporcionado el contenido del mensaje');
+            .setDescription(resources.RedTick + ' No has proporcionado el contenido del mensaje');
         
         let confirmEmbed = new discord.RichEmbed()
             .setColor(0xB8E986)
-            .setDescription(emojis.GreenTick + ' ¡Mensaje enviado!');
+            .setDescription(resources.GreenTick + ' ¡Mensaje enviado!');
         
         if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
         
@@ -31,11 +31,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             let noUserEmbed = new discord.RichEmbed()
                 .setColor(0xF04647)
-                .setDescription(emojis.RedTick + ' No has proporcionado un usuario válido');
+                .setDescription(resources.RedTick + ' No has proporcionado un usuario válido');
             
             let noBotsEmbed = new discord.RichEmbed()
                 .setColor(0xF04647)
-                .setDescription(emojis.RedTick + ' No puedes entablar una conversación con un bot');
+                .setDescription(resources.RedTick + ' No puedes entablar una conversación con un bot');
             
             let member = message.mentions.members.first() || message.guild.members.get(args[1]);
             if (!member) return message.channel.send(noUserEmbed);
@@ -90,7 +90,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             let sendingEmbed = new discord.RichEmbed()
                 .setColor(0xB8E986)
-                .setDescription(emojis.GreenTick + ' El mensaje está siendo enviado');
+                .setDescription(resources.GreenTick + ' El mensaje está siendo enviado');
             
             await message.delete()
             await message.channel.send(sendingEmbed);

@@ -1,20 +1,20 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     let experimentalEmbed = new discord.RichEmbed()
         .setColor(0xC6C9C6)
-        .setDescription(emojis.GrayTick + ' **Función experimental**\nEstá ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
-    message.channel.send(experimentalEmbed);
+        .setDescription(resources.GrayTick + ' **Función experimental**\nEstás ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
+    await message.channel.send(experimentalEmbed).then(msg => {msg.delete(5000)});
     
     //-infousuario (@usuario | id)
     
     try {
         let noUserEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' No has proporcionado un usuario válido');
+            .setDescription(resources.RedTick + ' No has proporcionado un usuario válido');
         
         let noBotsEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' No puedes obtener información de un bot');
+            .setDescription(resources.RedTick + ' No puedes obtener información de un bot');
         
         //let toInfo;
         let member;

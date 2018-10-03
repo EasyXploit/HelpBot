@@ -1,11 +1,11 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //$roles
 
     let experimentalEmbed = new discord.RichEmbed()
         .setColor(0xC6C9C6)
-        .setDescription('❕ **Función experimental**\nEstá ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
-    await message.channel.send(experimentalEmbed);
+        .setDescription(resources.GrayTick + ' **Función experimental**\nEstás ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
+    await message.channel.send(experimentalEmbed).then(msg => {msg.delete(5000)});
 
     try {
         let csgo = message.guild.roles.find(r => r.name === 'CS:GO');

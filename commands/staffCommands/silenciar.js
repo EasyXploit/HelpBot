@@ -1,9 +1,9 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
     let experimentalEmbed = new discord.RichEmbed()
         .setColor(0xC6C9C6)
-        .setDescription(emojis.GrayTick + ' **Función experimental**\nEstá ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
-    message.channel.send(experimentalEmbed);
+        .setDescription(resources.GrayTick + ' **Función experimental**\nEstás ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
+    await message.channel.send(experimentalEmbed).then(msg => {msg.delete(5000)});
     
     //-silenciar (@usuario | id) (motivo)
     
@@ -12,11 +12,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let notToMuteEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' Debes mencionar a un miembro o escribir su id');
+            .setDescription(resources.RedTick + ' Debes mencionar a un miembro o escribir su id');
 
         let noBotsEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' No puedes silenciar a un bot');
+            .setDescription(resources.RedTick + ' No puedes silenciar a un bot');
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
         let member = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
@@ -53,11 +53,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let alreadyMutedEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' Este usuario ya esta silenciado');
+            .setDescription(resources.RedTick + ' Este usuario ya esta silenciado');
 
         let successEmbed = new discord.RichEmbed()
             .setColor(0xB8E986)
-            .setTitle(emojis.GreenTick + ' Operación completada')
+            .setTitle(resources.GreenTick + ' Operación completada')
             .setDescription('El usuario <@' + member.id + '> ha sido silenciado, ¿alguien más?');
 
         let loggingEmbed = new discord.RichEmbed()

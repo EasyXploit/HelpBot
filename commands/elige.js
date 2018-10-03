@@ -1,11 +1,11 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!elige "opción1" "opción2" ...
     
     try {
         let notToAnswerEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' Debes proporcionarme al menos 2 opciones.\nLa sintaxis de este comando es `' + config.prefix + 'elige "opción1" "opción2" ...`');
+            .setDescription(resources.RedTick + ' Debes proporcionarme al menos 2 opciones.\nLa sintaxis de este comando es `' + config.prefix + 'elige "opción1" "opción2" ...`');
 
         let options = message.content.slice(8).split('" "');
         let lastOption = options.slice(-1).join();

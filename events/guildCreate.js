@@ -1,4 +1,4 @@
-exports.run = async (event, discord, fs, config, keys, bot, emojis) => {
+exports.run = async (event, discord, fs, config, keys, bot, resources) => {
     
     if (event.id === '374945492133740544' || event.id === '430436498937217036') {
         
@@ -50,7 +50,7 @@ exports.run = async (event, discord, fs, config, keys, bot, emojis) => {
     } else {
         const cantJoinEmbed = new discord.RichEmbed()
             .setColor(0xC6C9C6)
-            .setDescription(emojis.GrayTick + ' | Por el momento, ' + bot.user.username + ' solo está disponible en la República Gamer.');
+            .setDescription(resources.GrayTick + ' | Por el momento, ' + bot.user.username + ' solo está disponible en la República Gamer.');
         
         event.owner.send(cantJoinEmbed)
         event.leave();

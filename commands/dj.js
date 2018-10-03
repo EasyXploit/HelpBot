@@ -1,18 +1,18 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!dj
     
     try {
         let noPrivilegesEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setTitle(emojis.RedTick + ' Ocurrió un error')
+            .setTitle(resources.RedTick + ' Ocurrió un error')
             .setDescription(message.author.username + ', no dispones de privilegios suficientes para ejecutar este comando.\nSolo aquellos que hayan alcanzado el rango **EXPERTOS** pueden usar esta característica.');
     
         if(!message.member.roles.find("name", "DJ")) return message.channel.send(noPrivilegesEmbed);
 
         let successEmbed = new discord.RichEmbed()
             .setColor(0xB8E986)
-            .setDescription(emojis.GreenTick + ' ¡Te he enviado las instrucciones por Mensaje Directo!');
+            .setDescription(resources.GreenTick + ' ¡Te he enviado las instrucciones por Mensaje Directo!');
 
         let helpEmbed = new discord.RichEmbed()
             .setColor(0xFFC857)

@@ -1,11 +1,11 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!8ball (pregunta)
     
     try {
         let notToAnswerEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setTitle(emojis.RedTick + ' Debes preguntarme algo')
+            .setTitle(resources.RedTick + ' Debes preguntarme algo')
             .setDescription('La sintaxis de este comando es `' + config.prefix +'8ball (pregunta)`');
     
         if (!args[0]) return message.channel.send(notToAnswerEmbed);

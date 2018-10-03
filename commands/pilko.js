@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     try {
         let helpEmbed = new discord.RichEmbed()
@@ -7,12 +7,12 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .setAuthor(bot.user.username, bot.user.avatarURL)
             .setDescription('Comandos de ' + bot.user.username)
             .setFooter('© 2018 República Gamer LLC', message.guild.iconURL)
-            .addField(emojis.fortnite + ' ' + config.prefix + 'fortnite "usuario" "solo/duo/squad/lifetime" "pc/xbl/psn"', 'Muestra estadísticas de Fortnite Battle Royale.', true)
+            .addField(resources.fortnite + ' ' + config.prefix + 'fortnite "usuario" "solo/duo/squad/lifetime" "pc/xbl/psn"', 'Muestra estadísticas de Fortnite Battle Royale.', true)
             .addField('👦 ' + config.prefix + 'avatar <@usuario>',  'Muestra tu avatar o el de cualquier usuario.', true)
             .addField('🐈 ' + config.prefix + 'catfacts', 'Muestra un dato curioso sobre los gatos.', true)
             .addField('🐕 ' + config.prefix + 'dogfacts', 'Muestra un dato curioso sobre los perros.', true)
             .addField(':game_die: ' + config.prefix + 'dado', 'Lanzará un dado.', true)
-            .addField(emojis.coin + ' ' + config.prefix + 'moneda', 'Lanzará una moneda.', true)
+            .addField(resources.coin + ' ' + config.prefix + 'moneda', 'Lanzará una moneda.', true)
             .addField(':8ball: ' + config.prefix + '8ball <pregunta>', 'La bola mágica te dará una respuesta.', true)
             .addField('✂ ' + config.prefix + 'ppt <piedra | papel | tijeras>', 'Juega a Piedra, Papel y Tijeras con ' + bot.user.username + '.', true)
             .addField('🦎 ' + config.prefix + 'pptls <piedra | papel | tijeras | lagarto | spock>', 'Juega a Piedra, Papel, Tijeras, Lagarto y Spock con ' + bot.user.username + '.', true)

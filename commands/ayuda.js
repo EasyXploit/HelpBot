@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!ayuda
     
@@ -13,7 +13,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         .setFooter('© 2018 República Gamer LLC', message.guild.iconURL)
 
         .addField(':grey_question: ' + config.prefix + 'normas', 'Muestra las normas del servidor.', true)
-        .addField(emojis.pilkobot + ' ' + config.prefix + 'pilko', 'Muestra los comandos de <@446041159853408257> ', true)
+        .addField(resources.pilkobot + ' ' + config.prefix + 'pilko', 'Muestra los comandos de <@446041159853408257> ', true)
         .addField(':robot: ' + config.prefix + 'comandos', 'Muestra los comandos de los bots.', true)
         .addField(':medal: !rank', 'Muestra tu rango en el servidor (o el de otro usuario).', true)
         .addField(':trophy: !levels', 'Muestra la tabla de clasificación del servidor.', true)
@@ -39,22 +39,22 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 if (reaction.emoji.name === '❔') {
                     await message.delete()
                     
-                    let commandFile = require(`../commands/normas.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis);
+                    let commandFile = require(`../commands/normas.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === '🤖') {
                     await message.delete()
                     
-                    let commandFile = require(`../commands/comandos.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis);
+                    let commandFile = require(`../commands/comandos.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === '⏱') {
                     await message.delete()
                     
-                    let commandFile = require(`../commands/ping.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis);
+                    let commandFile = require(`../commands/ping.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === 'ℹ') {
                     await message.delete()
                     
-                    let commandFile = require(`../commands/info.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis);
+                    let commandFile = require(`../commands/info.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 }
             })

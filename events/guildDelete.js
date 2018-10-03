@@ -1,4 +1,4 @@
-exports.run = async (event, discord, fs, config, keys, bot, emojis) => {
+exports.run = async (event, discord, fs, config, keys, bot, resources) => {
 
     console.log('\n' + new Date() + ' 》' + bot.user.username + ' abandonó la guild: ' + event.name + '\n')
         

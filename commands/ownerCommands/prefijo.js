@@ -1,11 +1,11 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //$prefijo (nuevo prefijo) (todos | staff | owner)
 
     try {
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' La sintaxis de este comando es: `' + config.ownerPrefix+ 'prefijo (nuevo prefijo) (todos | staff | owner)`');
+            .setDescription(resources.RedTick + ' La sintaxis de este comando es: `' + config.ownerPrefix+ 'prefijo (nuevo prefijo) (todos | staff | owner)`');
 
         //Comprueba si se han proporcionado todos los argumentos
         if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
@@ -15,7 +15,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let tooLongEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' Debes proporcionar un prefijo cuya longitud sea de 1 carácter');
+            .setDescription(resources.RedTick + ' Debes proporcionar un prefijo cuya longitud sea de 1 carácter');
         
         //Se comprueba si el prefijo tiene una longitud de 1 carácter
         if (newPrefix.length !== 1) return message.channel.send(tooLongEmbed);
@@ -39,11 +39,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let actuallyConfiguredEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' Este prefijo ya ha sido configurado');
+            .setDescription(resources.RedTick + ' Este prefijo ya ha sido configurado');
         
         let successEmbed = new discord.RichEmbed()
             .setColor(0xB8E986)
-            .setTitle(emojis.GreenTick + ' Operación completada')
+            .setTitle(resources.GreenTick + ' Operación completada')
             .setDescription('Cambiaste el prefijo ' + prefixType + ' a `' + newPrefix + '`');
 
         let loggingEmbed = new discord.RichEmbed()

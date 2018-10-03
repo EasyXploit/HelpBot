@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //-herramientas
     
@@ -7,7 +7,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let successEmbed = new discord.RichEmbed()
             .setColor(0xB8E986)
-            .setDescription(emojis.GreenTick + ' ¡Te he enviado los detalles por Mensaje Directo!');
+            .setDescription(resources.GreenTick + ' ¡Te he enviado los detalles por Mensaje Directo!');
 
         let helpEmbed = new discord.RichEmbed()
             .setColor(0xFEF65B)

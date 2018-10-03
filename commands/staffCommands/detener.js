@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
     //-detener
     
@@ -7,7 +7,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
   
         let successEmbed = new discord.RichEmbed()
             .setColor(0xB8E986)
-            .setTitle(emojis.GreenTick + ' Operación completada')
+            .setTitle(resources.GreenTick + ' Operación completada')
             .setDescription('Deteniendo ' + bot.user.username + ' . . .'); 
 
         let loggingEmbed = new discord.RichEmbed()

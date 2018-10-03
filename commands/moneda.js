@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!moneda
     
@@ -7,7 +7,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
 
         const resultEmbed = new discord.RichEmbed()
             .setColor(0xEAE151)
-            .setTitle('Lanzaste una moneda ...  ' + emojis.coin)
+            .setTitle('Lanzaste una moneda ...  ' + resources.coin)
             .setDescription('¡Salió __**' + datos[Math.floor(Math.random() * datos.length)] + '**__!');
         message.channel.send(resultEmbed);
     } catch (e) {

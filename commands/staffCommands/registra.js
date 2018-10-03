@@ -1,11 +1,11 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //-registra (#canal) (xS/xM/xH)
     
     try {
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
-            .setDescription(emojis.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'registra (#canal) (xS/xM/xH)`');
+            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'registra (#canal) (xS/xM/xH)`');
 
         if (args.length === 0 || args.length > 2) return message.channel.send(noCorrectSyntaxEmbed);
         if (!message.mentions.channels.first()) return message.channel.send(noCorrectSyntaxEmbed);
@@ -42,7 +42,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             default:
                 let errorEmbed = new discord.RichEmbed()
                     .setColor(0xF12F49)
-                    .setDescription(emojis.RedTick + ' Ocurrió un error durante la ejecución del comando');
+                    .setDescription(resources.RedTick + ' Ocurrió un error durante la ejecución del comando');
                 return message.channel.send(errorEmbed);
                 break;
         }

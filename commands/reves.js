@@ -1,11 +1,11 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!reves
     
     try {
         let notToAnswerEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' Debes escribir el texto a invertir.\nLa sintaxis de este comando es `' + config.prefix + 'reves <texto>`');
+            .setDescription(resources.RedTick + ' Debes escribir el texto a invertir.\nLa sintaxis de este comando es `' + config.prefix + 'reves <texto>`');
 
         if (!args[0]) return message.channel.send(notToAnswerEmbed);
 

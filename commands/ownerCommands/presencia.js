@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
     //$presencia (estatus | actividad) (online | offline | idle | dnd - nombreDeLaAtividad)
     
@@ -16,11 +16,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
-            .setDescription(emojis.RedTick + ' La sintaxis del comando es `' + config.ownerPrefix + 'presencia ("estatus" | "actividad") ("online" | "offline" | "idle" | "dnd" - "nombreDeLaAtividad")`');
+            .setDescription(resources.RedTick + ' La sintaxis del comando es `' + config.ownerPrefix + 'presencia ("estatus" | "actividad") ("online" | "offline" | "idle" | "dnd" - "nombreDeLaAtividad")`');
 
         let actuallyConfiguredEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' Esta configuración ya ha sido aplicada');
+            .setDescription(resources.RedTick + ' Esta configuración ya ha sido aplicada');
 
         if (!args[0] || !args[1]) return message.channel.send(noCorrectSyntaxEmbed);
         if (toModify !== 'estatus' && toModify !== 'actividad') return message.channel.send(noCorrectSyntaxEmbed);
@@ -48,7 +48,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let resultEmbed = new discord.RichEmbed()
             .setColor(0xB8E986)
-            .setTitle(emojis.GreenTick + ' Operación en marcha')
+            .setTitle(resources.GreenTick + ' Operación en marcha')
             .setDescription('Cambiaste ' + changed + ' del bot a `' + content + '`.\nEsta operación podría tardar unos minutos en completarse.')
 
         let loggingEmbed = new discord.RichEmbed()

@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!calcula (número 1) (+ | - | * | / | round | pow | sqrt | abs | ceil | floor | sin | cos) (número 2 si procede)
     
@@ -6,7 +6,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
-            .setDescription(emojis.RedTick + ' La sintaxis de este comando es `' + config.prefix + 'calcula (número 1) (+ | - | * | / | round | pow | sqrt | abs | ceil | floor | sin | cos) (número 2 si procede)`');
+            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.prefix + 'calcula (número 1) (+ | - | * | / | round | pow | sqrt | abs | ceil | floor | sin | cos) (número 2 si procede)`');
         
         if (!args[0] || !args[1]) return message.channel.send(noCorrectSyntaxEmbed);
         
@@ -15,14 +15,14 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         
         let isNaNEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
-            .setDescription(emojis.RedTick + ' Debes proporcionar números enteros);
+            .setDescription(resources.RedTick + ' Debes proporcionar números enteros);
         
         if (isNaN(args[0])) return message.channel.send(isNaNEmbed);
         let N1 = parseInt(args[0]);
         
         let noN2Embed = new discord.RichEmbed()
             .setColor(0xF04647)
-            .setDescription(emojis.RedTick + ' Debes proporcionar una segunda cifra');
+            .setDescription(resources.RedTick + ' Debes proporcionar una segunda cifra');
         
         let operation;
         let result;

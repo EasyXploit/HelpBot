@@ -1,11 +1,11 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!pptls <piedra | papel | tijeras | lagarto | spock>
     
     try {
         let notToAnswerEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' La sintaxis de este comando es `' + config.prefix + 'pptls <piedra | papel | tijeras | lagarto | spock>`');
+            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.prefix + 'pptls <piedra | papel | tijeras | lagarto | spock>`');
 
         if (!args[0]) return message.channel.send(notToAnswerEmbed);
 

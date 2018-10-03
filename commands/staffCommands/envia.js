@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //-envia (texto)
     
@@ -7,7 +7,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' Debes escribir el contenido del mensaje');
+            .setDescription(resources.RedTick + ' Debes escribir el contenido del mensaje');
     
         if (text.length < 1) return message.channel.send(noCorrectSyntaxEmbed);
             

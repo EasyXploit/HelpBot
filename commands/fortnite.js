@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!fortnite "usuario" "solo/duo/squad/lifetime" "pc/xbl/psn"
     
@@ -13,8 +13,6 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         fields.splice(-1);
         fields.push(lastField);
 
-        console.log(fields);
-
         let username = fields[0];
         let gamemode = fields[1];
         let platform = fields[2];
@@ -23,7 +21,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
 
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
-            .setDescription(emojis.RedTick + ' La sintaxis de este comando es `' + config.prefix + 'fortnite "usuario" "solo/duo/squad/lifetime" "pc/xbl/psn"`');
+            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.prefix + 'fortnite "usuario" "solo/duo/squad/lifetime" "pc/xbl/psn"`');
 
         if (!username || !gamemode || !platform) return message.channel.send(noCorrectSyntaxEmbed);
         if (gamemode !== 'solo' && gamemode !== 'duo' && gamemode !== 'squad' && gamemode !== 'lifetime') return message.channel.send(noCorrectSyntaxEmbed);
@@ -153,7 +151,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         }).catch (e => {
             let errorEmbed = new discord.RichEmbed()
                 .setColor(0xF12F49)
-                .setTitle(emojis.RedTick + ' Ocurrió un error')
+                .setTitle(resources.RedTick + ' Ocurrió un error')
                 .setDescription('No hemos podido encontrar al usuario `' + username + '` en la plataforma `' + platform + '`.')
                 .addField('Posibles causas', '● El usuario `' + username +'` no existe o nunca ha jugado\n● `' + username + '` no ha jugado en la plataforma `' + platform +'` o al modo de juego `'+ gamemode +'`\n● El usuario ha cambiado de nombre de usuario\n● La API no tiene registrada ninguna estadística del usuario `' + username + '`',true)
             message.channel.send(errorEmbed);

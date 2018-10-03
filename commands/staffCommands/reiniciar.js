@@ -1,11 +1,11 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //-reiniciar
     
     try {
         let restartingEmbed = new discord.RichEmbed()
             .setColor(12118406)
-            .setTitle(emojis.GreenTick + ' Operación completada')
+            .setTitle(resources.GreenTick + ' Operación completada')
             .setDescription('Reiniciando PilkoBot . . .');
         message.channel.send(restartingEmbed);
 

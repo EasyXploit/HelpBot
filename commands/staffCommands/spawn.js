@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, emojis) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //-spawn (url)
     
@@ -7,7 +7,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(emojis.RedTick + ' Debes escribir la URL de la imagen a Spawnear');
+            .setDescription(resources.RedTick + ' Debes escribir la URL de la imagen a Spawnear');
             
         if (url.length < 1) return message.channel.send(noCorrectSyntaxEmbed);
 

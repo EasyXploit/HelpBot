@@ -15,7 +15,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         .addField(':grey_question: ' + config.prefix + 'normas', 'Muestra las normas del servidor.', true)
         .addField(resources.pilkobot + ' ' + config.prefix + 'pilko', 'Muestra los comandos de <@446041159853408257> ', true)
         .addField(':robot: ' + config.prefix + 'comandos', 'Muestra los comandos de los bots.', true)
-        .addField(':medal: !rank', 'Muestra tu rango en el servidor (o el de otro usuario).', true)
+        .addField('🎖 ' + config.prefix + 'rangos', 'Muestra los rangos del servidor.', true)
+        .addField(':label: !rank', 'Muestra tu rango en el servidor (o el de otro usuario).', true)
         .addField(':trophy: !levels', 'Muestra la tabla de clasificación del servidor.', true)
         .addField(':ticket: +invites', 'Muestra a cuentas personas has invitado.', true)
         .addField('📈 +leaderboard', 'Muestra la tabla de clasificación de invitaciones.', true)
@@ -25,11 +26,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     await message.channel.send(helpEmbed).then(async function (message) {
         await message.react('❔');
         await message.react('🤖');
+        await message.react('🎖');
         await message.react('⏱');
         await message.react('ℹ');
 
         const filter = (reaction, user) => {
-            return ['❔', '🤖', '⏱', 'ℹ'].includes(reaction.emoji.name) && user.id === userID;
+            return ['❔', '🤖', '🎖', '⏱', 'ℹ'].includes(reaction.emoji.name) && user.id === userID;
         };
 
         message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
@@ -46,7 +48,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                     
                     let commandFile = require(`../commands/comandos.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
-                } else if (reaction.emoji.name === '⏱') {
+                } else if (reaction.emoji.name === '🎖') {
+                    await message.delete()
+                    
+                    let commandFile = require(`../commands/rangos.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    
+                }  else if (reaction.emoji.name === '⏱') {
                     await message.delete()
                     
                     let commandFile = require(`../commands/ping.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);

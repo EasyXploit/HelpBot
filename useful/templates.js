@@ -35,15 +35,16 @@ let embed = new discord.RichEmbed()
 //Comando deshabilitado
 let disabledEmbed = new discord.RichEmbed()
     .setColor(0xC6C9C6)
-    .setDescription(emojis.GrayTick + ' Comando `' + command.slice(-0, -3) + '` deshabilitado temporalmente');
-message.channel.send(disabledEmbed);
+    .setDescription(resources.GrayTick + ' Comando `' + command.slice(-0, -3) + '` deshabilitado temporalmente');
+await message.delete()
+await message.channel.send(disabledEmbed).then(msg => {msg.delete(5000)});
 return;
 
 //Fase experimental
 let experimentalEmbed = new discord.RichEmbed()
     .setColor(0xC6C9C6)
-    .setDescription(emojis.GrayTick + ' **Función experimental**\nEstá ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
-message.channel.send(experimentalEmbed);
+    .setDescription(resources.GrayTick + ' **Función experimental**\nEstás ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
+await message.channel.send(experimentalEmbed).then(msg => {msg.delete(5000)});
 
 //De ms a H, M o S
 function msToHMS( ms ) {

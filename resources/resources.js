@@ -14,9 +14,6 @@ exports.run = (discord, bot) => {
     const RedTick = bot.emojis.get('496633289528836108');
     module.exports.RedTick = RedTick;
     
-    const pokeball = bot.emojis.get('496633450540040212');
-    module.exports.pokeball = pokeball;
-    
     const beta = bot.emojis.get('496633935174828034');
     module.exports.beta = beta;
     
@@ -34,6 +31,12 @@ exports.run = (discord, bot) => {
     
     const verified = bot.emojis.get('496633324010471424');
     module.exports.verified = verified;
+    
+    const boxbot = bot.emojis.get('497178946149023744');
+    module.exports.boxbot = boxbot;
+    
+    const pokecord = bot.emojis.get('497179902643273753');
+    module.exports.pokecord = pokecord;
     
     const chevron10 = bot.emojis.get('497133468535226389');
     module.exports.chevron10 = chevron10;

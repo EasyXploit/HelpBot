@@ -6,8 +6,8 @@ exports.run = async (discord, config, bot, message, args, command, e) => {
     //Se declara el canal de depuración
     const debuggingChannel = bot.channels.get(config.debuggingChannel);
     
-    //Se declara el archivo de emojis
-    const emojis = require(`./resources/emojis.js`);
+    //Se declara el archivo de recursos
+    const resources = require(`./resources/resources.js`);
     
     //Se comprueba si se han proporcionado argumentos
     let arguments;
@@ -37,7 +37,7 @@ exports.run = async (discord, config, bot, message, args, command, e) => {
     
     let reportedEmbed = new discord.RichEmbed()
         .setColor(0xF04647)
-        .setTitle(emojis.RedTick + '¡Vaya! Algo fue mal ...')
+        .setTitle(resources.RedTick + '¡Vaya! Algo fue mal ...')
         .setDescription('Lo hemos reportado al equipo de desarrollo');
     
     await message.channel.send(reportedEmbed);

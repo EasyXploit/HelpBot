@@ -20,7 +20,8 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .addField('📝 ' + config.prefix + 'reves <texto>', bot.user.username + ' le dará la vuelta al texto que especifiques.', true)
             .addField('💭 ' + config.prefix + 'di <texto>', 'Hará que ' + bot.user.username + ' repita lo que escribas.', true)
             .addField(':gun: ' + config.prefix + 'psychopass <@usuario | nada>', 'Hará que el sistema Sibyl diga el coeficiente criminal.', true)
-            .addField('🔢 ' + config.prefix + 'calcula <número 1> <+ | - | * | / | round | pow | sqrt | abs | ceil | floor | sin | cos> <número 2 si procede>', 'Resolverá la operación matemática expresada', true);
+            .addField('🔢 ' + config.prefix + 'calcula <número 1> <+ | - | * | / | round | pow | sqrt | abs | ceil | floor | sin | cos> <número 2 si procede>', 'Resolverá la operación matemática expresada', true)
+            .addField(':stopwatch: ' + config.prefix + 'ping', 'Comprueba el tiempo de respuesta entre el cliente y ' + bot.user.username, true);
         message.channel.send(helpEmbed);
     } catch (e) {
         const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);

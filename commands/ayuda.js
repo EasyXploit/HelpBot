@@ -20,7 +20,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         .addField(':trophy: !levels', 'Muestra la tabla de clasificación del servidor.', true)
         .addField(':ticket: +invites', 'Muestra a cuentas personas has invitado.', true)
         .addField('📈 +leaderboard', 'Muestra la tabla de clasificación de invitaciones.', true)
-        .addField(':stopwatch: ' + config.prefix + 'ping', 'Comprueba el tiempo de respuesta entre el cliente y ' + bot.user.username, true)
         .addField('ℹ ' + config.prefix + 'info', 'Muestra información acerca del proyecto', true);
         
     await message.channel.send(helpEmbed).then(async function (message) {
@@ -31,11 +30,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await message.react(pilkobot);
         await message.react('🤖');
         await message.react('🎖');
-        await message.react('⏱');
         await message.react('ℹ');
 
         const filter = (reaction, user) => {
-            return ['❔', 'pilkobot', '🤖', '🎖', '⏱', 'ℹ'].includes(reaction.emoji.name) && user.id === userID;
+            return ['❔', 'pilkobot', '🤖', '🎖', 'ℹ'].includes(reaction.emoji.name) && user.id === userID;
         };
 
         message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
@@ -61,11 +59,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                     await message.delete()
                     
                     let commandFile = require(`../commands/rangos.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
-                    
-                }  else if (reaction.emoji.name === '⏱') {
-                    await message.delete()
-                    
-                    let commandFile = require(`../commands/ping.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === 'ℹ') {
                     await message.delete()

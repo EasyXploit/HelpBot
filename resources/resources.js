@@ -38,6 +38,12 @@ exports.run = (discord, bot) => {
     const pokecord = bot.emojis.get('497179902643273753');
     module.exports.pokecord = pokecord;
     
+    const drakeban = bot.emojis.get('497381029011521593');
+    module.exports.drakeban = drakeban;
+    
+    const mee6 = bot.emojis.get('497728749131792385');
+    module.exports.mee6 = mee6;
+    
     const chevron10 = bot.emojis.get('497133468535226389');
     module.exports.chevron10 = chevron10;
     

@@ -23,8 +23,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(resources.RedTick + ' No puedes banear a un bot');
         
         let alreadyBannedEmbed = new discord.RichEmbed()
-                .setColor(0xF12F49)
-                .setDescription(resources.RedTick + ' Este usuario ya ha sido baneado');
+            .setColor(0xF12F49)
+            .setDescription(resources.RedTick + ' Este usuario ya ha sido baneado');
         
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
         let user = await message.mentions.users.first() || await bot.fetchUser(args[0]);
@@ -59,7 +59,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let successEmbed = new discord.RichEmbed()
             .setColor(0xB8E986)
             .setTitle(resources.GreenTick + ' Operación completada')
-            .setDescription('El usuario <@' + user.id + '> ha sido baneado, ¿alguien más?');
+            .setDescription('El usuario <@' + user.id + '> ha sido baneado, ¿alguien más? ' + resources.drakeban);
 
         let loggingEmbed = new discord.RichEmbed()
             .setColor(0xEF494B)

@@ -24,14 +24,18 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         .addField('ℹ ' + config.prefix + 'info', 'Muestra información acerca del proyecto', true);
         
     await message.channel.send(helpEmbed).then(async function (message) {
+        
+        const pilkobot = bot.emojis.get('496633714802032655')
+        
         await message.react('❔');
+        await message.react(pilkobot);
         await message.react('🤖');
         await message.react('🎖');
         await message.react('⏱');
         await message.react('ℹ');
 
         const filter = (reaction, user) => {
-            return ['❔', '🤖', '🎖', '⏱', 'ℹ'].includes(reaction.emoji.name) && user.id === userID;
+            return ['❔', 'pilkobot', '🤖', '🎖', '⏱', 'ℹ'].includes(reaction.emoji.name) && user.id === userID;
         };
 
         message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
@@ -43,7 +47,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                     
                     let commandFile = require(`../commands/normas.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
-                } else if (reaction.emoji.name === '🤖') {
+                } else if (reaction.emoji.name === 'pilkobot') {
+                    await message.delete()
+                    
+                    let commandFile = require(`../commands/pilko.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    
+                }  else if (reaction.emoji.name === '🤖') {
                     await message.delete()
                     
                     let commandFile = require(`../commands/comandos.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);

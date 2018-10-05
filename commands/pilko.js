@@ -21,6 +21,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .addField('💭 ' + config.prefix + 'di <texto>', 'Hará que ' + bot.user.username + ' repita lo que escribas.', true)
             .addField(':gun: ' + config.prefix + 'psychopass <@usuario | nada>', 'Hará que el sistema Sibyl diga el coeficiente criminal.', true)
             .addField('🔢 ' + config.prefix + 'calcula <número 1> <+ | - | * | / | round | pow | sqrt | abs | ceil | floor | sin | cos> <número 2 si procede>', 'Resolverá la operación matemática expresada', true)
+            .addField('🔮 ' + config.prefix + 'paulo', 'Comando que envía frases aleatorias de Paulo Coelho', true)
             .addField(':stopwatch: ' + config.prefix + 'ping', 'Comprueba el tiempo de respuesta entre el cliente y ' + bot.user.username, true);
         message.channel.send(helpEmbed);
     } catch (e) {

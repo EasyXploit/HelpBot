@@ -10,18 +10,17 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'añadir-rol (@rol | "rol" | id) (@usuario | id)`');
+            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'asignar-rol (@rol | "rol" | id) (@usuario | id)`');
 
         if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
         
         const guild = message.guild;
         let role = message.mentions.roles.first() || message.guild.roles.get(args[0]);
         if (!role) {
-            let newArgs = message.content.slice(13).split('" ').slice(0, 1).join();
+            let newArgs = message.content.slice(14).split('" ').slice(0, 1).join();
             role = message.guild.roles.find('name', newArgs)
         }
         let member = message.mentions.members.first() || message.guild.members.get(args[1]);
-        
         if (!role || !member) return message.channel.send(noCorrectSyntaxEmbed);
         
         let author = message.guild.member(message.author.id)

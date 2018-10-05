@@ -21,7 +21,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             event.guild.member(event.user).ban('No está permitido utilizar enlaces como nombre de usuario')
 
             .catch ((err) => {
-                console.error(new Date() + ' 》' + err);
+                console.error(new Date().toUTCString() + ' 》' + err);
 
                 let errorEmbed = new discord.RichEmbed()
                     .setColor(0xF12F49)
@@ -30,7 +30,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                 loggingChannel.send(errorEmbed);
             })
             
-            console.log(new Date() + ' 》@' + event.user.username + ' intentó unirse a la República Gamer, pero fue baneado por que no está permitido utilizar enlaces como nombre de usuario')
+            console.log(new Date().toUTCString() + ' 》@' + event.user.username + ' intentó unirse a la República Gamer, pero fue baneado por que no está permitido utilizar enlaces como nombre de usuario')
 
             let preventAccessEmbed = new discord.RichEmbed()
                 .setColor(0xF12F49)
@@ -41,7 +41,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             
         } else  {
 
-            console.log(new Date() + ' 》@' + event.user.username + ' se unió a la guild: ' + event.guild.name)
+            console.log(new Date().toUTCString() + ' 》@' + event.user.username + ' se unió a la guild: ' + event.guild.name)
 
             event.guild.member(event.user).addRole(welcomeRole);
 

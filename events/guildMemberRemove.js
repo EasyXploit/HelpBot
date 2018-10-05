@@ -6,7 +6,7 @@ exports.run = (event, discord, fs, config, keys, bot, resources) => {
     const loggingChannel = bot.channels.get(config.loggingChannel);
     
     if (!event.user.bot) {
-        console.log(new Date() + ' 》@' + event.user.tag + ' abandonó la guield: ' + event.guild.name);
+        console.log(new Date().toUTCString() + ' 》@' + event.user.tag + ' abandonó la guield: ' + event.guild.name);
 
         let embed = new discord.RichEmbed()
             .setColor(0xDB904D)

@@ -19,10 +19,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription('Guess the pokémon and type p!catch <pokémon> to catch it!')
             .setImage(url);
         message.channel.send(resultEmbed);
-
-        //await message.channel.send('p!catch ' + args[2])
-
-        //.then(message.channel.send('Congratulations '+ message.author.username +'! You caught a level ' + math.random + ' ' + args[2]))
     } catch (e) {
         const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }

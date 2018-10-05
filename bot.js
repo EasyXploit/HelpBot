@@ -35,7 +35,6 @@ bot.on('ready', async () => {
             .setFooter(bot.user.username, bot.user.avatarURL)
             .setTimestamp();
         loggingChannel.send(statusEmbed);
-        
     } catch (e) {
         console.error(new Date().toUTCString() + ' 》' + e.stack);
     }
@@ -56,19 +55,6 @@ fs.readdir('./events/', async (err, files) => {
     });
     console.log('\n');
 });
-
-/*bot.on('messageReactionAdd', (reaction, user) => {
-    if(reaction.emoji.name === "✅") {
-        let reactionEmoji = reaction.emoji;
-        let reactionUsers = reaction.users;
-        
-        console.log(reactionEmoji);
-        console.log(reactionUsers);
-        
-        let messageId = reactionUsers['ReactionEmoji'][0]['MessageReaction'][0]['Message'][1];
-        console.log(messageId);
-    }
-});*/
 
 // MANEJADOR DE COMANDOS
 bot.on('message', async message => {

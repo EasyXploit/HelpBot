@@ -8,7 +8,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .setDescription('Comandos de ' + bot.user.username)
             .setFooter('© 2018 República Gamer LLC', resources.server.iconURL)
             .addField(resources.fortnite + ' ' + config.prefix + 'fortnite "usuario" "solo/duo/squad/lifetime" "pc/xbl/psn"', 'Muestra estadísticas de Fortnite Battle Royale.', true)
-            .addField('👦 ' + config.prefix + 'avatar <@usuario>',  'Muestra tu avatar o el de cualquier usuario.', true)
+            .addField('👦 ' + config.prefix + 'avatar (@usuario)',  'Muestra tu avatar o el de cualquier usuario.', true)
             .addField('🐈 ' + config.prefix + 'catfacts', 'Muestra un dato curioso sobre los gatos.', true)
             .addField('🐕 ' + config.prefix + 'dogfacts', 'Muestra un dato curioso sobre los perros.', true)
             .addField(':game_die: ' + config.prefix + 'dado', 'Lanzará un dado.', true)

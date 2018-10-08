@@ -5,7 +5,8 @@
   "main": "bot.js",
   "dependencies": {
     "discord.js": "^11.3.2",
-    "fortnite": "^4.1.1"
+    "fortnite": "^4.1.1",
+    "urban": "^0.3.2"
   },
   "devDependencies": {},
   "scripts": {

@@ -16,6 +16,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .addField(':8ball: ' + config.prefix + '8ball <pregunta>', 'La bola mágica te dará una respuesta.', true)
             .addField('✂ ' + config.prefix + 'ppt <piedra | papel | tijeras>', 'Juega a Piedra, Papel y Tijeras con ' + bot.user.username + '.', true)
             .addField('🦎 ' + config.prefix + 'pptls <piedra | papel | tijeras | lagarto | spock>', 'Juega a Piedra, Papel, Tijeras, Lagarto y Spock con ' + bot.user.username + '.', true)
+            .addField('📔 ' + config.prefix + 'urban (término)', 'Busca en el Urban Dictionary (en inglés)', true)
             .addField('🎯 ' + config.prefix + 'elige "opción1" "opción2" ...', bot.user.username + ' elegirá por ti de entre las opciones que le facilites.', true)
             .addField('📝 ' + config.prefix + 'reves <texto>', bot.user.username + ' le dará la vuelta al texto que especifiques.', true)
             .addField('💭 ' + config.prefix + 'di <texto>', 'Hará que ' + bot.user.username + ' repita lo que escribas.', true)

@@ -26,7 +26,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         //Graba el nuevo canal de auditoría 
         config.loggingChannel = channel;
-        await fs.writeFile('./config.json', JSON.stringify(config), (err) => console.error);
+        await fs.writeFile('./config.json', JSON.stringify(config, null, 4), (err) => console.error);
 
         let completedEmbed = new discord.RichEmbed()
             .setColor(0xB8E986)

@@ -31,7 +31,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             config.status = content;
 
             //Graba la configuración
-            await fs.writeFile('./config.json', JSON.stringify(config), (err) => console.error);
+            await fs.writeFile('./config.json', JSON.stringify(config, null, 4), (err) => console.error);
             await bot.user.setStatus(config.status);
 
             changed = 'el estado';
@@ -40,7 +40,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             config.game = content;
 
             //Graba la configuración
-            await fs.writeFile('./config.json', JSON.stringify(config), (err) => console.error);
+            await fs.writeFile('./config.json', JSON.stringify(config, null, 4), (err) => console.error);
             await bot.user.setPresence({game: {name: config.game, type: config.type}});
 
             changed = 'la actividad';   

@@ -9,7 +9,75 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         if (!args[0]) return message.channel.send(noCorrectSyntaxEmbed);
 
-        if (args[0] === 'roles') {
+        if (args[0] === 'informacion') {
+            message.delete();
+            
+            let embed1 = new discord.RichEmbed()
+                .setColor(0xFFC857)
+                .setDescription(resources.republicagamer + ' **Bienvenido al servidor oficial de la República Gamer en Discord**\nA continuación te explicaremos la dinámica de este servidor:')
+                .attachFile('./resources/images/banners/logo_banner_transparent.png');
+            
+            let embed2 = new discord.RichEmbed()
+                .setColor(0xFFC857)
+                .setAuthor('REGLAMENTO DE LA COMUNIDAD', 'https://i.imgur.com/jAiDAvR.png')
+                .setDescription('Este servidor se apoya en los **Términos de Servicio** y las **Directivas de la comunidad de Discord**. Puedes encontrarlos en __https://discordapp.com/terms__ y en __https://discordapp.com/guidelines__ respectivamente.')
+                .addField(':one: No está permitido publicar contenido inadecuado:', 'Es decir, todo lo relacionado con pornografía, drogas y apuestas. Tampoco contenido que pueda alentar el odio hacia una etnia, religión o cualquier otro colectivo/individuo. De la misma forma están prohibidas las actitudes tóxicas, faltas de respeto, el acoso, el gore y/o crueldad animal y el envío de pornografía infantil.', true)
+                .addField(':two: Está prohibido hacer spam:', 'No puedes enviar links hacia otros servidores de Discord _(tanto invitaciones como URL redireccionadas o spam relacionado)_, ni links de afiliado (incluyendo mensajes directos). Tampoco puedes abusar de las menciones a los demás usuarios y también está prohibido hacer _flood_ de chat. __Si deseas que te promocionemos, contáctanos.__', true)
+                .addField(':three: No abuses de las menciones:', 'No está permitido excederse utilizando las menciones a personas, a __roles__, o a `@everyone` y `@here`. _Las menciones abusivas pueden ser realmente molestas y pueden llevar a los usuario a silenciar el servidor._', true)
+                .addField(':four: Respeta las temáticas:', 'Has de usar los canales de texto/voz adecuados en cada caso. Lee los temas de los canales para más información.', true)
+                .addField(':five: No busques vacíos legales:', 'No intentes hacer algo que obviamente pueda resultar inadecuado tanto para el staff como para el resto de usuarios de la comunidad.\n\n```La infracción de la normativa conllevará desde sanciones administrativas (warn, mute, ban o kick) hasta avisos a las autoridades (en el caso de actividades ilegales).```', true)
+                .attachFile('./resources/images/banners/rules.png');
+            
+            let embed3 = new discord.RichEmbed()
+                .setColor(0xFFC857)
+                .setDescription(':grey_question: Escribe `!ayuda` en cualquier canal de texto para acceder al sistema de ayuda.\n\n📓 Escribe `!normas` para mostrar las normas del servidor.\n\n' + resources.pilkobot + ' Esccribe `!pilko` para mostrar los comandos de <@446041159853408257>.\n\n:robot: Escribe `!comandos` para mostrar los comandos de los bots.\n\n:military_medal: Escribe `!rangos` para mostrar los rangos, la tabla de puntuaciones y tu nivel.')
+                .attachFile('./resources/images/banners/help.png');
+            
+            let embed4 = new discord.RichEmbed()
+                .setColor(16762967)
+                .setThumbnail('https://i.imgur.com/vDgiPwT.png')
+                .setAuthor('NIVELES', 'https://i.imgur.com/vDgiPwT.png')
+                .setDescription('Los usuarios que participan __activamente__ en la comunidad adquieren puntos de **EXP**, y al alcanzar determinados niveles se obtienen rangos que aportan la siguientes _ventajas_:')
+                .addField(resources.chevron + ' Nivel 0 ‣ NOVATOS', 'Es el primer rol que recibes al unirte a la comunidad.', true)
+                .addField(resources.chevron5 + ' Nivel 3 ‣ INICIADOS', 'Permite usar emojis externos' + resources.nitro + ' y acceder a sorteos públicos.', true)
+                .addField(resources.chevron9 + ' Nivel 5 ‣ PROFESIONALES', 'Permite publicar en <#472491041602404362> y en <#488662764081119233>.', true)
+                .addField(resources.chevron15 + ' Nivel 8 ‣ VETERANOS', 'Permite **adjuntar archivos** y **cambiar tu propio apodo**.', true)
+                .addField(resources.chevron18 + ' Nivel 10 ‣ EXPERTOS', 'Te permite **mencionar a todos** y **controlar la música**.', true)
+                .addField('● Estadísticas', 'Usa `!rank` para conocer tu nivel\n[Ver la tabla de clasificación](https://mee6.xyz/leaderboard/374945492133740544)')
+                .attachFile('./resources/images/banners/ranks.png');
+
+            let embed5 = new discord.RichEmbed()
+                .setColor(16762967)
+                .setThumbnail('https://i.imgur.com/TU8U8wq.png')
+                .setAuthor('ROLES ASIGNABLES', 'https://i.imgur.com/TU8U8wq.png')
+                .addField('● ¿Que son?', 'Los roles asignables te permiten añadir __tus propios roles__ basados en tus **intereses**, **videojuegos** y **región**.', true)
+                .addField('● ¿Como los uso?', 'Desde el canal <#440905255073349635>, puedes reaccionar al mensaje de configuración con los emojis correspondientes a los roles que quieres asignarte', true);
+            
+            let embed6 = new discord.RichEmbed()
+                .setColor(16762967)
+                .setThumbnail('https://i.imgur.com/0l3jSuV.png')
+                .setAuthor('RANGO SUPPORTER', 'https://i.imgur.com/0l3jSuV.png')
+                .setDescription('Aquellos usuarios que traen a __gente nueva__ a la comunidad son recompensados con el rango **@SUPPORTER**, que permite acceder a varias ventajas, entre las que destacan el **acceso preferente a los sorteos**, poder **cambiar su propio apodo** y usar **emojis externos**.')
+                .addField('🞘 Pasos a seguir:', ':one: Genera una invitación instantánea. [Ver cómo](https://support.discordapp.com/hc/es/articles/208866998-Invitaci%C3%B3n-Instant%C3%A1nea-101)\n:two: Invita a 5 personas _(procura que se unan y se queden)_.\n:three: ¡Recibirás tu rol cuando se unan 5! _(lo perderás si se van)_.', true)
+                .addField('🞘 Comandos:', 'Usa `+invites` para conocer a cuantos has invitado.\nUsa `+leaderboard` para ver la tabla de clasificacion.', true);
+            
+            let embed7 = new discord.RichEmbed()
+                .setColor(16762967)
+                .setAuthor('ENLACE DE INVITACIÓN PERMANENTE', 'https://i.imgur.com/teglfDA.png')
+                .setThumbnail('https://i.imgur.com/teglfDA.png')
+                .setDescription('➧ Puedes usar el siguiente enlace para invitar a más jugadores a la comunidad. **¡Compártelo con todos!**\n_(este link no cuenta para tus invitaciones a referidos)_')
+                .attachFile('./resources/images/banners/link.png');
+            
+            await message.channel.send(embed1);
+            await message.channel.send(embed2);
+            await message.channel.send(embed3);
+            await message.channel.send(embed4);
+            await message.channel.send(embed5);
+            await message.channel.send(embed6);
+            await message.channel.send(embed7);
+            await message.channel.send('https://discord.gg/eWx72Jy');
+            
+        } else if (args[0] === 'roles') {
             message.delete();
         
             let csgo = message.guild.roles.find(r => r.name === 'CS:GO');

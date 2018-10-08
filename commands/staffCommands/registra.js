@@ -1,19 +1,25 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    //-registra (#canal) (xS/xM/xH)
+    //-registra (#canal) (xS | xM | xH)
     
     try {
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
             .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'registra (#canal) (xS/xM/xH)`');
+        
+        let noCorrectTimeEmbed = new discord.RichEmbed()
+            .setColor(0xF12F49)
+            .setDescription(resources.RedTick + ' Debes proporcionar una unidad de medida válida. Por ejemplo: `5s`, `10m`, `12h` o `3d`');
 
         if (args.length === 0 || args.length > 2) return message.channel.send(noCorrectSyntaxEmbed);
         if (!message.mentions.channels.first()) return message.channel.send(noCorrectSyntaxEmbed);
 
         let time = args.slice(1).join().slice(0, -1);
         let measure = args.slice(1).join().slice(-1).toLowerCase();
+        
+        if (isNaN(time)) return message.channel.send(noCorrectTimeEmbed);
 
-        if (measure !== 's' && measure !== 'm' && measure !== 'h') return message.channel.send('Error');
+        if (measure !== 's' && measure !== 'm' && measure !== 'h') return message.channel.send(noCorrectTimeEmbed);
 
         let milliseconds;
 
@@ -38,12 +44,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 break;
             case 'h':
                 htoms(time);
-                break;
-            default:
-                let errorEmbed = new discord.RichEmbed()
-                    .setColor(0xF12F49)
-                    .setDescription(resources.RedTick + ' Ocurrió un error durante la ejecución del comando');
-                return message.channel.send(errorEmbed);
                 break;
         }
 

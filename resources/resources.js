@@ -4,6 +4,10 @@ exports.run = (discord, bot) => {
     const server = bot.guilds.get('374945492133740544');
     module.exports.server = server;
     
+    //VARIABLES MODIFICABLES
+    const valueCheck = 'null';
+    module.exports.valueCheck = valueCheck;
+    
     //EMOJIS
     const GreenTick = bot.emojis.get('496633289726099478');
     module.exports.GreenTick = GreenTick;
@@ -22,6 +26,9 @@ exports.run = (discord, bot) => {
     
     const pilkobot = bot.emojis.get('496633714802032655');
     module.exports.pilkobot = pilkobot;
+    
+    const republicagamer = bot.emojis.get('498288236607569962');
+    module.exports.republicagamer = republicagamer;
     
     const coin = bot.emojis.get('496634668758859786');
     module.exports.coin = coin;
@@ -43,6 +50,9 @@ exports.run = (discord, bot) => {
     
     const mee6 = bot.emojis.get('497728749131792385');
     module.exports.mee6 = mee6;
+    
+    const tatsumaki = bot.emojis.get('498276660156694529');
+    module.exports.tatsumaki = tatsumaki;
     
     const chevron10 = bot.emojis.get('497133468535226389');
     module.exports.chevron10 = chevron10;

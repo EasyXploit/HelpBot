@@ -1,10 +1,5 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    let experimentalEmbed = new discord.RichEmbed()
-        .setColor(0xC6C9C6)
-        .setDescription(resources.GrayTick + ' **Función experimental**\nEstás ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
-    await message.channel.send(experimentalEmbed).then(msg => {msg.delete(5000)});
-    
     //-infoservidor
     
     try {    

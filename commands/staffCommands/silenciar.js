@@ -1,10 +1,5 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
-    let experimentalEmbed = new discord.RichEmbed()
-        .setColor(0xC6C9C6)
-        .setDescription(resources.GrayTick + ' **Función experimental**\nEstás ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
-    await message.channel.send(experimentalEmbed).then(msg => {msg.delete(5000)});
-    
     //-silenciar (@usuario | id) (motivo)
     
     try {
@@ -21,6 +16,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
         let member = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
         if (!member) return message.channel.send(notToMuteEmbed);
+        if (member.user.bot) return message.channel.send(noBotsEmbed);
         
         let author = message.guild.member(message.author.id)
         
@@ -31,8 +27,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let toDeleteCount = command.length - 2 + args[0].length + 2; 
         let reason = message.content.slice(toDeleteCount) || 'Indefinida';
-
-        if (member.bot) return message.channel.send('noBotsEmbed');
 
         let role = message.guild.roles.find(r => r.name === 'Silenciado');
         if (!role) {
@@ -76,6 +70,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField('Razón', reason, true)
             .addField('Duración', '∞', true);
 
+        //Comprueba si este susuario ya estaba silenciado
         if (member.roles.has(role.id)) return message.channel.send(alreadyMutedEmbed);
 
         await member.addRole(role);

@@ -16,8 +16,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setThumbnail(mee6Avatar)
             .setAuthor('MODERACIÓN DE MEE6', mee6Avatar)
             .setDescription('Comandos de moderación del bot <@159985870458322944>')
-            .addField('🕑 !tempban <@usuario> [motivo]', 'Banea a un usuario temporalmente.' + resources.chevron10)
-            .addField('🔈 !tempmute <@usuario> [motivo]', 'Silencia a un usuario temporalmente.')
             .addField('🔊 !unmute <@usuario>', 'Des-silencia a un usuario silenciado por <@159985870458322944>.' + resources.chevron10)
             .addField('🔔 !warn <@usuario> [advertencia]', 'Advierte a un usuario con <@159985870458322944>')
             .addField('⚖ !infractions <@usuario>', 'Comprueba el historial de infracciones de <@159985870458322944> de un usuario.')

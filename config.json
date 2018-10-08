@@ -1,1 +1,15 @@
-{"prefix":"!","staffPrefix":"-","ownerPrefix":"$","botOwner":"359333470771740683","serverInvite":"https://discord.gg/eWx72Jy","botStaff":"428631949029015562","botSupervisor":"374949036555239434","loggingChannel":"455405868960448552","debuggingChannel":"479380760625676300","welcomeChannel":"374945492716617729","game":"!ayuda","status":"online","type":"WATCHING"}
+{
+    "prefix": "!",
+    "staffPrefix": "-",
+    "ownerPrefix": "$",
+    "botOwner": "359333470771740683",
+    "serverInvite": "https://discord.gg/eWx72Jy",
+    "botStaff": "428631949029015562",
+    "botSupervisor": "374949036555239434",
+    "loggingChannel": "455405868960448552",
+    "debuggingChannel": "479380760625676300",
+    "welcomeChannel": "374945492716617729",
+    "game": "!ayuda",
+    "status": "online",
+    "type": "WATCHING"
+}

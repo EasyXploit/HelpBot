@@ -2,11 +2,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     
     //-quitar-rol (@rol | "rol" | id) (@usuario | id)
 
-    let experimentalEmbed = new discord.RichEmbed()
-        .setColor(0xC6C9C6)
-        .setDescription(resources.GrayTick + ' **Función experimental**\nEstás ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
-    await message.channel.send(experimentalEmbed).then(msg => {msg.delete(5000)});
-    
     try {
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
@@ -18,10 +13,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let role = message.mentions.roles.first() || message.guild.roles.get(args[0]);
         if (!role) {
             let newArgs = message.content.slice(13).split('" ').slice(0, 1).join();
-            role = message.guild.roles.find('name', newArgs)
+            role = message.guild.roles.find('name', newArgs);
         }
         let member = message.mentions.members.first() || message.guild.members.get(args[1]);
-        
+ 
         if (!role || !member) return message.channel.send(noCorrectSyntaxEmbed);
         
         let author = message.guild.member(message.author.id)
@@ -66,16 +61,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             let permittedRoles = ['ES', 'LATAM', 'CS:GO', 'RAINBOW SIX', 'FORTNITE', 'ROCKET LEAGUE', 'LOL', 'MINECRAFT', 'BATTLEFIELD', 'PUBG', 'GTA V', 'ROBLOX', 'OVERWATCH']
             
-            if (message.member.roles.has(config.botSupervisor)) {permittedRoles.push('NOVATOS', 'INICIADOS', 'PROFESIONALES', 'VETERANOS', 'EXPERTOS')}
+            if (message.member.roles.has(config.botSupervisor)) {permittedRoles.push('NOVATOS', 'INICIADOS', 'PROFESIONALES', 'VETERANOS', 'EXPERTOS', 'DJ')}
     
-            if (permittedRoles.some(roleName => role.name === roleName)) {
-                await member.removeRole(role);
-            } else {
-                let noPrivilegesEmbed = new discord.RichEmbed()
-                    .setColor(0xF12F49)
-                    .setDescription(resources.RedTick + ' ' + message.author.username + ', no dispones de privilegios suficientes para retirar este rol');
-                message.channel.send(noPrivilegesEmbed);
-            }
 
             let successEmbed = new discord.RichEmbed()
                 .setColor(0xB8E986)
@@ -91,12 +78,21 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .addField('Fecha:', new Date().toUTCString(), true)
                 .addField('Emisor:', '<@' + message.author.id + '>', true)
                 .addField('Rol:', role.name, true)
-                .addField('Destino:', member.displayName, true)
+                .addField('Destino:', '<@' + member.id + '>', true)
             
-            await message.channel.send(successEmbed);
-            await loggingChannel.send(loggingEmbed);
+            if (permittedRoles.some(roleName => role.name === roleName)) {
+                await member.removeRole(role);
+                
+                await message.channel.send(successEmbed);
+                await loggingChannel.send(loggingEmbed);
 
-            console.log('\n 》' + message.author.username + ' retiró el rol ' + role.name + ' al usuario ' + member.displayName + '.');
+                console.log('\n 》' + message.author.username + ' retiró el rol ' + role.name + ' al usuario ' + member.displayName + '.');
+            } else {
+                let noPrivilegesEmbed = new discord.RichEmbed()
+                    .setColor(0xF12F49)
+                    .setDescription(resources.RedTick + ' ' + message.author.username + ', no dispones de privilegios suficientes para retirar este rol');
+                message.channel.send(noPrivilegesEmbed);
+            }
         }
     } catch (e) {
         const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);

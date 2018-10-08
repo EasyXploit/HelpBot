@@ -2,11 +2,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     
     //-asignar-rol (@rol | "rol" | id) (@usuario | id)
 
-    let experimentalEmbed = new discord.RichEmbed()
-        .setColor(0xC6C9C6)
-        .setDescription(resources.GrayTick + ' **Función experimental**\nEstás ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
-    await message.channel.send(experimentalEmbed).then(msg => {msg.delete(5000)});
-    
     try {
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
@@ -18,7 +13,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let role = message.mentions.roles.first() || message.guild.roles.get(args[0]);
         if (!role) {
             let newArgs = message.content.slice(14).split('" ').slice(0, 1).join();
-            role = message.guild.roles.find('name', newArgs)
+            role = message.guild.roles.find('name', newArgs);
         }
         let member = message.mentions.members.first() || message.guild.members.get(args[1]);
         if (!role || !member) return message.channel.send(noCorrectSyntaxEmbed);
@@ -43,12 +38,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             let successEmbed = new discord.RichEmbed()
                 .setColor(0xB8E986)
                 .setTitle(resources.GreenTick + ' Operación completada')
-                .setDescription('Añadiste el rol **' +  role.name + '** al usuario **' + member.displayName + '**.');
+                .setDescription('Asignaste el rol **' +  role.name + '** al usuario **' + member.displayName + '**.');
 
             let loggingEmbed = new discord.RichEmbed()
                 .setColor(0x4A90E2)
                 .setTitle('📑 Auditoría')
-                .setDescription('Se ha proporcionado un nuevo rol.')
+                .setDescription('Se ha asignado un nuevo rol.')
                 .setTimestamp()
                 .setFooter(bot.user.username, bot.user.avatarURL)
                 .addField('Fecha:', new Date().toUTCString(), true)
@@ -59,43 +54,43 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await message.channel.send(successEmbed);
             await loggingChannel.send(loggingEmbed);
 
-            console.log('\n 》' + message.author.username + ' añadió el rol ' + role.name + ' al usuario ' + member.displayName + '.');
+            console.log('\n 》' + message.author.username + ' asignó el rol ' + role.name + ' al usuario ' + member.displayName + '.');
             
         } else if (message.member.roles.has(config.botStaff)) {
             
             let permittedRoles = ['ES', 'LATAM', 'CS:GO', 'RAINBOW SIX', 'FORTNITE', 'ROCKET LEAGUE', 'LOL', 'MINECRAFT', 'BATTLEFIELD', 'PUBG', 'GTA V', 'ROBLOX', 'OVERWATCH']
             
-            if (message.member.roles.has(config.botSupervisor)) {permittedRoles.push('NOVATOS', 'INICIADOS', 'PROFESIONALES', 'VETERANOS', 'EXPERTOS')}
-    
-            if (permittedRoles.some(roleName => role.name === roleName)) {
-                await member.addRole(role);
-            } else {
-                let noPrivilegesEmbed = new discord.RichEmbed()
-                    .setColor(0xF12F49)
-                    .setDescription(resources.RedTick + ' ' + message.author.username + ', no dispones de privilegios suficientes para otorgar este rol');
-                message.channel.send(noPrivilegesEmbed);
-            }
+            if (message.member.roles.has(config.botSupervisor)) {permittedRoles.push('NOVATOS', 'INICIADOS', 'PROFESIONALES', 'VETERANOS', 'EXPERTOS', 'DJ')}
 
             let successEmbed = new discord.RichEmbed()
                 .setColor(0xB8E986)
                 .setTitle(resources.GreenTick + ' Operación completada')
-                .setDescription('Añadiste el rol ' +  role.name + ' al usuario **' + member.displayName + '**.');
+                .setDescription('Asignaste el rol ' +  role.name + ' al usuario **' + member.displayName + '**.');
 
             let loggingEmbed = new discord.RichEmbed()
                 .setColor(0x4A90E2)
                 .setTimestamp()
                 .setFooter(bot.user.username, bot.user.avatarURL)
                 .setTitle('📑 Auditoría')
-                .setDescription('Se ha proporcionado un nuevo rol.')
+                .setDescription('Se ha asignado un rol.')
                 .addField('Fecha:', new Date().toUTCString(), true)
                 .addField('Emisor:', '<@' + message.author.id + '>', true)
                 .addField('Rol:', role.name, true)
-                .addField('Destino:', member.displayName, true)
+                .addField('Destino:', '<@' + member.id + '>', true)
             
-            await message.channel.send(successEmbed);
-            await loggingChannel.send(loggingEmbed);
+            if (permittedRoles.some(roleName => role.name === roleName)) {
+                await member.addRole(role);
+                
+                await message.channel.send(successEmbed);
+                await loggingChannel.send(loggingEmbed);
 
-            console.log('\n 》' + message.author.username + ' añadió el rol ' + role.name + ' al usuario ' + member.displayName + '.');
+                console.log('\n 》' + message.author.username + ' asignó el rol ' + role.name + ' al usuario ' + member.displayName + '.');
+            } else {
+                let noPrivilegesEmbed = new discord.RichEmbed()
+                    .setColor(0xF12F49)
+                    .setDescription(resources.RedTick + ' ' + message.author.username + ', no dispones de privilegios suficientes para asignar este rol');
+                message.channel.send(noPrivilegesEmbed);
+            }
         }
     } catch (e) {
         const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);

@@ -1,10 +1,5 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
-    let experimentalEmbed = new discord.RichEmbed()
-        .setColor(0xC6C9C6)
-        .setDescription(resources.GrayTick + ' **Función experimental**\nEstás ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
-    await message.channel.send(experimentalEmbed).then(msg => {msg.delete(5000)});
-    
     //-silenciar (@usuario | id) (motivo)
     
     try {
@@ -28,7 +23,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let role = message.guild.roles.find(r => r.name === 'Silenciado');
 
-        let alreadyMutedEmbed = new discord.RichEmbed()
+        let notMutedEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Este usuario no esta silenciado');
 
@@ -51,9 +46,17 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField('Moderador', message.author.tag, true)
             .addField('Razón', reason, true);
 
-        if (!role || !member.roles.has(role.id)) return message.channel.send(alreadyMutedEmbed);
+        if (!role || !member.roles.has(role.id)) return message.channel.send(notMutedEmbed);
 
         await member.removeRole(role);
+        
+        if (bot.mutes.hasOwnProperty(member.id)) {
+            await delete bot.mutes[member.id];
+            await fs.writeFile('./mutes.json', JSON.stringify(bot.mutes), async err => {
+                if (err) throw err;
+            });
+        };
+        
         await message.channel.send(successEmbed);
         await loggingChannel.send(loggingEmbed);
         await member.send(toDMEmbed);

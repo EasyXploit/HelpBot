@@ -1,10 +1,5 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
-    let experimentalEmbed = new discord.RichEmbed()
-        .setColor(0xC6C9C6)
-        .setDescription(resources.GrayTick + ' **Función experimental**\nEstás ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
-    await message.channel.send(experimentalEmbed).then(msg => {msg.delete(5000)});
-    
     //-desbanear (id) (motivo)
     
     try {
@@ -29,6 +24,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!reason) return message.channel.send(noReasonEmbed);
 
         await message.guild.unban(user.id);
+        
+        if (bot.bans.hasOwnProperty(user.id)) {
+            await delete bot.bans[user.id];
+            await fs.writeFile('./bans.json', JSON.stringify(bot.bans), async err => {
+                if (err) throw err;
+            });
+        };
 
         let successEmbed = new discord.RichEmbed()
             .setColor(0xB8E986)

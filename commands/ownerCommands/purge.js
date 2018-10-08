@@ -47,13 +47,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setTitle('📑 Auditoría')
                 .setDescription('<@' + message.author.id + '> eliminó ' + count + ' mensajes del canal <#' + channel.id + '>');
             
-            let runningEmbed = new discord.RichEmbed()
-                .setColor(0xC6C9C6)
-                .setTitle(resources.GrayTick + ' Operación en marcha')
-                .setDescription('Se han encontrado ' + count + ' mensajes. Eliminando ...');
-            
             try {
-                await message.channel.send(runningEmbed).then(msg => {msg.delete(2000)}).then(await channel.bulkDelete(messages));
+                await channel.bulkDelete(messages);
                 
                 await message.channel.send(successEmbed).then(msg => {msg.delete(5000)});
                 await loggingChannel.send(loggingEmbed);
@@ -80,13 +75,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setTitle('📑 Auditoría')
                 .setDescription('<@' + message.author.id + '> eliminó ' + count + ' mensajes del canal <#' + channel.id + '>');
             
-            let runningEmbed = new discord.RichEmbed()
-                .setColor(0xC6C9C6)
-                .setTitle(resources.GrayTick + ' Operación en marcha')
-                .setDescription('Se han encontrado ' + count + ' mensajes. Eliminando ...');
-            
             try {
-                await message.channel.send(runningEmbed).then(msg => {msg.delete(2000)}).then(await channel.bulkDelete(messages));
+                await channel.bulkDelete(messages);
                 
                 await message.channel.send(successEmbed).then(msg => {msg.delete(5000)});
                 await loggingChannel.send(loggingEmbed);

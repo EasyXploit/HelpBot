@@ -167,6 +167,26 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await message.channel.send(basesEmbed);
             await message.channel.send(adquireEmbed);
             await message.channel.send(entryEmbed);
+        }  else if (args[0] === 'bienvenida') {
+            let noUserEmbed = new discord.RichEmbed()
+                .setColor(0xF04647)
+                .setDescription(resources.RedTick + ' No has proporcionado un usuario válido');
+            
+            let noBotsEmbed = new discord.RichEmbed()
+                .setColor(0xF04647)
+                .setDescription(resources.RedTick + ' No puedes entablar una conversación con un bot');
+            
+            let successEmbed = new discord.RichEmbed()
+                .setColor(0xB8E986)
+                .setDescription(resources.GreenTick + ' ¡Listo!');
+            
+            if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
+            
+            let member = message.mentions.members.first() || message.guild.members.get(args[1]);
+            if (!member) return message.channel.send(noUserEmbed);
+            if (member.user.bot) return message.channel.send(noBotsEmbed);
+            
+            message.delete().then(bot.emit('guildMemberAdd', member));
         } else {
             let noArgsEmbed = new discord.RichEmbed()
                 .setColor(0xF12F49)

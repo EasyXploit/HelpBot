@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //$presence (estatus | actividad) (online | offline | idle | dnd - nombreDeLaAtividad)
     
     try {
-        let fields = message.content.slice(12).split('" "');
+        let fields = message.content.slice(11).split('" "');
         let lastField = fields.slice(-1).join();
 
         lastField = lastField.substring(0, lastField.length - 1);

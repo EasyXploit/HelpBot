@@ -4,7 +4,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     
     try {
         // Introduce los argumentos separados por " en el array 'fields'
-        let fields = message.content.slice(11).split('" "');
+        let fields = message.content.slice(7).split('" "');
         let lastField = fields.slice(-1).join();
 
         lastField = lastField.substring(0, lastField.length - 1);

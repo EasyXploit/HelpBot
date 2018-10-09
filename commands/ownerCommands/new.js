@@ -11,7 +11,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     
     try {
         // Introduce los argumentos separados por " en el array 'fields'
-        var fields = message.content.slice(10).split('" "');
+        var fields = message.content.slice(6).split('" "');
         var lastField = fields.slice(-1).join();
 
         lastField = lastField.substring(0, lastField.length - 1);

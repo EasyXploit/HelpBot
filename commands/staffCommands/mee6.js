@@ -17,7 +17,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setAuthor('MODERACIÓN DE MEE6', mee6Avatar)
             .setDescription('Comandos de moderación del bot <@159985870458322944>')
             .addField('🔊 !unmute <@usuario>', 'Des-silencia a un usuario silenciado por <@159985870458322944>.' + resources.chevron10)
-            .addField('🔔 !warn <@usuario> [advertencia]', 'Advierte a un usuario con <@159985870458322944>')
             .addField('⚖ !infractions <@usuario>', 'Comprueba el historial de infracciones de <@159985870458322944> de un usuario.')
             .addField('🚥 !slowmode <@canal>', 'Habilita el cooldown de mensajería de un canal.' + resources.chevron10)
             .setFooter('Algunos comandos no se muestran debido a que PilkoBot ahora se encarga de su funcionamiento. Mas detalles con el comando -staff', mee6Avatar);

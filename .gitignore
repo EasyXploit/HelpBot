@@ -1,2 +1,4 @@
 keys.json
-node_modules/.bin/urban
+mutes.json
+bans.json
+warns.json

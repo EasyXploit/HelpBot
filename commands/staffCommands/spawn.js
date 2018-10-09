@@ -26,7 +26,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             if (!foundWebhook) {
                 message.channel.createWebhook('Pokécord', avatar).then(webhook => {
-                webhook.send(resultEmbed);
+                    webhook.send(resultEmbed);
                 })
             } else {
                 foundWebhook.send(resultEmbed);

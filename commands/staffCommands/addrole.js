@@ -13,7 +13,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let role = message.mentions.roles.first() || message.guild.roles.get(args[0]);
         if (!role) {
             let newArgs = message.content.slice(10).split('" ').slice(0, 1).join();
-            role = message.guild.roles.find('name', newArgs);
+            role = message.guild.roles.find(r => r.name === newArgs);
         }
         let member = message.mentions.members.first() || message.guild.members.get(args[1]);
         if (!role || !member) return message.channel.send(noCorrectSyntaxEmbed);

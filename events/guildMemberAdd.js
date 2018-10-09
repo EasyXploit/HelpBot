@@ -5,7 +5,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
     
     const loggingChannel = bot.channels.get(config.loggingChannel);
     const welcomeChannel = bot.channels.get(config.welcomeChannel);
-    const welcomeRole = event.guild.roles.find('name', 'NOVATOS');
+    const welcomeRole = event.guild.roles.find( r => r.name === 'NOVATOS');
 
     if (!event.user.bot) {
 

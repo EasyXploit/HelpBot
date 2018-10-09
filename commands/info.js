@@ -20,7 +20,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .addField('🔗 Añádeme', '___Aún no disponible___', true)
             .addField('💬 Servidor', '[Únete](' + config.serverInvite + ')', true)
             .addField('📣 Twitter', '___Aún no disponible___', true)
-            .addField('🗂 Librerias', '● discord.js\n● flaticon', true);
+            .addField('🗂 Librerias', '● discord.js\n● flaticon\n● fortnite\n● urban-dictionay', true);
         message.channel.send(resultEmbed);
     } catch (e) {
         const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);

@@ -7,7 +7,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     await message.channel.send(disabledEmbed).then(msg => {msg.delete(5000)});
     return;
     
-    //$novedad "título" "contenido"
+    //$new "título" "contenido"
     
     try {
         // Introduce los argumentos separados por " en el array 'fields'
@@ -20,7 +20,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.ownerPrefix + 'novedad "título" "contenido"`');
+            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.ownerPrefix + 'new "título" "contenido"`');
 
         if (fields.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
 

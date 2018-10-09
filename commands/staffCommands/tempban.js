@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
-    //-tempban (@usuario | id) (@usuario | id) (xS | xM | xH | xD) (motivo)
+    //-tempban (@usuario | id) (xS | xM | xH | xD) (motivo)
     
     try {
         if (message.author.id !== config.botOwner && !message.member.roles.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);

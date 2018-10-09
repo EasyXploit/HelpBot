@@ -109,10 +109,16 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Los moderadores solo pueden silenciar un máximo de 1 día');
         
+        let undefinedReasoneEmbed = new discord.RichEmbed()
+            .setColor(0xF12F49)
+            .setDescription(resources.RedTick + ' Los moderadores deben adjuntar una razón');
+        
         if (milliseconds > 86400000 && (!message.member.roles.has(supervisorsRole.id) || message.author.id !== config.botOwner)) return message.channel.send(maxTimeEmbed);
         
         let toDeleteCount = command.length - 2 + args[0].length + 1 + args[1].length + 2; 
         let reason = message.content.slice(toDeleteCount) || 'Indefinida';
+        
+        if (reason === 'Indefinida' && (!message.member.roles.has(supervisorsRole.id) || message.author.id !== config.botOwner)) return message.channel.send(undefinedReasoneEmbed);
 
         let loggingEmbed = new discord.RichEmbed()
             .setColor(0xEF494B)

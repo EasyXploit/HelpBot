@@ -1,11 +1,11 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    //$prefijo (nuevo prefijo) (todos | staff | owner)
+    //$prefix (nuevo prefijo) (todos | staff | owner)
 
     try {
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es: `' + config.ownerPrefix+ 'prefijo (nuevo prefijo) (todos | staff | owner)`');
+            .setDescription(resources.RedTick + ' La sintaxis de este comando es: `' + config.ownerPrefix+ 'prefix (nuevo prefijo) (todos | staff | owner)`');
 
         //Comprueba si se han proporcionado todos los argumentos
         if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);

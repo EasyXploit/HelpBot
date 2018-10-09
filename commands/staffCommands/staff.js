@@ -25,7 +25,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField('🔊 ' + config.staffPrefix + 'dessilenciar (@usuario | id) (motivo)', 'Des-silencia a un usuario' + resources.chevron10, true)
             .addField('⛔ ' + config.staffPrefix + 'expulsar (@usuario | id)) (motivo)', 'Expulsa a un usuario' + resources.chevron10, true)
             .addField(':hammer: ' + config.staffPrefix + 'banear (@usuario | id) (motivo)', 'Banea a un usuario' + resources.chevron10, true)
-            .addField('🕑 ' + config.staffPrefix + 'tempban (@usuario | id) (@usuario | id) (xS | xM | xH | xD) (motivo)', 'Banea a un usuario de forma temporal' + resources.chevron10, true)
+            .addField('🕑 ' + config.staffPrefix + 'tempban (@usuario | id) (xS | xM | xH | xD) (motivo)', 'Banea a un usuario de forma temporal' + resources.chevron10, true)
             .addField('🛡 ' + config.staffPrefix + 'softban (@usuario | id) (motivo)', 'Banea a un usuario y borra sus mensajes (máx 14 días)' + resources.chevron10, true)
             .addField(resources.GreenTick + ' ' + config.staffPrefix + 'desbanear (id) (motivo)', 'Desbanea a un usuario' + resources.chevron10, true)
             .addField('🔖 ' + config.staffPrefix + 'asignar-rol (@rol | "rol" | id) (@usuario | id)', 'Añade un determinado rol a un determinado usuario', true)

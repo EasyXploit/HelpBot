@@ -1,11 +1,11 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    //$nombre (nombre)
+    //$name (nombre)
 
     try {
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
-            .setDescription(resources.RedTick + ' La sintaxis del comando es `' + config.ownerPrefix + 'nombre (nombre)`');
+            .setDescription(resources.RedTick + ' La sintaxis del comando es `' + config.ownerPrefix + 'name (nombre)`');
 
         //Comprueba si se ha proporcionado argumento
         if (args.length < 1) return message.channel.send(noCorrectSyntaxEmbed);

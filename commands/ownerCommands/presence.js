@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
-    //$presencia (estatus | actividad) (online | offline | idle | dnd - nombreDeLaAtividad)
+    //$presence (estatus | actividad) (online | offline | idle | dnd - nombreDeLaAtividad)
     
     try {
         let fields = message.content.slice(12).split('" "');
@@ -16,7 +16,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
-            .setDescription(resources.RedTick + ' La sintaxis del comando es `' + config.ownerPrefix + 'presencia ("estatus" | "actividad") ("online" | "offline" | "idle" | "dnd" - "nombreDeLaAtividad")`');
+            .setDescription(resources.RedTick + ' La sintaxis del comando es `' + config.ownerPrefix + 'presence ("estatus" | "actividad") ("online" | "offline" | "idle" | "dnd" - "nombreDeLaAtividad")`');
 
         let actuallyConfiguredEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)

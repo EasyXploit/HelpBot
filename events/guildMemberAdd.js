@@ -43,6 +43,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
 
             console.log(new Date().toUTCString() + ' 》@' + event.user.username + ' se unió a la guild: ' + event.guild.name)
 
+            if (event.guild.member(event.user).roles.has(welcomeRole.id)) return;
             event.guild.member(event.user).addRole(welcomeRole);
 
             let channelWelcomeEmbed = new discord.RichEmbed()

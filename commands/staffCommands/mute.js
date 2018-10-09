@@ -35,7 +35,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 color: '#818386',
                 permissions: []
             });
-            //await message.guild.setRolePosition(role, message.guild.roles.size - 1);
+            
+            let botMmeber = message.guild.members.get(bot.user.id);
+            await message.guild.setRolePosition(role, botMmeber.highestRole.position - 1);
+            
             message.guild.channels.forEach(async (channel, id) => {
                 await channel.overwritePermissions (role, {
                     SEND_MESSAGES: false,

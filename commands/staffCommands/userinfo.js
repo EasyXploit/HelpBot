@@ -42,6 +42,14 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             return perms[x] !== false; 
         });
         
+        //Comprueba el número de warns del usuario
+        let warns;
+        if (!bot.warns[member.id]) {
+            warns = 0
+        } else {
+            warns = bot.warns[member.id].warns
+        }
+        
         let resultEmbed = new discord.RichEmbed()
             .setColor(member.displayHexColor)
             .setTitle('🙍 Información de usuario')
@@ -57,7 +65,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField('Estatus', status.join(', '), true)
             .addField('Rol más alto', member.highestRole.name, true)
             .addField('Último mensaje', member.lastMessage + ' (ID: ' + member.lastMessageID + ')', true)
-            .addField('Infracciones', '_Aún no disponible_', true)
+            .addField('Infracciones', warns, true)
         message.channel.send(resultEmbed);
     } catch (e) {
         const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);

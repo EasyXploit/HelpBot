@@ -10,8 +10,11 @@ const bot = new discord.Client();
 let resources = require(`./resources/resources.js`);
 
 const talkedRecently = new Set();
+
 bot.mutes = require('./mutes.json');
 bot.bans = require('./bans.json');
+bot.warns = JSON.parse(fs.readFileSync('./warns.json', 'utf-8'));
+//bot.giveaways = require('./giveaways.json');
 
 // COMPROBACIÓN DE INICIO DE SESIÓN Y PRESENCIA
 bot.on('ready', async () => {
@@ -171,31 +174,41 @@ bot.on('message', async message => {
             }
 
             if (!reason) return;
+            
+            if (!bot.warns[message.author.id]) bot.warns[message.author.id] = {
+                guild: message.guild.id,
+                warns: 0
+            }
 
-            let noBadWordsEmbed = new discord.RichEmbed()
-                .setColor(0xF7A71C)
-                .setAuthor('[ADVERTENCIA] ' + message.author.username, message.author.displayAvatarURL)
-                .addField('Moderador', '<@' + bot.user.id + '>', true)
-                .addField('Razón', reason, true)
+            bot.warns[message.author.id].warns++;
 
-            const infractionChannelEmbed = new discord.RichEmbed()
-                .setColor(0XFFC857)
-                .setDescription('<@' + message.author.id + '> ha sido advertido debido a "**' + reason + '**"');
+            let infractionChannelEmbed = new discord.RichEmbed()
+                .setColor(0xF8A41E)
+                .setDescription(`${resources.OrangeTick} El usuario <@${message.author.id}> ha sido advertido debido a **${reason}**`);
 
             let loggingEmbed = new discord.RichEmbed()
-                .setColor(0xF7A71C)
-                .setAuthor('[ADVERTENCIA] ' + message.author.username, message.author.displayAvatarURL)
-                .addField('Usuario', '<@' + message.author.id + '>', true)
+                .setColor(0xF8A41E)
+                .setAuthor(message.author.tag + ' ha sido ADVERTIDO', message.author.displayAvatarURL)
+                .addField('Miembro', '<@' + message.author.id + '>', true)
                 .addField('Moderador', '<@' + bot.user.id + '>', true)
-                .addField('Razón', reason, true)
-                .addField('Canal', message.channel, true)
-                .addField('Mensaje', message.content, true)
+                .addField('Razón', reason, true);
 
-            await message.author.send(noBadWordsEmbed);
-            await message.channel.send(infractionChannelEmbed);
-            await loggingChannel.send(loggingEmbed);
+            let toDMEmbed = new discord.RichEmbed()
+                .setColor(0xF8A41E)
+                .setAuthor('[ADVERTIDO]', message.guild.iconURL)
+                .setDescription('<@' + message.author.id + '>, has sido advertido en ' + message.guild.name)
+                .addField('Moderador', '<@' + bot.user.id + '>', true)
+                .addField('Razón', reason, true);
+            
+            fs.writeFile('./warns.json', JSON.stringify(bot.warns, null, 4), async err => {
+                if (err) throw err;
+
+                await message.author.send(toDMEmbed);
+                await message.channel.send(infractionChannelEmbed);
+                await loggingChannel.send(loggingEmbed);
+            });
         } catch (e) {
-            console.log('Ocurrió un error durante la ejecución de la función "checkBadWords"');
+            console.log('Ocurrió un error durante la ejecución de la función "checkBadWords"\nError: ' + e);
         }
     }
     checkBadWords();

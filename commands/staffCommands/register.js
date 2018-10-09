@@ -1,11 +1,11 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    //-registra (#canal) (xS | xM | xH)
+    //-register (#canal) (xS | xM | xH)
     
     try {
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'registra (#canal) (xS/xM/xH)`');
+            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'register (#canal) (xS/xM/xH)`');
         
         let noCorrectTimeEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)

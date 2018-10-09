@@ -1,12 +1,12 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
-    //-md (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)
+    //-dm (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)
     
     try {
         
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.ownerPrefix + 'md (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)`');
+            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.ownerPrefix + 'dm (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)`');
         
         let noToDMEmbed = new discord.RichEmbed()
             .setColor(0xF04647)

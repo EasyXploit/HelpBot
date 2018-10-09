@@ -1,11 +1,11 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
-    //-asignar-rol (@rol | "rol" | id) (@usuario | id)
+    //-addrole (@rol | "rol" | id) (@usuario | id)
 
     try {
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'asignar-rol (@rol | "rol" | id) (@usuario | id)`');
+            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'addrole (@rol | "rol" | id) (@usuario | id)`');
 
         if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
         

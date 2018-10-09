@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
-    //-quitar-rol (@rol | "rol" | id) (@usuario | id)
+    //-removerole (@rol | "rol" | id) (@usuario | id)
 
     try {
         let noCorrectSyntaxEmbed = new discord.RichEmbed()

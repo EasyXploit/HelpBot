@@ -1,11 +1,11 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    //-inforol (@rol | "rol" | id)
+    //-roleinfo (@rol | "rol" | id)
     
     try {
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'inforol (@rol | "rol" | id)`');
+            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'roleinfo (@rol | "rol" | id)`');
         
         let guild = message.guild;
         let role = message.mentions.roles.first() || guild.roles.get(args[0]) || message.guild.roles.find('name', args[0]);

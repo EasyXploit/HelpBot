@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    //-infoservidor
+    //-serverinfo
     
     try {    
         const guild = message.guild;

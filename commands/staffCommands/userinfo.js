@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    //-infousuario (@usuario | id)
+    //-userinfo (@usuario | id)
     
     try {
         let noUserEmbed = new discord.RichEmbed()

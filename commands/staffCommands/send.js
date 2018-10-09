@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    //-envia (texto)
+    //-send (texto)
     
     try {
         const text = message.content.slice(7);

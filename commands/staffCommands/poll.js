@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    //-encuesta "título" "campo1" "campo2" ...
+    //-poll "título" "campo1" "campo2" ...
     
     try {
         // Introduce los argumentos separados por " en el array 'fields'
@@ -13,7 +13,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es ' + config.staffPrefix + 'encuesta "título" "campo1" "campo2" ...');
+            .setDescription(resources.RedTick + ' La sintaxis de este comando es ' + config.staffPrefix + 'poll "título" "campo1" "campo2" ...');
         
         if (fields.length < 2 || fields.length > 11) return message.channel.send(noCorrectSyntaxEmbed);
 

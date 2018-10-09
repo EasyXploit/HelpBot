@@ -19,7 +19,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(resources.boxbot + ' ' + config.prefix + 'boxbot', 'Muestra la ayuda para jugar a <@413728456942288896> en <#433376010688397312> y <#435495241840328705>', true)
             .addField(resources.pokecord +  ' ' + config.prefix + 'pokecord', 'Muestra la ayuda para jugar a <@365975655608745985> en <#433376047833022513> ', true);
         
-    if (resources.valueCheck === 'null') return message.channel.send(helpEmbed);
+    let originUser = resources.valueCheck;
+    resources.valueCheck = 'null';
+        
+    if (originUser === 'null') {
+        originUser = message.author.id;
+    }
         
     await message.channel.send(helpEmbed).then(async function (message) {
         
@@ -33,7 +38,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await message.react(resources.pokecord);
 
         const filter = (reaction, user) => {
-            return ['pilkobot', '⚡', '🎵', '🎶', 'tatsumaki', '🎭', 'boxbot', 'pokecord'].includes(reaction.emoji.name) && user.id === resources.valueCheck;
+            return ['pilkobot', '⚡', '🎵', '🎶', 'tatsumaki', '🎭', 'boxbot', 'pokecord'].includes(reaction.emoji.name) && user.id === originUser;
         };
 
         message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })

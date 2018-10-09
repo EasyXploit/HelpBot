@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-send (texto)
     
     try {
-        const text = message.content.slice(7);
+        const text = message.content.slice(6);
         
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)

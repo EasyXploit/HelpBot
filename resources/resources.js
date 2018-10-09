@@ -18,6 +18,9 @@ exports.run = (discord, bot) => {
     const RedTick = bot.emojis.get('496633289528836108');
     module.exports.RedTick = RedTick;
     
+    const OrangeTick = bot.emojis.get('499215590741901312');
+    module.exports.OrangeTick = OrangeTick;
+    
     const beta = bot.emojis.get('496633935174828034');
     module.exports.beta = beta;
     
@@ -29,6 +32,9 @@ exports.run = (discord, bot) => {
     
     const republicagamer = bot.emojis.get('498288236607569962');
     module.exports.republicagamer = republicagamer;
+    
+    const shield = bot.emojis.get('499209508275355648');
+    module.exports.shield = shield;
     
     const coin = bot.emojis.get('496634668758859786');
     module.exports.coin = coin;

@@ -66,6 +66,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Comprueba si el usuario tiene warns
         if (!bot.warns[member.id]) return message.channel.send(noWarnsEmbed);
         
+        let noCorrectQuantityEmbed = new discord.RichEmbed()
+            .setColor(0xF12F49)
+            .setDescription(resources.RedTick + ` Solo puedes retirar ${bot.warns[member.id].warns} advertencia/s a este usuario`);
+        
+        //Comprueba si la cantidad aportada se puede retirar
+        if ((bot.warns[member.id].warns - quantity) < 0) return message.channel.send(noCorrectQuantityEmbed);
+        
         //Resta los warns indicados en quantity
         bot.warns[member.id].warns = bot.warns[member.id].warns - quantity;
         

@@ -22,7 +22,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setImage(url);
         
         message.channel.fetchWebhooks().then(webhook => {
-            let foundWebhook = webhook.find('name', 'Pokécord')
+            let foundWebhook = webhook.find(w => w.name === 'Pokécord')
             
             if (!foundWebhook) {
                 message.channel.createWebhook('Pokécord', avatar).then(webhook => {

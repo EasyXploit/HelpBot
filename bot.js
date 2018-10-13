@@ -1,25 +1,25 @@
 'use-strict';
 
-console.log('》Iniciando aplicación «\n―――――――――――――――――――――――― \n' + new Date().toUTCString() + '\n');
+console.log(`》Iniciando aplicación «\n―――――――――――――――――――――――― \n${new Date().toUTCString()}\n`);
 
-const discord = require('discord.js');
-const fs = require('fs');
-const config = require('./config.json');
-const keys = require('./keys.json');
-const package = require('./package.json');
+const discord = require(`discord.js`);
+const fs = require(`fs`);
+const config = require(`./config.json`);
+const keys = require(`./keys.json`);
+const package = require(`./package.json`);
 const bot = new discord.Client();
 
 let resources = require(`./resources/resources.js`);
 
 const talkedRecently = new Set();
 
-bot.mutes = require('./mutes.json');
-bot.bans = require('./bans.json');
-bot.warns = JSON.parse(fs.readFileSync('./warns.json', 'utf-8'));
-bot.giveaways = require('./giveaways.json');
+bot.mutes = require(`./mutes.json`);
+bot.bans = require(`./bans.json`);
+bot.warns = JSON.parse(fs.readFileSync(`./warns.json`, `utf-8`));
+bot.giveaways = require(`./giveaways.json`);
 
 // COMPROBACIÓN DE INICIO DE SESIÓN Y PRESENCIA
-bot.on('ready', async () => {
+bot.on(`ready`, async () => {
     try {
         const debuggingChannel = bot.channels.get(config.debuggingChannel);
         const loggingChannel = bot.channels.get(config.loggingChannel);
@@ -30,28 +30,28 @@ bot.on('ready', async () => {
                 let time = bot.mutes[idKey].time;
                 let guild = bot.guilds.get(bot.mutes[idKey].guild);
                 let member = guild.members.get(idKey);
-                let role = guild.roles.find (r => r.name === 'Silenciado')
+                let role = guild.roles.find (r => r.name === `Silenciado`)
                 if (!role) continue;
 
                 if (Date.now() > time) {
                     let loggingEmbed = new discord.RichEmbed()
                         .setColor(0x3EB57B)
-                        .setAuthor(member.user.tag + ' ha sido DES-SILENCIADO', member.user.displayAvatarURL)
-                        .addField('Miembro', '<@' + member.id + '>', true)
-                        .addField('Moderador', '<@' + bot.user.id + '>', true)
-                        .addField('Razón', 'Venció la amonestación', true);
+                        .setAuthor(`${member.user.tag} ha sido DES-SILENCIADO`, member.user.displayAvatarURL)
+                        .addField(`Miembro`, `<@${member.id}>`, true)
+                        .addField(`Moderador`, `<@${bot.user.id}>`, true)
+                        .addField(`Razón`, `Venció la amonestación`, true);
 
                     let toDMEmbed = new discord.RichEmbed()
                         .setColor(0x3EB57B)
-                        .setAuthor('[DES-SILENCIADO]', guild.iconURL)
-                        .setDescription('<@' + member.id + '>, has sido des-silenciado en ' + guild.name)
-                        .addField('Moderador', bot.user.id, true)
-                        .addField('Razón', 'Venció la amonestación', true);
+                        .setAuthor(`[DES-SILENCIADO]`, guild.iconURL)
+                        .setDescription(`<@${member.id}>, has sido des-silenciado en ${guild.name}`)
+                        .addField(`Moderador`, bot.user.id, true)
+                        .addField(`Razón`, `Venció la amonestación`, true);
 
                     await member.removeRole(role);
 
                     delete bot.mutes[idKey];
-                    fs.writeFile('./mutes.json', JSON.stringify(bot.mutes), async err => {
+                    fs.writeFile(`./mutes.json`, JSON.stringify(bot.mutes), async err => {
                         if (err) throw err;
 
                         await loggingChannel.send(loggingEmbed);
@@ -71,15 +71,15 @@ bot.on('ready', async () => {
                 if (Date.now() > time) {
                     let loggingEmbed = new discord.RichEmbed()
                         .setColor(0x3EB57B)
-                        .setAuthor(user.tag + ' ha sido DES-BANEADO', user.displayAvatarURL)
-                        .addField('Usuario', '@' + user.tag, true)
-                        .addField('Moderador', '<@' + bot.user.id + '>', true)
-                        .addField('Razón', 'Venció la amonestación', true);
+                        .setAuthor(`${user.tag} ha sido DES-BANEADO`, user.displayAvatarURL)
+                        .addField(`Usuario`, `@${user.tag}`, true)
+                        .addField(`Moderador`, `<@${bot.user.id}>`, true)
+                        .addField(`Razón`, `Venció la amonestación`, true);
 
                     await guild.unban(idKey);
 
                     delete bot.bans[idKey];
-                    fs.writeFile('./bans.json', JSON.stringify(bot.bans), async err => {
+                    fs.writeFile(`./bans.json`, JSON.stringify(bot.bans), async err => {
                         if (err) throw err;
 
                         await loggingChannel.send(loggingEmbed);
@@ -98,9 +98,9 @@ bot.on('ready', async () => {
                 try {
                     giveawayMessage = await channel.fetchMessage(idKey);
                 } catch (e) {
-                    if (e.toString().includes('Unknown Message')) {
+                    if (e.toString().includes(`Unknown Message`)) {
                         delete bot.giveaways[idKey];
-                        fs.writeFile('./giveaways.json', JSON.stringify(bot.giveaways), async err => {
+                        fs.writeFile(`./giveaways.json`, JSON.stringify(bot.giveaways), async err => {
                             if (err) throw err;
                         });
                         return;
@@ -134,11 +134,11 @@ bot.on('ready', async () => {
                     let newEmbed = new discord.RichEmbed()
                         .setColor(0xB8E986)
                         .setTitle(prize)
-                        .setDescription(pickedWinners.join('\n'));
+                        .setDescription(pickedWinners.join(`\n`));
                     
                     delete bot.giveaways[idKey];
                     
-                    fs.writeFile('./giveaways.json', JSON.stringify(bot.giveaways), async err => {
+                    fs.writeFile(`./giveaways.json`, JSON.stringify(bot.giveaways), async err => {
                         if (err) throw err;
 
                         await giveawayMessage.edit(newEmbed);
@@ -159,7 +159,7 @@ bot.on('ready', async () => {
         bot.setInterval(async () => {
             let ping = Math.round(bot.ping);
             if (ping > 250) {
-                console.log(' 》Tiempo de respuesta del Websocket elevado: ' + ping + ' ms\n');
+                console.log(`${new Date().toUTCString()} 》Tiempo de respuesta del Websocket elevado: ${ping} ms\n`);
             
             	let debuggingEmbed = new discord.RichEmbed()
 	               .setColor(0xF8A41E)
@@ -174,7 +174,7 @@ bot.on('ready', async () => {
         await bot.user.setPresence({
             status: config.status,
             game: {
-                name: bot.users.filter(user => !user.bot).size + ' usuarios | ' + config.game,
+                name: `${bot.users.filter(user => !user.bot).size} usuarios | ${config.game}`,
                 type: config.type
             }
         });
@@ -184,12 +184,12 @@ bot.on('ready', async () => {
         resources = require(`./resources/resources.js`);
 
         //Auditoría
-        console.log(' 》' + bot.user.username + ' iniciado correctamente \n  ● Estatus: ' + config.status + '\n  ● Tipo de actividad: ' + config.type + '\n  ● Actividad: ' + config.game + '\n');
+        console.log(` 》${bot.user.username} iniciado correctamente \n  ● Estatus: ${config.status}\n  ● Tipo de actividad: ${config.type}\n  ● Actividad: ${config.game}\n`);
 
         let statusEmbed = new discord.RichEmbed()
-            .setTitle('📑 Estado de ejecución')
+            .setTitle(`📑 Estado de ejecución`)
             .setColor(0xFFC857)
-            .setDescription(bot.user.username + ' iniciado correctamente')
+            .setDescription(`${bot.user.username} iniciado correctamente`)
             .addField('Estatus:', config.status, true)
             .addField('Tipo de actividad:', config.type, true)
             .addField('Actividad:', config.game, true)
@@ -198,39 +198,39 @@ bot.on('ready', async () => {
             .setTimestamp();
         debuggingChannel.send(statusEmbed);
     } catch (e) {
-        console.error(new Date().toUTCString() + ' 》' + e.stack);
+        console.error(`${new Date().toUTCString()} 》${e.stack}`);
     }
 });
 
 // MANEJADOR DE EVENTOS
-fs.readdir('./events/', async (err, files) => {
+fs.readdir(`./events/`, async (err, files) => {
 
-    if (err) return console.error(new Date().toUTCString() + ' 》No se ha podido completar la carga de los eventos.\n' + err.stack);
+    if (err) return console.error(`${new Date().toUTCString()} 》No se ha podido completar la carga de los eventos.\n${err.stack}`);
     files.forEach(file => {
         let eventFunction = require(`./events/${file}`);
-        let eventName = file.split('.')[0];
-        console.log(' - Evento [' + eventName + '] cargado');
+        let eventName = file.split(`.`)[0];
+        console.log(` - Evento [${eventName}] cargado`);
 
         bot.on(eventName, event => {
             eventFunction.run(event, discord, fs, config, keys, bot, resources);
         });
     });
-    console.log('\n');
+    console.log(`\n`);
 });
 
 // MANEJADOR DE COMANDOS
-bot.on('message', async message => {
+bot.on(`message`, async message => {
 
     const debuggingChannel = bot.channels.get(config.debuggingChannel);
     const loggingChannel = bot.channels.get(config.loggingChannel);
 
     if (message.author.bot) return;
-    if (message.channel.type === 'dm') {
+    if (message.channel.type === `dm`) {
         const noDMEmbed = new discord.RichEmbed()
             .setColor(0xC6C9C6)
-            .setDescription(resources.GrayTick + ' | Por el momento, ' + bot.user.username + ' solo está disponible en la República Gamer.');
+            .setDescription(`${resources.GrayTick} | Por el momento, los comandos de **${bot.user.username}** solo está disponible desde el servidor de la **República Gamer**.`);
         await message.author.send(noDMEmbed);
-        await console.log('DM: ' + message.author.username + ' > ' + message.content);
+        await console.log(`${new Date().toUTCString()} 》DM: ${message.author.username} (ID: ${message.author.id}) > ${message.content}`);
         return;
     }
 
@@ -240,21 +240,21 @@ bot.on('message', async message => {
         let staffRole = message.guild.roles.get(config.botStaff);
         let reason;
 
-        const swearWords = ['hijo de puta', 'me cago en tu puta madre', 'me cago en tus muertos', 'tu puta madre', 'gilipollas']; //Palabras prohibidas
-        const invites = ['discord.gg', '.gg/', '.gg /', '. gg /', '. gg/', 'discord .gg /', 'discord.gg /', 'discord .gg/', 'discord .gg', 'discord . gg', 'discord. gg', 'discord gg', 'discordgg', 'discord gg /'] //Invitaciones prohibidas
+        const swearWords = [`hijo de puta`, `me cago en tu puta madre`, `me cago en tus muertos`, `tu puta madre`, `gilipollas`]; //Palabras prohibidas
+        const invites = [`discord.gg`, `.gg/`, `.gg /`, `. gg /`, `. gg/`, `discord .gg /`, `discord.gg /`, `discord .gg/`, `discord .gg`, `discord . gg`, `discord. gg`, `discord gg`, `discordgg`, `discord gg /`] //Invitaciones prohibidas
 
         try {
             if (swearWords.some(word => message.content.toLowerCase().includes(word))) {
                 if (message.author.id === message.guild.ownerID) return;
                 await message.delete();
-                reason = 'Palabras ofensivas'
+                reason = `Palabras ofensivas`;
             }
 
             if (invites.some(word => message.content.toLowerCase().includes(word))) {
                 if (message.author.id === message.guild.ownerID) return;
                 if (message.member.roles.has(staffRole.id)) return;
                 await message.delete();
-                reason = 'Invitaciones no permitidas';
+                reason = `Invitaciones no permitidas`;
             }
 
             if (!reason) return;
@@ -272,20 +272,20 @@ bot.on('message', async message => {
 
             let loggingEmbed = new discord.RichEmbed()
                 .setColor(0xF8A41E)
-                .setAuthor(message.author.tag + ' ha sido ADVERTIDO', message.author.displayAvatarURL)
-                .addField('Miembro', '<@' + message.author.id + '>', true)
-                .addField('Moderador', '<@' + bot.user.id + '>', true)
-                .addField('Razón', reason, true)
-                .addField('Mensaje', message.content, true);
+                .setAuthor(`${message.author.tag} ha sido ADVERTIDO`, message.author.displayAvatarURL)
+                .addField(`Miembro`, `<@${message.author.id}>`, true)
+                .addField(`Moderador`, `<@${bot.user.id}>`, true)
+                .addField(`Razón`, reason, true)
+                .addField(`Mensaje`, message.content, true);
 
             let toDMEmbed = new discord.RichEmbed()
                 .setColor(0xF8A41E)
-                .setAuthor('[ADVERTIDO]', message.guild.iconURL)
-                .setDescription('<@' + message.author.id + '>, has sido advertido en ' + message.guild.name)
-                .addField('Moderador', '<@' + bot.user.id + '>', true)
-                .addField('Razón', reason, true);
+                .setAuthor(`[ADVERTIDO]`, message.guild.iconURL)
+                .setDescription(`<@${message.author.id}>, has sido advertido en ${message.guild.name}`)
+                .addField(`Moderador`, `<@${bot.user.id}>`, true)
+                .addField(`Razón`, reason, true);
             
-            fs.writeFile('./warns.json', JSON.stringify(bot.warns, null, 4), async err => {
+            fs.writeFile(`./warns.json`, JSON.stringify(bot.warns, null, 4), async err => {
                 if (err) throw err;
 
                 await message.author.send(toDMEmbed);
@@ -293,7 +293,7 @@ bot.on('message', async message => {
                 await loggingChannel.send(loggingEmbed);
             });
         } catch (e) {
-            console.log('Ocurrió un error durante la ejecución de la función "checkBadWords"\nError: ' + e);
+            console.log(`Ocurrió un error durante la ejecución de la función "checkBadWords"\nError: ${e}`);
         }
     }
     checkBadWords();
@@ -303,15 +303,15 @@ bot.on('message', async message => {
     const prefix = message.content.slice(0, 1);
     // Función para eliminar el prefijo, extraer el comando y sus argumentos (en caso de tenerlos)
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-    const command = args.shift().toLowerCase() + '.js';
+    const command = args.shift().toLowerCase() + `.js`;
 
-    if (command.length <= 0) return console.error(new Date().toUTCString() + ' 》No hubo ningún comando a cargar');
+    if (command.length <= 0) return console.error(`${new Date().toUTCString()} 》No hubo ningún comando a cargar`);
 
     // Función para ejecutar el comando
     try {
-        let commandImput = new Date().toUTCString() + ' 》' + message.author.username + ' introdujo el comando: ' + command.slice(-0, -3) + ' en ' + message.guild.name;
+        let commandImput = `${new Date().toUTCString()} 》${message.author.username} introdujo el comando: ${command.slice(-0, -3)} en el canal ${message.channel.name} de la guild ${message.guild.name}`;
 
-        let waitEmbed = new discord.RichEmbed().setColor(0xF12F49).setDescription(resources.RedTick + ' Debes esperar 2 segundos antes de usar este comando');
+        let waitEmbed = new discord.RichEmbed().setColor(0xF12F49).setDescription(`${resources.RedTick} Debes esperar 2 segundos antes de usar este comando`);
         if (talkedRecently.has(message.author.id)) return message.channel.send(waitEmbed).then(msg => {
             msg.delete(1000)
         });
@@ -327,25 +327,27 @@ bot.on('message', async message => {
             }, 2000);
 
         } else if (prefix === config.staffPrefix) { // STAFF
+            let commandFile = require(`./commands/staffCommands/${command}`);
+            if (!commandFile) return;
             const supervisorsRole = message.guild.roles.get(config.botSupervisor);
             let staffRole = message.guild.roles.get(config.botStaff);
 
             const noPrivilegesEmbed = new discord.RichEmbed()
                 .setColor(0xF12F49)
-                .setDescription(resources.RedTick + ' ' + message.author.username + ', no dispones de privilegios suficientes para realizar esta operación');
+                .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
             if (!message.member.roles.has(staffRole.id) && message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed)
-
-            let commandFile = require(`./commands/staffCommands/${command}`);
+            
             commandFile.run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed);
             console.log(commandImput);
         } else if (prefix === config.ownerPrefix) { // OWNER
+            let commandFile = require(`./commands/ownerCommands/${command}`);
+            if (!commandFile) return;
             const noPrivilegesEmbed = new discord.RichEmbed()
                 .setColor(0xF12F49)
-                .setDescription(resources.RedTick + ' ' + message.author.username + ', no dispones de privilegios suficientes para ejecutar este comando');
+                .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para ejecutar este comando`);
 
             if (message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed);
-            let commandFile = require(`./commands/ownerCommands/${command}`);
             console.log(commandImput);
             commandFile.run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
         } else {
@@ -357,8 +359,8 @@ bot.on('message', async message => {
 });
 
 // Debugging
-bot.on('error', (e) => console.error(new Date().toUTCString() + ' 》' + e.stack));
-bot.on('warn', (e) => console.warn(new Date().toUTCString() + ' 》' + e.stack));
+bot.on(`error`, (e) => console.error(`${new Date().toUTCString()} 》${e.stack}`));
+bot.on(`warn`, (e) => console.warn(`${new Date().toUTCString()} 》${e.stack}`));
 
 // Inicio de sesión del bot
 bot.login(keys.token);

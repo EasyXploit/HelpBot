@@ -28,6 +28,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let toDeleteCount = command.length - 2 + args[0].length + 2; 
         let reason = message.content.slice(toDeleteCount) || 'Indefinida';
 
+        //Comprueba si existe el rol silenciado, y de no existir, lo crea
         let role = message.guild.roles.find(r => r.name === 'Silenciado');
         if (!role) {
             role = await message.guild.createRole({
@@ -36,8 +37,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 permissions: []
             });
             
-            let botMmeber = message.guild.members.get(bot.user.id);
-            await message.guild.setRolePosition(role, botMmeber.highestRole.position - 1);
+            let botMember = message.guild.members.get(bot.user.id);
+            await message.guild.setRolePosition(role, botMember.highestRole.position - 1);
             
             message.guild.channels.forEach(async (channel, id) => {
                 await channel.overwritePermissions (role, {

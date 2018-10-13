@@ -131,7 +131,9 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                 if (wins >= 1000) {
                     thumbnail = 'https://image.fnbr.co/misc/5ab282b5ca60ff23958a3e77/icon.png';
                     footer = '¡Vaya! Al parecer estás muy enganchado a este juego ...';
-                };
+                } else {
+                    footer = '© 2018 República Gamer LLC';
+                }
 
                 let resultEmbed = new discord.RichEmbed()
                     .setColor(0x8A2BE2)
@@ -139,7 +141,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                     .setTitle('Modo de juego: LIFETIME')
                     .setDescription('Mostrando las estadísticas de __' + data.username + '__ en __' + platform.toUpperCase() + '__')
                     .setThumbnail(thumbnail)
-                    .setFooter(footer)
+                    .setFooter(footer,resources.server.iconURL)
                     .addField('Puntuación', score, true)
                     .addField('Partidas jugadas', matches, true) 
                     .addField('Victorias', wins, true)
@@ -147,7 +149,6 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                     .addField('Bajas', kills, true)
                     .addField('Ratio B/M', kd, true)
                     .addField('Top 3', top3 + ' veces', true)
-                    .setFooter('© 2018 República Gamer LLC', resources.server.iconURL);
                 message.channel.send(resultEmbed);
             } else {
                 message.channel.send(noCorrectSyntaxEmbed);

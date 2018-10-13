@@ -1,3 +1,5 @@
+'use-strict';
+
 console.log('》Iniciando aplicación «\n―――――――――――――――――――――――― \n' + new Date().toUTCString() + '\n');
 
 const discord = require('discord.js');
@@ -14,14 +16,15 @@ const talkedRecently = new Set();
 bot.mutes = require('./mutes.json');
 bot.bans = require('./bans.json');
 bot.warns = JSON.parse(fs.readFileSync('./warns.json', 'utf-8'));
-//bot.giveaways = require('./giveaways.json');
+bot.giveaways = require('./giveaways.json');
 
 // COMPROBACIÓN DE INICIO DE SESIÓN Y PRESENCIA
 bot.on('ready', async () => {
     try {
+        const debuggingChannel = bot.channels.get(config.debuggingChannel);
         const loggingChannel = bot.channels.get(config.loggingChannel);
 
-        //Comprobación de usuarios silenciados temporalmente
+        //Intervalo de comprobación de usuarios silenciados temporalmente
         bot.setInterval(async () => {
             for (let idKey in bot.mutes) {
                 let time = bot.mutes[idKey].time;
@@ -58,7 +61,7 @@ bot.on('ready', async () => {
             }
         }, 5000)
         
-        //Comprobación de usuarios baneados temporalmente
+        //Intervalo de comprobación de usuarios baneados temporalmente
         bot.setInterval(async () => {
             for (let idKey in bot.bans) {
                 let time = bot.bans[idKey].time;
@@ -85,6 +88,88 @@ bot.on('ready', async () => {
             }
         }, 5000)
         
+        //Intervalo de comprobación de sorteos
+        bot.setInterval(async () => {
+            for (let idKey in bot.giveaways) {
+                let guild = bot.guilds.find( g => g.id === bot.giveaways[idKey].guild);
+                let channel = guild.channels.find( c => c.id === bot.giveaways[idKey].channel);
+                let giveawayMessage;
+                
+                try {
+                    giveawayMessage = await channel.fetchMessage(idKey);
+                } catch (e) {
+                    if (e.toString().includes('Unknown Message')) {
+                        delete bot.giveaways[idKey];
+                        fs.writeFile('./giveaways.json', JSON.stringify(bot.giveaways), async err => {
+                            if (err) throw err;
+                        });
+                        return;
+                    } else {
+                        console.log(e);
+                    }
+                }
+                
+                let time = bot.giveaways[idKey].time;
+                let winners = bot.giveaways[idKey].winners;
+                let winnerType = bot.giveaways[idKey].winnerType;
+                let prize = bot.giveaways[idKey].prize;
+
+                if (Date.now() > time) {
+                    async function drawWinners() {
+                        let possibleWinners = []
+                        giveawayMessage.reactions.forEach( r => {
+                            if (r.user.id === bot.user.id) return;
+                            possibleWinners.push(r.user.id);
+                        });
+
+                        let pickedWinners = []
+                        for (i = 0; i < winners; i++) {
+                            await guild.members.find( m => {
+                                pickedWinners.push(`Ganador Nº${i}: ${possibleWinners[Math.floor(Math.random() * possibleWinners.length)]}`);
+                            });
+                        }
+                    }
+                    drawWinners();
+                    
+                    let newEmbed = new discord.RichEmbed()
+                        .setColor(0xB8E986)
+                        .setTitle(prize)
+                        .setDescription(pickedWinners.join('\n'));
+                    
+                    delete bot.giveaways[idKey];
+                    
+                    fs.writeFile('./giveaways.json', JSON.stringify(bot.giveaways), async err => {
+                        if (err) throw err;
+
+                        await giveawayMessage.edit(newEmbed);
+                    });
+                } else {
+                    let newEmbed = new discord.RichEmbed()
+                        .setColor(0xB8E986)
+                        .setTitle(prize)
+                        .setDescription(`¡Reacciona con :tada: para entrar!\nTiempo restante: ${Date.now() - time}`)
+                        .setFooter(`${winners} ${winnerType}`);
+
+                    await giveawayMessage.edit(newEmbed);
+                }
+            }
+        }, 10000)
+        
+        //Intervalo de comprobación del tiempo de respuesta del Websocket
+        bot.setInterval(async () => {
+            let ping = Math.round(bot.ping);
+            if (ping > 250) {
+                console.log(' 》Tiempo de respuesta del Websocket elevado: ' + ping + ' ms\n');
+            
+            	let debuggingEmbed = new discord.RichEmbed()
+	               .setColor(0xF8A41E)
+	               .setTimestamp()
+	               .setFooter(bot.user.username, bot.user.avatarURL)
+	               .setDescription(`${resources.OrangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);
+            	debuggingChannel.send(debuggingEmbed);
+	       }	
+        }, 60000)
+        
         //Presencia
         await bot.user.setPresence({
             status: config.status,
@@ -100,7 +185,6 @@ bot.on('ready', async () => {
 
         //Auditoría
         console.log(' 》' + bot.user.username + ' iniciado correctamente \n  ● Estatus: ' + config.status + '\n  ● Tipo de actividad: ' + config.type + '\n  ● Actividad: ' + config.game + '\n');
-        console.log('》Tiempo de respuesta del Websocket: ' + bot.ping + 'ms\n\n');
 
         let statusEmbed = new discord.RichEmbed()
             .setTitle('📑 Estado de ejecución')
@@ -112,7 +196,7 @@ bot.on('ready', async () => {
             .addField('Versión:', package.version, true)
             .setFooter(bot.user.username, bot.user.avatarURL)
             .setTimestamp();
-        loggingChannel.send(statusEmbed);
+        debuggingChannel.send(statusEmbed);
     } catch (e) {
         console.error(new Date().toUTCString() + ' 》' + e.stack);
     }
@@ -191,7 +275,8 @@ bot.on('message', async message => {
                 .setAuthor(message.author.tag + ' ha sido ADVERTIDO', message.author.displayAvatarURL)
                 .addField('Miembro', '<@' + message.author.id + '>', true)
                 .addField('Moderador', '<@' + bot.user.id + '>', true)
-                .addField('Razón', reason, true);
+                .addField('Razón', reason, true)
+                .addField('Mensaje', message.content, true);
 
             let toDMEmbed = new discord.RichEmbed()
                 .setColor(0xF8A41E)

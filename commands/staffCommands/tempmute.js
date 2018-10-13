@@ -30,6 +30,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             if (author.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed)
         }
 
+        //Comprueba si existe el rol silenciado, y de no existir, lo crea
         let role = message.guild.roles.find(r => r.name === 'Silenciado');
         if (!role) {
             role = await message.guild.createRole({
@@ -37,7 +38,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 color: '#818386',
                 permissions: []
             });
-            //await message.guild.setRolePosition(role, message.guild.roles.size - 1);
+            
+            let botMember = message.guild.members.get(bot.user.id);
+            await message.guild.setRolePosition(role, botMember.highestRole.position - 1);
+            
             message.guild.channels.forEach(async (channel, id) => {
                 await channel.overwritePermissions (role, {
                     SEND_MESSAGES: false,

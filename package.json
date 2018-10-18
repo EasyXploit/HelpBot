@@ -3,12 +3,6 @@
   "version": "2.5.0",
   "description": "PilkoBot es un bot para uso exclusivo de los usuario de la República Gamer",
   "main": "bot.js",
-  "dependencies": {
-    "discord.js": "^11.4.2",
-    "fortnite": "^4.1.1",
-    "urban-dictionary": "^2.2.1"
-  },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,14 +10,24 @@
     "type": "git",
     "url": "git+https://github.com/danielperales555/PilkoBot.git"
   },
+  "keywords": [
+    "discord-bot",
+    "discord.js"
+  ],
   "author": "Daniel Perales Mauriz",
   "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/danielperales555/PilkoBot/issues"
   },
   "homepage": "https://github.com/danielperales555/PilkoBot#readme",
-  "keywords": [
-    "discord-bot",
-    "discord-js"
-  ]
+  "dependencies": {
+    "bufferutil": "^4.0.0",
+    "discord.js": "^11.4.2",
+    "erlpack": "github:hammerandchisel/erlpack",
+    "ffmpeg-binaries": "^4.0.0",
+    "fortnite": "^4.1.1",
+    "node-opus": "^0.3.0",
+    "opusscript": "0.0.6",
+    "urban-dictionary": "^2.2.1"
+  }
 }

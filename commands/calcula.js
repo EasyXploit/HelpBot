@@ -3,6 +3,19 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     //!calcula (número 1) (+ | - | * | / | round | pow | sqrt | abs | ceil | floor | sin | cos) (número 2 si procede)
     
     try {
+        if (args.join(' ').toLowerCase() === 'yo + ella' || args.join(' ').toLowerCase() === 'ella + yo' || args.join(' ').toLowerCase() === 'yo+ella' || args.join(' ').toLowerCase() === 'ella+yo') {
+            let resultEmbed = new discord.RichEmbed()
+                .setColor(0x3D8AC2)
+                .setDescription('🔢 | **Resultado:** ' + 'Eso no es posible')
+                .setFooter('Operación sugerida: ella + el');
+            return message.channel.send(resultEmbed);
+        } else if (args.join(' ').toLowerCase() === 'el + ella' || args.join(' ').toLowerCase() === 'ella + el' || args.join(' ').toLowerCase() === 'el+ella' || args.join(' ').toLowerCase() === 'ella+el' || args.join(' ').toLowerCase() === 'él + ella' || args.join(' ').toLowerCase() === 'ella + él' || args.join(' ').toLowerCase() === 'él+ella' || args.join(' ').toLowerCase() === 'ella+él') {
+            let resultEmbed = new discord.RichEmbed()
+                .setColor(0x3D8AC2)
+                .setDescription('🔢 | **Resultado:** ' + 'Jamás será tuya')
+                .setFooter('Ella es feliz con él');
+            return message.channel.send(resultEmbed);
+        }
         
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
@@ -15,7 +28,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         
         let isNaNEmbed = new discord.RichEmbed()
             .setColor(0xF04647)
-            .setDescription(resources.RedTick + ' Debes proporcionar números enteros);
+            .setDescription(resources.RedTick + ' Debes proporcionar números enteros');
         
         if (isNaN(args[0])) return message.channel.send(isNaNEmbed);
         let N1 = parseInt(args[0]);

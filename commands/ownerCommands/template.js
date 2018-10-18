@@ -30,7 +30,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             let embed3 = new discord.RichEmbed()
                 .setColor(0xFFC857)
-                .setDescription(':grey_question: Escribe `!ayuda` en cualquier canal de texto para acceder al sistema de ayuda.\n\n📓 Escribe `!normas` para mostrar las normas del servidor.\n\n' + resources.pilkobot + ' Esccribe `!pilko` para mostrar los comandos de <@446041159853408257>.\n\n:robot: Escribe `!comandos` para mostrar los comandos de los bots.\n\n:military_medal: Escribe `!rangos` para mostrar los rangos, la tabla de puntuaciones y tu nivel.')
+                .setDescription(':grey_question: Escribe `!ayuda` en cualquier canal de texto para acceder al sistema de ayuda.\n\n📓 Escribe `!normas` para mostrar las normas del servidor.\n\n' + resources.pilkobot + ' Escribe `!pilko` para mostrar los comandos de <@446041159853408257>.\n\n:robot: Escribe `!comandos` para mostrar los comandos de los bots.\n\n:military_medal: Escribe `!rangos` para mostrar los rangos, la tabla de puntuaciones y tu nivel.')
                 .attachFile('./resources/images/banners/help.png');
             
             let embed4 = new discord.RichEmbed()
@@ -167,7 +167,25 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await message.channel.send(basesEmbed);
             await message.channel.send(adquireEmbed);
             await message.channel.send(entryEmbed);
-        }  else if (args[0] === 'bienvenida') {
+        } else if (args[0] === 'marafu') {
+            message.delete();
+            
+            let embed = new discord.RichEmbed()
+                .setColor(0xEB0BEC)
+                .setThumbnail(`https://cdn.discordapp.com/avatars/486892252115763200/c6dcf124ddbc86108fcd51267e08f7d5.png`)
+                .setAuthor(`[Torneo MaRaFú] LEAGUE OF LEGENDS`, `https://cdn.discordapp.com/avatars/486892252115763200/c6dcf124ddbc86108fcd51267e08f7d5.png`)
+                .setDescription('Dentro de poco se realizará un evento organizado por la **MaRaFú Army**. Un torneo que será casteado y tendrá una gran recompensa.\n\n')
+                .addField(`📅 Información`, `La semana del __5 de noviembre__ se organizara un torneo de LoL (League of Legends) totalmente **gratis** (en el servidor EUW), se realizará únicamente los fines de semana, la duración del mismo es indefinida, se harán directos para cada partido en el canal de twitch [marafu_army](https://www.twitch.tv/marafu_army) con 1-2 comentaristas siempre (eso hará que sea más dinámico haciendo más divertido cada uno de los partidos del torneo).`, true)
+                .addField(`ℹ Organización`, `Serán enfrentamientos de __5 vs 5__ en la **Grieta del Invocador** por equipos previamente hechos, es decir, los equipos deberán ser hechos e inscritos en el formulario antes del día de la inauguración del torneo.`, true)
+                .addField(`🏆 Premios`, `El torneo tendrá premios para los que se alcen con el primer y el segundo puesto en la clasificación. Estarán en juego **50€** en (RP) Riot Points: el primer equipo ganará **4830 Riot Points** y el segundo equipo ganará **3250 Riot Points**.`, true)
+                .addField(`👥 Equipos`,`_¿A que esperas para formar un equipo?_ Si no encuentras compañeros con los que formar un equipo, en el Discord de la MaRaFú Army se ha creado un canal para buscar miembros.\nDurante las siguientes semanas informaremos la fecha máxima para inscribirse en el torneo.\n\nEn caso de no poder participar en el torneo, siempre puedes ver los directos casteados en twitch: [marafu_army](https://www.twitch.tv/marafu_army) (te pasarás un buen rato y unas risas que nunca faltan).`, true)
+                .addField(`📝 Formulario de inscripción`, `[Haz clic aquí para inscribirte](https://docs.google.com/forms/d/1CYHAGngKAu_Ve1SiCqpxbJ0yIYlxh1nVI-jML9H2G_I)`)
+                .addField(`👮 Responsable de organización`, `<@372484235707285505>`, true)
+                .setImage(`https://i.imgur.com/E7mxrFm.png`)
+                .setFooter(`República Gamer no se responsabiliza de la organización del torneo`, resources.server.iconURL);
+            
+            message.channel.send(embed);
+        } else if (args[0] === 'bienvenida') {
             let noUserEmbed = new discord.RichEmbed()
                 .setColor(0xF04647)
                 .setDescription(resources.RedTick + ' No has proporcionado un usuario válido');

@@ -17,6 +17,7 @@ bot.mutes = require(`./mutes.json`);
 bot.bans = require(`./bans.json`);
 bot.warns = JSON.parse(fs.readFileSync(`./warns.json`, `utf-8`));
 bot.giveaways = require(`./giveaways.json`);
+bot.voiceStatus = true;
 
 // COMPROBACIÓN DE INICIO DE SESIÓN Y PRESENCIA
 bot.on(`ready`, async () => {
@@ -35,14 +36,14 @@ bot.on(`ready`, async () => {
 
                 if (Date.now() > time) {
                     let loggingEmbed = new discord.RichEmbed()
-                        .setColor(0x3EB57B)
+                        .setColor(resources.green2)
                         .setAuthor(`${member.user.tag} ha sido DES-SILENCIADO`, member.user.displayAvatarURL)
                         .addField(`Miembro`, `<@${member.id}>`, true)
                         .addField(`Moderador`, `<@${bot.user.id}>`, true)
                         .addField(`Razón`, `Venció la amonestación`, true);
 
                     let toDMEmbed = new discord.RichEmbed()
-                        .setColor(0x3EB57B)
+                        .setColor(resources.green2)
                         .setAuthor(`[DES-SILENCIADO]`, guild.iconURL)
                         .setDescription(`<@${member.id}>, has sido des-silenciado en ${guild.name}`)
                         .addField(`Moderador`, bot.user.id, true)
@@ -70,7 +71,7 @@ bot.on(`ready`, async () => {
 
                 if (Date.now() > time) {
                     let loggingEmbed = new discord.RichEmbed()
-                        .setColor(0x3EB57B)
+                        .setColor(resources.green2)
                         .setAuthor(`${user.tag} ha sido DES-BANEADO`, user.displayAvatarURL)
                         .addField(`Usuario`, `@${user.tag}`, true)
                         .addField(`Moderador`, `<@${bot.user.id}>`, true)
@@ -88,70 +89,63 @@ bot.on(`ready`, async () => {
             }
         }, 5000)
         
-        //Intervalo de comprobación de sorteos
+        //Intervalo de comprobación de sorteos (en desarrollo)
         bot.setInterval(async () => {
-            for (let idKey in bot.giveaways) {
-                let guild = bot.guilds.find( g => g.id === bot.giveaways[idKey].guild);
-                let channel = guild.channels.find( c => c.id === bot.giveaways[idKey].channel);
-                let giveawayMessage;
-                
-                try {
-                    giveawayMessage = await channel.fetchMessage(idKey);
-                } catch (e) {
-                    if (e.toString().includes(`Unknown Message`)) {
-                        delete bot.giveaways[idKey];
-                        fs.writeFile(`./giveaways.json`, JSON.stringify(bot.giveaways), async err => {
-                            if (err) throw err;
-                        });
-                        return;
-                    } else {
-                        console.log(e);
-                    }
-                }
-                
-                let time = bot.giveaways[idKey].time;
-                let winners = bot.giveaways[idKey].winners;
-                let winnerType = bot.giveaways[idKey].winnerType;
-                let prize = bot.giveaways[idKey].prize;
+            try {
+                for (let idKey in bot.giveaways) {
+                    let guild = bot.guilds.find( g => g.id === bot.giveaways[idKey].guild);
+                    let channel = guild.channels.find( c => c.id === bot.giveaways[idKey].channel);
+                    let giveawayMessage;
 
-                if (Date.now() > time) {
-                    async function drawWinners() {
-                        let possibleWinners = []
-                        giveawayMessage.reactions.forEach( r => {
-                            if (r.user.id === bot.user.id) return;
-                            possibleWinners.push(r.user.id);
-                        });
-
-                        let pickedWinners = []
-                        for (i = 0; i < winners; i++) {
-                            await guild.members.find( m => {
-                                pickedWinners.push(`Ganador Nº${i}: ${possibleWinners[Math.floor(Math.random() * possibleWinners.length)]}`);
+                    try {
+                        giveawayMessage = await channel.fetchMessage(idKey);
+                    } catch (e) {
+                        if (e.toString().includes(`Unknown Message`)) {
+                            delete bot.giveaways[idKey];
+                            fs.writeFile(`./giveaways.json`, JSON.stringify(bot.giveaways), async err => {
+                                if (err) throw err;
                             });
+                            return;
+                        } else {
+                            console.log(e);
                         }
                     }
-                    drawWinners();
-                    
-                    let newEmbed = new discord.RichEmbed()
-                        .setColor(0xB8E986)
-                        .setTitle(prize)
-                        .setDescription(pickedWinners.join(`\n`));
-                    
-                    delete bot.giveaways[idKey];
-                    
-                    fs.writeFile(`./giveaways.json`, JSON.stringify(bot.giveaways), async err => {
-                        if (err) throw err;
+
+                    let time = bot.giveaways[idKey].time;
+                    let winners = bot.giveaways[idKey].winners;
+                    let winnerType = bot.giveaways[idKey].winnerType;
+                    let prize = bot.giveaways[idKey].prize;
+
+                    if (Date.now() > time) {
+                        async function drawWinners() {
+                            return `En desarrollo`;
+                        }
+                        drawWinners();
+
+                        let newEmbed = new discord.RichEmbed()
+                            .setColor(0xB8E986)
+                            .setTitle(prize)
+                            .setDescription(drawWinners());
+
+                        delete bot.giveaways[idKey];
+
+                        fs.writeFile(`./giveaways.json`, JSON.stringify(bot.giveaways), async err => {
+                            if (err) throw err;
+
+                            await giveawayMessage.edit(newEmbed);
+                        });
+                    } else {
+                        let newEmbed = new discord.RichEmbed()
+                            .setColor(resources.green)
+                            .setTitle(prize)
+                            .setDescription(`¡Reacciona con :tada: para entrar!\nTiempo restante: ${Date.now() - time}`)
+                            .setFooter(`${winners} ${winnerType}`);
 
                         await giveawayMessage.edit(newEmbed);
-                    });
-                } else {
-                    let newEmbed = new discord.RichEmbed()
-                        .setColor(0xB8E986)
-                        .setTitle(prize)
-                        .setDescription(`¡Reacciona con :tada: para entrar!\nTiempo restante: ${Date.now() - time}`)
-                        .setFooter(`${winners} ${winnerType}`);
-
-                    await giveawayMessage.edit(newEmbed);
+                    }
                 }
+            } catch (e) {
+                console.error(`${new Date().toUTCString()} 》${e.stack}`);
             }
         }, 10000)
         
@@ -188,7 +182,7 @@ bot.on(`ready`, async () => {
 
         let statusEmbed = new discord.RichEmbed()
             .setTitle(`📑 Estado de ejecución`)
-            .setColor(0xFFC857)
+            .setColor(resources.gold)
             .setDescription(`${bot.user.username} iniciado correctamente`)
             .addField('Estatus:', config.status, true)
             .addField('Tipo de actividad:', config.type, true)
@@ -227,7 +221,7 @@ bot.on(`message`, async message => {
     if (message.author.bot) return;
     if (message.channel.type === `dm`) {
         const noDMEmbed = new discord.RichEmbed()
-            .setColor(0xC6C9C6)
+            .setColor(resources.gray)
             .setDescription(`${resources.GrayTick} | Por el momento, los comandos de **${bot.user.username}** solo está disponible desde el servidor de la **República Gamer**.`);
         await message.author.send(noDMEmbed);
         await console.log(`${new Date().toUTCString()} 》DM: ${message.author.username} (ID: ${message.author.id}) > ${message.content}`);
@@ -267,11 +261,11 @@ bot.on(`message`, async message => {
             bot.warns[message.author.id].warns++;
 
             let infractionChannelEmbed = new discord.RichEmbed()
-                .setColor(0xF8A41E)
+                .setColor(resources.orange)
                 .setDescription(`${resources.OrangeTick} El usuario <@${message.author.id}> ha sido advertido debido a **${reason}**`);
 
             let loggingEmbed = new discord.RichEmbed()
-                .setColor(0xF8A41E)
+                .setColor(resources.orange)
                 .setAuthor(`${message.author.tag} ha sido ADVERTIDO`, message.author.displayAvatarURL)
                 .addField(`Miembro`, `<@${message.author.id}>`, true)
                 .addField(`Moderador`, `<@${bot.user.id}>`, true)
@@ -279,7 +273,7 @@ bot.on(`message`, async message => {
                 .addField(`Mensaje`, message.content, true);
 
             let toDMEmbed = new discord.RichEmbed()
-                .setColor(0xF8A41E)
+                .setColor(resources.orange)
                 .setAuthor(`[ADVERTIDO]`, message.guild.iconURL)
                 .setDescription(`<@${message.author.id}>, has sido advertido en ${message.guild.name}`)
                 .addField(`Moderador`, `<@${bot.user.id}>`, true)
@@ -318,14 +312,13 @@ bot.on(`message`, async message => {
 
         if (prefix === config.prefix) { // EVERYONE
             let commandFile = require(`./commands/${command}`);
-            commandFile.run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
             console.log(commandImput);
+            commandFile.run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
 
             talkedRecently.add(message.author.id);
             setTimeout(() => {
                 talkedRecently.delete(message.author.id);
             }, 2000);
-
         } else if (prefix === config.staffPrefix) { // STAFF
             let commandFile = require(`./commands/staffCommands/${command}`);
             if (!commandFile) return;
@@ -333,18 +326,18 @@ bot.on(`message`, async message => {
             let staffRole = message.guild.roles.get(config.botStaff);
 
             const noPrivilegesEmbed = new discord.RichEmbed()
-                .setColor(0xF12F49)
+                .setColor(resources.red)
                 .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
             if (!message.member.roles.has(staffRole.id) && message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed)
             
-            commandFile.run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed);
             console.log(commandImput);
+            commandFile.run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed);
         } else if (prefix === config.ownerPrefix) { // OWNER
             let commandFile = require(`./commands/ownerCommands/${command}`);
             if (!commandFile) return;
             const noPrivilegesEmbed = new discord.RichEmbed()
-                .setColor(0xF12F49)
+                .setColor(resources.red)
                 .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para ejecutar este comando`);
 
             if (message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed);

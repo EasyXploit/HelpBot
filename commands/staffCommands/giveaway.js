@@ -1,5 +1,12 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
+    let disabledEmbed = new discord.RichEmbed()
+        .setColor(0xC6C9C6)
+        .setDescription(resources.GrayTick + ' Comando `' + command.slice(-0, -3) + '` deshabilitado temporalmente');
+    await message.delete()
+    await message.channel.send(disabledEmbed).then(msg => {msg.delete(5000)});
+    return;
+    
     //-giveaway (xS | xM | xH | xD) (nº ganadores) (premio)
     
     try {

@@ -4,6 +4,28 @@ exports.run = (discord, bot) => {
     const server = bot.guilds.get('374945492133740544');
     module.exports.server = server;
     
+    //COLORES
+    const gold = '0xFFC857';
+    module.exports.gold = gold;
+    
+    const red = '0xF12F49';
+    module.exports.red = red;
+    
+    const green = '0xB8E986';
+    module.exports.green = green;
+    
+    const green2 = '0x3EB57B';
+    module.exports.green2 = green2;
+    
+    const gray = '0xC6C9C6';
+    module.exports.gray = gray;
+    
+    const blue = '0x4A90E2';
+    module.exports.blue = blue;
+    
+    const orange = '0xF8A41E';
+    module.exports.orange = orange;
+    
     //VARIABLES MODIFICABLES
     const valueCheck = 'null';
     module.exports.valueCheck = valueCheck;

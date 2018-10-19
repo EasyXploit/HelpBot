@@ -18,7 +18,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(':stop_button: ' + config.staffPrefix + 'stop', 'Detiene a ' + bot.user.username + resources.shield, true)
             .addField('🙍 ' + config.staffPrefix + 'userinfo (@usuario | id | nada)', 'Muestra información acerca del usuario mencionado', true)
             .addField('🖥 ' + config.staffPrefix + 'serverinfo', 'Muestra información acerca de la guild actual', true)
-            .addField('🔖 ' + config.staffPrefix + 'roleinfo (@rol | "rol" | id)', 'Muestra información acerca de un rol', true)
+            .addField('🔖 ' + config.staffPrefix + 'roleinfo (@rol | rol | id)', 'Muestra información acerca de un rol', true)
             .addField(resources.OrangeTick + ' ' + config.staffPrefix + 'warn (@miembro | id) (razón)', 'Advierte a un usuario', true)
             .addField('📤 ' + config.staffPrefix + 'rmwarn (@miembro | id) (cantidad) (razón)', 'Retira una determinada cantidad de advertencias a un usuario' + resources.shield, true)
             .addField('🔇 ' + config.staffPrefix + 'mute (@usuario | id) (motivo)', 'Silencia a un usuario' + resources.shield, true)

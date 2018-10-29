@@ -21,7 +21,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setColor(0xFFC857)
                 .setAuthor('REGLAMENTO DE LA COMUNIDAD', 'https://i.imgur.com/jAiDAvR.png')
                 .setDescription('Este servidor se apoya en los **Términos de Servicio** y las **Directivas de la comunidad de Discord**. Puedes encontrarlos en __https://discordapp.com/terms__ y en __https://discordapp.com/guidelines__ respectivamente.')
-                .addField(':one: No está permitido publicar contenido inadecuado:', 'Es decir, todo lo relacionado con pornografía, drogas y apuestas. Tampoco contenido que pueda alentar el odio hacia una etnia, religión o cualquier otro colectivo/individuo. De la misma forma están prohibidas las actitudes tóxicas, faltas de respeto, el acoso, el gore y/o crueldad animal y el envío de pornografía infantil.', true)
+                .addField(':one: No está permitido publicar contenido inadecuado:', 'Es decir, todo lo relacionado con pornografía (excepto en <#505448278381428764>), drogas y apuestas. Tampoco contenido que pueda alentar el odio hacia una etnia, religión o cualquier otro colectivo/individuo. De la misma forma están prohibidas las actitudes tóxicas, faltas de respeto, el acoso, el gore y/o crueldad animal y el envío de pornografía infantil.', true)
                 .addField(':two: Está prohibido hacer spam:', 'No puedes enviar links hacia otros servidores de Discord _(tanto invitaciones como URL redireccionadas o spam relacionado)_, ni links de afiliado (incluyendo mensajes directos). Tampoco puedes abusar de las menciones a los demás usuarios y también está prohibido hacer _flood_ de chat. __Si deseas que te promocionemos, contáctanos.__', true)
                 .addField(':three: No abuses de las menciones:', 'No está permitido excederse utilizando las menciones a personas, a __roles__, o a `@everyone` y `@here`. _Las menciones abusivas pueden ser realmente molestas y pueden llevar a los usuario a silenciar el servidor._', true)
                 .addField(':four: Respeta las temáticas:', 'Has de usar los canales de texto/voz adecuados en cada caso. Lee los temas de los canales para más información.', true)
@@ -124,18 +124,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setDescription('Aquí se muestra un listado con las comunidades que participan en el programa de afiliaciones de la comunidad.\n\nSi quieres participar en este programa, ponte en contacto con nosotros enviando un mensaje directo a <@359333470771740683>')
                 .setThumbnail('https://i.imgur.com/Dj1xJqK.png');
             message.channel.send(resultEmbed);
-        }  else if (args[0] === 'valgreen') {
-            message.delete();
-
-            let resultEmbed = new discord.RichEmbed()
-                .setColor(0xFFC857)
-                .setTitle('Comunidad hispanohablante de videojugadores')
-                .setAuthor('ValGreen Gaming', 'https://i.imgur.com/dlusDji.png')
-                .setURL('https://discord.gg/m4EdakX')
-                .setDescription('● Tenemos nuestro propio equipo de E-sports\n● Jugamos a gran variedad de juegos: CSGO, Fortnite, Brawlhalla...\n● ¿Quieres jugar en el equipo competitivo? ¡¡Contacta con los mods del reino o el rey de la ciénaga!!\n● Tenemos minijuegos in-chat\n● Creamos nuestros propios torneos y sorteos')
-                .setThumbnail('https://i.imgur.com/dlusDji.png');
-            await message.channel.send(resultEmbed);
-            await message.channel.send('https://discord.gg/m4EdakX');
         } else if (args[0] === 'sorteo') {
             message.delete();
 
@@ -205,6 +193,56 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             if (member.user.bot) return message.channel.send(noBotsEmbed);
             
             message.delete().then(bot.emit('guildMemberAdd', member));
+        } else if (args[0] === `donar`) {
+            message.delete();
+            
+            let donateEmbed = new discord.RichEmbed()
+                .setColor(0x00D2D7)
+                .setThumbnail(`https://i.imgur.com/E26Kl1A.png`)
+                .setAuthor(`¡APÓYANOS!`, `https://i.imgur.com/6lpSOKA.png`)
+                .setDescription(`¡La comunidad necesita de tu ayuda para crecer!. Realizando un donativo ayudas a financiar el desarrollo y manutención de <@446041159853408257>, cuyo servidor requiere de una inversión mensual para mantenerse funcionando.\n\nAl donar, también permites que el <@&428631949029015562> que se esfuerza en la comunidad, reciba compensación por su esfuerzo.`)
+                .addField(`🏆 ¿Que consigues?`, `● Un rango por encima de los que se obtienen mediante XP.\n● Acceder a salas de voz VIP, con un mejor Bitrate.\n● Un chat de texto exclusivo para VIPs (con mensajes de TTS).\n● Controlar a los bots de música.\n● Acceder a todos los sorteos públicos.\n● Cambiar tu propio apodo cuando quieras.\n● Adjuntar cualquier tipo archivo.\n● Mencionar a todos (` + '`@everyone y @here`' + `).\n● Usar emojis de otros servidores (si eres usuario de Nitro).`, true)
+                .addField(`💎 Apoyar`, `[Haz clic aquí y sigue las instrucciones en pantalla](https://donatebot.io/checkout/374945492133740544)`, true)
+                .attachFile(`./resources/images/banners/support.png`);
+            
+            message.channel.send(donateEmbed);
+        } else if (args[0] === `rolnuevo`) {
+            message.delete();
+            
+            let channel = message.guild.channels.find( c => c.id === `440905255073349635`);
+            let msg = await channel.fetchMessage(args[1]);
+            
+            let newEmbed = new discord.RichEmbed()
+                .setColor(0xE2E5E7)
+                .setAuthor('ELIGE TUS ROLES', 'https://i.imgur.com/TU8U8wq.png')
+                .setFooter('© 2018 República Gamer LLC', resources.server.iconURL)
+                .setThumbnail('https://i.imgur.com/TU8U8wq.png')
+                .setDescription('Reacciona con el emoji correspondiente al rol que quieras asignarte. En cualquier momento puedes quitarte un rol retirando tu reacción.')
+                .addField('Región', '● Reacciona con :flag_es: para asignarte el rol `@ES`\n● Reacciona con :earth_americas: para asignarte el rol `@LATAM`', true)
+                .addField('Videojuegos', '● Reacciona con :bomb: para asignarte el rol `@CS:GO`\n● Reacciona con :boom: para asignarte el rol `@RAINBOW SIX`\n● Reacciona con :hammer_pick: para asignarte el rol `@FORTNITE`\n● Reacciona con 🚀 para asignarte el rol `@ROCKET LEAGUE`\n● Reacciona con 🌟 para asignarte el rol `@LOL`\n● Reacciona con ⛏ para asignarte el rol `@MINECRAFT`\n● Reacciona con ⚜ para asignarte el rol `@BATTLEFIELD`\n● Reacciona con 🔫 para asignarte el rol `@PUBG`\n● Reacciona con 🚔 para asignarte el rol `@GTA V`\n● Reacciona con 📦 para asignarte el rol `@ROBLOX`\n● Reacciona con ⚡ para asignarte el rol `@OVERWATCH`\n● Reacciona con 🛫 para asignarte el rol `@BO4`\n● Reacciona con 🌲 para asignarte el rol `@TERRARIA`\n● Reacciona con 🏡 para asignarte el rol `@STARDEW VALLEY`\n● Reacciona con 🗡 para asignarte el rol `@BRAWLHALLA`\n● Reacciona con 🐲 para asignarte el rol `@ARK`', true);
+            
+            msg.edit(newEmbed);
+        } else if (args[0] === `oposiciones`) {
+            message.delete();
+            
+            let embed = new discord.RichEmbed()
+                .setColor(0x3F8CFC)
+                .setThumbnail(`https://i.imgur.com/WFyNbtO.png`)
+                .setAuthor(`Presenta tu oposición a moderador (LATAM)`, resources.server.iconURL)
+                .setDescription(`Estamos buscando personas de **LATAM** comprometidas con la comunidad interesadas en "echarnos un cable" moderando el servidor. Necesitamos gente proactiva, seria (pero no demasiado), con experiencia en el uso de Discord ¡y con ganas de ayudar!`)
+                .addField(`Si estás interesado, envía la siguiente información vía MD a @EasyXploit:`, `● ¿Como te llamas (nombre y apellidos)?\n● ¿Cual es tu edad?\n● ¿Cual es tu país de residencia?\n● ¿Tienes experiencia moderando?\n● ¿Administras algún otro servidor de Discord?\n● ¿Por que quieres ser moderador?\n\n● Las oposiciones finalizan el día 29 de Octubre de 2018. Tan solo tienes que enviar la información requerida a <@359333470771740683> y este revisará tu oposición y se pondrá en contacto contigo.`, true)
+                .attachFile(`./resources/images/banners/oppositions.png`);
+            
+            message.channel.send(embed);
+        } else if (args[0] === `roles2`) {
+            message.delete();
+            
+            let embed = new discord.RichEmbed()
+                .setColor(0xE2E5E7)
+                .addField('Videojuegos', '● Reacciona con 👹 para asignarte el rol `@MHW`\n● Reacciona con ☠ para asignarte el rol `@L4D2`\n\n_Si hay algún rol que no está en la lista y te gustaría que añadiésemos, envíanos un mensaje a <#449289541866749953>_', true)
+                .setFooter('© 2018 República Gamer LLC', resources.server.iconURL);
+            
+            message.channel.send(embed);
         } else {
             let noArgsEmbed = new discord.RichEmbed()
                 .setColor(0xF12F49)

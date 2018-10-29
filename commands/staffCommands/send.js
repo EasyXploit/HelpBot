@@ -3,13 +3,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-send (texto)
     
     try {
-        const text = message.content.slice(5);
-        
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Debes escribir el contenido del mensaje');
-    
-        if (text.length < 1) return message.channel.send(noCorrectSyntaxEmbed);
+        
+        let text = args.join(` `);
+        if (!text) return message.channel.send(noCorrectSyntaxEmbed);
             
         message.delete();
 

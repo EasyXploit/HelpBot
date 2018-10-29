@@ -12,10 +12,10 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     
         if (!args[0]) return message.channel.send(notToSearchEmbed);
         
-        const searchTerm = args.join(" ");
+        const searchTerm = args.join(` `);
         
         urban.term(searchTerm).then((result) => {
-            const data = result.entries
+            const data = result.entries;
             
             const resultEmbed = new discord.RichEmbed()
                 .setColor(0x1D2339)

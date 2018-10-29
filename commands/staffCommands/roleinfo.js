@@ -10,7 +10,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!args[0]) return message.channel.send(noCorrectSyntaxEmbed);
 
         let guild = message.guild;
-        let role = message.mentions.roles.first() || guild.roles.get(args[0]) || message.guild.roles.find('name', args.join(` `));
+        let role = message.mentions.roles.first() || guild.roles.get(args[0]) || message.guild.roles.find( r => r.name === args.join(` `));
 
         let roleNotFoundEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)

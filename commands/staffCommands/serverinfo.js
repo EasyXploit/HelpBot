@@ -41,7 +41,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(`🆙 Large guild (+250)`, large, true)
             .addField(`👮 Nivel de verificación`, guild.verificationLevel, true)
             .addField(`🔖 Roles`, guild.roles.size, true)
-            .addField(`👥 Miembros`, `${guild.memberCount} miembros\n${guild.members.filter(m => m.user.presence.status == 'online').size} online\n${guild.members.filter(m => m.user.bot).size} bots, ${guild.members.filter(m => !m.user.bot).size} humanos`, true)
+            .addField(`👥 Miembros`, `${guild.memberCount} miembros\n${guild.members.filter(m => m.user.presence.status == 'online' && !m.user.bot).size} online\n${guild.members.filter(m => m.user.bot).size} bots, ${guild.members.filter(m => !m.user.bot).size} humanos`, true)
             .addField(`💬 Canales`, `${guild.channels.size} canales en total:\n${(categories.size - 1)} categorías\n${guild.channels.filter(c => c.type === 'text').size} de texto, ${guild.channels.filter(c => c.type === 'voice').size} de voz`, true)
             .addField(`${resources.GreenTick} Verificado`, verified, true)
 

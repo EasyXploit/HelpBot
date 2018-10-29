@@ -8,8 +8,11 @@ exports.run = (discord, bot) => {
     const gold = '0xFFC857';
     module.exports.gold = gold;
     
-    const red = '0xF12F49';
+    const red = '0xF04647';
     module.exports.red = red;
+    
+    const red2 = '0xF12F49';
+    module.exports.red2 = red2;
     
     const green = '0xB8E986';
     module.exports.green = green;
@@ -23,8 +26,14 @@ exports.run = (discord, bot) => {
     const blue = '0x4A90E2';
     module.exports.blue = blue;
     
+    const blue2 = '0x7CD6F9';
+    module.exports.blue2 = blue2;
+    
     const orange = '0xF8A41E';
     module.exports.orange = orange;
+    
+    const brown = `0xCBAC88`;
+    module.exports.brown = brown;
     
     //VARIABLES MODIFICABLES
     const valueCheck = 'null';
@@ -55,6 +64,9 @@ exports.run = (discord, bot) => {
     const republicagamer = bot.emojis.get('498288236607569962');
     module.exports.republicagamer = republicagamer;
     
+    const musicBox = bot.emojis.get('503128880933240832');
+    module.exports.musicBox = musicBox;
+    
     const shield = bot.emojis.get('499209508275355648');
     module.exports.shield = shield;
     
@@ -82,8 +94,14 @@ exports.run = (discord, bot) => {
     const tatsumaki = bot.emojis.get('498276660156694529');
     module.exports.tatsumaki = tatsumaki;
     
+    const translate = bot.emojis.get('503248605814063105');
+    module.exports.translate = translate;
+    
     const chevron10 = bot.emojis.get('497133468535226389');
     module.exports.chevron10 = chevron10;
+    
+    const chevron11 = bot.emojis.get('497133469495721986');
+    module.exports.chevron11 = chevron11;
     
     const chevron = bot.emojis.get('497133469110108189');
     module.exports.chevron = chevron;

@@ -62,6 +62,18 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         } else {
             warns = bot.warns[member.id].warns
         }
+        
+        let lastMessage;
+            
+        if (member.lastMessage) {
+            if (member.lastMessage.content.length >= 995) {
+                lastMessage = `${member.lastMessage.content.substr(0, 995)} ... (ID: ${member.lastMessage.id})`;
+            } else {
+                lastMessage = `${member.lastMessage} (ID: ${member.lastMessage.id})`;
+            }
+        } else {
+            lastMessage = `Ninguno en caché`;
+        }
 
         let resultEmbed = new discord.RichEmbed()
             .setColor(member.displayHexColor)
@@ -77,7 +89,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(`↙ Unido al servidor`, member.joinedAt.toUTCString(), true)
             .addField(`👑 Estatus`, status.join(', '), true)
             .addField(`🎖 Rol más alto`, member.highestRole.name, true)
-            .addField(`💬 Último mensaje`, `${member.lastMessage} (ID: ${member.lastMessageID})`, true)
+            .addField(`💬 Último mensaje`, lastMessage, true)
             .addField(`⚖ Infracciones`, warns, true)
         message.channel.send(resultEmbed);
     } catch (e) {

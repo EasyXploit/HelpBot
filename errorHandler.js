@@ -18,13 +18,11 @@ exports.run = async (discord, config, bot, message, args, command, e) => {
     }
     
     //Se muestra el error en consola
-    console.error('\n' + new Date().toUTCString() + ' 》' + e + '\n');
+    console.error('\n' + new Date().toUTCString() + ' 》' + e.stack + '\n');
 
     //Se muestra el error en el canal de depuración
     let debuggEmbed = new discord.RichEmbed()
-        .setColor(0xCBAC88)
-        .setTimestamp()
-        .setFooter('© 2018 República Gamer LLC', bot.user.avatarURL)
+        .setColor(resources.brown)
         .setTitle('📋 Depuración')
         .setDescription('Se declaró un error durante la ejecución de un comando')
         .addField('Comando:', command.slice(-0, -3), true)
@@ -33,10 +31,11 @@ exports.run = async (discord, config, bot, message, args, command, e) => {
         .addField('Canal:', message.channel, true)
         .addField('Autor:', '<@' + message.author.id + '>', true)
         .addField('Fecha:', new Date().toUTCString(), true)
-        .addField('Error:', e, true);
+        .addField('Error:', e.stack, true)
+        .setFooter(new Date().toUTCString(), resources.server.iconURL).setTimestamp()
     
     let reportedEmbed = new discord.RichEmbed()
-        .setColor(0xF04647)
+        .setColor(resources.red)
         .setTitle(resources.RedTick + '¡Vaya! Algo fue mal ...')
         .setDescription('Lo hemos reportado al equipo de desarrollo');
     

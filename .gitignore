@@ -3,3 +3,4 @@ mutes.json
 bans.json
 warns.json
 *.mp3
+node_modules

@@ -11,5 +11,6 @@
     "welcomeChannel": "374945492716617729",
     "game": "!ayuda",
     "status": "online",
-    "type": "WATCHING"
+    "type": "WATCHING",
+    "serverLanguage": "es"
 }

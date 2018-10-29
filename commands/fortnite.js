@@ -4,7 +4,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     
     try {
         const fortniteClient = require('fortnite');
-        const fortnite = new fortniteClient(keys.fortniteApiKey);
+        const fortnite = new fortniteClient(keys.fortnite);
 
         let fields = message.content.slice(11).split('" "');
         let lastField = fields.slice(-1).join();

@@ -21,6 +21,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Este usuario ya ha sido baneado');
         
+        if (!args[0]) return message.channel.send(notToBanEmbed);
+        
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
         let user = await message.mentions.users.first() || await bot.fetchUser(args[0]);
         if (!user) return message.channel.send(notToBanEmbed);

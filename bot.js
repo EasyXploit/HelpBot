@@ -226,7 +226,7 @@ bot.on(`ready`, async () => {
             .setDescription(`${bot.user.username} iniciado correctamente`)
             .addField(`Estatus:`, config.status, true)
             .addField(`Tipo de actividad:`, config.type, true)
-            .addField(`Actividad:`, config.game, true)
+            .addField(`Actividad:`, `${bot.users.filter(user => !user.bot).size} usuarios | ${config.game}`, true)
             .addField(`Guilds:`, bot.guilds.size, true)
             .addField(`Shards:`, `__No disponible__`, true)
             .addField(`Usuarios:`, bot.users.filter(user => !user.bot).size, true)
@@ -268,18 +268,23 @@ bot.on(`message`, async message => {
             let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
             let command = args.shift().toLowerCase();
             
-            if (prefix !== `-` || command !== `ban` || !args[0] || args[1]) return;
+            if (prefix !== `-` || command !== `ban` || !args[0]  || !args[1]) return;
             
             let member = await resources.server.fetchMember(args[0]);
             
             await console.log(`${new Date().toUTCString()} 》Se ha recibido una orden automática de baneo para ${member.user.tag} (${member.id})`);
+
+            let spamMessage = message.content.slice(6 + args[0].length);
+            
+            console.log(spamMessage);
             
             let loggingEmbed = new discord.RichEmbed()
-                .setColor(0xEF494B)
+                .setColor(resources.red)
                 .setAuthor(member.user.tag + ' ha sido BANEADO', member.user.displayAvatarURL)
                 .addField('Miembro', '<@' + member.id + '>', true)
                 .addField('Moderador', '<@468149377412890626>', true)
                 .addField('Razón', `Spam vía MD`, true)
+                .addField('Mensaje', spamMessage, true)
                 .addField('Duración', '∞', true);
             
             await loggingChannel.send(loggingEmbed).then(resources.server.ban(member.id, {reason: `Spam vía MD`}));

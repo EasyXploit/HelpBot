@@ -35,6 +35,9 @@ exports.run = (discord, bot) => {
     const brown = `0xCBAC88`;
     module.exports.brown = brown;
     
+    const lilac = `0xA3B3EE`;
+    module.exports.lilac = lilac;
+    
     //VARIABLES MODIFICABLES
     const valueCheck = 'null';
     module.exports.valueCheck = valueCheck;

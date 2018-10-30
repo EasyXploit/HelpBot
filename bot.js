@@ -203,6 +203,15 @@ bot.on(`ready`, async () => {
                 type: config.type
             }
         });
+        
+        //Actualización de usuarios totales en presencia
+        bot.setInterval(async () => {
+            await bot.user.setPresence({
+                game: {
+                    name: `${bot.users.filter(user => !user.bot).size} usuarios | ${config.game}`
+                }
+            });
+        }, 60000)
 
         //Recursos globales
         resources.run(discord, bot);

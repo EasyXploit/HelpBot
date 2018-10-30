@@ -9,7 +9,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
 
             let embed = new discord.RichEmbed()
                 .setColor(resources.orange)
-                .setThumbnail(`https://i.imgur.com/2nZ23V4.png`)
+                .setThumbnail(`https://image.ibb.co/nn7X50/outbox-tray.png`)
                 .setAuthor(`Un miembro abandonó`, event.user.displayAvatarURL)
                 .setDescription(`${event.user.username} abandonó el servidor`)
                 .addField(`🏷 TAG completo`, event.user.tag, true)

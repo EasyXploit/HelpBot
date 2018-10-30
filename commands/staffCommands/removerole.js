@@ -4,15 +4,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
     try {
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'quitar-rol (@rol | "rol" | id) (@usuario | id)`');
+            .setColor(resources.red)
+            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'removerole (@rol | "rol" | id) (@usuario | id)`');
 
         if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
         
         const guild = message.guild;
         let role = message.mentions.roles.first() || message.guild.roles.get(args[0]);
         if (!role) {
-            let newArgs = message.content.slice(13).split('" ').slice(0, 1).join();
+            let newArgs = message.content.slice(13).split(`" `).slice(0, 1).join();
             role = message.guild.roles.find(r => r.name === newArgs);
         }
         let member = message.mentions.members.first() || message.guild.members.get(args[1]);
@@ -27,7 +27,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         }
         
         let notAssignedEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
+            .setColor(resources.red)
             .setDescription(resources.RedTick + ' Este usuario no dispone del rol `' + role.name + '`');
         
         if (!member.roles.has(role.id)) return message.channel.send(notAssignedEmbed);
@@ -37,48 +37,45 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await member.removeRole(role);
 
             let successEmbed = new discord.RichEmbed()
-                .setColor(0xB8E986)
-                .setTitle(resources.GreenTick + ' Operación completada')
-                .setDescription('Retiraste el rol **' +  role.name + '** al usuario **' + member.displayName + '**.');
+                .setColor(resources.green)
+                .setTitle(`${resources.GreenTick} Operación completada`)
+                .setDescription(`Retiraste el rol **${role.name}** al usuario **${member.displayName}**.`);
 
             let loggingEmbed = new discord.RichEmbed()
-                .setColor(0x4A90E2)
-                .setTitle('📑 Auditoría')
-                .setDescription('Se ha retirado un rol.')
-                .setTimestamp()
-                .setFooter(bot.user.username, bot.user.avatarURL)
-                .addField('Fecha:', new Date().toUTCString(), true)
-                .addField('Emisor:', '<@' + message.author.id + '>', true)
-                .addField('Rol:', role.name, true)
-                .addField('Destino:', member.user.tag, true)
+                .setColor(resources.blue)
+                .setTitle(`📑 Auditoría`)
+                .setDescription(`Se ha retirado un rol.`)
+                .addField(`Fecha:`, new Date().toUTCString(), true)
+                .addField(`Emisor:`, `<@${message.author.id}>`, true)
+                .addField(`Rol:`, role.name, true)
+                .addField(`Destino:`, member.user.tag, true)
+                .setFooter(bot.user.username, bot.user.avatarURL).setTimestamp();
             
             await message.channel.send(successEmbed);
             await loggingChannel.send(loggingEmbed);
-
-            console.log('\n 》' + message.author.username + ' retiró el rol ' + role.name + ' al usuario ' + member.displayName + '.');
             
         } else if (message.member.roles.has(config.botStaff)) {
             
-            let permittedRoles = ['ES', 'LATAM', 'CS:GO', 'RAINBOW SIX', 'FORTNITE', 'ROCKET LEAGUE', 'LOL', 'MINECRAFT', 'BATTLEFIELD', 'PUBG', 'GTA V', 'ROBLOX', 'OVERWATCH']
+            let permittedRoles = [`ES`, `LATAM`, `CS:GO`, `RAINBOW SIX`, `FORTNITE`, `ROCKET LEAGUE`, `LOL`, `MINECRAFT`, `BATTLEFIELD`, `PUBG`, `GTA V`, `ROBLOX`, `OVERWATCH`, `BO4`, `TERRARIA`, `STARDEW VALLEY`, `BRAWLHALLA`, `ARK`, `MHW`, `L4D2`, `PAYDAY 2`, `FIFA`, `THE FOREST`]
             
-            if (message.member.roles.has(config.botSupervisor)) {permittedRoles.push('NOVATOS', 'INICIADOS', 'PROFESIONALES', 'VETERANOS', 'EXPERTOS', 'DJ')}
-    
+            if (message.member.roles.has(config.botSupervisor)) {
+                permittedRoles.push(`NOVATOS`, `INICIADOS`, `PROFESIONALES`, `VETERANOS`, `EXPERTOS`, `DJ`)
+            }
 
             let successEmbed = new discord.RichEmbed()
-                .setColor(0xB8E986)
-                .setTitle(resources.GreenTick + ' Operación completada')
-                .setDescription('Retiraste el rol ' +  role.name + ' al usuario **' + member.displayName + '**.');
+                .setColor(resources.green)
+                .setTitle(`${resources.GreenTick} Operación completada`)
+                .setDescription(`Retiraste el rol ${role.name} al usuario **${member.displayName}**.`);
 
             let loggingEmbed = new discord.RichEmbed()
-                .setColor(0x4A90E2)
-                .setTimestamp()
-                .setFooter(bot.user.username, bot.user.avatarURL)
-                .setTitle('📑 Auditoría')
-                .setDescription('Se ha retirado un rol.')
-                .addField('Fecha:', new Date().toUTCString(), true)
-                .addField('Emisor:', '<@' + message.author.id + '>', true)
-                .addField('Rol:', role.name, true)
-                .addField('Destino:', '<@' + member.id + '>', true)
+                .setColor(resources.blue)
+                .setTitle(`📑 Auditoría`)
+                .setDescription(`Se ha retirado un rol.`)
+                .addField(`Fecha:`, new Date().toUTCString(), true)
+                .addField(`Emisor:`, `<@${message.author.id}>`, true)
+                .addField(`Rol:`, role.name, true)
+                .addField(`Destino:`, `<@${member.id}>`, true)
+                .setFooter(bot.user.username, bot.user.avatarURL).setTimestamp();
             
             if (permittedRoles.some(roleName => role.name === roleName)) {
                 await member.removeRole(role);
@@ -86,11 +83,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 await message.channel.send(successEmbed);
                 await loggingChannel.send(loggingEmbed);
 
-                console.log('\n 》' + message.author.username + ' retiró el rol ' + role.name + ' al usuario ' + member.displayName + '.');
             } else {
                 let noPrivilegesEmbed = new discord.RichEmbed()
-                    .setColor(0xF12F49)
-                    .setDescription(resources.RedTick + ' ' + message.author.username + ', no dispones de privilegios suficientes para retirar este rol');
+                    .setColor(resources.red)
+                    .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para retirar este rol`);
                 message.channel.send(noPrivilegesEmbed);
             }
         }

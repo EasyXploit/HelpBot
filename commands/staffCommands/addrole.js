@@ -4,7 +4,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
     try {
         let noCorrectSyntaxEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
+            .setColor(resources.red)
             .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'addrole (@rol | "rol" | id) (@usuario | id)`');
 
         if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
@@ -12,7 +12,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         const guild = message.guild;
         let role = message.mentions.roles.first() || message.guild.roles.get(args[0]);
         if (!role) {
-            let newArgs = message.content.slice(10).split('" ').slice(0, 1).join();
+            let newArgs = message.content.slice(10).split(`" `).slice(0, 1).join();
             role = message.guild.roles.find(r => r.name === newArgs);
         }
         let member = message.mentions.members.first() || message.guild.members.get(args[1]);
@@ -26,7 +26,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         }
         
         let alreadyAssignedEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
+            .setColor(resources.red)
             .setDescription(resources.RedTick + ' Este usuario ya dispone del rol `' + role.name + '`');
         
         if (member.roles.has(role.id)) return message.channel.send(alreadyAssignedEmbed);
@@ -36,59 +36,55 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await member.addRole(role);
 
             let successEmbed = new discord.RichEmbed()
-                .setColor(0xB8E986)
-                .setTitle(resources.GreenTick + ' Operación completada')
-                .setDescription('Asignaste el rol **' +  role.name + '** al usuario **' + member.displayName + '**.');
+                .setColor(resources.green)
+                .setTitle(`${resources.GreenTick} Operación completada`)
+                .setDescription(`Asignaste el rol **${role.name}** al usuario **${member.displayName}**.`);
 
             let loggingEmbed = new discord.RichEmbed()
-                .setColor(0x4A90E2)
-                .setTitle('📑 Auditoría')
-                .setDescription('Se ha asignado un nuevo rol.')
-                .setTimestamp()
-                .setFooter(bot.user.username, bot.user.avatarURL)
-                .addField('Fecha:', new Date().toUTCString(), true)
-                .addField('Emisor:', '<@' + message.author.id + '>', true)
-                .addField('Rol:', role.name, true)
-                .addField('Destino:', member.user.tag, true)
+                .setColor(resources.blue)
+                .setTitle(`📑 Auditoría`)
+                .setDescription(`Se ha asignado un nuevo rol.`)
+                .addField(`Fecha:`, new Date().toUTCString(), true)
+                .addField(`Emisor:`, `<@${message.author.id}>`, true)
+                .addField(`Rol:`, role.name, true)
+                .addField(`Destino:`, member.user.tag, true)
+                .setFooter(bot.user.username, bot.user.avatarURL).setTimestamp();
             
             await message.channel.send(successEmbed);
             await loggingChannel.send(loggingEmbed);
-
-            console.log('\n 》' + message.author.username + ' asignó el rol ' + role.name + ' al usuario ' + member.displayName + '.');
             
         } else if (message.member.roles.has(config.botStaff)) {
             
-            let permittedRoles = ['ES', 'LATAM', 'CS:GO', 'RAINBOW SIX', 'FORTNITE', 'ROCKET LEAGUE', 'LOL', 'MINECRAFT', 'BATTLEFIELD', 'PUBG', 'GTA V', 'ROBLOX', 'OVERWATCH']
+            let permittedRoles = [`ES`, `LATAM`, `CS:GO`, `RAINBOW SIX`, `FORTNITE`, `ROCKET LEAGUE`, `LOL`, `MINECRAFT`, `BATTLEFIELD`, `PUBG`, `GTA V`, `ROBLOX`, `OVERWATCH`, `BO4`, `TERRARIA`, `STARDEW VALLEY`, `BRAWLHALLA`, `ARK`, `MHW`, `L4D2`, `PAYDAY 2`, `FIFA`, `THE FOREST`]
             
-            if (message.member.roles.has(config.botSupervisor)) {permittedRoles.push('NOVATOS', 'INICIADOS', 'PROFESIONALES', 'VETERANOS', 'EXPERTOS', 'DJ')}
+            if (message.member.roles.has(config.botSupervisor)) {
+                permittedRoles.push(`NOVATOS`, `INICIADOS`, `PROFESIONALES`, `VETERANOS`, `EXPERTOS`, `DJ`)
+            }
 
             let successEmbed = new discord.RichEmbed()
-                .setColor(0xB8E986)
-                .setTitle(resources.GreenTick + ' Operación completada')
-                .setDescription('Asignaste el rol ' +  role.name + ' al usuario **' + member.displayName + '**.');
+                .setColor(resources.green)
+                .setTitle(`${resources.GreenTick} Operación completada`)
+                .setDescription(`Asignaste el rol ${role.name} al usuario **${member.displayName}**.`);
 
             let loggingEmbed = new discord.RichEmbed()
-                .setColor(0x4A90E2)
-                .setTimestamp()
-                .setFooter(bot.user.username, bot.user.avatarURL)
-                .setTitle('📑 Auditoría')
-                .setDescription('Se ha asignado un rol.')
-                .addField('Fecha:', new Date().toUTCString(), true)
-                .addField('Emisor:', '<@' + message.author.id + '>', true)
-                .addField('Rol:', role.name, true)
-                .addField('Destino:', '<@' + member.id + '>', true)
+                .setColor(resources.blue)
+                .setTitle(`📑 Auditoría`)
+                .setDescription(`Se ha asignado un rol.`)
+                .addField(`Fecha:`, new Date().toUTCString(), true)
+                .addField(`Emisor:`, `<@${message.author.id}>`, true)
+                .addField(`Rol:`, role.name, true)
+                .addField(`Destino:`, `<@${member.id}>`, true)
+                .setFooter(bot.user.username, bot.user.avatarURL).setTimestamp();
             
             if (permittedRoles.some(roleName => role.name === roleName)) {
                 await member.addRole(role);
                 
                 await message.channel.send(successEmbed);
                 await loggingChannel.send(loggingEmbed);
-
-                console.log('\n 》' + message.author.username + ' asignó el rol ' + role.name + ' al usuario ' + member.displayName + '.');
             } else {
                 let noPrivilegesEmbed = new discord.RichEmbed()
-                    .setColor(0xF12F49)
-                    .setDescription(resources.RedTick + ' ' + message.author.username + ', no dispones de privilegios suficientes para asignar este rol');
+                    .setColor(resources.red)
+                    .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para asignar este rol`);
                 message.channel.send(noPrivilegesEmbed);
             }
         }

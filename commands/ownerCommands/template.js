@@ -228,12 +228,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         } else if (args[0] === `roles2`) {
             message.delete();
             
+            let channel = message.guild.channels.find( c => c.id === `440905255073349635`);
+            let msg = await channel.fetchMessage(args[1]);
+            
             let embed = new discord.RichEmbed()
                 .setColor(resources.gray)
                 .addField(`Videojuegos`, '● Reacciona con 👹 para asignarte el rol `@MHW`\n● Reacciona con ☠ para asignarte el rol `@L4D2`\n● Reacciona con 💎 para asignarte el rol `@PAYDAY 2`\n● Reacciona con ⚽ para asignarte el rol `@FIFA`\n● Reacciona con 🌳 para asignarte el rol `@THE FOREST`\n\n_Si hay algún rol que no está en la lista y te gustaría que añadiésemos, envíanos un mensaje a <#449289541866749953>_', true)
                 .setFooter(`© 2018 República Gamer LLC`, resources.server.iconURL);
             
-            message.channel.send(embed);
+            msg.edit(embed);
         } else {
             let noArgsEmbed = new discord.RichEmbed()
                 .setColor(resources.red)

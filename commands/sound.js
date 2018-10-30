@@ -55,8 +55,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
                 voiceChannel.join().then(connection => {
                     const dispatcher = connection.playFile(`./resources/audios/${sound}.mp3`);
+                    
+                    dispatcher.on("start", () => {
+                        console.log(`Reproduciendo: true`);
+                    });
 
-                    dispatcher.on("end", end => {
+                    dispatcher.on("end", reason => {
+                        console.log(`Fin => Razón: ${reason}`);
                         voiceChannel.leave();
                         bot.voiceStatus = true;
                     });

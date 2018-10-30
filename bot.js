@@ -1,23 +1,54 @@
 'use-strict';
 
+const logo = require('asciiart-logo');
+const package = require(`./package.json`);
+
+console.log(
+    logo({
+        name: `PilkoBot`,
+        font: `Speed`,
+        lineChars: 15,
+        padding: 5,
+        margin: 2
+    })
+    .emptyLine()
+    .right(`Versión ${package.version}`)
+    .emptyLine()
+    .wrap(`PilkoBot es un bot multifuncional desarrollado por el Staff de la comunidad, cuyo uso es exclusivo de los usuarios de la República Gamer, por lo que no está permitido su uso fuera de los servidores administrados por la República Gamer LLC.`)
+    .render()
+);
+
 console.log(`》Iniciando aplicación «\n―――――――――――――――――――――――― \n${new Date().toUTCString()}\n`);
 
+//DEPENDENCIAS GLOBALES
 const discord = require(`discord.js`);
 const fs = require(`fs`);
 const config = require(`./config.json`);
 const keys = require(`./keys.json`);
-const package = require(`./package.json`);
 const bot = new discord.Client();
 
+//RECURSOS GLOBALES
 let resources = require(`./resources/resources.js`);
 
+//USUARIOS QUE USARON COMANDOS RECIENTEMENTE
 const talkedRecently = new Set();
 
+//DATOS PERSISTENTES
 bot.mutes = require(`./mutes.json`);
 bot.bans = require(`./bans.json`);
 bot.warns = JSON.parse(fs.readFileSync(`./warns.json`, `utf-8`));
 bot.giveaways = require(`./giveaways.json`);
-bot.voiceStatus = true;
+
+//VOZ
+bot.servers = {}; //Almacena la cola y otros datos
+bot.voiceStatus = true; //Almacena la disponiblidad del bot
+bot.voiceDispatcher; //Almacena el dispatcher
+bot.voiceConnection; //Almacena la conexión
+
+/*bot.voiceDispatcher.on(`end`, () => {
+    let voiceDispatcherEnd = require(`./resources/voiceDispatcherEnd.js`);
+    voiceDispatcherEnd.run(discord, bot, resources);
+}*/
 
 // COMPROBACIÓN DE INICIO DE SESIÓN Y PRESENCIA
 bot.on(`ready`, async () => {
@@ -31,7 +62,7 @@ bot.on(`ready`, async () => {
                 let time = bot.mutes[idKey].time;
                 let guild = bot.guilds.get(bot.mutes[idKey].guild);
                 let member = guild.members.get(idKey);
-                let role = guild.roles.find (r => r.name === `Silenciado`)
+                let role = guild.roles.find(r => r.name === `Silenciado`)
                 if (!role) continue;
 
                 if (Date.now() > time) {
@@ -61,7 +92,7 @@ bot.on(`ready`, async () => {
                 }
             }
         }, 5000)
-        
+
         //Intervalo de comprobación de usuarios baneados temporalmente
         bot.setInterval(async () => {
             for (let idKey in bot.bans) {
@@ -88,13 +119,13 @@ bot.on(`ready`, async () => {
                 }
             }
         }, 5000)
-        
+
         //Intervalo de comprobación de sorteos (en desarrollo)
         bot.setInterval(async () => {
             try {
                 for (let idKey in bot.giveaways) {
-                    let guild = bot.guilds.find( g => g.id === bot.giveaways[idKey].guild);
-                    let channel = guild.channels.find( c => c.id === bot.giveaways[idKey].channel);
+                    let guild = bot.guilds.find(g => g.id === bot.giveaways[idKey].guild);
+                    let channel = guild.channels.find(c => c.id === bot.giveaways[idKey].channel);
                     let giveawayMessage;
 
                     try {
@@ -148,22 +179,22 @@ bot.on(`ready`, async () => {
                 console.error(`${new Date().toUTCString()} 》${e.stack}`);
             }
         }, 10000)
-        
+
         //Intervalo de comprobación del tiempo de respuesta del Websocket
         bot.setInterval(async () => {
             let ping = Math.round(bot.ping);
             if (ping > 250) {
                 console.log(`${new Date().toUTCString()} 》Tiempo de respuesta del Websocket elevado: ${ping} ms\n`);
-            
-            	let debuggingEmbed = new discord.RichEmbed()
-	               .setColor(0xF8A41E)
-	               .setTimestamp()
-	               .setFooter(bot.user.username, bot.user.avatarURL)
-	               .setDescription(`${resources.OrangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);
-            	debuggingChannel.send(debuggingEmbed);
-	       }	
+
+                let debuggingEmbed = new discord.RichEmbed()
+                    .setColor(0xF8A41E)
+                    .setTimestamp()
+                    .setFooter(bot.user.username, bot.user.avatarURL)
+                    .setDescription(`${resources.OrangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);
+                debuggingChannel.send(debuggingEmbed);
+            }
         }, 60000)
-        
+
         //Presencia
         await bot.user.setPresence({
             status: config.status,
@@ -184,10 +215,13 @@ bot.on(`ready`, async () => {
             .setTitle(`📑 Estado de ejecución`)
             .setColor(resources.gold)
             .setDescription(`${bot.user.username} iniciado correctamente`)
-            .addField('Estatus:', config.status, true)
-            .addField('Tipo de actividad:', config.type, true)
-            .addField('Actividad:', config.game, true)
-            .addField('Versión:', package.version, true)
+            .addField(`Estatus:`, config.status, true)
+            .addField(`Tipo de actividad:`, config.type, true)
+            .addField(`Actividad:`, config.game, true)
+            .addField(`Guilds:`, bot.guilds.size, true)
+            .addField(`Shards:`, `__No disponible__`, true)
+            .addField(`Usuarios:`, bot.users.filter(user => !user.bot).size, true)
+            .addField(`Versión:`, package.version, true)
             .setFooter(bot.user.username, bot.user.avatarURL)
             .setTimestamp();
         debuggingChannel.send(statusEmbed);
@@ -203,11 +237,11 @@ fs.readdir(`./events/`, async (err, files) => {
     files.forEach(file => {
         let eventFunction = require(`./events/${file}`);
         let eventName = file.split(`.`)[0];
-        console.log(` - Evento [${eventName}] cargado`);
 
         bot.on(eventName, event => {
             eventFunction.run(event, discord, fs, config, keys, bot, resources);
         });
+        console.log(` - Evento [${eventName}] cargado`);
     });
     console.log(`\n`);
 });
@@ -220,12 +254,36 @@ bot.on(`message`, async message => {
 
     if (message.author.bot) return;
     if (message.channel.type === `dm`) {
-        const noDMEmbed = new discord.RichEmbed()
-            .setColor(resources.gray)
-            .setDescription(`${resources.GrayTick} | Por el momento, los comandos de **${bot.user.username}** solo está disponible desde el servidor de la **República Gamer**.`);
-        await message.author.send(noDMEmbed);
-        await console.log(`${new Date().toUTCString()} 》DM: ${message.author.username} (ID: ${message.author.id}) > ${message.content}`);
-        return;
+        if (message.author.id === `468149377412890626`) {
+            let prefix = message.content.slice(0, 1);
+            let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+            let command = args.shift().toLowerCase();
+            
+            if (prefix !== `-` || command !== `ban` || !args[0] || args[1]) return;
+            
+            let member = await resources.server.fetchMember(args[0]);
+            
+            await console.log(`${new Date().toUTCString()} 》Se ha recibido una orden automática de baneo para ${member.user.tag} (${member.id})`);
+            
+            let loggingEmbed = new discord.RichEmbed()
+                .setColor(0xEF494B)
+                .setAuthor(member.user.tag + ' ha sido BANEADO', member.user.displayAvatarURL)
+                .addField('Miembro', '<@' + member.id + '>', true)
+                .addField('Moderador', '<@468149377412890626>', true)
+                .addField('Razón', `Spam vía MD`, true)
+                .addField('Duración', '∞', true);
+            
+            await loggingChannel.send(loggingEmbed).then(resources.server.ban(member.id, {reason: `Spam vía MD`}));
+            
+            return;
+        } else {
+            const noDMEmbed = new discord.RichEmbed()
+                .setColor(resources.gray)
+                .setDescription(`${resources.GrayTick} | Por el momento, los comandos de **${bot.user.username}** solo está disponible desde el servidor de la **República Gamer**.`);
+            await message.author.send(noDMEmbed);
+            await console.log(`${new Date().toUTCString()} 》DM: ${message.author.username} (ID: ${message.author.id}) > ${message.content}`);
+            return;
+        }
     }
 
     //COMPROBACIÓN DEL CONTENIDO DEL MENSAJE
@@ -234,7 +292,7 @@ bot.on(`message`, async message => {
         let staffRole = message.guild.roles.get(config.botStaff);
         let reason;
 
-        const swearWords = [`hijo de puta`, `me cago en tu puta madre`, `me cago en tus muertos`, `tu puta madre`, `gilipollas`]; //Palabras prohibidas
+        const swearWords = [`hijo de puta`, `me cago en tu`, `tu puta madre`, `bollera`, `cabron`, `cabrón`, `chupapollas`, `concha de tu madre`, `concha tu madre`, `gilipichis`, `hija de puta`, `hijaputa`, `hijoputa`, `idiota`, `imbécil`, `imbecil`, `jilipollas`, `lameculos`, `marica`, `maricón`, `maricon`, `mariconazo`, `ramera`, `soplagaitas`, `soplapollas`, `vete a la mierda`, `tus muertos`, `retrasao`, `anormal`, `malparido`, `gilipollas`, `negro de mierda`, `moro de mierda`, `pancho de mierda`, `panchito de mierda`]; //Palabras prohibidas
         const invites = [`discord.gg`, `.gg/`, `.gg /`, `. gg /`, `. gg/`, `discord .gg /`, `discord.gg /`, `discord .gg/`, `discord .gg`, `discord . gg`, `discord. gg`, `discord gg`, `discordgg`, `discord gg /`] //Invitaciones prohibidas
 
         try {
@@ -252,7 +310,7 @@ bot.on(`message`, async message => {
             }
 
             if (!reason) return;
-            
+
             if (!bot.warns[message.author.id]) bot.warns[message.author.id] = {
                 guild: message.guild.id,
                 warns: 0
@@ -278,7 +336,7 @@ bot.on(`message`, async message => {
                 .setDescription(`<@${message.author.id}>, has sido advertido en ${message.guild.name}`)
                 .addField(`Moderador`, `<@${bot.user.id}>`, true)
                 .addField(`Razón`, reason, true);
-            
+
             fs.writeFile(`./warns.json`, JSON.stringify(bot.warns, null, 4), async err => {
                 if (err) throw err;
 
@@ -286,6 +344,7 @@ bot.on(`message`, async message => {
                 await message.channel.send(infractionChannelEmbed);
                 await loggingChannel.send(loggingEmbed);
             });
+            return;
         } catch (e) {
             console.log(`Ocurrió un error durante la ejecución de la función "checkBadWords"\nError: ${e}`);
         }
@@ -303,7 +362,7 @@ bot.on(`message`, async message => {
 
     // Función para ejecutar el comando
     try {
-        let commandImput = `${new Date().toUTCString()} 》${message.author.username} introdujo el comando: ${command.slice(-0, -3)} en el canal ${message.channel.name} de la guild ${message.guild.name}`;
+        let commandImput = `${new Date().toUTCString()} 》${message.author.username} introdujo el comando: ${command.slice(-0, -3)} en el canal: ${message.channel.name} de la guild: ${message.guild.name}`;
 
         let waitEmbed = new discord.RichEmbed().setColor(0xF12F49).setDescription(`${resources.RedTick} Debes esperar 2 segundos antes de usar este comando`);
         if (talkedRecently.has(message.author.id)) return message.channel.send(waitEmbed).then(msg => {
@@ -330,7 +389,7 @@ bot.on(`message`, async message => {
                 .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
             if (!message.member.roles.has(staffRole.id) && message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed)
-            
+
             console.log(commandImput);
             commandFile.run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed);
         } else if (prefix === config.ownerPrefix) { // OWNER

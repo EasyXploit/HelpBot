@@ -164,6 +164,19 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setFooter(`República Gamer no se responsabiliza de la organización del torneo`, resources.server.iconURL);
             
             message.channel.send(embed);
+        } else if (args[0] === `detuned`) {
+            message.delete();
+            
+            let embed = new discord.RichEmbed()
+                .setColor(resources.gold) .setThumbnail(`https://vignette.wikia.nocookie.net/clubpenguin/images/0/0a/Pumpkin_Head_clothing_icon_ID_1095.png/revision/latest?cb=20131006145935`)
+                .setAuthor(`[DETUNED] EVENTO DE HALLOWEEN`, `https://cdn.discordapp.com/avatars/147813177004916736/96c24cbea86c4f1fe654b34693eda5c9.png?`)
+                .setDescription('**¡Hola a todos!** Me gustaría compartiros por aquí un __evento especial por Halloween__ que van a hacer hoy en Detuned, 31 de Octubre. No sólo van a jugar a un juego de terror con cámara, sino que también van a sortear un juego y estrenarán una nueva sección muy especial llamada **Desafina tu Destino**.\n\n:yellow_heart: _¡Muchas gracias a todos los que os podáis pasar por el directo!_ Ya sea porque os quedéis viéndolos y participando, como con el directo abierto en segundo plano. ¡Valoran mucho vuestro apoyo.')
+                .addField(`:link: Detalles`, `[Haz clic aquí para más info.](https://medium.com/tuneintodetuned/especial-halloween-f7c4ed23487d)`, true)
+                .addField(`👮 Responsable de organización`, `<@147813177004916736>`, true)
+                .setImage(`https://image.ibb.co/kqte50/1-OOk0l-HSi-Ns-EZs-XNv-Rm9-HSQ.jpg`)
+                .setFooter(`República Gamer no se responsabiliza de la organización del evento`, resources.server.iconURL);
+            
+            message.channel.send(embed);
         } else if (args[0] === `bienvenida`) {
             let noUserEmbed = new discord.RichEmbed()
                 .setColor(resources.red)
@@ -189,11 +202,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             let donateEmbed = new discord.RichEmbed()
                 .setColor(0x00D2D7)
-                .setThumbnail(`https://i.imgur.com/E26Kl1A.png`)
+                .setThumbnail(`https://image.ibb.co/cxhbXf/diamond.png`)
                 .setAuthor(`¡APÓYANOS!`, `https://i.imgur.com/6lpSOKA.png`)
                 .setDescription(`¡La comunidad necesita de tu ayuda para crecer!. Realizando un donativo ayudas a financiar el desarrollo y manutención de <@446041159853408257>, cuyo servidor requiere de una inversión mensual para mantenerse funcionando.\n\nAl donar, también permites que el <@&428631949029015562> que se esfuerza en la comunidad, reciba compensación por su esfuerzo.`)
                 .addField(`🏆 ¿Que consigues?`, `● Un rango por encima de los que se obtienen mediante XP.\n● Acceder a salas de voz VIP, con un mejor Bitrate.\n● Un chat de texto exclusivo para VIPs (con mensajes de TTS).\n● Controlar a los bots de música.\n● Acceder a todos los sorteos públicos.\n● Cambiar tu propio apodo cuando quieras.\n● Adjuntar cualquier tipo archivo.\n● Mencionar a todos (` + '`@everyone y @here`' + `).\n● Usar emojis de otros servidores (si eres usuario de Nitro).`, true)
-                .addField(`💎 Apoyar`, `[Haz clic aquí y sigue las instrucciones en pantalla](https://donatebot.io/checkout/374945492133740544)`, true)
+                .addField(`💎 Apoyar`, `[Haz clic aquí y sigue las instrucciones en pantalla](https://www.patreon.com/republicagamer)`, true)
                 .attachFile(`./resources/images/banners/support.png`);
             
             message.channel.send(donateEmbed);

@@ -100,6 +100,12 @@ exports.run = (discord, bot) => {
     const translate = bot.emojis.get('503248605814063105');
     module.exports.translate = translate;
     
+    const rythm = bot.emojis.get('507187604031275008');
+    module.exports.rythm = rythm;
+    
+    const rythm2 = bot.emojis.get('507187615402033155');
+    module.exports.rythm2 = rythm2;
+
     const chevron10 = bot.emojis.get('497133468535226389');
     module.exports.chevron10 = chevron10;
     

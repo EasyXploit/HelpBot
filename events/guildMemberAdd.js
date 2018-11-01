@@ -61,7 +61,8 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                     .setAuthor(`Nuevo miembro`, event.user.displayAvatarURL)
                     .setDescription(`${event.user.username} se unió al servidor`)
                     .addField(`🏷 TAG completo`, event.user.tag, true)
-                    .addField(`🆔 ID del usuario`, event.user.id, true);
+                    .addField(`🆔 ID del usuario`, event.user.id, true)
+                    .setFooter(`| `, bot.user.displayAvatarURL).setTimestamp();
 
                 let dmWelcomeEmbed = new discord.RichEmbed()
                     .setColor(resources.gold)

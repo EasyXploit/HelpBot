@@ -13,7 +13,8 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                 .setAuthor(`Un miembro abandonó`, event.user.displayAvatarURL)
                 .setDescription(`${event.user.username} abandonó el servidor`)
                 .addField(`🏷 TAG completo`, event.user.tag, true)
-                .addField(`🆔 ID del usuario`, event.user.id, true);
+                .addField(`🆔 ID del usuario`, event.user.id, true)
+                .setFooter(`| `, bot.user.displayAvatarURL).setTimestamp();
             
             await bot.channels.get(config.loggingChannel).send(embed);
         } else {

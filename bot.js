@@ -45,11 +45,6 @@ bot.voiceStatus = true; //Almacena la disponiblidad del bot
 bot.voiceDispatcher; //Almacena el dispatcher
 bot.voiceConnection; //Almacena la conexión
 
-/*bot.voiceDispatcher.on(`end`, () => {
-    let voiceDispatcherEnd = require(`./resources/voiceDispatcherEnd.js`);
-    voiceDispatcherEnd.run(discord, bot, resources);
-}*/
-
 // COMPROBACIÓN DE INICIO DE SESIÓN Y PRESENCIA
 bot.on(`ready`, async () => {
     try {

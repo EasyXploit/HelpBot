@@ -75,18 +75,6 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
                 //Si queda algo en la cola
                 if (server.queue[0]) {
 
-                    //CÓDIGO PROVISIONAL
-
-
-                    /*bot.voiceDispatcher = connection.playStream(ytdl(server.queue[0].link, {
-                        filter: `audioonly`,
-                        highWaterMark: 1024 * 1024 * 10
-                    }));*/
-
-
-                    // ------------------
-
-
                     //Vuelve a cargar la función de reproducción
                     play(bot.voiceConnection, message);
 

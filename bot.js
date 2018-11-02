@@ -25,7 +25,10 @@ const discord = require(`discord.js`);
 const fs = require(`fs`);
 const config = require(`./config.json`);
 const keys = require(`./keys.json`);
-const bot = new discord.Client();
+const bot = new discord.Client({
+    disableEveryone: true,
+    disabledEvents: [`TYPING_START`, `TYPING_STOP`]
+});
 
 //RECURSOS GLOBALES
 let resources = require(`./resources/resources.js`);
@@ -301,7 +304,7 @@ bot.on(`message`, async message => {
         let staffRole = message.guild.roles.get(config.botStaff);
         let reason;
 
-        const swearWords = [`hijo de puta`, `me cago en tu`, `tu puta madre`, `bollera`, `cabron`, `cabrón`, `chupapollas`, `concha de tu madre`, `concha tu madre`, `gilipichis`, `hija de puta`, `hijaputa`, `hijoputa`, `idiota`, `imbécil`, `imbecil`, `jilipollas`, `lameculos`, `marica`, `maricón`, `maricon`, `mariconazo`, `ramera`, `soplagaitas`, `soplapollas`, `vete a la mierda`, `tus muertos`, `retrasao`, `anormal`, `malparido`, `gilipollas`, `negro de mierda`, `moro de mierda`, `pancho de mierda`, `panchito de mierda`]; //Palabras prohibidas
+        const swearWords = [`hijo de puta`, `me cago en tu`, `tu puta madre`, `bollera`, `cabron`, `cabrón`, `chupapollas`, `concha de tu madre`, `concha tu madre`, `gilipichis`, `hija de puta`, `hijaputa`, `hijoputa`, `idiota`, `imbécil`, `imbecil`, `jilipollas`, `lameculos`, `marica`, `maricón`, `maricon`, `mariconazo`, `ramera`, `soplagaitas`, `soplapollas`, `vete a la mierda`, `tus muertos`, `tus putos muertos`, `retrasao`, `anormal`, `malparido`, `gilipollas`, `negro de mierda`, `moro de mierda`, `pancho de mierda`, `panchito de mierda`]; //Palabras prohibidas
         const invites = [`discord.gg`, `.gg/`, `.gg /`, `. gg /`, `. gg/`, `discord .gg /`, `discord.gg /`, `discord .gg/`, `discord .gg`, `discord . gg`, `discord. gg`, `discord gg`, `discordgg`, `discord gg /`] //Invitaciones prohibidas
 
         try {

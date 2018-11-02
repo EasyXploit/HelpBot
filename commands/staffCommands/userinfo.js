@@ -11,13 +11,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setColor(0xF12F49)
             .setDescription(`${resources.RedTick} No puedes obtener información de un bot`);
 
-        //let toInfo;
         let member;
 
         if (args.length < 1) {
             member = message.guild.members.get(message.author.id);
         } else {
-            member = message.mentions.members.first() || message.guild.members.get(args[0]);
+            member = await message.guild.fetchMember(message.mentions.users.first() || args[0]);
         }
 
         if (!member) return message.channel.send(noUserEmbed);

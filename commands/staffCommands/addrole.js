@@ -15,14 +15,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             let newArgs = message.content.slice(10).split(`" `).slice(0, 1).join();
             role = message.guild.roles.find(r => r.name === newArgs);
         }
-        let member = message.mentions.members.first() || message.guild.members.get(args[1]);
+        let member = await message.guild.fetchMember(message.mentions.users.first() || args[1]);
+
         if (!role || !member) return message.channel.send(noCorrectSyntaxEmbed);
         
-        let author = message.guild.member(message.author.id)
+        let moderator = await message.guild.fetchMember(message.author);
         
         //Se comprueba si puede banear al usuario
-        if (author.id !== member.id && author.id !== message.guild.owner.id) {
-            if (author.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed);
+        if (moderator.id !== member.id && author.id !== message.guild.owner.id) {
+            if (moderator.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed);
         }
         
         let alreadyAssignedEmbed = new discord.RichEmbed()
@@ -58,7 +59,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             let permittedRoles = [`ES`, `LATAM`, `CS:GO`, `RAINBOW SIX`, `FORTNITE`, `ROCKET LEAGUE`, `LOL`, `MINECRAFT`, `BATTLEFIELD`, `PUBG`, `GTA V`, `ROBLOX`, `OVERWATCH`, `BO4`, `TERRARIA`, `STARDEW VALLEY`, `BRAWLHALLA`, `ARK`, `MHW`, `L4D2`, `PAYDAY 2`, `FIFA`, `THE FOREST`]
             
             if (message.member.roles.has(config.botSupervisor)) {
-                permittedRoles.push(`NOVATOS`, `INICIADOS`, `PROFESIONALES`, `VETERANOS`, `EXPERTOS`, `DJ`)
+                permittedRoles.push(`NOVATO`, `INICIADO`, `PROFESIONAL`, `VETERANO`, `EXPERTO`, `DJ`)
             }
 
             let successEmbed = new discord.RichEmbed()

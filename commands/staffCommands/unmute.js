@@ -14,7 +14,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(resources.RedTick + ' No puedes silenciar a un bot');
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let member = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
+        let member = await message.guild.fetchMember(message.mentions.users.first() || args[0]);
         if (!member) return message.channel.send(notToMuteEmbed);
         let toDeleteCount = command.length - 2 + args[0].length + 2; 
         let reason = message.content.slice(toDeleteCount) || 'Indefinida';

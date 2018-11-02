@@ -14,7 +14,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(resources.RedTick + ' Debes proporcionar un motivo');
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let user = await message.mentions.users.first() || await bot.fetchUser(args[0]);
+        let user = await bot.fetchUser(message.mentions.users.first() || args[0]);
         if (!user) return message.channel.send(notToBanEmbed);
 
         let toDeleteCount = command.length - 2 + args[0].length + 2;

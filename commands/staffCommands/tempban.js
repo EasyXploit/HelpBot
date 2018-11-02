@@ -26,18 +26,18 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(resources.RedTick + ' Debes proporcionar una unidad de medida de tiempo. Por ejemplo: `5s`, `10m`, `12h` o `3d`');
         
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let user = await message.mentions.users.first() || await bot.fetchUser(args[0]);
+        let user = await bot.fetchUser(message.mentions.users.first() || args[0]);
         if (!user) return message.channel.send(notToBanEmbed);
         
         if (user.bot) return message.channel.send(noBotsEmbed);
         
-        let author = message.guild.member(message.author.id)
+        let moderator = await message.guild.fetchMember(message.author);
         
         let member = message.guild.members.get(user.id);
         if (member) {
             //Se comprueba si puede banear al usuario
-            if (author.id !== message.guild.owner.id) {
-                if (author.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed)
+            if (moderator.id !== message.guild.owner.id) {
+                if (moderator.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed)
             }
         }
         

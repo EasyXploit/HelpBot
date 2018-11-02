@@ -18,14 +18,14 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(resources.RedTick + ' No puedes expulsar a un bot');
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let member = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
+        let member = await message.guild.fetchMember(message.mentions.users.first() || args[0]);
         if (!member) return message.channel.send(notToKickEmbed);
         
-        let author = message.guild.member(message.author.id)
+        let moderator = await message.guild.fetchMember(message.author);
         
         //Se comprueba si puede banear al usuario
-        if (author.id !== message.guild.owner.id) {
-            if (author.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed)
+        if (moderator.id !== message.guild.owner.id) {
+            if (moderator.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed)
         }
 
         let toDeleteCount = command.length - 2 + args[0].length + 2;

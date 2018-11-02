@@ -26,7 +26,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(resources.RedTick + ' Este usuario no tiene advertencias');
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let member = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
+        let member = await await message.guild.fetchMember(message.mentions.users.first() || args[0]);
         if (!member) return message.channel.send(notToMuteEmbed);
         if (member.user.bot) return message.channel.send(noBotsEmbed);
         
@@ -38,7 +38,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let reason = args.slice(2).join(" ") || 'Indefinida';
         if (reason === 'Indefinida' && message.author.id !== message.guild.ownerID) return message.channel.send(undefinedReasonEmbed);
           
-        let moderator = message.guild.member(message.author.id);
+        let moderator = await message.guild.fetchMember(message.author);
         
         //Se comprueba si puede advertir al usuario
         if (moderator.id !== message.guild.owner.id) {

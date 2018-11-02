@@ -3,7 +3,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     //!moneda
     
     try {
-        const datos = ['CARA', 'CRUZ'];
+        const datos = ['CARA', 'CARA', 'CARA', 'CARA', 'CARA', 'CRUZ', 'CRUZ', 'CRUZ', 'CRUZ', 'CRUZ', 'CANTO.. ¿CANTO?'];
 
         const resultEmbed = new discord.RichEmbed()
             .setColor(0xEAE151)

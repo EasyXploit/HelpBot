@@ -1,6 +1,5 @@
 keys.json
-mutes.json
-bans.json
 warns.json
+bans.json
+mutes.json
 *.mp3
-/node_modules/*

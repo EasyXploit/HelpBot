@@ -261,7 +261,7 @@ bot.on(`message`, async message => {
 
     if (message.author.bot) return;
     if (message.channel.type === `dm`) {
-        if (message.author.id === `468149377412890626`) {
+        if (message.author.id === `507668335547252747` || message.author.id === `468149377412890626`) {
             let prefix = message.content.slice(0, 1);
             let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
             let command = args.shift().toLowerCase();

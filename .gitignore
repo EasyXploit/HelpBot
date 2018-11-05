@@ -3,6 +3,7 @@ warns.json
 bans.json
 mutes.json
 giveaways.json
+nodemon.json
 /node_modules
 /useful
 *.mp3

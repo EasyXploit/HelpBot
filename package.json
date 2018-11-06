@@ -1,6 +1,6 @@
 {
   "name": "pilkobot",
-  "version": "2.7.1",
+  "version": "2.8.0",
   "description": "PilkoBot es un bot para uso exclusivo de los usuario de la República Gamer",
   "main": "bot.js",
   "scripts": {
@@ -27,6 +27,7 @@
     "erlpack": "github:hammerandchisel/erlpack",
     "ffmpeg-binaries": "^4.0.0",
     "fortnite": "^4.1.1",
+    "giphy-api": "^1.2.8",
     "libsodium-wrappers": "^0.7.3",
     "moment": "^2.22.2",
     "node-opus": "^0.3.0",

@@ -34,20 +34,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                 .addField(`${resources.GreenTick} Verificado`, verified, true)
                 .setTimestamp()
 
-            //Agradecimiento provisional
-            let thanksEmbed = new discord.RichEmbed()
-                .setColor(resources.gold)
-                .setAuthor(`¡Gracias por añadirme!`, bot.user.displayAvatarURL)
-                .setDescription('¡Hola **' + event.owner.user.username + '**! Mi nombre es ' + bot.user.username + ', y he venido a ayudar en tu servidor, el que llaman **' + event.name + '**. Espero ser de tu agrado, a pesar de que soy una versión _beta_. Aprende a utilizarme usando el comando `!ayuda`')
-                .addField(`⚙ Configuración`, '`!configurar`', true)
-                .addField(`📊 Estadísticas`, `${bot.guilds.size} servidores\n${bot.users.size} usuarios`, true)
-                .addField(`🔗 Bot`, `[Añádeme](https://discordapp.com/oauth2/authorize?client_id=446041159853408257&scope=bot&permissions=8)`, true)
-                .addField(`💬 Servidor`, `[Únete](${config.serverInvite})`, true)
-                .addField(`📣 Twitter`, `___Aún no disponible___`, true)
-                .setFooter(`© 2018 República Gamer LLC`, bot.user.avatarURL)
-
-            await bot.channels.get(config.debuggingChannel).send(debuggingEmbed);
-            await event.owner.send(thanksEmbed)
+            await bot.channels.get(config.debuggingChannel).send(debuggingEmbed)
 
         } else {
             const cantJoinEmbed = new discord.RichEmbed()

@@ -5,6 +5,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         if (message.author.id !== config.botOwner && !message.member.roles.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
         
+        return (message.channel.send(`Comando deshabilitado temporalmente`));
+        
         let notToBanEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Debes mencionar a un miembro o escribir su id');

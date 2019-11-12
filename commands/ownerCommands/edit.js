@@ -20,9 +20,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         message.delete();
 
-        let newEmbed = new discord.RichEmbed()
+        /*let newEmbed = new discord.RichEmbed()
             .setColor(resources.gold)
-            .setDescription(newContent);
+            .setDescription(newContent);*/
+
+        let newEmbed = newContent;
         
         msg.edit(newEmbed);
     } catch (e) {

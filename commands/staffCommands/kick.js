@@ -6,60 +6,59 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (message.author.id !== config.botOwner && !message.member.roles.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
 
         let notToKickEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Debes mencionar a un miembro o escribir su id');
+            .setColor(resources.red)
+            .setDescription(`${resources.RedTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID`);
 
         let noReasonEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Debes proporcionar un motivo');
+            .setColor(resources.red)
+            .setDescription(`${resources.RedTick} Debes proporcionar un motivo`);
 
-        let noBotsEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' No puedes expulsar a un bot');
+        if (!args[0]) return message.channel.send(notToKickEmbed);
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let member = await message.guild.fetchMember(message.mentions.users.first() || args[0]);
-        if (!member) return message.channel.send(notToKickEmbed);
+        let member;
+        try {
+            member = await message.guild.fetchMember(message.mentions.users.first() || args[0]);
+        } catch (e) {
+            return message.channel.send(notToKickEmbed);
+        }
         
         let moderator = await message.guild.fetchMember(message.author);
         
         //Se comprueba si puede banear al usuario
-        if (moderator.id !== message.guild.owner.id) {
-            if (moderator.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed)
-        }
+        if (moderator.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed)
 
         let toDeleteCount = command.length - 2 + args[0].length + 2;
 
-        //Esto comprueba si se ha proporcionado razón
+        //Esto comprueba si se debe proporcionar razón
         let reason = message.content.slice(toDeleteCount)
-        if (!reason) return message.channel.send(noReasonEmbed);
-
-        if (member.bot) return message.channel.send('noBotsEmbed');
+        if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send(noReasonEmbed);
+        if (!reason) reason = `Indefinida`;
 
         let successEmbed = new discord.RichEmbed()
-            .setColor(0xB8E986)
-            .setTitle(resources.GreenTick + ' Operación completada')
-            .setDescription('El usuario <@' + member.id + '> ha sido expulsado, ¿alguien más?');
+            .setColor(resources.green)
+            .setTitle(`${resources.GreenTick} Operación completada`)
+            .setDescription(`El usuario <@${member.id}> ha sido expulsado, ¿alguien más?`);
 
         let loggingEmbed = new discord.RichEmbed()
-            .setColor(0xEF494B)
-            .setAuthor(member.user.tag + ' ha sido EXPULSADO', member.user.displayAvatarURL)
-            .addField('Miembro', '<@' + member.id + '>', true)
-            .addField('Moderador', '<@' + message.author.id + '>', true)
-            .addField('Razón', reason, true)
+            .setColor(resources.red2)
+            .setAuthor(`${member.user.tag} ha sido EXPULSADO`, member.user.displayAvatarURL)
+            .addField(`Miembro`, `<@${member.id}>`, true)
+            .addField(`Moderador`, `<@${message.author.id}>`, true)
+            .addField(`Razón`, reason, true)
 
         let toDMEmbed = new discord.RichEmbed()
-            .setColor(0xEF494B)
-            .setAuthor('[EXPULSADO]', message.guild.iconURL)
-            .setDescription('<@' + member.id + '>, has sido expulsado en ' + message.guild.name)
-            .addField('Moderador', message.author.tag, true)
-            .addField('Razón', reason, true)
+            .setColor(resources.red2)
+            .setAuthor(`[EXPULSADO]`, message.guild.iconURL)
+            .setDescription(`<@${member.id}>, has sido expulsado en ${message.guild.name}`)
+            .addField(`Moderador`, message.author.tag, true)
+            .addField(`Razón`, reason, true)
 
         await member.send(toDMEmbed);
         await member.kick(reason);
         await loggingChannel.send(loggingEmbed);
         await message.channel.send(successEmbed);
     } catch (e) {
-        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

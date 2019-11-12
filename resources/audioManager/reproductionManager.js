@@ -1,5 +1,5 @@
 exports.run = async (discord, bot, resources, message, info, ytdl, moment, randomColor) => {
-    
+
     try {
         //Función para reproducir
         async function play(connection, message) {
@@ -10,19 +10,28 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
 
             if (bot.servers[message.guild.id].shuffle === true) toPlay = Math.floor(Math.random() * (bot.servers[message.guild.id].queue.length - 1));
 
-            //Reproduce la canción
-            bot.voiceDispatcher = connection.playStream(ytdl(server.queue[toPlay].link, {
-                filter: `audioonly`,
-                highWaterMark: 1024 * 1024 * 10
-            }));
+            console.log(`PASS - - - - - - 1`);
+
+            try {
+                //Reproduce la canción
+                bot.voiceDispatcher = connection.playStream(ytdl(server.queue[toPlay].link, {
+                    filter: `audioonly`,
+                    highWaterMark: 1024 * 1024 * 10
+                }));
+            } catch (e) {
+                console.log(e);
+            }
+
+            console.log(`PASS - - - - - - 2`);
             
             info = await ytdl.getInfo(server.queue[toPlay].link);
+            let details = info.player_response.videoDetails;
 
             let durationExcededEmbed = new discord.RichEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No puedo reproducir canciones con una duración mayor a 3 horas.`);
 
-            if (info.length_seconds > 10800) return message.channel.send(durationExcededEmbed);
+            if (details.lengthSeconds > 10800) return message.channel.send(durationExcededEmbed);
 
             let upNext = `Nada`;
 
@@ -38,9 +47,9 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
 
             let playingEmbed = new discord.RichEmbed()
                 .setColor(randomColor())
-                .setThumbnail(info.thumbnail_url.replace("default.jpg", "hqdefault.jpg"))
+                .setThumbnail(details.thumbnail.thumbnails[3].url)
                 .setAuthor(`Reproduciendo 🎶`, `https://i.imgur.com/lvShSwa.png`)
-                .setDescription('[' + info.title + '](' + info.video_url + ')\n\n● **Autor:** `' + info.author.name + '`\n● **Duración:** `' + moment().startOf('day').seconds(info.length_seconds).format('H:mm:ss') + '`')
+                .setDescription('[' + details.title + '](' + info.video_url + ')\n\n● **Autor:** `' + details.author + '`\n● **Duración:** `' + moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss') + '`')
                 .addField(`Solicitado por:`, server.queue[toPlay].requestedBy, true)
                 .addField(`Siguiente:`, upNext, true)
                 .setFooter(`© 2018 República Gamer LLC | BETA Pública`, resources.server.iconURL);
@@ -62,9 +71,9 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
 
             //Actualiza nowplaying
             server.nowplaying = {
-                title: info.title,
+                title: details.title,
                 link: info.video_url,
-                duration: moment().startOf('day').seconds(info.length_seconds).format('H:mm:ss'),
+                duration: moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss'),
                 requestedBy: message.member.displayName
             };
 

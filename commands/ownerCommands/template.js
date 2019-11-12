@@ -38,11 +38,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setThumbnail(`https://i.imgur.com/vDgiPwT.png`)
                 .setAuthor(`NIVELES`, `https://i.imgur.com/vDgiPwT.png`)
                 .setDescription(`Los usuarios que participan __activamente__ en la comunidad adquieren puntos de **EXP**, y al alcanzar determinados niveles se obtienen rangos que aportan la siguientes _ventajas_:`)
-                .addField(`${resources.chevron} Nivel 0 ‣ NOVATOS`, `Es el primer rol que recibes al unirte a la comunidad.`, true)
-                .addField(`${resources.chevron5} Nivel 3 ‣ INICIADOS`, `Permite usar emojis externos${resources.nitro} y acceder a sorteos públicos.`, true)
-                .addField(`${resources.chevron9} Nivel 5 ‣ PROFESIONALES`, `Permite publicar en <#472491041602404362> y en <#488662764081119233>.`, true)
-                .addField(`${resources.chevron15} Nivel 8 ‣ VETERANOS`, `Permite **adjuntar archivos** y **cambiar tu propio apodo**.`, true)
-                .addField(`${resources.chevron18} Nivel 10 ‣ EXPERTOS`, `Te permite **mencionar a todos** y **controlar la música**.`, true)
+                .addField(`${resources.chevron} Nivel 0 ‣ PLATA I`, `Es el primer rol que recibes al unirte a la comunidad.`, true)
+                .addField(`${resources.chevron5} Nivel 5 ‣ PLATA V`, `Permite usar emojis externos${resources.nitro} y acceder a sorteos públicos.`, true)
+                .addField(`${resources.chevron15} Nivel 10 ‣ ORO V`, `Permite **adjuntar archivos** y **cambiar tu propio apodo**.`, true)
+                .addField(`${resources.chevron18} Nivel 15 ‣ PLATINO V`, `Te permite **mencionar a todos** y **controlar la música**.`, true)
                 .addField(`● Estadísticas`, 'Usa `!rank` para conocer tu nivel\n[Ver la tabla de clasificación](https://mee6.xyz/leaderboard/374945492133740544)')
                 .attachFile(`./resources/images/banners/ranks.png`);
 
@@ -61,6 +60,14 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .addField(`🞘 Pasos a seguir:`, `:one: Genera una invitación instantánea. [Ver cómo](https://support.discordapp.com/hc/es/articles/208866998-Invitaci%C3%B3n-Instant%C3%A1nea-101)\n:two: Invita a 5 personas _(procura que se unan y se queden)_.\n:three: ¡Recibirás tu rol cuando se unan 5! _(lo perderás si se van)_.`, true)
                 .addField(`🞘 Comandos:`, 'Usa `+invites` para conocer a cuantos has invitado.\nUsa `+leaderboard` para ver la tabla de clasificacion.', true);
             
+            let donateEmbed = new discord.RichEmbed()
+                .setColor(resources.gold)
+                .setThumbnail(`https://image.ibb.co/cxhbXf/diamond.png`)
+                .setAuthor(`¡APÓYANOS!`, `https://i.imgur.com/6lpSOKA.png`)
+                .setDescription(`¡La comunidad necesita de tu ayuda para crecer!. Realizando un donativo ayudas a financiar el desarrollo y manutención de <@446041159853408257>, cuyo servidor requiere de una inversión mensual para mantenerse funcionando.\n\nAl donar, también permites que el <@&428631949029015562> que se esfuerza en la comunidad, reciba compensación por su esfuerzo.`)
+                .addField(`🏆 ¿Que consigues?`, `● Un rango por encima de los que se obtienen mediante XP.\n● Acceder a salas de voz VIP, con un mejor Bitrate.\n● Un chat de texto exclusivo para VIPs (con mensajes de TTS).\n● Controlar a los bots de música.\n● Acceder a todos los sorteos públicos.\n● Cambiar tu propio apodo cuando quieras.\n● Adjuntar cualquier tipo archivo.\n● Mencionar a todos (` + '`@everyone y @here`' + `).\n● Usar emojis de otros servidores (si eres usuario de Nitro).`, true)
+                .addField(`💎 Apoyar`, `[Haz clic aquí y sigue las instrucciones en pantalla](https://www.patreon.com/republicagamer)`, true)
+
             let embed7 = new discord.RichEmbed()
                 .setColor(resources.gold)
                 .setAuthor(`ENLACE DE INVITACIÓN PERMANENTE`, `https://i.imgur.com/teglfDA.png`)
@@ -74,8 +81,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await message.channel.send(embed4);
             await message.channel.send(embed5);
             await message.channel.send(embed6);
+            await message.channel.send(donateEmbed);
             await message.channel.send(embed7);
-            await message.channel.send(config.serverInvite);
+            await message.channel.send(`https://discord.gg/nYdyN2k`);
             
         } else if (args[0] === `roles`) {
             message.delete();
@@ -119,32 +127,25 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             message.delete();
 
             let giveawayEmbed = new discord.RichEmbed()
-                .setColor(resources.lilac)
-                .setTitle(`:tada: SORTEO DE 1.000 PAVOS DE FORTNITE`)
-                .setDescription(`Hemos organizado un nuevo sorteo para todos aquellos que compartan la comunidad con sus amigos, para que de esta forma nos conozca cada vez más gente.\n\nEn esta ocasión sorteamos **1.000 paVos de Fortnite**, que te permitirán adquirir el nuevo Pase de Temporada`)
-                .setThumbnail(`https://i.imgur.com/dkKER4U.png`)
+                .setColor(resources.gold)
+                .setTitle(`:tada: SORTEO DE UN VIDEOJUEGO A ELEGIR·`)
+                .setDescription(`Hemos organizado un nuevo sorteo para todos aquellos que compartan la comunidad con sus amigos, para que de esta forma nos conozca cada vez más gente.\n\nEn esta ocasión sorteamos **Un videojuego a elegir**`)
+                .setThumbnail(`https://i.imgur.com/YUOdN5X.png`)
 
             let basesEmbed = new discord.RichEmbed()
-                .setColor(resources.lilac)
+                .setColor(resources.gold)
                 .setTitle(`Bases del sorteo`)
-                .setDescription(`El sorteo comienza el día **25** de **Septiembre** y finalizará el día **02** de **Octubre** de 2018\n\nSolo aquellos jugadores que hayan invitado a otras __5 personas__ a través de un __enlace de invitación personalizado__ _(y se hayan unido al servidor)_, podrán participar en el sorteo.\n\nUna vez se hayan unido 5 personas con tu invitación, recibirás en rango <@&447475457617821698>, el cual te permite acceder al canal del sorteo.\n\nEste sorteo tendrá una duración máxima de **7 días** desde la fecha de publicación del evento _(podrá ser finalizado prematuramente)_.`)
+                .setDescription(`El sorteo comienza el día **1** de **ENERO** y finalizará el día **14** de **ENERO** de 2019\n\nSolo aquellos jugadores que hayan invitado a otras __5 personas__ a través de un __enlace de invitación personalizado__ _(y se hayan unido al servidor)_, podrán participar en el sorteo.\n\nUna vez se hayan unido 5 personas con tu invitación, recibirás en rango <@&447475457617821698>, el cual te permite acceder al canal del sorteo.\n\nEste sorteo tendrá una duración máxima de **14 días** desde la fecha de publicación del evento _(podrá ser finalizado prematuramente)_.\n\n**De resultar ganador, podrás elegir entre:**\n\n➢ Player Unknowns Battlegrounds  _(Steam)_\n➢ Grand Theft Auto V  _(Social Club)_\n➢ Counter Strike: Global Offensive  _(Steam)_\n➢ Rainbow Six Siege  _(Uplay)_\n➢ Rocket League  _(Steam)_\n➢ Ghost Recon Wildlands  _(Uplay)_\n➢ Los Sims 4  _(Origin)_\n➢ Battlefield 1  _(Origin)_\n➢ Dark Souls 3  _(Steam)_\n➢ DOOM  _(Steam)_\n➢ Watch Dogs 2  _(Uplay)_\n➢ The Witcher 3: Wild Hunt GOTY Edition  _(GOG Galaxy)_\n➢ Far Cry 4  _(Uplay)_\n➢ Minecraft  _(Mojang)_\n➢ The Elder Scrolls V: Skyrim Special Edition  _(Steam)_\n➢ Arma III  _(Steam)_\n➢ Civilization V: Complete Edition  _(Steam)_\n➢ Killing Floor 2  _(Steam)_\n➢ Titanfall 2  _(Origin)_\n➢ Age of Empires: Definitive Edition  _(Microsoft Store)_\n➢ Just Cause 3  _(Steam)_\n➢ Plants vs. Zombies: Garden Warfare 2  _(Origin)_`)
                 .setThumbnail(`https://i.imgur.com/qfamqUv.png`)
 
-            let adquireEmbed = new discord.RichEmbed()
-                .setColor(resources.lilac)
-                .setTitle(`Adquisición del premio`)
-                .setDescription('El premio se podrá obtener de una de las siguientes dos formas:\n\n● `Proporcionándonos las credenciales de tu cuenta de Epic, nosotros accederemos a tu cuenta y añadiremos los 1000 paVos a tu cuenta.`\n\n● `Creando una cuenta nueva con los detalles que desees, le añadiremos el saldo y te facilitaremos sus credenciales.`\n\nEl ganador será quien elija el método de entrega del premio.')
-                .setThumbnail(`https://i.imgur.com/pRSeU8Q.png`)
-
             let entryEmbed = new discord.RichEmbed()
-                .setColor(resources.lilac)
+                .setColor(resources.gold)
                 .setTitle(`Entrada al sorteo`)
-                .setDescription(`Participa en el sorteo desde: <#494042090850877440>.\n(solo verás el canal cuando obtengas el rango <@&447475457617821698>).`)
+                .setDescription(`Participa en el sorteo desde: <#529383165551181824>.\n(solo verás el canal cuando obtengas el rango <@&447475457617821698>).`)
                 .setThumbnail(`https://i.imgur.com/jRVtTSF.png`)
 
             await message.channel.send(giveawayEmbed);
             await message.channel.send(basesEmbed);
-            await message.channel.send(adquireEmbed);
             await message.channel.send(entryEmbed);
         } else if (args[0] === `marafu`) {
             message.delete();
@@ -211,22 +212,55 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .attachFile(`./resources/images/banners/support.png`);
             
             message.channel.send(donateEmbed);
-        } else if (args[0] === `rolnuevo`) {
+        } else if (args[0] === `roles1`) {
+            message.delete();
+
+            const europe = await bot.emojis.get('538773808673325075');
+            const latam = await bot.emojis.get('538773808773857291');
+            
+            let channel = message.guild.channels.find( c => c.id === `440905255073349635`);
+            let msg = await channel.fetchMessage(`538869679234744330`);
+            
+            let embed = new discord.RichEmbed()
+                .setColor(resources.gray)
+                .setAuthor(`ELIGE TUS ROLES`, `https://i.imgur.com/TU8U8wq.png`)
+                .setThumbnail(`https://i.imgur.com/TU8U8wq.png`)
+                .setDescription(`Reacciona con el emoji correspondiente al rol que quieras asignarte. En cualquier momento puedes quitarte un rol retirando tu reacción.`)
+                .addField(`Región`, '● Reacciona con ' + europe + ' para asignarte el rol `@EUROPA`\n● Reacciona con ' + latam + ' para asignarte el rol `@LATINOAMÉRICA`', true)
+                .addField(`Configuraciones`, '● Reacciona con :newspaper: para asignarte recibir actualizaciones de los videojuegos que te asignes en la sección de "Videojuegos"', true)
+            
+            msg.edit(newEmbed);
+        } else if (args[0] === `roles2`) {
+            message.delete();
+
+            const r6 = await bot.emojis.get('538773808648028190');
+            const csgo = await bot.emojis.get('538865510432112670');
+            const fortnite = await bot.emojis.get('538774033634820117');
+            const lol = await bot.emojis.get('538773808891559949');
+            const apex = await bot.emojis.get('543093735836221462');
+            
+            let channel = message.guild.channels.find( c => c.id === `440905255073349635`);
+            let msg = await channel.fetchMessage(`538869690626342924`);
+            
+            let embed = new discord.RichEmbed()
+                .setColor(resources.gray)
+                .setThumbnail(`https://i.imgur.com/Nz65AFB.png`)
+                .addField(`Videojuegos principales`, '● Reacciona con ' + r6 + ' para asignarte el rol `@RAINBOW SIX`\n● Reacciona con ' + csgo + ' para asignarte el rol `@CS:GO`\n● Reacciona con ' + fortnite + ' para asignarte el rol `@FORTNITE`\n● Reacciona con ' + lol + ' para asignarte el rol `@LOL`\n● Reacciona con ' + apex + ' para asignarte el rol `@APEX LEGENDS`', true)
+            
+            msg.edit(embed);
+        } else if (args[0] === `roles3`) {
             message.delete();
             
             let channel = message.guild.channels.find( c => c.id === `440905255073349635`);
-            let msg = await channel.fetchMessage(args[1]);
+            let msg = await channel.fetchMessage(`538869701141331999`);
             
-            let newEmbed = new discord.RichEmbed()
+            let embed = new discord.RichEmbed()
                 .setColor(resources.gray)
-                .setAuthor(`ELIGE TUS ROLES`, `https://i.imgur.com/TU8U8wq.png`)
-                .setFooter(`© 2018 República Gamer LLC`, resources.server.iconURL)
-                .setThumbnail(`https://i.imgur.com/TU8U8wq.png`)
-                .setDescription(`Reacciona con el emoji correspondiente al rol que quieras asignarte. En cualquier momento puedes quitarte un rol retirando tu reacción.`)
-                .addField(`Región`, '● Reacciona con :flag_es: para asignarte el rol `@ES`\n● Reacciona con :earth_americas: para asignarte el rol `@LATAM`', true)
-                .addField(`Videojuegos`, '● Reacciona con :bomb: para asignarte el rol `@CS:GO`\n● Reacciona con :boom: para asignarte el rol `@RAINBOW SIX`\n● Reacciona con :hammer_pick: para asignarte el rol `@FORTNITE`\n● Reacciona con 🚀 para asignarte el rol `@ROCKET LEAGUE`\n● Reacciona con 🌟 para asignarte el rol `@LOL`\n● Reacciona con ⛏ para asignarte el rol `@MINECRAFT`\n● Reacciona con ⚜ para asignarte el rol `@BATTLEFIELD`\n● Reacciona con 🔫 para asignarte el rol `@PUBG`\n● Reacciona con 🚔 para asignarte el rol `@GTA V`\n● Reacciona con 📦 para asignarte el rol `@ROBLOX`\n● Reacciona con ⚡ para asignarte el rol `@OVERWATCH`\n● Reacciona con 🛫 para asignarte el rol `@BO4`\n● Reacciona con 🌲 para asignarte el rol `@TERRARIA`\n● Reacciona con 🏡 para asignarte el rol `@STARDEW VALLEY`\n● Reacciona con 🗡 para asignarte el rol `@BRAWLHALLA`\n● Reacciona con 🐲 para asignarte el rol `@ARK`', true);
+                .setThumbnail(`https://i.imgur.com/WdWMdgt.png`)
+                .addField(`Otros videojuegos`, '● Reacciona con 🔫 para asignarte el rol `@PUBG`\n● Reacciona con 🚀 para asignarte el rol `@ROCKET LEAGUE`\n● Reacciona con ⛏ para asignarte el rol `@MINECRAFT`\n● Reacciona con ⚜ para asignarte el rol `@BATTLEFIELD`\n● Reacciona con 🚔 para asignarte el rol `@GTA V`\n● Reacciona con 📦 para asignarte el rol `@ROBLOX`\n● Reacciona con ⚡ para asignarte el rol `@OVERWATCH`\n● Reacciona con 🛫 para asignarte el rol `@BO4`\n● Reacciona con 🌲 para asignarte el rol `@TERRARIA`\n● Reacciona con 🏡 para asignarte el rol `@STARDEW VALLEY`\n● Reacciona con 🗡 para asignarte el rol `@BRAWLHALLA`\n● Reacciona con 🐲 para asignarte el rol `@ARK`\n● Reacciona con 💎 para asignarte el rol `@PAYDAY`', true)
+                .setFooter(`© 2018 República Gamer LLC`, resources.server.iconURL);
             
-            msg.edit(newEmbed);
+            msg.edit(embed);
         } else if (args[0] === `oposiciones`) {
             message.delete();
             
@@ -239,18 +273,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .attachFile(`./resources/images/banners/oppositions.png`);
             
             message.channel.send(embed);
-        } else if (args[0] === `roles2`) {
-            message.delete();
-            
-            let channel = message.guild.channels.find( c => c.id === `440905255073349635`);
-            let msg = await channel.fetchMessage(args[1]);
-            
-            let embed = new discord.RichEmbed()
-                .setColor(resources.gray)
-                .addField(`Videojuegos`, '● Reacciona con 👹 para asignarte el rol `@MHW`\n● Reacciona con ☠ para asignarte el rol `@L4D2`\n● Reacciona con 💎 para asignarte el rol `@PAYDAY 2`\n● Reacciona con ⚽ para asignarte el rol `@FIFA`\n● Reacciona con 🌳 para asignarte el rol `@THE FOREST`\n\n_Si hay algún rol que no está en la lista y te gustaría que añadiésemos, envíanos un mensaje a <#449289541866749953>_', true)
-                .setFooter(`© 2018 República Gamer LLC`, resources.server.iconURL);
-            
-            msg.edit(embed);
         } else {
             let noArgsEmbed = new discord.RichEmbed()
                 .setColor(resources.red)
@@ -258,6 +280,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             message.channel.send(noArgsEmbed);
         }
     } catch (e) {
-        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

@@ -26,6 +26,7 @@ const fs = require(`fs`);
 const config = require(`./config.json`);
 const keys = require(`./keys.json`);
 const bot = new discord.Client({
+    fetchAllMembers: true,
     disableEveryone: true,
     disabledEvents: [`TYPING_START`, `TYPING_STOP`]
 });
@@ -40,7 +41,6 @@ const talkedRecently = new Set();
 bot.mutes = require(`./mutes.json`);
 bot.bans = require(`./bans.json`);
 bot.warns = JSON.parse(fs.readFileSync(`./warns.json`, `utf-8`));
-bot.giveaways = require(`./giveaways.json`);
 
 //VOZ
 bot.servers = {}; //Almacena la cola y otros datos
@@ -59,7 +59,19 @@ bot.on(`ready`, async () => {
             for (let idKey in bot.mutes) {
                 let time = bot.mutes[idKey].time;
                 let guild = bot.guilds.get(bot.mutes[idKey].guild);
-                let member = guild.members.get(idKey);
+                let member;
+                try {
+                    member = await guild.fetchMember(idKey);
+                } catch (e) {
+                    delete bot.mutes[idKey];
+                    fs.writeFile(`./mutes.json`, JSON.stringify(bot.mutes), async err => {
+                        if (err) throw err;
+
+                        await loggingChannel.send(loggingEmbed);
+                        await member.send(toDMEmbed);
+                    });
+                    return;
+                }
                 let role = guild.roles.find(r => r.name === `Silenciado`)
                 if (!role) continue;
 
@@ -118,70 +130,10 @@ bot.on(`ready`, async () => {
             }
         }, 5000)
 
-        //Intervalo de comprobación de sorteos (en desarrollo)
-        bot.setInterval(async () => {
-            try {
-                for (let idKey in bot.giveaways) {
-                    let guild = bot.guilds.find(g => g.id === bot.giveaways[idKey].guild);
-                    let channel = guild.channels.find(c => c.id === bot.giveaways[idKey].channel);
-                    let giveawayMessage;
-
-                    try {
-                        giveawayMessage = await channel.fetchMessage(idKey);
-                    } catch (e) {
-                        if (e.toString().includes(`Unknown Message`)) {
-                            delete bot.giveaways[idKey];
-                            fs.writeFile(`./giveaways.json`, JSON.stringify(bot.giveaways), async err => {
-                                if (err) throw err;
-                            });
-                            return;
-                        } else {
-                            console.log(e);
-                        }
-                    }
-
-                    let time = bot.giveaways[idKey].time;
-                    let winners = bot.giveaways[idKey].winners;
-                    let winnerType = bot.giveaways[idKey].winnerType;
-                    let prize = bot.giveaways[idKey].prize;
-
-                    if (Date.now() > time) {
-                        async function drawWinners() {
-                            return `En desarrollo`;
-                        }
-                        drawWinners();
-
-                        let newEmbed = new discord.RichEmbed()
-                            .setColor(0xB8E986)
-                            .setTitle(prize)
-                            .setDescription(drawWinners());
-
-                        delete bot.giveaways[idKey];
-
-                        fs.writeFile(`./giveaways.json`, JSON.stringify(bot.giveaways), async err => {
-                            if (err) throw err;
-
-                            await giveawayMessage.edit(newEmbed);
-                        });
-                    } else {
-                        let newEmbed = new discord.RichEmbed()
-                            .setColor(resources.green)
-                            .setTitle(prize)
-                            .setDescription(`¡Reacciona con :tada: para entrar!\nTiempo restante: ${Date.now() - time}`)
-                            .setFooter(`${winners} ${winnerType}`);
-
-                        await giveawayMessage.edit(newEmbed);
-                    }
-                }
-            } catch (e) {
-                console.error(`${new Date().toUTCString()} 》${e.stack}`);
-            }
-        }, 10000)
-
         //Intervalo de comprobación del tiempo de respuesta del Websocket
         bot.setInterval(async () => {
             let ping = Math.round(bot.ping);
-            if (ping > 250) {
+            if (ping > 1000) {
                 console.log(`${new Date().toUTCString()} 》Tiempo de respuesta del Websocket elevado: ${ping} ms\n`);
 
                 let debuggingEmbed = new discord.RichEmbed()
@@ -206,7 +158,8 @@ bot.on(`ready`, async () => {
         bot.setInterval(async () => {
             await bot.user.setPresence({
                 game: {
-                    name: `${bot.users.filter(user => !user.bot).size} usuarios | ${config.game}`
+                    name: `${bot.users.filter(user => !user.bot).size} usuarios | ${config.game}`,
+                    type: config.type
                 }
             });
         }, 60000)
@@ -225,8 +178,6 @@ bot.on(`ready`, async () => {
             .addField(`Estatus:`, config.status, true)
             .addField(`Tipo de actividad:`, config.type, true)
             .addField(`Actividad:`, `${bot.users.filter(user => !user.bot).size} usuarios | ${config.game}`, true)
-            .addField(`Guilds:`, bot.guilds.size, true)
-            .addField(`Shards:`, `__No disponible__`, true)
             .addField(`Usuarios:`, bot.users.filter(user => !user.bot).size, true)
             .addField(`Versión:`, package.version, true)
             .setFooter(bot.user.username, bot.user.avatarURL)
@@ -304,7 +255,7 @@ bot.on(`message`, async message => {
         let staffRole = message.guild.roles.get(config.botStaff);
         let reason;
 
-        const swearWords = [`hijo de puta`, `me cago en tu`, `tu puta madre`, `bollera`, `cabron`, `cabrón`, `chupapollas`, `concha de tu madre`, `concha tu madre`, `gilipichis`, `hija de puta`, `hijaputa`, `hijoputa`, `idiota`, `imbécil`, `imbecil`, `jilipollas`, `lameculos`, `marica`, `maricón`, `maricon`, `mariconazo`, `ramera`, `soplagaitas`, `soplapollas`, `vete a la mierda`, `tus muertos`, `tus putos muertos`, `retrasao`, `anormal`, `malparido`, `gilipollas`, `negro de mierda`, `moro de mierda`, `pancho de mierda`, `panchito de mierda`]; //Palabras prohibidas
+        const swearWords = [`hijo de puta`, `me cago en tu`, `tu puta madre`, `bollera`, `chupapollas`, `concha de tu madre`, `concha tu madre`, `gilipichis`, `hija de puta`, `hijaputa`, `hijoputa`, `idiota`, `imbécil`, `imbecil`, `jilipollas`, `lameculos`, `marica`, `maricón`, `maricon`, `mariconazo`, `ramera`, `soplagaitas`, `soplapollas`, `vete a la mierda`, `tus muertos`, `tus putos muertos`, `retrasao`, `anormal`, `malparido`, `gilipollas`, `negro de mierda`, `moro de mierda`, `pancho de mierda`, `panchito de mierda`]; //Palabras prohibidas
         const invites = [`discord.gg`, `.gg/`, `.gg /`, `. gg /`, `. gg/`, `discord .gg /`, `discord.gg /`, `discord .gg/`, `discord .gg`, `discord . gg`, `discord. gg`, `discord gg`, `discordgg`, `discord gg /`] //Invitaciones prohibidas
 
         try {

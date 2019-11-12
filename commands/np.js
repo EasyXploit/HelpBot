@@ -23,7 +23,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let server = bot.servers[message.guild.id];
         let progress = await bot.voiceDispatcher.time;
         
-        let total = info.length_seconds * 1000;
+        let total = info.player_response.videoDetails.lengthSeconds * 1000;
         let percentage = Math.floor((progress * 100) / total);
         
         let progressBar = [`▬`, `▬`, `▬`, `▬`, `▬`, `▬`, `▬`, `▬`, `▬`, `▬`, `▬`];

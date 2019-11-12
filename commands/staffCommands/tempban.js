@@ -6,39 +6,43 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (message.author.id !== config.botOwner && !message.member.roles.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
         
         let notToBanEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Debes mencionar a un usuario o escribir su id');
+            .setColor(resources.red)
+            .setDescription(`${resources.RedTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID`);
 
         let noReasonEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Debes proporcionar un motivo');
-
-        let noBotsEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' No puedes banear a un bot');
+            .setColor(resources.red)
+            .setDescription(`${resources.RedTick} Debes proporcionar un motivo`);
         
         let alreadyBannedEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Este usuario ya ha sido baneado');
+            .setColor(resources.red)
+            .setDescription(`${resources.RedTick} Este usuario ya ha sido baneado`);
         
         let noCorrectTimeEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
+            .setColor(resources.red)
             .setDescription(resources.RedTick + ' Debes proporcionar una unidad de medida de tiempo. Por ejemplo: `5s`, `10m`, `12h` o `3d`');
         
+        if (!args[0]) return message.channel.send(notToBanEmbed);
+    
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let user = await bot.fetchUser(message.mentions.users.first() || args[0]);
-        if (!user) return message.channel.send(notToBanEmbed);
-        
-        if (user.bot) return message.channel.send(noBotsEmbed);
+        let user;
+        try {
+            user = await bot.fetchUser(message.mentions.users.first() || args[0]);
+        } catch (e) {
+            return message.channel.send(notToBanEmbed);
+        }
         
         let moderator = await message.guild.fetchMember(message.author);
         
-        let member = message.guild.members.get(user.id);
+        let member;
+        try {
+            member = await message.guild.fetchMember(user);
+        } catch (e) {
+            return message.channel.send(notToBanEmbed);
+        }
+
         if (member) {
             //Se comprueba si puede banear al usuario
-            if (moderator.id !== message.guild.owner.id) {
-                if (moderator.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed)
-            }
+            if (moderator.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed)
         }
         
         let bans = await message.guild.fetchBans();
@@ -50,7 +54,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (isBanned) return message.channel.send(alreadyBannedEmbed);
 
         //Comprueba la longitud del tiempo proporcionado
-        if (args[1].length < 2) return message.channel.send(noCorrectTimeEmbed);
+        if (!args[1] || args[1].length < 2) return message.channel.send(noCorrectTimeEmbed);
 
         //Divide el tiempo y la unidad de medida proporcionados
         let time = args[1].slice(0, -1);
@@ -60,7 +64,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (isNaN(time)) return message.channel.send(noCorrectTimeEmbed);
 
         //Comprueba si se ha proporcionado una nunida de medida válida
-        if (measure !== 's' && measure !== 'm' && measure !== 'h' && measure !== 'd') return message.channel.send(noCorrectTimeEmbed);
+        if (measure !== `s` && measure !== `m` && measure !== `h` && measure !== `d`) return message.channel.send(noCorrectTimeEmbed);
 
         let milliseconds;
 
@@ -81,50 +85,54 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         } 
 
         switch (measure) {
-            case 's':
+            case `s`:
                 stoms(time);
                 break;
-            case 'm':
+            case `m`:
                 mtoms(time);
                 break;
-            case 'h':
+            case `h`:
                 htoms(time);
                 break;
-            case 'd':
+            case `d`:
                 dtoms(time);
                 break;
         }
         
         let toDeleteCount = command.length - 2 + args[0].length + 1 + args[1].length + 2; 
-        let reason = message.content.slice(toDeleteCount) || 'Indefinida';
+
+        //Esto comprueba si se debe proporcionar razón
+        let reason = message.content.slice(toDeleteCount)
+        if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send(noReasonEmbed);
+        if (!reason) reason = `Indefinida`;
 
         let successEmbed = new discord.RichEmbed()
-            .setColor(0xB8E986)
-            .setTitle(resources.GreenTick + ' Operación completada')
-            .setDescription('El usuario <@' + user.id + '> ha sido baneado, ¿alguien más? ' + resources.drakeban);
+            .setColor(resources.green)
+            .setTitle(`${resources.GreenTick} Operación completada`)
+            .setDescription(`El usuario <@${user.id}> ha sido baneado, ¿alguien más? ${resources.drakeban}`);
 
         let loggingEmbed = new discord.RichEmbed()
-            .setColor(0xEF494B)
-            .setAuthor(user.tag + ' ha sido BANEADO', user.displayAvatarURL)
-            .addField('Miembro', '<@' + user.id + '>', true)
-            .addField('Moderador', '<@' + message.author.id + '>', true)
-            .addField('Razón', reason, true)
-            .addField('Duración', args[1], true);
+            .setColor(resources.red2)
+            .setAuthor(`${user.tag} ha sido BANEADO`, user.displayAvatarURL)
+            .addField(`Miembro`, `<@${user.id}>`, true)
+            .addField(`Moderador`, `<@${message.author.id}>`, true)
+            .addField(`Razón`, reason, true)
+            .addField(`Duración`, args[1], true);
 
         let toDMEmbed = new discord.RichEmbed()
-            .setColor(0xEF494B)
-            .setAuthor('[BANEADO]', message.guild.iconURL)
-            .setDescription('<@' + user.id + '>, has sido baneado en ' + message.guild.name)
-            .addField('Moderador', '@' + message.author.tag, true)
-            .addField('Razón', reason, true)
-            .addField('Duración', args[1], true);
+            .setColor(resources.red2)
+            .setAuthor(`[BANEADO]`, message.guild.iconURL)
+            .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
+            .addField(`Moderador`, `@${message.author.tag}`, true)
+            .addField(`Razón`, reason, true)
+            .addField(`Duración`, args[1], true);
         
         bot.bans[user.id] = {
             guild: message.guild.id,
             time: Date.now() + milliseconds
         }
 
-        fs.writeFile('./bans.json', JSON.stringify(bot.bans, null, 4), async err => {
+        fs.writeFile(`./bans.json`, JSON.stringify(bot.bans, null, 4), async err => {
             if (err) throw err;
 
             if (member) {
@@ -135,14 +143,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await message.channel.send(successEmbed);
         });
     } catch (e) {
-        if (e.toString().includes('Invalid Form Body')) {
-            let notToBanEmbed = new discord.RichEmbed()
-                .setColor(0xF12F49)
-                .setDescription(resources.RedTick + ' Si el usuario no está en el servidor, has de especificar su ID');
-            message.channel.send(notToBanEmbed);
-            console.log(e);
-        } else {
-            const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
-        }
+        require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

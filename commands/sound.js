@@ -55,6 +55,14 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
                 voiceChannel.join().then(connection => {
                     const dispatcher = connection.playFile(`./resources/audios/${sound}.mp3`);
+
+                    dispatcher.on("error", reason => {
+                        console.log(`Error: ${reason}`);
+                    });
+
+                    dispatcher.on("debug", debug => {
+                        console.log(`Debug: ${debug}`);
+                    });
                     
                     dispatcher.on("start", () => {
                         console.log(`Reproduciendo: true`);

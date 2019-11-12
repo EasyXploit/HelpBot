@@ -57,6 +57,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         //Datos de la canción a reproducir
         let info;
+        let details;
 
         //Función para almacenar la información
         async function reproduction(query) {
@@ -64,6 +65,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             //Busca la información
             try {
                 info = await ytdl.getInfo(query);
+                details = info.player_response.videoDetails;
             } catch (e) {
                 let notFoundEmbed = new discord.RichEmbed()
                     .setColor(resources.red)
@@ -74,8 +76,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             //Genera la información de la cola
             let newQueueItem = {
                 link: info.video_url,
-                title: info.title,
-                duration: moment().startOf('day').seconds(info.length_seconds).format('H:mm:ss'),
+                title: details.title,
+                duration: moment().startOf('day').seconds(details.lengthSeconds).format('H:mm:ss'),
                 requestedBy: message.member.displayName
             };
 

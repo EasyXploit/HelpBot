@@ -45,12 +45,19 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Si se especifica una cantidad, se skipearan en consecuencia
         if (args[0]) {
             
-            let tooMuchSkipsEmbed = new discord.RichEmbed()
+            let tooMuchSkipsRandomEmbed = new discord.RichEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No puedes omitir más de una canción con el modo aleatorio activado.`);
+
+            let tooMuchSkipsLoopEmbed = new discord.RichEmbed()
+                .setColor(resources.red)
+                .setDescription(`${resources.RedTick} No puedes omitir más de una canción con el modo loop activado.`);
             
             //Comprueba si está activado el modo aleatorio
-            if (bot.servers[message.guild.id].shuffle === true) return message.channel.send(tooMuchSkipsEmbed);
+            if (bot.servers[message.guild.id].shuffle === true) return message.channel.send(tooMuchSkipsRandomEmbed);
+
+            //Comprueba si está activado el modo loop
+            if (bot.servers[message.guild.id].loop === true) return message.channel.send(tooMuchSkipsLoopEmbed);
             
             //Comprueba si se ha proporcionado un número entero
             if (isNaN(args[0])) return message.channel.send(NaNEmbed);
@@ -66,7 +73,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         }
 
         //Omite la reproducción y manda un mensaje de confirmación
-        await message.channel.send(`⏭ | Canción omitida`)
+        await message.channel.send(`⏭ | Canción omitida`);
         await bot.voiceDispatcher.end();
     } catch (e) {
         const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);

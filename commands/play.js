@@ -79,6 +79,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
             //Datos de la canción a reproducir
             let info;
+            let details;
             
             //Función para almacenar la información
             async function reproduction(query) {
@@ -86,6 +87,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 //Busca la información
                 try {
                     info = await ytdl.getInfo(query);
+                    details = info.player_response.videoDetails;
                 } catch (e) {
                     let notFoundEmbed = new discord.RichEmbed()
                         .setColor(resources.red)
@@ -100,9 +102,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
                     let queuedEmbed = new discord.RichEmbed()
                         .setColor(randomColor())
-                        .setThumbnail(info.thumbnail_url.replace("default.jpg", "hqdefault.jpg"))
+                        .setThumbnail(details.thumbnail.thumbnails[3].url)
                         .setAuthor(`Añadido a la cola 🎶`, `https://i.imgur.com/lvShSwa.png`)
-                        .setDescription('[' + info.title + '](' + info.video_url + ')\n\n● **Autor:** `' + info.author.name + '`\n● **Duración:** `' + moment().startOf('day').seconds(info.length_seconds).format('H:mm:ss') + '`')
+                        .setDescription('[' + details.title + '](' + info.video_url + ')\n\n● **Autor:** `' + details.author + '`\n● **Duración:** `' + moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss') + '`')
                         .setFooter(`© 2018 República Gamer LLC | BETA Pública`, resources.server.iconURL);
                     message.channel.send(queuedEmbed);
                 }
@@ -115,7 +117,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         bot.servers[message.guild.id] = {
                             queue: [],
                             nowplaying: {},
-                            shuffle: false
+                            shuffle: false,
+                            loop: false
                         }
                     }
 
@@ -152,8 +155,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         //Genera la información de la cola
                         let newQueueItem = {
                             link: info.video_url,
-                            title: info.title,
-                            duration: moment().startOf('day').seconds(info.length_seconds).format('H:mm:ss'),
+                            title: details.title,
+                            duration: moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss'),
                             requestedBy: message.member.displayName
                         };
 
@@ -161,8 +164,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         bot.servers[message.guild.id].queue.push(newQueueItem);
 
                         //Ejecuta la función de reproducción
-                        const reproductionManager = require(`../resources/audioManager/reproductionManager.js`).run(discord, bot, resources, message, info, ytdl, moment, randomColor);
-                        
+                        require(`../resources/audioManager/reproductionManager.js`).run(discord, bot, resources, message, info, ytdl, moment, randomColor);
+
                     }).catch(err => console.log(err));
                 } else if (message.member.voiceChannelID === message.guild.member(bot.user).voiceChannelID) {
                     //Comprueba si la guild tiene una cola de reproducción
@@ -170,7 +173,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         bot.servers[message.guild.id] = {
                             queue: [],
                             nowplaying: {},
-                            shuffle: false
+                            shuffle: false,
+                            loop: false
                         }
                     }
                     //Comprueba si hay algo en reproducción
@@ -179,8 +183,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         //Genera la información de la cola
                         let newQueueItem = {
                             link: info.video_url,
-                            title: info.title,
-                            duration: moment().startOf('day').seconds(info.length_seconds).format('H:mm:ss'),
+                            title: details.title,
+                            duration: moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss'),
                             requestedBy: message.member.displayName
                         };
 
@@ -188,13 +192,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         bot.servers[message.guild.id].queue.push(newQueueItem);
 
                         //Ejecuta la función de reproducción
-                        const reproductionManager = require(`../resources/audioManager/reproductionManager.js`).run(discord, bot, resources, message, info, ytdl, moment, randomColor);
+                        require(`../resources/audioManager/reproductionManager.js`).run(discord, bot, resources, message, info, ytdl, moment, randomColor);
                     } else {
                         //Genera la información de la cola
                         let newQueueItem = {
                             link: info.video_url,
-                            title: info.title,
-                            duration: moment().startOf('day').seconds(info.length_seconds).format('H:mm:ss'),
+                            title: details.title,
+                            duration: moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss'),
                             requestedBy: message.member.displayName
                         };
 
@@ -239,6 +243,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             };
         }
     } catch (e) {
-        const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

@@ -27,7 +27,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         if (gamemode !== 'solo' && gamemode !== 'duo' && gamemode !== 'squad' && gamemode !== 'lifetime') return message.channel.send(noCorrectSyntaxEmbed);
         if (platform !== 'pc' && platform !== 'xbl' && platform !== 'psn') return message.channel.send(noCorrectSyntaxEmbed);
 
-        let data = fortnite.user(username, platform).then(data => {
+        fortnite.user(username, platform).then(data => {
 
             let stats = data.stats;
 
@@ -162,6 +162,6 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             message.channel.send(errorEmbed);
         });
     } catch (e) {
-        const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

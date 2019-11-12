@@ -6,64 +6,61 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (message.author.id !== config.botOwner && !message.member.roles.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
 
         let notToUnbanEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Debes escribir el id del miembro a desbanear');
+            .setColor(resources.red)
+            .setDescription(`${resources.RedTick} Miembro no encontrado. Debes escribir el ID del miembro a desbanear`);
 
         let noReasonEmbed = new discord.RichEmbed()
-            .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Debes proporcionar un motivo');
+            .setColor(resources.red)
+            .setDescription(`${resources.RedTick} Debes proporcionar un motivo`);
+
+        if (!args[0]) return message.channel.send(notToUnbanEmbed);
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let user = await bot.fetchUser(message.mentions.users.first() || args[0]);
-        if (!user) return message.channel.send(notToBanEmbed);
+        let user;
+        try {
+            user = await bot.fetchUser(args[0]);
+        } catch (e) {
+            return message.channel.send(notToUnbanEmbed);
+        }
 
         let toDeleteCount = command.length - 2 + args[0].length + 2;
 
-        //Esto comprueba si se ha proporcionado razón
+        //Esto comprueba si se debe proporcionar razón
         let reason = message.content.slice(toDeleteCount)
-        if (!reason) return message.channel.send(noReasonEmbed);
+        if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send(noReasonEmbed);
+        if (!reason) reason = `Indefinida`;
 
         await message.guild.unban(user.id);
         
         if (bot.bans.hasOwnProperty(user.id)) {
             await delete bot.bans[user.id];
-            await fs.writeFile('./bans.json', JSON.stringify(bot.bans), async err => {
+            await fs.writeFile(`./bans.json`, JSON.stringify(bot.bans), async err => {
                 if (err) throw err;
             });
         };
 
         let successEmbed = new discord.RichEmbed()
-            .setColor(0xB8E986)
-            .setTitle(resources.GreenTick + ' Operación completada')
-            .setDescription('El usuario ' + user.tag + ' ha sido desbaneado');
+            .setColor(resources.green)
+            .setTitle(`${resources.GreenTick} Operación completada`)
+            .setDescription(`El usuario ${user.tag} ha sido desbaneado`);
 
         let loggingEmbed = new discord.RichEmbed()
-            .setColor(0x3EB57B)
-            .setAuthor(user.tag + ' ha sido DESBANEADO', user.displayAvatarURL)
-            .addField('Usuario', '@' + user.tag, true)
-            .addField('Moderador', '<@' + message.author.id + '>', true)
-            .addField('Razón', reason, true)
+            .setColor(resources.green2)
+            .setAuthor(`${user.tag} ha sido DESBANEADO`, user.displayAvatarURL)
+            .addField(`Usuario`, `@${user.tag}`, true)
+            .addField(`Moderador`, `<@${message.author.id}>`, true)
+            .addField(`Razón`, reason, true)
 
         await loggingChannel.send(loggingEmbed);
         await message.channel.send(successEmbed);
     } catch (e) {
-        if (e.toString().includes('Unknown Ban')) {
+        if (e.toString().includes(`Unknown Ban`)) {
             let notBannedEmbed = new discord.RichEmbed()
-                .setColor(0xF12F49)
-                .setDescription(resources.RedTick + ' Este usuario no ha sido baneado');
-            message.channel.send(notBannedEmbed);
-        } else if (e.toString().includes('Invalid Form Body')) {
-            let notBannedEmbed = new discord.RichEmbed()
-                .setColor(0xF12F49)
-                .setDescription(resources.RedTick + ' Si el usuario no está en el servidor, has de especificar su ID');
-            message.channel.send(notBannedEmbed);
-        }  else if (e.toString().includes('Unknown User')) {
-            let notBannedEmbed = new discord.RichEmbed()
-                .setColor(0xF12F49)
-                .setDescription(resources.RedTick + ' El ID proporcionado no es válido');
+                .setColor(resources.red)
+                .setDescription(`${resources.RedTick} Este usuario no ha sido baneado`);
             message.channel.send(notBannedEmbed);
         } else {
-            let handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+            require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
         }
     }
 }

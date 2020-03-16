@@ -42,9 +42,9 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                 .setFooter(`Traducción solicitada por: ${message.member.displayName}`);
             message.channel.send(resultEmbed);
         }).catch((error) => {
-            console.log(`Error durante la traducción`)
+            console.log(`${new Date().toLocaleString()} 》Error durante la traducción: ${error}`)
         })
     } catch (e) {
-        const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

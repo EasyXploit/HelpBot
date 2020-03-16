@@ -57,7 +57,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription('Se ha/n retirado advertencia/s.')
             .setTimestamp()
             .setFooter(bot.user.username, bot.user.avatarURL)
-            .addField('Fecha:', new Date().toUTCString(), true)
+            .addField('Fecha:', new Date().toLocaleString(), true)
             .addField('Emisor:', '<@' + message.author.id + '>', true)
             .addField('Cantidad:', quantity, true)
             .addField('Destino:', member.user.tag, true)
@@ -87,6 +87,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await loggingChannel.send(loggingEmbed);
         });
     } catch (e) {
-        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

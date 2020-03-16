@@ -57,23 +57,23 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                     const dispatcher = connection.playFile(`./resources/audios/${sound}.mp3`);
 
                     dispatcher.on("error", reason => {
-                        console.log(`Error: ${reason}`);
+                        console.log(`${new Date().toLocaleString()} 》Error: ${reason}`);
                     });
 
                     dispatcher.on("debug", debug => {
-                        console.log(`Debug: ${debug}`);
+                        console.log(`${new Date().toLocaleString()} 》Debug: ${debug}`);
                     });
                     
                     dispatcher.on("start", () => {
-                        console.log(`Reproduciendo: true`);
+                        console.log(`${new Date().toLocaleString()} 》Reproduciendo: true`);
                     });
 
                     dispatcher.on("end", reason => {
-                        console.log(`Fin => Razón: ${reason}`);
+                        console.log(`${new Date().toLocaleString()} 》Fin => Razón: ${reason}`);
                         voiceChannel.leave();
                         bot.voiceStatus = true;
                     });
-                }).catch(err => console.log(err));
+                }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));
                 return;
             } else {
                 return message.channel.send(notAvailableEmbed);
@@ -81,6 +81,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             }
         }
     } catch (e) {
-        const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

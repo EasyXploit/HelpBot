@@ -20,7 +20,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                 event.guild.member(event.user).ban(`No está permitido utilizar enlaces como nombre de usuario`)
 
                 .catch ((err) => {
-                    console.error(`${new Date().toUTCString()} 》${err}`);
+                    console.error(`${new Date().toLocaleString()} 》${err}`);
 
                     let errorEmbed = new discord.RichEmbed()
                         .setColor(resources.red)
@@ -29,7 +29,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                     loggingChannel.send(errorEmbed);
                 })
 
-                console.log(`${new Date().toUTCString()} 》@${event.user.username} intentó unirse a la República Gamer, pero fue baneado por que no está permitido utilizar enlaces como nombre de usuario`)
+                console.log(`${new Date().toLocaleString()} 》@${event.user.username} intentó unirse a la República Gamer, pero fue baneado por que no está permitido utilizar enlaces como nombre de usuario`)
 
                 let preventAccessEmbed = new discord.RichEmbed()
                     .setColor(resources.red)
@@ -37,13 +37,13 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                     .setDescription(`@${event.user.username} intentó unirse a la República Gamer, pero fue baneado por que no está permitido utilizar enlaces como nombre de usuario`)
                     .addField(`🏷 TAG completo`, event.user.tag, true)
                     .addField(`🆔 ID del usuario`, event.user.id, true)
-                    .addField(`📝 Fecha de registro`, event.user.createdAt.toUTCString(), true)
+                    .addField(`📝 Fecha de registro`, event.user.createdAt.toLocaleString(), true)
                     .setTimestamp();
                 loggingChannel.send(preventAccessEmbed);
 
             } else  {
 
-                console.log(`${new Date().toUTCString()} 》@${event.user.tag} se unió a la guild: ${event.guild.name}`)
+                console.log(`${new Date().toLocaleString()} 》@${event.user.tag} se unió a la guild: ${event.guild.name}`)
 
                 let channelWelcomeEmbed = new discord.RichEmbed()
                     .setColor(resources.gold)
@@ -92,9 +92,9 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             .setTitle(`📋 Depuración`)
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
             .addField(`Evento:`, `guildMemberAdd`, true)
-            .addField(`Fecha:`, new Date().toUTCString(), true)
+            .addField(`Fecha:`, new Date().toLocaleString(), true)
             .addField(`Error:`, e.stack, true)
-            .setFooter(new Date().toUTCString(), resources.server.iconURL).setTimestamp();
+            .setFooter(new Date().toLocaleString(), resources.server.iconURL).setTimestamp();
         
         //Se envía el mensaje al canal de depuración
         await bot.channels.get(config.debuggingChannel).send(debuggEmbed);

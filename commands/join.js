@@ -68,8 +68,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             //Manda un mensaje de confirmación
             message.channel.send(`⏺ | Me he unido al canal`);
 
-        }).catch(err => console.log(err));
+        }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));
     } catch (e) {
-        const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

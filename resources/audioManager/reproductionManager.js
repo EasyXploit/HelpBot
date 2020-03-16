@@ -10,8 +10,6 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
 
             if (bot.servers[message.guild.id].shuffle === true) toPlay = Math.floor(Math.random() * (bot.servers[message.guild.id].queue.length - 1));
 
-            console.log(`PASS - - - - - - 1`);
-
             try {
                 //Reproduce la canción
                 bot.voiceDispatcher = connection.playStream(ytdl(server.queue[toPlay].link, {
@@ -19,10 +17,8 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
                     highWaterMark: 1024 * 1024 * 10
                 }));
             } catch (e) {
-                console.log(e);
+                console.log(`${new Date().toLocaleString()} 》${e}`);
             }
-
-            console.log(`PASS - - - - - - 2`);
             
             info = await ytdl.getInfo(server.queue[toPlay].link);
             let details = info.player_response.videoDetails;
@@ -79,7 +75,7 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
 
             bot.voiceDispatcher.on(`end`, reason => {
 
-                console.log(`${new Date().toUTCString()} 》End reason: ${reason}`)
+                console.log(`${new Date().toLocaleString()} 》End reason: ${reason}`)
 
                 //Si queda algo en la cola
                 if (server.queue[0]) {
@@ -103,26 +99,26 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
 
             //Se dispara cuando el dispatcher comienza a emitir
             bot.voiceDispatcher.on(`start`, () => {
-                console.log(`${new Date().toUTCString()} 》Dispatcher: started`)
+                console.log(`${new Date().toLocaleString()} 》Dispatcher: started`)
             });
 
             //Se dispara si el dispatcher tiene información de depuración a mostrar
             bot.voiceDispatcher.on(`debug`, debug => {
-                console.log(`${new Date().toUTCString()} 》Dispatcher (debug): ${debug}`)
+                console.log(`${new Date().toLocaleString()} 》Dispatcher (debug): ${debug}`)
             });
 
             //Se dispara si ocurre un error durante el streaming
             bot.voiceDispatcher.on(`error`, error => {
-                console.log(`${new Date().toUTCString()} 》Dispatcher error: ${error}`)
+                console.log(`${new Date().toLocaleString()} 》Dispatcher error: ${error}`)
             });
 
             //Evalua si el dispatcher está emitiendo o no
             bot.voiceDispatcher.on(`speaking`, speaking => {
-                console.log(`${new Date().toUTCString()} 》Dispatcher speaking: ${speaking}`)
+                console.log(`${new Date().toLocaleString()} 》Dispatcher speaking: ${speaking}`)
             });
         }
         play(bot.voiceConnection, message)
     } catch (e) {
-        console.log(`Error: ${e}`)
+        console.log(`${new Date().toLocaleString()} 》Error: ${e}`)
     }
 }

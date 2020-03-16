@@ -15,7 +15,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         const searchTerm = args.join(` `);
         
         weather.find({search: searchTerm, degreeType: 'C'}, function(err, result) {
-            if(err) console.log(err);
+            if(err) console.log(`${new Date().toLocaleString()} 》${err}`);
             
             const current = result[0].current;
             const location = result[0].location;
@@ -32,6 +32,6 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             message.channel.send(resultEmbed);
         });
     } catch (e) {
-        const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

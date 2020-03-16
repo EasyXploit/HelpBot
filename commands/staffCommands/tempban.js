@@ -138,7 +138,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             if (member) {
                 await user.send(toDMEmbed);
             }
-            await message.guild.ban(user, {reason: reason});
+            await message.guild.ban(user, {reason: `Duración: ${args[1]}, Razón: ${reason}`});
             await loggingChannel.send(loggingEmbed);
             await message.channel.send(successEmbed);
         });

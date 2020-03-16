@@ -40,13 +40,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`El usuario <@${member.id}> ha sido expulsado, ¿alguien más?`);
 
-        let loggingEmbed = new discord.RichEmbed()
-            .setColor(resources.red2)
-            .setAuthor(`${member.user.tag} ha sido EXPULSADO`, member.user.displayAvatarURL)
-            .addField(`Miembro`, `<@${member.id}>`, true)
-            .addField(`Moderador`, `<@${message.author.id}>`, true)
-            .addField(`Razón`, reason, true)
-
         let toDMEmbed = new discord.RichEmbed()
             .setColor(resources.red2)
             .setAuthor(`[EXPULSADO]`, message.guild.iconURL)
@@ -56,7 +49,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         await member.send(toDMEmbed);
         await member.kick(reason);
-        await loggingChannel.send(loggingEmbed);
         await message.channel.send(successEmbed);
     } catch (e) {
         require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);

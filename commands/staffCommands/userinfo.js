@@ -84,14 +84,14 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(`🆔 ID del usuario`, member.id, true)
             .addField(`👮 Permisos`, permsArray.join(', ').toLowerCase(), true)
             .addField(`⚒ Baneable`, bannable, true)
-            .addField(`📝 Fecha de registro`, user.createdAt.toUTCString(), true)
-            .addField(`↙ Unido al servidor`, member.joinedAt.toUTCString(), true)
+            .addField(`📝 Fecha de registro`, user.createdAt.toLocaleString(), true)
+            .addField(`↙ Unido al servidor`, member.joinedAt.toLocaleString(), true)
             .addField(`👑 Estatus`, status.join(', '), true)
             .addField(`🎖 Rol más alto`, member.highestRole.name, true)
             .addField(`💬 Último mensaje`, lastMessage, true)
             .addField(`⚖ Infracciones`, warns, true)
         message.channel.send(resultEmbed);
     } catch (e) {
-        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

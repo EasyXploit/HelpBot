@@ -55,7 +55,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setTimestamp();
         await message.channel.send(awaitingEmbed);
 
-        console.log('\n 》' + bot.user.username + ' ha comenzado a registrar los mensajes del canal ' + message.mentions.channels.first().name + ' a petición de ' + message.author.username + ' durante ' + args[1] + '\n');
+        console.log(`\n${new Date().toLocaleString()} 》${bot.user.username} ha comenzado a registrar los mensajes del canal ${message.mentions.channels.first().name} a petición de ${message.author.username} durante ${args[1]}\n`);
 
         const msgs = await message.mentions.channels.first().awaitMessages(msg => {return msg.content}, {time: milliseconds});
 
@@ -67,8 +67,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setTimestamp();
         message.channel.send(stopEmbed);
 
-        console.log('\n 》' + bot.user.username + ' finalizó el registro de mensajes.');
+        console.log(`\n${new Date().toLocaleString()} 》 ${bot.user.username} finalizó el registro de mensajes.`);
     } catch (e) {
-        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

@@ -17,7 +17,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setTitle('📑 Auditoría')
             .setDescription('**' + message.author.tag + '** detuvo a **' + bot.user.username + '**. \nEl bot tendrá que ser arrancado manualmente');
 
-        console.log(new Date().toUTCString() + ' 》Deteniendo ' + bot.user.username + ' a petición de ' + message.author.username);
+        console.log(`${new Date().toLocaleString()} 》Deteniendo ${bot.user.username} a petición de ${message.author.username}`);
         
         await message.channel.send(successEmbed);
         await loggingChannel.send(loggingEmbed);
@@ -25,6 +25,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await bot.destroy();
         process.exit();
     } catch (e) {
-        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

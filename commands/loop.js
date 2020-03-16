@@ -69,6 +69,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             return message.channel.send(`Error`);
         }
     } catch (e) {
-        const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

@@ -18,7 +18,7 @@ console.log(
     .render()
 );
 
-console.log(`》Iniciando aplicación «\n―――――――――――――――――――――――― \n${new Date().toUTCString()}\n`);
+console.log(`》Iniciando aplicación «\n―――――――――――――――――――――――― \n${new Date().toLocaleString()}\n`);
 
 //DEPENDENCIAS GLOBALES
 const discord = require(`discord.js`);
@@ -28,7 +28,9 @@ const keys = require(`./keys.json`);
 const bot = new discord.Client({
     fetchAllMembers: true,
     disableEveryone: true,
-    disabledEvents: [`TYPING_START`, `TYPING_STOP`]
+    disabledEvents: [`TYPING_START`, `TYPING_STOP`],
+    autoReconnect: true,
+    retryLimit: Infinity 
 });
 
 //RECURSOS GLOBALES
@@ -134,7 +136,7 @@ bot.on(`ready`, async () => {
         bot.setInterval(async () => {
             let ping = Math.round(bot.ping);
             if (ping > 1000) {
-                console.log(`${new Date().toUTCString()} 》Tiempo de respuesta del Websocket elevado: ${ping} ms\n`);
+                console.log(`${new Date().toLocaleString()} 》Tiempo de respuesta del Websocket elevado: ${ping} ms\n`);
 
                 let debuggingEmbed = new discord.RichEmbed()
                     .setColor(0xF8A41E)
@@ -184,14 +186,14 @@ bot.on(`ready`, async () => {
             .setTimestamp();
         debuggingChannel.send(statusEmbed);
     } catch (e) {
-        console.error(`${new Date().toUTCString()} 》${e.stack}`);
+        console.error(`${new Date().toLocaleString()} 》${e.stack}`);
     }
 });
 
 // MANEJADOR DE EVENTOS
 fs.readdir(`./events/`, async (err, files) => {
 
-    if (err) return console.error(`${new Date().toUTCString()} 》No se ha podido completar la carga de los eventos.\n${err.stack}`);
+    if (err) return console.error(`${new Date().toLocaleString()} 》No se ha podido completar la carga de los eventos.\n${err.stack}`);
     files.forEach(file => {
         let eventFunction = require(`./events/${file}`);
         let eventName = file.split(`.`)[0];
@@ -221,7 +223,7 @@ bot.on(`message`, async message => {
             
             let member = await resources.server.fetchMember(args[0]);
             
-            await console.log(`${new Date().toUTCString()} 》Se ha recibido una orden automática de baneo para ${member.user.tag} (${member.id})`);
+            await console.log(`${new Date().toLocaleString()} 》Se ha recibido una orden automática de baneo para ${member.user.tag} (${member.id})`);
 
             let spamMessage = message.content.slice(6 + args[0].length);
             
@@ -244,7 +246,7 @@ bot.on(`message`, async message => {
                 .setColor(resources.gray)
                 .setDescription(`${resources.GrayTick} | Por el momento, los comandos de **${bot.user.username}** solo está disponible desde el servidor de la **República Gamer**.`);
             await message.author.send(noDMEmbed);
-            await console.log(`${new Date().toUTCString()} 》DM: ${message.author.username} (ID: ${message.author.id}) > ${message.content}`);
+            await console.log(`${new Date().toLocaleString()} 》DM: ${message.author.username} (ID: ${message.author.id}) > ${message.content}`);
             return;
         }
     }
@@ -307,9 +309,112 @@ bot.on(`message`, async message => {
                 await message.channel.send(infractionChannelEmbed);
                 await loggingChannel.send(loggingEmbed);
             });
+
+            //Si los warns son 3 o más
+            if (bot.warns[message.author.id].warns >= 3 && bot.warns[message.author.id].warns < 5)  {
+                //Comprueba si existe el rol silenciado, y de no existir, lo crea
+                let role = message.guild.roles.find(r => r.name === 'Silenciado');
+                if (!role) {
+                    role = await message.guild.createRole({
+                        name: 'Silenciado',
+                        color: '#818386',
+                        permissions: []
+                    });
+                    
+                    let botMember = message.guild.members.get(bot.user.id);
+                    await message.guild.setRolePosition(role, botMember.highestRole.position - 1);
+                    
+                    message.guild.channels.forEach(async (channel, id) => {
+                        await channel.overwritePermissions (role, {
+                            SEND_MESSAGES: false,
+                            ADD_REACTIONS: false,
+                            SPEAK: false
+                        });
+                    });
+                }
+
+                //Comprueba si este susuario ya estaba silenciado
+                if (message.member.roles.has(role.id)) return;
+
+                let milliseconds = 604800000; //Duración del mute
+
+                let loggingEmbed = new discord.RichEmbed()
+                    .setColor(0xEF494B)
+                    .setAuthor(message.member.user.tag + ' ha sido SILENCIADO', message.member.user.displayAvatarURL)
+                    .addField('Miembro', '<@' + message.member.id + '>', true)
+                    .addField('Moderador', '<@' + bot.user.id + '>', true)
+                    .addField('Razón', 'Demasiadas infracciones', true)
+                    .addField('Duración', '7 días', true);
+
+                let toDMEmbed = new discord.RichEmbed()
+                    .setColor(0xEF494B)
+                    .setAuthor('[SILENCIADO]', message.guild.iconURL)
+                    .setDescription('<@' + message.member.id + '>, has sido silenciado en ' + message.guild.name)
+                    .addField('Moderador', bot.user.tag, true)
+                    .addField('Razón', 'Demasiadas infracciones', true)
+                    .addField('Duración', '7 días', true);
+
+                bot.mutes[message.member.id] = {
+                    guild: message.guild.id,
+                    time: Date.now() + milliseconds
+                }
+                await message.member.addRole(role);
+
+                fs.writeFile('./mutes.json', JSON.stringify(bot.mutes, null, 4), async err => {
+                    if (err) throw err;
+
+                    await loggingChannel.send(loggingEmbed);
+                    await message.member.send(toDMEmbed);
+                });
+            } else if (bot.warns[message.author.id].warns > 5)  {
+                //Comprueba si existe el rol silenciado, y de no existir, lo crea
+                let role = message.guild.roles.find(r => r.name === 'Silenciado');
+                if (!role) {
+                    role = await message.guild.createRole({
+                        name: 'Silenciado',
+                        color: '#818386',
+                        permissions: []
+                    });
+                    
+                    let botMember = message.guild.members.get(bot.user.id);
+                    await message.guild.setRolePosition(role, botMember.highestRole.position - 1);
+                    
+                    message.guild.channels.forEach(async (channel, id) => {
+                        await channel.overwritePermissions (role, {
+                            SEND_MESSAGES: false,
+                            ADD_REACTIONS: false,
+                            SPEAK: false
+                        });
+                    });
+                }
+
+                let loggingEmbed = new discord.RichEmbed()
+                    .setColor(0xEF494B)
+                    .setAuthor(message.member.user.tag + ' ha sido SILENCIADO', message.member.user.displayAvatarURL)
+                    .addField('Miembro', '<@' + message.member.id + '>', true)
+                    .addField('Moderador', '<@' + bot.user.id + '>', true)
+                    .addField('Razón', 'Demasiadas infracciones', true)
+                    .addField('Duración', '∞', true);
+
+                let toDMEmbed = new discord.RichEmbed()
+                    .setColor(0xEF494B)
+                    .setAuthor('[SILENCIADO]', message.message.guild.iconURL)
+                    .setDescription('<@' + message.member.id + '>, has sido silenciado en ' + message.guild.name)
+                    .addField('Moderador', bot.user.tag, true)
+                    .addField('Razón', 'Demasiadas infracciones', true)
+                    .addField('Duración', '∞', true);
+
+                //Comprueba si este susuario ya estaba silenciado
+                if (member.roles.has(role.id)) return;
+
+                await message.member.addRole(role);
+                await loggingChannel.send(loggingEmbed);
+                await message.member.send(toDMEmbed);
+            }
+
             return;
         } catch (e) {
-            console.log(`Ocurrió un error durante la ejecución de la función "checkBadWords"\nError: ${e}`);
+            console.log(`${new Date().toLocaleString()} 》Ocurrió un error durante la ejecución de la función "checkBadWords"\nError: ${e}`);
         }
     }
     checkBadWords();
@@ -321,11 +426,11 @@ bot.on(`message`, async message => {
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase() + `.js`;
 
-    if (command.length <= 0) return console.error(`${new Date().toUTCString()} 》No hubo ningún comando a cargar`);
+    if (command.length <= 0) return console.error(`${new Date().toLocaleString()} 》No hubo ningún comando a cargar`);
 
     // Función para ejecutar el comando
     try {
-        let commandImput = `${new Date().toUTCString()} 》${message.author.username} introdujo el comando: ${command.slice(-0, -3)} en el canal: ${message.channel.name} de la guild: ${message.guild.name}`;
+        let commandImput = `${new Date().toLocaleString()} 》${message.author.username} introdujo el comando: ${command.slice(-0, -3)} en el canal: ${message.channel.name} de la guild: ${message.guild.name}`;
 
         let waitEmbed = new discord.RichEmbed().setColor(0xF12F49).setDescription(`${resources.RedTick} Debes esperar 2 segundos antes de usar este comando`);
         if (talkedRecently.has(message.author.id)) return message.channel.send(waitEmbed).then(msg => {
@@ -369,13 +474,25 @@ bot.on(`message`, async message => {
             return;
         }
     } catch (e) {
-        const handler = require(`./errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`./errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 });
 
 // Debugging
-bot.on(`error`, (e) => console.error(`${new Date().toUTCString()} 》${e.stack}`));
-bot.on(`warn`, (e) => console.warn(`${new Date().toUTCString()} 》${e.stack}`));
+bot.on(`error`, (e) => {
+    if (e.message.includes(`ECONNRESET`)) return console.log(`${new Date().toLocaleString()} ERROR 》La conexión fue cerrada inesperadamente.\n`)
+    console.error(`${new Date().toLocaleString()} 》ERROR: ${e.stack}`)
+});
+
+bot.on(`warn`, (e) => console.warn(`${new Date().toLocaleString()} 》WARN: ${e.stack}`));
+
+bot.on('shardError', error => {
+    console.error('Una conexión websocket encontró un error:', error);
+});
+
+process.on('unhandledRejection', error => {
+	console.error('Rechazo de promesa no manejada:', error);
+});
 
 // Inicio de sesión del bot
 bot.login(keys.token);

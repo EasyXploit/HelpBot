@@ -5,7 +5,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
         //Comprobación de servidor provisional
         if (event.id === `374945492133740544` || event.id === `430436498937217036`) {
         
-            console.log(`${new Date().toUTCString()} 》${bot.user.username} se unió a la guild: ${event.name}`)
+            console.log(`${new Date().toLocaleString()} 》${bot.user.username} se unió a la guild: ${event.name}`)
 
             let large = `No`;
             let verified = `No`;
@@ -27,7 +27,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                 .addField(`🏷 Nombre`, event.name, true)
                 .addField(`🆔 ID`, event.id, true)
                 .addField(`👑 Propietario`, event.owner + ' (ID: ' + event.ownerID + ')', true)
-                .addField(`📝 Fecha de creación`, event.createdAt.toUTCString(), true)
+                .addField(`📝 Fecha de creación`, event.createdAt.toLocaleString(), true)
                 .addField(`🌍 Región`, event.region, true)
                 .addField(`🆙 Large guild (+250)`, large, true)
                 .addField(`👥 Miembros`, event.members.filter(m => !m.user.bot).size, true)
@@ -51,9 +51,9 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             .setTitle(`📋 Depuración`)
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
             .addField(`Evento:`, `guildCreate`, true)
-            .addField(`Fecha:`, new Date().toUTCString(), true)
+            .addField(`Fecha:`, new Date().toLocaleString(), true)
             .addField(`Error:`, e.stack, true)
-            .setFooter(new Date().toUTCString(), resources.server.iconURL).setTimestamp();
+            .setFooter(new Date().toLocaleString(), resources.server.iconURL).setTimestamp();
         
         //Se envía el mensaje al canal de depuración
         await bot.channels.get(config.debuggingChannel).send(debuggEmbed);

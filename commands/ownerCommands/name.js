@@ -20,7 +20,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Se comprueba si el nombre de usuario proporcionado es igual al ya configurado
         if (nickname === bot.user.username) return message.channel.send(actuallyConfiguredEmbed);
 
-        console.log('\n' + new Date().toUTCString() + ' 》Se procederá a cambiar el nombre de usuario ' + bot.user.username + ' a ' + nickname);
+        console.log(`\n${new Date().toLocaleString()} 》Se procederá a cambiar el nombre de usuario ${bot.user.username} a ${nickname}`);
 
         //Se cambia el username
         await bot.user.setUsername(nickname);
@@ -40,6 +40,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await message.channel.send(successEmbed);
         await loggingChannel.send(loggingEmbed);
     } catch (e) {
-        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

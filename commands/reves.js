@@ -16,6 +16,6 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .setDescription('📝 | ' + text);
         message.channel.send(resultEmbed);
     } catch (e) {
-        const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

@@ -76,6 +76,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await message.channel.send(`⏭ | Canción omitida`);
         await bot.voiceDispatcher.end();
     } catch (e) {
-        const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

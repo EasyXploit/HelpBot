@@ -47,17 +47,17 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                                 .setFooter(bot.user.username, bot.user.avatarURL)
                                 .setTitle('📑 Auditoría')
                                 .setDescription('Se ha instalado un nuevo rol configurable.')
-                                .addField('Fecha:', new Date().toUTCString(), true)
+                                .addField('Fecha:', new Date().toLocaleString(), true)
                                 .addField('Emisor:', '<@' + message.author.id + '>', true)
                                 .addField('Rol:', args[1], true)
                                 .addField('Destino (ID)', args[0], true)
                                 .addField('Emoji:', args[2], true);
                             await loggingChannel.send(loggingEmbed);
 
-                            console.log('\n 》' + message.author.username + ' instaló el rol ' + message.mentions.roles.first().name + ' en la lista de configuración de roles con ID ' + args[0] + '.');
+                            console.log(`\n ${new Date().toLocaleString()} 》${message.author.username} instaló el rol ${message.mentions.roles.first().name} en la lista de configuración de roles con ID ${args[0]}.`);
 
                         } catch (e) {
-                            console.error(new Date().toUTCString() + ' 》' + e);
+                            console.error(new Date().toLocaleString() + ' 》' + e);
                             let errorEmbed = new discord.RichEmbed()
                                 .setColor(0xF12F49)
                                 .setTitle('❌ Ocurrió un error')
@@ -68,7 +68,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                     }
                     setupRole();
                 } else {
-                    console.log (new Date().toUTCString() + ' 》' + message.author.username + ' no proporcionó un ID de canal de texto válido para ejecutar el comando: ' + message.content + ' en ' + message.guild.name);
+                    console.log (new Date().toLocaleString() + ' 》' + message.author.username + ' no proporcionó un ID de canal de texto válido para ejecutar el comando: ' + message.content + ' en ' + message.guild.name);
 
                     let errorEmbed = new discord.RichEmbed()
                         .setColor(0xF12F49)
@@ -76,7 +76,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                     message.channel.send(errorEmbed);
                 }
             } else {
-                console.log (new Date().toUTCString() + ' 》' + message.author.username + ' no proporcionó un rol válido para ejecutar el comando: ' + message.content + ' en ' + message.guild.name);
+                console.log (new Date().toLocaleString() + ' 》' + message.author.username + ' no proporcionó un rol válido para ejecutar el comando: ' + message.content + ' en ' + message.guild.name);
 
                 let errorEmbed = new discord.RichEmbed()
                     .setColor(0xF12F49)
@@ -84,7 +84,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 message.channel.send(errorEmbed);
             }
         } else {
-            console.log (new Date().toUTCString() + ' 》' + message.author.username + ' proporcionó demasiados argumentos para ejecutar el comando: ' + message.content + ' en ' + message.guild.name);
+            console.log (new Date().toLocaleString() + ' 》' + message.author.username + ' proporcionó demasiados argumentos para ejecutar el comando: ' + message.content + ' en ' + message.guild.name);
 
             let errorEmbed = new discord.RichEmbed()
                 .setColor(0xF12F49)
@@ -92,7 +92,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             message.channel.send(errorEmbed);
         }
     } else {
-        console.log (new Date().toUTCString() + ' 》' + message.author.username + ' no proporcionó suficientes argumentos para ejecutar el comando: ' + message.content + ' en ' + message.guild.name);
+        console.log (new Date().toLocaleString() + ' 》' + message.author.username + ' no proporcionó suficientes argumentos para ejecutar el comando: ' + message.content + ' en ' + message.guild.name);
 
         let errorEmbed = new discord.RichEmbed()
             .setColor(0xF12F49)

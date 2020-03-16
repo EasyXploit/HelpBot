@@ -1,7 +1,7 @@
 exports.run = async (event, discord, fs, config, keys, bot, resources) => {
     
     try {
-        console.log(`${new Date().toUTCString()} 》${bot.user.username} abandonó la guild: ${event.name}`)
+        console.log(`${new Date().toLocaleString()} 》${bot.user.username} abandonó la guild: ${event.name}`)
 
         let debuggingEmbed = new discord.RichEmbed()
             .setColor(resources.orange)
@@ -19,9 +19,9 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             .setTitle(`📋 Depuración`)
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
             .addField(`Evento:`, `guildMemberRemove`, true)
-            .addField(`Fecha:`, new Date().toUTCString(), true)
+            .addField(`Fecha:`, new Date().toLocaleString(), true)
             .addField(`Error:`, e.stack, true)
-            .setFooter(new Date().toUTCString(), resources.server.iconURL).setTimestamp();
+            .setFooter(new Date().toLocaleString(), resources.server.iconURL).setTimestamp();
         
         //Se envía el mensaje al canal de depuración
         await bot.channels.get(config.debuggingChannel).send(debuggEmbed);

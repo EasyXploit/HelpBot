@@ -16,7 +16,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         const randomColor = require('randomcolor');
         
         giphy.search(searchTerm, function(err, results) {
-            if(err) console.log(err);
+            if(err) console.log(`${new Date().toLocaleString()} 》${err}`);
             
             let data = results.data[Math.floor(Math.random() * (results.data.length - 1))];
             
@@ -35,6 +35,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             message.channel.send(resultEmbed);
         });
     } catch (e) {
-        const handler = require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

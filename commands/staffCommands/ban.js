@@ -62,14 +62,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`El usuario <@${user.id}> ha sido baneado, ¿alguien más? ${resources.drakeban}`);
 
-        let loggingEmbed = new discord.RichEmbed()
-            .setColor(resources.red2)
-            .setAuthor(`${user.tag} ha sido BANEADO`, user.displayAvatarURL)
-            .addField(`Miembro`, `<@${user.id}>`, true)
-            .addField(`Moderador`, `<@${message.author.id}>`, true)
-            .addField(`Razón`, reason, true)
-            .addField(`Duración`, `∞`, true);
-
         let toDMEmbed = new discord.RichEmbed()
             .setColor(resources.red2)
             .setAuthor(`[BANEADO]`, message.guild.iconURL)
@@ -83,7 +75,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         }
 
         await message.guild.ban(user, {reason: reason});
-        await loggingChannel.send(loggingEmbed);
         await message.channel.send(successEmbed);
 
     } catch (e) {

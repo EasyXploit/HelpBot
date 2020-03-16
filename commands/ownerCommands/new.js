@@ -34,6 +34,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setThumbnail('https://i.imgur.com/oqDsHz4.png');
         message.channel.send(embed);
     } catch (e) {
-        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

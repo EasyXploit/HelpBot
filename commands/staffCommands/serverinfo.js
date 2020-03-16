@@ -35,7 +35,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(`🏷 Nombre`, guild.name, true)
             .addField(`🆔 ID`, guild.id, true)
             .addField(`👑 Propietario`, `${guild.owner} (ID: ${guild.ownerID})`, true)
-            .addField(`📝 Fecha de creación`, guild.createdAt.toUTCString(), true)
+            .addField(`📝 Fecha de creación`, guild.createdAt.toLocaleString(), true)
             .addField(`🌍 Región`, guild.region, true)
             .addField(`🕗 Canal de AFK`, `${guild.afkChannel.name}\nTimeout: ${minutes} minutos`, true)
             .addField(`🆙 Large guild (+250)`, large, true)
@@ -47,6 +47,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         message.channel.send(resultEmbed);
     } catch (e) {
-        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

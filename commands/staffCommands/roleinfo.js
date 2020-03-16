@@ -45,11 +45,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(`🗣 Mencionable`, mentionable, true)
             .addField(`👁️‍ Se muestra`, hoisted, true)
             .addField(`🔰 Color`, role.hexColor, true)
-            .addField(`📝 Fecha de creación`, role.createdAt.toUTCString(), true)
+            .addField(`📝 Fecha de creación`, role.createdAt.toLocaleString(), true)
             .addField(`⚙ Administración`, managed, true)
 
         message.channel.send(resultEmbed);
     } catch (e) {
-        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

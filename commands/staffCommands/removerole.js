@@ -45,7 +45,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setColor(resources.blue)
                 .setTitle(`📑 Auditoría`)
                 .setDescription(`Se ha retirado un rol.`)
-                .addField(`Fecha:`, new Date().toUTCString(), true)
+                .addField(`Fecha:`, new Date().toLocaleString(), true)
                 .addField(`Emisor:`, `<@${message.author.id}>`, true)
                 .addField(`Rol:`, role.name, true)
                 .addField(`Destino:`, member.user.tag, true)
@@ -71,7 +71,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setColor(resources.blue)
                 .setTitle(`📑 Auditoría`)
                 .setDescription(`Se ha retirado un rol.`)
-                .addField(`Fecha:`, new Date().toUTCString(), true)
+                .addField(`Fecha:`, new Date().toLocaleString(), true)
                 .addField(`Emisor:`, `<@${message.author.id}>`, true)
                 .addField(`Rol:`, role.name, true)
                 .addField(`Destino:`, `<@${member.id}>`, true)
@@ -91,6 +91,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             }
         }
     } catch (e) {
-        const handler = require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 }

@@ -198,9 +198,16 @@ fs.readdir(`./events/`, async (err, files) => {
         let eventFunction = require(`./events/${file}`);
         let eventName = file.split(`.`)[0];
 
-        bot.on(eventName, event => {
-            eventFunction.run(event, discord, fs, config, keys, bot, resources);
-        });
+        if (eventName === 'guildBanAdd') {
+            bot.on(eventName, (guild, user) => {
+                eventFunction.run(guild, user, discord, fs, config, keys, bot, resources);
+            });
+        } else {
+            bot.on(eventName, event => {
+                eventFunction.run(event, discord, fs, config, keys, bot, resources);
+            });
+        }
+
         console.log(` - Evento [${eventName}] cargado`);
     });
     console.log(`\n`);

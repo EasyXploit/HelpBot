@@ -5,7 +5,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         const url = message.content.slice(7);
         
-        let noCorrectSyntaxEmbed = new discord.RichEmbed()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Debes escribir la URL de la imagen a Spawnear');
             
@@ -15,7 +15,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         const avatar = "https://cdn.discordapp.com/avatars/365975655608745985/a6cfb55514ce22cd720d37d1c572a5e7.png?";
         
-        let resultEmbed = new discord.RichEmbed()
+        let resultEmbed = new discord.MessageEmbed ()
             .setColor(0x00AF85)
             .setTitle('A wild pokémon has appeared!')
             .setDescription('Guess the pokémon and type p!catch <pokémon> to catch it!')

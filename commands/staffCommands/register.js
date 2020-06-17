@@ -3,11 +3,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-register (#canal) (xS | xM | xH)
     
     try {
-        let noCorrectSyntaxEmbed = new discord.RichEmbed()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(0xF04647)
             .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'register (#canal) (xS/xM/xH)`');
         
-        let noCorrectTimeEmbed = new discord.RichEmbed()
+        let noCorrectTimeEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Debes proporcionar una unidad de medida válida. Por ejemplo: `5s`, `10m`, `12h` o `3d`');
 
@@ -47,7 +47,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 break;
         }
 
-        let awaitingEmbed = new discord.RichEmbed()
+        let awaitingEmbed = new discord.MessageEmbed ()
             .setTitle('👁 Registrando mensajes ...')
             .setColor(0xFFC857)
             .setDescription(bot.user.username + ' registrará todos los mensajes enviados a ' + args[0] + ' durante ' + args[1] + '.')
@@ -59,7 +59,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         const msgs = await message.mentions.channels.first().awaitMessages(msg => {return msg.content}, {time: milliseconds});
 
-        let stopEmbed = new discord.RichEmbed()
+        let stopEmbed = new discord.MessageEmbed ()
             .setTitle('👁 Registro finalizado')
             .setColor(0xFFC857)
             .setDescription('Mensajes registrados por ' + bot.user.username + `:\n\n- ${msgs.map(msg => msg.content).join('\n- ')}`)

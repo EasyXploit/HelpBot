@@ -4,7 +4,7 @@ exports.run = async (discord, config, bot, message, args, command, e) => {
     if (e.toLocaleString().includes('Cannot find module')) return;
     
     //Se declara el canal de depuración
-    const debuggingChannel = bot.channels.get(config.debuggingChannel);
+    const debuggingChannel = bot.channels.cache.get(config.debuggingChannel);
     
     //Se declara el archivo de recursos
     const resources = require(`./resources/resources.js`);
@@ -21,7 +21,7 @@ exports.run = async (discord, config, bot, message, args, command, e) => {
     console.error('\n' + new Date().toLocaleString() + ' 》' + e.stack + '\n');
 
     //Se muestra el error en el canal de depuración
-    let debuggEmbed = new discord.RichEmbed()
+    let debuggEmbed = new discord.MessageEmbed()
         .setColor(resources.brown)
         .setTitle('📋 Depuración')
         .setDescription('Se declaró un error durante la ejecución de un comando')
@@ -34,7 +34,7 @@ exports.run = async (discord, config, bot, message, args, command, e) => {
         .addField('Error:', e.stack, true)
         .setFooter(new Date().toLocaleString(), resources.server.iconURL).setTimestamp()
     
-    let reportedEmbed = new discord.RichEmbed()
+    let reportedEmbed = new discord.MessageEmbed()
         .setColor(resources.red)
         .setTitle(resources.RedTick + '¡Vaya! Algo fue mal ...')
         .setDescription('Lo hemos reportado al equipo de desarrollo');

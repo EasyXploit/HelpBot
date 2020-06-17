@@ -14,11 +14,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let content = fields[1];
         let changed;
 
-        let noCorrectSyntaxEmbed = new discord.RichEmbed()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(0xF04647)
             .setDescription(resources.RedTick + ' La sintaxis del comando es `' + config.ownerPrefix + 'presence ("estatus" | "actividad") ("online" | "offline" | "idle" | "dnd" - "nombreDeLaAtividad")`');
 
-        let actuallyConfiguredEmbed = new discord.RichEmbed()
+        let actuallyConfiguredEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Esta configuración ya ha sido aplicada');
 
@@ -46,12 +46,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             changed = 'la actividad';   
         }
 
-        let resultEmbed = new discord.RichEmbed()
+        let resultEmbed = new discord.MessageEmbed ()
             .setColor(0xB8E986)
             .setTitle(resources.GreenTick + ' Operación en marcha')
             .setDescription('Cambiaste ' + changed + ' del bot a `' + content + '`.\nEsta operación podría tardar unos minutos en completarse.')
 
-        let loggingEmbed = new discord.RichEmbed()
+        let loggingEmbed = new discord.MessageEmbed ()
             .setColor(0x4A90E2)
             .setTimestamp()
             .setFooter('© 2018 República Gamer LLC', bot.user.avatarURL)

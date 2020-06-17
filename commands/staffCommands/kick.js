@@ -5,11 +5,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         if (message.author.id !== config.botOwner && !message.member.roles.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
 
-        let notToKickEmbed = new discord.RichEmbed()
+        let notToKickEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID`);
 
-        let noReasonEmbed = new discord.RichEmbed()
+        let noReasonEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes proporcionar un motivo`);
 
@@ -35,12 +35,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send(noReasonEmbed);
         if (!reason) reason = `Indefinida`;
 
-        let successEmbed = new discord.RichEmbed()
+        let successEmbed = new discord.MessageEmbed ()
             .setColor(resources.green)
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`El usuario <@${member.id}> ha sido expulsado, ¿alguien más?`);
 
-        let toDMEmbed = new discord.RichEmbed()
+        let toDMEmbed = new discord.MessageEmbed ()
             .setColor(resources.red2)
             .setAuthor(`[EXPULSADO]`, message.guild.iconURL)
             .setDescription(`<@${member.id}>, has sido expulsado en ${message.guild.name}`)

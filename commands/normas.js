@@ -3,7 +3,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     //!normas
     
     try {
-        let helpEmbed = new discord.RichEmbed()
+        let helpEmbed = new discord.MessageEmbed ()
             .setColor(0xFFC857)
             .setThumbnail('http://i.imgur.com/jAiDAvR.png')
             .setAuthor('NORMAS', 'http://i.imgur.com/jAiDAvR.png')

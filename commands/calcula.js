@@ -4,20 +4,20 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     
     try {
         if (args.join(' ').toLowerCase() === 'yo + ella' || args.join(' ').toLowerCase() === 'ella + yo' || args.join(' ').toLowerCase() === 'yo+ella' || args.join(' ').toLowerCase() === 'ella+yo') {
-            let resultEmbed = new discord.RichEmbed()
+            let resultEmbed = new discord.MessageEmbed()
                 .setColor(0x3D8AC2)
                 .setDescription('🔢 | **Resultado:** ' + 'Eso no es posible')
                 .setFooter('Operación sugerida: ella + el');
             return message.channel.send(resultEmbed);
         } else if (args.join(' ').toLowerCase() === 'el + ella' || args.join(' ').toLowerCase() === 'ella + el' || args.join(' ').toLowerCase() === 'el+ella' || args.join(' ').toLowerCase() === 'ella+el' || args.join(' ').toLowerCase() === 'él + ella' || args.join(' ').toLowerCase() === 'ella + él' || args.join(' ').toLowerCase() === 'él+ella' || args.join(' ').toLowerCase() === 'ella+él') {
-            let resultEmbed = new discord.RichEmbed()
+            let resultEmbed = new discord.MessageEmbed()
                 .setColor(0x3D8AC2)
                 .setDescription('🔢 | **Resultado:** ' + 'Jamás será tuya')
                 .setFooter('Ella es feliz con él');
             return message.channel.send(resultEmbed);
         }
         
-        let noCorrectSyntaxEmbed = new discord.RichEmbed()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(0xF04647)
             .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.prefix + 'calcula (número 1) (+ | - | * | / | round | pow | sqrt | abs | ceil | floor | sin | cos) (número 2 si procede)`');
         
@@ -26,14 +26,14 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         let operator = args[1];
         if (operator !== '+' && operator !== '-' && operator !== '*' && operator !== '/' && operator !== 'pi' && operator !== 'round' && operator !== 'pow' && operator !== 'sqrt' && operator !== 'abs' && operator !== 'ceil' && operator !== 'floor' && operator !== 'sin' && operator !== 'cos') return message.channel.send(noCorrectSyntaxEmbed);
         
-        let isNaNEmbed = new discord.RichEmbed()
+        let isNaNEmbed = new discord.MessageEmbed()
             .setColor(0xF04647)
             .setDescription(resources.RedTick + ' Debes proporcionar números enteros');
         
         if (isNaN(args[0])) return message.channel.send(isNaNEmbed);
         let N1 = parseInt(args[0]);
         
-        let noN2Embed = new discord.RichEmbed()
+        let noN2Embed = new discord.MessageEmbed()
             .setColor(0xF04647)
             .setDescription(resources.RedTick + ' Debes proporcionar una segunda cifra');
         
@@ -98,7 +98,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             result = Math.cos(N1 * Math.PI / 180);
         }
 
-        const resultEmbed = new discord.RichEmbed()
+        const resultEmbed = new discord.MessageEmbed()
             .setColor(0x3D8AC2)
             .setDescription('🔢 | **Resultado:** ' + result)
             .setFooter(operation);

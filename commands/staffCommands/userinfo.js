@@ -3,18 +3,18 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-userinfo (@usuario | id)
 
     try {
-        let noUserEmbed = new discord.RichEmbed()
+        let noUserEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
 
-        let noBotsEmbed = new discord.RichEmbed()
+        let noBotsEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(`${resources.RedTick} No puedes obtener información de un bot`);
 
         let member;
 
         if (args.length < 1) {
-            member = message.guild.members.get(message.author.id);
+            member = message.guild.members.cache.get(message.author.id);
         } else {
             member = await message.guild.fetchMember(message.mentions.users.first() || args[0]);
         }
@@ -74,7 +74,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             lastMessage = `Ninguno en caché`;
         }
 
-        let resultEmbed = new discord.RichEmbed()
+        let resultEmbed = new discord.MessageEmbed ()
             .setColor(member.displayHexColor)
             .setTitle(`🙍 Información de usuario`)
             .setDescription(`Mostrando información acerca del usuario <@${member.id}>`)

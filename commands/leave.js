@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    const noPrivilegesEmbed = new discord.RichEmbed()
+    const noPrivilegesEmbed = new discord.MessageEmbed ()
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
@@ -9,11 +9,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //!leave
 
     try {
-        let notInChannelEmbed = new discord.RichEmbed()
+        let notInChannelEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} El bot no está en ningún canal de voz.`);
         
-        let notInYourChannelEmbed = new discord.RichEmbed()
+        let notInYourChannelEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que el bot.`);
 

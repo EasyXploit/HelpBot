@@ -3,7 +3,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
     try {
         console.log(`${new Date().toLocaleString()} 》${bot.user.username} abandonó la guild: ${event.name}`)
 
-        let debuggingEmbed = new discord.RichEmbed()
+        let debuggingEmbed = new discord.MessageEmbed()
             .setColor(resources.orange)
             .setThumbnail(event.iconURL)
             .setAuthor(`${bot.user.username} abandonó una guild`, bot.user.displayAvatarURL)
@@ -11,10 +11,10 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             .addField(`🆔 ID`, event.id, true)
             .setTimestamp();
 
-        await bot.channels.get(config.debuggingChannel).send(debuggingEmbed);
+        await bot.channels.cache.get(config.debuggingChannel).send(debuggingEmbed);
     } catch (e) {
         //Se muestra el error en el canal de depuración
-        let debuggEmbed = new discord.RichEmbed()
+        let debuggEmbed = new discord.MessageEmbed()
             .setColor(resources.brown)
             .setTitle(`📋 Depuración`)
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
@@ -24,6 +24,6 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             .setFooter(new Date().toLocaleString(), resources.server.iconURL).setTimestamp();
         
         //Se envía el mensaje al canal de depuración
-        await bot.channels.get(config.debuggingChannel).send(debuggEmbed);
+        await bot.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
     }
 }

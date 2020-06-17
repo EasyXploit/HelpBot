@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //$logging (#canal | id)
     
     try {
-        let noCorrectSyntaxEmbed = new discord.RichEmbed()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.prefix + 'logging (#canal | id)`');
     
@@ -11,13 +11,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (args.length < 1) return message.channel.send(noCorrectSyntaxEmbed);
         
         //Comprueba si se ha proporcionado un canal de texto válido (mención/id)
-        let channelMention = message.mentions.channels.first() || message.guild.channels.get(args[0]);
+        let channelMention = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
         if (!channelMention) return message.channel.send(noCorrectSyntaxEmbed);
         
         //Almacena el ID del canal
         let channel = channelMention.id;
         
-        let alreadyConfiguredEmbed = new discord.RichEmbed()
+        let alreadyConfiguredEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Este canal de auditoría ya ha sido configurado');
         
@@ -28,12 +28,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         config.loggingChannel = channel;
         await fs.writeFile('./config.json', JSON.stringify(config, null, 4), (err) => console.error);
 
-        let completedEmbed = new discord.RichEmbed()
+        let completedEmbed = new discord.MessageEmbed ()
             .setColor(0xB8E986)
             .setTitle(resources.GreenTick + ' Operación completada')
             .setDescription('Cambiaste el canal de auditoría a <#' + channel + '>');
 
-        let loggingEmbed = new discord.RichEmbed()
+        let loggingEmbed = new discord.MessageEmbed ()
             .setColor(0x4A90E2)
             .setTimestamp()
             .setFooter(bot.user.username, bot.user.avatarURL)

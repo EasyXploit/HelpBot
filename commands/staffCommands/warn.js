@@ -3,15 +3,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-warn (@miembro | id) (razón)
     
     try {
-        let notToMuteEmbed = new discord.RichEmbed()
+        let notToMuteEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Debes mencionar a un miembro o escribir su id');
 
-        let noBotsEmbed = new discord.RichEmbed()
+        let noBotsEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' No puedes advertir a un bot');
         
-        let undefinedReasonEmbed = new discord.RichEmbed()
+        let undefinedReasonEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Se debe adjuntar una razón');
 
@@ -33,18 +33,18 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         message.delete();
 
-        let successEmbed = new discord.RichEmbed()
+        let successEmbed = new discord.MessageEmbed ()
             .setColor(0xF8A41E)
             .setDescription(`${resources.OrangeTick} El usuario <@${member.id}> ha sido advertido debido a **${reason}**`);
 
-        let loggingEmbed = new discord.RichEmbed()
+        let loggingEmbed = new discord.MessageEmbed ()
             .setColor(0xF8A41E)
             .setAuthor(member.user.tag + ' ha sido ADVERTIDO', member.user.displayAvatarURL)
             .addField('Miembro', '<@' + member.id + '>', true)
             .addField('Moderador', '<@' + moderator.id + '>', true)
             .addField('Razón', reason, true);
 
-        let toDMEmbed = new discord.RichEmbed()
+        let toDMEmbed = new discord.MessageEmbed ()
             .setColor(0xF8A41E)
             .setAuthor('[ADVERTIDO]', message.guild.iconURL)
             .setDescription('<@' + member.id + '>, has sido advertido en ' + message.guild.name)
@@ -79,7 +79,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                     permissions: []
                 });
                 
-                let botMember = message.guild.members.get(bot.user.id);
+                let botMember = message.guild.members.cache.get(bot.user.id);
                 await message.guild.setRolePosition(role, botMember.highestRole.position - 1);
 
                 message.guild.channels.forEach(async (channel, id) => {
@@ -91,7 +91,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 });
             }
 
-            let loggingEmbed = new discord.RichEmbed()
+            let loggingEmbed = new discord.MessageEmbed ()
                 .setColor(0xEF494B)
                 .setAuthor(member.user.tag + ' ha sido SILENCIADO', member.user.displayAvatarURL)
                 .addField('Miembro', '<@' + member.id + '>', true)
@@ -99,7 +99,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .addField('Razón', 'Demasiadas advertencias', true)
                 .addField('Duración', duration, true);
 
-            let toDMEmbed = new discord.RichEmbed()
+            let toDMEmbed = new discord.MessageEmbed ()
                 .setColor(0xEF494B)
                 .setAuthor('[SILENCIADO]', message.guild.iconURL)
                 .setDescription('<@' + member.id + '>, has sido silenciado en ' + message.guild.name)

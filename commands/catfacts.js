@@ -22,7 +22,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             return image;
         }
 
-        let resultEmbed = new discord.RichEmbed()         
+        let resultEmbed = new discord.MessageEmbed()         
             .setColor(0xA7A5C6)
             .setImage(randomImages())
             .setTitle('Datos sobre gatos  🐈')

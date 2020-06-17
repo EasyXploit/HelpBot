@@ -5,11 +5,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         if (message.author.id !== config.botOwner && !message.member.roles.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
 
-        let notToUnbanEmbed = new discord.RichEmbed()
+        let notToUnbanEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Miembro no encontrado. Debes escribir el ID del miembro a desbanear`);
 
-        let noReasonEmbed = new discord.RichEmbed()
+        let noReasonEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes proporcionar un motivo`);
 
@@ -39,12 +39,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             });
         };
 
-        let successEmbed = new discord.RichEmbed()
+        let successEmbed = new discord.MessageEmbed ()
             .setColor(resources.green)
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`El usuario ${user.tag} ha sido desbaneado`);
 
-        let loggingEmbed = new discord.RichEmbed()
+        let loggingEmbed = new discord.MessageEmbed ()
             .setColor(resources.green2)
             .setAuthor(`${user.tag} ha sido DESBANEADO`, user.displayAvatarURL)
             .addField(`Usuario`, `@${user.tag}`, true)
@@ -55,7 +55,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await message.channel.send(successEmbed);
     } catch (e) {
         if (e.toString().includes(`Unknown Ban`)) {
-            let notBannedEmbed = new discord.RichEmbed()
+            let notBannedEmbed = new discord.MessageEmbed ()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} Este usuario no ha sido baneado`);
             message.channel.send(notBannedEmbed);

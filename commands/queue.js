@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    const noPrivilegesEmbed = new discord.RichEmbed()
+    const noPrivilegesEmbed = new discord.MessageEmbed ()
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
@@ -11,7 +11,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         const randomColor = require('randomcolor');
         
-        let noQueueEmbed = new discord.RichEmbed()
+        let noQueueEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} El bot no tiene ninguna canción en la cola.`);
         
@@ -19,7 +19,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let server = bot.servers[message.guild.id];
         
-        let queueEmbed = new discord.RichEmbed()
+        let queueEmbed = new discord.MessageEmbed ()
                 .setColor(randomColor())
                 .setAuthor(`Cola de reproducción - Ahora mismo:`, `https://i.imgur.com/lvShSwa.png`)
                 .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n` + '● Duración: `' + server.nowplaying.duration + '`.\n ● Requerida por: `' + server.nowplaying.requestedBy + '`')

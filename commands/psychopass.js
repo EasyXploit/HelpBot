@@ -15,7 +15,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             result = '** es un criminal que necesita ser ejecutado mortalmente.'
         }
 
-        const resultEmbed = new discord.RichEmbed()
+        const resultEmbed = new discord.MessageEmbed ()
             .setColor(0xDDDDDD)
             .setTitle(':gun: | Coeficiente criminal: **' + coefficient + '%**')
             .setDescription('**' + member + result)

@@ -3,7 +3,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     //!elige "opción1" "opción2" ...
     
     try {
-        let notToAnswerEmbed = new discord.RichEmbed()
+        let notToAnswerEmbed = new discord.MessageEmbed()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Debes proporcionarme al menos 2 opciones.\nLa sintaxis de este comando es `' + config.prefix + 'elige "opción1" "opción2" ...`');
 
@@ -18,7 +18,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
 
         const texts = ['parece buena opción', 'suena bien', 'parece la opción más viable', ', me decantaré por esta opción', 'es para noobs, osea que la otra'];
 
-        const resultEmbed = new discord.RichEmbed()
+        const resultEmbed = new discord.MessageEmbed()
             .setColor(0x98DBCC)
             .setDescription('🎯 | _"' + options[Math.floor(Math.random() * options.length)] + '"_ ' + texts[Math.floor(Math.random() * texts.length)] + ' ' + message.member.displayName);
 

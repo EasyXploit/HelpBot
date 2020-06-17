@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    const noPrivilegesEmbed = new discord.RichEmbed()
+    const noPrivilegesEmbed = new discord.MessageEmbed ()
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
@@ -9,7 +9,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //!np
 
     try {
-        let noQueueEmbed = new discord.RichEmbed()
+        let noQueueEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} El bot no tiene ninguna canción en la cola.`);
         
@@ -34,7 +34,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             progressBar[percentage.toString().slice(0, 1)] = `🔘`;
         }
         
-        let progressEmbed = new discord.RichEmbed()
+        let progressEmbed = new discord.MessageEmbed ()
             .setColor(randomColor())
             .setAuthor(`Ahora mismo:`, `https://i.imgur.com/lvShSwa.png`)
             .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n${progressBar.join(``)} ${percentage}%\n` + '`' + moment().startOf('day').milliseconds(progress).format('H:mm:ss') + ' / ' + moment().startOf('day').milliseconds(total).format('H:mm:ss') + '`')

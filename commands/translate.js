@@ -6,17 +6,17 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         const translate = module.require(`translate`);
         const langs = JSON.parse(fs.readFileSync(`./langs.json`, `utf-8`));
         
-        let noLanguageEmbed = new discord.RichEmbed()
+        let noLanguageEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setTitle(`${resources.RedTick} Debes proporcionarme un lenguaje al que traducir`)
             .setDescription('La sintaxis de este comando es `' + config.prefix +'translate (fromLang) (toLang) (toTranslate)`');
         
-        let notToTranslateEmbed = new discord.RichEmbed()
+        let notToTranslateEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setTitle(`${resources.RedTick} Debes proporcionarme un término a traducir`)
             .setDescription('La sintaxis de este comando es `' + config.prefix +'translate (fromLang) (toLang) (toTranslate)`');
         
-        let noCorrectCodeEmbed = new discord.RichEmbed()
+        let noCorrectCodeEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setTitle(`${resources.RedTick} Debes proporcionarme un lenguaje al que traducir`)
             .setDescription('Debes introducir \n`' + config.prefix +'translate (fromLang) (toLang) (toTranslate)`');
@@ -34,7 +34,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         translate(toTranslate, { from: fromLang, to: toLang, engine: 'yandex', key: keys.yandexTranslate }).then(text => {
             message.delete();
             
-            let resultEmbed = new discord.RichEmbed()
+            let resultEmbed = new discord.MessageEmbed ()
                 .setColor(resources.blue)
                 .setThumbnail(`https://i.imgur.com/Gg66EoX.png`)
                 .setAuthor(`Traductor`, `https://i.imgur.com/Gg66EoX.png`)

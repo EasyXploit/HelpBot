@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
-    const noPrivilegesEmbed = new discord.RichEmbed()
+    const noPrivilegesEmbed = new discord.MessageEmbed ()
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
@@ -12,27 +12,27 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         const ytdl = require(`ytdl-core`);
         const moment = require(`moment`);
         
-        let noConnectionEmbed = new discord.RichEmbed()
+        let noConnectionEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} <@${bot.user.id}> no está conectado a ninguna sala.`);
         
-        let noChannelEmbed = new discord.RichEmbed()
+        let noChannelEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes estar conectado a un canal de voz.`);
 
-        let notAvailableEmbed = new discord.RichEmbed()
+        let notAvailableEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${bot.user.id}>.`);
 
-        let noCorrectSyntaxEmbed = new discord.RichEmbed()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} La sintaxis de este comando es:` + '`' + config.prefix + 'playskip (URL de YouTube | término)`');
         
-        let noDispatcherEmbed = new discord.RichEmbed()
+        let noDispatcherEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} No hay nada en reproducción.`);
 
-        let noTalkPermissionEmbed = new discord.RichEmbed()
+        let noTalkPermissionEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} No tengo permiso para hablar en esta sala.`);
         
@@ -67,7 +67,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 info = await ytdl.getInfo(query);
                 details = info.player_response.videoDetails;
             } catch (e) {
-                let notFoundEmbed = new discord.RichEmbed()
+                let notFoundEmbed = new discord.MessageEmbed ()
                     .setColor(resources.red)
                     .setDescription(`${resources.RedTick} No se ha podido localizar el vídeo.`);
                 return message.channel.send(notFoundEmbed)
@@ -105,7 +105,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 //Almacena el primer resultado que coincida
                 const data = results[0];
 
-                let noResultsEmbed = new discord.RichEmbed()
+                let noResultsEmbed = new discord.MessageEmbed ()
                     .setColor(resources.red)
                     .setDescription(`${resources.RedTick} No se ha encontrado ningún resultado que encaje con ${args.join(' ')}.`);
 

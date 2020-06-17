@@ -5,11 +5,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         message.delete();
         
-        let successEmbed = new discord.RichEmbed()
+        let successEmbed = new discord.MessageEmbed ()
             .setColor(0xB8E986)
             .setDescription(resources.GreenTick + ' ¡Te he enviado los detalles por Mensaje Directo!');
 
-        let helpEmbed = new discord.RichEmbed()
+        let helpEmbed = new discord.MessageEmbed ()
             .setColor(0x2BBDC4)
             .setThumbnail('https://i.imgur.com/iODevD9.png')
             .setAuthor('STAFF', 'https://i.imgur.com/iODevD9.png')
@@ -39,7 +39,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(resources.pokecord + ' ' + config.staffPrefix + 'spawn "url"', 'Spawnea un pokémon en base a la URL de imágen proporcionada', true)
             .setFooter('© 2018 República Gamer LLC | Escudo: Solo para Supervisores', message.guild.iconURL);
         
-        message.channel.send(successEmbed).then(msg => {msg.delete(1000)});
+        message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 1000})});
         message.author.send(helpEmbed);
     } catch (e) {
         require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);

@@ -5,23 +5,23 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         if (message.author.id !== config.botOwner && !message.member.roles.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
         
-        let notToMuteEmbed = new discord.RichEmbed()
+        let notToMuteEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Debes mencionar a un miembro o escribir su id');
 
-        let noBotsEmbed = new discord.RichEmbed()
+        let noBotsEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Los bots no pueden ser advertidos');
         
-        let noQuantityEmbed = new discord.RichEmbed()
+        let noQuantityEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Debes proporcionar la cantidad de advertencias a quitar');
         
-        let undefinedReasonEmbed = new discord.RichEmbed()
+        let undefinedReasonEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Se debe adjuntar una razón');
         
-        let noWarnsEmbed = new discord.RichEmbed()
+        let noWarnsEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Este usuario no tiene advertencias');
 
@@ -47,11 +47,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         message.delete();
 
-        let successEmbed = new discord.RichEmbed()
+        let successEmbed = new discord.MessageEmbed ()
             .setColor(0xB8E986)
             .setDescription(`${resources.GreenTick} Se ha/n retirado ${quantity} advertencia/s al usuario <@${member.id}>`);
 
-        let loggingEmbed = new discord.RichEmbed()
+        let loggingEmbed = new discord.MessageEmbed ()
             .setColor(0x4A90E2)
             .setTitle('📑 Auditoría')
             .setDescription('Se ha/n retirado advertencia/s.')
@@ -66,7 +66,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Comprueba si el usuario tiene warns
         if (!bot.warns[member.id]) return message.channel.send(noWarnsEmbed);
         
-        let noCorrectQuantityEmbed = new discord.RichEmbed()
+        let noCorrectQuantityEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ` Solo puedes retirar ${bot.warns[member.id].warns} advertencia/s a este usuario`);
         

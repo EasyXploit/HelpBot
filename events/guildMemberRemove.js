@@ -8,20 +8,20 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
         async function sendLogEmbed(executor, reason) {
             if (event.user.bot) {
                 if (event.user.id === bot.user.id) return;
-                const loggingEmbed = new discord.RichEmbed()
+                const loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.orange)
                     .addField(`📤 Auditoría`, `El **BOT** <@${event.user.tag}> fue expulsado del servidor`);
                 
-                await bot.channels.get(config.loggingChannel).send(loggingEmbed)
+                await bot.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             } else {
-                const loggingEmbed = new discord.RichEmbed()
+                const loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.red2)
                     .setAuthor(`${event.user.tag} ha sido EXPULSADO`, event.user.displayAvatarURL)
                     .addField(`Miembro`, `<@${event.user.id}>`, true)
                     .addField(`Moderador`, `<@${executor.id || 'Desconocido'}>`, true)
                     .addField(`Razón`, reason || 'Desconocida', true);
 
-                await bot.channels.get(config.loggingChannel).send(loggingEmbed)
+                await bot.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             }
         }
         
@@ -56,7 +56,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
 
             console.log(`${new Date().toLocaleString()} 》${event.user.tag} abandonó la guild: ${event.guild.name}.`);
 
-            let loggingEmbed = new discord.RichEmbed()
+            let loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.orange)
                 .setThumbnail(`https://i.imgur.com/2nZ23V4.png`)
                 .setAuthor(`Un miembro abandonó`, event.user.displayAvatarURL)
@@ -65,11 +65,11 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                 .addField(`🆔 ID del usuario`, event.user.id, true)
                 .setFooter(event.guild.name, event.guild.iconURL).setTimestamp()
             
-            return await bot.channels.get(config.loggingChannel).send(loggingEmbed);
+            return await bot.channels.cache.get(config.loggingChannel).send(loggingEmbed);
         }
     } catch (e) {
         //Se muestra el error en el canal de depuración
-        let debuggEmbed = new discord.RichEmbed()
+        let debuggEmbed = new discord.MessageEmbed()
             .setColor(resources.brown)
             .setTitle(`📋 Depuración`)
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
@@ -79,6 +79,6 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             .setFooter(new Date().toLocaleString(), resources.server.iconURL).setTimestamp();
         
         //Se envía el mensaje al canal de depuración
-        await bot.channels.get(config.debuggingChannel).send(debuggEmbed);
+        await bot.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
     }
 }

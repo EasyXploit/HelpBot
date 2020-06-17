@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    const noPrivilegesEmbed = new discord.RichEmbed()
+    const noPrivilegesEmbed = new discord.MessageEmbed ()
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
@@ -9,11 +9,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //!skip (cantidad opcional)
 
     try {
-        let notPlayingEmbed = new discord.RichEmbed()
+        let notPlayingEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} No hay ninguna canción en cola/reproducción.`);
         
-        let notAvailableEmbed = new discord.RichEmbed()
+        let notAvailableEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${bot.user.id}>.`);
 
@@ -27,29 +27,29 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Comprueba si el miembro está en el mismo canal que el bot
         if (message.member.voiceChannelID !== message.guild.member(bot.user).voiceChannelID) return message.channel.send(notAvailableEmbed);
 
-        let noTalkPermissionEmbed = new discord.RichEmbed()
+        let noTalkPermissionEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} No tengo permiso para hablar en esta sala.`);
 
         //Comprueba si el bot tiene permiso para hablar
         if (!voiceChannel.speakable) return message.channel.send(noTalkPermissionEmbed)
         
-        let NaNEmbed = new discord.RichEmbed()
+        let NaNEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes proporcionar un número entero.`);
         
-        let tooBigEmbed = new discord.RichEmbed()
+        let tooBigEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Solo puedes hacer skip de ` + '`' + (bot.servers[message.guild.id].queue.length + 1) + '` canciones.');
         
         //Si se especifica una cantidad, se skipearan en consecuencia
         if (args[0]) {
             
-            let tooMuchSkipsRandomEmbed = new discord.RichEmbed()
+            let tooMuchSkipsRandomEmbed = new discord.MessageEmbed ()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No puedes omitir más de una canción con el modo aleatorio activado.`);
 
-            let tooMuchSkipsLoopEmbed = new discord.RichEmbed()
+            let tooMuchSkipsLoopEmbed = new discord.MessageEmbed ()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No puedes omitir más de una canción con el modo loop activado.`);
             

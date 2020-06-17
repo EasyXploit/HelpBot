@@ -3,13 +3,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-restart
     
     try {
-        let restartingEmbed = new discord.RichEmbed()
+        let restartingEmbed = new discord.MessageEmbed ()
             .setColor(12118406)
             .setTitle(resources.GreenTick + ' Operación completada')
             .setDescription('Reiniciando PilkoBot . . .');
         message.channel.send(restartingEmbed);
 
-        let loggingEmbed = new discord.RichEmbed()
+        let loggingEmbed = new discord.MessageEmbed ()
             .setColor(4886754)
             .setTimestamp()
             .setFooter(bot.user.username, bot.user.avatarURL)

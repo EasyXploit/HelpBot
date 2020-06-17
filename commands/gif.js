@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //!gif (término)
     
     try {
-        let notToSearchEmbed = new discord.RichEmbed()
+        let notToSearchEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setTitle(resources.RedTick + ' Debes proporcionarme un término de búsqueda')
             .setDescription('La sintaxis de este comando es `' + config.prefix +'gif (término)`');
@@ -20,13 +20,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             let data = results.data[Math.floor(Math.random() * (results.data.length - 1))];
             
-            let noResultEmbed = new discord.RichEmbed()
+            let noResultEmbed = new discord.MessageEmbed ()
                 .setColor(resources.red)
                 .setDescription(resources.RedTick + ' No se ha encontrado ningún resultado que coincida con `' + searchTerm + '`');
             
             if (!data) return message.channel.send(noResultEmbed);
             
-            const resultEmbed = new discord.RichEmbed()
+            const resultEmbed = new discord.MessageEmbed ()
                 .setColor(randomColor())
                 .setAuthor(data.title, `https://i.imgur.com/oVfX8we.gif`)
                 .setDescription(`[URL de GIPHY](${data.url})`)

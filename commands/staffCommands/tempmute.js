@@ -3,15 +3,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-tempmute (@usuario | id) (xS | xM | xH | xD) (motivo)
     
     try {
-        let notToMuteEmbed = new discord.RichEmbed()
+        let notToMuteEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Debes mencionar a un miembro o escribir su id');
 
-        let noBotsEmbed = new discord.RichEmbed()
+        let noBotsEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' No puedes silenciar a un bot');
         
-        let noCorrectTimeEmbed = new discord.RichEmbed()
+        let noCorrectTimeEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Debes proporcionar una unidad de medida de tiempo. Por ejemplo: `5s`, `10m`, `12h` o `3d`');
 
@@ -39,7 +39,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 permissions: []
             });
             
-            let botMember = message.guild.members.get(bot.user.id);
+            let botMember = message.guild.members.cache.get(bot.user.id);
             await message.guild.setRolePosition(role, botMember.highestRole.position - 1);
             
             message.guild.channels.forEach(async (channel, id) => {
@@ -51,11 +51,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             });
         }
 
-        let alreadyMutedEmbed = new discord.RichEmbed()
+        let alreadyMutedEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Este usuario ya esta silenciado');
 
-        let successEmbed = new discord.RichEmbed()
+        let successEmbed = new discord.MessageEmbed ()
             .setColor(0xB8E986)
             .setTitle(resources.GreenTick + ' Operación completada')
             .setDescription('El usuario <@' + member.id + '> ha sido silenciado, ¿alguien más?');
@@ -110,7 +110,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         }
         
         if (message.author.id !== config.botOwner) {
-            let maxTimeEmbed = new discord.RichEmbed()
+            let maxTimeEmbed = new discord.MessageEmbed ()
                 .setColor(0xF12F49)
                 .setDescription(resources.RedTick + ' Los moderadores solo pueden silenciar un máximo de 1 día');
 
@@ -120,14 +120,14 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let toDeleteCount = command.length - 2 + args[0].length + 1 + args[1].length + 2; 
         let reason = message.content.slice(toDeleteCount) || 'Indefinida';
         if (message.author.id !== config.botOwner) {
-            let undefinedReasoneEmbed = new discord.RichEmbed()
+            let undefinedReasoneEmbed = new discord.MessageEmbed ()
                 .setColor(0xF12F49)
                 .setDescription(resources.RedTick + ' Los moderadores deben adjuntar una razón');
 
             if (reason === 'Indefinida' && !message.member.roles.has(supervisorsRole.id)) return message.channel.send(undefinedReasoneEmbed);
         }
 
-        let loggingEmbed = new discord.RichEmbed()
+        let loggingEmbed = new discord.MessageEmbed ()
             .setColor(0xEF494B)
             .setAuthor(member.user.tag + ' ha sido SILENCIADO', member.user.displayAvatarURL)
             .addField('Miembro', '<@' + member.id + '>', true)
@@ -135,7 +135,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField('Razón', reason, true)
             .addField('Duración', args[1], true);
 
-        let toDMEmbed = new discord.RichEmbed()
+        let toDMEmbed = new discord.MessageEmbed ()
             .setColor(0xEF494B)
             .setAuthor('[SILENCIADO]', message.guild.iconURL)
             .setDescription('<@' + member.id + '>, has sido silenciado en ' + message.guild.name)

@@ -8,13 +8,13 @@ exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => 
             if (user.bot) {
                 if (user.id === bot.user.id) return;
 
-                const loggingEmbed = new discord.RichEmbed()
+                const loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.orange)
                     .addField(`📤 Auditoría`, `El **BOT** <@${user.tag}> fue baneado del servidor`);
 
-                await bot.channels.get(config.loggingChannel).send(loggingEmbed)
+                await bot.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             } else {
-                const loggingEmbed = new discord.RichEmbed()
+                const loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.red2)
                     .setAuthor(`${user.tag} ha sido BANEADO`, user.displayAvatarURL)
                     .addField(`Miembro`, `<@${user.id}>`, true)
@@ -22,7 +22,7 @@ exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => 
                     .addField(`Razón`, reason || 'Desconocida', true)
                     .addField(`Duración`, time || 'Desconocida', true);
 
-                await bot.channels.get(config.loggingChannel).send(loggingEmbed)
+                await bot.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             }
         }
 
@@ -58,7 +58,7 @@ exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => 
 
     } catch (e) {
         //Se muestra el error en el canal de depuración
-        let debuggEmbed = new discord.RichEmbed()
+        let debuggEmbed = new discord.MessageEmbed()
             .setColor(resources.brown)
             .setTitle(`📋 Depuración`)
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
@@ -68,6 +68,6 @@ exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => 
             .setFooter(new Date().toLocaleString(), resources.server.iconURL).setTimestamp();
         
         //Se envía el mensaje al canal de depuración
-        await bot.channels.get(config.debuggingChannel).send(debuggEmbed);
+        await bot.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
     }
 }

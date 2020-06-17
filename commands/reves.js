@@ -3,7 +3,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     //!reves
     
     try {
-        let notToAnswerEmbed = new discord.RichEmbed()
+        let notToAnswerEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Debes escribir el texto a invertir.\nLa sintaxis de este comando es `' + config.prefix + 'reves <texto>`');
 
@@ -11,7 +11,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
 
         let text = message.content.slice(7).split("").reverse().join("");
 
-        const resultEmbed = new discord.RichEmbed()
+        const resultEmbed = new discord.MessageEmbed ()
             .setColor(0xA37044)
             .setDescription('📝 | ' + text);
         message.channel.send(resultEmbed);

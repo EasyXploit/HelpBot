@@ -8,17 +8,17 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let botPingEmbed;
 
         if (botPing <= 180) {
-            botPingEmbed = new discord.RichEmbed()
+            botPingEmbed = new discord.MessageEmbed ()
               .setTitle('Tiempo de respuesta del bot: ')
               .setColor(0x7ED321)
               .setDescription(':stopwatch: | ' + botPing + ' ms');
         } else if (botPing > 180 && botPing <= 250) {
-            botPingEmbed = new discord.RichEmbed()
+            botPingEmbed = new discord.MessageEmbed ()
               .setTitle('Tiempo de respuesta del bot: ')
               .setColor(0xF5A623)
               .setDescription(':stopwatch: | ' + botPing + ' ms');
         } else {
-            botPingEmbed = new discord.RichEmbed()
+            botPingEmbed = new discord.MessageEmbed ()
               .setTitle('Tiempo de respuesta del bot: ')
               .setColor(0xF12F49)
               .setDescription(':stopwatch: | ' + botPing + ' ms');
@@ -29,17 +29,17 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let websocketPingEmbed;
 
         if (websocketPing <= 180) {
-            websocketPingEmbed = new discord.RichEmbed()
+            websocketPingEmbed = new discord.MessageEmbed ()
               .setTitle('Tiempo de respuesta del Websocket: ')
               .setColor(0x7ED321)
               .setDescription(':stopwatch: | ' + websocketPing + ' ms');
         } else if (websocketPing > 180 && websocketPing <= 250) {
-            websocketPingEmbed = new discord.RichEmbed()
+            websocketPingEmbed = new discord.MessageEmbed ()
               .setTitle('Tiempo de respuesta del Websocket: ')
               .setColor(0xF5A623)
               .setDescription(':stopwatch: | ' + websocketPing + ' ms');
         } else {
-            websocketPingEmbed = new discord.RichEmbed()
+            websocketPingEmbed = new discord.MessageEmbed ()
               .setTitle('Tiempo de respuesta del Websocket: ')
               .setColor(0xF12F49)
               .setDescription(':stopwatch: | ' + websocketPing + ' ms');
@@ -58,7 +58,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             day = Math.floor(hour / 24);
             hour = hour % 24;
 
-            uptimeEmbed = new discord.RichEmbed()
+            uptimeEmbed = new discord.MessageEmbed ()
                 .setColor(0xFFC857)
                 .setTitle('Tiempo de actividad: ')
                 .setDescription(':stopwatch: | ' + day + ' días, ' + hour + ' horas, ' + minute + ' minutos y ' + seconds + ' segundos');

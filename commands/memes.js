@@ -3,7 +3,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     //!memes
     
     try {
-        let helpEmbed = new discord.RichEmbed()
+        let helpEmbed = new discord.MessageEmbed ()
             .setColor(0xFFC857)
             .setAuthor('AYUDA', 'http://i.imgur.com/sYyH2IM.png')
             .setTitle('Memes y efectos sonoros :performing_arts:')

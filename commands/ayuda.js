@@ -5,7 +5,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         const userID = message.author.id;
         
-        let helpEmbed = new discord.RichEmbed()
+        let helpEmbed = new discord.MessageEmbed()
         .setColor(0xFFC857)
         .setAuthor('AYUDA', 'http://i.imgur.com/sYyH2IM.png')
         .setTitle('Sistema de ayuda del servidor')

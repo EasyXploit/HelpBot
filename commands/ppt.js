@@ -3,7 +3,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     //!ppt <piedra | papel | tijeras>
     
     try {
-        let notToAnswerEmbed = new discord.RichEmbed()
+        let notToAnswerEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.prefix + 'ppt <piedra | papel | tijeras>`');
 
@@ -79,7 +79,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             }
         }
 
-        const resultEmbed = new discord.RichEmbed()
+        const resultEmbed = new discord.MessageEmbed ()
             .setColor(0xF74A4A)
             .setTitle(message.member.displayName + ' ' + emojiOpponentChoose + ' VS ' + emojiChoose + ' ' + bot.user.username)
             .setDescription('__Resultado:__ ¡' + result + '!')

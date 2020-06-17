@@ -3,7 +3,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     //!di (texto)
     
     try {   
-        let noTextEmbed = new discord.RichEmbed()
+        let noTextEmbed = new discord.MessageEmbed()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Debes escribir el contenido del mensaje');
 
@@ -12,7 +12,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         message.delete();
         const text = message.content.slice(4);
 
-        let resultEmbed = new discord.RichEmbed()
+        let resultEmbed = new discord.MessageEmbed()
             .setColor(0x2E4052)
             .setAuthor(message.author.username + ' dijo:', message.author.avatarURL)
             .setDescription(text);

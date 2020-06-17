@@ -5,7 +5,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     try {
         const datos = ['1', '2', '3', '4', '5', '6'];
 
-        const resultEmbed = new discord.RichEmbed()
+        const resultEmbed = new discord.MessageEmbed()
             .setColor(0xDDDDDD)
             .setTitle('Lanzaste un dado ...  🎲')
             .setDescription('¡Salió **' + datos[Math.floor(Math.random() * datos.length)] + '**!');

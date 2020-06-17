@@ -19,7 +19,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
 
         let thumbnail = 'https://toppng.com/public/uploads/preview/fortnite-battle-royale-logo-11530963305mex6keb5qj.png';
 
-        let noCorrectSyntaxEmbed = new discord.RichEmbed()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(0xF04647)
             .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.prefix + 'fortnite "usuario" "solo/duo/squad/lifetime" "pc/xbl/psn"`');
 
@@ -43,7 +43,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                 let wins = solostats.wins;
                 let top_5 = solostats.top_5;
 
-                let resultEmbed = new discord.RichEmbed()
+                let resultEmbed = new discord.MessageEmbed()
                     .setColor(0x8A2BE2)
                     .setAuthor('Estadísticas de Fortnite', 'http://s2.googleusercontent.com/s2/favicons?domain_url=https://www.epicgames.com/fortnite/')
                     .setTitle('Modo de juego: SOLO')
@@ -71,7 +71,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                 let wins = duostats.wins;   
                 let top_5 = duostats.top_5;
 
-                let resultEmbed = new discord.RichEmbed()
+                let resultEmbed = new discord.MessageEmbed()
                     .setColor(0x8A2BE2)
                     .setAuthor('Estadísticas de Fortnite', 'http://s2.googleusercontent.com/s2/favicons?domain_url=https://www.epicgames.com/fortnite/')
                     .setTitle('Modo de juego: DUO')
@@ -99,7 +99,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                 let wins = squadstats.wins;
                 let top3 = squadstats.top_3;
 
-                let resultEmbed = new discord.RichEmbed()
+                let resultEmbed = new discord.MessageEmbed()
                     .setColor(0x8A2BE2)
                     .setAuthor('Estadísticas de Fortnite', 'http://s2.googleusercontent.com/s2/favicons?domain_url=https://www.epicgames.com/fortnite/')
                     .setTitle('Modo de juego: SQUAD')
@@ -135,7 +135,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                     footer = '© 2018 República Gamer LLC';
                 }
 
-                let resultEmbed = new discord.RichEmbed()
+                let resultEmbed = new discord.MessageEmbed()
                     .setColor(0x8A2BE2)
                     .setAuthor('Estadísticas de Fortnite', 'http://s2.googleusercontent.com/s2/favicons?domain_url=https://www.epicgames.com/fortnite/')
                     .setTitle('Modo de juego: LIFETIME')
@@ -154,7 +154,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                 message.channel.send(noCorrectSyntaxEmbed);
             }
         }).catch (e => {
-            let errorEmbed = new discord.RichEmbed()
+            let errorEmbed = new discord.MessageEmbed()
                 .setColor(0xF12F49)
                 .setTitle(resources.RedTick + ' Ocurrió un error')
                 .setDescription('No hemos podido encontrar al usuario `' + username + '` en la plataforma `' + platform + '`.')

@@ -1,7 +1,7 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
-    let staffRole = message.guild.roles.get(config.botStaff);
-    const noPrivilegesEmbed = new discord.RichEmbed()
+    let staffRole = message.guild.roles.cache.get(config.botStaff);
+    const noPrivilegesEmbed = new discord.MessageEmbed ()
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
@@ -11,19 +11,19 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
     try {
         
-        let noConnectionEmbed = new discord.RichEmbed()
+        let noConnectionEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} <@${bot.user.id}> no está conectado a ninguna sala.`);
         
-        let noChannelEmbed = new discord.RichEmbed()
+        let noChannelEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes estar conectado a un canal de voz.`);
 
-        let notAvailableEmbed = new discord.RichEmbed()
+        let notAvailableEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${bot.user.id}>.`);
         
-        let noDispatcherEmbed = new discord.RichEmbed()
+        let noDispatcherEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} No hay nada en reproducción.`);
         

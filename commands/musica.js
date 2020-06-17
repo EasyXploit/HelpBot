@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //!musica
     
     try {
-        let helpEmbed1 = new discord.RichEmbed()
+        let helpEmbed1 = new discord.MessageEmbed ()
             .setColor(resources.gold)
             .setAuthor(`Reproducción de música`, `https://image.ibb.co/dS0ZoL/MusicBox.png`)
             .setDescription(`Estos comandos te permiten reproducir canciones mediante ${bot.user.username}\n(esta funcionalidad solo está disponible para el **STAFF** y los miembros  **VIP**) ${resources.beta}`)
@@ -23,7 +23,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(`${config.prefix}shuffle`, `Activa el modo aleatorio en la cola`, true)
             .setFooter(`© 2018 República Gamer LLC`, resources.server.iconURL);
         
-        let helpEmbed2 = new discord.RichEmbed()
+        let helpEmbed2 = new discord.MessageEmbed ()
             .setColor(resources.gold)
             .setAuthor(`Comandos de Rythm`, `https://cdn.discordapp.com/avatars/235088799074484224/16c197c4c3f0eb808f9bceb6e1075e71.png?`)
             .setDescription('Estos comandos te permiten reproducir canciones mediante ' + resources.rythm + ' **Rythm**.\n• Usa el prefijo `>` para controlar a ' + resources.rythm + ' <@235088799074484224>\n• Usa el prefijo `?` para controlar a ' + resources.rythm2 + ' <@252128902418268161>\n\n**Los comandos sólo pueden ser utilizados en el canal de texto <#388699973866225676>**\n\n__**Básicos:**__ :musical_score: \n• `>play [canción]`  _reproduce una canción_ \n• `>skip`  _omite la canción actual_ \n• `>pause`  _pausa la cola_ \n• `>clear`  _borra la cola de reproducción_ \n• `>join`  _mueve el bot al canal de voz actual_ \n• `>leave`  _desconecta el bot del canal de voz actual_ \n• `>queue`  _muestra la cola_ \n \n __**Avanzados:**__ :notes: \n• `>loop`  _reproduce en bucle la canción actual_ \n• `>loopqueue`  _reproduce en bucle toda la cola_ \n• `>lyrics`  _muestra la letra de la canción actual_ \n• `>np`  _muestra la canción actual_ \n • `>seek [momento (00:00)]` _busca un momento exacto de la canción_ \n• `>shuffle`  _reproduce aleatoriamente_ \n• `>soundcloud`  _busca en SoundCloud_ \n\n• `>aliases`  _para ver el resto de comandos_');

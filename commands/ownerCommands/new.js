@@ -1,10 +1,10 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    let disabledEmbed = new discord.RichEmbed()
+    let disabledEmbed = new discord.MessageEmbed ()
         .setColor(0xC6C9C6)
         .setDescription(resources.GrayTick + ' Comando `' + command.slice(-0, -3) + '` deshabilitado temporalmente');
     await message.delete()
-    await message.channel.send(disabledEmbed).then(msg => {msg.delete(5000)});
+    await message.channel.send(disabledEmbed).then(msg => {msg.delete({timeout: 5000})});
     return;
     
     //$new "título" "contenido"
@@ -18,7 +18,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         fields.splice(-1);
         fields.push(lastField);
 
-        let noCorrectSyntaxEmbed = new discord.RichEmbed()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.ownerPrefix + 'new "título" "contenido"`');
 
@@ -26,7 +26,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         message.delete();
 
-        let embed = new discord.RichEmbed()
+        let embed = new discord.MessageEmbed ()
             .setAuthor(fields[0], 'https://i.imgur.com/pihFXyM.png')
             .setColor(0xFFC857)
             .setDescription(fields[1])

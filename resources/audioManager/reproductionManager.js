@@ -23,7 +23,7 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
             info = await ytdl.getInfo(server.queue[toPlay].link);
             let details = info.player_response.videoDetails;
 
-            let durationExcededEmbed = new discord.RichEmbed()
+            let durationExcededEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No puedo reproducir canciones con una duración mayor a 3 horas.`);
 
@@ -41,7 +41,7 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
                 upNext = `Nada`;
             }
 
-            let playingEmbed = new discord.RichEmbed()
+            let playingEmbed = new discord.MessageEmbed()
                 .setColor(randomColor())
                 .setThumbnail(details.thumbnail.thumbnails[3].url)
                 .setAuthor(`Reproduciendo 🎶`, `https://i.imgur.com/lvShSwa.png`)

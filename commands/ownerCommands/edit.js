@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //$edit <ID del canal> <ID del mensaje> <nuevo contenido>
     
     try {
-        let noCorrectSyntaxEmbed = new discord.RichEmbed()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} La sintaxis de este comando es ` + '`' + config.ownerPrefix + 'edit <ID del canal> <ID del mensaje> <nuevo contenido>`');
         
@@ -20,7 +20,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         message.delete();
 
-        /*let newEmbed = new discord.RichEmbed()
+        /*let newEmbed = new discord.MessageEmbed ()
             .setColor(resources.gold)
             .setDescription(newContent);*/
 

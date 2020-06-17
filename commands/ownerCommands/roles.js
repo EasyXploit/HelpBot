@@ -2,10 +2,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     
     //$roles
 
-    let experimentalEmbed = new discord.RichEmbed()
+    let experimentalEmbed = new discord.MessageEmbed ()
         .setColor(0xC6C9C6)
         .setDescription(resources.GrayTick + ' **Función experimental**\nEstás ejecutando una versión inestable del código de esta función, por lo que esta podría sufrir modificaciones o errores antes de su lanzamiento final.');
-    await message.channel.send(experimentalEmbed).then(msg => {msg.delete(5000)});
+    await message.channel.send(experimentalEmbed).then(msg => {msg.delete({timeout: 5000})});
 
     try {
         message.delete();
@@ -22,7 +22,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let roblox = message.guild.roles.find(r => r.name === 'ROBLOX');
         let overwatch = message.guild.roles.find(r => r.name === 'OVERWATCH');
 
-        let rolesEmbed = new discord.RichEmbed()
+        let rolesEmbed = new discord.MessageEmbed ()
             .setColor(0xE2E5E7)
             .setAuthor('ELIGE TUS ROLES', 'https://i.imgur.com/TU8U8wq.png')
             .setFooter('© 2018 República Gamer LLC', resources.server.iconURL)

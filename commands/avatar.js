@@ -5,7 +5,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     try {
         const user = message.mentions.users.first() || message.author;
 
-        const avatarEmbed = new discord.RichEmbed()
+        const avatarEmbed = new discord.MessageEmbed()
             .setColor(0xFFC857)
             .setAuthor('Avatar de @' + user.tag)
             .setTitle('URL del Avatar')

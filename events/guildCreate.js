@@ -20,7 +20,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                 verified = `Si`;
             };
 
-            let debuggingEmbed = new discord.RichEmbed()
+            let debuggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue2)
                 .setThumbnail(event.iconURL)
                 .setAuthor(`${bot.user.username} ha sido añadido a una nueva guild`, bot.user.displayAvatarURL)
@@ -34,10 +34,10 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                 .addField(`${resources.GreenTick} Verificado`, verified, true)
                 .setTimestamp()
 
-            await bot.channels.get(config.debuggingChannel).send(debuggingEmbed)
+            await bot.channels.cache.get(config.debuggingChannel).send(debuggingEmbed)
 
         } else {
-            const cantJoinEmbed = new discord.RichEmbed()
+            const cantJoinEmbed = new discord.MessageEmbed()
                 .setColor(resources.gray)
                 .setDescription(`${resources.GrayTick} | Por el momento, ${bot.user.username} solo está disponible en la [República Gamer](${config.serverInvite}).`);
 
@@ -46,7 +46,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
         }
     } catch (e) {
         //Se muestra el error en el canal de depuración
-        let debuggEmbed = new discord.RichEmbed()
+        let debuggEmbed = new discord.MessageEmbed()
             .setColor(resources.brown)
             .setTitle(`📋 Depuración`)
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
@@ -56,6 +56,6 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             .setFooter(new Date().toLocaleString(), resources.server.iconURL).setTimestamp();
         
         //Se envía el mensaje al canal de depuración
-        await bot.channels.get(config.debuggingChannel).send(debuggEmbed);
+        await bot.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
     }
 }

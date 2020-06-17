@@ -53,14 +53,14 @@ bot.voiceConnection; //Almacena la conexión
 // COMPROBACIÓN DE INICIO DE SESIÓN Y PRESENCIA
 bot.on(`ready`, async () => {
     try {
-        const debuggingChannel = bot.channels.get(config.debuggingChannel);
-        const loggingChannel = bot.channels.get(config.loggingChannel);
+        const debuggingChannel = bot.channels.cache.get(config.debuggingChannel);
+        const loggingChannel = bot.channels.cache.get(config.loggingChannel);
 
         //Intervalo de comprobación de usuarios silenciados temporalmente
         bot.setInterval(async () => {
             for (let idKey in bot.mutes) {
                 let time = bot.mutes[idKey].time;
-                let guild = bot.guilds.get(bot.mutes[idKey].guild);
+                let guild = bot.guilds.cache.get(bot.mutes[idKey].guild);
                 let member;
                 try {
                     member = await guild.fetchMember(idKey);
@@ -69,8 +69,14 @@ bot.on(`ready`, async () => {
                     fs.writeFile(`./mutes.json`, JSON.stringify(bot.mutes), async err => {
                         if (err) throw err;
 
+                        let loggingEmbed = new discord.MessageEmbed()
+                            .setColor(resources.green2)
+                            .setAuthor(`<@${idKey}> ha sido DES-SILENCIADO, pero no se encontraba en el servidor`)
+                            .addField(`ID`, idKey, true)
+                            .addField(`Moderador`, `<@${bot.user.id}>`, true)
+                            .addField(`Razón`, `Venció la amonestación`, true);
+
                         await loggingChannel.send(loggingEmbed);
-                        await member.send(toDMEmbed);
                     });
                     return;
                 }
@@ -78,14 +84,14 @@ bot.on(`ready`, async () => {
                 if (!role) continue;
 
                 if (Date.now() > time) {
-                    let loggingEmbed = new discord.RichEmbed()
+                    let loggingEmbed = new discord.MessageEmbed()
                         .setColor(resources.green2)
                         .setAuthor(`${member.user.tag} ha sido DES-SILENCIADO`, member.user.displayAvatarURL)
                         .addField(`Miembro`, `<@${member.id}>`, true)
                         .addField(`Moderador`, `<@${bot.user.id}>`, true)
                         .addField(`Razón`, `Venció la amonestación`, true);
 
-                    let toDMEmbed = new discord.RichEmbed()
+                    let toDMEmbed = new discord.MessageEmbed()
                         .setColor(resources.green2)
                         .setAuthor(`[DES-SILENCIADO]`, guild.iconURL)
                         .setDescription(`<@${member.id}>, has sido des-silenciado en ${guild.name}`)
@@ -109,11 +115,11 @@ bot.on(`ready`, async () => {
         bot.setInterval(async () => {
             for (let idKey in bot.bans) {
                 let time = bot.bans[idKey].time;
-                let guild = bot.guilds.get(bot.bans[idKey].guild);
+                let guild = bot.guilds.cache.get(bot.bans[idKey].guild);
                 let user = await bot.fetchUser(idKey);
 
                 if (Date.now() > time) {
-                    let loggingEmbed = new discord.RichEmbed()
+                    let loggingEmbed = new discord.MessageEmbed()
                         .setColor(resources.green2)
                         .setAuthor(`${user.tag} ha sido DES-BANEADO`, user.displayAvatarURL)
                         .addField(`Usuario`, `@${user.tag}`, true)
@@ -138,7 +144,7 @@ bot.on(`ready`, async () => {
             if (ping > 1000) {
                 console.log(`${new Date().toLocaleString()} 》Tiempo de respuesta del Websocket elevado: ${ping} ms\n`);
 
-                let debuggingEmbed = new discord.RichEmbed()
+                let debuggingEmbed = new discord.MessageEmbed()
                     .setColor(0xF8A41E)
                     .setTimestamp()
                     .setFooter(bot.user.username, bot.user.avatarURL)
@@ -151,7 +157,7 @@ bot.on(`ready`, async () => {
         await bot.user.setPresence({
             status: config.status,
             game: {
-                name: `${bot.users.filter(user => !user.bot).size} usuarios | ${config.game}`,
+                name: `${bot.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`,
                 type: config.type
             }
         });
@@ -160,7 +166,7 @@ bot.on(`ready`, async () => {
         bot.setInterval(async () => {
             await bot.user.setPresence({
                 game: {
-                    name: `${bot.users.filter(user => !user.bot).size} usuarios | ${config.game}`,
+                    name: `${bot.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`,
                     type: config.type
                 }
             });
@@ -173,14 +179,14 @@ bot.on(`ready`, async () => {
         //Auditoría
         console.log(` 》${bot.user.username} iniciado correctamente \n  ● Estatus: ${config.status}\n  ● Tipo de actividad: ${config.type}\n  ● Actividad: ${config.game}\n`);
 
-        let statusEmbed = new discord.RichEmbed()
+        let statusEmbed = new discord.MessageEmbed()
             .setTitle(`📑 Estado de ejecución`)
             .setColor(resources.gold)
             .setDescription(`${bot.user.username} iniciado correctamente`)
             .addField(`Estatus:`, config.status, true)
             .addField(`Tipo de actividad:`, config.type, true)
-            .addField(`Actividad:`, `${bot.users.filter(user => !user.bot).size} usuarios | ${config.game}`, true)
-            .addField(`Usuarios:`, bot.users.filter(user => !user.bot).size, true)
+            .addField(`Actividad:`, `${bot.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`, true)
+            .addField(`Usuarios:`, bot.users.cache.filter(user => !user.bot).size, true)
             .addField(`Versión:`, package.version, true)
             .setFooter(bot.user.username, bot.user.avatarURL)
             .setTimestamp();
@@ -216,8 +222,8 @@ fs.readdir(`./events/`, async (err, files) => {
 // MANEJADOR DE COMANDOS
 bot.on(`message`, async message => {
 
-    const debuggingChannel = bot.channels.get(config.debuggingChannel);
-    const loggingChannel = bot.channels.get(config.loggingChannel);
+    const debuggingChannel = bot.channels.cache.get(config.debuggingChannel);
+    const loggingChannel = bot.channels.cache.get(config.loggingChannel);
 
     if (message.author.bot) return;
     if (message.channel.type === `dm`) {
@@ -236,7 +242,7 @@ bot.on(`message`, async message => {
             
             console.log(spamMessage);
             
-            let loggingEmbed = new discord.RichEmbed()
+            let loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setAuthor(member.user.tag + ' ha sido BANEADO', member.user.displayAvatarURL)
                 .addField('Miembro', '<@' + member.id + '>', true)
@@ -249,7 +255,7 @@ bot.on(`message`, async message => {
             
             return;
         } else {
-            const noDMEmbed = new discord.RichEmbed()
+            const noDMEmbed = new discord.MessageEmbed()
                 .setColor(resources.gray)
                 .setDescription(`${resources.GrayTick} | Por el momento, los comandos de **${bot.user.username}** solo está disponible desde el servidor de la **República Gamer**.`);
             await message.author.send(noDMEmbed);
@@ -261,7 +267,7 @@ bot.on(`message`, async message => {
     //COMPROBACIÓN DEL CONTENIDO DEL MENSAJE
     async function checkBadWords() {
 
-        let staffRole = message.guild.roles.get(config.botStaff);
+        let staffRole = message.guild.roles.cache.get(config.botStaff);
         let reason;
 
         const swearWords = [`hijo de puta`, `me cago en tu`, `tu puta madre`, `bollera`, `chupapollas`, `concha de tu madre`, `concha tu madre`, `gilipichis`, `hija de puta`, `hijaputa`, `hijoputa`, `idiota`, `imbécil`, `imbecil`, `jilipollas`, `lameculos`, `marica`, `maricón`, `maricon`, `mariconazo`, `ramera`, `soplagaitas`, `soplapollas`, `vete a la mierda`, `tus muertos`, `tus putos muertos`, `retrasao`, `anormal`, `malparido`, `gilipollas`, `negro de mierda`, `moro de mierda`, `pancho de mierda`, `panchito de mierda`]; //Palabras prohibidas
@@ -276,7 +282,7 @@ bot.on(`message`, async message => {
 
             if (invites.some(word => message.content.toLowerCase().includes(word))) {
                 if (message.author.id === message.guild.ownerID) return;
-                if (message.member.roles.has(staffRole.id)) return;
+                if (message.member.roles.cache.has(staffRole.id)) return;
                 await message.delete();
                 reason = `Invitaciones no permitidas`;
             }
@@ -290,11 +296,11 @@ bot.on(`message`, async message => {
 
             bot.warns[message.author.id].warns++;
 
-            let infractionChannelEmbed = new discord.RichEmbed()
+            let infractionChannelEmbed = new discord.MessageEmbed()
                 .setColor(resources.orange)
                 .setDescription(`${resources.OrangeTick} El usuario <@${message.author.id}> ha sido advertido debido a **${reason}**`);
 
-            let loggingEmbed = new discord.RichEmbed()
+            let loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.orange)
                 .setAuthor(`${message.author.tag} ha sido ADVERTIDO`, message.author.displayAvatarURL)
                 .addField(`Miembro`, `<@${message.author.id}>`, true)
@@ -302,7 +308,7 @@ bot.on(`message`, async message => {
                 .addField(`Razón`, reason, true)
                 .addField(`Mensaje`, message.content, true);
 
-            let toDMEmbed = new discord.RichEmbed()
+            let toDMEmbed = new discord.MessageEmbed()
                 .setColor(resources.orange)
                 .setAuthor(`[ADVERTIDO]`, message.guild.iconURL)
                 .setDescription(`<@${message.author.id}>, has sido advertido en ${message.guild.name}`)
@@ -328,7 +334,7 @@ bot.on(`message`, async message => {
                         permissions: []
                     });
                     
-                    let botMember = message.guild.members.get(bot.user.id);
+                    let botMember = message.guild.members.cache.get(bot.user.id);
                     await message.guild.setRolePosition(role, botMember.highestRole.position - 1);
                     
                     message.guild.channels.forEach(async (channel, id) => {
@@ -341,11 +347,11 @@ bot.on(`message`, async message => {
                 }
 
                 //Comprueba si este susuario ya estaba silenciado
-                if (message.member.roles.has(role.id)) return;
+                if (message.member.roles.cache.has(role.id)) return;
 
                 let milliseconds = 604800000; //Duración del mute
 
-                let loggingEmbed = new discord.RichEmbed()
+                let loggingEmbed = new discord.MessageEmbed()
                     .setColor(0xEF494B)
                     .setAuthor(message.member.user.tag + ' ha sido SILENCIADO', message.member.user.displayAvatarURL)
                     .addField('Miembro', '<@' + message.member.id + '>', true)
@@ -353,7 +359,7 @@ bot.on(`message`, async message => {
                     .addField('Razón', 'Demasiadas infracciones', true)
                     .addField('Duración', '7 días', true);
 
-                let toDMEmbed = new discord.RichEmbed()
+                let toDMEmbed = new discord.MessageEmbed()
                     .setColor(0xEF494B)
                     .setAuthor('[SILENCIADO]', message.guild.iconURL)
                     .setDescription('<@' + message.member.id + '>, has sido silenciado en ' + message.guild.name)
@@ -383,7 +389,7 @@ bot.on(`message`, async message => {
                         permissions: []
                     });
                     
-                    let botMember = message.guild.members.get(bot.user.id);
+                    let botMember = message.guild.members.cache.get(bot.user.id);
                     await message.guild.setRolePosition(role, botMember.highestRole.position - 1);
                     
                     message.guild.channels.forEach(async (channel, id) => {
@@ -395,7 +401,7 @@ bot.on(`message`, async message => {
                     });
                 }
 
-                let loggingEmbed = new discord.RichEmbed()
+                let loggingEmbed = new discord.MessageEmbed()
                     .setColor(0xEF494B)
                     .setAuthor(message.member.user.tag + ' ha sido SILENCIADO', message.member.user.displayAvatarURL)
                     .addField('Miembro', '<@' + message.member.id + '>', true)
@@ -403,7 +409,7 @@ bot.on(`message`, async message => {
                     .addField('Razón', 'Demasiadas infracciones', true)
                     .addField('Duración', '∞', true);
 
-                let toDMEmbed = new discord.RichEmbed()
+                let toDMEmbed = new discord.MessageEmbed()
                     .setColor(0xEF494B)
                     .setAuthor('[SILENCIADO]', message.message.guild.iconURL)
                     .setDescription('<@' + message.member.id + '>, has sido silenciado en ' + message.guild.name)
@@ -439,9 +445,9 @@ bot.on(`message`, async message => {
     try {
         let commandImput = `${new Date().toLocaleString()} 》${message.author.username} introdujo el comando: ${command.slice(-0, -3)} en el canal: ${message.channel.name} de la guild: ${message.guild.name}`;
 
-        let waitEmbed = new discord.RichEmbed().setColor(0xF12F49).setDescription(`${resources.RedTick} Debes esperar 2 segundos antes de usar este comando`);
+        let waitEmbed = new discord.MessageEmbed().setColor(0xF12F49).setDescription(`${resources.RedTick} Debes esperar 2 segundos antes de usar este comando`);
         if (talkedRecently.has(message.author.id)) return message.channel.send(waitEmbed).then(msg => {
-            msg.delete(1000)
+            msg.delete({timeout: 1000})
         });
 
         if (prefix === config.prefix) { // EVERYONE
@@ -456,21 +462,21 @@ bot.on(`message`, async message => {
         } else if (prefix === config.staffPrefix) { // STAFF
             let commandFile = require(`./commands/staffCommands/${command}`);
             if (!commandFile) return;
-            const supervisorsRole = message.guild.roles.get(config.botSupervisor);
-            let staffRole = message.guild.roles.get(config.botStaff);
+            const supervisorsRole = message.guild.roles.cache.get(config.botSupervisor);
+            let staffRole = message.guild.roles.cache.get(config.botStaff);
 
-            const noPrivilegesEmbed = new discord.RichEmbed()
+            const noPrivilegesEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
-            if (!message.member.roles.has(staffRole.id) && message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed)
+            if (!message.member.roles.cache.has(staffRole.id) && message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed)
 
             console.log(commandImput);
             commandFile.run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed);
         } else if (prefix === config.ownerPrefix) { // OWNER
             let commandFile = require(`./commands/ownerCommands/${command}`);
             if (!commandFile) return;
-            const noPrivilegesEmbed = new discord.RichEmbed()
+            const noPrivilegesEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para ejecutar este comando`);
 

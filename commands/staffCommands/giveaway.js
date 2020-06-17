@@ -1,28 +1,28 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
-    let disabledEmbed = new discord.RichEmbed()
+    let disabledEmbed = new discord.MessageEmbed ()
         .setColor(0xC6C9C6)
         .setDescription(resources.GrayTick + ' Comando `' + command.slice(-0, -3) + '` deshabilitado temporalmente');
     await message.delete()
-    await message.channel.send(disabledEmbed).then(msg => {msg.delete(5000)});
+    await message.channel.send(disabledEmbed).then(msg => {msg.delete({timeout: 5000})});
     return;
     
     //-giveaway (xS | xM | xH | xD) (nº ganadores) (premio)
     
     try {
-        let noCorrectSyntaxEmbed = new discord.RichEmbed()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' La sintaxis de este comando es: `' + config.satffPrefix+ 'giveaway "título" (xS | xM | xH | xD) (nº ganadores)`');
 
-        let noTimeEmbed = new discord.RichEmbed()
+        let noTimeEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' Debes proporcionar una unidad de medida de tiempo. Por ejemplo: `5s`, `10m`, `12h` o `3d`');
         
-        let noWinnersEmbed = new discord.RichEmbed()
+        let noWinnersEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(`${resources.RedTick} Debes proporcionar una cantidad numérica de ganadores superior a 0`);
         
-        let noPrizeEmbed = new discord.RichEmbed()
+        let noPrizeEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(`${resources.RedTick} Debes proporcionar un premio para el sorteo`);
         
@@ -94,7 +94,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let prize = message.content.slice(toDeleteCount);
         if (!prize) return message.channel.send(noPrizeEmbed);
 
-        let loggingEmbed = new discord.RichEmbed()
+        let loggingEmbed = new discord.MessageEmbed ()
             .setColor(0xB8E986)
             .setAuthor(message.author.tag + ' ha iniciado un sorteo', message.author.displayAvatarURL)
             .addField('Iniciado por', '<@' + message.author.id + '>', true)
@@ -103,7 +103,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField('Ganador/es', winners, true)
             .addField('Premio', prize, true);
         
-        let giveawayEmbed = new discord.RichEmbed()
+        let giveawayEmbed = new discord.MessageEmbed ()
             .setColor(0xB8E986)
             .setTitle(prize)
             .setDescription(`¡Reacciona con :tada: para entrar!\nTiempo restante: ${Date.now() - time}`)

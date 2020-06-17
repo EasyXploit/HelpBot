@@ -11,7 +11,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         fields.splice(-1);
         fields.push(lastField);
         
-        let noCorrectSyntaxEmbed = new discord.RichEmbed()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(resources.RedTick + ' La sintaxis de este comando es ' + config.staffPrefix + 'poll "título" "campo1" "campo2" ...');
         
@@ -29,7 +29,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             count = count + 1;
         }
 
-        let embed = new discord.RichEmbed()
+        let embed = new discord.MessageEmbed ()
             .setAuthor('Encuesta disponible', 'https://i.imgur.com/zdAm4AD.png')
             .setColor(0x2AB7F1)
             .setDescription('**' + fields[0] + '**\n\n:one: ' + lines)

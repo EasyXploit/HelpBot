@@ -5,7 +5,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     try {
         const weather = module.require('weather-js');
         
-        let notToSearchEmbed = new discord.RichEmbed()
+        let notToSearchEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setTitle(resources.RedTick + ' Debes proporcionarme un término de búsqueda')
             .setDescription('La sintaxis de este comando es `' + config.prefix +'weather (ubicación)`');
@@ -20,7 +20,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             const current = result[0].current;
             const location = result[0].location;
             
-            const resultEmbed = new discord.RichEmbed()
+            const resultEmbed = new discord.MessageEmbed ()
                 .setColor(0x93BEDF)
                 .setThumbnail(current.imageUrl)
                 .setTitle(`🌦 | El tiempo en __${current.observationpoint}__`)

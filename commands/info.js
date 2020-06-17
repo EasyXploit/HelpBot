@@ -5,7 +5,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     const package = require('../package.json');
     
     try {
-        let resultEmbed = new discord.RichEmbed()
+        let resultEmbed = new discord.MessageEmbed ()
             .setColor(0XFFC857)
             .setAuthor('La República Gamer', bot.user.avatarURL)
             .setThumbnail('https://i.imgur.com/cTW63kf.png')

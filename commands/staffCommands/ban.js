@@ -27,11 +27,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             return message.channel.send(notToBanEmbed);
         }
         
-        let moderator = await message.guild.fetchMember(message.author);
+        let moderator = await message.guild.members.fetch(message.author);
         
         let member;
         try {
-            member = await message.guild.fetchMember(user);
+            member = await message.guild.members.fetch(user);
         } catch (e) {
             //return message.channel.send(notToBanEmbed);
             console.log(`-`);

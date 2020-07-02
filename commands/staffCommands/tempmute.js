@@ -16,14 +16,14 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(resources.RedTick + ' Debes proporcionar una unidad de medida de tiempo. Por ejemplo: `5s`, `10m`, `12h` o `3d`');
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let member = await message.guild.fetchMember(message.mentions.users.first() || args[0]);
+        let member = await message.guild.members.fetch(message.mentions.users.first() || args[0]);
         if (!member) return message.channel.send(notToMuteEmbed);
         if (member.user.bot) return message.channel.send(noBotsEmbed);
         
         //Esto comprueba si se ha proporcionado una unidad de medida de tiempo
         if (!args[1]) return message.channel.send(noCorrectTimeEmbed);
         
-        let moderator = await message.guild.fetchMember(message.author);
+        let moderator = await message.guild.members.fetch(message.author);
         
         //Se comprueba si puede banear al usuario
         if (moderator.id !== message.guild.owner.id) {

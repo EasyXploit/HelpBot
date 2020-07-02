@@ -15,7 +15,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             let embed1 = new discord.MessageEmbed ()
                 .setColor(resources.gold)
                 .setDescription(`${resources.republicagamer} **Bienvenido al servidor oficial de la República Gamer en Discord**\nA continuación te explicaremos la dinámica de este servidor:`)
-                .attachFile(`./resources/images/banners/logo_banner_transparent.png`);
+                .attachFiles(`./resources/images/banners/logo_banner_transparent.png`);
             
             let embed2 = new discord.MessageEmbed ()
                 .setColor(resources.gold)
@@ -26,12 +26,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .addField(`:three: No abuses de las menciones:`, 'No está permitido excederse utilizando las menciones a personas, a __roles__, o a `@everyone` y `@here`. _Las menciones abusivas pueden ser realmente molestas y pueden llevar a los usuario a silenciar el servidor._', true)
                 .addField(`:four: Respeta las temáticas:`, `Has de usar los canales de texto/voz adecuados en cada caso. Lee los temas de los canales para más información.`, true)
                 .addField(`:five: No busques vacíos legales:`, `No intentes hacer algo que obviamente pueda resultar inadecuado tanto para el staff como para el resto de usuarios de la comunidad.` + '\n\n```La infracción de la normativa conllevará desde sanciones administrativas (warn, mute, ban o kick) hasta avisos a las autoridades (en el caso de actividades ilegales).```', true)
-                .attachFile(`./resources/images/banners/rules.png`);
+                .attachFiles(`./resources/images/banners/rules.png`);
             
             let embed3 = new discord.MessageEmbed ()
                 .setColor(resources.gold)
-                .setDescription(':grey_question: Escribe `!ayuda` en cualquier canal de texto para acceder al sistema de ayuda.\n\n📓 Escribe `!normas` para mostrar las normas del servidor.\n\n' + resources.pilkobot + ' Escribe `!pilko` para mostrar los comandos de <@446041159853408257>.\n\n:robot: Escribe `!comandos` para mostrar los comandos de los bots.\n\n:military_medal: Escribe `!rangos` para mostrar los rangos, la tabla de puntuaciones y tu nivel.')
-                .attachFile(`./resources/images/banners/help.png`);
+                .setDescription(`:grey_question: Escribe \`!ayuda\` en cualquier canal de texto para acceder al sistema de ayuda.\n\n📓 Escribe \`!normas\` para mostrar las normas del servidor.\n\n${resources.pilkobot} Escribe \`!pilko\` para mostrar los comandos de <@446041159853408257>.\n\n:robot: Escribe \`!comandos\` para mostrar los comandos de los bots.\n\n:military_medal: Escribe \`!rangos\` para mostrar los rangos, la tabla de puntuaciones y tu nivel.`)
+                .attachFiles(`./resources/images/banners/help.png`);
             
             let embed4 = new discord.MessageEmbed ()
                 .setColor(resources.gold)
@@ -43,7 +43,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .addField(`${resources.chevron15} Nivel 10 ‣ ORO V`, `Permite **adjuntar archivos** y **cambiar tu propio apodo**.`, true)
                 .addField(`${resources.chevron18} Nivel 15 ‣ PLATINO V`, `Te permite **mencionar a todos** y **controlar la música**.`, true)
                 .addField(`● Estadísticas`, 'Usa `!rank` para conocer tu nivel\n[Ver la tabla de clasificación](https://mee6.xyz/leaderboard/374945492133740544)')
-                .attachFile(`./resources/images/banners/ranks.png`);
+                .attachFiles(`./resources/images/banners/ranks.png`);
 
             let embed5 = new discord.MessageEmbed ()
                 .setColor(resources.gold)
@@ -73,7 +73,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setAuthor(`ENLACE DE INVITACIÓN PERMANENTE`, `https://i.imgur.com/teglfDA.png`)
                 .setThumbnail(`https://i.imgur.com/teglfDA.png`)
                 .setDescription(`➧ Puedes usar el siguiente enlace para invitar a más jugadores a la comunidad. **¡Compártelo con todos!**\n_(este link no cuenta para tus invitaciones a referidos)_`)
-                .attachFile(`./resources/images/banners/link.png`);
+                .attachFiles(`./resources/images/banners/link.png`);
             
             await message.channel.send(embed1);
             await message.channel.send(embed2);
@@ -209,7 +209,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setDescription(`¡La comunidad necesita de tu ayuda para crecer!. Realizando un donativo ayudas a financiar el desarrollo y manutención de <@446041159853408257>, cuyo servidor requiere de una inversión mensual para mantenerse funcionando.\n\nAl donar, también permites que el <@&428631949029015562> que se esfuerza en la comunidad, reciba compensación por su esfuerzo.`)
                 .addField(`🏆 ¿Que consigues?`, `● Un rango por encima de los que se obtienen mediante XP.\n● Acceder a salas de voz VIP, con un mejor Bitrate.\n● Un chat de texto exclusivo para VIPs (con mensajes de TTS).\n● Controlar a los bots de música.\n● Acceder a todos los sorteos públicos.\n● Cambiar tu propio apodo cuando quieras.\n● Adjuntar cualquier tipo archivo.\n● Mencionar a todos (` + '`@everyone y @here`' + `).\n● Usar emojis de otros servidores (si eres usuario de Nitro).`, true)
                 .addField(`💎 Apoyar`, `[Haz clic aquí y sigue las instrucciones en pantalla](https://www.patreon.com/republicagamer)`, true)
-                .attachFile(`./resources/images/banners/support.png`);
+                .attachFiles(`./resources/images/banners/support.png`);
             
             message.channel.send(donateEmbed);
         } else if (args[0] === `roles1`) {
@@ -270,7 +270,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setAuthor(`Presenta tu oposición a moderador (LATAM)`, resources.server.iconURL)
                 .setDescription(`Estamos buscando personas de **LATAM** comprometidas con la comunidad interesadas en "echarnos un cable" moderando el servidor. Necesitamos gente proactiva, seria (pero no demasiado), con experiencia en el uso de Discord ¡y con ganas de ayudar!`)
                 .addField(`Si estás interesado, envía la siguiente información vía MD a @EasyXploit:`, `● ¿Como te llamas (nombre y apellidos)?\n● ¿Cual es tu edad?\n● ¿Cual es tu país de residencia?\n● ¿Tienes experiencia moderando?\n● ¿Administras algún otro servidor de Discord?\n● ¿Por que quieres ser moderador?\n\n● Las oposiciones finalizan el día 29 de Octubre de 2018. Tan solo tienes que enviar la información requerida a <@359333470771740683> y este revisará tu oposición y se pondrá en contacto contigo.`, true)
-                .attachFile(`./resources/images/banners/oppositions.png`);
+                .attachFiles(`./resources/images/banners/oppositions.png`);
             
             message.channel.send(embed);
         } else {

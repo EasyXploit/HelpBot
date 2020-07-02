@@ -15,11 +15,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             let newArgs = message.content.slice(13).split(`" `).slice(0, 1).join();
             role = message.guild.roles.find(r => r.name === newArgs);
         }
-        let member = await message.guild.fetchMember(message.mentions.users.first() || args[1]);
+        let member = await message.guild.members.fetch(message.mentions.users.first() || args[1]);
  
         if (!role || !member) return message.channel.send(noCorrectSyntaxEmbed);
         
-        let moderator = await message.guild.fetchMember(message.author);
+        let moderator = await message.guild.members.fetch(message.author);
         
         //Se comprueba si puede banear al usuario
         if (moderator.id !== member.id && author.id !== message.guild.owner.id) {

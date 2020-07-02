@@ -18,12 +18,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
         let member;
         try {
-            member = await message.guild.fetchMember(message.mentions.users.first() || args[0]);
+            member = await message.guild.members.fetch(message.mentions.users.first() || args[0]);
         } catch (e) {
             return message.channel.send(notToKickEmbed);
         }
         
-        let moderator = await message.guild.fetchMember(message.author);
+        let moderator = await message.guild.members.fetch(message.author);
         
         //Se comprueba si puede banear al usuario
         if (moderator.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed)

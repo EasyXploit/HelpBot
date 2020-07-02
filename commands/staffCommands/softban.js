@@ -33,7 +33,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         //Se comprueba si puede banear al usuario
         if (author.id !== message.guild.owner.id) {
-            if (author.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed);
+            if (author.roles.highest.position <= member.roles.highest.position) return message.channel.send(noPrivilegesEmbed);
         }
         
         let bans = await message.guild.fetchBans();

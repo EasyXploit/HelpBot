@@ -87,7 +87,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(`📝 Fecha de registro`, user.createdAt.toLocaleString(), true)
             .addField(`↙ Unido al servidor`, member.joinedAt.toLocaleString(), true)
             .addField(`👑 Estatus`, status.join(', '), true)
-            .addField(`🎖 Rol más alto`, member.highestRole.name, true)
+            .addField(`🎖 Rol más alto`, member.roles.highest.name, true)
             .addField(`💬 Último mensaje`, lastMessage, true)
             .addField(`⚖ Infracciones`, warns, true)
         message.channel.send(resultEmbed);

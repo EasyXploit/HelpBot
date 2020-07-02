@@ -156,7 +156,7 @@ bot.on(`ready`, async () => {
         //Presencia
         await bot.user.setPresence({
             status: config.status,
-            game: {
+            activity: {
                 name: `${bot.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`,
                 type: config.type
             }

@@ -26,7 +26,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let moderator = await message.guild.members.fetch(message.author);
         
         //Se comprueba si puede banear al usuario
-        if (moderator.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed)
+        if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send(noPrivilegesEmbed)
 
         let toDeleteCount = command.length - 2 + args[0].length + 2;
 

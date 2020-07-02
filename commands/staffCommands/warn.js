@@ -28,7 +28,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         //Se comprueba si puede advertir al usuario
         if (moderator.id !== message.guild.owner.id) {
-            if (moderator.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed);
+            if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send(noPrivilegesEmbed);
         }
         
         message.delete();
@@ -80,7 +80,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 });
                 
                 let botMember = message.guild.members.cache.get(bot.user.id);
-                await message.guild.setRolePosition(role, botMember.highestRole.position - 1);
+                await message.guild.setRolePosition(role, botMember.roles.highest.position - 1);
 
                 message.guild.channels.forEach(async (channel, id) => {
                     await channel.overwritePermissions (role, {

@@ -23,7 +23,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         //Se comprueba si puede banear al usuario
         if (moderator.id !== member.id && author.id !== message.guild.owner.id) {
-            if (moderator.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed);
+            if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send(noPrivilegesEmbed);
         }
         
         let notAssignedEmbed = new discord.MessageEmbed ()

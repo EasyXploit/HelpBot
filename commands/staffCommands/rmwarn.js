@@ -42,7 +42,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         //Se comprueba si puede advertir al usuario
         if (moderator.id !== message.guild.owner.id) {
-            if (moderator.highestRole.position <= member.highestRole.position) return message.channel.send(noPrivilegesEmbed);
+            if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send(noPrivilegesEmbed);
         }
         
         message.delete();

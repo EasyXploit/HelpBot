@@ -13,7 +13,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es ' + config.staffPrefix + 'poll "título" "campo1" "campo2" ...');
+            .setDescription(`${resources.RedTick} La sintaxis de este comando es ${config.staffPrefix}poll "título" "campo1" "campo2" ...`);
         
         if (fields.length < 2 || fields.length > 11) return message.channel.send(noCorrectSyntaxEmbed);
 
@@ -32,7 +32,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let embed = new discord.MessageEmbed ()
             .setAuthor('Encuesta disponible', 'https://i.imgur.com/zdAm4AD.png')
             .setColor(0x2AB7F1)
-            .setDescription('**' + fields[0] + '**\n\n:one: ' + lines)
+            .setDescription(`**${fields[0]}**\n\n:one: ${lines}`)
             .setFooter('© 2018 República Gamer LLC', bot.user.avatarURL)
             .setThumbnail('https://i.imgur.com/9ciWYgU.png');
         message.channel.send(embed)

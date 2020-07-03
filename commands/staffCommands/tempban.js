@@ -19,7 +19,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let noCorrectTimeEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
-            .setDescription(resources.RedTick + ' Debes proporcionar una unidad de medida de tiempo. Por ejemplo: `5s`, `10m`, `12h` o `3d`');
+            .setDescription(`${resources.RedTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5s\`, \`10m\`, \`12h\` o \`3d\``);
         
         if (!args[0]) return message.channel.send(notToBanEmbed);
     

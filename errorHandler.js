@@ -36,7 +36,7 @@ exports.run = async (discord, config, bot, message, args, command, e) => {
     
     let reportedEmbed = new discord.MessageEmbed()
         .setColor(resources.red)
-        .setTitle(resources.RedTick + '¡Vaya! Algo fue mal ...')
+        .setTitle(`${resources.RedTick} ¡Vaya! Algo fue mal ...`)
         .setDescription('Lo hemos reportado al equipo de desarrollo');
     
     await message.channel.send(reportedEmbed);

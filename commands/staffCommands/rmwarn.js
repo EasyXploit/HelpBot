@@ -7,23 +7,23 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let notToMuteEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Debes mencionar a un miembro o escribir su id');
+            .setDescription(`${resources.RedTick} Debes mencionar a un miembro o escribir su id`);
 
         let noBotsEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Los bots no pueden ser advertidos');
+            .setDescription(`${resources.RedTick} Los bots no pueden ser advertidos`);
         
         let noQuantityEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Debes proporcionar la cantidad de advertencias a quitar');
+            .setDescription(`${resources.RedTick} Debes proporcionar la cantidad de advertencias a quitar`);
         
         let undefinedReasonEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Se debe adjuntar una razón');
+            .setDescription(`${resources.RedTick} Se debe adjuntar una razón`);
         
         let noWarnsEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Este usuario no tiene advertencias');
+            .setDescription(`${resources.RedTick} Este usuario no tiene advertencias`);
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
         let member = await await message.guild.members.fetch(message.mentions.users.first() || args[0]);
@@ -58,7 +58,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setTimestamp()
             .setFooter(bot.user.username, bot.user.avatarURL)
             .addField('Fecha:', new Date().toLocaleString(), true)
-            .addField('Emisor:', '<@' + message.author.id + '>', true)
+            .addField('Emisor:', `<@${message.author.id}>`, true)
             .addField('Cantidad:', quantity, true)
             .addField('Destino:', member.user.tag, true)
             .addField('Razón:', reason, true);

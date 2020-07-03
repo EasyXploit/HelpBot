@@ -5,7 +5,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'removerole (@rol | "rol" | id) (@usuario | id)`');
+            .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.staffPrefix}removerole (@rol | "rol" | id) (@usuario | id)\``);
 
         if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
         
@@ -28,7 +28,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let notAssignedEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
-            .setDescription(resources.RedTick + ' Este usuario no dispone del rol `' + role.name + '`');
+            .setDescription(`${resources.RedTick} Este usuario no dispone del rol \`${role.name}\``);
         
         if (!member.roles.has(role.id)) return message.channel.send(notAssignedEmbed);
 

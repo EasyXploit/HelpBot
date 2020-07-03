@@ -6,15 +6,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(0xF04647)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.ownerPrefix + 'dm (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)`');
+            .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.ownerPrefix}dm (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)\``);
         
         let noToDMEmbed = new discord.MessageEmbed ()
             .setColor(0xF04647)
-            .setDescription(resources.RedTick + ' No has proporcionado el contenido del mensaje');
+            .setDescription(`${resources.RedTick} No has proporcionado el contenido del mensaje`);
         
         let confirmEmbed = new discord.MessageEmbed ()
             .setColor(0xB8E986)
-            .setDescription(resources.GreenTick + ' ¡Mensaje enviado!');
+            .setDescription(`${resources.GreenTick} ¡Mensaje enviado!`);
         
         if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
         
@@ -26,11 +26,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             let noUserEmbed = new discord.MessageEmbed ()
                 .setColor(0xF04647)
-                .setDescription(resources.RedTick + ' No has proporcionado un usuario válido');
+                .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
             
             let noBotsEmbed = new discord.MessageEmbed ()
                 .setColor(0xF04647)
-                .setDescription(resources.RedTick + ' No puedes entablar una conversación con un bot');
+                .setDescription(`${resources.RedTick} No puedes entablar una conversación con un bot`);
             
             let member = await message.guild.members.fetch(message.mentions.users.first() || args[1]);
             if (!member) return message.channel.send(noUserEmbed);
@@ -85,7 +85,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             let sendingEmbed = new discord.MessageEmbed ()
                 .setColor(0xB8E986)
-                .setDescription(resources.GreenTick + ' El mensaje está siendo enviado');
+                .setDescription(`${resources.GreenTick} El mensaje está siendo enviado`);
             
             await message.delete()
             await message.channel.send(sendingEmbed);

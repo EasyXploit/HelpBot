@@ -5,11 +5,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(0xF04647)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.staffPrefix + 'register (#canal) (xS/xM/xH)`');
+            .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.staffPrefix}register (#canal) (xS/xM/xH)\``);
         
         let noCorrectTimeEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Debes proporcionar una unidad de medida válida. Por ejemplo: `5s`, `10m`, `12h` o `3d`');
+            .setDescription(`${resources.RedTick} Debes proporcionar una unidad de medida válida. Por ejemplo: \`5s\`, \`10m\`, \`12h\` o \`3d\``);
 
         if (args.length === 0 || args.length > 2) return message.channel.send(noCorrectSyntaxEmbed);
         if (!message.mentions.channels.first()) return message.channel.send(noCorrectSyntaxEmbed);
@@ -50,7 +50,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let awaitingEmbed = new discord.MessageEmbed ()
             .setTitle('👁 Registrando mensajes ...')
             .setColor(0xFFC857)
-            .setDescription(bot.user.username + ' registrará todos los mensajes enviados a ' + args[0] + ' durante ' + args[1] + '.')
+            .setDescription(`${bot.user.username} registrará todos los mensajes enviados a ${args[0]} durante ${args[1]}.`)
             .setFooter(bot.user.username, bot.user.avatarURL)
             .setTimestamp();
         await message.channel.send(awaitingEmbed);

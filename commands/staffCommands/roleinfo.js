@@ -5,7 +5,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(`${resources.RedTick} La sintaxis de este comando es ` + '`' + config.staffPrefix + 'roleinfo (@rol | rol | id)`');
+            .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.staffPrefix}roleinfo (@rol | rol | id)\``);
 
         if (!args[0]) return message.channel.send(noCorrectSyntaxEmbed);
 

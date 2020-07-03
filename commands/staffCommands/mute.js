@@ -7,11 +7,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let notToMuteEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Debes mencionar a un miembro o escribir su id');
+            .setDescription(`${resources.RedTick} Debes mencionar a un miembro o escribir su id`);
 
         let noBotsEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' No puedes silenciar a un bot');
+            .setDescription(`${resources.RedTick} No puedes silenciar a un bot`);
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
         let member = await message.guild.members.fetch(message.mentions.users.first() || args[0]);
@@ -51,25 +51,25 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let alreadyMutedEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Este usuario ya esta silenciado');
+            .setDescription(`${resources.RedTick} Este usuario ya esta silenciado`);
 
         let successEmbed = new discord.MessageEmbed ()
             .setColor(0xB8E986)
-            .setTitle(resources.GreenTick + ' Operación completada')
-            .setDescription('El usuario <@' + member.id + '> ha sido silenciado, ¿alguien más?');
+            .setTitle(`${resources.GreenTick} Operación completada`)
+            .setDescription(`El usuario <@${member.id}> ha sido silenciado, ¿alguien más?`);
 
         let loggingEmbed = new discord.MessageEmbed ()
             .setColor(0xEF494B)
-            .setAuthor(member.user.tag + ' ha sido SILENCIADO', member.user.displayAvatarURL)
-            .addField('Miembro', '<@' + member.id + '>', true)
-            .addField('Moderador', '<@' + message.author.id + '>', true)
+            .setAuthor(`${member.user.tag} ha sido SILENCIADO`, member.user.displayAvatarURL)
+            .addField('Miembro', `<@${member.id}>`, true)
+            .addField('Moderador', `<@${message.author.id}>`, true)
             .addField('Razón', reason, true)
             .addField('Duración', '∞', true);
 
         let toDMEmbed = new discord.MessageEmbed ()
             .setColor(0xEF494B)
             .setAuthor('[SILENCIADO]', message.guild.iconURL)
-            .setDescription('<@' + member.id + '>, has sido silenciado en ' + message.guild.name)
+            .setDescription(`<@${member.id}>, has sido silenciado en ${message.guild.name}`)
             .addField('Moderador', message.author.tag, true)
             .addField('Razón', reason, true)
             .addField('Duración', '∞', true);

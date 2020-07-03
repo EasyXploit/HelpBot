@@ -5,7 +5,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         let restartingEmbed = new discord.MessageEmbed ()
             .setColor(12118406)
-            .setTitle(resources.GreenTick + ' Operación completada')
+            .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription('Reiniciando PilkoBot . . .');
         message.channel.send(restartingEmbed);
 
@@ -14,7 +14,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setTimestamp()
             .setFooter(bot.user.username, bot.user.avatarURL)
             .setTitle('📑 Auditoría')
-            .setDescription('**' + message.author.tag + '** reinició a **' + bot.user.username + '**');
+            .setDescription(`**${message.author.tag}** reinició a **${bot.user.username}**`);
 
         // Destrucción de la actividad
         bot.destroy();

@@ -5,7 +5,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Debes escribir el contenido del mensaje');
+            .setDescription(`${resources.RedTick} Debes escribir el contenido del mensaje`);
         
         let text = args.join(` `);
         if (!text) return message.channel.send(noCorrectSyntaxEmbed);

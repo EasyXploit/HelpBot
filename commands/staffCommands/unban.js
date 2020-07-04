@@ -60,7 +60,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setDescription(`${resources.RedTick} Este usuario no ha sido baneado`);
             message.channel.send(notBannedEmbed);
         } else {
-            require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+            require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
         }
     }
 }

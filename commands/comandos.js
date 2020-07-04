@@ -10,11 +10,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setAuthor('COMANDOS', 'http://i.imgur.com/E3nPnZY.png')
             .setTitle('Comandos de los bots del servidor')
             .setFooter('© 2020 República Gamer S.L.', resources.server.iconURL())
-            .addField(resources.pilkobot + ' ' + config.prefix + 'pilko', 'Muestra los comandos de <@446041159853408257> ', true)
-            .addField(':musical_note: ' + config.prefix + 'musica', 'Muestra la ayuda para reproducir música en las salas de voz.', true)
-            .addField('🎶 ' + config.prefix + 'dj', `Muestra los comandos para controlar la música (solo DJs) ${resources.beta}.`, true)
-            .addField(':performing_arts: ' + config.prefix + 'memes', 'Muestra la ayuda para enviar memes y efectos sonoros.', true)
-            .addField(resources.boxbot + ' ' + config.prefix + 'boxbot', 'Muestra la ayuda para jugar a <@413728456942288896> en <#433376010688397312> y <#435495241840328705>', true);
+            .addField(`${resources.pilkobot} ${config.prefix}pilko`, 'Muestra los comandos de <@446041159853408257> ')
+            .addField(`:musical_note: ${config.prefix}musica`, 'Muestra la ayuda para reproducir música en las salas de voz.')
+            .addField(`🎶 ${config.prefix}dj`, `Muestra los comandos para controlar la música (solo DJs) ${resources.beta}.`)
+            .addField(`:performing_arts: ${config.prefix}memes`, 'Muestra la ayuda para enviar memes y efectos sonoros.')
+            .addField(`${resources.boxbot} ${config.prefix}boxbot`, 'Muestra la ayuda para jugar a <@413728456942288896> en <#433376010688397312> y <#435495241840328705>');
         
     let originUser = resources.valueCheck;
     resources.valueCheck = 'null';
@@ -71,6 +71,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             });
         });
     } catch (e) {
-        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require('../errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

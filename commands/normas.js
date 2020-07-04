@@ -17,6 +17,6 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .setFooter("© 2020 República Gamer S.L.", resources.server.iconURL());
         message.channel.send(helpEmbed);
     } catch (e) {
-        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require('../errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

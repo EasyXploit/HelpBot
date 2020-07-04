@@ -45,6 +45,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await bot.voiceDispatcher.resume();
         await message.channel.send(`▶ | Cola reanudada`);
     } catch (e) {
-        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require('../errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

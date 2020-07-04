@@ -24,6 +24,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 1000})});
         message.author.send(helpEmbed);
     } catch (e) {
-        require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

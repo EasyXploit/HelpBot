@@ -51,6 +51,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await member.kick(reason);
         await message.channel.send(successEmbed);
     } catch (e) {
-        require(`../../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

@@ -47,7 +47,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                     .setColor(0x8A2BE2)
                     .setAuthor('Estadísticas de Fortnite', 'http://s2.googleusercontent.com/s2/favicons?domain_url=https://www.epicgames.com/fortnite/')
                     .setTitle('Modo de juego: SOLO')
-                    .setDescription('Mostrando las estadísticas de __' + data.username + '__ en __' + platform.toUpperCase() + '__')
+                    .setDescription(`Mostrando las estadísticas de __${data.username}__ en __${platform.toUpperCase()}__`)
                     .setThumbnail(thumbnail)
                     .addField('Puntuación', score, true)
                     .addField('Partidas jugadas', matches, true) 
@@ -75,7 +75,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                     .setColor(0x8A2BE2)
                     .setAuthor('Estadísticas de Fortnite', 'http://s2.googleusercontent.com/s2/favicons?domain_url=https://www.epicgames.com/fortnite/')
                     .setTitle('Modo de juego: DUO')
-                    .setDescription('Mostrando las estadísticas de __' + data.username + '__ en __' + platform.toUpperCase() + '__')
+                    .setDescription(`Mostrando las estadísticas de __${data.username}__ en __${platform.toUpperCase()}__`)
                     .setThumbnail(thumbnail)
                     .addField('Puntuación', score, true)
                     .addField('Partidas jugadas', matches, true) 
@@ -103,7 +103,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                     .setColor(0x8A2BE2)
                     .setAuthor('Estadísticas de Fortnite', 'http://s2.googleusercontent.com/s2/favicons?domain_url=https://www.epicgames.com/fortnite/')
                     .setTitle('Modo de juego: SQUAD')
-                    .setDescription('Mostrando las estadísticas de __' + data.username + '__ en __' + platform.toUpperCase() + '__')
+                    .setDescription(`Mostrando las estadísticas de __${data.username}__ en __${platform.toUpperCase()}__`)
                     .setThumbnail(thumbnail)
                     .addField('Puntuación', score, true)
                     .addField('Partidas jugadas', matches, true) 
@@ -139,7 +139,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                     .setColor(0x8A2BE2)
                     .setAuthor('Estadísticas de Fortnite', 'http://s2.googleusercontent.com/s2/favicons?domain_url=https://www.epicgames.com/fortnite/')
                     .setTitle('Modo de juego: LIFETIME')
-                    .setDescription('Mostrando las estadísticas de __' + data.username + '__ en __' + platform.toUpperCase() + '__')
+                    .setDescription(`Mostrando las estadísticas de __${data.username}__ en __${platform.toUpperCase()}__`)
                     .setThumbnail(thumbnail)
                     .setFooter(footer,resources.server.iconURL())
                     .addField('Puntuación', score, true)
@@ -148,7 +148,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                     .addField('Victorias (%)', winsper, true)
                     .addField('Bajas', kills, true)
                     .addField('Ratio B/M', kd, true)
-                    .addField('Top 3', top3 + ' veces', true)
+                    .addField('Top 3', `${top3} veces`, true)
                 message.channel.send(resultEmbed);
             } else {
                 message.channel.send(noCorrectSyntaxEmbed);
@@ -156,12 +156,12 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         }).catch (e => {
             let errorEmbed = new discord.MessageEmbed()
                 .setColor(0xF12F49)
-                .setTitle(resources.RedTick + ' Ocurrió un error')
-                .setDescription('No hemos podido encontrar al usuario `' + username + '` en la plataforma `' + platform + '`.')
-                .addField('Posibles causas', '● El usuario `' + username +'` no existe o nunca ha jugado\n● `' + username + '` no ha jugado en la plataforma `' + platform +'` o al modo de juego `'+ gamemode +'`\n● El usuario ha cambiado de nombre de usuario\n● La API no tiene registrada ninguna estadística del usuario `' + username + '`',true)
+                .setTitle(`${resources.RedTick} Ocurrió un error`)
+                .setDescription(`No hemos podido encontrar al usuario \`${username}\` en la plataforma \`${platform}\`.`)
+                .addField('Posibles causas', `● El usuario \`${username}\` no existe o nunca ha jugado\n● \`${username}\` no ha jugado en la plataforma \`${platform}\` o al modo de juego \`${gamemode}\`\n● El usuario ha cambiado de nombre de usuario\n● La API no tiene registrada ninguna estadística del usuario \`${username}\``,true)
             message.channel.send(errorEmbed);
         });
     } catch (e) {
-        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require('../errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

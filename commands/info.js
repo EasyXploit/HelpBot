@@ -21,6 +21,6 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .addField('🗂 Librerias', '● discord.js\n● flaticon\n● Giphy', true);
         message.channel.send(resultEmbed);
     } catch (e) {
-        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require('../errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

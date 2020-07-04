@@ -25,6 +25,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await message.channel.send(helpEmbed1);
         await message.channel.send(helpEmbed2);
     } catch (e) {
-        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require('../errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

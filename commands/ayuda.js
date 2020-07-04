@@ -10,13 +10,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         .setAuthor('AYUDA', 'http://i.imgur.com/sYyH2IM.png')
         .setTitle('Sistema de ayuda del servidor')
         .setThumbnail('http://i.imgur.com/sYyH2IM.png')
-        .addField('📓 ' + config.prefix + 'normas', 'Muestra las normas del servidor.', true)
-        .addField(resources.pilkobot + ' ' + config.prefix + 'pilko', 'Muestra los comandos de <@446041159853408257> ', true)
-        .addField(':robot: ' + config.prefix + 'comandos', 'Muestra los comandos de los bots.', true)
-        .addField('🎖 ' + config.prefix + 'rangos', 'Muestra los rangos del servidor, la tabla de puntuaciones y tu nivel.', true)
-        .addField('ℹ ' + config.prefix + 'info', 'Muestra información acerca del proyecto', true)
-        .addField(':ticket: +invites', 'Muestra a cuentas personas has invitado.', true)
-        .addField('📈 +leaderboard', 'Muestra la tabla de clasificación de invitaciones.', true)
+        .addField(`📓 ${config.prefix}normas`, 'Muestra las normas del servidor.')
+        .addField(`${resources.pilkobot} ${config.prefix}pilko`, 'Muestra los comandos de <@446041159853408257> ')
+        .addField(`:robot: ${config.prefix}comandos`, 'Muestra los comandos de los bots.')
+        .addField(`🎖 ${config.prefix}rangos`, 'Muestra los rangos del servidor, la tabla de puntuaciones y tu nivel.')
+        .addField(`ℹ ${config.prefix}info`, 'Muestra información acerca del proyecto')
         .setFooter('© 2020 República Gamer S.L.', resources.server.iconURL());
 
     await message.channel.send(helpEmbed).then(async function (message) {
@@ -38,28 +36,28 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 if (reaction.emoji.name === '📓') {
                     await message.delete()
                     
-                    let commandFile = require(`../commands/normas.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/normas.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === 'pilkobot') {
                     await message.delete()
                     
-                    let commandFile = require(`../commands/pilko.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/pilko.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 }  else if (reaction.emoji.name === '🤖') {
                     await message.delete()
                     
                     resources.valueCheck = userID;
-                    let commandFile = require(`../commands/comandos.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/comandos.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === '🎖') {
                     await message.delete()
                     
-                    let commandFile = require(`../commands/niveles.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/niveles.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === 'ℹ') {
                     await message.delete()
                     
-                    let commandFile = require(`../commands/info.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/info.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 }
             })
@@ -68,6 +66,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             });
         });
     } catch (e) {
-        require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require('../errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

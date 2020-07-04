@@ -5,18 +5,18 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         let noQuantityEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Debes proporcionar la cantidad de mensajes a eliminar');
+            .setDescription(`${resources.RedTick} Debes proporcionar la cantidad de mensajes a eliminar`);
         
         let NaNEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Debes proporcionar una cantidad numérica');
+            .setDescription(`${resources.RedTick} Debes proporcionar una cantidad numérica`);
 
         if(!args[0]) return message.channel.send(noQuantityEmbed);
         if (isNaN(args[0])) return message.channel.send(NaNEmbed);
         
         let tooMuchOldMessagesEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Solo puedes borrar mensajes con un máximo de 14 días de antiguedad');
+            .setDescription(`${resources.RedTick} Solo puedes borrar mensajes con un máximo de 14 días de antiguedad`);
         
         const limit = Math.floor(args[0]);
         let count = 0;
@@ -25,7 +25,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (args[1]) {
             let noChannelEmbed = new discord.MessageEmbed ()
                 .setColor(0xF12F49)
-                .setDescription(resources.RedTick + ' El canal de texto proporcionado no es válido');
+                .setDescription(`${resources.RedTick} El canal de texto proporcionado no es válido`);
             
             channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
             if (!channel) return message.channel.send(noChannelEmbed);
@@ -37,15 +37,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             let successEmbed = new discord.MessageEmbed ()
                 .setColor(0xB8E986)
-                .setTitle(resources.GreenTick + ' Operación completada')
-                .setDescription('Mensajes eliminados: ' + count);
+                .setTitle(`${resources.GreenTick} Operación completada`)
+                .setDescription(`Mensajes eliminados: ${count}`);
 
             let loggingEmbed = new discord.MessageEmbed ()
                 .setColor(0x4A90E2)
                 .setTimestamp()
-                .setFooter(bot.user.username, bot.user.avatarURL)
+                .setFooter(bot.user.username, bot.user.avatarURL())
                 .setTitle('📑 Auditoría')
-                .setDescription('<@' + message.author.id + '> eliminó ' + count + ' mensajes del canal <#' + channel.id + '>');
+                .setDescription(`<@${message.author.id}> eliminó ${count} mensajes del canal <#${channel.id}>`);
             
             try {
                 await channel.bulkDelete(messages);
@@ -65,15 +65,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             let successEmbed = new discord.MessageEmbed ()
                 .setColor(0xB8E986)
-                .setTitle(resources.GreenTick + ' Operación completada')
-                .setDescription('Mensajes eliminados: ' + count);
+                .setTitle(`${resources.GreenTick} Operación completada`)
+                .setDescription(`Mensajes eliminados: ${count}`);
 
             let loggingEmbed = new discord.MessageEmbed ()
                 .setColor(0x4A90E2)
                 .setTimestamp()
-                .setFooter(bot.user.username, bot.user.avatarURL)
+                .setFooter(bot.user.username, bot.user.avatarURL())
                 .setTitle('📑 Auditoría')
-                .setDescription('<@' + message.author.id + '> eliminó ' + count + ' mensajes del canal <#' + channel.id + '>');
+                .setDescription(`<@${message.author.id}> eliminó ${count} mensajes del canal <#${channel.id}>`);
             
             try {
                 await channel.bulkDelete(messages);

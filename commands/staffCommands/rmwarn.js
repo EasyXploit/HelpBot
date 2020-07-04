@@ -56,7 +56,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setTitle('📑 Auditoría')
             .setDescription('Se ha/n retirado advertencia/s.')
             .setTimestamp()
-            .setFooter(bot.user.username, bot.user.avatarURL)
+            .setFooter(bot.user.username, bot.user.avatarURL())
             .addField('Fecha:', new Date().toLocaleString(), true)
             .addField('Emisor:', `<@${message.author.id}>`, true)
             .addField('Cantidad:', quantity, true)

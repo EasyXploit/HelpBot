@@ -70,7 +70,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
         let loggingEmbed = new discord.MessageEmbed ()
             .setColor(0xEF494B)
-            .setAuthor(`${member.user.tag} ha sido BANEADO`, member.user.displayAvatarURL)
+            .setAuthor(`${member.user.tag} ha sido BANEADO`, member.user.displayAvatarURL())
             .addField('Miembro', `<@${member.id}>`, true)
             .addField('Moderador', `<@${message.author.id}>`, true)
             .addField('Razón', reason, true)
@@ -79,7 +79,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
         let toDMEmbed = new discord.MessageEmbed ()
             .setColor(0xEF494B)
-            .setAuthor('[BANEADO]', message.guild.iconURL)
+            .setAuthor('[BANEADO]', message.guild.iconURL())
             .setDescription(`<@${member.id}>, has sido baneado en ${message.guild.name}`)
             .addField('Moderador', '@' + message.author.tag, true)
             .addField('Razón', reason, true)

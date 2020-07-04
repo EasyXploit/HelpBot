@@ -17,7 +17,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         .addField('ℹ ' + config.prefix + 'info', 'Muestra información acerca del proyecto', true)
         .addField(':ticket: +invites', 'Muestra a cuentas personas has invitado.', true)
         .addField('📈 +leaderboard', 'Muestra la tabla de clasificación de invitaciones.', true)
-        .setFooter('© 2018 República Gamer LLC', resources.server.iconURL);
+        .setFooter('© 2020 República Gamer S.L.', resources.server.iconURL());
 
     await message.channel.send(helpEmbed).then(async function (message) {
         

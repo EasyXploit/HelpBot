@@ -5,7 +5,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(0xF04647)
-            .setDescription(resources.RedTick + ' La sintaxis del comando es `' + config.ownerPrefix + 'name (nombre)`');
+            .setDescription(`${resources.RedTick} La sintaxis del comando es \`${config.ownerPrefix}name (nombre)\``);
 
         //Comprueba si se ha proporcionado argumento
         if (args.length < 1) return message.channel.send(noCorrectSyntaxEmbed);
@@ -15,7 +15,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let actuallyConfiguredEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Este nombre de usuario ya ha sido configurado');
+            .setDescription(`${resources.RedTick} Este nombre de usuario ya ha sido configurado`);
 
         //Se comprueba si el nombre de usuario proporcionado es igual al ya configurado
         if (nickname === bot.user.username) return message.channel.send(actuallyConfiguredEmbed);
@@ -27,15 +27,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let successEmbed = new discord.MessageEmbed ()
             .setColor(0xB8E986)
-            .setTitle(resources.GreenTick + ' Operación completada')
-            .setDescription('Cambiaste el nombre del bot a ' + nickname);
+            .setTitle(`${resources.GreenTick} Operación completada`)
+            .setDescription(`Cambiaste el nombre del bot a ${nickname}`);
 
         let loggingEmbed = new discord.MessageEmbed ()
             .setColor(0x4A90E2)
             .setTimestamp()
-            .setFooter(bot.user.username, bot.user.avatarURL)
+            .setFooter(bot.user.username, bot.user.avatarURL())
             .setTitle('📑 Auditoría')
-            .setDescription(message.author.username + ' cambió el nombre del bot a ' + nickname);
+            .setDescription(`${message.author.username} cambió el nombre del bot a ${nickname}`);
 
         await message.channel.send(successEmbed);
         await loggingChannel.send(loggingEmbed);

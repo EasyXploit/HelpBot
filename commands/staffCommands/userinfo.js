@@ -78,7 +78,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setColor(member.displayHexColor)
             .setTitle(`🙍 Información de usuario`)
             .setDescription(`Mostrando información acerca del usuario <@${member.id}>`)
-            .setThumbnail(user.displayAvatarURL)
+            .setThumbnail(user.displayAvatarURL())
             .addField(`ℹ Nickname`, member.displayName, true)
             .addField(`🏷 TAG completo`, user.tag, true)
             .addField(`🆔 ID del usuario`, member.id, true)

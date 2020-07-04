@@ -13,7 +13,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let loggingEmbed = new discord.MessageEmbed ()
             .setColor(0xFF773D)
             .setTimestamp()
-            .setFooter(bot.user.username, bot.user.avatarURL)
+            .setFooter(bot.user.username, bot.user.avatarURL())
             .setTitle('📑 Auditoría')
             .setDescription(`**${message.author.tag}** detuvo a **${bot.user.username}**. \nEl bot tendrá que ser arrancado manualmente`);
 

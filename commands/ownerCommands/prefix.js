@@ -5,7 +5,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es: `' + config.ownerPrefix+ 'prefix (nuevo prefijo) (todos | staff | owner)`');
+            .setDescription(`${resources.RedTick} La sintaxis de este comando es: \`${config.ownerPrefix}prefix (nuevo prefijo) (todos | staff | owner)\``);
 
         //Comprueba si se han proporcionado todos los argumentos
         if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
@@ -15,7 +15,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let tooLongEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Debes proporcionar un prefijo cuya longitud sea de 1 carácter');
+            .setDescription(`${resources.RedTick} Debes proporcionar un prefijo cuya longitud sea de 1 carácter`);
         
         //Se comprueba si el prefijo tiene una longitud de 1 carácter
         if (newPrefix.length !== 1) return message.channel.send(tooLongEmbed);
@@ -39,19 +39,19 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let actuallyConfiguredEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Este prefijo ya ha sido configurado');
+            .setDescription(`${resources.RedTick} Este prefijo ya ha sido configurado`);
         
         let successEmbed = new discord.MessageEmbed ()
             .setColor(0xB8E986)
-            .setTitle(resources.GreenTick + ' Operación completada')
-            .setDescription('Cambiaste el prefijo ' + prefixType + ' a `' + newPrefix + '`');
+            .setTitle(`${resources.GreenTick} Operación completada`)
+            .setDescription(`Cambiaste el prefijo ${prefixType} a \`${newPrefix}\``);
 
         let loggingEmbed = new discord.MessageEmbed ()
             .setColor(0x4A90E2)
             .setTimestamp()
-            .setFooter(bot.user.username, bot.user.avatarURL)
+            .setFooter(bot.user.username, bot.user.avatarURL())
             .setTitle('📑 Auditoría')
-            .setDescription(message.author.username + ' cambió el prefijo ' + prefixType + ' a `' + newPrefix + '`');
+            .setDescription(`${message.author.username} cambió el prefijo ${prefixType} a \`${newPrefix}\``);
 
         if (args[1] === 'todos') {
             if (newPrefix === config.prefix) return message.channel.send(actuallyConfiguredEmbed);

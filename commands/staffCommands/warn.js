@@ -39,14 +39,14 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let loggingEmbed = new discord.MessageEmbed ()
             .setColor(0xF8A41E)
-            .setAuthor(`${member.user.tag} ha sido ADVERTIDO`, member.user.displayAvatarURL)
+            .setAuthor(`${member.user.tag} ha sido ADVERTIDO`, member.user.displayAvatarURL())
             .addField('Miembro', `<@${member.id}>`, true)
             .addField('Moderador', `<@${moderator.id}`, true)
             .addField('Razón', reason, true);
 
         let toDMEmbed = new discord.MessageEmbed ()
             .setColor(0xF8A41E)
-            .setAuthor('[ADVERTIDO]', message.guild.iconURL)
+            .setAuthor('[ADVERTIDO]', message.guild.iconURL())
             .setDescription(`<@${member.id}>, has sido advertido en ${message.guild.name}`)
             .addField('Moderador', message.author.tag, true)
             .addField('Razón', reason, true);
@@ -93,7 +93,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
             let loggingEmbed = new discord.MessageEmbed ()
                 .setColor(0xEF494B)
-                .setAuthor(`${member.user.tag} ha sido SILENCIADO`, member.user.displayAvatarURL)
+                .setAuthor(`${member.user.tag} ha sido SILENCIADO`, member.user.displayAvatarURL())
                 .addField('Miembro', `<@${member.id}>`, true)
                 .addField('Moderador', `<@${bot.user.id}`, true)
                 .addField('Razón', 'Demasiadas advertencias', true)
@@ -101,7 +101,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
             let toDMEmbed = new discord.MessageEmbed ()
                 .setColor(0xEF494B)
-                .setAuthor('[SILENCIADO]', message.guild.iconURL)
+                .setAuthor('[SILENCIADO]', message.guild.iconURL())
                 .setDescription(`<@${member.id}>, has sido silenciado en ${message.guild.name}`)
                 .addField('Moderador', `<@${bot.user.id}>`, true)
                 .addField('Razón', 'Demasiadas advertencias', true)

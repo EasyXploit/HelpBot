@@ -32,7 +32,7 @@ exports.run = async (discord, config, bot, message, args, command, e) => {
         .addField('Autor:', '<@' + message.author.id + '>', true)
         .addField('Fecha:', new Date().toLocaleString(), true)
         .addField('Error:', e.stack, true)
-        .setFooter(new Date().toLocaleString(), resources.server.iconURL).setTimestamp()
+        .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp()
     
     let reportedEmbed = new discord.MessageEmbed()
         .setColor(resources.red)

@@ -42,7 +42,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let toDMEmbed = new discord.MessageEmbed ()
             .setColor(resources.red2)
-            .setAuthor(`[EXPULSADO]`, message.guild.iconURL)
+            .setAuthor(`[EXPULSADO]`, message.guild.iconURL())
             .setDescription(`<@${member.id}>, has sido expulsado en ${message.guild.name}`)
             .addField(`Moderador`, message.author.tag, true)
             .addField(`Razón`, reason, true)

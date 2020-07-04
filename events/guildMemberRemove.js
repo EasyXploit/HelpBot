@@ -16,7 +16,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             } else {
                 const loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.red2)
-                    .setAuthor(`${event.user.tag} ha sido EXPULSADO`, event.user.displayAvatarURL)
+                    .setAuthor(`${event.user.tag} ha sido EXPULSADO`, event.user.displayAvatarURL())
                     .addField(`Miembro`, `<@${event.user.id}>`, true)
                     .addField(`Moderador`, `<@${executor.id || 'Desconocido'}>`, true)
                     .addField(`Razón`, reason || 'Desconocida', true);
@@ -59,11 +59,11 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             let loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.orange)
                 .setThumbnail(`https://i.imgur.com/2nZ23V4.png`)
-                .setAuthor(`Un miembro abandonó`, event.user.displayAvatarURL)
+                .setAuthor(`Un miembro abandonó`, event.user.displayAvatarURL())
                 .setDescription(`${event.user.username} abandonó el servidor`)
                 .addField(`🏷 TAG completo`, event.user.tag, true)
                 .addField(`🆔 ID del usuario`, event.user.id, true)
-                .setFooter(event.guild.name, event.guild.iconURL).setTimestamp()
+                .setFooter(event.guild.name, event.guild.iconURL()).setTimestamp()
             
             return await bot.channels.cache.get(config.loggingChannel).send(loggingEmbed);
         }
@@ -76,7 +76,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             .addField(`Evento:`, `guildMemberRemove`, true)
             .addField(`Fecha:`, new Date().toLocaleString(), true)
             .addField(`Error:`, e.stack, true)
-            .setFooter(new Date().toLocaleString(), resources.server.iconURL).setTimestamp();
+            .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp();
         
         //Se envía el mensaje al canal de depuración
         await bot.channels.cache.get(config.debuggingChannel).send(debuggEmbed);

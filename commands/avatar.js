@@ -9,8 +9,8 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .setColor(0xFFC857)
             .setAuthor('Avatar de @' + user.tag)
             .setTitle('URL del Avatar')
-            .setImage(user.displayAvatarURL)
-            .setURL(user.displayAvatarURL);
+            .setImage(user.displayAvatarURL())
+            .setURL(user.displayAvatarURL());
         message.channel.send(avatarEmbed);
     } catch (e) {
         require(`../errorHandler.js`).run(discord, config, bot, message, args, command, e);

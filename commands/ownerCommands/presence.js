@@ -16,11 +16,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(0xF04647)
-            .setDescription(resources.RedTick + ' La sintaxis del comando es `' + config.ownerPrefix + 'presence ("estatus" | "actividad") ("online" | "offline" | "idle" | "dnd" - "nombreDeLaAtividad")`');
+            .setDescription(`${resources.RedTick} La sintaxis del comando es \`${config.ownerPrefix}presence ("estatus" | "actividad") ("online" | "offline" | "idle" | "dnd" - "nombreDeLaAtividad")\``);
 
         let actuallyConfiguredEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Esta configuración ya ha sido aplicada');
+            .setDescription(`${resources.RedTick} Esta configuración ya ha sido aplicada`);
 
         if (!args[0] || !args[1]) return message.channel.send(noCorrectSyntaxEmbed);
         if (toModify !== 'estatus' && toModify !== 'actividad') return message.channel.send(noCorrectSyntaxEmbed);
@@ -48,15 +48,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let resultEmbed = new discord.MessageEmbed ()
             .setColor(0xB8E986)
-            .setTitle(resources.GreenTick + ' Operación en marcha')
-            .setDescription('Cambiaste ' + changed + ' del bot a `' + content + '`.\nEsta operación podría tardar unos minutos en completarse.')
+            .setTitle(`${resources.GreenTick} Operación en marcha`)
+            .setDescription(`Cambiaste ${changed} del bot a \`${content}\`.\nEsta operación podría tardar unos minutos en completarse.`)
 
         let loggingEmbed = new discord.MessageEmbed ()
             .setColor(0x4A90E2)
             .setTimestamp()
-            .setFooter('© 2018 República Gamer LLC', bot.user.avatarURL)
+            .setFooter('© 2020 República Gamer S.L.', bot.user.avatarURL())
             .setTitle('📑 Auditoría')
-            .setDescription(message.author.username + ' cambió ' + changed + ' del bot a `' + content + '`');
+            .setDescription(`${message.author.username} cambió ${changed} del bot a \`${content}\``);
 
         await loggingChannel.send(loggingEmbed);
         await message.channel.send(resultEmbed)

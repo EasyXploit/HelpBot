@@ -5,8 +5,8 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
 
         let debuggingEmbed = new discord.MessageEmbed()
             .setColor(resources.orange)
-            .setThumbnail(event.iconURL)
-            .setAuthor(`${bot.user.username} abandonó una guild`, bot.user.displayAvatarURL)
+            .setThumbnail(event.iconURL())
+            .setAuthor(`${bot.user.username} abandonó una guild`, bot.user.displayAvatarURL())
             .addField(`🏷 Nombre`, event.name, true)
             .addField(`🆔 ID`, event.id, true)
             .setTimestamp();
@@ -21,7 +21,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             .addField(`Evento:`, `guildMemberRemove`, true)
             .addField(`Fecha:`, new Date().toLocaleString(), true)
             .addField(`Error:`, e.stack, true)
-            .setFooter(new Date().toLocaleString(), resources.server.iconURL).setTimestamp();
+            .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp();
         
         //Se envía el mensaje al canal de depuración
         await bot.channels.cache.get(config.debuggingChannel).send(debuggEmbed);

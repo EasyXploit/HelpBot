@@ -36,7 +36,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(`📬 ${config.staffPrefix}dm (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)`, 'Envio de mensajes directos', true)
             .addField(`📊 ${config.staffPrefix}poll "título" "campo1" "campo2" ...`, 'Envia una encuesta al canal actual', true)
             .addField(`👁 ${config.staffPrefix}register (#canal) (xS/xM/xH)`, `Hará que ${bot.user.username} registre los mensajes enviados durante el tiempo especificado.`)
-            .setFooter('© 2018 República Gamer LLC | Escudo: Solo para Supervisores', message.guild.iconURL);
+            .setFooter('© 2020 República Gamer S.L. | Escudo: Solo para Supervisores', message.guild.iconURL());
         
         message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 1000})});
         message.author.send(helpEmbed);

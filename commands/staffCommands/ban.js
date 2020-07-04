@@ -64,7 +64,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let toDMEmbed = new discord.MessageEmbed ()
             .setColor(resources.red2)
-            .setAuthor(`[BANEADO]`, message.guild.iconURL)
+            .setAuthor(`[BANEADO]`, message.guild.iconURL())
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
             .addField(`Moderador`, `@${message.author.tag}`, true)
             .addField(`Razón`, reason, true)

@@ -12,7 +12,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let loggingEmbed = new discord.MessageEmbed ()
             .setColor(4886754)
             .setTimestamp()
-            .setFooter(bot.user.username, bot.user.avatarURL)
+            .setFooter(bot.user.username, bot.user.avatarURL())
             .setTitle('📑 Auditoría')
             .setDescription(`**${message.author.tag}** reinició a **${bot.user.username}**`);
 

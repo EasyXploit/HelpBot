@@ -20,7 +20,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setAuthor('ROLES ASIGNABLES', 'https://i.imgur.com/TU8U8wq.png')
             .addField('● ¿Que son?', 'Los roles asignables te permiten añadir __tus propios roles__ basados en tus **intereses**, **videojuegos** y **región**.', true)
             .addField('● ¿Como los uso?', 'Desde el canal <#440905255073349635>, puedes reaccionar al mensaje de configuración con los emojis correspondientes a los roles que quieres asignarte', true)
-            .setFooter('© 2018 República Gamer LLC', message.guild.iconURL);
+            .setFooter('© 2020 República Gamer S.L.', message.guild.iconURL());
         
         await message.channel.send(helpEmbed1);
         await message.channel.send(helpEmbed2);

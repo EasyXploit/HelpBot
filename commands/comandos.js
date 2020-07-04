@@ -9,7 +9,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setThumbnail('http://i.imgur.com/g31RYSS.png')
             .setAuthor('COMANDOS', 'http://i.imgur.com/E3nPnZY.png')
             .setTitle('Comandos de los bots del servidor')
-            .setFooter('© 2018 República Gamer LLC', resources.server.iconURL)
+            .setFooter('© 2020 República Gamer S.L.', resources.server.iconURL())
             .addField(resources.pilkobot + ' ' + config.prefix + 'pilko', 'Muestra los comandos de <@446041159853408257> ', true)
             .addField(':musical_note: ' + config.prefix + 'musica', 'Muestra la ayuda para reproducir música en las salas de voz.', true)
             .addField('🎶 ' + config.prefix + 'dj', `Muestra los comandos para controlar la música (solo DJs) ${resources.beta}.`, true)
@@ -42,31 +42,31 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 if (reaction.emoji.name === 'pilkobot') {
                     await message.delete()
                     
-                    let commandFile = require(`../commands/pilko.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/pilko.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === '🎵') {
                     await message.delete()
                     
-                    let commandFile = require(`../commands/musica.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/musica.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === '🎶') {
                     await message.delete()
                     
-                    let commandFile = require(`../commands/dj.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/dj.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === '🎭') {
                     await message.delete()
                     
-                    let commandFile = require(`../commands/memes.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/memes.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 }   else if (reaction.emoji.name === 'boxbot') {
                     await message.delete()
                     
-                    let commandFile = require(`../commands/boxbot.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/boxbot.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } 
             })
-            .catch(collected => {
+            .catch(() => {
                 return;
             });
         });

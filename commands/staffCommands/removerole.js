@@ -49,7 +49,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .addField(`Emisor:`, `<@${message.author.id}>`, true)
                 .addField(`Rol:`, role.name, true)
                 .addField(`Destino:`, member.user.tag, true)
-                .setFooter(bot.user.username, bot.user.avatarURL).setTimestamp();
+                .setFooter(bot.user.username, bot.user.avatarURL()).setTimestamp();
             
             await message.channel.send(successEmbed);
             await loggingChannel.send(loggingEmbed);
@@ -75,7 +75,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .addField(`Emisor:`, `<@${message.author.id}>`, true)
                 .addField(`Rol:`, role.name, true)
                 .addField(`Destino:`, `<@${member.id}>`, true)
-                .setFooter(bot.user.username, bot.user.avatarURL).setTimestamp();
+                .setFooter(bot.user.username, bot.user.avatarURL()).setTimestamp();
             
             if (permittedRoles.some(roleName => role.name === roleName)) {
                 await member.removeRole(role);

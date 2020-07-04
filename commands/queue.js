@@ -23,7 +23,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setColor(randomColor())
                 .setAuthor(`Cola de reproducción - Ahora mismo:`, `https://i.imgur.com/lvShSwa.png`)
                 .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n` + '● Duración: `' + server.nowplaying.duration + '`.\n ● Requerida por: `' + server.nowplaying.requestedBy + '`')
-                .setFooter(`© 2018 República Gamer LLC | BETA Pública`, resources.server.iconURL);
+                .setFooter(`© 2020 República Gamer S.L. | BETA Pública`, resources.server.iconURL());
         
         if (!bot.servers[message.guild.id].queue[0]) {
             

@@ -25,7 +25,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setColor(0xCCCCCC)
                 .setTitle(`🎙 Lista de grabaciones`)
                 .setDescription('```' + newFileNames.join(`    `) + '```')
-                .setFooter(`© 2018 República Gamer LLC`, resources.server.iconURL);
+                .setFooter(`© 2020 República Gamer S.L.`, resources.server.iconURL());
             message.channel.send(listEmbed);
         } else {
             

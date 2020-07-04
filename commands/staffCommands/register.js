@@ -51,7 +51,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setTitle('👁 Registrando mensajes ...')
             .setColor(0xFFC857)
             .setDescription(`${bot.user.username} registrará todos los mensajes enviados a ${args[0]} durante ${args[1]}.`)
-            .setFooter(bot.user.username, bot.user.avatarURL)
+            .setFooter(bot.user.username, bot.user.avatarURL())
             .setTimestamp();
         await message.channel.send(awaitingEmbed);
 
@@ -63,7 +63,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setTitle('👁 Registro finalizado')
             .setColor(0xFFC857)
             .setDescription('Mensajes registrados por ' + bot.user.username + `:\n\n- ${msgs.map(msg => msg.content).join('\n- ')}`)
-            .setFooter(bot.user.username, bot.user.avatarURL)
+            .setFooter(bot.user.username, bot.user.avatarURL())
             .setTimestamp();
         message.channel.send(stopEmbed);
 

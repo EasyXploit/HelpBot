@@ -14,7 +14,7 @@ console.log(
     .emptyLine()
     .right(`Versión ${package.version}`)
     .emptyLine()
-    .wrap(`PilkoBot es un bot multifuncional desarrollado por el Staff de la comunidad, cuyo uso es exclusivo de los usuarios de la República Gamer, por lo que no está permitido su uso fuera de los servidores administrados por la República Gamer LLC.`)
+    .wrap(`PilkoBot es un bot multifuncional desarrollado por el Staff de la comunidad, cuyo uso es exclusivo de los usuarios de la República Gamer, por lo que no está permitido su uso fuera de los servidores administrados por la República Gamer S.L..`)
     .render()
 );
 
@@ -86,14 +86,14 @@ bot.on(`ready`, async () => {
                 if (Date.now() > time) {
                     let loggingEmbed = new discord.MessageEmbed()
                         .setColor(resources.green2)
-                        .setAuthor(`${member.user.tag} ha sido DES-SILENCIADO`, member.user.displayAvatarURL)
+                        .setAuthor(`${member.user.tag} ha sido DES-SILENCIADO`, member.user.displayAvatarURL())
                         .addField(`Miembro`, `<@${member.id}>`, true)
                         .addField(`Moderador`, `<@${bot.user.id}>`, true)
                         .addField(`Razón`, `Venció la amonestación`, true);
 
                     let toDMEmbed = new discord.MessageEmbed()
                         .setColor(resources.green2)
-                        .setAuthor(`[DES-SILENCIADO]`, guild.iconURL)
+                        .setAuthor(`[DES-SILENCIADO]`, guild.iconURL())
                         .setDescription(`<@${member.id}>, has sido des-silenciado en ${guild.name}`)
                         .addField(`Moderador`, bot.user.id, true)
                         .addField(`Razón`, `Venció la amonestación`, true);
@@ -121,7 +121,7 @@ bot.on(`ready`, async () => {
                 if (Date.now() > time) {
                     let loggingEmbed = new discord.MessageEmbed()
                         .setColor(resources.green2)
-                        .setAuthor(`${user.tag} ha sido DES-BANEADO`, user.displayAvatarURL)
+                        .setAuthor(`${user.tag} ha sido DES-BANEADO`, user.displayAvatarURL())
                         .addField(`Usuario`, `@${user.tag}`, true)
                         .addField(`Moderador`, `<@${bot.user.id}>`, true)
                         .addField(`Razón`, `Venció la amonestación`, true);
@@ -147,7 +147,7 @@ bot.on(`ready`, async () => {
                 let debuggingEmbed = new discord.MessageEmbed()
                     .setColor(0xF8A41E)
                     .setTimestamp()
-                    .setFooter(bot.user.username, bot.user.avatarURL)
+                    .setFooter(bot.user.username, bot.user.avatarURL())
                     .setDescription(`${resources.OrangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);
                 debuggingChannel.send(debuggingEmbed);
             }
@@ -188,7 +188,7 @@ bot.on(`ready`, async () => {
             .addField(`Actividad:`, `${bot.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`, true)
             .addField(`Usuarios:`, bot.users.cache.filter(user => !user.bot).size, true)
             .addField(`Versión:`, package.version, true)
-            .setFooter(bot.user.username, bot.user.avatarURL)
+            .setFooter(bot.user.username, bot.user.avatarURL())
             .setTimestamp();
         debuggingChannel.send(statusEmbed);
     } catch (e) {
@@ -244,7 +244,7 @@ bot.on(`message`, async message => {
             
             let loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
-                .setAuthor(member.user.tag + ' ha sido BANEADO', member.user.displayAvatarURL)
+                .setAuthor(member.user.tag + ' ha sido BANEADO', member.user.displayAvatarURL())
                 .addField('Miembro', '<@' + member.id + '>', true)
                 .addField('Moderador', '<@468149377412890626>', true)
                 .addField('Razón', `Spam vía MD`, true)
@@ -302,7 +302,7 @@ bot.on(`message`, async message => {
 
             let loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.orange)
-                .setAuthor(`${message.author.tag} ha sido ADVERTIDO`, message.author.displayAvatarURL)
+                .setAuthor(`${message.author.tag} ha sido ADVERTIDO`, message.author.displayAvatarURL())
                 .addField(`Miembro`, `<@${message.author.id}>`, true)
                 .addField(`Moderador`, `<@${bot.user.id}>`, true)
                 .addField(`Razón`, reason, true)
@@ -310,7 +310,7 @@ bot.on(`message`, async message => {
 
             let toDMEmbed = new discord.MessageEmbed()
                 .setColor(resources.orange)
-                .setAuthor(`[ADVERTIDO]`, message.guild.iconURL)
+                .setAuthor(`[ADVERTIDO]`, message.guild.iconURL())
                 .setDescription(`<@${message.author.id}>, has sido advertido en ${message.guild.name}`)
                 .addField(`Moderador`, `<@${bot.user.id}>`, true)
                 .addField(`Razón`, reason, true);
@@ -353,7 +353,7 @@ bot.on(`message`, async message => {
 
                 let loggingEmbed = new discord.MessageEmbed()
                     .setColor(0xEF494B)
-                    .setAuthor(message.member.user.tag + ' ha sido SILENCIADO', message.member.user.displayAvatarURL)
+                    .setAuthor(message.member.user.tag + ' ha sido SILENCIADO', message.member.user.displayAvatarURL())
                     .addField('Miembro', '<@' + message.member.id + '>', true)
                     .addField('Moderador', '<@' + bot.user.id + '>', true)
                     .addField('Razón', 'Demasiadas infracciones', true)
@@ -361,7 +361,7 @@ bot.on(`message`, async message => {
 
                 let toDMEmbed = new discord.MessageEmbed()
                     .setColor(0xEF494B)
-                    .setAuthor('[SILENCIADO]', message.guild.iconURL)
+                    .setAuthor('[SILENCIADO]', message.guild.iconURL())
                     .setDescription('<@' + message.member.id + '>, has sido silenciado en ' + message.guild.name)
                     .addField('Moderador', bot.user.tag, true)
                     .addField('Razón', 'Demasiadas infracciones', true)
@@ -403,7 +403,7 @@ bot.on(`message`, async message => {
 
                 let loggingEmbed = new discord.MessageEmbed()
                     .setColor(0xEF494B)
-                    .setAuthor(message.member.user.tag + ' ha sido SILENCIADO', message.member.user.displayAvatarURL)
+                    .setAuthor(message.member.user.tag + ' ha sido SILENCIADO', message.member.user.displayAvatarURL())
                     .addField('Miembro', '<@' + message.member.id + '>', true)
                     .addField('Moderador', '<@' + bot.user.id + '>', true)
                     .addField('Razón', 'Demasiadas infracciones', true)
@@ -411,7 +411,7 @@ bot.on(`message`, async message => {
 
                 let toDMEmbed = new discord.MessageEmbed()
                     .setColor(0xEF494B)
-                    .setAuthor('[SILENCIADO]', message.message.guild.iconURL)
+                    .setAuthor('[SILENCIADO]', message.message.guild.iconURL())
                     .setDescription('<@' + message.member.id + '>, has sido silenciado en ' + message.guild.name)
                     .addField('Moderador', bot.user.tag, true)
                     .addField('Razón', 'Demasiadas infracciones', true)

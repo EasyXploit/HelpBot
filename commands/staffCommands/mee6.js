@@ -5,7 +5,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         message.delete();
         
-        const mee6Avatar = message.guild.members.cache.get('159985870458322944').user.displayAvatarURL;
+        const mee6Avatar = message.guild.members.cache.get('159985870458322944').user.displayAvatarURL();
         
         let successEmbed = new discord.MessageEmbed ()
             .setColor(0xB8E986)

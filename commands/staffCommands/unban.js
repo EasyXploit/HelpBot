@@ -46,7 +46,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let loggingEmbed = new discord.MessageEmbed ()
             .setColor(resources.green2)
-            .setAuthor(`${user.tag} ha sido DESBANEADO`, user.displayAvatarURL)
+            .setAuthor(`${user.tag} ha sido DESBANEADO`, user.displayAvatarURL())
             .addField(`Usuario`, `@${user.tag}`, true)
             .addField(`Moderador`, `<@${message.author.id}>`, true)
             .addField(`Razón`, reason, true)

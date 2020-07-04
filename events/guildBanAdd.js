@@ -16,7 +16,7 @@ exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => 
             } else {
                 const loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.red2)
-                    .setAuthor(`${user.tag} ha sido BANEADO`, user.displayAvatarURL)
+                    .setAuthor(`${user.tag} ha sido BANEADO`, user.displayAvatarURL())
                     .addField(`Miembro`, `<@${user.id}>`, true)
                     .addField(`Moderador`, `<@${executor.id || 'Desconocido'}>`, true)
                     .addField(`Razón`, reason || 'Desconocida', true)
@@ -65,7 +65,7 @@ exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => 
             .addField(`Evento:`, `guildBanAdd`, true)
             .addField(`Fecha:`, new Date().toLocaleString(), true)
             .addField(`Error:`, e.stack, true)
-            .setFooter(new Date().toLocaleString(), resources.server.iconURL).setTimestamp();
+            .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp();
         
         //Se envía el mensaje al canal de depuración
         await bot.channels.cache.get(config.debuggingChannel).send(debuggEmbed);

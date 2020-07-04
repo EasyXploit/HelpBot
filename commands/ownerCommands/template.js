@@ -5,7 +5,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(0xF04647)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.ownerPrefix + 'template (plantilla)`');
+            .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.ownerPrefix}template (plantilla)\``);
 
         if (!args[0]) return message.channel.send(noCorrectSyntaxEmbed);
 
@@ -107,7 +107,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setDescription(`Reacciona con el emoji correspondiente al rol que quieras asignarte. En cualquier momento puedes quitarte un rol retirando tu reacción.`)
                 .addField(`Región`, '● Reacciona con :flag_es: para asignarte el rol `@ES`\n● Reacciona con :earth_americas: para asignarte el rol `@LATAM`', true)
                 .addField(`Videojuegos`, '● Reacciona con :bomb: para asignarte el rol `@CS:GO`\n● Reacciona con :boom: para asignarte el rol `@RAINBOW SIX`\n● Reacciona con :hammer_pick: para asignarte el rol `@FORTNITE`\n● Reacciona con 🚀 para asignarte el rol `@ROCKET LEAGUE`\n● Reacciona con 🌟 para asignarte el rol `@LOL`\n● Reacciona con ⛏ para asignarte el rol `@MINECRAFT`\n● Reacciona con ⚜ para asignarte el rol `@BATTLEFIELD`\n● Reacciona con 🔫 para asignarte el rol `@PUBG`\n● Reacciona con 🚔 para asignarte el rol `@GTA V`\n● Reacciona con 📦 para asignarte el rol `@ROBLOX`\n● Reacciona con ⚡ para asignarte el rol `@OVERWATCH`\n\n_Si hay algún rol que no está en la lista y te gustaría que añadiésemos, envíanos un mensaje a <#449289541866749953>_', true)
-                .setFooter(`© 2018 República Gamer LLC`, resources.server.iconURL);
+                .setFooter(`© 2020 República Gamer S.L.`, resources.server.iconURL());
             message.channel.send(rolesEmbed).then(async function (message) {
                 await message.react(`🇪🇸`);
                 await message.react(`🌎`);
@@ -162,7 +162,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .addField(`📝 Formulario de inscripción`, `[Haz clic aquí para inscribirte](https://docs.google.com/forms/d/1CYHAGngKAu_Ve1SiCqpxbJ0yIYlxh1nVI-jML9H2G_I)`)
                 .addField(`👮 Responsable de organización`, `<@372484235707285505>`, true)
                 .setImage(`https://i.imgur.com/E7mxrFm.png`)
-                .setFooter(`República Gamer no se responsabiliza de la organización del torneo`, resources.server.iconURL);
+                .setFooter(`República Gamer no se responsabiliza de la organización del torneo`, resources.server.iconURL());
             
             message.channel.send(embed);
         } else if (args[0] === `detuned`) {
@@ -175,7 +175,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .addField(`:link: Detalles`, `[Haz clic aquí para más info.](https://medium.com/tuneintodetuned/especial-halloween-f7c4ed23487d)`, true)
                 .addField(`👮 Responsable de organización`, `<@147813177004916736>`, true)
                 .setImage(`https://image.ibb.co/kqte50/1-OOk0l-HSi-Ns-EZs-XNv-Rm9-HSQ.jpg`)
-                .setFooter(`República Gamer no se responsabiliza de la organización del evento`, resources.server.iconURL);
+                .setFooter(`República Gamer no se responsabiliza de la organización del evento`, resources.server.iconURL());
             
             message.channel.send(embed);
         } else if (args[0] === `bienvenida`) {
@@ -258,7 +258,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setColor(resources.gray)
                 .setThumbnail(`https://i.imgur.com/WdWMdgt.png`)
                 .addField(`Otros videojuegos`, '● Reacciona con 🔫 para asignarte el rol `@PUBG`\n● Reacciona con 🚀 para asignarte el rol `@ROCKET LEAGUE`\n● Reacciona con ⛏ para asignarte el rol `@MINECRAFT`\n● Reacciona con ⚜ para asignarte el rol `@BATTLEFIELD`\n● Reacciona con 🚔 para asignarte el rol `@GTA V`\n● Reacciona con 📦 para asignarte el rol `@ROBLOX`\n● Reacciona con ⚡ para asignarte el rol `@OVERWATCH`\n● Reacciona con 🛫 para asignarte el rol `@BO4`\n● Reacciona con 🌲 para asignarte el rol `@TERRARIA`\n● Reacciona con 🏡 para asignarte el rol `@STARDEW VALLEY`\n● Reacciona con 🗡 para asignarte el rol `@BRAWLHALLA`\n● Reacciona con 🐲 para asignarte el rol `@ARK`\n● Reacciona con 💎 para asignarte el rol `@PAYDAY`', true)
-                .setFooter(`© 2018 República Gamer LLC`, resources.server.iconURL);
+                .setFooter(`© 2020 República Gamer S.L.`, resources.server.iconURL());
             
             msg.edit(embed);
         } else if (args[0] === `oposiciones`) {
@@ -267,9 +267,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             let embed = new discord.MessageEmbed ()
                 .setColor(resources.blue)
                 .setThumbnail(`https://i.imgur.com/WFyNbtO.png`)
-                .setAuthor(`Presenta tu oposición a moderador (LATAM)`, resources.server.iconURL)
+                .setAuthor(`Presenta tu oposición a moderador (LATAM)`, resources.server.iconURL())
                 .setDescription(`Estamos buscando personas de **LATAM** comprometidas con la comunidad interesadas en "echarnos un cable" moderando el servidor. Necesitamos gente proactiva, seria (pero no demasiado), con experiencia en el uso de Discord ¡y con ganas de ayudar!`)
-                .addField(`Si estás interesado, envía la siguiente información vía MD a @EasyXploit:`, `● ¿Como te llamas (nombre y apellidos)?\n● ¿Cual es tu edad?\n● ¿Cual es tu país de residencia?\n● ¿Tienes experiencia moderando?\n● ¿Administras algún otro servidor de Discord?\n● ¿Por que quieres ser moderador?\n\n● Las oposiciones finalizan el día 29 de Octubre de 2018. Tan solo tienes que enviar la información requerida a <@359333470771740683> y este revisará tu oposición y se pondrá en contacto contigo.`, true)
+                .addField(`Si estás interesado, envía la siguiente información vía MD a @EasyXploit:`, `● ¿Como te llamas (nombre y apellidos)?\n● ¿Cual es tu edad?\n● ¿Cual es tu país de residencia?\n● ¿Tienes experiencia moderando?\n● ¿Administras algún otro servidor de Discord?\n● ¿Por que quieres ser moderador?\n\n● Las oposiciones finalizan el día 29 de Octubre de 2020. Tan solo tienes que enviar la información requerida a <@359333470771740683> y este revisará tu oposición y se pondrá en contacto contigo.`, true)
                 .attachFiles(`./resources/images/banners/oppositions.png`);
             
             message.channel.send(embed);

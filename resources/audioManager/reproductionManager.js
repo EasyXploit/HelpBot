@@ -48,7 +48,7 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
                 .setDescription('[' + details.title + '](' + info.video_url + ')\n\n● **Autor:** `' + details.author + '`\n● **Duración:** `' + moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss') + '`')
                 .addField(`Solicitado por:`, server.queue[toPlay].requestedBy, true)
                 .addField(`Siguiente:`, upNext, true)
-                .setFooter(`© 2018 República Gamer LLC | BETA Pública`, resources.server.iconURL);
+                .setFooter(`© 2020 República Gamer S.L. | BETA Pública`, resources.server.iconURL());
 
             //Ajusta el bitrate del oncoder de Opus actual
             //connection.player.setBitrate(96);

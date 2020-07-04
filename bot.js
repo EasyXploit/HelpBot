@@ -236,7 +236,7 @@ bot.on(`message`, async message => {
             
             let member = await resources.server.fetchMember(args[0]);
             
-            await console.log(`${new Date().toLocaleString()} 》Se ha recibido una orden automática de baneo para ${member.user.tag} (${member.id})`);
+            console.log(`${new Date().toLocaleString()} 》Se ha recibido una orden automática de baneo para ${member.user.tag} (${member.id})`);
 
             let spamMessage = message.content.slice(6 + args[0].length);
             

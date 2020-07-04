@@ -41,7 +41,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
             if (newFileNames.includes(sound) == false) return message.channel.send(soundNotFoundEmbed);
 
-            let voiceChannel = message.member.voiceChannel;
+            let voiceChannel = message.member.voice.channel;
             if (!voiceChannel) return message.channel.send(noChannelEmbed);
             
             if (bot.voiceStatus) {
@@ -54,7 +54,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 message.channel.send(playingEmbed);
 
                 voiceChannel.join().then(connection => {
-                    const dispatcher = connection.playFile(`./resources/audios/${sound}.mp3`);
+                    const dispatcher = connection.play(`./resources/audios/${sound}.mp3`);
 
                     dispatcher.on("error", reason => {
                         console.log(`${new Date().toLocaleString()} 》Error: ${reason}`);
@@ -63,13 +63,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                     dispatcher.on("debug", debug => {
                         console.log(`${new Date().toLocaleString()} 》Debug: ${debug}`);
                     });
-                    
-                    dispatcher.on("start", () => {
-                        console.log(`${new Date().toLocaleString()} 》Reproduciendo: true`);
-                    });
 
-                    dispatcher.on("end", reason => {
-                        console.log(`${new Date().toLocaleString()} 》Fin => Razón: ${reason}`);
+                    dispatcher.on("finish", reason => {
                         voiceChannel.leave();
                         bot.voiceStatus = true;
                     });
@@ -77,7 +72,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 return;
             } else {
                 return message.channel.send(notAvailableEmbed);
-                return;
             }
         }
     } catch (e) {

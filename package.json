@@ -1,6 +1,6 @@
 {
   "name": "pilkobot",
-  "version": "2.9.8",
+  "version": "2.9.9",
   "description": "PilkoBot es un bot para uso exclusivo de los usuario de la República Gamer",
   "main": "bot.js",
   "scripts": {
@@ -21,16 +21,14 @@
   },
   "homepage": "https://github.com/danielperales555/PilkoBot#readme",
   "dependencies": {
+    "@discordjs/opus": "^0.3.2",
     "asciiart-logo": "^0.1.7",
     "bufferutil": "^4.0.0",
     "discord.js": "^12.2.0",
     "ffmpeg": "0.0.4",
     "fortnite": "^4.1.1",
-    "giphy-api": "^1.2.8",
     "libsodium-wrappers": "^0.7.3",
     "moment": "^2.22.2",
-    "node-opus": "^0.3.0",
-    "opusscript": "0.0.6",
     "randomcolor": "^0.5.3",
     "translate": "^1.0.3",
     "tubesearch": "^1.0.5",

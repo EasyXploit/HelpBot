@@ -12,10 +12,7 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
 
             try {
                 //Reproduce la canción
-                bot.voiceDispatcher = connection.playStream(ytdl(server.queue[toPlay].link, {
-                    filter: `audioonly`,
-                    highWaterMark: 1024 * 1024 * 10
-                }));
+                bot.voiceDispatcher = connection.play(await ytdl(server.queue[toPlay].link), {type: 'opus'});
             } catch (e) {
                 console.log(`${new Date().toLocaleString()} 》${e}`);
             }
@@ -45,7 +42,7 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
                 .setColor(randomColor())
                 .setThumbnail(details.thumbnail.thumbnails[3].url)
                 .setAuthor(`Reproduciendo 🎶`, `https://i.imgur.com/lvShSwa.png`)
-                .setDescription('[' + details.title + '](' + info.video_url + ')\n\n● **Autor:** `' + details.author + '`\n● **Duración:** `' + moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss') + '`')
+                .setDescription(`[${details.title}](${info.video_url})\n\n● **Autor:** \`${details.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss')}\``)
                 .addField(`Solicitado por:`, server.queue[toPlay].requestedBy, true)
                 .addField(`Siguiente:`, upNext, true)
                 .setFooter(`© 2020 República Gamer S.L. | BETA Pública`, resources.server.iconURL());
@@ -73,7 +70,7 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
                 requestedBy: message.member.displayName
             };
 
-            bot.voiceDispatcher.on(`end`, reason => {
+            bot.voiceDispatcher.on(`finish`, reason => {
 
                 console.log(`${new Date().toLocaleString()} 》End reason: ${reason}`)
 
@@ -85,7 +82,7 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
 
                 } else {
 
-                    //Manda un mensaje de abandoni
+                    //Manda un mensaje de abandono
                     message.channel.send(`⏏ | Reproducción finalizada`);
 
                     //Aborta la conexión
@@ -110,11 +107,6 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
             //Se dispara si ocurre un error durante el streaming
             bot.voiceDispatcher.on(`error`, error => {
                 console.log(`${new Date().toLocaleString()} 》Dispatcher error: ${error}`)
-            });
-
-            //Evalua si el dispatcher está emitiendo o no
-            bot.voiceDispatcher.on(`speaking`, speaking => {
-                console.log(`${new Date().toLocaleString()} 》Dispatcher speaking: ${speaking}`)
             });
         }
         play(bot.voiceConnection, message)

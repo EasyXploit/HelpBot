@@ -14,7 +14,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(`:musical_note: ${config.prefix}musica`, 'Muestra la ayuda para reproducir música en las salas de voz.')
             .addField(`🎶 ${config.prefix}dj`, `Muestra los comandos para controlar la música (solo DJs) ${resources.beta}.`)
             .addField(`:performing_arts: ${config.prefix}memes`, 'Muestra la ayuda para enviar memes y efectos sonoros.')
-            .addField(`${resources.boxbot} ${config.prefix}boxbot`, 'Muestra la ayuda para jugar a <@413728456942288896> en <#433376010688397312> y <#435495241840328705>');
+            .addField(`${resources.boxbot} ${config.prefix}boxbot`, 'Muestra la ayuda para jugar a <@413728456942288896> en <#433376010688397312>');
         
     let originUser = resources.valueCheck;
     resources.valueCheck = 'null';

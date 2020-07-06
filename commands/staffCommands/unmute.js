@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-unmute (@usuario | id) (motivo)
     
     try {
-        if (message.author.id !== config.botOwner && !message.member.roles.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
+        if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
 
         let notToMuteEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
@@ -46,7 +46,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField('Moderador', message.author.tag, true)
             .addField('Razón', reason, true);
 
-        if (!role || !member.roles.has(role.id)) return message.channel.send(notMutedEmbed);
+        if (!role || !member.roles.cache.has(role.id)) return message.channel.send(notMutedEmbed);
 
         await member.removeRole(role);
         

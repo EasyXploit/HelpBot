@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-rmwarn (@miembro | id) (cantidad) (razón)
     
     try {
-        if (message.author.id !== config.botOwner && !message.member.roles.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
+        if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
         
         let notToMuteEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)

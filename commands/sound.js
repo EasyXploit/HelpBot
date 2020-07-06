@@ -24,7 +24,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             let listEmbed = new discord.MessageEmbed ()
                 .setColor(0xCCCCCC)
                 .setTitle(`🎙 Lista de grabaciones`)
-                .setDescription('```' + newFileNames.join(`    `) + '```')
+                .setDescription(`\`\`\`${newFileNames.join(`    `)}\`\`\``)
                 .setFooter(`© 2020 República Gamer S.L.`, resources.server.iconURL());
             message.channel.send(listEmbed);
         } else {

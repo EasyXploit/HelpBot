@@ -4,7 +4,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
-    if (!message.member.roles.has(config.botStaff) && !message.member.roles.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
+    if (!message.member.roles.cache.has(config.botStaff) && !message.member.roles.cache.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
 
     //!shuffle
 
@@ -31,14 +31,14 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(`${resources.RedTick} No hay nada en la cola.`);
         
         //Comprueba si el bot tiene o no una conexión a un canal de voz
-        if (!message.guild.voiceConnection) return message.channel.send(noConnectionEmbed);
+        if (!message.guild.voice) return message.channel.send(noConnectionEmbed);
 
         //Comprueba si el miembro está en un canal de voz
-        let voiceChannel = message.member.voiceChannel;
+        let voiceChannel = message.member.voice.channel;
         if (!voiceChannel) return message.channel.send(noChannelEmbed);
         
         //Comprueba si el bot está en el mismo canal que el miembro
-        if (message.member.voiceChannelID !== message.guild.member(bot.user).voiceChannelID) return message.channel.send(notAvailableEmbed);
+        if (message.member.voice.channelID !== message.guild.member(bot.user).voice.channelID) return message.channel.send(notAvailableEmbed);
         
         //Comprueba si hay reproducción
         if (!bot.voiceDispatcher) return message.channel.send(noDispatcherEmbed);

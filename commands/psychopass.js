@@ -17,8 +17,8 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
 
         const resultEmbed = new discord.MessageEmbed ()
             .setColor(0xDDDDDD)
-            .setTitle(':gun: | Coeficiente criminal: **' + coefficient + '%**')
-            .setDescription('**' + member + result)
+            .setTitle(`:gun: | Coeficiente criminal: **${coefficient}%**`)
+            .setDescription(`**${member}${result}`)
 
         message.channel.send(resultEmbed);
     } catch (e) {

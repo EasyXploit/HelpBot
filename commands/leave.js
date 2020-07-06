@@ -4,7 +4,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
-    if (!message.member.roles.has(config.botStaff) && !message.member.roles.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
+    if (!message.member.roles.cache.has(config.botStaff) && !message.member.roles.cache.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
     
     //!leave
 
@@ -18,10 +18,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que el bot.`);
 
         //Comprueba si hay una conexión de voz
-        if (!message.guild.voiceConnection) return message.channel.send(notInChannelEmbed);
+        if (!message.guild.voice) return message.channel.send(notInChannelEmbed);
 
         //Comprueba si está en la sala del miembro
-        if (message.member.voiceChannelID !== message.guild.member(bot.user).voiceChannelID) return message.channel.send(notInYourChannelEmbed);
+        if (message.member.voice.channelID !== message.guild.member(bot.user).voice.channelID) return message.channel.send(notInYourChannelEmbed);
 
         //Aborta la conexión
         bot.voiceConnection.disconnect();

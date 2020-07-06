@@ -4,7 +4,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
-    if (!message.member.roles.has(config.botStaff) && !message.member.roles.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
+    if (!message.member.roles.cache.has(config.botStaff) && !message.member.roles.cache.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
     
     //!np
 
@@ -15,13 +15,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         if (!bot.servers[message.guild.id]) return message.channel.send(noQueueEmbed);
         
-        const ytdl = require(`ytdl-core`);
+        const ytdl = require(`ytdl-core-discord`);
         const moment = require(`moment`);
         const randomColor = require('randomcolor');
         
         let info = await ytdl.getInfo(bot.servers[message.guild.id].nowplaying.link);
         let server = bot.servers[message.guild.id];
-        let progress = await bot.voiceDispatcher.time;
+        let progress = await bot.voiceDispatcher.streamTime;
         
         let total = info.player_response.videoDetails.lengthSeconds * 1000;
         let percentage = Math.floor((progress * 100) / total);
@@ -37,7 +37,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let progressEmbed = new discord.MessageEmbed ()
             .setColor(randomColor())
             .setAuthor(`Ahora mismo:`, `https://i.imgur.com/lvShSwa.png`)
-            .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n${progressBar.join(``)} ${percentage}%\n` + '`' + moment().startOf('day').milliseconds(progress).format('H:mm:ss') + ' / ' + moment().startOf('day').milliseconds(total).format('H:mm:ss') + '`')
+            .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n${progressBar.join(``)} ${percentage}%\n\`${moment().startOf('day').milliseconds(progress).format('H:mm:ss')} / ${moment().startOf('day').milliseconds(total).format('H:mm:ss')}\``)
             .setFooter(`© 2020 República Gamer S.L. | BETA Pública`, resources.server.iconURL());
         
         message.channel.send(progressEmbed);

@@ -4,7 +4,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
-    if (!message.member.roles.has(config.botStaff) && !message.member.roles.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
+    if (!message.member.roles.cache.has(config.botStaff) && !message.member.roles.cache.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
 
     //!move (posición 1) (posición 2)
 
@@ -24,7 +24,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
-            .setDescription(`${resources.RedTick} La sintaxis de este comando es:` + '`' + config.prefix + 'move (posición 1) (posición 2)`');
+            .setDescription(`${resources.RedTick} La sintaxis de este comando es: \`${config.prefix}move (posición 1) (posición 2)\``);
         
         let noDispatcherEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
@@ -35,7 +35,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(`${resources.RedTick} No hay nada en la cola.`);
         
         //Comprueba si el bot tiene o no una conexión a un canal de voz
-        if (!message.guild.voiceConnection) return message.channel.send(noConnectionEmbed);
+        if (!message.guild.voice) return message.channel.send(noConnectionEmbed);
 
         //Comprueba si el miembro está en un canal de voz
         let voiceChannel = message.member.voiceChannel;

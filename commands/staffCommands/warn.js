@@ -108,7 +108,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .addField('Duración', duration, true);
 
             //Comprueba si este susuario ya estaba silenciado
-            if (!member.roles.has(role.id)) {
+            if (!member.roles.cache.has(role.id)) {
                 await member.addRole(role);
             }
             

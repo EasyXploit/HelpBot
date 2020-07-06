@@ -4,7 +4,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
-    if (!message.member.roles.has(config.botStaff) && !message.member.roles.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
+    if (!message.member.roles.cache.has(config.botStaff) && !message.member.roles.cache.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
     
     //!queue
 
@@ -22,7 +22,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let queueEmbed = new discord.MessageEmbed ()
                 .setColor(randomColor())
                 .setAuthor(`Cola de reproducción - Ahora mismo:`, `https://i.imgur.com/lvShSwa.png`)
-                .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n` + '● Duración: `' + server.nowplaying.duration + '`.\n ● Requerida por: `' + server.nowplaying.requestedBy + '`')
+                .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n● Duración: \`${server.nowplaying.duration}\`.\n ● Requerida por: \`${server.nowplaying.requestedBy}\``)
                 .setFooter(`© 2020 República Gamer S.L. | BETA Pública`, resources.server.iconURL());
         
         if (!bot.servers[message.guild.id].queue[0]) {
@@ -31,7 +31,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             message.channel.send(queueEmbed);
         } else if (!bot.servers[message.guild.id].queue[1]) {
             let serverQueue = bot.servers[message.guild.id].queue
-            let queueList = '`1.` ' + ` [${serverQueue[0].title}](${serverQueue[0].link}) | ` + '`' + serverQueue[0].duration + ' ' + serverQueue[0].requestedBy + '`\n\n';
+            let queueList = `\`1.\` [${serverQueue[0].title}](${serverQueue[0].link}) | \`${serverQueue[0].duration} ${serverQueue[0].requestedBy}\`\n\n`;
             
             queueEmbed.addField(`A continuación`, queueList, true)
             message.channel.send(queueEmbed);
@@ -39,10 +39,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         } else {
             
             let serverQueue = bot.servers[message.guild.id].queue
-            let queueList = '`1.` ' + ` [${serverQueue[0].title}](${serverQueue[0].link}) | ` + '`' + serverQueue[0].duration + ' ' + serverQueue[0].requestedBy + '`\n\n';
+            let queueList = `\`1.\` [${serverQueue[0].title}](${serverQueue[0].link}) | \`${serverQueue[0].duration} ${serverQueue[0].requestedBy}\`\n\n`;
             
             for (let id = 1; id < serverQueue.length; id++) {
-                queueList = queueList + '`' + (id + 1) + '.` ' + ` [${serverQueue[id].title}](${serverQueue[id].link}) | ` + '`' + serverQueue[id].duration + ' ' + serverQueue[id].requestedBy + '`\n\n';
+                queueList = queueList + '`' + (id + 1) + `.\` [${serverQueue[id].title}](${serverQueue[id].link}) | \`${serverQueue[id].duration} ${serverQueue[id].requestedBy}\`\n\n`;
             }
             
             queueEmbed.addField(`A continuación`, queueList, true)

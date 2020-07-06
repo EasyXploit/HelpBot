@@ -30,7 +30,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Este usuario ya dispone del rol \`${role.name}\``);
         
-        if (member.roles.has(role.id)) return message.channel.send(alreadyAssignedEmbed);
+        if (member.roles.cache.has(role.id)) return message.channel.send(alreadyAssignedEmbed);
 
         if(message.author.id === config.botOwner) {
 
@@ -54,11 +54,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await message.channel.send(successEmbed);
             await loggingChannel.send(loggingEmbed);
             
-        } else if (message.member.roles.has(config.botStaff)) {
+        } else if (message.member.roles.cache.has(config.botStaff)) {
             
             let permittedRoles = [`ES`, `LATAM`, `CS:GO`, `RAINBOW SIX`, `FORTNITE`, `ROCKET LEAGUE`, `LOL`, `MINECRAFT`, `BATTLEFIELD`, `PUBG`, `GTA V`, `ROBLOX`, `OVERWATCH`, `BO4`, `TERRARIA`, `STARDEW VALLEY`, `BRAWLHALLA`, `ARK`, `MHW`, `L4D2`, `PAYDAY 2`, `FIFA`, `THE FOREST`]
             
-            if (message.member.roles.has(config.botSupervisor)) {
+            if (message.member.roles.cache.has(config.botSupervisor)) {
                 permittedRoles.push(`NOVATO`, `INICIADO`, `PROFESIONAL`, `VETERANO`, `EXPERTO`, `DJ`)
             }
 

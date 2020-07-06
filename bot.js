@@ -165,7 +165,7 @@ bot.on(`ready`, async () => {
         //Actualización de usuarios totales en presencia
         bot.setInterval(async () => {
             await bot.user.setPresence({
-                game: {
+                activity: {
                     name: `${bot.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`,
                     type: config.type
                 }
@@ -418,7 +418,7 @@ bot.on(`message`, async message => {
                     .addField('Duración', '∞', true);
 
                 //Comprueba si este susuario ya estaba silenciado
-                if (member.roles.has(role.id)) return;
+                if (member.roles.cache.has(role.id)) return;
 
                 await message.member.addRole(role);
                 await loggingChannel.send(loggingEmbed);

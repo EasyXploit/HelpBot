@@ -4,7 +4,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
-    if (!message.member.roles.has(config.botStaff) && !message.member.roles.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
+    if (!message.member.roles.cache.has(config.botStaff) && !message.member.roles.cache.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
     
     //!skip (cantidad opcional)
 
@@ -18,14 +18,14 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${bot.user.id}>.`);
 
         //Comprueba si el bot tiene o no una conexión a un canal de voz en el servidor
-        if (!message.guild.voiceConnection) return message.channel.send(notPlayingEmbed);
+        if (!message.guild.voice) return message.channel.send(notPlayingEmbed);
         
         //Comprueba si el miembro está en un canal de voz
-        let voiceChannel = message.member.voiceChannel;
+        let voiceChannel = message.member.voice.channel;
         if (!voiceChannel) return message.channel.send(notAvailableEmbed);
 
         //Comprueba si el miembro está en el mismo canal que el bot
-        if (message.member.voiceChannelID !== message.guild.member(bot.user).voiceChannelID) return message.channel.send(notAvailableEmbed);
+        if (message.member.voice.channelID !== message.guild.member(bot.user).voice.channelID) return message.channel.send(notAvailableEmbed);
 
         let noTalkPermissionEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
@@ -40,7 +40,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let tooBigEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Solo puedes hacer skip de ` + '`' + (bot.servers[message.guild.id].queue.length + 1) + '` canciones.');
+            .setDescription(`${resources.RedTick} Solo puedes hacer skip de \`${(bot.servers[message.guild.id].queue.length + 1)}\` canciones.`);
         
         //Si se especifica una cantidad, se skipearan en consecuencia
         if (args[0]) {

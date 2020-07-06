@@ -5,7 +5,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     try {
         let notToAnswerEmbed = new discord.MessageEmbed()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' Debes proporcionarme al menos 2 opciones.\nLa sintaxis de este comando es `' + config.prefix + 'elige "opción1" "opción2" ...`');
+            .setDescription(`${resources.RedTick} Debes proporcionarme al menos 2 opciones.\nLa sintaxis de este comando es \`${config.prefix}elige "opción1" "opción2" ...\``);
 
         let options = message.content.slice(8).split('" "');
         let lastOption = options.slice(-1).join();
@@ -20,7 +20,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
 
         const resultEmbed = new discord.MessageEmbed()
             .setColor(0x98DBCC)
-            .setDescription('🎯 | _"' + options[Math.floor(Math.random() * options.length)] + '"_ ' + texts[Math.floor(Math.random() * texts.length)] + ' ' + message.member.displayName);
+            .setDescription(`🎯 | _"${options[Math.floor(Math.random() * options.length)]}"_ ${texts[Math.floor(Math.random() * texts.length)]} ${message.member.displayName}`);
 
         message.channel.send(resultEmbed);
     } catch (e) {

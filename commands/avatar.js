@@ -7,7 +7,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
 
         const avatarEmbed = new discord.MessageEmbed()
             .setColor(0xFFC857)
-            .setAuthor('Avatar de @' + user.tag)
+            .setAuthor(`Avatar de @${user.tag}`)
             .setTitle('URL del Avatar')
             .setImage(user.displayAvatarURL())
             .setURL(user.displayAvatarURL());

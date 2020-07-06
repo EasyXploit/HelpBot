@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-mute (@usuario | id) (motivo)
     
     try {
-        if (message.author.id !== config.botOwner && !message.member.roles.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
+        if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
 
         let notToMuteEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
@@ -75,7 +75,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField('Duración', '∞', true);
 
         //Comprueba si este susuario ya estaba silenciado
-        if (member.roles.has(role.id)) return message.channel.send(alreadyMutedEmbed);
+        if (member.roles.cache.has(role.id)) return message.channel.send(alreadyMutedEmbed);
 
         await member.addRole(role);
         await message.channel.send(successEmbed);

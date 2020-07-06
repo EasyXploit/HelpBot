@@ -61,7 +61,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(`El usuario <@${member.id}> ha sido silenciado, ¿alguien más?`);
 
         //Comprueba si este susuario ya estaba silenciado
-        if (member.roles.has(role.id)) return message.channel.send(alreadyMutedEmbed);
+        if (member.roles.cache.has(role.id)) return message.channel.send(alreadyMutedEmbed);
         
         //Comprueba la longitud del tiempo proporcionado
         if (args[1].length < 2) return message.channel.send(noCorrectTimeEmbed);
@@ -114,7 +114,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setColor(0xF12F49)
                 .setDescription(`${resources.RedTick} Los moderadores solo pueden silenciar un máximo de 1 día`);
 
-            if (milliseconds > 86400000 && !message.member.roles.has(supervisorsRole.id)) return message.channel.send(maxTimeEmbed);
+            if (milliseconds > 86400000 && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(maxTimeEmbed);
         }
         
         let toDeleteCount = command.length - 2 + args[0].length + 1 + args[1].length + 2; 
@@ -124,7 +124,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setColor(0xF12F49)
                 .setDescription(`${resources.RedTick} Los moderadores deben adjuntar una razón`);
 
-            if (reason === 'Indefinida' && !message.member.roles.has(supervisorsRole.id)) return message.channel.send(undefinedReasoneEmbed);
+            if (reason === 'Indefinida' && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(undefinedReasoneEmbed);
         }
 
         let loggingEmbed = new discord.MessageEmbed ()

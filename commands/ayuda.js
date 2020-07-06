@@ -52,7 +52,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 } else if (reaction.emoji.name === '🎖') {
                     await message.delete()
                     
-                    require(`../commands/niveles.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/rangos.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === 'ℹ') {
                     await message.delete()

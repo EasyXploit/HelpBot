@@ -4,7 +4,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
-    if (!message.member.roles.has(config.botStaff) && !message.member.roles.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
+    if (!message.member.roles.cache.has(config.botStaff) && !message.member.roles.cache.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
     
     //!join
 
@@ -22,17 +22,17 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(`${resources.RedTick} El bot ya está en la sala.`);
         
         //Comprueba si el miembro está en un canal de voz
-        let voiceChannel = message.member.voiceChannel;
+        let voiceChannel = message.member.voice.channel;
         if (!voiceChannel) return message.channel.send(noChannelEmbed);
 
         //Comprueba si el bot ya tiene una conexión a un canal de voz en el servidor
-        if (message.guild.voiceConnection) {
+        if (message.guild.voice && message.guild.voice.channel) {
             
             //Si está en otra sala diferente
-            if (message.member.voiceChannelID !== message.guild.member(bot.user).voiceChannelID) return message.channel.send(alreadyInChannelEmbed);
+            if (message.member.voice.channelID !== message.guild.member(bot.user).voice.channelID) return message.channel.send(alreadyInChannelEmbed);
             
             //Si está en la sala del miembro
-            if (message.member.voiceChannelID === message.guild.member(bot.user).voiceChannelID) return message.channel.send(alreadyInYourChannelEmbed);
+            if (message.member.voice.channelID === message.guild.member(bot.user).voice.channelID) return message.channel.send(alreadyInYourChannelEmbed);
         }
 
         let noConnectPermissionEmbed = new discord.MessageEmbed ()
@@ -51,7 +51,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!voiceChannel.joinable) return message.channel.send(noConnectPermissionEmbed)
         
         //Comprueba si la sala es de AFK
-        if (message.member.voiceChannelID === message.guild.afkChannelID) return message.channel.send(noAfkRoomEmbed)
+        if (message.member.voice.channelID === message.guild.afkChannelID) return message.channel.send(noAfkRoomEmbed)
         
         //Comprueba la sala está llena
         if (voiceChannel.full) return message.channel.send(fullRoomEmbed)

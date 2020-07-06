@@ -1,6 +1,6 @@
 {
   "name": "pilkobot",
-  "version": "2.9.9",
+  "version": "2.10.1",
   "description": "PilkoBot es un bot para uso exclusivo de los usuario de la República Gamer",
   "main": "bot.js",
   "scripts": {
@@ -31,10 +31,10 @@
     "moment": "^2.22.2",
     "randomcolor": "^0.5.3",
     "translate": "^1.0.3",
-    "tubesearch": "^1.0.5",
     "urban-dictionary": "^2.2.1",
     "weather-js": "^2.0.0",
-    "ytdl-core": "^0.26.3"
+    "youtube-search": "^1.1.4",
+    "ytdl-core-discord": "^1.2.1"
   },
   "devDependencies": {}
 }

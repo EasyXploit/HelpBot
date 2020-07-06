@@ -4,12 +4,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
-    if (!message.member.roles.has(config.botStaff) && !message.member.roles.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
+    if (!message.member.roles.cache.has(config.botStaff) && !message.member.roles.cache.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
 
     //!play (URL de YouTube | término | nada)
 
     try {
-        const ytdl = require(`ytdl-core`);
+        const ytdl = require(`ytdl-core-discord`);
         const moment = require(`moment`);
         const randomColor = require('randomcolor');
 
@@ -33,14 +33,14 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setDescription(`${resources.RedTick} El bot no está pausado.`);
 
             //Comprueba si el bot tiene o no una conexión a un canal de voz en el servidor
-            if (!message.guild.voiceConnection) return message.channel.send(notPlayingEmbed);
+            if (!message.guild.voice) return message.channel.send(notPlayingEmbed);
 
             //Comprueba si el miembro está en un canal de voz
-            let voiceChannel = message.member.voiceChannel;
-            if (!voiceChannel) return message.channel.send(notAvailableEmbed);
+            let voiceChannel = message.member.voice.channel;
+            if (!voiceChannel) return message.channel.send(noConnectionEmbed);
 
             //Comprueba si el miembro está en el mismo canal que el bot
-            if (message.member.voiceChannelID !== message.guild.member(bot.user).voiceChannelID) return message.channel.send(notAvailableEmbed);
+            if (message.member.voice.channelID !== message.guild.member(bot.user).voice.channelID) return message.channel.send(notAvailableEmbed);
 
             //Comprueba si la reproducción no está pausada
             if (!bot.voiceDispatcher.paused) return message.channel.send(notPausedEmbed);
@@ -64,14 +64,14 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
             let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
                 .setColor(resources.red)
-                .setDescription(`${resources.RedTick} La sintaxis de este comando es:` + '`' + config.prefix + 'play (URL de YouTube | término | nada)`');
+                .setDescription(`${resources.RedTick} La sintaxis de este comando es: \`${config.prefix}play (URL de YouTube | término | nada)\``);
             
             let noTalkPermissionEmbed = new discord.MessageEmbed ()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No tengo permiso para hablar en esta sala.`);
 
             //Comprueba si el miembro está en un canal de voz
-            let voiceChannel = message.member.voiceChannel;
+            let voiceChannel = message.member.voice.channel;
             if (!voiceChannel) return message.channel.send(noChannelEmbed);
 
             //Comprueba si el bot tiene permiso para hablar
@@ -89,6 +89,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                     info = await ytdl.getInfo(query);
                     details = info.player_response.videoDetails;
                 } catch (e) {
+                    console.log(e);
                     let notFoundEmbed = new discord.MessageEmbed ()
                         .setColor(resources.red)
                         .setDescription(`${resources.RedTick} No se ha podido localizar el vídeo.`);
@@ -98,19 +99,17 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 //Función para comprobar la cola de reproducción
                 async function queued(message) {
 
-                    let server = bot.servers[message.guild.id];
-
                     let queuedEmbed = new discord.MessageEmbed ()
                         .setColor(randomColor())
                         .setThumbnail(details.thumbnail.thumbnails[3].url)
                         .setAuthor(`Añadido a la cola 🎶`, `https://i.imgur.com/lvShSwa.png`)
-                        .setDescription('[' + details.title + '](' + info.video_url + ')\n\n● **Autor:** `' + details.author + '`\n● **Duración:** `' + moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss') + '`')
+                        .setDescription(`[${details.title}](${info.video_url})\n\n● **Autor:** \`${details.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss')}\``)
                         .setFooter(`© 2020 República Gamer S.L. | BETA Pública`, resources.server.iconURL());
                     message.channel.send(queuedEmbed);
                 }
 
                 //Comprueba si el bot tiene o no una conexión a un canal de voz
-                if (!message.guild.voiceConnection) { //Ejecuta esto si no está conectado
+                if (!message.guild.voice || !message.guild.voice.channel) { //Ejecuta esto si no está conectado
 
                     //Comprueba si la guild tiene una cola de reproducción
                     if (!bot.servers[message.guild.id]) {
@@ -138,9 +137,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                     if (!voiceChannel.joinable) return message.channel.send(noConnectPermissionEmbed)
 
                     //Comprueba si la sala es de AFK
-                    if (message.member.voiceChannelID === message.guild.afkChannelID) return message.channel.send(noAfkRoomEmbed)
+                    if (message.member.voice.channelID === message.guild.afkChannelID) return message.channel.send(noAfkRoomEmbed)
 
-                    //Comprueba la sala está llena
+                    //Comprueba si la sala está llena
                     if (voiceChannel.full) return message.channel.send(fullRoomEmbed)
 
                     //Se une al canal de voz donde se encuentra el miembro
@@ -167,7 +166,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         require(`../resources/audioManager/reproductionManager.js`).run(discord, bot, resources, message, info, ytdl, moment, randomColor);
 
                     }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));
-                } else if (message.member.voiceChannelID === message.guild.member(bot.user).voiceChannelID) {
+                } else if (message.member.voice.channelID === message.guild.member(bot.user).voice.channelID) {
                     //Comprueba si la guild tiene una cola de reproducción
                     if (!bot.servers[message.guild.id]) {
                         bot.servers[message.guild.id] = {
@@ -215,32 +214,31 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             }
 
             //Si se proporciona una URL de YouTube, busca con esa url, de lo contrario buscará la URL mediante tubesearch
-            if (args[0].startsWith(`https://www.youtube/watch?v=`)) {
-                //Almacena los datos de la canción
-                reproduction(args[0]);
-            } else {
-                const search = require(`tubesearch`);
+            const search = require('youtube-search');
+            const keys = require('../keys.json');
 
-                //Manda el mensaje "buscando ..."
-                message.channel.send('🔎 | Buscando `' + args.join(` `) + '` ...')
-
-                //Realiza la búsqueda
-                await search(args.join(` `)).then((results) => {
-
-                    //Almacena el primer resultado que coincida
-                    const data = results[0];
-
-                    let noResultsEmbed = new discord.MessageEmbed ()
-                        .setColor(resources.red)
-                        .setDescription(`${resources.RedTick} No se ha encontrado ningún resultado que encaje con ${args.join(' ')}.`);
-
-                    //Comprueba si se han obtenido resultados
-                    if (!data) return message.channel.send(noResultsEmbed);
-                    
-                    //Almacena los datos de la canción
-                    reproduction(data.link);
-                });
+            const opts = {
+                maxResults: 1,
+                key: keys.youtube
             };
+
+            //Manda el mensaje "buscando ..."
+            message.channel.send(`🔎 | Buscando \`${args.join(` `)}\` ...`)
+
+            //Realiza la búsqueda
+            search(args.join(` `), opts, function(err, result) {
+                if(err) return console.log(err);
+
+                let noResultsEmbed = new discord.MessageEmbed ()
+                    .setColor(resources.red)
+                    .setDescription(`${resources.RedTick} No se ha encontrado ningún resultado que encaje con ${args.join(' ')}.`);
+
+                //Comprueba si se han obtenido resultados
+                if (!result) return message.channel.send(noResultsEmbed);
+                
+                //Almacena los datos de la canción
+                reproduction(result[0].link);
+            });
         }
     } catch (e) {
         require('../errorHandler.js').run(discord, config, bot, message, args, command, e);

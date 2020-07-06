@@ -5,7 +5,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     try {
         let notToAnswerEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.prefix + 'ppt <piedra | papel | tijeras>`');
+            .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.prefix}ppt <piedra | papel | tijeras>\``);
 
         if (!args[0]) return message.channel.send(notToAnswerEmbed);
 
@@ -81,9 +81,9 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
 
         const resultEmbed = new discord.MessageEmbed ()
             .setColor(0xF74A4A)
-            .setTitle(message.member.displayName + ' ' + emojiOpponentChoose + ' VS ' + emojiChoose + ' ' + bot.user.username)
-            .setDescription('__Resultado:__ ¡' + result + '!')
-            .setFooter('| ' + reason, resources.server.iconURL());
+            .setTitle(`${message.member.displayName} ${emojiOpponentChoose} VS ${emojiChoose} ${bot.user.username}`)
+            .setDescription(`__Resultado:__ ¡${result}!`)
+            .setFooter(`| ${reason}`, resources.server.iconURL());
 
         message.channel.send(resultEmbed);
     } catch (e) {

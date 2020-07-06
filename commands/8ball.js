@@ -5,8 +5,8 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     try {
         let notToAnswerEmbed = new discord.MessageEmbed()
             .setColor(0xF12F49)
-            .setTitle(resources.RedTick + ' Debes preguntarme algo')
-            .setDescription('La sintaxis de este comando es `' + config.prefix +'8ball (pregunta)`');
+            .setTitle(`${resources.RedTick} Debes preguntarme algo`)
+            .setDescription(`La sintaxis de este comando es \`${config.prefix}8ball (pregunta)\``);
     
         if (!args[0]) return message.channel.send(notToAnswerEmbed);
 
@@ -14,7 +14,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
 
         const resultEmbed = new discord.MessageEmbed()
             .setColor(0xDDDDDD)
-            .setDescription(':8ball: | ' + data[Math.floor(Math.random() * data.length)] + ', ' + message.member.displayName);
+            .setDescription(`:8ball: | ${data[Math.floor(Math.random() * data.length)]}`, message.member.displayName);
 
         message.channel.send(resultEmbed);
     } catch (e) {

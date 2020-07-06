@@ -7,7 +7,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
 
         const resultEmbed = new discord.MessageEmbed ()
             .setColor(0xDDDDDD)
-            .setDescription('🔮 | "' + data[Math.floor(Math.random() * data.length)] + '"')
+            .setDescription(`🔮 | "${data[Math.floor(Math.random() * data.length)]}"`)
             .setFooter('- Paulo Coelho', );
         message.channel.send(resultEmbed);
     } catch (e) {

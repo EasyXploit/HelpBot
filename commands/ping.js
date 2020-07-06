@@ -9,19 +9,19 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         if (botPing <= 180) {
             botPingEmbed = new discord.MessageEmbed ()
-              .setTitle('Tiempo de respuesta del bot: ')
+              .setTitle(`Tiempo de respuesta del bot: `)
               .setColor(0x7ED321)
-              .setDescription(':stopwatch: | ' + botPing + ' ms');
+              .setDescription(`:stopwatch: | ${botPing} ms`);
         } else if (botPing > 180 && botPing <= 250) {
             botPingEmbed = new discord.MessageEmbed ()
-              .setTitle('Tiempo de respuesta del bot: ')
+              .setTitle(`Tiempo de respuesta del bot: `)
               .setColor(0xF5A623)
-              .setDescription(':stopwatch: | ' + botPing + ' ms');
+              .setDescription(`:stopwatch: | ${botPing} ms`);
         } else {
             botPingEmbed = new discord.MessageEmbed ()
-              .setTitle('Tiempo de respuesta del bot: ')
+              .setTitle(`Tiempo de respuesta del bot: `)
               .setColor(0xF12F49)
-              .setDescription(':stopwatch: | ' + botPing + ' ms');
+              .setDescription(`:stopwatch: | ${botPing} ms`);
         }
 
         //TIEMPO DE RESPUESTA DEL WEBSOCKET
@@ -30,19 +30,19 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         if (websocketPing <= 180) {
             websocketPingEmbed = new discord.MessageEmbed ()
-              .setTitle('Tiempo de respuesta del Websocket: ')
+              .setTitle(`Tiempo de respuesta del Websocket: `)
               .setColor(0x7ED321)
-              .setDescription(':stopwatch: | ' + websocketPing + ' ms');
+              .setDescription(`:stopwatch: | ${websocketPing} ms`);
         } else if (websocketPing > 180 && websocketPing <= 250) {
             websocketPingEmbed = new discord.MessageEmbed ()
-              .setTitle('Tiempo de respuesta del Websocket: ')
+              .setTitle(`Tiempo de respuesta del Websocket: `)
               .setColor(0xF5A623)
-              .setDescription(':stopwatch: | ' + websocketPing + ' ms');
+              .setDescription(`:stopwatch: | ${websocketPing} ms`);
         } else {
             websocketPingEmbed = new discord.MessageEmbed ()
-              .setTitle('Tiempo de respuesta del Websocket: ')
+              .setTitle(`Tiempo de respuesta del Websocket: `)
               .setColor(0xF12F49)
-              .setDescription(':stopwatch: | ' + websocketPing + ' ms');
+              .setDescription(`:stopwatch: | ${websocketPing} ms`);
         }
 
         //TIEMPO DE ACTIVIDAD
@@ -61,7 +61,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             uptimeEmbed = new discord.MessageEmbed ()
                 .setColor(0xFFC857)
                 .setTitle('Tiempo de actividad: ')
-                .setDescription(':stopwatch: | ' + day + ' días, ' + hour + ' horas, ' + minute + ' minutos y ' + seconds + ' segundos');
+                .setDescription(`:stopwatch: | ${day} días, ${hour} horas, ${minute} minutos y ${seconds} segundos`);
         }
         convertMS(bot.uptime);
 

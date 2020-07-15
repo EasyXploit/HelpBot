@@ -31,7 +31,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         }
 
         //Comprueba si existe el rol silenciado, y de no existir, lo crea
-        let role = message.guild.roles.find(r => r.name === 'Silenciado');
+        let role = message.guild.roles.cache.find(r => r.name === 'Silenciado');
         if (!role) {
             role = await message.guild.createRole({
                 name: 'Silenciado',
@@ -145,9 +145,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         bot.mutes[member.id] = {
             guild: message.guild.id,
+            tag: member.tag,
             time: Date.now() + milliseconds
         }
-        await member.addRole(role);
+        await member.roles.add(role);
 
         fs.writeFile('./mutes.json', JSON.stringify(bot.mutes, null, 4), async err => {
             if (err) throw err;

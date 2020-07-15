@@ -2,6 +2,9 @@ exports.run = async (discord, config, bot, message, args, command, e) => {
     
     //Se comprueba si el error es provocado por la invocación de un comando no existente
     if (e.toLocaleString().includes('Cannot find module')) return;
+
+    //Se muestra el error en consola
+    console.error('\n' + new Date().toLocaleString() + ' 》' + e.stack + '\n');
     
     //Se declara el canal de depuración
     const debuggingChannel = bot.channels.cache.get(config.debuggingChannel);
@@ -16,9 +19,10 @@ exports.run = async (discord, config, bot, message, args, command, e) => {
     } else {
         arguments = args.join(' ');
     }
-    
-    //Se muestra el error en consola
-    console.error('\n' + new Date().toLocaleString() + ' 》' + e.stack + '\n');
+
+    let error = e.stack;
+    if (error.length > 1014) error = error.slice(0, 1014);
+    error = error + ' ...';
 
     //Se muestra el error en el canal de depuración
     let debuggEmbed = new discord.MessageEmbed()
@@ -31,7 +35,7 @@ exports.run = async (discord, config, bot, message, args, command, e) => {
         .addField('Canal:', message.channel, true)
         .addField('Autor:', '<@' + message.author.id + '>', true)
         .addField('Fecha:', new Date().toLocaleString(), true)
-        .addField('Error:', e.stack, true)
+        .addField('Error:', error, true)
         .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp()
     
     let reportedEmbed = new discord.MessageEmbed()

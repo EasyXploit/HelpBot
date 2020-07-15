@@ -21,7 +21,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         if (member.bot) return message.channel.send('noBotsEmbed');
 
-        let role = message.guild.roles.find(r => r.name === 'Silenciado');
+        let role = message.guild.roles.cache.find(r => r.name === 'Silenciado');
 
         let notMutedEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
@@ -48,7 +48,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         if (!role || !member.roles.cache.has(role.id)) return message.channel.send(notMutedEmbed);
 
-        await member.removeRole(role);
+        await member.roles.remove(role);
         
         if (bot.mutes.hasOwnProperty(member.id)) {
             await delete bot.mutes[member.id];

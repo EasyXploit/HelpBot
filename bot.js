@@ -60,30 +60,37 @@ bot.on(`ready`, async () => {
         bot.setInterval(async () => {
             for (let idKey in bot.mutes) {
                 let time = bot.mutes[idKey].time;
-                let guild = bot.guilds.cache.get(bot.mutes[idKey].guild);
-                let member;
-                try {
-                    member = await guild.fetchMember(idKey);
-                } catch (e) {
-                    delete bot.mutes[idKey];
-                    fs.writeFile(`./mutes.json`, JSON.stringify(bot.mutes), async err => {
-                        if (err) throw err;
-
-                        let loggingEmbed = new discord.MessageEmbed()
-                            .setColor(resources.green2)
-                            .setAuthor(`<@${idKey}> ha sido DES-SILENCIADO, pero no se encontraba en el servidor`)
-                            .addField(`ID`, idKey, true)
-                            .addField(`Moderador`, `<@${bot.user.id}>`, true)
-                            .addField(`Razón`, `Venció la amonestación`, true);
-
-                        await loggingChannel.send(loggingEmbed);
-                    });
-                    return;
-                }
-                let role = guild.roles.find(r => r.name === `Silenciado`)
-                if (!role) continue;
 
                 if (Date.now() > time) {
+
+                    let guild = bot.guilds.cache.get(bot.mutes[idKey].guild);
+                
+                    let role = guild.roles.cache.find(r => r.name === `Silenciado`)
+                    if (!role) continue;
+
+                    let member;
+
+                    try {
+                        member = await guild.members.cache.get(idKey);
+                    } catch (e) {
+                        console.log(e);
+                        delete bot.mutes[idKey];
+                        fs.writeFile(`./mutes.json`, JSON.stringify(bot.mutes), async err => {
+                            if (err) throw err;
+    
+                            let loggingEmbed = new discord.MessageEmbed()
+                                .setColor(resources.green2)
+                                .setAuthor(`@${bot.mutes[idKey].tag} ha sido DES-SILENCIADO, pero no se encontraba en el servidor`)
+                                .addField(`ID`, idKey, true)
+                                .addField(`Moderador`, `<@${bot.user.id}>`, true)
+                                .addField(`Razón`, `Venció la amonestación`, true);
+    
+                            await loggingChannel.send(loggingEmbed);
+                        });
+                        return;
+                    }
+
+
                     let loggingEmbed = new discord.MessageEmbed()
                         .setColor(resources.green2)
                         .setAuthor(`${member.user.tag} ha sido DES-SILENCIADO`, member.user.displayAvatarURL())
@@ -98,7 +105,7 @@ bot.on(`ready`, async () => {
                         .addField(`Moderador`, bot.user.id, true)
                         .addField(`Razón`, `Venció la amonestación`, true);
 
-                    await member.removeRole(role);
+                    await member.roles.remove(role);
 
                     delete bot.mutes[idKey];
                     fs.writeFile(`./mutes.json`, JSON.stringify(bot.mutes), async err => {
@@ -326,7 +333,7 @@ bot.on(`message`, async message => {
             //Si los warns son 3 o más
             if (bot.warns[message.author.id].warns >= 3 && bot.warns[message.author.id].warns < 5)  {
                 //Comprueba si existe el rol silenciado, y de no existir, lo crea
-                let role = message.guild.roles.find(r => r.name === 'Silenciado');
+                let role = message.guild.roles.cache.find(r => r.name === 'Silenciado');
                 if (!role) {
                     role = await message.guild.createRole({
                         name: 'Silenciado',

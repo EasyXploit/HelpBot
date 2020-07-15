@@ -94,26 +94,31 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             //Almacena los datos de la canción
             reproduction(args[0]);
         } else {
-            const search = require(`tubesearch`);
+            //Si se proporciona una URL de YouTube, busca con esa url, de lo contrario buscará la URL mediante tubesearch
+            const search = require('youtube-search');
+            const keys = require('../keys.json');
+
+            const opts = {
+                maxResults: 1,
+                key: keys.youtube
+            };
 
             //Manda el mensaje "buscando ..."
             message.channel.send(`🔎 | Buscando \`${args.join(` `)}\` ...`)
 
             //Realiza la búsqueda
-            await search(args.join(` `)).then((results) => {
-
-                //Almacena el primer resultado que coincida
-                const data = results[0];
+            search(args.join(` `), opts, function(err, result) {
+                if(err) return console.log(err);
 
                 let noResultsEmbed = new discord.MessageEmbed ()
                     .setColor(resources.red)
                     .setDescription(`${resources.RedTick} No se ha encontrado ningún resultado que encaje con ${args.join(' ')}.`);
 
                 //Comprueba si se han obtenido resultados
-                if (!data) return message.channel.send(noResultsEmbed);
-
+                if (!result) return message.channel.send(noResultsEmbed);
+                
                 //Almacena los datos de la canción
-                reproduction(data.link);
+                reproduction(result[0].link);
             });
         };
     } catch (e) {

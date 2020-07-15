@@ -79,10 +79,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setTitle(`🙍 Información de usuario`)
             .setDescription(`Mostrando información acerca del usuario <@${member.id}>`)
             .setThumbnail(user.displayAvatarURL())
-            .addField(`ℹ Nickname`, member.displayName, true)
             .addField(`🏷 TAG completo`, user.tag, true)
             .addField(`🆔 ID del usuario`, member.id, true)
-            .addField(`👮 Permisos`, permsArray.join(', ').toLowerCase(), true)
             .addField(`⚒ Baneable`, bannable, true)
             .addField(`📝 Fecha de registro`, user.createdAt.toLocaleString(), true)
             .addField(`↙ Unido al servidor`, member.joinedAt.toLocaleString(), true)
@@ -90,6 +88,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(`🎖 Rol más alto`, member.roles.highest.name, true)
             .addField(`💬 Último mensaje`, lastMessage, true)
             .addField(`⚖ Infracciones`, warns, true)
+            .addField(`👮 Permisos`, `\`\`\`${permsArray.join(', ').toLowerCase()}\`\`\``)
         message.channel.send(resultEmbed);
     } catch (e) {
         require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);

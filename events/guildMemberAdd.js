@@ -45,6 +45,46 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
 
                 console.log(`${new Date().toLocaleString()} 》@${event.user.tag} se unió a la guild: ${event.guild.name}`)
 
+
+                /* --- CANVAS --- */
+
+                const Canvas = require('canvas');
+                
+                //Crea el lienzo
+                const canvas = Canvas.createCanvas(700, 250); //Inicializa el lienzo. 700x250px
+                const context = canvas.getContext('2d'); //Indica que el  contexto es en 2 dimensiones
+
+                //Ajusta la imagen al lienzo
+                const background = await Canvas.loadImage('./resources/images/wallpaper.png'); //Carga la imagen de fondo
+                context.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+                //Crea un borde
+                context.strokeStyle = '#74037b';
+                context.strokeRect(0, 0, canvas.width, canvas.height);
+
+                // Añade el nombre de usuario
+                context.font = '60px sans-serif';
+                context.fillStyle = '#ffffff';
+                context.fillText(event.displayName, canvas.width / 2.5, canvas.height / 1.8);
+
+                //Redondea el marco del avatar
+                context.beginPath();
+                context.arc(125, 125, 100, 0, Math.PI * 2, true);
+                context.closePath();
+                context.clip();
+
+                //Añade el avatar del usuario
+                const avatar = await Canvas.loadImage(event.user.displayAvatarURL({ format: 'jpg' }));
+                context.drawImage(avatar, 25, 25, 200, 200);
+
+                //Adjunta y envía la foto
+                const attachment = new discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
+                await welcomeChannel.send(attachment);
+
+                /* --- --- */
+
+
+                
                 let channelWelcomeEmbed = new discord.MessageEmbed()
                     .setColor(resources.gold)
                     .setAuthor(`Bienvenido a la República Gamer @${event.user.username}`, event.user.displayAvatarURL())
@@ -69,13 +109,14 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                     .addField(`Guía de inicio rápido:`, `:one: Entra en <#498455357853794304> y dedica unos segundos a leer las breves normas que rigen nuestra comunidad. Además, aprenderás a usar a los bots, a como obtener ayuda y a como subir de nivel.\n:two: Entra en <#440905255073349635> y elige los roles de tu preferencia. Esto desbloqueará catacterísticas especiales para determinados videojuegos. ${resources.beta}\n:three: Entra en <#388699973866225676> y escribe ` + '`/create`' + ` para crear ¡tu propia sala temporal! (recuerda que desparecerá si no hay nadie en ella).\n:four: ¡Tan solo diviértete y trae a tus amigos para que nos conozcan! Mándales este enlace de invitación: https://discord.gg/eWx72Jy`, true)
                     .setFooter(`© 2020 República Gamer S.L.`, resources.server.iconURL());
 
-                await welcomeChannel.send(channelWelcomeEmbed).then(msg => {msg.delete({timeout: 60000})});
+                await welcomeChannel.send(channelWelcomeEmbed);
                 await loggingChannel.send(loggingWelcomeEmbed);
                 await event.user.send(dmWelcomeEmbed);
+                
             }
         } else {
-            if (event.guild.member(event.user).roles.has(`426789294007517205`)) return;
-            event.guild.member(event.user).addRole(`426789294007517205`);
+            if (event.guild.member(event.user).roles.cache.has(`426789294007517205`)) return;
+            event.guild.member(event.user).roles.add(`426789294007517205`);
 
             let loggingWelcomeBotEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue)
@@ -86,6 +127,11 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             return;
         }
     } catch (e) {
+
+        let error = e.stack;
+        if (error.length > 1014) error = error.slice(0, 1014);
+        error = error + ' ...';
+
         //Se muestra el error en el canal de depuración
         let debuggEmbed = new discord.MessageEmbed()
             .setColor(resources.brown)
@@ -93,7 +139,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
             .addField(`Evento:`, `guildMemberAdd`, true)
             .addField(`Fecha:`, new Date().toLocaleString(), true)
-            .addField(`Error:`, e.stack, true)
+            .addField(`Error:`, `\`\`\`${error}\`\`\``, )
             .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp();
         
         //Se envía el mensaje al canal de depuración

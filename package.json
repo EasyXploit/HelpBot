@@ -1,6 +1,6 @@
 {
   "name": "pilkobot",
-  "version": "2.10.1",
+  "version": "2.10.3",
   "description": "PilkoBot es un bot para uso exclusivo de los usuario de la República Gamer",
   "main": "bot.js",
   "scripts": {
@@ -24,6 +24,7 @@
     "@discordjs/opus": "^0.3.2",
     "asciiart-logo": "^0.1.7",
     "bufferutil": "^4.0.0",
+    "canvas": "^2.6.1",
     "discord.js": "^12.2.0",
     "ffmpeg": "0.0.4",
     "fortnite": "^4.1.1",

@@ -33,7 +33,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setAuthor('Encuesta disponible', 'https://i.imgur.com/zdAm4AD.png')
             .setColor(0x2AB7F1)
             .setDescription(`**${fields[0]}**\n\n:one: ${lines}`)
-            .setFooter('© 2020 República Gamer S.L.', bot.user.avatarURL())
+            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, bot.user.avatarURL())
             .setThumbnail('https://i.imgur.com/9ciWYgU.png');
         message.channel.send(embed)
 

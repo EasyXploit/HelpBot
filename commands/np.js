@@ -37,8 +37,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let progressEmbed = new discord.MessageEmbed ()
             .setColor(randomColor())
             .setAuthor(`Ahora mismo:`, `https://i.imgur.com/lvShSwa.png`)
-            .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n${progressBar.join(``)} ${percentage}%\n\`${moment().startOf('day').milliseconds(progress).format('H:mm:ss')} / ${moment().startOf('day').milliseconds(total).format('H:mm:ss')}\``)
-            .setFooter(`© 2020 República Gamer S.L. | BETA Pública`, resources.server.iconURL());
+            .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n${progressBar.join(``)} ${percentage}%\n\`${moment().startOf('day').milliseconds(progress).format('H:mm:ss')} / ${moment().startOf('day').milliseconds(total).format('HH:mm:ss')}\``)
+            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L. | BETA Pública`, resources.server.iconURL());
         
         message.channel.send(progressEmbed);
     } catch (e) {

@@ -21,7 +21,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(`${config.prefix}playskip (URL de YouTube | término)`, `Reproduce la canción inmediatamente (a pesar de la cola)`)
             .addField(`${config.prefix}replay`, `Vuelve a reproducir la canción actual desde el principio`)
             .addField(`${config.prefix}shuffle`, `Activa el modo aleatorio en la cola`)
-            .setFooter(`© 2020 República Gamer S.L.`, resources.server.iconURL());
+            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
         
         let helpEmbed2 = new discord.MessageEmbed ()
             .setColor(resources.gold)

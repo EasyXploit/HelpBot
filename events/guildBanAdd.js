@@ -14,12 +14,24 @@ exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => 
 
                 await bot.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             } else {
+
+                console.log()
+
+                let moderador = executor;
+                let razon = reason;
+
+                if (reason.includes('Moderador: ')) {
+                    moderador = await bot.users.fetch(reason.split(', ')[0].substring(11));
+                    razon = reason.split(', Razón: ')[1];
+                }
+
                 const loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.red2)
                     .setAuthor(`${user.tag} ha sido BANEADO`, user.displayAvatarURL())
                     .addField(`Miembro`, `<@${user.id}>`, true)
-                    .addField(`Moderador`, `<@${executor.id || 'Desconocido'}>`, true)
-                    .addField(`Razón`, reason || 'Desconocida', true)
+                    .addField(`ID`, `${user.id}`, true)
+                    .addField(`Moderador`, `<@${moderador.id || 'Desconocido'}>`, true)
+                    .addField(`Razón`, razon || 'Desconocida', true)
                     .addField(`Duración`, time || 'Desconocida', true);
 
                 await bot.channels.cache.get(config.loggingChannel).send(loggingEmbed)
@@ -39,6 +51,7 @@ exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => 
         } 
     
         let { executor, target, reason } = banLog;
+        console.log(banLog);
         let time = '∞'
     
         if (target.id === user.id) {
@@ -57,6 +70,11 @@ exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => 
         }
 
     } catch (e) {
+
+        let error = e.stack;
+        if (error.length > 1014) error = error.slice(0, 1014);
+        error = error + ' ...';
+
         //Se muestra el error en el canal de depuración
         let debuggEmbed = new discord.MessageEmbed()
             .setColor(resources.brown)
@@ -64,7 +82,7 @@ exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => 
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
             .addField(`Evento:`, `guildBanAdd`, true)
             .addField(`Fecha:`, new Date().toLocaleString(), true)
-            .addField(`Error:`, e.stack, true)
+            .addField(`Error:`, `\`\`\`${error}\`\`\``)
             .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp();
         
         //Se envía el mensaje al canal de depuración

@@ -1,4 +1,4 @@
-exports.run = async (discord, bot, resources, message, info, ytdl, moment, randomColor) => {
+exports.run = async (discord, fs, bot, resources, message, info, ytdl, moment, randomColor) => {
 
     try {
         //Función para reproducir
@@ -42,10 +42,10 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
                 .setColor(randomColor())
                 .setThumbnail(details.thumbnail.thumbnails[3].url)
                 .setAuthor(`Reproduciendo 🎶`, `https://i.imgur.com/lvShSwa.png`)
-                .setDescription(`[${details.title}](${info.video_url})\n\n● **Autor:** \`${details.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss')}\``)
+                .setDescription(`[${details.title}](${info.video_url})\n\n● **Autor:** \`${details.author}\`\n● **Duración:** \`${moment().startOf('day').milliseconds(details.lengthSeconds * 1000).format('HH:mm:ss')}\``)
                 .addField(`Solicitado por:`, server.queue[toPlay].requestedBy, true)
                 .addField(`Siguiente:`, upNext, true)
-                .setFooter(`© 2020 República Gamer S.L. | BETA Pública`, resources.server.iconURL());
+                .setFooter(`© ${new Date().getFullYear()} República Gamer S.L. | BETA Pública`, resources.server.iconURL());
 
             //Ajusta el bitrate del oncoder de Opus actual
             //connection.player.setBitrate(96);
@@ -72,8 +72,6 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
 
             bot.voiceDispatcher.on(`finish`, reason => {
 
-                console.log(`${new Date().toLocaleString()} 》End reason: ${reason}`)
-
                 //Si queda algo en la cola
                 if (server.queue[0]) {
 
@@ -93,11 +91,6 @@ exports.run = async (discord, bot, resources, message, info, ytdl, moment, rando
                     bot.voiceStatus = true;
                 }
             })
-
-            //Se dispara cuando el dispatcher comienza a emitir
-            bot.voiceDispatcher.on(`start`, () => {
-                console.log(`${new Date().toLocaleString()} 》Dispatcher: started`)
-            });
 
             //Se dispara si el dispatcher tiene información de depuración a mostrar
             bot.voiceDispatcher.on(`debug`, debug => {

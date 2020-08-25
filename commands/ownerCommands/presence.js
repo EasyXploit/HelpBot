@@ -54,7 +54,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let loggingEmbed = new discord.MessageEmbed ()
             .setColor(0x4A90E2)
             .setTimestamp()
-            .setFooter('© 2020 República Gamer S.L.', bot.user.avatarURL())
+            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, bot.user.avatarURL())
             .setTitle('📑 Auditoría')
             .setDescription(`${message.author.username} cambió ${changed} del bot a \`${content}\``);
 

@@ -23,6 +23,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
          // Inicio de sesión del bot
         bot.login(keys.token);
         console.log(`${new Date().toLocaleString()} 》Iniciando ${bot.user.username} . . .\n`);
+        bot.emit('ready');
         loggingChannel.send(loggingEmbed);
     } catch (e) {
         require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);

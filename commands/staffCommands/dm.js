@@ -84,19 +84,24 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setDescription(toDM);
             
             let sendingEmbed = new discord.MessageEmbed ()
-                .setColor(0xB8E986)
-                .setDescription(`${resources.GreenTick} El mensaje está siendo enviado`);
+                .setColor(resources.gray)
+                .setDescription(`${resources.GrayTick} El mensaje está siendo enviado`);
             
             await message.delete()
             await message.channel.send(sendingEmbed);
-            
-            //Envia el mensaje a cada usuario
-            message.guild.members.forEach( async m => {
-                if (m.user.bot) return;
-                await m.user.send(resultEmbed);
-            });
-            
-            await message.channel.send(confirmEmbed);
+
+            let i = 0;
+            let interval = setInterval(function(){
+                //if err throw err
+                let member = message.guild.members.cache.array()[i]
+                if (!member.user.bot) member.user.send(resultEmbed)
+                    .then(console.log(`${new Date().toLocaleString()} 》Mensaje de broadcast enviado a ${member.user.tag}`));
+                i++;
+                if(i === message.guild.members.cache.array().length) {
+                    clearInterval(interval);
+                    message.channel.send(confirmEmbed);
+                }
+            }, 10000);
         }
     } catch (e) {
         require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);

@@ -15,7 +15,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         .addField(`:robot: ${config.prefix}comandos`, 'Muestra los comandos de los bots.')
         .addField(`🎖 ${config.prefix}rangos`, 'Muestra los rangos del servidor, la tabla de puntuaciones y tu nivel.')
         .addField(`ℹ ${config.prefix}info`, 'Muestra información acerca del proyecto')
-        .setFooter('© 2020 República Gamer S.L.', resources.server.iconURL());
+        .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
 
     await message.channel.send(helpEmbed).then(async function (message) {
         

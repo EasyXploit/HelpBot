@@ -9,7 +9,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setThumbnail('http://i.imgur.com/g31RYSS.png')
             .setAuthor('COMANDOS', 'http://i.imgur.com/E3nPnZY.png')
             .setTitle('Comandos de los bots del servidor')
-            .setFooter('© 2020 República Gamer S.L.', resources.server.iconURL())
+            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL())
             .addField(`${resources.pilkobot} ${config.prefix}pilko`, 'Muestra los comandos de <@446041159853408257> ')
             .addField(`:musical_note: ${config.prefix}musica`, 'Muestra la ayuda para reproducir música en las salas de voz.')
             .addField(`🎶 ${config.prefix}dj`, `Muestra los comandos para controlar la música (solo DJs) ${resources.beta}.`)

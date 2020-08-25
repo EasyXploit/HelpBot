@@ -59,7 +59,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!bot.warns[member.id]) {
             warns = 0
         } else {
-            warns = bot.warns[member.id].warns
+            warns = bot.warns[member.id].length;
         }
         
         let lastMessage;
@@ -74,6 +74,17 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             lastMessage = `Ninguno en caché`;
         }
 
+        let translations = require(`../../resources/translations.json`);
+
+        let matches = [];
+
+        permsArray.forEach(async (perm) => {
+            matches.push(translations[perm]);
+        });
+
+        let infractionsCount = 0;
+        if (bot.warns[member.id]) infractionsCount = Object.keys(bot.warns[member.id]).length;
+
         let resultEmbed = new discord.MessageEmbed ()
             .setColor(member.displayHexColor)
             .setTitle(`🙍 Información de usuario`)
@@ -87,8 +98,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(`👑 Estatus`, status.join(', '), true)
             .addField(`🎖 Rol más alto`, member.roles.highest.name, true)
             .addField(`💬 Último mensaje`, lastMessage, true)
-            .addField(`⚖ Infracciones`, warns, true)
-            .addField(`👮 Permisos`, `\`\`\`${permsArray.join(', ').toLowerCase()}\`\`\``)
+            .addField(`⚖ Infracciones`, infractionsCount, true)
+            .addField(`👮 Permisos`, `\`\`\`${matches.join(', ')}\`\`\``);
+        
         message.channel.send(resultEmbed);
     } catch (e) {
         require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);

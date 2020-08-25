@@ -32,7 +32,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     
             message.delete()
             
-            const messages = await channel.fetchMessages({limit: args[0]});
+            const messages = await channel.messages.fetch({limit: args[0]});
             count = messages.size;
             
             let successEmbed = new discord.MessageEmbed ()
@@ -60,7 +60,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             message.delete()
             
-            const messages = await message.channel.fetchMessages({limit: args[0]});
+            const messages = await message.channel.messages.fetch({limit: args[0]});
             count = messages.size;
             
             let successEmbed = new discord.MessageEmbed ()

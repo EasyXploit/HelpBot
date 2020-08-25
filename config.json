@@ -9,8 +9,47 @@
     "loggingChannel": "455405868960448552",
     "debuggingChannel": "479380760625676300",
     "welcomeChannel": "729666507650498663",
+    "pilkoChatChannel": "733062405042733086",
     "game": "!ayuda",
     "status": "online",
     "type": "WATCHING",
-    "serverLanguage": "es"
+    "serverLanguage": "es",
+    "filters": {
+        "swearWords": {
+            "status": true,
+            "action": 3,
+            "reason": "Palabras malsonantes",
+            "bypassRoles": ["374949036555239434"],
+            "bypassChannels": []
+        },
+        "invites": {
+            "status": true,
+            "action": 3,
+            "reason": "Invitaciones no permitidas",
+            "bypassRoles": ["374949036555239434"],
+            "bypassChannels": []
+        },
+        "uppercase": {
+            "status": true,
+            "action": 3,
+            "reason": "Demasiadas mayúsulas",
+            "bypassRoles": ["374949036555239434"],
+            "bypassChannels": []
+        },
+        "links": {
+            "status": false,
+            "action": 1,
+            "reason": "No se permiten enlaces",
+            "bypassRoles": ["374949036555239434"],
+            "bypassChannels": ["740288558878687333", "428234707927564299", "472491041602404362"]
+        },
+        "massEmoji": {
+            "status": true,
+            "action": 3,
+            "reason": "Demasiados emojis",
+            "bypassRoles": ["374949036555239434"],
+            "bypassChannels": [],
+            "quantity": 20
+        }
+    }
 }

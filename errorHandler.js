@@ -1,7 +1,7 @@
 exports.run = async (discord, config, bot, message, args, command, e) => {
     
     //Se comprueba si el error es provocado por la invocación de un comando no existente
-    if (e.toLocaleString().includes('Cannot find module')) return;
+    if (e.toLocaleString().includes('Cannot find module') || e.toLocaleString().includes('Cannot send messages to this user')) return;
 
     //Se muestra el error en consola
     console.error('\n' + new Date().toLocaleString() + ' 》' + e.stack + '\n');
@@ -35,7 +35,7 @@ exports.run = async (discord, config, bot, message, args, command, e) => {
         .addField('Canal:', message.channel, true)
         .addField('Autor:', '<@' + message.author.id + '>', true)
         .addField('Fecha:', new Date().toLocaleString(), true)
-        .addField('Error:', error, true)
+        .addField('Error:', `\`\`\`${error}\`\`\``, true)
         .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp()
     
     let reportedEmbed = new discord.MessageEmbed()

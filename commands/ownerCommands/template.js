@@ -11,6 +11,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         if (args[0] === `informacion`) {
             message.delete();
+
+            const cfg = require('../../config.json');
             
             let embed1 = new discord.MessageEmbed ()
                 .setColor(resources.gold)
@@ -59,14 +61,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setDescription(`Aquellos usuarios que traen a __gente nueva__ a la comunidad son recompensados con el rango **@SUPPORTER**, que permite acceder a varias ventajas, entre las que destacan el **acceso preferente a los sorteos**, poder **cambiar su propio apodo** y usar **emojis externos**.`)
                 .addField(`🞘 Pasos a seguir:`, `:one: Genera una invitación instantánea. [Ver cómo](https://support.discordapp.com/hc/es/articles/208866998-Invitaci%C3%B3n-Instant%C3%A1nea-101)\n:two: Invita a 5 personas _(procura que se unan y se queden)_.\n:three: ¡Recibirás tu rol cuando se unan 5! _(lo perderás si se van)_.`, true)
                 .addField(`🞘 Comandos:`, 'Usa `+invites` para conocer a cuantos has invitado.\nUsa `+leaderboard` para ver la tabla de clasificacion.', true);
-            
-            let donateEmbed = new discord.MessageEmbed ()
-                .setColor(resources.gold)
-                .setThumbnail(`https://image.ibb.co/cxhbXf/diamond.png`)
-                .setAuthor(`¡APÓYANOS!`, `https://i.imgur.com/6lpSOKA.png`)
-                .setDescription(`¡La comunidad necesita de tu ayuda para crecer!. Realizando un donativo ayudas a financiar el desarrollo y manutención de <@446041159853408257>, cuyo servidor requiere de una inversión mensual para mantenerse funcionando.\n\nAl donar, también permites que el <@&428631949029015562> que se esfuerza en la comunidad, reciba compensación por su esfuerzo.`)
-                .addField(`🏆 ¿Que consigues?`, `● Un rango por encima de los que se obtienen mediante XP.\n● Acceder a salas de voz VIP, con un mejor Bitrate.\n● Un chat de texto exclusivo para VIPs (con mensajes de TTS).\n● Controlar a los bots de música.\n● Acceder a todos los sorteos públicos.\n● Cambiar tu propio apodo cuando quieras.\n● Adjuntar cualquier tipo archivo.\n● Mencionar a todos (` + '`@everyone y @here`' + `).\n● Usar emojis de otros servidores (si eres usuario de Nitro).`, true)
-                .addField(`💎 Apoyar`, `[Haz clic aquí y sigue las instrucciones en pantalla](https://www.patreon.com/republicagamer)`, true)
 
             let embed7 = new discord.MessageEmbed ()
                 .setColor(resources.gold)
@@ -81,48 +75,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await message.channel.send(embed4);
             await message.channel.send(embed5);
             await message.channel.send(embed6);
-            await message.channel.send(donateEmbed);
             await message.channel.send(embed7);
-            await message.channel.send(`https://discord.gg/nYdyN2k`);
+            await message.channel.send(cfg.serverInvite);
             
-        } else if (args[0] === `roles`) {
-            message.delete();
-        
-            let csgo = message.guild.roles.find(r => r.name === `CS:GO`);
-            let r6 = message.guild.roles.find(r => r.name === `RAINBOW SIX`);
-            let fortnite = message.guild.roles.find(r => r.name === `FORTNITE`);
-            let rocketleague = message.guild.roles.find(r => r.name === `ROCKET LEAGUE`);
-            let lol = message.guild.roles.find(r => r.name === `LOL`);
-            let minecraft = message.guild.roles.find(r => r.name === `MINECRAFT`);
-            let battlefield = message.guild.roles.find(r => r.name === `BATTLEFIELD`);
-            let pubg = message.guild.roles.find(r => r.name === `PUBG`);
-            let gtav = message.guild.roles.find(r => r.name === `GTA V`);
-            let roblox = message.guild.roles.find(r => r.name === `ROBLOX`);
-            let overwatch = message.guild.roles.find(r => r.name === `OVERWATCH`);
-
-            let rolesEmbed = new discord.MessageEmbed ()
-                .setColor(resources.gray)
-                .setThumbnail(`https://i.imgur.com/TU8U8wq.png`)
-                .setAuthor(`ELIGE TUS ROLES`, `https://i.imgur.com/TU8U8wq.png`)
-                .setDescription(`Reacciona con el emoji correspondiente al rol que quieras asignarte. En cualquier momento puedes quitarte un rol retirando tu reacción.`)
-                .addField(`Región`, '● Reacciona con :flag_es: para asignarte el rol `@ES`\n● Reacciona con :earth_americas: para asignarte el rol `@LATAM`', true)
-                .addField(`Videojuegos`, '● Reacciona con :bomb: para asignarte el rol `@CS:GO`\n● Reacciona con :boom: para asignarte el rol `@RAINBOW SIX`\n● Reacciona con :hammer_pick: para asignarte el rol `@FORTNITE`\n● Reacciona con 🚀 para asignarte el rol `@ROCKET LEAGUE`\n● Reacciona con 🌟 para asignarte el rol `@LOL`\n● Reacciona con ⛏ para asignarte el rol `@MINECRAFT`\n● Reacciona con ⚜ para asignarte el rol `@BATTLEFIELD`\n● Reacciona con 🔫 para asignarte el rol `@PUBG`\n● Reacciona con 🚔 para asignarte el rol `@GTA V`\n● Reacciona con 📦 para asignarte el rol `@ROBLOX`\n● Reacciona con ⚡ para asignarte el rol `@OVERWATCH`\n\n_Si hay algún rol que no está en la lista y te gustaría que añadiésemos, envíanos un mensaje a <#449289541866749953>_', true)
-                .setFooter(`© 2020 República Gamer S.L.`, resources.server.iconURL());
-            message.channel.send(rolesEmbed).then(async function (message) {
-                await message.react(`🇪🇸`);
-                await message.react(`🌎`);
-                await message.react(`💣`);
-                await message.react(`💥`);
-                await message.react(`⚒`);
-                await message.react(`🚀`);
-                await message.react(`🌟`);
-                await message.react(`⛏`);
-                await message.react(`⚜`);
-                await message.react(`🔫`);
-                await message.react(`🚔`);
-                await message.react(`📦`);
-                await message.react(`⚡`);
-            });
         } else if (args[0] === `sorteo`) {
             message.delete();
 
@@ -147,37 +102,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await message.channel.send(giveawayEmbed);
             await message.channel.send(basesEmbed);
             await message.channel.send(entryEmbed);
-        } else if (args[0] === `marafu`) {
-            message.delete();
-            
-            let embed = new discord.MessageEmbed ()
-                .setColor(0xEB0BEC)
-                .setThumbnail(`https://cdn.discordapp.com/avatars/486892252115763200/c6dcf124ddbc86108fcd51267e08f7d5.png`)
-                .setAuthor(`[Torneo MaRaFú] LEAGUE OF LEGENDS`, `https://cdn.discordapp.com/avatars/486892252115763200/c6dcf124ddbc86108fcd51267e08f7d5.png`)
-                .setDescription('Dentro de poco se realizará un evento organizado por la **MaRaFú Army**. Un torneo que será casteado y tendrá una gran recompensa.\n\n')
-                .addField(`📅 Información`, `La semana del __5 de noviembre__ se organizara un torneo de LoL (League of Legends) totalmente **gratis** (en el servidor EUW), se realizará únicamente los fines de semana, la duración del mismo es indefinida, se harán directos para cada partido en el canal de twitch [marafu_army](https://www.twitch.tv/marafu_army) con 1-2 comentaristas siempre (eso hará que sea más dinámico haciendo más divertido cada uno de los partidos del torneo).`, true)
-                .addField(`ℹ Organización`, `Serán enfrentamientos de __5 vs 5__ en la **Grieta del Invocador** por equipos previamente hechos, es decir, los equipos deberán ser hechos e inscritos en el formulario antes del día de la inauguración del torneo.`, true)
-                .addField(`🏆 Premios`, `El torneo tendrá premios para los que se alcen con el primer y el segundo puesto en la clasificación. Estarán en juego **50€** en (RP) Riot Points: el primer equipo ganará **4830 Riot Points** y el segundo equipo ganará **3250 Riot Points**.`, true)
-                .addField(`👥 Equipos`,`_¿A que esperas para formar un equipo?_ Si no encuentras compañeros con los que formar un equipo, en el Discord de la MaRaFú Army se ha creado un canal para buscar miembros.\nDurante las siguientes semanas informaremos la fecha máxima para inscribirse en el torneo.\n\nEn caso de no poder participar en el torneo, siempre puedes ver los directos casteados en twitch: [marafu_army](https://www.twitch.tv/marafu_army) (te pasarás un buen rato y unas risas que nunca faltan).`, true)
-                .addField(`📝 Formulario de inscripción`, `[Haz clic aquí para inscribirte](https://docs.google.com/forms/d/1CYHAGngKAu_Ve1SiCqpxbJ0yIYlxh1nVI-jML9H2G_I)`)
-                .addField(`👮 Responsable de organización`, `<@372484235707285505>`, true)
-                .setImage(`https://i.imgur.com/E7mxrFm.png`)
-                .setFooter(`República Gamer no se responsabiliza de la organización del torneo`, resources.server.iconURL());
-            
-            message.channel.send(embed);
-        } else if (args[0] === `detuned`) {
-            message.delete();
-            
-            let embed = new discord.MessageEmbed ()
-                .setColor(resources.gold) .setThumbnail(`https://vignette.wikia.nocookie.net/clubpenguin/images/0/0a/Pumpkin_Head_clothing_icon_ID_1095.png/revision/latest?cb=20131006145935`)
-                .setAuthor(`[DETUNED] EVENTO DE HALLOWEEN`, `https://cdn.discordapp.com/avatars/147813177004916736/96c24cbea86c4f1fe654b34693eda5c9.png?`)
-                .setDescription('**¡Hola a todos!** Me gustaría compartiros por aquí un __evento especial por Halloween__ que van a hacer hoy en Detuned, 31 de Octubre. No sólo van a jugar a un juego de terror con cámara, sino que también van a sortear un juego y estrenarán una nueva sección muy especial llamada **Desafina tu Destino**.\n\n:yellow_heart: _¡Muchas gracias a todos los que os podáis pasar por el directo!_ Ya sea porque os quedéis viéndolos y participando, como con el directo abierto en segundo plano. ¡Valoran mucho vuestro apoyo.')
-                .addField(`:link: Detalles`, `[Haz clic aquí para más info.](https://medium.com/tuneintodetuned/especial-halloween-f7c4ed23487d)`, true)
-                .addField(`👮 Responsable de organización`, `<@147813177004916736>`, true)
-                .setImage(`https://image.ibb.co/kqte50/1-OOk0l-HSi-Ns-EZs-XNv-Rm9-HSQ.jpg`)
-                .setFooter(`República Gamer no se responsabiliza de la organización del evento`, resources.server.iconURL());
-            
-            message.channel.send(embed);
         } else if (args[0] === `bienvenida`) {
             let noUserEmbed = new discord.MessageEmbed ()
                 .setColor(resources.red)
@@ -199,19 +123,27 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             await message.delete().then(bot.emit(`guildMemberAdd`, member));
             await message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 1000})});
-        } else if (args[0] === `donar`) {
-            message.delete();
+        } else if (args[0] === `despedida`) {
+            let noUserEmbed = new discord.MessageEmbed ()
+                .setColor(resources.red)
+                .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
             
-            let donateEmbed = new discord.MessageEmbed ()
-                .setColor(0x00D2D7)
-                .setThumbnail(`https://image.ibb.co/cxhbXf/diamond.png`)
-                .setAuthor(`¡APÓYANOS!`, `https://i.imgur.com/6lpSOKA.png`)
-                .setDescription(`¡La comunidad necesita de tu ayuda para crecer!. Realizando un donativo ayudas a financiar el desarrollo y manutención de <@446041159853408257>, cuyo servidor requiere de una inversión mensual para mantenerse funcionando.\n\nAl donar, también permites que el <@&428631949029015562> que se esfuerza en la comunidad, reciba compensación por su esfuerzo.`)
-                .addField(`🏆 ¿Que consigues?`, `● Un rango por encima de los que se obtienen mediante XP.\n● Acceder a salas de voz VIP, con un mejor Bitrate.\n● Un chat de texto exclusivo para VIPs (con mensajes de TTS).\n● Controlar a los bots de música.\n● Acceder a todos los sorteos públicos.\n● Cambiar tu propio apodo cuando quieras.\n● Adjuntar cualquier tipo archivo.\n● Mencionar a todos (` + '`@everyone y @here`' + `).\n● Usar emojis de otros servidores (si eres usuario de Nitro).`, true)
-                .addField(`💎 Apoyar`, `[Haz clic aquí y sigue las instrucciones en pantalla](https://www.patreon.com/republicagamer)`, true)
-                .attachFiles(`./resources/images/banners/support.png`);
+            let noBotsEmbed = new discord.MessageEmbed ()
+                .setColor(resources.red)
+                .setDescription(`${resources.RedTick} No puedes entablar una conversación con un bot`);
             
-            message.channel.send(donateEmbed);
+            let successEmbed = new discord.MessageEmbed ()
+                .setColor(resources.green)
+                .setDescription(`${resources.GreenTick} ¡Listo!`);
+            
+            if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
+            
+            let member = await message.guild.members.fetch(message.mentions.users.first() || bot.users.fetch(args[1]));
+            if (!member) return message.channel.send(noUserEmbed);
+            if (member.user.bot) return message.channel.send(noBotsEmbed);
+            
+            await message.delete().then(bot.emit(`guildMemberRemove`, member));
+            await message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 1000})});
         } else if (args[0] === `roles1`) {
             message.delete();
 
@@ -258,7 +190,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setColor(resources.gray)
                 .setThumbnail(`https://i.imgur.com/WdWMdgt.png`)
                 .addField(`Otros videojuegos`, '● Reacciona con 🔫 para asignarte el rol `@PUBG`\n● Reacciona con 🚀 para asignarte el rol `@ROCKET LEAGUE`\n● Reacciona con ⛏ para asignarte el rol `@MINECRAFT`\n● Reacciona con ⚜ para asignarte el rol `@BATTLEFIELD`\n● Reacciona con 🚔 para asignarte el rol `@GTA V`\n● Reacciona con 📦 para asignarte el rol `@ROBLOX`\n● Reacciona con ⚡ para asignarte el rol `@OVERWATCH`\n● Reacciona con 🛫 para asignarte el rol `@BO4`\n● Reacciona con 🌲 para asignarte el rol `@TERRARIA`\n● Reacciona con 🏡 para asignarte el rol `@STARDEW VALLEY`\n● Reacciona con 🗡 para asignarte el rol `@BRAWLHALLA`\n● Reacciona con 🐲 para asignarte el rol `@ARK`\n● Reacciona con 💎 para asignarte el rol `@PAYDAY`', true)
-                .setFooter(`© 2020 República Gamer S.L.`, resources.server.iconURL());
+                .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
             
             msg.edit(embed);
         } else if (args[0] === `oposiciones`) {

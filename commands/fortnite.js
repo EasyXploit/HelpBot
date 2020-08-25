@@ -57,7 +57,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                     .addField('Bajas por partida', kills_per_match, true)
                     .addField('Puntuación por partida', score_per_match, true)
                     .addField('Top 5', top_5 + ' veces', true)
-                    .setFooter('© 2020 República Gamer S.L.', resources.server.iconURL());
+                    .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
                 message.channel.send(resultEmbed);
             } else if (gamemode === 'duo') {
                 let duostats = stats.duo;
@@ -85,7 +85,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                     .addField('Bajas por partida', kills_per_match, true)
                     .addField('Puntuación por partida', score_per_match, true)
                     .addField('Top 5', top_5 + ' veces', true)
-                    .setFooter('© 2020 República Gamer S.L.', resources.server.iconURL());
+                    .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
                 message.channel.send(resultEmbed);
             } else if (gamemode === 'squad') {
                 let squadstats = stats.squad;
@@ -113,7 +113,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                     .addField('Bajas por partida', kills_per_match, true)
                     .addField('Puntuación por partida', score_per_match, true)
                     .addField('Top 3', top3 + ' veces', true)
-                    .setFooter('© 2020 República Gamer S.L.', resources.server.iconURL());
+                    .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
                 message.channel.send(resultEmbed);
             } else if (gamemode === 'lifetime') {
                 let lifetime = stats.lifetime;
@@ -132,7 +132,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                     thumbnail = 'https://image.fnbr.co/misc/5ab282b5ca60ff23958a3e77/icon.png';
                     footer = '¡Vaya! Al parecer estás muy enganchado a este juego ...';
                 } else {
-                    footer = '© 2020 República Gamer S.L.';
+                    footer = `© ${new Date().getFullYear()} República Gamer S.L.`;
                 }
 
                 let resultEmbed = new discord.MessageEmbed()

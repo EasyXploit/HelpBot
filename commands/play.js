@@ -9,6 +9,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //!play (URL de YouTube | término | nada)
 
     try {
+
+        /* ---- */
+
+        //if(message.guild.voice) message.guild.voice.kick();
+
+        /* ---- */
+
         const ytdl = require(`ytdl-core-discord`);
         const moment = require(`moment`);
         const randomColor = require('randomcolor');
@@ -104,7 +111,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         .setThumbnail(details.thumbnail.thumbnails[3].url)
                         .setAuthor(`Añadido a la cola 🎶`, `https://i.imgur.com/lvShSwa.png`)
                         .setDescription(`[${details.title}](${info.video_url})\n\n● **Autor:** \`${details.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss')}\``)
-                        .setFooter(`© 2020 República Gamer S.L. | BETA Pública`, resources.server.iconURL());
+                        .setFooter(`© ${new Date().getFullYear()} República Gamer S.L. | BETA Pública`, resources.server.iconURL());
                     message.channel.send(queuedEmbed);
                 }
 
@@ -163,7 +170,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         bot.servers[message.guild.id].queue.push(newQueueItem);
 
                         //Ejecuta la función de reproducción
-                        require(`../resources/audioManager/reproductionManager.js`).run(discord, bot, resources, message, info, ytdl, moment, randomColor);
+                        require(`../resources/audioManager/reproductionManager.js`).run(discord, fs, bot, resources, message, info, ytdl, moment, randomColor);
 
                     }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));
                 } else if (message.member.voice.channelID === message.guild.member(bot.user).voice.channelID) {

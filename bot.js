@@ -35,6 +35,7 @@ const bot = new discord.Client({
 
 //RECURSOS GLOBALES
 let resources = require(`./resources/resources.js`);
+const automodFilters = require('./resources/automodFilters.js')
 
 //USUARIOS QUE USARON COMANDOS RECIENTEMENTE
 const talkedRecently = new Set();
@@ -123,7 +124,7 @@ bot.on(`ready`, async () => {
             for (let idKey in bot.bans) {
                 let time = bot.bans[idKey].time;
                 let guild = bot.guilds.cache.get(bot.bans[idKey].guild);
-                let user = await bot.fetchUser(idKey);
+                let user = await bot.users.fetch(idKey);
 
                 if (Date.now() > time) {
                     let loggingEmbed = new discord.MessageEmbed()
@@ -133,7 +134,7 @@ bot.on(`ready`, async () => {
                         .addField(`Moderador`, `<@${bot.user.id}>`, true)
                         .addField(`Razón`, `Venció la amonestación`, true);
 
-                    await guild.unban(idKey);
+                    await guild.members.unban(idKey);
 
                     delete bot.bans[idKey];
                     fs.writeFile(`./bans.json`, JSON.stringify(bot.bans), async err => {
@@ -195,9 +196,9 @@ bot.on(`ready`, async () => {
             .addField(`Actividad:`, `${bot.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`, true)
             .addField(`Usuarios:`, bot.users.cache.filter(user => !user.bot).size, true)
             .addField(`Versión:`, package.version, true)
-            .setFooter(bot.user.username, bot.user.avatarURL())
-            .setTimestamp();
-        debuggingChannel.send(statusEmbed);
+            .setFooter(`${bot.user.username} • Este mensaje se borrará en 10s`, bot.user.avatarURL());
+        debuggingChannel.send(statusEmbed).then(msg => {msg.delete({timeout: 10000})});
+        debuggingChannel.send(`<@${config.botOwner}>`).then(msg => {msg.delete({timeout: 1000})});
     } catch (e) {
         console.error(`${new Date().toLocaleString()} 》${e.stack}`);
     }
@@ -228,9 +229,12 @@ fs.readdir(`./events/`, async (err, files) => {
 
 // MANEJADOR DE COMANDOS
 bot.on(`message`, async message => {
-
+    
     const debuggingChannel = bot.channels.cache.get(config.debuggingChannel);
     const loggingChannel = bot.channels.cache.get(config.loggingChannel);
+    const pilkoChatChannel = bot.channels.cache.get(config.pilkoChatChannel);
+
+    if (message.channel.id === '550420589458751526' && message.author.id !== '359333470771740683' && message.author.id !== '474051954998509571') return message.delete({timeout: 5000});
 
     if (message.author.bot) return;
     if (message.channel.type === `dm`) {
@@ -262,182 +266,46 @@ bot.on(`message`, async message => {
             
             return;
         } else {
+            console.log(`${new Date().toLocaleString()} 》DM: ${message.author.username} (ID: ${message.author.id}) > ${message.content}`);
+
             const noDMEmbed = new discord.MessageEmbed()
                 .setColor(resources.gray)
                 .setDescription(`${resources.GrayTick} | Por el momento, los comandos de **${bot.user.username}** solo está disponible desde el servidor de la **República Gamer**.`);
-            await message.author.send(noDMEmbed);
-            await console.log(`${new Date().toLocaleString()} 》DM: ${message.author.username} (ID: ${message.author.id}) > ${message.content}`);
-            return;
+            
+            if (message.content.startsWith(config.prefix) || message.content.startsWith(config.staffPrefix) || message.content.startsWith(config.ownerPrefix)) return await message.author.send(noDMEmbed);
+            
+            const pilkoChatEmbed = new discord.MessageEmbed()
+                .setColor(resources.gold)
+                .setAuthor(`Mensaje de: ${message.author.tag}`, message.author.displayAvatarURL())
+                .setDescription(message.content);
+
+            return await pilkoChatChannel.send(pilkoChatEmbed);
         }
     }
 
-    //COMPROBACIÓN DEL CONTENIDO DEL MENSAJE
-    async function checkBadWords() {
+    //FILTROS DE AUTO-MODERACIÓN
+    (async () => {
+        for (var key in config.filters) {
+            await (async () => {
+                if (config.filters[key].status) {
+                    //Comprueba si el miembro tiene algún rol permitido
+                    const bypassRoles = config.filters[key].bypassRoles;
+                    const bypassChannels = config.filters[key].bypassChannels;
 
-        let staffRole = message.guild.roles.cache.get(config.botStaff);
-        let reason;
+                    if (bypassChannels.includes(message.channel.id)) return;
+    
+                    for (let i = 0; i < bypassRoles.length; i++) {
+                        if (message.member.roles.cache.has(bypassRoles[i])) return;
+                    }
 
-        const swearWords = [`hijo de puta`, `me cago en tu`, `tu puta madre`, `bollera`, `chupapollas`, `concha de tu madre`, `concha tu madre`, `gilipichis`, `hija de puta`, `hijaputa`, `hijoputa`, `idiota`, `imbécil`, `imbecil`, `jilipollas`, `lameculos`, `marica`, `maricón`, `maricon`, `mariconazo`, `ramera`, `soplagaitas`, `soplapollas`, `vete a la mierda`, `tus muertos`, `tus putos muertos`, `retrasao`, `anormal`, `malparido`, `gilipollas`, `negro de mierda`, `moro de mierda`, `pancho de mierda`, `panchito de mierda`]; //Palabras prohibidas
-        const invites = [`discord.gg`, `.gg/`, `.gg /`, `. gg /`, `. gg/`, `discord .gg /`, `discord.gg /`, `discord .gg/`, `discord .gg`, `discord . gg`, `discord. gg`, `discord gg`, `discordgg`, `discord gg /`] //Invitaciones prohibidas
-
-        try {
-            if (swearWords.some(word => message.content.toLowerCase().includes(word))) {
-                if (message.author.id === message.guild.ownerID) return;
-                await message.delete();
-                reason = `Palabras ofensivas`;
-            }
-
-            if (invites.some(word => message.content.toLowerCase().includes(word))) {
-                if (message.author.id === message.guild.ownerID) return;
-                if (message.member.roles.cache.has(staffRole.id)) return;
-                await message.delete();
-                reason = `Invitaciones no permitidas`;
-            }
-
-            if (!reason) return;
-
-            if (!bot.warns[message.author.id]) bot.warns[message.author.id] = {
-                guild: message.guild.id,
-                warns: 0
-            }
-
-            bot.warns[message.author.id].warns++;
-
-            let infractionChannelEmbed = new discord.MessageEmbed()
-                .setColor(resources.orange)
-                .setDescription(`${resources.OrangeTick} El usuario <@${message.author.id}> ha sido advertido debido a **${reason}**`);
-
-            let loggingEmbed = new discord.MessageEmbed()
-                .setColor(resources.orange)
-                .setAuthor(`${message.author.tag} ha sido ADVERTIDO`, message.author.displayAvatarURL())
-                .addField(`Miembro`, `<@${message.author.id}>`, true)
-                .addField(`Moderador`, `<@${bot.user.id}>`, true)
-                .addField(`Razón`, reason, true)
-                .addField(`Mensaje`, message.content, true);
-
-            let toDMEmbed = new discord.MessageEmbed()
-                .setColor(resources.orange)
-                .setAuthor(`[ADVERTIDO]`, message.guild.iconURL())
-                .setDescription(`<@${message.author.id}>, has sido advertido en ${message.guild.name}`)
-                .addField(`Moderador`, `<@${bot.user.id}>`, true)
-                .addField(`Razón`, reason, true);
-
-            fs.writeFile(`./warns.json`, JSON.stringify(bot.warns, null, 4), async err => {
-                if (err) throw err;
-
-                await message.author.send(toDMEmbed);
-                await message.channel.send(infractionChannelEmbed);
-                await loggingChannel.send(loggingEmbed);
-            });
-
-            //Si los warns son 3 o más
-            if (bot.warns[message.author.id].warns >= 3 && bot.warns[message.author.id].warns < 5)  {
-                //Comprueba si existe el rol silenciado, y de no existir, lo crea
-                let role = message.guild.roles.cache.find(r => r.name === 'Silenciado');
-                if (!role) {
-                    role = await message.guild.createRole({
-                        name: 'Silenciado',
-                        color: '#818386',
-                        permissions: []
-                    });
-                    
-                    let botMember = message.guild.members.cache.get(bot.user.id);
-                    await message.guild.setRolePosition(role, botMember.highestRole.position - 1);
-                    
-                    message.guild.channels.forEach(async (channel, id) => {
-                        await channel.overwritePermissions (role, {
-                            SEND_MESSAGES: false,
-                            ADD_REACTIONS: false,
-                            SPEAK: false
-                        });
+                    await automodFilters[key](message).then(match => {
+                        if (match) require('./resources/infractionsHandler.js').run(discord, fs, config, bot, resources, loggingChannel, message, message.guild, message.member, config.filters[key].reason, config.filters[key].action, bot.user, message.content)
                     });
                 }
+            })();
+        };
+    })()
 
-                //Comprueba si este susuario ya estaba silenciado
-                if (message.member.roles.cache.has(role.id)) return;
-
-                let milliseconds = 604800000; //Duración del mute
-
-                let loggingEmbed = new discord.MessageEmbed()
-                    .setColor(0xEF494B)
-                    .setAuthor(message.member.user.tag + ' ha sido SILENCIADO', message.member.user.displayAvatarURL())
-                    .addField('Miembro', '<@' + message.member.id + '>', true)
-                    .addField('Moderador', '<@' + bot.user.id + '>', true)
-                    .addField('Razón', 'Demasiadas infracciones', true)
-                    .addField('Duración', '7 días', true);
-
-                let toDMEmbed = new discord.MessageEmbed()
-                    .setColor(0xEF494B)
-                    .setAuthor('[SILENCIADO]', message.guild.iconURL())
-                    .setDescription('<@' + message.member.id + '>, has sido silenciado en ' + message.guild.name)
-                    .addField('Moderador', bot.user.tag, true)
-                    .addField('Razón', 'Demasiadas infracciones', true)
-                    .addField('Duración', '7 días', true);
-
-                bot.mutes[message.member.id] = {
-                    guild: message.guild.id,
-                    time: Date.now() + milliseconds
-                }
-                await message.member.addRole(role);
-
-                fs.writeFile('./mutes.json', JSON.stringify(bot.mutes, null, 4), async err => {
-                    if (err) throw err;
-
-                    await loggingChannel.send(loggingEmbed);
-                    await message.member.send(toDMEmbed);
-                });
-            } else if (bot.warns[message.author.id].warns > 5)  {
-                //Comprueba si existe el rol silenciado, y de no existir, lo crea
-                let role = message.guild.roles.find(r => r.name === 'Silenciado');
-                if (!role) {
-                    role = await message.guild.createRole({
-                        name: 'Silenciado',
-                        color: '#818386',
-                        permissions: []
-                    });
-                    
-                    let botMember = message.guild.members.cache.get(bot.user.id);
-                    await message.guild.setRolePosition(role, botMember.highestRole.position - 1);
-                    
-                    message.guild.channels.forEach(async (channel, id) => {
-                        await channel.overwritePermissions (role, {
-                            SEND_MESSAGES: false,
-                            ADD_REACTIONS: false,
-                            SPEAK: false
-                        });
-                    });
-                }
-
-                let loggingEmbed = new discord.MessageEmbed()
-                    .setColor(0xEF494B)
-                    .setAuthor(message.member.user.tag + ' ha sido SILENCIADO', message.member.user.displayAvatarURL())
-                    .addField('Miembro', '<@' + message.member.id + '>', true)
-                    .addField('Moderador', '<@' + bot.user.id + '>', true)
-                    .addField('Razón', 'Demasiadas infracciones', true)
-                    .addField('Duración', '∞', true);
-
-                let toDMEmbed = new discord.MessageEmbed()
-                    .setColor(0xEF494B)
-                    .setAuthor('[SILENCIADO]', message.message.guild.iconURL())
-                    .setDescription('<@' + message.member.id + '>, has sido silenciado en ' + message.guild.name)
-                    .addField('Moderador', bot.user.tag, true)
-                    .addField('Razón', 'Demasiadas infracciones', true)
-                    .addField('Duración', '∞', true);
-
-                //Comprueba si este susuario ya estaba silenciado
-                if (member.roles.cache.has(role.id)) return;
-
-                await message.member.addRole(role);
-                await loggingChannel.send(loggingEmbed);
-                await message.member.send(toDMEmbed);
-            }
-
-            return;
-        } catch (e) {
-            console.log(`${new Date().toLocaleString()} 》Ocurrió un error durante la ejecución de la función "checkBadWords"\nError: ${e}`);
-        }
-    }
-    checkBadWords();
 
     if (!message.content.startsWith(config.prefix) && !message.content.startsWith(config.staffPrefix) && !message.content.startsWith(config.ownerPrefix)) return;
 

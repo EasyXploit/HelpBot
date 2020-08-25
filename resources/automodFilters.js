@@ -1,0 +1,56 @@
+const config = require(`../config.json`);
+
+//Palabras malsonantes
+async function swearWords(message) {
+
+    const words = require('./swearWords.json');
+
+    if (words.some(word => message.content.toLowerCase().includes(word))) {
+        return true;
+    }
+};
+
+//Invitaciones
+async function invites(message) {
+    const invites = ['discord.gg', '.gg/', '.gg /', '. gg /', '. gg/', 'discord .gg /', 'discord.gg /', 'discord .gg/', 'discord .gg', 'discord . gg', 'discord. gg', 'discord gg', 'discordgg', 'discord gg /'];
+
+    if (invites.some(word => message.content.toLowerCase().includes(word))) {
+        return true;
+    }
+};
+
+//Mayúsculas
+async function uppercase(message) {
+
+    if (message.content.length < 15) return false;
+    if (message.content.replace(/[^A-Z]/g, "").length > (message.content.length / 100) * 75) return true;
+};
+
+//Enlaces
+async function links(message) {
+
+    const urlRegex = RegExp('https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}');
+    return urlRegex.test(message.content);
+};
+
+//Emojis masivos
+async function massEmoji(message) {
+
+    function fancyCount(str){
+        return Array.from(str.split(/[\ufe00-\ufe0f]/).join("")).length;
+    }
+
+    let stringWithoutUTFEmojis = message.content.replace(/([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g, "");
+    let serverEmojis = message.content.match(/<:.+?:\d+>/g);
+    if (serverEmojis) serverEmojis = serverEmojis.length;
+
+    if ((((fancyCount(message.content) - fancyCount(stringWithoutUTFEmojis))) + serverEmojis) > config.filters.massEmoji.quantity) return true;
+};
+
+module.exports = {
+    swearWords : swearWords,
+    invites : invites,
+    uppercase : uppercase,
+    links : links,
+    massEmoji: massEmoji
+}

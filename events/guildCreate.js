@@ -45,6 +45,11 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             event.leave();
         }
     } catch (e) {
+
+        let error = e.stack;
+        if (error.length > 1014) error = error.slice(0, 1014);
+        error = error + ' ...';
+
         //Se muestra el error en el canal de depuración
         let debuggEmbed = new discord.MessageEmbed()
             .setColor(resources.brown)
@@ -52,7 +57,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
             .addField(`Evento:`, `guildCreate`, true)
             .addField(`Fecha:`, new Date().toLocaleString(), true)
-            .addField(`Error:`, e.stack, true)
+            .addField(`Error:`, `\`\`\`${error}\`\`\``)
             .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp();
         
         //Se envía el mensaje al canal de depuración

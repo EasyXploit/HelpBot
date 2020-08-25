@@ -1,10 +1,8 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
-    //-rmwarn (@miembro | id) (cantidad) (razón)
+    //-rmwarn (@miembro | id) (id de sanción | all) (razón)
     
     try {
-        if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
-        
         let notToMuteEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(`${resources.RedTick} Debes mencionar a un miembro o escribir su id`);
@@ -13,9 +11,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setColor(0xF12F49)
             .setDescription(`${resources.RedTick} Los bots no pueden ser advertidos`);
         
-        let noQuantityEmbed = new discord.MessageEmbed ()
+        let noWarnIDEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(`${resources.RedTick} Debes proporcionar la cantidad de advertencias a quitar`);
+            .setDescription(`${resources.RedTick} Debes proporcionar el ID de la advertencia a quitar`);
         
         let undefinedReasonEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
@@ -31,8 +29,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (member.user.bot) return message.channel.send(noBotsEmbed);
         
         //Esto comprueba si se ha aportado alguna cantidad numérica
-        let quantity = args[1];
-        if (!quantity || isNaN(quantity)) return message.channel.send(noQuantityEmbed);
+        let warnID = args[1].toLowerCase();
+        if (!warnID || isNaN(warnID) && warnID !== 'all') return message.channel.send(noWarnIDEmbed);
         
         //Esto comprueba si se ha aportado alguna razón
         let reason = args.slice(2).join(" ") || 'Indefinida';
@@ -40,44 +38,63 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
           
         let moderator = await message.guild.members.fetch(message.author);
         
-        //Se comprueba si puede advertir al usuario
+        //Se comprueba si puede des-advertir al usuario
         if (moderator.id !== message.guild.owner.id) {
             if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send(noPrivilegesEmbed);
         }
         
         message.delete();
 
-        let successEmbed = new discord.MessageEmbed ()
-            .setColor(0xB8E986)
-            .setDescription(`${resources.GreenTick} Se ha/n retirado ${quantity} advertencia/s al usuario <@${member.id}>`);
-
-        let loggingEmbed = new discord.MessageEmbed ()
-            .setColor(0x4A90E2)
-            .setTitle('📑 Auditoría')
-            .setDescription('Se ha/n retirado advertencia/s.')
-            .setTimestamp()
-            .setFooter(bot.user.username, bot.user.avatarURL())
-            .addField('Fecha:', new Date().toLocaleString(), true)
-            .addField('Emisor:', `<@${message.author.id}>`, true)
-            .addField('Cantidad:', quantity, true)
-            .addField('Destino:', member.user.tag, true)
-            .addField('Razón:', reason, true);
-
         //Comprueba si el usuario tiene warns
         if (!bot.warns[member.id]) return message.channel.send(noWarnsEmbed);
-        
-        let noCorrectQuantityEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
-            .setDescription(resources.RedTick + ` Solo puedes retirar ${bot.warns[member.id].warns} advertencia/s a este usuario`);
-        
-        //Comprueba si la cantidad aportada se puede retirar
-        if ((bot.warns[member.id].warns - quantity) < 0) return message.channel.send(noCorrectQuantityEmbed);
-        
-        //Resta los warns indicados en quantity
-        bot.warns[member.id].warns = bot.warns[member.id].warns - quantity;
-        
-        //Si se queda en 0 warns, se borra la entrada del JSON
-        if (bot.warns[member.id].warns === 0) await delete bot.warns[member.id];
+
+        let successEmbed, loggingEmbed;
+
+        if (warnID === 'all') {
+            if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
+
+            successEmbed = new discord.MessageEmbed ()
+                .setColor(0xB8E986)
+                .setDescription(`${resources.GreenTick} Se han retirado todas las advertencias al usuario <@${member.id}>`);
+
+            loggingEmbed = new discord.MessageEmbed ()
+                .setColor(0x4A90E2)
+                .setTitle('📑 Auditoría')
+                .setDescription('Se han retirado todas las advertencias.')
+                .setTimestamp()
+                .setFooter(bot.user.username, bot.user.avatarURL())
+                .addField('Fecha:', new Date().toLocaleString(), true)
+                .addField('Emisor:', `<@${message.author.id}>`, true)
+                .addField('Miembro:', member.user.tag, true)
+                .addField('Razón:', reason, true);
+
+            delete bot.warns[member.id];
+        } else {
+            if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id) && bot.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send(noPrivilegesEmbed);
+
+            successEmbed = new discord.MessageEmbed ()
+                .setColor(0xB8E986)
+                .setDescription(`${resources.GreenTick} Se ha retirado la advertencia con ID **${warnID}** al usuario <@${member.id}>`);
+
+            loggingEmbed = new discord.MessageEmbed ()
+                .setColor(0x4A90E2)
+                .setTitle('📑 Auditoría')
+                .setDescription('Se ha retirado una advertencia.')
+                .setTimestamp()
+                .setFooter(bot.user.username, bot.user.avatarURL())
+                .addField('Fecha:', new Date().toLocaleString(), true)
+                .addField('Emisor:', `<@${message.author.id}>`, true)
+                .addField('ID de advertencia:', warnID, true)
+                .addField('Sanción:', bot.warns[member.id][warnID].reason, true)
+                .addField('Miembro:', member.user.tag, true)
+                .addField('Razón:', reason, true);
+
+            //Resta el warn indicado
+            delete bot.warns[member.id][warnID];
+            
+            //Si se queda en 0 warns, se borra la entrada del JSON
+            if (Object.keys(bot.warns[member.id]).length === 0) delete bot.warns[member.id];
+        }
 
         //Escribe el resultado en el JSON
         fs.writeFile('./warns.json', JSON.stringify(bot.warns, null, 4), async err => {

@@ -144,8 +144,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField('Duración', args[1], true);
 
         bot.mutes[member.id] = {
-            guild: message.guild.id,
-            tag: member.tag,
             time: Date.now() + milliseconds
         }
         await member.roles.add(role);

@@ -26,7 +26,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
         let user;
         try {
-            user = await bot.fetchUser(message.mentions.users.first() || args[0]);
+            user = await bot.users.fetch(message.mentions.users.first() || args[0]);
         } catch (e) {
             return message.channel.send(notToBanEmbed);
         }
@@ -128,7 +128,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(`Duración`, args[1], true);
         
         bot.bans[user.id] = {
-            guild: message.guild.id,
             time: Date.now() + milliseconds
         }
 
@@ -138,7 +137,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             if (member) {
                 await user.send(toDMEmbed);
             }
-            await message.guild.ban(user, {reason: `Duración: ${args[1]}, Razón: ${reason}`});
+            await message.guild.members.ban(user, {reason: `Duración: ${args[1]}, Razón: ${reason}`});
             await loggingChannel.send(loggingEmbed);
             await message.channel.send(successEmbed);
         });

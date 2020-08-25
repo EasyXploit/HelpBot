@@ -18,7 +18,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
         let user;
         try {
-            user = await bot.fetchUser(args[0]);
+            user = await bot.users.fetch(args[0]);
         } catch (e) {
             return message.channel.send(notToUnbanEmbed);
         }
@@ -30,7 +30,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send(noReasonEmbed);
         if (!reason) reason = `Indefinida`;
 
-        await message.guild.unban(user.id);
+        await message.guild.members.unban(user.id);
         
         if (bot.bans.hasOwnProperty(user.id)) {
             await delete bot.bans[user.id];

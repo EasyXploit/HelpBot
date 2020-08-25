@@ -12,7 +12,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .setThumbnail('https://i.imgur.com/cTW63kf.png')
             .setURL(cfg.serverInvite)
             .setTitle('República Gamer S.L.')
-            .setFooter('©2020 República Gamer S.L.', resources.server.iconURL())
+            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL())
             .addField(`${resources.pilkobot} PilkoBot`, `**${bot.user.username}** es un bot multifuncional desarrollado por el Staff de la comunidad, cuyo uso es exclusivo de los usuarios de la **República Gamer**.\n\nEste proyecto no tiene licencia, por lo que se aplican las leyes de copyright predeterminadas, lo que significa que conservamos todos los derechos de nuestro código fuente y que nadie puede reproducir, distribuir o crear trabajos derivados de este.\n\n_Para más información relativa a las funcionalidades de este bot, usa el comando \`${config.prefix}ayuda\`_`)
             .addField('✉ Agradecimientos', '● Maria José Lozano\n● Amish Shah\n● El Pilko (Carlos)', true)
             .addField('📊 Estadísticas', `${bot.guilds.cache.size} servidores\n${bot.users.cache.filter(user => !user.bot).size} usuarios\nV ${package.version}`, true)

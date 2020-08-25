@@ -26,8 +26,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
         let user;
         try {
-            user = await bot.users.fetch(message.mentions.users.first() || args[0]);
+            let mentioned = message.mentions.users.first();
+            if (mentioned) mentioned = mentioned.id
+            user = await bot.users.fetch(mentioned || args[0]);
         } catch (e) {
+            console.log(e);
             return message.channel.send(notToBanEmbed);
         }
         

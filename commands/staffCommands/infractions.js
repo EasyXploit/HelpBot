@@ -24,7 +24,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let user = member.user;
         if (user.bot) return message.channel.send(noBotsEmbed);
 
-
         //Comprueba el número de warns del usuario
         let warns;
         if (!bot.warns[member.id]) {
@@ -32,13 +31,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         } else {
             warns = bot.warns[member.id].length;
         }
-
-        /* --- */
-
-        //Fórmula para calcular cuándo aplicar las reglas de automoderación
-        //Timestamp actual - Timestamp del warn -> ¿Es menor que el timestamp de la regla? -> True = match
-
-        /* --- */
 
         let infractionsCount = {
             day: 0,
@@ -64,7 +56,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 Object.keys(userWarns[i]).forEach((key) => {
                     let moderator = message.guild.members.cache.get(userWarns[i][key].moderator);
                     if (typeof moderator === "undefined") moderator = 'Moderador desconocido';
-                    console.log(key);
                     lastWarns = lastWarns + `\`${key}\` • ${moderator} • ${new Date(parseInt(key)).toLocaleString()}\n${userWarns[i][key].reason}\n\n`;
                 })
             }

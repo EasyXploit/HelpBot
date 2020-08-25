@@ -50,6 +50,14 @@
             "bypassRoles": ["374949036555239434"],
             "bypassChannels": [],
             "quantity": 20
+        },
+        "massMentions": {
+            "status": true,
+            "action": 3,
+            "reason": "Demasiadas menciones",
+            "bypassRoles": ["374949036555239434"],
+            "bypassChannels": [],
+            "quantity": 5
         }
     }
 }

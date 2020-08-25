@@ -16,7 +16,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (args.length < 1) {
             member = message.guild.members.cache.get(message.author.id);
         } else {
-            member = await message.guild.members.fetch(message.mentions.users.first() || args[0]);
+            member = await message.guild.members.fetch(message.mentions.users.first() || args[0]).catch(e => {
+                if (!e.toLocaleString().includes('Unknown member')) console.log(e)
+            });
         }
 
         if (!member) return message.channel.send(noUserEmbed);

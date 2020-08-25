@@ -47,10 +47,18 @@ async function massEmoji(message) {
     if ((((fancyCount(message.content) - fancyCount(stringWithoutUTFEmojis))) + serverEmojis) > config.filters.massEmoji.quantity) return true;
 };
 
+//Menciones masivas
+async function massMentions(message) {
+
+    let count = (message.content.match(/<@!?(\d+)>/g) || []).length;
+    if (count > config.filters.massMentions.quantity) return true;
+};
+
 module.exports = {
     swearWords : swearWords,
     invites : invites,
     uppercase : uppercase,
     links : links,
-    massEmoji: massEmoji
+    massEmoji: massEmoji,
+    massMentions: massMentions
 }

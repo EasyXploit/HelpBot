@@ -42,9 +42,9 @@ exports.run = async (discord, fs, config, bot, resources, loggingChannel, messag
             .setColor(0xEF494B)
             .setAuthor(`${member.user.tag} ha sido SILENCIADO`, member.user.displayAvatarURL())
             .addField('Miembro', `<@${member.id}>`, true)
-            .addField('Moderador', `<@${moderator.id}`, true)
+            .addField('Moderador', `<@${moderator.id}>`, true)
             .addField('Razón', 'Demasiadas advertencias', true)
-            .addField('Duración', time || '∞', true); //Falta formatear duración
+            .addField('Duración', new Date(parseInt(time)).toLocaleString() || '∞', true);
 
         let toDMEmbed = new discord.MessageEmbed ()
             .setColor(0xEF494B)
@@ -52,7 +52,7 @@ exports.run = async (discord, fs, config, bot, resources, loggingChannel, messag
             .setDescription(`<@${member.id}>, has sido silenciado en ${guild.name}`)
             .addField('Moderador', `<@${moderator.id}>`, true)
             .addField('Razón', 'Demasiadas advertencias', true)
-            .addField('Duración', time || '∞', true); //Falta formatear duración
+            .addField('Duración', new Date(parseInt(time)).toLocaleString() || '∞', true);
 
         await member.roles.add(role);
 
@@ -62,16 +62,60 @@ exports.run = async (discord, fs, config, bot, resources, loggingChannel, messag
 
     //Función para expulsar
     async function kick() {
+        let loggingEmbed = new discord.MessageEmbed ()
+            .setColor(resources.red2)
+            .setAuthor(`${member.user.tag} ha sido EXPULSADO`, member.user.displayAvatarURL())
+            .addField('Miembro', `<@${member.id}>`, true)
+            .addField('Moderador', `<@${moderator.id}>`, true)
+            .addField('Razón', 'Demasiadas advertencias', true);
 
+        let toDMEmbed = new discord.MessageEmbed ()
+            .setColor(resources.red2)
+            .setAuthor(`[EXPULSADO]`, guild.iconURL())
+            .setDescription(`<@${member.id}>, has sido expulsado en ${guild.name}`)
+            .addField(`Moderador`, `<@${moderator.id}>`, true)
+            .addField(`Razón`, 'Demasiadas advertencias', true)
 
+        await loggingChannel.send(loggingEmbed);
+        await member.send(toDMEmbed);
+
+        await member.kick(reason);
     };
 
     //Función para banear
     async function ban(time) {
 
         if (time) {
-
+            bot.bans[user.id] = {
+                time: Date.now() + time
+            }
+    
+            fs.writeFile(`./bans.json`, JSON.stringify(bot.bans, null, 4), async err => {
+                if (err) throw err;
+            });
         };
+
+        let loggingEmbed = new discord.MessageEmbed()
+            .setColor(resources.red2)
+            .setAuthor(`${member.tag} ha sido BANEADO`, user.displayAvatarURL())
+            .addField(`Miembro`, `<@${member.id}>`, true)
+            .addField(`ID`, `${member.id}`, true)
+            .addField(`Moderador`, `<@${moderator.id}>`, true)
+            .addField(`Razón`, 'Demasiadas advertencias', true)
+            .addField(`Duración`, new Date(parseInt(time)).toLocaleString() || '∞', true);
+
+        let toDMEmbed = new discord.MessageEmbed ()
+            .setColor(resources.red2)
+            .setAuthor(`[BANEADO]`, message.guild.iconURL())
+            .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
+            .addField(`Moderador`, `<@${moderator.id}>`, true)
+            .addField(`Razón`, 'Demasiadas advertencias', true)
+            .addField(`Duración`, new Date(parseInt(time)).toLocaleString() || '∞', true);
+
+        await loggingChannel.send(loggingEmbed);
+        await member.send(toDMEmbed);
+
+        await guild.members.ban(user, {reason: `Moderador: ${moderator.id}, Razón: Demasiadas advertencias`});
 
     };
 
@@ -122,46 +166,26 @@ exports.run = async (discord, fs, config, bot, resources, loggingChannel, messag
             await loggingChannel.send(loggingEmbed);
         });
 
-        //comprobar que sanción corresponde (si corresponde) en función de automodRules.json
-        //tempmute, mute, kick, tempban, ban
+        const rules = require('./automodRules.json');
 
-        /*
-            abrir reglas en orden
-            regla *# -> ¿se cumple condición? - actúa o 
-        */
-
-        /*const rules = require('./automodRules.json');
-        const warnsCount = Object.keys(bot.warns[member.id]).length;
-
-        for (let i = Object.keys(rules).length; i > 0; i--) {
+        for (let i = 0; i < rules.length; i++) {
             let rule = rules[i];
+            let warnsCount = 0;
+
+            Object.keys(bot.warns[member.id]).forEach(entry => {
+                if (Date.now() - entry <= rule.age) warnsCount++
+            });
 
             if (warnsCount >= rule.quantity) {
                 switch (rule.action) {
-                    case tempmute:
-                        mute(rule.duration)
-                        break;
-
-                    case mute:
-                        mute()
-                        break;
-
-                    case kick:
-                        kick()
-                        break;
-
-                    case tempban:
-                        ban(rule.duration)
-                        break;
-
-                    case ban:
-                        ban()
-                        break;
-                    
-                    default:
-                        break;
-                }
+                    case 'tempmute': mute(rule.duration); break;
+                    case 'mute': mute(); break;
+                    case 'kick': kick(); break;
+                    case 'tempban': ban(rule.duration); break;
+                    case 'ban': ban(); break;
+                };
+                break;
             };
-        };*/
+        };
     };
 };

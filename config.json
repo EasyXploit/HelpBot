@@ -58,6 +58,21 @@
             "bypassRoles": ["374949036555239434"],
             "bypassChannels": [],
             "quantity": 5
+        },
+        "massiveSpoilers": {
+            "status": true,
+            "action": 3,
+            "reason": "Demasiados spoilers",
+            "bypassRoles": ["374949036555239434"],
+            "bypassChannels": [],
+            "quantity": 10
+        },
+        "repeatedText": {
+            "status": true,
+            "action": 3,
+            "reason": "Texto repetitivo",
+            "bypassRoles": ["374949036555239434"],
+            "bypassChannels": []
         }
     }
 }

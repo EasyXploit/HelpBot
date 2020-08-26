@@ -4,19 +4,14 @@ const config = require(`../config.json`);
 async function swearWords(message) {
 
     const words = require('./swearWords.json');
-
-    if (words.some(word => message.content.toLowerCase().includes(word))) {
-        return true;
-    }
+    if (words.some(word => message.content.toLowerCase().includes(word))) return true;
 };
 
 //Invitaciones
 async function invites(message) {
+    
     const invites = ['discord.gg', '.gg/', '.gg /', '. gg /', '. gg/', 'discord .gg /', 'discord.gg /', 'discord .gg/', 'discord .gg', 'discord . gg', 'discord. gg', 'discord gg', 'discordgg', 'discord gg /'];
-
-    if (invites.some(word => message.content.toLowerCase().includes(word))) {
-        return true;
-    }
+    if (invites.some(word => message.content.toLowerCase().includes(word))) return true;
 };
 
 //Mayúsculas
@@ -54,11 +49,30 @@ async function massMentions(message) {
     if (count > config.filters.massMentions.quantity) return true;
 };
 
+//Spoilers masivos
+async function massiveSpoilers(message) {
+
+    let count = (message.content.match(/\|\|.*?\|\|/g) || []).length;
+    if (count > config.filters.massiveSpoilers.quantity) return true;
+};
+
+//Texto repetitivo
+async function repeatedText(message) {
+    
+    // Experimental
+    // /^\s*(.+?)(\s*\1\s*)+$/
+
+    return /^(.+)(?: +\1){3}/.test(message.content);
+};
+
+
 module.exports = {
     swearWords : swearWords,
     invites : invites,
     uppercase : uppercase,
     links : links,
     massEmoji: massEmoji,
-    massMentions: massMentions
+    massMentions: massMentions,
+    massiveSpoilers: massiveSpoilers,
+    repeatedText: repeatedText
 }

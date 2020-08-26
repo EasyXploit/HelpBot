@@ -110,7 +110,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         .setColor(randomColor())
                         .setThumbnail(details.thumbnail.thumbnails[3].url)
                         .setAuthor(`Añadido a la cola 🎶`, `https://i.imgur.com/lvShSwa.png`)
-                        .setDescription(`[${details.title}](${info.video_url})\n\n● **Autor:** \`${details.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss')}\``)
+                        .setDescription(`[${details.title}](${info.video_url})\n\n● **Autor:** \`${details.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(details.lengthSeconds).format('H:mm:ss')}\``)
                         .setFooter(`© ${new Date().getFullYear()} República Gamer S.L. | BETA Pública`, resources.server.iconURL());
                     message.channel.send(queuedEmbed);
                 }
@@ -162,7 +162,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         let newQueueItem = {
                             link: info.video_url,
                             title: details.title,
-                            duration: moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss'),
+                            duration: moment().startOf('day').seconds(details.lengthSeconds).format('H:mm:ss'),
                             requestedBy: message.member.displayName
                         };
 
@@ -190,7 +190,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         let newQueueItem = {
                             link: info.video_url,
                             title: details.title,
-                            duration: moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss'),
+                            duration: moment().startOf('day').seconds(details.lengthSeconds).format('H:mm:ss'),
                             requestedBy: message.member.displayName
                         };
 
@@ -204,7 +204,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         let newQueueItem = {
                             link: info.video_url,
                             title: details.title,
-                            duration: moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss'),
+                            duration: moment().startOf('day').seconds(details.lengthSeconds).format('H:mm:ss'),
                             requestedBy: message.member.displayName
                         };
 

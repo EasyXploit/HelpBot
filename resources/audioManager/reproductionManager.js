@@ -66,7 +66,7 @@ exports.run = async (discord, fs, bot, resources, message, info, ytdl, moment, r
             server.nowplaying = {
                 title: details.title,
                 link: info.video_url,
-                duration: moment().startOf('day').seconds(details.lengthSeconds).format('h:mm:ss'),
+                duration: moment().startOf('day').seconds(details.lengthSeconds).format('H:mm:ss'),
                 requestedBy: message.member.displayName
             };
 

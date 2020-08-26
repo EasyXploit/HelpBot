@@ -88,9 +88,6 @@ exports.run = (discord, bot) => {
     const drakeban = bot.emojis.cache.get('497381029011521593');
     module.exports.drakeban = drakeban;
     
-    const mee6 = bot.emojis.cache.get('497728749131792385');
-    module.exports.mee6 = mee6;
-    
     const translate = bot.emojis.cache.get('503248605814063105');
     module.exports.translate = translate;
     

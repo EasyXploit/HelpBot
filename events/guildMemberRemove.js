@@ -15,7 +15,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                 await bot.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             } else {
                 const loggingEmbed = new discord.MessageEmbed()
-                    .setColor(resources.red2)
+                    .setColor(resources.red)
                     .setAuthor(`${event.user.tag} ha sido EXPULSADO`, event.user.displayAvatarURL())
                     .addField(`Miembro`, `<@${event.user.id}>`, true)
                     .addField(`Moderador`, `<@${executor.id || 'Desconocido'}>`, true)

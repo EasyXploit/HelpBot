@@ -117,7 +117,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                     .setThumbnail(images[Math.floor(Math.random() * images.length)]);*/
 
                 let loggingWelcomeEmbed = new discord.MessageEmbed()
-                    .setColor(resources.green2)
+                    .setColor(resources.green)
                     .setThumbnail(event.user.displayAvatarURL())
                     .setAuthor(`Nuevo miembro`, `https://i.imgur.com/A60x2Di.png`)
                     .setDescription(`${event.user.username} se unió al servidor`)

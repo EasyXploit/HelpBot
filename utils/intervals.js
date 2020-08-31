@@ -98,7 +98,7 @@ exports.run = (discord, bot, fs, resources, moment, config) => {
             console.log(`${new Date().toLocaleString()} 》Tiempo de respuesta del Websocket elevado: ${ping} ms\n`);
 
             let debuggingEmbed = new discord.MessageEmbed()
-                .setColor(0xF8A41E)
+                .setColor(resources.orange)
                 .setTimestamp()
                 .setFooter(bot.user.username, bot.user.avatarURL())
                 .setDescription(`${resources.OrangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);

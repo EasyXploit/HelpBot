@@ -4,7 +4,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
     try {
         let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.staffPrefix}roleinfo (@rol | rol | id)\``);
 
         if (!args[0]) return message.channel.send(noCorrectSyntaxEmbed);
@@ -13,7 +13,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let role = message.mentions.roles.first() || guild.roles.cache.get(args[0]) || message.guild.roles.find( r => r.name === args.join(` `));
 
         let roleNotFoundEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} El rol no existe`);
 
         if (!role) return message.channel.send(roleNotFoundEmbed);

@@ -6,7 +6,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         const urban = module.require('urban-dictionary');
         
         let notToSearchEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setTitle(`${resources.RedTick} Debes proporcionarme un término de búsqueda`)
             .setDescription(`La sintaxis de este comando es \`${config.prefix}urban (término)\``);
     
@@ -27,7 +27,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             message.channel.send(resultEmbed);
         }).catch((error) => {
             let noDataEmbed = new discord.MessageEmbed ()
-                .setColor(0xF12F49)
+                .setColor(resources.red2)
                 .setDescription(`${resources.RedTick} No se ha encontrado ningún resultado que coincida con \`${searchTerm}\``);
             
             if (error.toString().includes(`is undefined`)) {

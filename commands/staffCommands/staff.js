@@ -6,7 +6,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         message.delete();
         
         let successEmbed = new discord.MessageEmbed ()
-            .setColor(0xB8E986)
+            .setColor(resources.green)
             .setDescription(`${resources.GreenTick} ¡Te he enviado los detalles por Mensaje Directo!`);
 
         let helpEmbed = new discord.MessageEmbed ()

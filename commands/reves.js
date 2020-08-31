@@ -4,7 +4,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     
     try {
         let notToAnswerEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes escribir el texto a invertir.\nLa sintaxis de este comando es \`${config.prefix}reves <texto>\``);
 
         if (!args[0]) return message.channel.send(notToAnswerEmbed);

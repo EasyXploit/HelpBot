@@ -210,7 +210,7 @@ bot.on(`message`, async message => {
     try {
         let commandImput = `${new Date().toLocaleString()} 》${message.author.username} introdujo el comando: ${command.slice(-0, -3)} en el canal: ${message.channel.name} de la guild: ${message.guild.name}`;
 
-        let waitEmbed = new discord.MessageEmbed().setColor(0xF12F49).setDescription(`${resources.RedTick} Debes esperar 2 segundos antes de usar este comando`);
+        let waitEmbed = new discord.MessageEmbed().setColor(resources.red2).setDescription(`${resources.RedTick} Debes esperar 2 segundos antes de usar este comando`);
         if (talkedRecently.has(message.author.id)) return message.channel.send(waitEmbed).then(msg => {
             msg.delete({timeout: 1000})
         });

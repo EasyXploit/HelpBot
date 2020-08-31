@@ -4,7 +4,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     
     try {
         let helpEmbed = new discord.MessageEmbed ()
-            .setColor(0xFFC857)
+            .setColor(resources.gold)
             .setThumbnail('http://i.imgur.com/jAiDAvR.png')
             .setAuthor('NORMAS', 'http://i.imgur.com/jAiDAvR.png')
             .setTitle('Normas del servidor')

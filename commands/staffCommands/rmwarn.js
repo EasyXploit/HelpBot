@@ -4,23 +4,23 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     
     try {
         let notToUnwarnEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes mencionar a un miembro o escribir su id`);
 
         let noBotsEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Los bots no pueden ser advertidos`);
         
         let noWarnIDEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes proporcionar el ID de la advertencia a quitar`);
         
         let undefinedReasonEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Se debe adjuntar una razón`);
         
         let noWarnsEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Este usuario no tiene advertencias`);
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
@@ -54,11 +54,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
 
             successEmbed = new discord.MessageEmbed ()
-                .setColor(0xB8E986)
+                .setColor(resources.green)
                 .setDescription(`${resources.GreenTick} Se han retirado todas las advertencias al usuario <@${member.id}>`);
 
             loggingEmbed = new discord.MessageEmbed ()
-                .setColor(0x4A90E2)
+                .setColor(resources.blue)
                 .setTitle('📑 Auditoría')
                 .setDescription('Se han retirado todas las advertencias.')
                 .setTimestamp()
@@ -73,11 +73,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id) && bot.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send(noPrivilegesEmbed);
 
             successEmbed = new discord.MessageEmbed ()
-                .setColor(0xB8E986)
+                .setColor(resources.green)
                 .setDescription(`${resources.GreenTick} Se ha retirado la advertencia con ID **${warnID}** al usuario <@${member.id}>`);
 
             loggingEmbed = new discord.MessageEmbed ()
-                .setColor(0x4A90E2)
+                .setColor(resources.blue)
                 .setTitle('📑 Auditoría')
                 .setDescription('Se ha retirado una advertencia.')
                 .setTimestamp()

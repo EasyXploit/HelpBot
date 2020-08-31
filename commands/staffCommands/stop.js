@@ -6,12 +6,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
   
         let successEmbed = new discord.MessageEmbed ()
-            .setColor(0xB8E986)
+            .setColor(resources.green)
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`Deteniendo ${bot.user.username} . . .`); 
 
         let loggingEmbed = new discord.MessageEmbed ()
-            .setColor(0xFF773D)
+            .setColor(resources.orange)
             .setTimestamp()
             .setFooter(bot.user.username, bot.user.avatarURL())
             .setTitle('📑 Auditoría')

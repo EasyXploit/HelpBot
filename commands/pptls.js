@@ -4,7 +4,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     
     try {
         let notToAnswerEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.prefix}pptls <piedra | papel | tijeras | lagarto | spock>\``);
 
         if (!args[0]) return message.channel.send(notToAnswerEmbed);

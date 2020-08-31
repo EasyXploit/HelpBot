@@ -20,7 +20,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         let thumbnail = 'https://toppng.com/public/uploads/preview/fortnite-battle-royale-logo-11530963305mex6keb5qj.png';
 
         let noCorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(0xF04647)
+            .setColor(resources.red2)
             .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.prefix + 'fortnite "usuario" "solo/duo/squad/lifetime" "pc/xbl/psn"`');
 
         if (!username || !gamemode || !platform) return message.channel.send(noCorrectSyntaxEmbed);
@@ -155,7 +155,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             }
         }).catch (e => {
             let errorEmbed = new discord.MessageEmbed()
-                .setColor(0xF12F49)
+                .setColor(resources.red2)
                 .setTitle(`${resources.RedTick} Ocurrió un error`)
                 .setDescription(`No hemos podido encontrar al usuario \`${username}\` en la plataforma \`${platform}\`.`)
                 .addField('Posibles causas', `● El usuario \`${username}\` no existe o nunca ha jugado\n● \`${username}\` no ha jugado en la plataforma \`${platform}\` o al modo de juego \`${gamemode}\`\n● El usuario ha cambiado de nombre de usuario\n● La API no tiene registrada ninguna estadística del usuario \`${username}\``,true)

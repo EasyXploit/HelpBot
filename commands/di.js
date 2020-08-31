@@ -4,7 +4,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     
     try {   
         let noTextEmbed = new discord.MessageEmbed()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes escribir el contenido del mensaje`);
 
         if (!args[0]) return message.channel.send(noTextEmbed);

@@ -5,7 +5,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     try {
         
         let noCorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(0xF04647)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.prefix}calcula (número 1) (+ | - | * | / | round | pow | sqrt | abs | ceil | floor | sin | cos) (número 2 si procede)\``);
         
         if (!args[0] || !args[1]) return message.channel.send(noCorrectSyntaxEmbed);
@@ -14,14 +14,14 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         if (operator !== '+' && operator !== '-' && operator !== '*' && operator !== '/' && operator !== 'pi' && operator !== 'round' && operator !== 'pow' && operator !== 'sqrt' && operator !== 'abs' && operator !== 'ceil' && operator !== 'floor' && operator !== 'sin' && operator !== 'cos') return message.channel.send(noCorrectSyntaxEmbed);
         
         let isNaNEmbed = new discord.MessageEmbed()
-            .setColor(0xF04647)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes proporcionar números enteros`);
         
         if (isNaN(args[0])) return message.channel.send(isNaNEmbed);
         let N1 = parseInt(args[0]);
         
         let noN2Embed = new discord.MessageEmbed()
-            .setColor(0xF04647)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes proporcionar una segunda cifra`);
         
         let operation;

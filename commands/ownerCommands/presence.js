@@ -15,11 +15,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let changed;
 
         let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
-            .setColor(0xF04647)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} La sintaxis del comando es \`${config.ownerPrefix}presence ("estatus" | "actividad") ("online" | "offline" | "idle" | "dnd" - "nombreDeLaAtividad")\``);
 
         let actuallyConfiguredEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Esta configuración ya ha sido aplicada`);
 
         if (!args[0] || !args[1]) return message.channel.send(noCorrectSyntaxEmbed);
@@ -47,12 +47,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         }
 
         let resultEmbed = new discord.MessageEmbed ()
-            .setColor(0xB8E986)
+            .setColor(resources.green)
             .setTitle(`${resources.GreenTick} Operación en marcha`)
             .setDescription(`Cambiaste ${changed} del bot a \`${content}\`.\nEsta operación podría tardar unos minutos en completarse.`)
 
         let loggingEmbed = new discord.MessageEmbed ()
-            .setColor(0x4A90E2)
+            .setColor(resources.blue)
             .setTimestamp()
             .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, bot.user.avatarURL())
             .setTitle('📑 Auditoría')

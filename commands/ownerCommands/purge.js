@@ -4,18 +4,18 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     
     try {
         let noQuantityEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes proporcionar la cantidad de mensajes a eliminar`);
         
         let incorrectQuantityEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes proporcionar una cantidad numérica superior a 2 e inferior a 100`);
 
         if(!args[0]) return message.channel.send(noQuantityEmbed);
         if (isNaN(args[0])) return message.channel.send(NaNEmbed);
         
         let tooMuchOldMessagesEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Solo puedes borrar mensajes con un máximo de 14 días de antiguedad`);
         
         const limit = Math.floor(args[0]);
@@ -25,7 +25,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         if (args[1]) {
             let noChannelEmbed = new discord.MessageEmbed ()
-                .setColor(0xF12F49)
+                .setColor(resources.red2)
                 .setDescription(`${resources.RedTick} El canal de texto proporcionado no es válido`);
             
             channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
@@ -37,12 +37,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             count = messages.size;
             
             let successEmbed = new discord.MessageEmbed ()
-                .setColor(0xB8E986)
+                .setColor(resources.green)
                 .setTitle(`${resources.GreenTick} Operación completada`)
                 .setDescription(`Mensajes eliminados: ${count}`);
 
             let loggingEmbed = new discord.MessageEmbed ()
-                .setColor(0x4A90E2)
+                .setColor(resources.blue)
                 .setTimestamp()
                 .setFooter(bot.user.username, bot.user.avatarURL())
                 .setTitle('📑 Auditoría')
@@ -65,12 +65,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             count = messages.size;
             
             let successEmbed = new discord.MessageEmbed ()
-                .setColor(0xB8E986)
+                .setColor(resources.green)
                 .setTitle(`${resources.GreenTick} Operación completada`)
                 .setDescription(`Mensajes eliminados: ${count}`);
 
             let loggingEmbed = new discord.MessageEmbed ()
-                .setColor(0x4A90E2)
+                .setColor(resources.blue)
                 .setTimestamp()
                 .setFooter(bot.user.username, bot.user.avatarURL())
                 .setTitle('📑 Auditoría')

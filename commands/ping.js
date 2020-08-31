@@ -20,7 +20,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         } else {
             botPingEmbed = new discord.MessageEmbed ()
               .setTitle(`Tiempo de respuesta del bot: `)
-              .setColor(0xF12F49)
+              .setColor(resources.red2)
               .setDescription(`:stopwatch: | ${botPing} ms`);
         }
 
@@ -41,7 +41,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         } else {
             websocketPingEmbed = new discord.MessageEmbed ()
               .setTitle(`Tiempo de respuesta del Websocket: `)
-              .setColor(0xF12F49)
+              .setColor(resources.red2)
               .setDescription(`:stopwatch: | ${websocketPing} ms`);
         }
 
@@ -59,7 +59,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             hour = hour % 24;
 
             uptimeEmbed = new discord.MessageEmbed ()
-                .setColor(0xFFC857)
+                .setColor(resources.gold)
                 .setTitle('Tiempo de actividad: ')
                 .setDescription(`:stopwatch: | ${day} días, ${hour} horas, ${minute} minutos y ${seconds} segundos`);
         }

@@ -19,7 +19,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setDescription(`El modo lento ha sido desactivado`);
 
             loggingEmbed = new discord.MessageEmbed ()
-                .setColor(0x4A90E2)
+                .setColor(resources.blue)
                 .setTitle('📑 Auditoría')
                 .setDescription('Se ha des-habilitado el modo lento.')
                 .setTimestamp()
@@ -53,7 +53,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setDescription(`El modo lento ha sido activado con un retraso de \`${seconds}s\``);
 
             loggingEmbed = new discord.MessageEmbed ()
-                .setColor(0x4A90E2)
+                .setColor(resources.blue)
                 .setTitle('📑 Auditoría')
                 .setDescription('Se ha habilitado el modo lento.')
                 .setTimestamp()

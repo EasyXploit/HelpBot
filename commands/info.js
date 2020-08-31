@@ -7,7 +7,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     
     try {
         let resultEmbed = new discord.MessageEmbed ()
-            .setColor(0XFFC857)
+            .setColor(resources.gold)
             .setAuthor('La República Gamer', bot.user.avatarURL())
             .setThumbnail('https://i.imgur.com/cTW63kf.png')
             .setURL(cfg.serverInvite)

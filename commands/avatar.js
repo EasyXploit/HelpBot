@@ -11,7 +11,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!user) return message.channel.send(notFoundEmbed);
 
         const avatarEmbed = new discord.MessageEmbed()
-            .setColor(0xFFC857)
+            .setColor(resources.gold)
             .setAuthor(`Avatar de @${user.tag}`)
             .setTitle('URL del Avatar')
             .setImage(user.displayAvatarURL())

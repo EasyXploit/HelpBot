@@ -97,12 +97,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!reason) reason = `Indefinida`;
 
         let successEmbed = new discord.MessageEmbed ()
-            .setColor(resources.green)
+            .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`El usuario <@${user.id}> ha sido baneado, ¿alguien más? ${resources.drakeban}`);
 
         let loggingEmbed = new discord.MessageEmbed ()
-            .setColor(resources.red2)
+            .setColor(resources.red)
             .setAuthor(`${user.tag} ha sido BANEADO`, user.displayAvatarURL())
             .addField(`Miembro`, `<@${user.id}>`, true)
             .addField(`Moderador`, `<@${message.author.id}>`, true)
@@ -110,7 +110,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(`Duración`, args[1], true);
 
         let toDMEmbed = new discord.MessageEmbed ()
-            .setColor(resources.red2)
+            .setColor(resources.red)
             .setAuthor(`[BANEADO]`, message.guild.iconURL())
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
             .addField(`Moderador`, `@${message.author.tag}`, true)

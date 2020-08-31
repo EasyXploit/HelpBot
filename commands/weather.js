@@ -6,7 +6,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         const weather = module.require('weather-js');
         
         let notToSearchEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setTitle(`${resources.RedTick} Debes proporcionarme un término de búsqueda`)
             .setDescription(`La sintaxis de este comando es \`${config.prefix}weather (ubicación)\``);
     

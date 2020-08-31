@@ -4,7 +4,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     
     try {
         let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
-            .setColor(0xF04647)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.ownerPrefix}template (plantilla)\``);
 
         if (!args[0]) return message.channel.send(noCorrectSyntaxEmbed);

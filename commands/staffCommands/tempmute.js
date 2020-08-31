@@ -4,15 +4,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     
     try {
         let notToMuteEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes mencionar a un miembro o escribir su id`);
 
         let noBotsEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} No puedes silenciar a un bot`);
         
         let noCorrectTimeEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5s\`, \`10m\`, \`12h\` o \`3d\``);
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
@@ -52,11 +52,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         };
 
         let alreadyMutedEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Este usuario ya esta silenciado`);
 
         let successEmbed = new discord.MessageEmbed ()
-            .setColor(0xB8E986)
+            .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`El usuario <@${member.id}> ha sido silenciado, ¿alguien más?`);
 
@@ -111,7 +111,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         if (message.author.id !== config.botOwner) {
             let maxTimeEmbed = new discord.MessageEmbed ()
-                .setColor(0xF12F49)
+                .setColor(resources.red2)
                 .setDescription(`${resources.RedTick} Los moderadores solo pueden silenciar un máximo de 1 día`);
 
             if (milliseconds > 86400000 && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(maxTimeEmbed);
@@ -121,14 +121,14 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let reason = message.content.slice(toDeleteCount) || 'Indefinida';
         if (message.author.id !== config.botOwner) {
             let undefinedReasoneEmbed = new discord.MessageEmbed ()
-                .setColor(0xF12F49)
+                .setColor(resources.red2)
                 .setDescription(`${resources.RedTick} Los moderadores deben adjuntar una razón`);
 
             if (reason === 'Indefinida' && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(undefinedReasoneEmbed);
         }
 
         let loggingEmbed = new discord.MessageEmbed ()
-            .setColor(0xEF494B)
+            .setColor(resources.red)
             .setAuthor(`${member.user.tag} ha sido SILENCIADO`, member.user.displayAvatarURL())
             .addField('Miembro', `<@${member.id}>`, true)
             .addField('Moderador', `<@${message.author.id}>`, true)
@@ -136,7 +136,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField('Duración', args[1], true);
 
         let toDMEmbed = new discord.MessageEmbed ()
-            .setColor(0xEF494B)
+            .setColor(resources.red)
             .setAuthor('[SILENCIADO]', message.guild.iconURL())
             .setDescription(`<@${member.id}>, has sido silenciado en ${message.guild.name}`)
             .addField('Moderador', message.author.tag, true)

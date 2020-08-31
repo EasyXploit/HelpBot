@@ -1,7 +1,7 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
     let disabledEmbed = new discord.MessageEmbed ()
-        .setColor(0xC6C9C6)
+        .setColor(resources.gray)
         .setDescription(`${resources.GrayTick} Comando \`${command.slice(-0, -3)}\` deshabilitado temporalmente`);
     await message.delete()
     await message.channel.send(disabledEmbed).then(msg => {msg.delete({timeout: 5000})});

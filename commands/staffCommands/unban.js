@@ -36,12 +36,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         };
 
         let successEmbed = new discord.MessageEmbed ()
-            .setColor(resources.green)
+            .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`El usuario ${user.tag} ha sido desbaneado`);
 
         let loggingEmbed = new discord.MessageEmbed ()
-            .setColor(resources.green2)
+            .setColor(resources.green)
             .setAuthor(`${user.tag} ha sido DESBANEADO`, user.displayAvatarURL())
             .addField(`Usuario`, `@${user.tag}`, true)
             .addField(`Moderador`, `<@${message.author.id}>`, true)
@@ -52,7 +52,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     } catch (e) {
         if (e.toString().includes(`Unknown Ban`)) {
             let notBannedEmbed = new discord.MessageEmbed ()
-                .setColor(resources.red)
+                .setColor(resources.red2)
                 .setDescription(`${resources.RedTick} Este usuario no ha sido baneado`);
             message.channel.send(notBannedEmbed);
         } else {

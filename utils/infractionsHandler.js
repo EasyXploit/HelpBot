@@ -39,7 +39,7 @@ exports.run = async (discord, fs, config, bot, resources, loggingChannel, messag
         }
 
         let loggingEmbed = new discord.MessageEmbed ()
-            .setColor(0xEF494B)
+            .setColor(resources.red)
             .setAuthor(`${member.user.tag} ha sido SILENCIADO`, member.user.displayAvatarURL())
             .addField('Miembro', `<@${member.id}>`, true)
             .addField('Moderador', `<@${moderator.id}>`, true)
@@ -47,7 +47,7 @@ exports.run = async (discord, fs, config, bot, resources, loggingChannel, messag
             .addField('Duración', new Date(parseInt(time)).toLocaleString() || '∞', true);
 
         let toDMEmbed = new discord.MessageEmbed ()
-            .setColor(0xEF494B)
+            .setColor(resources.red)
             .setAuthor('[SILENCIADO]', guild.iconURL())
             .setDescription(`<@${member.id}>, has sido silenciado en ${guild.name}`)
             .addField('Moderador', `<@${moderator.id}>`, true)

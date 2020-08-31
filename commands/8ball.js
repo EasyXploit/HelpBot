@@ -4,7 +4,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     
     try {
         let notToAnswerEmbed = new discord.MessageEmbed()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setTitle(`${resources.RedTick} Debes preguntarme algo`)
             .setDescription(`La sintaxis de este comando es \`${config.prefix}8ball (pregunta)\``);
     

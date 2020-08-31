@@ -6,11 +6,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
 
         let notToMuteEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes mencionar a un miembro o escribir su id`);
 
         let noBotsEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} No puedes silenciar a un bot`);
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
@@ -25,23 +25,23 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let role = message.guild.roles.cache.find(r => r.name === 'Silenciado');
 
         let notMutedEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Este usuario no esta silenciado`);
 
         let successEmbed = new discord.MessageEmbed ()
-            .setColor(0xB8E986)
+            .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`El usuario <@${member.id}> ha sido des-silenciado`);
 
         let loggingEmbed = new discord.MessageEmbed ()
-            .setColor(0x3EB57B)
+            .setColor(resources.green)
             .setAuthor(`${member.user.tag} ha sido DES-SILENCIADO`, member.user.displayAvatarURL())
             .addField('Miembro', `<@${member.id}>`, true)
             .addField('Moderador', `<@${message.author.id}>`, true)
             .addField('Razón', reason, true);
 
         let toDMEmbed = new discord.MessageEmbed ()
-            .setColor(0x3EB57B)
+            .setColor(resources.green)
             .setAuthor('[DES-SILENCIADO]', message.guild.iconURL())
             .setDescription(`<@${member.id}>, has sido des-silenciado en ${message.guild.name}`)
             .addField('Moderador', message.author.tag, true)

@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
-    const noPrivilegesEmbed = new discord.MessageEmbed ()
+    const noPrivilegesEmbed = new discord.MessageEmbed()
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
@@ -10,27 +10,27 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
     try {
         
-        let noConnectionEmbed = new discord.MessageEmbed ()
+        let noConnectionEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} <@${bot.user.id}> no está conectado a ninguna sala.`);
         
-        let noChannelEmbed = new discord.MessageEmbed ()
+        let noChannelEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes estar conectado a un canal de voz.`);
 
-        let notAvailableEmbed = new discord.MessageEmbed ()
+        let notAvailableEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${bot.user.id}>.`);
 
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} La sintaxis de este comando es:` + '`' + config.prefix + 'remove (posición)`');
         
-        let noDispatcherEmbed = new discord.MessageEmbed ()
+        let noDispatcherEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} No hay nada en reproducción.`);
         
-        let noQueueEmbed = new discord.MessageEmbed ()
+        let noQueueEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} No hay nada en la cola.`);
         
@@ -53,11 +53,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Comprueba si hay cola
         if (!bot.servers[message.guild.id] || bot.servers[message.guild.id].queue <= 0) return message.channel.send(noQueueEmbed);
         
-        let isNaNEmbed = new discord.MessageEmbed ()
+        let isNaNEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes proporcionar un número entero.`);
         
-        let tooBigEmbed = new discord.MessageEmbed ()
+        let tooBigEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} La canción Nº\`${args[0]}\` no está añadida a la cola.`);
 

@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //!avatar (@usuario | nada)
     
     try {
-        let notFoundEmbed = new discord.MessageEmbed ()
+        let notFoundEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`);
 

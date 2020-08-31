@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-send (texto)
     
     try {
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes escribir el contenido del mensaje`);
         
@@ -12,7 +12,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
         message.delete();
 
-        let resultEmbed = new discord.MessageEmbed ()
+        let resultEmbed = new discord.MessageEmbed()
             .setColor(resources.gold)
             .setDescription(text);
         message.channel.send(resultEmbed);

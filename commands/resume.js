@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    const noPrivilegesEmbed = new discord.MessageEmbed ()
+    const noPrivilegesEmbed = new discord.MessageEmbed()
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
@@ -9,15 +9,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //!resume
 
     try {
-        let notPlayingEmbed = new discord.MessageEmbed ()
+        let notPlayingEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} No hay ninguna canción en cola/reproducción.`);
         
-        let notAvailableEmbed = new discord.MessageEmbed ()
+        let notAvailableEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${bot.user.id}>.`);
         
-        let notPausedEmbed = new discord.MessageEmbed ()
+        let notPausedEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} El bot no está pausado.`);
 
@@ -34,7 +34,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Comprueba si la reproducción ya está pausada
         if (!bot.voiceDispatcher.paused) return message.channel.send(notPausedEmbed);
         
-        let noTalkPermissionEmbed = new discord.MessageEmbed ()
+        let noTalkPermissionEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} No tengo permiso para hablar en esta sala.`);
 

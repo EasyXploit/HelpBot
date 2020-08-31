@@ -5,11 +5,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
 
-        let notToMuteEmbed = new discord.MessageEmbed ()
+        let notToMuteEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes mencionar a un miembro o escribir su id`);
 
-        let noBotsEmbed = new discord.MessageEmbed ()
+        let noBotsEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} No puedes silenciar a un bot`);
 
@@ -49,16 +49,16 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             });
         }
 
-        let alreadyMutedEmbed = new discord.MessageEmbed ()
+        let alreadyMutedEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Este usuario ya esta silenciado`);
 
-        let successEmbed = new discord.MessageEmbed ()
+        let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`El usuario <@${member.id}> ha sido silenciado, ¿alguien más?`);
 
-        let loggingEmbed = new discord.MessageEmbed ()
+        let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setAuthor(`${member.user.tag} ha sido SILENCIADO`, member.user.displayAvatarURL())
             .addField('Miembro', `<@${member.id}>`, true)
@@ -66,7 +66,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField('Razón', reason, true)
             .addField('Duración', '∞', true);
 
-        let toDMEmbed = new discord.MessageEmbed ()
+        let toDMEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setAuthor('[SILENCIADO]', message.guild.iconURL())
             .setDescription(`<@${member.id}>, has sido silenciado en ${message.guild.name}`)

@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-userinfo (@usuario | id)
 
     try {
-        let noUserEmbed = new discord.MessageEmbed ()
+        let noUserEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
 
@@ -101,7 +101,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let infractionsCount = 0;
         if (bot.warns[member.id]) infractionsCount = Object.keys(bot.warns[member.id]).length;
 
-        let resultEmbed = new discord.MessageEmbed ()
+        let resultEmbed = new discord.MessageEmbed()
             .setColor(member.displayHexColor)
             .setTitle(`🙍 Información de usuario`)
             .setDescription(`Mostrando información acerca del usuario <@${member.id}>\nSanción actual: \`${sanction || 'Ninguna'}\``)

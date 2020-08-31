@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
-    const noPrivilegesEmbed = new discord.MessageEmbed ()
+    const noPrivilegesEmbed = new discord.MessageEmbed()
         .setColor(resources.red)
         .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
 
@@ -20,22 +20,22 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         const moment = require(`moment`);
         const randomColor = require('randomcolor');
 
-        let notAvailableEmbed = new discord.MessageEmbed ()
+        let notAvailableEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${bot.user.id}>.`);
 
-        let noConnectionEmbed = new discord.MessageEmbed ()
+        let noConnectionEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} <@${bot.user.id}> no está conectado a ninguna sala.`);
 
         //Comprueba si se han introducido argumentos
         if (!args[0]) { //En este caso, "play" funcionará como "resume"
 
-            let notPlayingEmbed = new discord.MessageEmbed ()
+            let notPlayingEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No hay ninguna canción en cola/reproducción.`);
 
-            let notPausedEmbed = new discord.MessageEmbed ()
+            let notPausedEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} El bot no está pausado.`);
 
@@ -52,7 +52,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             //Comprueba si la reproducción no está pausada
             if (!bot.voiceDispatcher.paused) return message.channel.send(notPausedEmbed);
 
-            let noTalkPermissionEmbed = new discord.MessageEmbed ()
+            let noTalkPermissionEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No tengo permiso para hablar en esta sala.`);
 
@@ -65,15 +65,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         } else if (args[0]) { //En este caso, "play" funcionará como "join" y reproducirá/añadirá a la cola
 
-            let noChannelEmbed = new discord.MessageEmbed ()
+            let noChannelEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} Debes estar conectado a un canal de voz.`);
 
-            let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
+            let noCorrectSyntaxEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} La sintaxis de este comando es: \`${config.prefix}play (URL de YouTube | término | nada)\``);
             
-            let noTalkPermissionEmbed = new discord.MessageEmbed ()
+            let noTalkPermissionEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No tengo permiso para hablar en esta sala.`);
 
@@ -97,7 +97,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                     details = info.player_response.videoDetails;
                 } catch (e) {
                     console.log(e);
-                    let notFoundEmbed = new discord.MessageEmbed ()
+                    let notFoundEmbed = new discord.MessageEmbed()
                         .setColor(resources.red)
                         .setDescription(`${resources.RedTick} No se ha podido localizar el vídeo.`);
                     return message.channel.send(notFoundEmbed)
@@ -106,7 +106,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 //Función para comprobar la cola de reproducción
                 async function queued(message) {
 
-                    let queuedEmbed = new discord.MessageEmbed ()
+                    let queuedEmbed = new discord.MessageEmbed()
                         .setColor(randomColor())
                         .setThumbnail(details.thumbnail.thumbnails[3].url)
                         .setAuthor(`Añadido a la cola 🎶`, `https://i.imgur.com/lvShSwa.png`)
@@ -128,15 +128,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         }
                     }
 
-                    let noConnectPermissionEmbed = new discord.MessageEmbed ()
+                    let noConnectPermissionEmbed = new discord.MessageEmbed()
                         .setColor(resources.red)
                         .setDescription(`${resources.RedTick} No tengo permiso para conectarme a esta sala.`);
 
-                    let noAfkRoomEmbed = new discord.MessageEmbed ()
+                    let noAfkRoomEmbed = new discord.MessageEmbed()
                         .setColor(resources.red)
                         .setDescription(`${resources.RedTick} No puedo unirme al canal de AFK.`);
 
-                    let fullRoomEmbed = new discord.MessageEmbed ()
+                    let fullRoomEmbed = new discord.MessageEmbed()
                         .setColor(resources.red)
                         .setDescription(`${resources.RedTick} La sala está llena.`);
 
@@ -236,7 +236,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             search(args.join(` `), opts, function(err, result) {
                 if(err) return console.log(err);
 
-                let noResultsEmbed = new discord.MessageEmbed ()
+                let noResultsEmbed = new discord.MessageEmbed()
                     .setColor(resources.red)
                     .setDescription(`${resources.RedTick} No se ha encontrado ningún resultado que encaje con ${args.join(' ')}.`);
 

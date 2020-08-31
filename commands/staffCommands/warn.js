@@ -3,15 +3,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-warn (@miembro | id) (razón)
     
     try {
-        let notToWarnEmbed = new discord.MessageEmbed ()
+        let notToWarnEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes mencionar a un miembro o escribir su id`);
 
-        let noBotsEmbed = new discord.MessageEmbed ()
+        let noBotsEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} No puedes advertir a un bot`);
         
-        let undefinedReasonEmbed = new discord.MessageEmbed ()
+        let undefinedReasonEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Se debe adjuntar una razón`);
 

@@ -3,18 +3,18 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //$purge (límite) <#canal | id>
     
     try {
-        let noQuantityEmbed = new discord.MessageEmbed ()
+        let noQuantityEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes proporcionar la cantidad de mensajes a eliminar`);
         
-        let incorrectQuantityEmbed = new discord.MessageEmbed ()
+        let incorrectQuantityEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes proporcionar una cantidad numérica superior a 2 e inferior a 100`);
 
         if(!args[0]) return message.channel.send(noQuantityEmbed);
         if (isNaN(args[0])) return message.channel.send(NaNEmbed);
         
-        let tooMuchOldMessagesEmbed = new discord.MessageEmbed ()
+        let tooMuchOldMessagesEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Solo puedes borrar mensajes con un máximo de 14 días de antiguedad`);
         
@@ -24,7 +24,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let channel;
 
         if (args[1]) {
-            let noChannelEmbed = new discord.MessageEmbed ()
+            let noChannelEmbed = new discord.MessageEmbed()
                 .setColor(resources.red2)
                 .setDescription(`${resources.RedTick} El canal de texto proporcionado no es válido`);
             
@@ -36,12 +36,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             const messages = await channel.messages.fetch({limit: args[0]});
             count = messages.size;
             
-            let successEmbed = new discord.MessageEmbed ()
+            let successEmbed = new discord.MessageEmbed()
                 .setColor(resources.green)
                 .setTitle(`${resources.GreenTick} Operación completada`)
                 .setDescription(`Mensajes eliminados: ${count}`);
 
-            let loggingEmbed = new discord.MessageEmbed ()
+            let loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue)
                 .setTimestamp()
                 .setFooter(bot.user.username, bot.user.avatarURL())
@@ -64,12 +64,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             const messages = await message.channel.messages.fetch({limit: args[0]});
             count = messages.size;
             
-            let successEmbed = new discord.MessageEmbed ()
+            let successEmbed = new discord.MessageEmbed()
                 .setColor(resources.green)
                 .setTitle(`${resources.GreenTick} Operación completada`)
                 .setDescription(`Mensajes eliminados: ${count}`);
 
-            let loggingEmbed = new discord.MessageEmbed ()
+            let loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue)
                 .setTimestamp()
                 .setFooter(bot.user.username, bot.user.avatarURL())

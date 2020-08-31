@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //$prefix (nuevo prefijo) (todos | staff | owner)
 
     try {
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} La sintaxis de este comando es: \`${config.ownerPrefix}prefix (nuevo prefijo) (todos | staff | owner)\``);
 
@@ -13,7 +13,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Se extrae el prefijo de los argumentos
         const newPrefix = message.content.split(" ").slice(1, 2)[0];
         
-        let tooLongEmbed = new discord.MessageEmbed ()
+        let tooLongEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes proporcionar un prefijo cuya longitud sea de 1 carácter`);
         
@@ -37,16 +37,16 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 break;
         }
         
-        let actuallyConfiguredEmbed = new discord.MessageEmbed ()
+        let actuallyConfiguredEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Este prefijo ya ha sido configurado`);
         
-        let successEmbed = new discord.MessageEmbed ()
+        let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green)
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`Cambiaste el prefijo ${prefixType} a \`${newPrefix}\``);
 
-        let loggingEmbed = new discord.MessageEmbed ()
+        let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.blue)
             .setTimestamp()
             .setFooter(bot.user.username, bot.user.avatarURL())

@@ -6,7 +6,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     const cfg = require('../config.json');
     
     try {
-        let resultEmbed = new discord.MessageEmbed ()
+        let resultEmbed = new discord.MessageEmbed()
             .setColor(resources.gold)
             .setAuthor('La República Gamer', bot.user.avatarURL())
             .setThumbnail('https://i.imgur.com/cTW63kf.png')

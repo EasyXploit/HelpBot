@@ -5,15 +5,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
         
-        let notToBanEmbed = new discord.MessageEmbed ()
+        let notToBanEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID`);
 
-        let noReasonEmbed = new discord.MessageEmbed ()
+        let noReasonEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes proporcionar un motivo`);
         
-        let alreadyBannedEmbed = new discord.MessageEmbed ()
+        let alreadyBannedEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Este usuario ya ha sido baneado`);
         
@@ -46,12 +46,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send(noReasonEmbed);
         if (!reason) reason = `Indefinida`;
 
-        let successEmbed = new discord.MessageEmbed ()
+        let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green)
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`El usuario <@${user.id}> ha sido baneado, ¿alguien más? ${resources.drakeban}`);
 
-        let toDMEmbed = new discord.MessageEmbed ()
+        let toDMEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setAuthor(`[BANEADO]`, message.guild.iconURL())
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)

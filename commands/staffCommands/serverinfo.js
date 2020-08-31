@@ -27,7 +27,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             categories.add(c.parent);
         });
 
-        let resultEmbed = new discord.MessageEmbed ()
+        let resultEmbed = new discord.MessageEmbed()
             .setColor(resources.gold)
             .setAuthor(`Información del servidor`, guild.iconURL())
             .setDescription(`Mostrando información acerca de la guild ${guild.name}`)

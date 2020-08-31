@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //$name (nombre)
 
     try {
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} La sintaxis del comando es \`${config.ownerPrefix}name (nombre)\``);
 
@@ -13,7 +13,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Se graba el nombre de usuario en una variable
         let nickname = args.join(' '); //Se graba el nuevo username
 
-        let actuallyConfiguredEmbed = new discord.MessageEmbed ()
+        let actuallyConfiguredEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Este nombre de usuario ya ha sido configurado`);
 
@@ -25,12 +25,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Se cambia el username
         await bot.user.setUsername(nickname);
 
-        let successEmbed = new discord.MessageEmbed ()
+        let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green)
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`Cambiaste el nombre del bot a ${nickname}`);
 
-        let loggingEmbed = new discord.MessageEmbed ()
+        let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.blue)
             .setTimestamp()
             .setFooter(bot.user.username, bot.user.avatarURL())

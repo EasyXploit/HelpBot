@@ -55,7 +55,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         if (!result) return;
 
                         if (result !== '-') {
-                            let inorrectTimeFormatEmbed = new discord.MessageEmbed ()
+                            let inorrectTimeFormatEmbed = new discord.MessageEmbed()
                                 .setColor(resources.red2)
                                 .setDescription(`${resources.RedTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5d 10h 2m\``);
 

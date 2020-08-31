@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-roleinfo (@rol | rol | id)
 
     try {
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.staffPrefix}roleinfo (@rol | rol | id)\``);
 
@@ -12,7 +12,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let guild = message.guild;
         let role = message.mentions.roles.first() || guild.roles.cache.get(args[0]) || message.guild.roles.find( r => r.name === args.join(` `));
 
-        let roleNotFoundEmbed = new discord.MessageEmbed ()
+        let roleNotFoundEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} El rol no existe`);
 
@@ -35,7 +35,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             managed = `Externa`
         };
 
-        let resultEmbed = new discord.MessageEmbed ()
+        let resultEmbed = new discord.MessageEmbed()
             .setColor(role.hexColor)
             .setTitle(`🔖 Información de rol`)
             .setDescription(`Mostrando información acerca del rol <@&${role.id}>`)

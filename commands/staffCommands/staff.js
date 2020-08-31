@@ -5,11 +5,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     try {
         message.delete();
         
-        let successEmbed = new discord.MessageEmbed ()
+        let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green)
             .setDescription(`${resources.GreenTick} ¡Te he enviado los detalles por Mensaje Directo!`);
 
-        let helpEmbed = new discord.MessageEmbed ()
+        let helpEmbed = new discord.MessageEmbed()
             .setColor(0x2BBDC4)
             .setThumbnail('https://i.imgur.com/iODevD9.png')
             .setAuthor('STAFF', 'https://i.imgur.com/iODevD9.png')

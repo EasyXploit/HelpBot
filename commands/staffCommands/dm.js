@@ -4,15 +4,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     
     try {
         
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.ownerPrefix}dm (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)\``);
         
-        let noToDMEmbed = new discord.MessageEmbed ()
+        let noToDMEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} No has proporcionado el contenido del mensaje`);
         
-        let confirmEmbed = new discord.MessageEmbed ()
+        let confirmEmbed = new discord.MessageEmbed()
             .setColor(resources.green)
             .setDescription(`${resources.GreenTick} ¡Mensaje enviado!`);
         
@@ -24,11 +24,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         if (args[0] === 'autor' || args[0] === 'anonimo') {
             
-            let noUserEmbed = new discord.MessageEmbed ()
+            let noUserEmbed = new discord.MessageEmbed()
                 .setColor(resources.red2)
                 .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
             
-            let noBotsEmbed = new discord.MessageEmbed ()
+            let noBotsEmbed = new discord.MessageEmbed()
                 .setColor(resources.red2)
                 .setDescription(`${resources.RedTick} No puedes entablar una conversación con un bot`);
             
@@ -46,7 +46,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             switch (type) {
                 case 'autor':
-                    resultEmbed = new discord.MessageEmbed ()
+                    resultEmbed = new discord.MessageEmbed()
                         .setAuthor('Mensaje de: ' + message.author.username, message.author.avatarURL())
                         .setColor(resources.gold)
                         .setDescription(toDM);
@@ -58,7 +58,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 case 'anonimo':
                     if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
                     
-                    resultEmbed = new discord.MessageEmbed ()
+                    resultEmbed = new discord.MessageEmbed()
                         .setColor(resources.gold)
                         .setDescription(toDM);
                 
@@ -79,11 +79,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             let toDM = message.content.slice(toDeleteCount)
             if (!toDM) return message.channel.send(noToDMEmbed);
             
-            let resultEmbed = new discord.MessageEmbed ()
+            let resultEmbed = new discord.MessageEmbed()
                 .setColor(resources.gold)
                 .setDescription(toDM);
             
-            let sendingEmbed = new discord.MessageEmbed ()
+            let sendingEmbed = new discord.MessageEmbed()
                 .setColor(resources.gray)
                 .setDescription(`${resources.GrayTick} El mensaje está siendo enviado`);
             

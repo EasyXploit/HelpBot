@@ -3,11 +3,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //!sound (término | list)
 
     try {
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} La sintaxis de este comando es:` + '`' + config.prefix + 'sound (término)`');
         
-        let notAvailableEmbed = new discord.MessageEmbed ()
+        let notAvailableEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} El bot no está disponible. Inténtalo más tarde.`);
         
@@ -21,7 +21,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         }
         
         if (args[0] === `list`) {
-            let listEmbed = new discord.MessageEmbed ()
+            let listEmbed = new discord.MessageEmbed()
                 .setColor(0xCCCCCC)
                 .setTitle(`🎙 Lista de grabaciones`)
                 .setDescription(`\`\`\`${newFileNames.join(`    `)}\`\`\``)
@@ -29,13 +29,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             message.channel.send(listEmbed);
         } else {
             
-            let noChannelEmbed = new discord.MessageEmbed ()
+            let noChannelEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} Debes estar conectado a un canal de voz.`);
 
             let sound = args.join(` `);
 
-            let soundNotFoundEmbed = new discord.MessageEmbed ()
+            let soundNotFoundEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} **${sound}** no existe.`);
 
@@ -47,7 +47,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             if (bot.voiceStatus) {
                 bot.voiceStatus = false;
                 
-                let playingEmbed = new discord.MessageEmbed ()
+                let playingEmbed = new discord.MessageEmbed()
                     .setColor(resources.green)
                     .setDescription(`${resources.GreenTick} Reproduciendo **${sound}**.`);
                 

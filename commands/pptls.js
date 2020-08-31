@@ -3,7 +3,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     //!pptls <piedra | papel | tijeras | lagarto | spock>
     
     try {
-        let notToAnswerEmbed = new discord.MessageEmbed ()
+        let notToAnswerEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.prefix}pptls <piedra | papel | tijeras | lagarto | spock>\``);
 
@@ -167,7 +167,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                 }
             }
 
-        const resultEmbed = new discord.MessageEmbed ()
+        const resultEmbed = new discord.MessageEmbed()
             .setColor(0x00AFC4)
             .setTitle(`${message.member.displayName} ${emojiOpponentChoose} VS ${emojiChoose} ${bot.user.username}`)
             .setDescription(`__Resultado:__ ¡${result}!`)

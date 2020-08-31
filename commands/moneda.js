@@ -5,7 +5,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     try {
         const datos = ['CARA', 'CARA', 'CARA', 'CARA', 'CARA', 'CRUZ', 'CRUZ', 'CRUZ', 'CRUZ', 'CRUZ', 'CANTO.. ¿CANTO?'];
 
-        const resultEmbed = new discord.MessageEmbed ()
+        const resultEmbed = new discord.MessageEmbed()
             .setColor(0xEAE151)
             .setTitle(`Lanzaste una moneda ...  ${resources.coin}`)
             .setDescription(`¡Salió __**${datos[Math.floor(Math.random() * datos.length)]}**__!`);

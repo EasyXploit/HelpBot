@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //!psychopass (@usuario | nada)
     
     try {
-        let notFoundEmbed = new discord.MessageEmbed ()
+        let notFoundEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`);
 
@@ -21,7 +21,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             result = '** es un criminal que necesita ser ejecutado mortalmente.'
         }
 
-        const resultEmbed = new discord.MessageEmbed ()
+        const resultEmbed = new discord.MessageEmbed()
             .setColor(0xDDDDDD)
             .setTitle(`:gun: | Coeficiente criminal: **${coefficient}%**`)
             .setDescription(`**${member.displayName}${result}`)

@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //!rangos
     
     try {
-        let helpEmbed1 = new discord.MessageEmbed ()
+        let helpEmbed1 = new discord.MessageEmbed()
             .setColor(16762967)
             .setThumbnail('https://i.imgur.com/vDgiPwT.png')
             .setAuthor('NIVELES', 'https://i.imgur.com/vDgiPwT.png')
@@ -14,7 +14,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(`${resources.chevron18} Nivel 15 ‣ PLATINO V`, 'Te permite **mencionar a todos** y **controlar la música**.')
             .addField('● Estadísticas', 'Usa `!rank` para conocer tu nivel\n[Ver la tabla de clasificación](https://mee6.xyz/leaderboard/374945492133740544)');
         
-        let helpEmbed2 = new discord.MessageEmbed ()
+        let helpEmbed2 = new discord.MessageEmbed()
             .setColor(16762967)
             .setThumbnail('https://i.imgur.com/TU8U8wq.png')
             .setAuthor('ROLES ASIGNABLES', 'https://i.imgur.com/TU8U8wq.png')

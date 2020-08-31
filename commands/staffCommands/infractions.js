@@ -3,11 +3,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-infractions (@miembro | id)
 
     try {
-        let noUserEmbed = new discord.MessageEmbed ()
+        let noUserEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
 
-        let noBotsEmbed = new discord.MessageEmbed ()
+        let noBotsEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} No puedes obtener información de un bot`);
 
@@ -83,7 +83,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             sanction = 'Silenciado indefinidamente';
         }
 
-        let resultEmbed = new discord.MessageEmbed ()
+        let resultEmbed = new discord.MessageEmbed()
             .setColor(resources.gold)
             .setTitle(`⚠ Infracciones`)
             .setDescription(`Mostrando las infracciones del usuario <@${member.id}>\nSanción actual: \`${sanction || 'Ninguna'}\``)

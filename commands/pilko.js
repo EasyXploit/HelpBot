@@ -1,7 +1,7 @@
 exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     try {
-        let helpEmbed = new discord.MessageEmbed ()
+        let helpEmbed = new discord.MessageEmbed()
             .setColor(resources.gold)
             .setThumbnail(`https://i.imgur.com/cTW63kf.png`)
             .setAuthor(bot.user.username, bot.user.avatarURL())

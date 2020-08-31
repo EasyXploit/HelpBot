@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //$template (plantilla)
     
     try {
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.ownerPrefix}template (plantilla)\``);
 
@@ -14,12 +14,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
             const cfg = require('../../config.json');
             
-            let embed1 = new discord.MessageEmbed ()
+            let embed1 = new discord.MessageEmbed()
                 .setColor(resources.gold)
                 .setDescription(`${resources.republicagamer} **Bienvenido al servidor oficial de la República Gamer en Discord**\nA continuación te explicaremos la dinámica de este servidor:`)
                 .attachFiles(`./resources/images/banners/logo_banner_transparent.png`);
             
-            let embed2 = new discord.MessageEmbed ()
+            let embed2 = new discord.MessageEmbed()
                 .setColor(resources.gold)
                 .setAuthor(`REGLAMENTO DE LA COMUNIDAD`, `https://i.imgur.com/jAiDAvR.png`)
                 .setDescription(`Este servidor se apoya en los **Términos de Servicio** y las **Directivas de la comunidad de Discord**. Puedes encontrarlos en __https://discordapp.com/terms__ y en __https://discordapp.com/guidelines__ respectivamente.`)
@@ -30,12 +30,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .addField(`:five: No busques vacíos legales:`, 'No intentes hacer algo que obviamente pueda resultar inadecuado tanto para el staff como para el resto de usuarios de la comunidad.\n\n```La infracción de la normativa conllevará desde sanciones administrativas (warn, mute, ban o kick) hasta avisos a las autoridades (en el caso de actividades ilegales).```')
                 .attachFiles(`./resources/images/banners/rules.png`);
             
-            let embed3 = new discord.MessageEmbed ()
+            let embed3 = new discord.MessageEmbed()
                 .setColor(resources.gold)
                 .setDescription(`:grey_question: Escribe \`!ayuda\` en cualquier canal de texto para acceder al sistema de ayuda.\n\n📓 Escribe \`!normas\` para mostrar las normas del servidor.\n\n${resources.pilkobot} Escribe \`!pilko\` para mostrar los comandos de <@446041159853408257>.\n\n:robot: Escribe \`!comandos\` para mostrar los comandos de los bots.\n\n:military_medal: Escribe \`!rangos\` para mostrar los rangos, la tabla de puntuaciones y tu nivel.`)
                 .attachFiles(`./resources/images/banners/help.png`);
             
-            let embed4 = new discord.MessageEmbed ()
+            let embed4 = new discord.MessageEmbed()
                 .setColor(resources.gold)
                 .setThumbnail(`https://i.imgur.com/vDgiPwT.png`)
                 .setAuthor(`NIVELES`, `https://i.imgur.com/vDgiPwT.png`)
@@ -47,14 +47,14 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .addField(`● Estadísticas`, 'Usa `!rank` para conocer tu nivel\n[Ver la tabla de clasificación](https://mee6.xyz/leaderboard/374945492133740544)')
                 .attachFiles(`./resources/images/banners/ranks.png`);
 
-            let embed5 = new discord.MessageEmbed ()
+            let embed5 = new discord.MessageEmbed()
                 .setColor(resources.gold)
                 .setThumbnail(`https://i.imgur.com/TU8U8wq.png`)
                 .setAuthor(`ROLES ASIGNABLES`, `https://i.imgur.com/TU8U8wq.png`)
                 .addField(`● ¿Que son?`, `Los roles asignables te permiten añadir __tus propios roles__ basados en tus **intereses**, **videojuegos** y **región**.`, true)
                 .addField(`● ¿Como los uso?`, `Desde el canal <#440905255073349635>, puedes reaccionar al mensaje de configuración con los emojis correspondientes a los roles que quieres asignarte`, true);
             
-            let embed6 = new discord.MessageEmbed ()
+            let embed6 = new discord.MessageEmbed()
                 .setColor(resources.gold)
                 .setThumbnail(`https://i.imgur.com/0l3jSuV.png`)
                 .setAuthor(`RANGO SUPPORTER`, `https://i.imgur.com/0l3jSuV.png`)
@@ -62,7 +62,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .addField(`🞘 Pasos a seguir:`, `:one: Genera una invitación instantánea. [Ver cómo](https://support.discordapp.com/hc/es/articles/208866998-Invitaci%C3%B3n-Instant%C3%A1nea-101)\n:two: Invita a 5 personas _(procura que se unan y se queden)_.\n:three: ¡Recibirás tu rol cuando se unan 5! _(lo perderás si se van)_.`, true)
                 .addField(`🞘 Comandos:`, 'Usa `+invites` para conocer a cuantos has invitado.\nUsa `+leaderboard` para ver la tabla de clasificacion.', true);
 
-            let embed7 = new discord.MessageEmbed ()
+            let embed7 = new discord.MessageEmbed()
                 .setColor(resources.gold)
                 .setAuthor(`ENLACE DE INVITACIÓN PERMANENTE`, `https://i.imgur.com/teglfDA.png`)
                 .setThumbnail(`https://i.imgur.com/teglfDA.png`)
@@ -81,19 +81,19 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         } else if (args[0] === `sorteo`) {
             message.delete();
 
-            let giveawayEmbed = new discord.MessageEmbed ()
+            let giveawayEmbed = new discord.MessageEmbed()
                 .setColor(resources.gold)
                 .setTitle(`:tada: SORTEO DE UN VIDEOJUEGO A ELEGIR·`)
                 .setDescription(`Hemos organizado un nuevo sorteo para todos aquellos que compartan la comunidad con sus amigos, para que de esta forma nos conozca cada vez más gente.\n\nEn esta ocasión sorteamos **Un videojuego a elegir**`)
                 .setThumbnail(`https://i.imgur.com/YUOdN5X.png`)
 
-            let basesEmbed = new discord.MessageEmbed ()
+            let basesEmbed = new discord.MessageEmbed()
                 .setColor(resources.gold)
                 .setTitle(`Bases del sorteo`)
                 .setDescription(`El sorteo comienza el día **1** de **ENERO** y finalizará el día **14** de **ENERO** de 2019\n\nSolo aquellos jugadores que hayan invitado a otras __5 personas__ a través de un __enlace de invitación personalizado__ _(y se hayan unido al servidor)_, podrán participar en el sorteo.\n\nUna vez se hayan unido 5 personas con tu invitación, recibirás en rango <@&447475457617821698>, el cual te permite acceder al canal del sorteo.\n\nEste sorteo tendrá una duración máxima de **14 días** desde la fecha de publicación del evento _(podrá ser finalizado prematuramente)_.\n\n**De resultar ganador, podrás elegir entre:**\n\n➢ Player Unknowns Battlegrounds  _(Steam)_\n➢ Grand Theft Auto V  _(Social Club)_\n➢ Counter Strike: Global Offensive  _(Steam)_\n➢ Rainbow Six Siege  _(Uplay)_\n➢ Rocket League  _(Steam)_\n➢ Ghost Recon Wildlands  _(Uplay)_\n➢ Los Sims 4  _(Origin)_\n➢ Battlefield 1  _(Origin)_\n➢ Dark Souls 3  _(Steam)_\n➢ DOOM  _(Steam)_\n➢ Watch Dogs 2  _(Uplay)_\n➢ The Witcher 3: Wild Hunt GOTY Edition  _(GOG Galaxy)_\n➢ Far Cry 4  _(Uplay)_\n➢ Minecraft  _(Mojang)_\n➢ The Elder Scrolls V: Skyrim Special Edition  _(Steam)_\n➢ Arma III  _(Steam)_\n➢ Civilization V: Complete Edition  _(Steam)_\n➢ Killing Floor 2  _(Steam)_\n➢ Titanfall 2  _(Origin)_\n➢ Age of Empires: Definitive Edition  _(Microsoft Store)_\n➢ Just Cause 3  _(Steam)_\n➢ Plants vs. Zombies: Garden Warfare 2  _(Origin)_`)
                 .setThumbnail(`https://i.imgur.com/qfamqUv.png`)
 
-            let entryEmbed = new discord.MessageEmbed ()
+            let entryEmbed = new discord.MessageEmbed()
                 .setColor(resources.gold)
                 .setTitle(`Entrada al sorteo`)
                 .setDescription(`Participa en el sorteo desde: <#529383165551181824>.\n(solo verás el canal cuando obtengas el rango <@&447475457617821698>).`)
@@ -103,15 +103,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await message.channel.send(basesEmbed);
             await message.channel.send(entryEmbed);
         } else if (args[0] === `bienvenida`) {
-            let noUserEmbed = new discord.MessageEmbed ()
+            let noUserEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
             
-            let noBotsEmbed = new discord.MessageEmbed ()
+            let noBotsEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No puedes entablar una conversación con un bot`);
             
-            let successEmbed = new discord.MessageEmbed ()
+            let successEmbed = new discord.MessageEmbed()
                 .setColor(resources.green)
                 .setDescription(`${resources.GreenTick} ¡Listo!`);
             
@@ -124,15 +124,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await message.delete().then(bot.emit(`guildMemberAdd`, member));
             await message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 1000})});
         } else if (args[0] === `despedida`) {
-            let noUserEmbed = new discord.MessageEmbed ()
+            let noUserEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
             
-            let noBotsEmbed = new discord.MessageEmbed ()
+            let noBotsEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No puedes entablar una conversación con un bot`);
             
-            let successEmbed = new discord.MessageEmbed ()
+            let successEmbed = new discord.MessageEmbed()
                 .setColor(resources.green)
                 .setDescription(`${resources.GreenTick} ¡Listo!`);
             
@@ -153,7 +153,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             let channel = message.guild.channels.find( c => c.id === `440905255073349635`);
             let msg = await channel.fetchMessage(`538869679234744330`);
             
-            let embed = new discord.MessageEmbed ()
+            let embed = new discord.MessageEmbed()
                 .setColor(resources.gray)
                 .setAuthor(`ELIGE TUS ROLES`, `https://i.imgur.com/TU8U8wq.png`)
                 .setThumbnail(`https://i.imgur.com/TU8U8wq.png`)
@@ -174,7 +174,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             let channel = message.guild.channels.find( c => c.id === `440905255073349635`);
             let msg = await channel.fetchMessage(`538869690626342924`);
             
-            let embed = new discord.MessageEmbed ()
+            let embed = new discord.MessageEmbed()
                 .setColor(resources.gray)
                 .setThumbnail(`https://i.imgur.com/Nz65AFB.png`)
                 .addField(`Videojuegos principales`, '● Reacciona con ' + r6 + ' para asignarte el rol `@RAINBOW SIX`\n● Reacciona con ' + csgo + ' para asignarte el rol `@CS:GO`\n● Reacciona con ' + fortnite + ' para asignarte el rol `@FORTNITE`\n● Reacciona con ' + lol + ' para asignarte el rol `@LOL`\n● Reacciona con ' + apex + ' para asignarte el rol `@APEX LEGENDS`', true)
@@ -186,7 +186,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             let channel = message.guild.channels.find( c => c.id === `440905255073349635`);
             let msg = await channel.fetchMessage(`538869701141331999`);
             
-            let embed = new discord.MessageEmbed ()
+            let embed = new discord.MessageEmbed()
                 .setColor(resources.gray)
                 .setThumbnail(`https://i.imgur.com/WdWMdgt.png`)
                 .addField(`Otros videojuegos`, '● Reacciona con 🔫 para asignarte el rol `@PUBG`\n● Reacciona con 🚀 para asignarte el rol `@ROCKET LEAGUE`\n● Reacciona con ⛏ para asignarte el rol `@MINECRAFT`\n● Reacciona con ⚜ para asignarte el rol `@BATTLEFIELD`\n● Reacciona con 🚔 para asignarte el rol `@GTA V`\n● Reacciona con 📦 para asignarte el rol `@ROBLOX`\n● Reacciona con ⚡ para asignarte el rol `@OVERWATCH`\n● Reacciona con 🛫 para asignarte el rol `@BO4`\n● Reacciona con 🌲 para asignarte el rol `@TERRARIA`\n● Reacciona con 🏡 para asignarte el rol `@STARDEW VALLEY`\n● Reacciona con 🗡 para asignarte el rol `@BRAWLHALLA`\n● Reacciona con 🐲 para asignarte el rol `@ARK`\n● Reacciona con 💎 para asignarte el rol `@PAYDAY`', true)
@@ -196,7 +196,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         } else if (args[0] === `oposiciones`) {
             message.delete();
             
-            let embed = new discord.MessageEmbed ()
+            let embed = new discord.MessageEmbed()
                 .setColor(resources.blue)
                 .setThumbnail(`https://i.imgur.com/WFyNbtO.png`)
                 .setAuthor(`Presenta tu oposición a moderador (LATAM)`, resources.server.iconURL())
@@ -218,7 +218,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             // Code here
 
         } else {
-            let noArgsEmbed = new discord.MessageEmbed ()
+            let noArgsEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No has especificado una plantilla válida`);
             message.channel.send(noArgsEmbed);

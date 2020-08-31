@@ -38,7 +38,7 @@ exports.run = async (discord, fs, config, bot, resources, loggingChannel, messag
             });
         }
 
-        let loggingEmbed = new discord.MessageEmbed ()
+        let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setAuthor(`${member.user.tag} ha sido SILENCIADO`, member.user.displayAvatarURL())
             .addField('Miembro', `<@${member.id}>`, true)
@@ -46,7 +46,7 @@ exports.run = async (discord, fs, config, bot, resources, loggingChannel, messag
             .addField('Razón', 'Demasiadas advertencias', true)
             .addField('Duración', new Date(parseInt(time)).toLocaleString() || '∞', true);
 
-        let toDMEmbed = new discord.MessageEmbed ()
+        let toDMEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setAuthor('[SILENCIADO]', guild.iconURL())
             .setDescription(`<@${member.id}>, has sido silenciado en ${guild.name}`)
@@ -62,14 +62,14 @@ exports.run = async (discord, fs, config, bot, resources, loggingChannel, messag
 
     //Función para expulsar
     async function kick() {
-        let loggingEmbed = new discord.MessageEmbed ()
+        let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setAuthor(`${member.user.tag} ha sido EXPULSADO`, member.user.displayAvatarURL())
             .addField('Miembro', `<@${member.id}>`, true)
             .addField('Moderador', `<@${moderator.id}>`, true)
             .addField('Razón', 'Demasiadas advertencias', true);
 
-        let toDMEmbed = new discord.MessageEmbed ()
+        let toDMEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setAuthor(`[EXPULSADO]`, guild.iconURL())
             .setDescription(`<@${member.id}>, has sido expulsado en ${guild.name}`)
@@ -104,7 +104,7 @@ exports.run = async (discord, fs, config, bot, resources, loggingChannel, messag
             .addField(`Razón`, 'Demasiadas advertencias', true)
             .addField(`Duración`, new Date(parseInt(time)).toLocaleString() || '∞', true);
 
-        let toDMEmbed = new discord.MessageEmbed ()
+        let toDMEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setAuthor(`[BANEADO]`, message.guild.iconURL())
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)

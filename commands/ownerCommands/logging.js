@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //$logging (#canal | id)
     
     try {
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed ()
+        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.prefix}logging (#canal | id)\``);
     
@@ -17,7 +17,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Almacena el ID del canal
         let channel = channelMention.id;
         
-        let alreadyConfiguredEmbed = new discord.MessageEmbed ()
+        let alreadyConfiguredEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Este canal de auditoría ya ha sido configurado`);
         
@@ -28,12 +28,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         config.loggingChannel = channel;
         await fs.writeFile('./config.json', JSON.stringify(config, null, 4), (err) => console.error);
 
-        let completedEmbed = new discord.MessageEmbed ()
+        let completedEmbed = new discord.MessageEmbed()
             .setColor(resources.green)
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`Cambiaste el canal de auditoría a <#${channel}>`);
 
-        let loggingEmbed = new discord.MessageEmbed ()
+        let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.blue)
             .setTimestamp()
             .setFooter(bot.user.username, bot.user.avatarURL())

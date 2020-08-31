@@ -5,7 +5,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     try {
         const urban = module.require('urban-dictionary');
         
-        let notToSearchEmbed = new discord.MessageEmbed ()
+        let notToSearchEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setTitle(`${resources.RedTick} Debes proporcionarme un término de búsqueda`)
             .setDescription(`La sintaxis de este comando es \`${config.prefix}urban (término)\``);
@@ -17,7 +17,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         urban.term(searchTerm).then((result) => {
             const data = result.entries;
             
-            const resultEmbed = new discord.MessageEmbed ()
+            const resultEmbed = new discord.MessageEmbed()
                 .setColor(0x1D2339)
                 .setThumbnail(`https://i.imgur.com/ftJ1lnP.png`)
                 .setTitle(`📔 | Definición de: __${data[0].word.toUpperCase()}__`)
@@ -26,7 +26,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
                 .setFooter(`Escrito por: ${data[0].author}`);
             message.channel.send(resultEmbed);
         }).catch((error) => {
-            let noDataEmbed = new discord.MessageEmbed ()
+            let noDataEmbed = new discord.MessageEmbed()
                 .setColor(resources.red2)
                 .setDescription(`${resources.RedTick} No se ha encontrado ningún resultado que coincida con \`${searchTerm}\``);
             

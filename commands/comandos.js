@@ -11,6 +11,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setTitle('Comandos de los bots del servidor')
             .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL())
             .addField(`${resources.pilkobot} ${config.prefix}pilko`, 'Muestra los comandos de <@446041159853408257> ')
+            .addField(`⚡ ${config.prefix}salas`, 'Muestra la ayuda para crear salas de voz.')
             .addField(`:musical_note: ${config.prefix}musica`, 'Muestra la ayuda para reproducir música en las salas de voz.')
             .addField(`🎶 ${config.prefix}dj`, `Muestra los comandos para controlar la música (solo DJs) ${resources.beta}.`)
             .addField(`:performing_arts: ${config.prefix}memes`, 'Muestra la ayuda para enviar memes y efectos sonoros.')
@@ -26,6 +27,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     await message.channel.send(helpEmbed).then(async function (message) {
         
         await message.react(resources.pilkobot);
+        await message.react('⚡');
         await message.react('🎵');
         await message.react('🎶');
         await message.react('🎭');
@@ -41,29 +43,22 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
                 if (reaction.emoji.name === 'pilkobot') {
                     await message.delete()
-                    
                     require(`../commands/pilko.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
-                    
+                } else if (reaction.emoji.name === '⚡') {
+                    await message.delete()
+                    require(`../commands/salas.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
                 } else if (reaction.emoji.name === '🎵') {
                     await message.delete()
-                    
                     require(`../commands/musica.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
-                    
                 } else if (reaction.emoji.name === '🎶') {
                     await message.delete()
-                    
                     require(`../commands/dj.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
-                    
                 } else if (reaction.emoji.name === '🎭') {
                     await message.delete()
-                    
                     require(`../commands/memes.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
-                    
                 }   else if (reaction.emoji.name === 'boxbot') {
                     await message.delete()
-                    
                     require(`../commands/boxbot.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
-                    
                 } 
             })
             .catch(() => {

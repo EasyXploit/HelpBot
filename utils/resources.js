@@ -43,16 +43,16 @@ exports.run = (discord, bot) => {
     const gold = '0xFFC857';
     module.exports.gold = gold;
     
-    const red = '0xF04647';
+    const red = '0xF12F49';
     module.exports.red = red;
     
-    const red2 = '0xF12F49';
+    const red2 = '0xF04647';
     module.exports.red2 = red2;
     
-    const green = '0xB8E986';
+    const green = '0x3EB57B';
     module.exports.green = green;
     
-    const green2 = '0x3EB57B';
+    const green2 = '0xB8E986';
     module.exports.green2 = green2;
     
     const gray = '0xC6C9C6';

@@ -55,10 +55,38 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         }
 
+        //Comprueba si existe el rol silenciado, y de no existir, lo crea
+        let role = message.guild.roles.cache.find(r => r.name === 'Silenciado');
+        if (!role) {
+            role = await message.guild.createRole({
+                name: 'Silenciado',
+                color: '#818386',
+                permissions: []
+            });
+            
+            let botMember = message.guild.members.cache.get(bot.user.id);
+            await message.guild.setRolePosition(role, botMember.roles.highest.position - 1);
+            
+            message.guild.channels.forEach(async (channel, id) => {
+                await channel.overwritePermissions (role, {
+                    SEND_MESSAGES: false,
+                    ADD_REACTIONS: false,
+                    SPEAK: false
+                });
+            });
+        };
+
+        let sanction;
+        if (bot.mutes[member.id]) {
+            sanction = `Silenciado hasta ${new Date(bot.mutes[member.id].time).toLocaleString()}`;
+        } else if (member.roles.cache.has(role.id)) {
+            sanction = 'Silenciado indefinidamente';
+        }
+
         let resultEmbed = new discord.MessageEmbed ()
             .setColor(resources.gold)
             .setTitle(`⚠ Infracciones`)
-            .setDescription(`Mostrando las infracciones del usuario <@${member.id}>`)
+            .setDescription(`Mostrando las infracciones del usuario <@${member.id}>\nSanción actual: \`${sanction || 'Ninguna'}\``)
             .setThumbnail(user.displayAvatarURL())
             .addField(`Últimas 24h`, infractionsCount.day, true)
             .addField(`Últimos 7 días`, infractionsCount.week, true)

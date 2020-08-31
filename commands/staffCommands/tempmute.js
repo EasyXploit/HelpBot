@@ -49,7 +49,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                     SPEAK: false
                 });
             });
-        }
+        };
 
         let alreadyMutedEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)

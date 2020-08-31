@@ -33,7 +33,7 @@ exports.run = async (discord, fs, config, bot, resources, loggingChannel, messag
                 time: Date.now() + time
             }
 
-            fs.writeFile('./mutes.json', JSON.stringify(bot.mutes, null, 4), async err => {
+            fs.writeFile('./storage/mutes.json', JSON.stringify(bot.mutes, null, 4), async err => {
                 if (err) throw err;
             });
         }
@@ -90,7 +90,7 @@ exports.run = async (discord, fs, config, bot, resources, loggingChannel, messag
                 time: Date.now() + time
             }
     
-            fs.writeFile(`./bans.json`, JSON.stringify(bot.bans, null, 4), async err => {
+            fs.writeFile(`./storage/bans.json`, JSON.stringify(bot.bans, null, 4), async err => {
                 if (err) throw err;
             });
         };
@@ -160,13 +160,13 @@ exports.run = async (discord, fs, config, bot, resources, loggingChannel, messag
         
         if (msg) loggingEmbed.addField(`Mensaje`, msg, true);
 
-        fs.writeFile(`./warns.json`, JSON.stringify(bot.warns, null, 4), async err => {
+        fs.writeFile(`./storage/warns.json`, JSON.stringify(bot.warns, null, 4), async err => {
             if (err) throw err;
 
             await loggingChannel.send(loggingEmbed);
         });
 
-        const rules = require('./automodRules.json');
+        const rules = require('./automod/automodRules.json');
 
         for (let i = 0; i < rules.length; i++) {
             let rule = rules[i];

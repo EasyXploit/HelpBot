@@ -16,7 +16,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(`${resources.RedTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5s\`, \`10m\`, \`12h\` o \`3d\``);
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let member = await message.guild.members.fetch(message.mentions.users.first() || args[0]);
+        const member = await resources.fetchMember(message.guild, args[0]);
         if (!member) return message.channel.send(notToMuteEmbed);
         if (member.user.bot) return message.channel.send(noBotsEmbed);
         
@@ -148,7 +148,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         }
         await member.roles.add(role);
 
-        fs.writeFile('./mutes.json', JSON.stringify(bot.mutes, null, 4), async err => {
+        fs.writeFile('./storage/mutes.json', JSON.stringify(bot.mutes, null, 4), async err => {
             if (err) throw err;
 
             await message.channel.send(successEmbed);
@@ -156,6 +156,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await member.send(toDMEmbed);
         });
     } catch (e) {
-        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

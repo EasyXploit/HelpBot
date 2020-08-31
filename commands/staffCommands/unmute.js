@@ -14,8 +14,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(`${resources.RedTick} No puedes silenciar a un bot`);
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let member = await message.guild.members.fetch(message.mentions.users.first() || args[0]);
+        const member = await resources.fetchMember(message.guild, args[0]);
         if (!member) return message.channel.send(notToMuteEmbed);
+
         let toDeleteCount = command.length - 2 + args[0].length + 2; 
         let reason = message.content.slice(toDeleteCount) || 'Indefinida';
 
@@ -52,7 +53,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         if (bot.mutes.hasOwnProperty(member.id)) {
             await delete bot.mutes[member.id];
-            await fs.writeFile('./mutes.json', JSON.stringify(bot.mutes), async err => {
+            await fs.writeFile('./storage/mutes.json', JSON.stringify(bot.mutes), async err => {
                 if (err) throw err;
             });
         };
@@ -61,6 +62,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await loggingChannel.send(loggingEmbed);
         await member.send(toDMEmbed);
     } catch (e) {
-        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

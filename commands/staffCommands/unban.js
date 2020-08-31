@@ -16,12 +16,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!args[0]) return message.channel.send(notToUnbanEmbed);
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let user;
-        try {
-            user = await bot.users.fetch(args[0]);
-        } catch (e) {
-            return message.channel.send(notToUnbanEmbed);
-        }
+        const user = await resources.fetchUser(args[0]);
+        if (!user) return message.channel.send(notToBanEmbed);
 
         let toDeleteCount = command.length - 2 + args[0].length + 2;
 
@@ -34,7 +30,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         if (bot.bans.hasOwnProperty(user.id)) {
             await delete bot.bans[user.id];
-            await fs.writeFile(`./bans.json`, JSON.stringify(bot.bans), async err => {
+            await fs.writeFile(`./storage/bans.json`, JSON.stringify(bot.bans), async err => {
                 if (err) throw err;
             });
         };
@@ -60,7 +56,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setDescription(`${resources.RedTick} Este usuario no ha sido baneado`);
             message.channel.send(notBannedEmbed);
         } else {
-            require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+            require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
         }
     }
 }

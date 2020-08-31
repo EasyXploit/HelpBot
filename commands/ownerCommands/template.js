@@ -205,6 +205,18 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .attachFiles(`./resources/images/banners/oppositions.png`);
             
             message.channel.send(embed);
+        } else if (args[0] === `pwned`) {
+
+            const fetch = require('node-fetch');
+
+            fetch(`https://haveibeenpwned.com/api/v3/breach/${args[1]}`)
+                .then(res => res.text())
+                .then(body => message.channel.send(`Hubo una brecha de seguridad para el dominio ${args[1]}`));
+            
+        } else if (args[0] === `test`) {
+
+            // Code here
+
         } else {
             let noArgsEmbed = new discord.MessageEmbed ()
                 .setColor(resources.red)
@@ -212,6 +224,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             message.channel.send(noArgsEmbed);
         }
     } catch (e) {
-        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "pilkobot",
-  "version": "2.11.2",
+  "version": "2.11.3",
   "description": "PilkoBot es un bot para uso exclusivo de los usuario de la República Gamer",
   "main": "bot.js",
   "scripts": {
@@ -30,6 +30,7 @@
     "fortnite": "^4.1.1",
     "libsodium-wrappers": "^0.7.3",
     "moment": "^2.22.2",
+    "node-fetch": "^2.6.0",
     "randomcolor": "^0.5.3",
     "translate": "^1.0.3",
     "urban-dictionary": "^2.2.1",

@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-rmwarn (@miembro | id) (id de sanción | all) (razón)
     
     try {
-        let notToMuteEmbed = new discord.MessageEmbed ()
+        let notToUnwarnEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(`${resources.RedTick} Debes mencionar a un miembro o escribir su id`);
 
@@ -24,8 +24,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(`${resources.RedTick} Este usuario no tiene advertencias`);
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let member = await await message.guild.members.fetch(message.mentions.users.first() || args[0]);
-        if (!member) return message.channel.send(notToMuteEmbed);
+        const member = await resources.fetchMember(message.guild, args[0]);
+        if (!member) return message.channel.send(notToUnwarnEmbed);
         if (member.user.bot) return message.channel.send(noBotsEmbed);
         
         //Esto comprueba si se ha aportado alguna cantidad numérica
@@ -97,13 +97,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         }
 
         //Escribe el resultado en el JSON
-        fs.writeFile('./warns.json', JSON.stringify(bot.warns, null, 4), async err => {
+        fs.writeFile('./storage/warns.json', JSON.stringify(bot.warns, null, 4), async err => {
             if (err) throw err;
 
             await message.channel.send(successEmbed);
             await loggingChannel.send(loggingEmbed);
         });
     } catch (e) {
-        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

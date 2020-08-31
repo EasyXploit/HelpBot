@@ -28,20 +28,17 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField(`⛔ ${config.staffPrefix}kick (@usuario | id)) (motivo)`, `Expulsa a un usuario${resources.shield}`)
             .addField(`:hammer: ${config.staffPrefix}ban (@usuario | id) (motivo)`, `Banea a un usuario${resources.shield}`)
             .addField(`🕑 ${config.staffPrefix}tempban (@usuario | id) (xS | xM | xH | xD) (motivo)`, `Banea a un usuario de forma temporal${resources.shield}`)
-            .addField(`🛡 ${config.staffPrefix}softban (@usuario | id) (motivo)`, `Banea a un usuario y borra sus mensajes (máx 14 días)${resources.shield}`)
+            .addField(`🛡 ${config.staffPrefix}softban (@usuario | id) (1 - 7) (motivo)`, `Banea a un usuario y borra sus mensajes (máx 7 días)${resources.shield}`)
             .addField(`${resources.GreenTick} ${config.staffPrefix}unban (id) (motivo)`, `Desbanea a un usuario${resources.shield}`)
             .addField(`⏱ ${config.staffPrefix}slowmode (off | segundos [5-30]) (razón)`, `Activa el modo lento en un canal`)
-            .addField(`🔖 ${config.staffPrefix}addrole (@rol | "rol" | id) (@usuario | id)`, 'Añade un determinado rol a un determinado usuario')
-            .addField(`🔖 ${config.staffPrefix}removerole (@rol | "rol" | id) (@usuario | id)`, 'Retira un determinado rol a un determinado usuario')
             .addField(`💭 ${config.staffPrefix}send (mensaje)`, `Envía un mensaje desde ${bot.user.username}`)
             .addField(`📬 ${config.staffPrefix}dm (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)`, 'Envio de mensajes directos')
-            .addField(`📊 ${config.staffPrefix}poll "título" "campo1" "campo2" ...`, 'Envia una encuesta al canal actual')
-            .addField(`👁 ${config.staffPrefix}register (#canal) (xS/xM/xH)`, `Hará que ${bot.user.username} registre los mensajes enviados durante el tiempo especificado.`)
+            .addField(`📊 ${config.staffPrefix}poll (nada | new | end) [id]`, 'Envia una encuesta al canal actual')
             .setFooter(`© ${new Date().getFullYear()} República Gamer S.L. | Escudo: Solo para Supervisores`, message.guild.iconURL());
         
         message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 1000})});
         message.author.send(helpEmbed);
     } catch (e) {
-        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

@@ -4,7 +4,7 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
     
     try {
         const translate = module.require(`translate`);
-        const langs = JSON.parse(fs.readFileSync(`./langs.json`, `utf-8`));
+        const langs = JSON.parse(fs.readFileSync(`./resources/texts/langs.json`, `utf-8`));
         
         let noLanguageEmbed = new discord.MessageEmbed ()
             .setColor(resources.red)
@@ -45,6 +45,6 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             console.log(`${new Date().toLocaleString()} 》Error durante la traducción: ${error}`)
         })
     } catch (e) {
-        require('../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

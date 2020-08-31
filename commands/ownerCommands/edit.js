@@ -9,25 +9,23 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         if (!args[0] || !args[1] || !args[2]) return message.channel.send(noCorrectSyntaxEmbed);
             
-        let channel = message.guild.channels.find( c => c.id === args[0]);
-        
+        const channel = message.guild.channels.cache.find(c => c.id === args[0]);
         if (!channel) return message.channel.send(noCorrectSyntaxEmbed);
         
-        let msg = await channel.fetchMessage(args[1]);
+        const msg = await channel.messages.fetch(args[1]);
+        if (!msg) return message.channel.send(noCorrectSyntaxEmbed);
+
         const newContent = message.content.slice(command.length - 2 + args[0].length + 1 + args[0].length + 2);
-        
-        if (!msg || !newContent) return message.channel.send(noCorrectSyntaxEmbed);
+        if (!newContent) return message.channel.send(noCorrectSyntaxEmbed);
         
         message.delete();
 
-        /*let newEmbed = new discord.MessageEmbed ()
+        let newEmbed = new discord.MessageEmbed ()
             .setColor(resources.gold)
-            .setDescription(newContent);*/
-
-        let newEmbed = newContent;
+            .setDescription(newContent);
         
         msg.edit(newEmbed);
     } catch (e) {
-        require('../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

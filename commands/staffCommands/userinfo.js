@@ -7,24 +7,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setColor(0xF12F49)
             .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
 
-        let noBotsEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
-            .setDescription(`${resources.RedTick} No puedes obtener información de un bot`);
-
-        let member;
-
-        if (args.length < 1) {
-            member = message.guild.members.cache.get(message.author.id);
-        } else {
-            member = await message.guild.members.fetch(message.mentions.users.first() || args[0]).catch(e => {
-                if (!e.toLocaleString().includes('Unknown member')) console.log(e)
-            });
-        }
-
+        const member = await resources.fetchMember(message.guild, args[0] || message.author.id);
         if (!member) return message.channel.send(noUserEmbed);
 
         let user = member.user;
-        if (user.bot) return message.channel.send(noBotsEmbed);
 
         //Comprueba si el usuario es baneable
         let bannable = `No`;
@@ -76,7 +62,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             lastMessage = `Ninguno en caché`;
         }
 
-        let translations = require(`../../resources/translations.json`);
+        let translations = require(`../../resources/texts/translations.json`);
 
         let matches = [];
 
@@ -105,6 +91,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

@@ -38,6 +38,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await bot.voiceDispatcher.pause();
         await message.channel.send(`⏸ | Cola pausada`);
     } catch (e) {
-        require('../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

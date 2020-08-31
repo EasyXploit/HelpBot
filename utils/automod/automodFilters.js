@@ -1,9 +1,9 @@
-const config = require(`../config.json`);
+const config = require(`../../config.json`);
 
 //Palabras malsonantes
 async function swearWords(message) {
 
-    const words = require('./swearWords.json');
+    const words = require('../../resources/texts/swearWords.json');
     if (words.some(word => message.content.toLowerCase().includes(word))) return true;
 };
 

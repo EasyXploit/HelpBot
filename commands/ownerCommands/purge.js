@@ -7,9 +7,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setColor(0xF12F49)
             .setDescription(`${resources.RedTick} Debes proporcionar la cantidad de mensajes a eliminar`);
         
-        let NaNEmbed = new discord.MessageEmbed ()
+        let incorrectQuantityEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
-            .setDescription(`${resources.RedTick} Debes proporcionar una cantidad numérica`);
+            .setDescription(`${resources.RedTick} Debes proporcionar una cantidad numérica superior a 2 e inferior a 100`);
 
         if(!args[0]) return message.channel.send(noQuantityEmbed);
         if (isNaN(args[0])) return message.channel.send(NaNEmbed);
@@ -19,6 +19,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(`${resources.RedTick} Solo puedes borrar mensajes con un máximo de 14 días de antiguedad`);
         
         const limit = Math.floor(args[0]);
+        if (limit < 2 || limit > 100) return message.channel.send(incorrectQuantityEmbed);
         let count = 0;
         let channel;
 
@@ -85,6 +86,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             }
         }
     } catch (e) {
-        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

@@ -13,7 +13,6 @@
     "game": "!ayuda",
     "status": "online",
     "type": "WATCHING",
-    "serverLanguage": "es",
     "filters": {
         "swearWords": {
             "status": true,

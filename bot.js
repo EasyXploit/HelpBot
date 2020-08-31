@@ -23,6 +23,7 @@ console.log(`》Iniciando aplicación «\n――――――――――――�
 //DEPENDENCIAS GLOBALES
 const discord = require(`discord.js`);
 const fs = require(`fs`);
+const moment = require('moment');
 const config = require(`./config.json`);
 const keys = require(`./keys.json`);
 const bot = new discord.Client({
@@ -34,16 +35,17 @@ const bot = new discord.Client({
 });
 
 //RECURSOS GLOBALES
-let resources = require(`./resources/resources.js`);
-const automodFilters = require('./resources/automodFilters.js')
+let resources = require(`./utils/resources.js`);
+const automodFilters = require('./utils/automod/automodFilters.js')
 
 //USUARIOS QUE USARON COMANDOS RECIENTEMENTE
 const talkedRecently = new Set();
 
 //DATOS PERSISTENTES
-bot.mutes = require(`./mutes.json`);
-bot.bans = require(`./bans.json`);
-bot.warns = JSON.parse(fs.readFileSync(`./warns.json`, `utf-8`));
+bot.mutes = require(`./storage/mutes.json`);
+bot.bans = require(`./storage/bans.json`);
+bot.polls = require(`./storage/polls.json`);
+bot.warns = JSON.parse(fs.readFileSync(`./storage/warns.json`, `utf-8`));
 
 //VOZ
 bot.servers = {}; //Almacena la cola y otros datos
@@ -55,111 +57,6 @@ bot.voiceConnection; //Almacena la conexión
 bot.on(`ready`, async () => {
     try {
         const debuggingChannel = bot.channels.cache.get(config.debuggingChannel);
-        const loggingChannel = bot.channels.cache.get(config.loggingChannel);
-
-        //Intervalo de comprobación de usuarios silenciados temporalmente
-        bot.setInterval(async () => {
-            for (let idKey in bot.mutes) {
-                let time = bot.mutes[idKey].time;
-
-                if (Date.now() > time) {
-
-                    let guild = bot.guilds.cache.get(bot.mutes[idKey].guild);
-                
-                    let role = guild.roles.cache.find(r => r.name === `Silenciado`)
-                    if (!role) continue;
-
-                    let member;
-
-                    try {
-                        member = await guild.members.cache.get(idKey);
-                    } catch (e) {
-                        console.log(e);
-                        delete bot.mutes[idKey];
-                        fs.writeFile(`./mutes.json`, JSON.stringify(bot.mutes), async err => {
-                            if (err) throw err;
-    
-                            let loggingEmbed = new discord.MessageEmbed()
-                                .setColor(resources.green2)
-                                .setAuthor(`@${bot.mutes[idKey].tag} ha sido DES-SILENCIADO, pero no se encontraba en el servidor`)
-                                .addField(`ID`, idKey, true)
-                                .addField(`Moderador`, `<@${bot.user.id}>`, true)
-                                .addField(`Razón`, `Venció la amonestación`, true);
-    
-                            await loggingChannel.send(loggingEmbed);
-                        });
-                        return;
-                    }
-
-
-                    let loggingEmbed = new discord.MessageEmbed()
-                        .setColor(resources.green2)
-                        .setAuthor(`${member.user.tag} ha sido DES-SILENCIADO`, member.user.displayAvatarURL())
-                        .addField(`Miembro`, `<@${member.id}>`, true)
-                        .addField(`Moderador`, `<@${bot.user.id}>`, true)
-                        .addField(`Razón`, `Venció la amonestación`, true);
-
-                    let toDMEmbed = new discord.MessageEmbed()
-                        .setColor(resources.green2)
-                        .setAuthor(`[DES-SILENCIADO]`, guild.iconURL())
-                        .setDescription(`<@${member.id}>, has sido des-silenciado en ${guild.name}`)
-                        .addField(`Moderador`, bot.user.id, true)
-                        .addField(`Razón`, `Venció la amonestación`, true);
-
-                    await member.roles.remove(role);
-
-                    delete bot.mutes[idKey];
-                    fs.writeFile(`./mutes.json`, JSON.stringify(bot.mutes), async err => {
-                        if (err) throw err;
-
-                        await loggingChannel.send(loggingEmbed);
-                        await member.send(toDMEmbed);
-                    });
-                }
-            }
-        }, 5000)
-
-        //Intervalo de comprobación de usuarios baneados temporalmente
-        bot.setInterval(async () => {
-            for (let idKey in bot.bans) {
-                let time = bot.bans[idKey].time;
-                let guild = bot.guilds.cache.get(bot.bans[idKey].guild);
-                let user = await bot.users.fetch(idKey);
-
-                if (Date.now() > time) {
-                    let loggingEmbed = new discord.MessageEmbed()
-                        .setColor(resources.green2)
-                        .setAuthor(`${user.tag} ha sido DES-BANEADO`, user.displayAvatarURL())
-                        .addField(`Usuario`, `@${user.tag}`, true)
-                        .addField(`Moderador`, `<@${bot.user.id}>`, true)
-                        .addField(`Razón`, `Venció la amonestación`, true);
-
-                    await guild.members.unban(idKey);
-
-                    delete bot.bans[idKey];
-                    fs.writeFile(`./bans.json`, JSON.stringify(bot.bans), async err => {
-                        if (err) throw err;
-
-                        await loggingChannel.send(loggingEmbed);
-                    });
-                }
-            }
-        }, 5000)
-
-        //Intervalo de comprobación del tiempo de respuesta del Websocket
-        bot.setInterval(async () => {
-            let ping = Math.round(bot.ping);
-            if (ping > 1000) {
-                console.log(`${new Date().toLocaleString()} 》Tiempo de respuesta del Websocket elevado: ${ping} ms\n`);
-
-                let debuggingEmbed = new discord.MessageEmbed()
-                    .setColor(0xF8A41E)
-                    .setTimestamp()
-                    .setFooter(bot.user.username, bot.user.avatarURL())
-                    .setDescription(`${resources.OrangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);
-                debuggingChannel.send(debuggingEmbed);
-            }
-        }, 60000)
 
         //Presencia
         await bot.user.setPresence({
@@ -169,20 +66,13 @@ bot.on(`ready`, async () => {
                 type: config.type
             }
         });
-        
-        //Actualización de usuarios totales en presencia
-        bot.setInterval(async () => {
-            await bot.user.setPresence({
-                activity: {
-                    name: `${bot.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`,
-                    type: config.type
-                }
-            });
-        }, 60000)
 
         //Recursos globales
         resources.run(discord, bot);
-        resources = require(`./resources/resources.js`);
+        resources = require(`./utils/resources.js`);
+
+        //Carga de intervalos
+        require(`./utils/intervals.js`).run(discord, bot, fs, resources, moment, config);
 
         //Auditoría
         console.log(` 》${bot.user.username} iniciado correctamente \n  ● Estatus: ${config.status}\n  ● Tipo de actividad: ${config.type}\n  ● Actividad: ${config.game}\n`);
@@ -299,7 +189,7 @@ bot.on(`message`, async message => {
                     }
 
                     await automodFilters[key](message).then(match => {
-                        if (match) require('./resources/infractionsHandler.js').run(discord, fs, config, bot, resources, loggingChannel, message, message.guild, message.member, config.filters[key].reason, config.filters[key].action, bot.user, message.content)
+                        if (match) require('./utils/infractionsHandler.js').run(discord, fs, config, bot, resources, loggingChannel, message, message.guild, message.member, config.filters[key].reason, config.filters[key].action, bot.user, message.content)
                     });
                 }
             })();
@@ -362,7 +252,7 @@ bot.on(`message`, async message => {
             return;
         }
     } catch (e) {
-        require(`./errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`./utils/errorHandler.js`).run(discord, config, bot, message, args, command, e);
     }
 });
 

@@ -50,6 +50,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

@@ -170,7 +170,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         bot.servers[message.guild.id].queue.push(newQueueItem);
 
                         //Ejecuta la función de reproducción
-                        require(`../resources/audioManager/reproductionManager.js`).run(discord, fs, bot, resources, message, info, ytdl, moment, randomColor);
+                        require(`../utils/reproductionManager.js`).run(discord, fs, bot, resources, message, info, ytdl, moment, randomColor);
 
                     }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));
                 } else if (message.member.voice.channelID === message.guild.member(bot.user).voice.channelID) {
@@ -198,7 +198,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         bot.servers[message.guild.id].queue.push(newQueueItem);
 
                         //Ejecuta la función de reproducción
-                        require(`../resources/audioManager/reproductionManager.js`).run(discord, bot, resources, message, info, ytdl, moment, randomColor);
+                        require(`../utils/reproductionManager.js`).run(discord, bot, resources, message, info, ytdl, moment, randomColor);
                     } else {
                         //Genera la información de la cola
                         let newQueueItem = {
@@ -248,6 +248,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             });
         }
     } catch (e) {
-        require('../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

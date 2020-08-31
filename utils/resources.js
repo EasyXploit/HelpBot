@@ -3,6 +3,41 @@ exports.run = (discord, bot) => {
     //SERVIDOR PRINCIPAL
     const server = bot.guilds.cache.get('374945492133740544');
     module.exports.server = server;
+
+    //FUNCIONES
+    //Función para buscar miembros
+    async function fetchMember(guild, argument) {
+        try {
+            let result;
+            const matches = argument.match(/^<@!?(\d+)>$/);
+            if (matches) {
+                result = await guild.members.fetch(matches[1]);
+            } else if (!isNaN(argument)) {
+                result = await guild.members.fetch(argument);
+            }
+            if (result && typeof result !== 'undefined') return result;
+        } catch (e) {
+            return false;
+        }
+    };
+    module.exports.fetchMember = fetchMember;
+
+    //Función para buscar usuarios
+    async function fetchUser(argument) {
+        try {
+            let result;
+            const matches = argument.match(/^<@!?(\d+)>$/);
+            if (matches) {
+                result = await bot.users.fetch(matches[1]);
+            } else if (!isNaN(argument)) {
+                result = await bot.users.fetch(argument);
+            }
+            if (result && typeof result !== 'undefined') return result;
+        } catch (e) {
+            return false;
+        }
+    };
+    module.exports.fetchUser = fetchUser;
     
     //COLORES
     const gold = '0xFFC857';

@@ -14,7 +14,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(`${resources.RedTick} No puedes silenciar a un bot`);
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let member = await message.guild.members.fetch(message.mentions.users.first() || args[0]);
+        const member = await resources.fetchMember(message.guild, args[0]);
         if (!member) return message.channel.send(notToMuteEmbed);
         if (member.user.bot) return message.channel.send(noBotsEmbed);
         
@@ -29,7 +29,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let reason = message.content.slice(toDeleteCount) || 'Indefinida';
 
         //Comprueba si existe el rol silenciado, y de no existir, lo crea
-        let role = message.guild.roles.find(r => r.name === 'Silenciado');
+        let role = message.guild.roles.cache.find(r => r.name === 'Silenciado');
         if (!role) {
             role = await message.guild.createRole({
                 name: 'Silenciado',
@@ -77,11 +77,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Comprueba si este susuario ya estaba silenciado
         if (member.roles.cache.has(role.id)) return message.channel.send(alreadyMutedEmbed);
 
-        await member.addRole(role);
+        await member.roles.add(role);
         await message.channel.send(successEmbed);
         await loggingChannel.send(loggingEmbed);
         await member.send(toDMEmbed);
     } catch (e) {
-        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

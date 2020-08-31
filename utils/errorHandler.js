@@ -10,7 +10,7 @@ exports.run = async (discord, config, bot, message, args, command, e) => {
     const debuggingChannel = bot.channels.cache.get(config.debuggingChannel);
     
     //Se declara el archivo de recursos
-    const resources = require(`./resources/resources.js`);
+    const resources = require(`./resources.js`);
     
     //Se comprueba si se han proporcionado argumentos
     let arguments;

@@ -16,13 +16,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!args[0]) return message.channel.send(notToKickEmbed);
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let member;
-        try {
-            member = await message.guild.members.fetch(message.mentions.users.first() || args[0]);
-        } catch (e) {
-            return message.channel.send(notToKickEmbed);
-        }
-        
+        const member = await resources.fetchMember(message.guild, args[0]);
+        if (!member) return message.channel.send(notToKickEmbed);
         let moderator = await message.guild.members.fetch(message.author);
         
         //Se comprueba si puede banear al usuario
@@ -51,6 +46,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await member.kick(reason);
         await message.channel.send(successEmbed);
     } catch (e) {
-        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

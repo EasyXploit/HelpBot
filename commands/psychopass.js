@@ -1,9 +1,15 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!psychopass (@usuario | nada)
     
     try {
-        const member = message.mentions.users.first() || message.member.displayName;
+        let notFoundEmbed = new discord.MessageEmbed ()
+            .setColor(resources.red)
+            .setDescription(`${resources.RedTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`);
+
+        const member = await resources.fetchMember(message.guild, args[0] || message.author.id);
+        if (!member) return message.channel.send(notFoundEmbed);
+
         const coefficient = Math.floor(Math.random() * 400);
         let result;
 
@@ -18,10 +24,10 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
         const resultEmbed = new discord.MessageEmbed ()
             .setColor(0xDDDDDD)
             .setTitle(`:gun: | Coeficiente criminal: **${coefficient}%**`)
-            .setDescription(`**${member}${result}`)
+            .setDescription(`**${member.displayName}${result}`)
 
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

@@ -14,9 +14,6 @@ exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => 
 
                 await bot.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             } else {
-
-                console.log()
-
                 let moderador = executor;
                 let razon = reason;
 
@@ -51,7 +48,6 @@ exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => 
         } 
     
         let { executor, target, reason } = banLog;
-        console.log(banLog);
         let time = '∞'
     
         if (target.id === user.id) {

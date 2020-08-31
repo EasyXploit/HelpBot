@@ -26,6 +26,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         bot.emit('ready');
         loggingChannel.send(loggingEmbed);
     } catch (e) {
-        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

@@ -1,39 +1,38 @@
 exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
-
-    //-softban (@usuario | id) (motivo)
+    
+    //-softban (@usuario | id) (1 - 7) (motivo)
     
     try {
         if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
         
-        return (message.channel.send(`Comando deshabilitado temporalmente`));
-        
         let notToBanEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
-            .setDescription(`${resources.RedTick} Debes mencionar a un miembro o escribir su id`);
-            
+            .setColor(resources.red)
+            .setDescription(`${resources.RedTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID`);
+
+        let incorrectTimeEmbed = new discord.MessageEmbed ()
+            .setColor(resources.red)
+            .setDescription(`${resources.RedTick} Debes proporcionar una cantidad válida de días de mensajes a borrar, entre 1 y 7`);
+
         let noReasonEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes proporcionar un motivo`);
-            
-        let noBotsEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
-            .setDescription(`${resources.RedTick} No puedes banear a un bot`);
         
         let alreadyBannedEmbed = new discord.MessageEmbed ()
-            .setColor(0xF12F49)
+            .setColor(resources.red)
             .setDescription(`${resources.RedTick} Este usuario ya ha sido baneado`);
-            
+        
+        if (!args[0]) return message.channel.send(notToBanEmbed);
+        
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let member = message.guild.member(message.mentions.users.first()) || message.guild.members.cache.get(args[0]);
-        if (!member) return message.channel.send(notToBanEmbed);
+        const user = await resources.fetchUser(args[0]);
+        if (!user) return message.channel.send(notToBanEmbed);
         
-        if (member.bot) return message.channel.send(noBotsEmbed);
-        
-        let author = message.guild.member(message.author.id)
-        
-        //Se comprueba si puede banear al usuario
-        if (author.id !== message.guild.owner.id) {
-            if (author.roles.highest.position <= member.roles.highest.position) return message.channel.send(noPrivilegesEmbed);
+        const moderator = await message.guild.members.fetch(message.author);
+        const member = await resources.fetchMember(message.guild, user.id);
+
+        if (member) {
+            //Se comprueba si puede banear al usuario
+            if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send(noPrivilegesEmbed)
         }
         
         let bans = await message.guild.fetchBans();
@@ -43,59 +42,37 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             if(ban.id === user.id) return isBanned = ban.id;
         });
         if (isBanned) return message.channel.send(alreadyBannedEmbed);
-        
-        let toDeleteCount = command.length - 2 + args[0].length + 2;
-        
-        //Esto comprueba si se ha proporcionado razón
-        let reason = message.content.slice(toDeleteCount)
-        if (!reason) return message.channel.send(noReasonEmbed);
-        
-        let user = member.user;
-        let count = 0;
-        
-        let workingEmbed = new discord.MessageEmbed ()
-            .setColor(0xC6C9C6)
-            .setDescription(`${resources.GrayTick} Operación en marcha ...`);
-        
-        await message.channel.send(workingEmbed).then(msg => {msg.delete({timeout: 1000})});
-        
-        await message.guild.channels.forEach( async c => {
-            if (c.type !== 'text') return;
-            c.fetchMessages().then(async m => {
-                const userMessages = m.filter(msg => msg.author.id === user.id);
-                await c.bulkDelete(userMessages);
-                count = count + parseInt(userMessages.array().length);
-            });
-        });
-            
-        let loggingEmbed = new discord.MessageEmbed ()
-            .setColor(0xEF494B)
-            .setAuthor(`${member.user.tag} ha sido BANEADO`, member.user.displayAvatarURL())
-            .addField('Miembro', `<@${member.id}>`, true)
-            .addField('Moderador', `<@${message.author.id}>`, true)
-            .addField('Razón', reason, true)
-            .addField('Duración', '∞', true)
-            .addField('Mensajes eliminados', count, true);
-            
-        let toDMEmbed = new discord.MessageEmbed ()
-            .setColor(0xEF494B)
-            .setAuthor('[BANEADO]', message.guild.iconURL())
-            .setDescription(`<@${member.id}>, has sido baneado en ${message.guild.name}`)
-            .addField('Moderador', '@' + message.author.tag, true)
-            .addField('Razón', reason, true)
-            .addField('Duración', '∞', true);
-            
-        await member.send(toDMEmbed);
-        await member.ban(reason);
-        await loggingChannel.send(loggingEmbed);
-        
-        let successDeleteEmbed = new discord.MessageEmbed ()
-            .setColor(0xB8E986)
+
+        let days = Math.floor(args[1]);
+        if (isNaN(days) || days < 1 || days > 7) return message.channel.send(incorrectTimeEmbed);
+
+        //Esto comprueba si se debe proporcionar razón
+        let reason = args.slice(2)
+        if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send(noReasonEmbed);
+        if (!reason) reason = `Indefinida`;
+
+        let successEmbed = new discord.MessageEmbed ()
+            .setColor(resources.green)
             .setTitle(`${resources.GreenTick} Operación completada`)
-            .setDescription(`El usuario <@${member.id}> ha sido baneado y se han eliminado ${count} mensajes. ¿alguien más?`);
-            
-        message.channel.send(successDeleteEmbed);
+            .setDescription(`El usuario <@${user.id}> ha sido baneado, ¿alguien más? ${resources.drakeban}`);
+
+        let toDMEmbed = new discord.MessageEmbed ()
+            .setColor(resources.red2)
+            .setAuthor(`[BANEADO]`, message.guild.iconURL())
+            .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
+            .addField(`Moderador`, `@${message.author.tag}`, true)
+            .addField(`Razón`, reason, true)
+            .addField(`Días de mensajes borrados`, days, true)
+            .addField(`Duración`, `∞`, true);
+
+        if (member) {
+            await user.send(toDMEmbed);
+        }
+
+        await message.guild.members.ban(user, {days: days, reason: `Moderador: ${message.author.id}, Razón: ${reason}`});
+        await message.channel.send(successEmbed);
+
     } catch (e) {
-        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
-}
+};

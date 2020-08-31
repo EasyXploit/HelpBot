@@ -3,7 +3,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
     //-warn (@miembro | id) (razón)
     
     try {
-        let notToMuteEmbed = new discord.MessageEmbed ()
+        let notToWarnEmbed = new discord.MessageEmbed ()
             .setColor(0xF12F49)
             .setDescription(`${resources.RedTick} Debes mencionar a un miembro o escribir su id`);
 
@@ -16,10 +16,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(`${resources.RedTick} Se debe adjuntar una razón`);
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let member = await message.guild.members.fetch(message.mentions.users.first() || args[0]);
-        if (!member) return message.channel.send(notToMuteEmbed);
-        if (member.user.bot) return message.channel.send(noBotsEmbed);
-        
+        const member = await resources.fetchMember(message.guild, args[0]);
+        if (!member) return message.channel.send(noUserEmbed);
+        if (member.user.bot) return message.channel.send(notToWarnEmbed);
+
         //Esto comprueba si se ha aportado alguna razón
         let reason = args.slice(1).join(" ");
         if (!reason) return message.channel.send(undefinedReasonEmbed);
@@ -33,9 +33,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         message.delete();
 
-        require('../../resources/infractionsHandler.js').run(discord, fs, config, bot, resources, loggingChannel, message, message.guild, member, reason, 2, message.author)
+        require('../../utils/infractionsHandler.js').run(discord, fs, config, bot, resources, loggingChannel, message, message.guild, member, reason, 2, message.author)
 
     } catch (e) {
-        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

@@ -32,7 +32,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setColor(0xF04647)
                 .setDescription(`${resources.RedTick} No puedes entablar una conversación con un bot`);
             
-            let member = await message.guild.members.fetch(message.mentions.users.first() || args[1]);
+            const member = await resources.fetchMember(message.guild, args[1]);
             if (!member) return message.channel.send(noUserEmbed);
             let user = member.user
             
@@ -104,6 +104,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             }, 10000);
         }
     } catch (e) {
-        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

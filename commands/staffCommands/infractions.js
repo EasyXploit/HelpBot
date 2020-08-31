@@ -11,14 +11,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setColor(0xF12F49)
             .setDescription(`${resources.RedTick} No puedes obtener información de un bot`);
 
-        let member;
-
-        if (args.length < 1) {
-            member = message.guild.members.cache.get(message.author.id);
-        } else {
-            member = await message.guild.members.fetch(message.mentions.users.first() || args[0]);
-        }
-
+        const member = await resources.fetchMember(message.guild, args[0] || message.author.id);
         if (!member) return message.channel.send(noUserEmbed);
 
         let user = member.user;
@@ -74,6 +67,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     };
 };

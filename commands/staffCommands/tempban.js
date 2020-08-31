@@ -24,24 +24,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!args[0]) return message.channel.send(notToBanEmbed);
     
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        let user;
-        try {
-            let mentioned = message.mentions.users.first();
-            if (mentioned) mentioned = mentioned.id
-            user = await bot.users.fetch(mentioned || args[0]);
-        } catch (e) {
-            console.log(e);
-            return message.channel.send(notToBanEmbed);
-        }
+        const user = await resources.fetchUser(args[0]);
+        if (!user) return message.channel.send(notToBanEmbed);
         
         let moderator = await message.guild.members.fetch(message.author);
-        
-        let member;
-        try {
-            member = await message.guild.members.fetch(user);
-        } catch (e) {
-            return message.channel.send(notToBanEmbed);
-        }
+        const member = await resources.fetchMember(message.guild, user.id);
 
         if (member) {
             //Se comprueba si puede banear al usuario
@@ -134,7 +121,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             time: Date.now() + milliseconds
         }
 
-        fs.writeFile(`./bans.json`, JSON.stringify(bot.bans, null, 4), async err => {
+        fs.writeFile(`./storage/bans.json`, JSON.stringify(bot.bans, null, 4), async err => {
             if (err) throw err;
 
             if (member) {
@@ -145,6 +132,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await message.channel.send(successEmbed);
         });
     } catch (e) {
-        require('../../errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
     }
 }

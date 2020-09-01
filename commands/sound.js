@@ -48,7 +48,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 bot.voiceStatus = false;
                 
                 let playingEmbed = new discord.MessageEmbed()
-                    .setColor(resources.green)
+                    .setColor(resources.green2)
                     .setDescription(`${resources.GreenTick} Reproduciendo **${sound}**.`);
                 
                 message.channel.send(playingEmbed);

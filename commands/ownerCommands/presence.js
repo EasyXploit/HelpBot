@@ -47,7 +47,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         }
 
         let resultEmbed = new discord.MessageEmbed()
-            .setColor(resources.green)
+            .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación en marcha`)
             .setDescription(`Cambiaste ${changed} del bot a \`${content}\`.\nEsta operación podría tardar unos minutos en completarse.`)
 

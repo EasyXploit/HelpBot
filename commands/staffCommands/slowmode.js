@@ -14,7 +14,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             if (!message.channel.rateLimitPerUser) return message.channel.send(noCorrectSyntaxEmbed).then(msg => {msg.delete({timeout: 5000})});
 
             let successEmbed = new discord.MessageEmbed()
-                .setColor(resources.green)
+                .setColor(resources.green2)
                 .setTitle(`${resources.GreenTick} Operación completada`)
                 .setDescription(`El modo lento ha sido desactivado`);
 
@@ -48,7 +48,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             };
 
             let successEmbed = new discord.MessageEmbed()
-                .setColor(resources.green)
+                .setColor(resources.green2)
                 .setTitle(`${resources.GreenTick} Operación completada`)
                 .setDescription(`El modo lento ha sido activado con un retraso de \`${seconds}s\``);
 

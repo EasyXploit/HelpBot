@@ -29,7 +29,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await fs.writeFile('./config.json', JSON.stringify(config, null, 4), (err) => console.error);
 
         let completedEmbed = new discord.MessageEmbed()
-            .setColor(resources.green)
+            .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`Cambiaste el canal de auditoría a <#${channel}>`);
 

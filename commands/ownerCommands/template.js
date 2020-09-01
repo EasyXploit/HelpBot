@@ -112,7 +112,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setDescription(`${resources.RedTick} No puedes entablar una conversación con un bot`);
             
             let successEmbed = new discord.MessageEmbed()
-                .setColor(resources.green)
+                .setColor(resources.green2)
                 .setDescription(`${resources.GreenTick} ¡Listo!`);
             
             if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
@@ -133,7 +133,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setDescription(`${resources.RedTick} No puedes entablar una conversación con un bot`);
             
             let successEmbed = new discord.MessageEmbed()
-                .setColor(resources.green)
+                .setColor(resources.green2)
                 .setDescription(`${resources.GreenTick} ¡Listo!`);
             
             if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
@@ -213,28 +213,58 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .then(res => res.text())
                 .then(body => message.channel.send(`Hubo una brecha de seguridad para el dominio ${args[1]}`));
             
-        } else if (args[0] === `test`) {
+        } else if (args[0] === `migrated`) {
 
-            let results = ['x', 'y', 'z'];
-            let test = [];
+            const stats = Object.entries(bot.stats[message.guild.id]).map((e) => ( { [e[0]]: e[1] } ));
 
-            function callback_Original_child(results) { 
-                return new Promise(resolve => {
-                      for (var i = 0; i < results.length; i++) { 
-                            test.push(results[i]);
-                      }
+            for (let i = 0; i < stats.length; i++) {
+                Object.keys(stats[i]).forEach(async (id) => {
+                    
+                    let member = await resources.fetchMember(message.guild, id);
+                    if (!member) return;
+
+                    let embed = new discord.MessageEmbed()
+                        .setColor(resources.gold)
+                        .setTitle('NUEVO SISTEMA DE PUNTUACIÓN')
+                        .setURL('https://discord.gg/vkSBZC7')
+                        .setAuthor('NEWSLETTER', bot.user.displayAvatarURL(), 'https://discord.gg/vkSBZC7')
+                        .setDescription(`¡Hola <@${message.author.id}>!\nTe mandamos este mensaje para informarte de un reciente cambio que afecta a la gran mayoría de los usuarios de la República Gamer.`)
+                        .setThumbnail('https://i.imgur.com/8RjlLEA.png')
+                        .addFields(
+                            { name: ' 🞄 ¿Qué ha cambiado? 🆕', value: 'Se trata de un cambio en el sistema de recompensas del servidor, que ha obligado a reconstruir la __tabla de clasificación desde 0__, pero para hacer esta transición lo más amena posible, hemos decidido realizar una __migración de todos los puntos de experiencia, niveles y roles__ que habías alcanzado con el sistema anterior.' },
+                            { name: ' 🞄 ¿He perdido algo? 🧭', value: 'Lo único que no hemos podido conservar son los puntos de experiencia que habías ganado __entre tu nivel actual y el siguiente nivel que ibas a alcanzar__, pero estamos convencidos de que eso no será un gran inconveniente. Puedes usar el comando `!rank` para ver tus XP y nivel actuales.' },
+                            { name: ' 🞄 ¿Por qué me cuentas esto? 🤷', value: 'Si llevas tiempo sin visitarnos, tal vez sea este el mejor momento para volver a participar en la comunidad. _Estamos __trabajando duro__ en mejorar la experiencia de nuestros usuarios y nos alegraría verte de nuevo por estos lares._'},
+                            { name: ' 🞄 ¿Qué hay de nuevo? 🌍', value: 'Estamos trabajando en nuevas características y mejoras que irán llegando poco a poco a la comunidad, pero de igual forma te agradeceríamos cualquier sugerencia que tuvieras para mejorar la comunidad. Usa el comando `$suggest` en los canales de la comunidad.'},
+                        )
+                        .setImage('https://i.imgur.com/IeExpLO.png')
+                        .setTimestamp()
+                        .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
+
+                    if (stats[i][id].level == args[1]) await member.send(embed);
                 });
-            }
-            
-            async function callback_Original(results) { 
-                try {
-                    await callback_Original_child(results);
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-            
-            callback_Original(results).then(console.log(test));
+            };
+
+        } else if (args[0] === `testEmbed`) {
+
+            let embed = new discord.MessageEmbed()
+                .setColor(resources.gold)
+                .setTitle('NUEVO SISTEMA DE PUNTUACIÓN')
+                .setURL('https://discord.gg/vkSBZC7')
+                .setAuthor('NEWSLETTER', bot.user.displayAvatarURL(), 'https://discord.gg/vkSBZC7')
+                .setDescription(`¡Hola <@${message.author.id}>!\nTe mandamos este mensaje para informarte de un reciente cambio que afecta a la gran mayoría de los usuarios de la República Gamer.`)
+                .setThumbnail('https://i.imgur.com/8RjlLEA.png')
+                .addFields(
+                    { name: ' 🞄 ¿Qué ha cambiado? 🆕', value: 'Se trata de un cambio en el sistema de recompensas del servidor, que ha obligado a reconstruir la __tabla de clasificación desde 0__, pero para hacer esta transición lo más amena posible, hemos decidido realizar una __migración de todos los puntos de experiencia, niveles y roles__ que habías alcanzado con el sistema anterior.' },
+                    { name: ' 🞄 ¿He perdido algo? 🧭', value: 'Lo único que no hemos podido conservar son los puntos de experiencia que habías ganado __entre tu nivel actual y el siguiente nivel que ibas a alcanzar__, pero estamos convencidos de que eso no será un gran inconveniente. Puedes usar el comando `!rank` para ver tus XP y nivel actuales.' },
+                    { name: ' 🞄 ¿Por qué me cuentas esto? 🤷', value: 'Si llevas tiempo sin visitarnos, tal vez sea este el mejor momento para volver a participar en la comunidad. _Estamos __trabajando duro__ en mejorar la experiencia de nuestros usuarios y nos alegraría verte de nuevo por estos lares._'},
+                    { name: ' 🞄 ¿Qué hay de nuevo? 🌍', value: 'Estamos trabajando en nuevas características y mejoras que irán llegando poco a poco a la comunidad, pero de igual forma te agradeceríamos cualquier sugerencia que tuvieras para mejorar la comunidad. Usa el comando `$suggest` en los canales de la comunidad.'},
+                )
+                .setImage('https://i.imgur.com/IeExpLO.png')
+                .setTimestamp()
+                .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
+
+            await message.channel.send(embed);
+
 
         } else {
             let noArgsEmbed = new discord.MessageEmbed()

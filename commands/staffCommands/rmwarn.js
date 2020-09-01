@@ -54,7 +54,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
 
             successEmbed = new discord.MessageEmbed()
-                .setColor(resources.green)
+                .setColor(resources.green2)
                 .setDescription(`${resources.GreenTick} Se han retirado todas las advertencias al usuario <@${member.id}>`);
 
             loggingEmbed = new discord.MessageEmbed()
@@ -73,7 +73,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id) && bot.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send(noPrivilegesEmbed);
 
             successEmbed = new discord.MessageEmbed()
-                .setColor(resources.green)
+                .setColor(resources.green2)
                 .setDescription(`${resources.GreenTick} Se ha retirado la advertencia con ID **${warnID}** al usuario <@${member.id}>`);
 
             loggingEmbed = new discord.MessageEmbed()

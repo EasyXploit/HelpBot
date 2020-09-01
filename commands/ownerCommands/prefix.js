@@ -42,7 +42,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(`${resources.RedTick} Este prefijo ya ha sido configurado`);
         
         let successEmbed = new discord.MessageEmbed()
-            .setColor(resources.green)
+            .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`Cambiaste el prefijo ${prefixType} a \`${newPrefix}\``);
 

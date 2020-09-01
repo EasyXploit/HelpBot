@@ -31,7 +31,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!reason) reason = `Indefinida`;
 
         let successEmbed = new discord.MessageEmbed()
-            .setColor(resources.green)
+            .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`El usuario <@${member.id}> ha sido expulsado, ¿alguien más?`);
 

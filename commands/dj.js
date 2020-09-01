@@ -11,7 +11,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if(!message.member.roles.cache.find(r=> r.name === `DJ`)) return message.channel.send(noPrivilegesEmbed);
 
         let successEmbed = new discord.MessageEmbed()
-            .setColor(resources.green)
+            .setColor(resources.green2)
             .setDescription(`${resources.GreenTick} ¡Te he enviado las instrucciones por Mensaje Directo!`);
 
         let helpEmbed = new discord.MessageEmbed()

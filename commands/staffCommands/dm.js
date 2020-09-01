@@ -13,7 +13,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(`${resources.RedTick} No has proporcionado el contenido del mensaje`);
         
         let confirmEmbed = new discord.MessageEmbed()
-            .setColor(resources.green)
+            .setColor(resources.green2)
             .setDescription(`${resources.GreenTick} ¡Mensaje enviado!`);
         
         if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);

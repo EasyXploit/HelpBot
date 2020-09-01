@@ -26,7 +26,7 @@ exports.run = (discord, bot, fs, resources, moment, config) => {
                         if (err) throw err;
 
                         let loggingEmbed = new discord.MessageEmbed()
-                            .setColor(resources.green2)
+                            .setColor(resources.green)
                             .setAuthor(`@${bot.mutes[idKey].tag} ha sido DES-SILENCIADO, pero no se encontraba en el servidor`)
                             .addField(`ID`, idKey, true)
                             .addField(`Moderador`, `<@${bot.user.id}>`, true)
@@ -38,14 +38,14 @@ exports.run = (discord, bot, fs, resources, moment, config) => {
                 }
 
                 let loggingEmbed = new discord.MessageEmbed()
-                    .setColor(resources.green2)
+                    .setColor(resources.green)
                     .setAuthor(`${member.user.tag} ha sido DES-SILENCIADO`, member.user.displayAvatarURL())
                     .addField(`Miembro`, `<@${member.id}>`, true)
                     .addField(`Moderador`, `<@${bot.user.id}>`, true)
                     .addField(`Razón`, `Venció la amonestación`, true);
 
                 let toDMEmbed = new discord.MessageEmbed()
-                    .setColor(resources.green2)
+                    .setColor(resources.green)
                     .setAuthor(`[DES-SILENCIADO]`, guild.iconURL())
                     .setDescription(`<@${member.id}>, has sido des-silenciado en ${guild.name}`)
                     .addField(`Moderador`, bot.user.id, true)
@@ -73,7 +73,7 @@ exports.run = (discord, bot, fs, resources, moment, config) => {
 
             if (Date.now() > time) {
                 let loggingEmbed = new discord.MessageEmbed()
-                    .setColor(resources.green2)
+                    .setColor(resources.green)
                     .setAuthor(`${user.tag} ha sido DES-BANEADO`, user.displayAvatarURL())
                     .addField(`Usuario`, `@${user.tag}`, true)
                     .addField(`Moderador`, `<@${bot.user.id}>`, true)

@@ -26,7 +26,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await bot.user.setUsername(nickname);
 
         let successEmbed = new discord.MessageEmbed()
-            .setColor(resources.green)
+            .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
             .setDescription(`Cambiaste el nombre del bot a ${nickname}`);
 

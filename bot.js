@@ -1,12 +1,12 @@
 'use-strict';
 
 const logo = require('asciiart-logo');
-const package = require(`./package.json`);
+const package = require('./package.json');
 
 console.log(
     logo({
-        name: `PilkoBot`,
-        font: `Speed`,
+        name: 'PilkoBot',
+        font: 'Speed',
         lineChars: 15,
         padding: 5,
         margin: 2
@@ -21,31 +21,34 @@ console.log(
 console.log(`》Iniciando aplicación «\n―――――――――――――――――――――――― \n${new Date().toLocaleString()}\n`);
 
 //DEPENDENCIAS GLOBALES
-const discord = require(`discord.js`);
-const fs = require(`fs`);
+const discord = require('discord.js');
+const fs = require('fs');
 const moment = require('moment');
-const config = require(`./config.json`);
-const keys = require(`./keys.json`);
+const config = require('./config.json');
+const filters = require('./utils/automod/filters.json');
+const keys = require('./keys.json');
 const bot = new discord.Client({
     fetchAllMembers: true,
     disableEveryone: true,
-    disabledEvents: [`TYPING_START`, `TYPING_STOP`],
+    disabledEvents: ['TYPING_START', 'TYPING_STOP'],
     autoReconnect: true,
     retryLimit: Infinity 
 });
 
 //RECURSOS GLOBALES
-let resources = require(`./utils/resources.js`);
+let resources = require('./utils/resources.js');
 const automodFilters = require('./utils/automod/automodFilters.js')
+const leveling = require('./utils/leveling/leveling.js')
 
 //USUARIOS QUE USARON COMANDOS RECIENTEMENTE
 const talkedRecently = new Set();
 
 //DATOS PERSISTENTES
-bot.mutes = require(`./storage/mutes.json`);
-bot.bans = require(`./storage/bans.json`);
-bot.polls = require(`./storage/polls.json`);
-bot.warns = JSON.parse(fs.readFileSync(`./storage/warns.json`, `utf-8`));
+bot.mutes = JSON.parse(fs.readFileSync('./storage/mutes.json', 'utf-8'));
+bot.bans = JSON.parse(fs.readFileSync('./storage/bans.json', 'utf-8'));
+bot.polls = JSON.parse(fs.readFileSync('./storage/polls.json', 'utf-8'));
+bot.stats = JSON.parse(fs.readFileSync('./storage/stats.json', 'utf-8'));
+bot.warns = JSON.parse(fs.readFileSync('./storage/warns.json', 'utf-8'));
 
 //VOZ
 bot.servers = {}; //Almacena la cola y otros datos
@@ -54,7 +57,7 @@ bot.voiceDispatcher; //Almacena el dispatcher
 bot.voiceConnection; //Almacena la conexión
 
 // COMPROBACIÓN DE INICIO DE SESIÓN Y PRESENCIA
-bot.on(`ready`, async () => {
+bot.on('ready', async () => {
     try {
         const debuggingChannel = bot.channels.cache.get(config.debuggingChannel);
 
@@ -69,23 +72,23 @@ bot.on(`ready`, async () => {
 
         //Recursos globales
         resources.run(discord, bot);
-        resources = require(`./utils/resources.js`);
+        resources = require('./utils/resources.js');
 
         //Carga de intervalos
-        require(`./utils/intervals.js`).run(discord, bot, fs, resources, moment, config);
+        require('./utils/intervals.js').run(discord, bot, fs, resources, moment, config);
 
         //Auditoría
         console.log(` 》${bot.user.username} iniciado correctamente \n  ● Estatus: ${config.status}\n  ● Tipo de actividad: ${config.type}\n  ● Actividad: ${config.game}\n`);
 
         let statusEmbed = new discord.MessageEmbed()
-            .setTitle(`📑 Estado de ejecución`)
+            .setTitle('📑 Estado de ejecución')
             .setColor(resources.gold)
             .setDescription(`${bot.user.username} iniciado correctamente`)
-            .addField(`Estatus:`, config.status, true)
-            .addField(`Tipo de actividad:`, config.type, true)
-            .addField(`Actividad:`, `${bot.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`, true)
-            .addField(`Usuarios:`, bot.users.cache.filter(user => !user.bot).size, true)
-            .addField(`Versión:`, package.version, true)
+            .addField('Estatus:', config.status, true)
+            .addField('Tipo de actividad:', config.type, true)
+            .addField('Actividad:', `${bot.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`, true)
+            .addField('Usuarios:', bot.users.cache.filter(user => !user.bot).size, true)
+            .addField('Versión:', package.version, true)
             .setFooter(`${bot.user.username} • Este mensaje se borrará en 10s`, bot.user.avatarURL());
         debuggingChannel.send(statusEmbed).then(msg => {msg.delete({timeout: 10000})});
         debuggingChannel.send(`<@${config.botOwner}>`).then(msg => {msg.delete({timeout: 1000})});
@@ -95,7 +98,7 @@ bot.on(`ready`, async () => {
 });
 
 // MANEJADOR DE EVENTOS
-fs.readdir(`./events/`, async (err, files) => {
+fs.readdir('./events/', async (err, files) => {
 
     if (err) return console.error(`${new Date().toLocaleString()} 》No se ha podido completar la carga de los eventos.\n${err.stack}`);
     files.forEach(file => {
@@ -114,11 +117,11 @@ fs.readdir(`./events/`, async (err, files) => {
 
         console.log(` - Evento [${eventName}] cargado`);
     });
-    console.log(`\n`);
+    console.log('\n');
 });
 
 // MANEJADOR DE COMANDOS
-bot.on(`message`, async message => {
+bot.on('message', async message => {
     
     const debuggingChannel = bot.channels.cache.get(config.debuggingChannel);
     const loggingChannel = bot.channels.cache.get(config.loggingChannel);
@@ -127,13 +130,13 @@ bot.on(`message`, async message => {
     if (message.channel.id === '550420589458751526' && message.author.id !== '359333470771740683' && message.author.id !== '474051954998509571') return message.delete({timeout: 5000});
 
     if (message.author.bot) return;
-    if (message.channel.type === `dm`) {
-        if (message.author.id === `507668335547252747` || message.author.id === `468149377412890626`) {
+    if (message.channel.type === 'dm') {
+        if (message.author.id === '507668335547252747' || message.author.id === '468149377412890626') {
             let prefix = message.content.slice(0, 1);
             let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
             let command = args.shift().toLowerCase();
             
-            if (prefix !== `-` || command !== `ban` || !args[0]  || !args[1]) return;
+            if (prefix !== '-' || command !== 'ban' || !args[0]  || !args[1]) return;
             
             let member = await resources.server.fetchMember(args[0]);
             
@@ -145,14 +148,14 @@ bot.on(`message`, async message => {
             
             let loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
-                .setAuthor(member.user.tag + ' ha sido BANEADO', member.user.displayAvatarURL())
-                .addField('Miembro', '<@' + member.id + '>', true)
+                .setAuthor(`${member.user.tag} ha sido BANEADO`, member.user.displayAvatarURL())
+                .addField('Miembro', `<@${member.id}>`, true)
                 .addField('Moderador', '<@468149377412890626>', true)
-                .addField('Razón', `Spam vía MD`, true)
+                .addField('Razón', 'Spam vía MD', true)
                 .addField('Mensaje', spamMessage, true)
                 .addField('Duración', '∞', true);
             
-            await loggingChannel.send(loggingEmbed).then(resources.server.ban(member.id, {reason: `Spam vía MD`}));
+            await loggingChannel.send(loggingEmbed).then(resources.server.ban(member.id, {reason: 'Spam vía MD'}));
             
             return;
         } else {
@@ -175,12 +178,12 @@ bot.on(`message`, async message => {
 
     //FILTROS DE AUTO-MODERACIÓN
     (async () => {
-        for (var key in config.filters) {
+        for (var key in filters) {
             await (async () => {
-                if (config.filters[key].status) {
+                if (filters[key].status) {
                     //Comprueba si el miembro tiene algún rol permitido
-                    const bypassRoles = config.filters[key].bypassRoles;
-                    const bypassChannels = config.filters[key].bypassChannels;
+                    const bypassRoles = filters[key].bypassRoles;
+                    const bypassChannels = filters[key].bypassChannels;
 
                     if (bypassChannels.includes(message.channel.id)) return;
     
@@ -189,15 +192,15 @@ bot.on(`message`, async message => {
                     }
 
                     await automodFilters[key](message).then(match => {
-                        if (match) require('./utils/infractionsHandler.js').run(discord, fs, config, bot, resources, loggingChannel, message, message.guild, message.member, config.filters[key].reason, config.filters[key].action, bot.user, message.content)
+                        if (match) require('./utils/infractionsHandler.js').run(discord, fs, config, bot, resources, loggingChannel, message, message.guild, message.member, filters[key].reason, filters[key].action, bot.user, message.content)
                     });
                 }
             })();
         };
-    })()
+    })();
 
 
-    if (!message.content.startsWith(config.prefix) && !message.content.startsWith(config.staffPrefix) && !message.content.startsWith(config.ownerPrefix)) return;
+    if (!message.content.startsWith(config.prefix) && !message.content.startsWith(config.staffPrefix) && !message.content.startsWith(config.ownerPrefix)) return await leveling(discord, fs, bot, config, resources, message);
 
     const prefix = message.content.slice(0, 1);
     // Función para eliminar el prefijo, extraer el comando y sus argumentos (en caso de tenerlos)

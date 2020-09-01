@@ -1,4 +1,4 @@
-const config = require(`../../config.json`);
+const filters = require(`../../utils/automod/filters.json`);
 
 //Palabras malsonantes
 async function swearWords(message) {
@@ -39,21 +39,21 @@ async function massEmoji(message) {
     let serverEmojis = message.content.match(/<:.+?:\d+>/g);
     if (serverEmojis) serverEmojis = serverEmojis.length;
 
-    if ((((fancyCount(message.content) - fancyCount(stringWithoutUTFEmojis))) + serverEmojis) > config.filters.massEmoji.quantity) return true;
+    if ((((fancyCount(message.content) - fancyCount(stringWithoutUTFEmojis))) + serverEmojis) > filters.massEmoji.quantity) return true;
 };
 
 //Menciones masivas
 async function massMentions(message) {
 
     let count = (message.content.match(/<@!?(\d+)>/g) || []).length;
-    if (count > config.filters.massMentions.quantity) return true;
+    if (count > filters.massMentions.quantity) return true;
 };
 
 //Spoilers masivos
 async function massiveSpoilers(message) {
 
     let count = (message.content.match(/\|\|.*?\|\|/g) || []).length;
-    if (count > config.filters.massiveSpoilers.quantity) return true;
+    if (count > filters.massiveSpoilers.quantity) return true;
 };
 
 //Texto repetitivo

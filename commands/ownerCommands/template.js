@@ -215,7 +215,26 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
         } else if (args[0] === `test`) {
 
-            // Code here
+            let results = ['x', 'y', 'z'];
+            let test = [];
+
+            function callback_Original_child(results) { 
+                return new Promise(resolve => {
+                      for (var i = 0; i < results.length; i++) { 
+                            test.push(results[i]);
+                      }
+                });
+            }
+            
+            async function callback_Original(results) { 
+                try {
+                    await callback_Original_child(results);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            
+            callback_Original(results).then(console.log(test));
 
         } else {
             let noArgsEmbed = new discord.MessageEmbed()

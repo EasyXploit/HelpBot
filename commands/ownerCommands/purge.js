@@ -37,7 +37,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             count = messages.size;
             
             let successEmbed = new discord.MessageEmbed()
-                .setColor(resources.green)
+                .setColor(resources.green2)
                 .setTitle(`${resources.GreenTick} Operación completada`)
                 .setDescription(`Mensajes eliminados: ${count}`);
 
@@ -65,7 +65,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             count = messages.size;
             
             let successEmbed = new discord.MessageEmbed()
-                .setColor(resources.green)
+                .setColor(resources.green2)
                 .setTitle(`${resources.GreenTick} Operación completada`)
                 .setDescription(`Mensajes eliminados: ${count}`);
 

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
     //-xp (@miembro | id) (set | add | remove | clear) <cantidad>
     
@@ -139,7 +139,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setTitle('📑 Auditoría')
             .setDescription(`Se ha modificado la cantidad de XP de **${member.user.tag}**.`)
             .setTimestamp()
-            .setFooter(bot.user.username, bot.user.avatarURL())
+            .setFooter(client.user.username, client.user.avatarURL())
             .addField('Fecha:', new Date().toLocaleString(), true)
             .addField('Moderador:', message.author.tag, true)
             .addField('Miembro:', member.user.tag, true)
@@ -147,7 +147,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField('Nuevo valor', newValue, true);
 
         //Escribe el resultado en el JSON
-        fs.writeFile('./storage/stats.json', JSON.stringify(bot.stats, null, 4), async err => {
+        fs.writeFile('./storage/stats.json', JSON.stringify(client.stats, null, 4), async err => {
             if (err) throw err;
 
             await loggingChannel.send(loggingEmbed);
@@ -155,7 +155,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await message.channel.send(successEmbed);
         });
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     };
 };
 

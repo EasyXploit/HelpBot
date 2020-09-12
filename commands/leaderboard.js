@@ -9,7 +9,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             if (client.stats[message.guild.id].hasOwnProperty(key)) {           
                 entries.push({
                     userID: key,
-                    totalXP: client.stats[message.guild.id][key].totalXP
+                    totalXP: client.stats[message.guild.id][key].totalXP,
+                    lvl: client.stats[message.guild.id][key].level
                 });
             };
         };
@@ -24,7 +25,10 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         //Almacena la página actual y las totales
         let position = 1;
-        const pages = Math.floor(entries.length / 10);
+        const pages = Math.ceil(entries.length / 10); //MAL
+        console.log(pages);
+
+        if (args[0] && !isNaN(args[0]) && args[0] > 0 && args[0] <= pages) position = args[0];
 
         //Función para cargar un rango de entradas
         async function loadBoard(fromRange, toRange) {
@@ -33,8 +37,10 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 let entry = entries[i];
                 if (!entry) break;
 
-                let user = await resources.fetchUser(entry.userID);
-                board = board + `\n**#${i + 1}** \`${entry.totalXP}\`: ${user.username}`;
+                let member = await resources.fetchMember(message.guild, entry.userID);
+                if (!member) member = `<@${entry.userID}>`
+                board = `${board}\n**#${i + 1}** • \`${entry.totalXP} xp\` • \`lvl ${entry.lvl}\` • ${member}`;
+
             };
             return board;
         };

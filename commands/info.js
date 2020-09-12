@@ -3,7 +3,7 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
     //!info
     
     const package = require('../package.json');
-    const cfg = require('../config.json');
+    const cfg = require('../configs/config.json');
     
     try {
         let resultEmbed = new discord.MessageEmbed()

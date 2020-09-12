@@ -58,7 +58,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             
             //Graba el nuevo prefijo
             config.prefix = newPrefix;
-            await fs.writeFile('./config.json', JSON.stringify(config, null, 4), (err) => console.error);
+            await fs.writeFile('./configs/config.json', JSON.stringify(config, null, 4), (err) => console.error);
             
             prefixType = 'general';
             
@@ -69,7 +69,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             
             //Graba el nuevo prefijo
             config.staffPrefix = newPrefix;
-            await fs.writeFile('./config.json', JSON.stringify(config, null, 4), (err) => console.error);
+            await fs.writeFile('./configs/config.json', JSON.stringify(config, null, 4), (err) => console.error);
             
             prefixType = 'del staff';
             
@@ -80,7 +80,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             
             //Graba el nuevo prefijo
             config.ownerPrefix = newPrefix;
-            await fs.writeFile('./config.json', JSON.stringify(config, null, 4), (err) => console.error);
+            await fs.writeFile('./configs/config.json', JSON.stringify(config, null, 4), (err) => console.error);
             
             prefixType = 'del owner';
             

@@ -222,7 +222,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             //Si se proporciona una URL de YouTube, busca con esa url, de lo contrario buscará la URL mediante tubesearch
             const search = require('youtube-search');
-            const keys = require('../keys.json');
+            const keys = require('../configs/keys.json');
 
             const opts = {
                 maxResults: 1,

@@ -26,7 +26,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         //Graba el nuevo canal de bienvenida 
         config.welcomeChannel = channel;
-        await fs.writeFile('./config.json', JSON.stringify(config, null, 4), (err) => console.error);
+        await fs.writeFile('./configs/config.json', JSON.stringify(config, null, 4), (err) => console.error);
 
         let completedEmbed = new discord.MessageEmbed()
             .setColor(resources.green2)

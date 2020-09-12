@@ -12,7 +12,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         if (args[0] === `informacion`) {
             message.delete();
 
-            const cfg = require('../../config.json');
+            const cfg = require('../../configs/configs/config.json');
             
             let embed1 = new discord.MessageEmbed()
                 .setColor(resources.gold)

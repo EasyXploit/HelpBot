@@ -24,9 +24,9 @@ console.log(`》Iniciando aplicación «\n――――――――――――�
 const discord = require('discord.js');
 const fs = require('fs');
 const moment = require('moment');
-const config = require('./config.json');
+const config = require('./configs/config.json');
 const filters = require('./utils/automod/filters.json');
-const keys = require('./keys.json');
+const keys = require('./configs/keys.json');
 const client = new discord.Client({
     fetchAllMembers: true,
     disableEveryone: true,

@@ -38,7 +38,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         let resultEmbed = new discord.MessageEmbed()
             .setColor(resources.gold)
-            .setTitle(`🏆 Rango`)
+            .setTitle(`🥇 Rango`)
             .setDescription(`Mostrando el rango del usuario **${member.user.tag}**`)
             .setThumbnail(member.user.displayAvatarURL())
             .addField(`Nivel actual`, userStats.level, true)

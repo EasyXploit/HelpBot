@@ -15,49 +15,56 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         .addField(`:robot: ${config.prefix}comandos`, 'Muestra los comandos de los bots.')
         .addField(`🎖 ${config.prefix}rangos`, 'Muestra los rangos del servidor, la tabla de puntuaciones y tu nivel.')
         .addField(`ℹ ${config.prefix}info`, 'Muestra información acerca del proyecto')
+        .addField(`🥇 ${config.prefix}rank`, 'Muestra tu rango actual')
+        .addField(`🏆 ${config.prefix}leaderboard`, 'Muestra la tabla de clasificación')
         .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
 
-    await message.channel.send(helpEmbed).then(async function (message) {
+    await message.channel.send(helpEmbed).then(async function (msg) {
         
-        await message.react('📓');
-        await message.react(resources.pilkobot);
-        await message.react('🤖');
-        await message.react('🎖');
-        await message.react('ℹ');
+        await msg.react('📓');
+        await msg.react(resources.pilkobot);
+        await msg.react('🤖');
+        await msg.react('🎖');
+        await msg.react('ℹ');
+        await msg.react('🥇');
+        await msg.react('🏆');
 
         const filter = (reaction, user) => {
-            return ['📓', 'pilkobot', '🤖', '🎖', 'ℹ'].includes(reaction.emoji.name) && user.id === userID;
+            return ['📓', 'pilkobot', '🤖', '🎖', 'ℹ', '🥇', '🏆'].includes(reaction.emoji.name) && user.id === userID;
         };
 
-        message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+        msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
             .then(async collected => {
                 const reaction = collected.first();
 
                 if (reaction.emoji.name === '📓') {
-                    await message.delete()
-                    
+                    await msg.delete()
                     require(`../commands/normas.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === 'pilkobot') {
-                    await message.delete()
-                    
+                    await msg.delete()
                     require(`../commands/pilko.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 }  else if (reaction.emoji.name === '🤖') {
-                    await message.delete()
-                    
+                    await msg.delete()
                     resources.valueCheck = userID;
                     require(`../commands/comandos.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === '🎖') {
-                    await message.delete()
-                    
+                    await msg.delete()
                     require(`../commands/rangos.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === 'ℹ') {
-                    await message.delete()
-                    
+                    await msg.delete()
                     require(`../commands/info.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
+                    
+                } else if (reaction.emoji.name === '🥇') {
+                    await msg.delete()
+                    require(`../commands/rank.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
+                    
+                } else if (reaction.emoji.name === '🏆') {
+                    await msg.delete()
+                    require(`../commands/leaderboard.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 }
             })

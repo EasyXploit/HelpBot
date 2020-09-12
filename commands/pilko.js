@@ -12,6 +12,7 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
             .addField(`${resources.translate} ${config.prefix}translate (idioma orígen) (idioma destino) (texto a traducir)`, `Traduce un texto proporcionado por el usuario (usa códigos de idioma. P. ej: _en_)`)
             .addField(`👦 ${config.prefix}avatar (@usuario)`,  `Muestra tu avatar o el de cualquier usuario.`)
             .addField(`🌦 ${config.prefix}weather (ubicación)`,  `Obtiene información metereológica acerca de la ubicación proporcionada.`)
+            .addField(`🎭 ${config.prefix}meme`, `Muestra un meme aleatorio en Español.`)
             .addField(`🐈 ${config.prefix}catfacts`, `Muestra un dato curioso aleatorio sobre los gatos.`)
             .addField(`🐕 ${config.prefix}dogfacts`, `Muestra un dato curioso aleatorio sobre los perros.`)
             .addField(`🎲 ${config.prefix}dado`, `Lanzará un dado.`)

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!dj
     
@@ -24,6 +24,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await message.channel.send(successEmbed);
         await message.author.send(helpEmbed);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

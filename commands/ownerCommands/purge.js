@@ -1,8 +1,10 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
     //$purge (límite) <#canal | id>
     
     try {
+        if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
+        
         let noQuantityEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes proporcionar la cantidad de mensajes a eliminar`);
@@ -44,9 +46,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             let loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue)
                 .setTimestamp()
-                .setFooter(bot.user.username, bot.user.avatarURL())
+                .setFooter(client.user.username, client.user.avatarURL())
                 .setTitle('📑 Auditoría')
-                .setDescription(`<@${message.author.id}> eliminó ${count} mensajes del canal <#${channel.id}>`);
+                .setDescription(`${message.author.tag} eliminó ${count} mensajes del canal <#${channel.id}>`);
             
             try {
                 await channel.bulkDelete(messages);
@@ -72,9 +74,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             let loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue)
                 .setTimestamp()
-                .setFooter(bot.user.username, bot.user.avatarURL())
+                .setFooter(client.user.username, client.user.avatarURL())
                 .setTitle('📑 Auditoría')
-                .setDescription(`<@${message.author.id}> eliminó ${count} mensajes del canal <#${channel.id}>`);
+                .setDescription(`${message.author.tag} eliminó ${count} mensajes del canal <#${channel.id}>`);
             
             try {
                 await channel.bulkDelete(messages);
@@ -86,6 +88,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             }
         }
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

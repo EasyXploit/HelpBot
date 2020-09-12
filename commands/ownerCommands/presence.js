@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
     //$presence (estatus | actividad) (online | offline | idle | dnd - nombreDeLaAtividad)
     
@@ -32,7 +32,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
             //Graba la configuración
             await fs.writeFile('./config.json', JSON.stringify(config, null, 4), (err) => console.error);
-            await bot.user.setStatus(config.status);
+            await client.user.setStatus(config.status);
 
             changed = 'el estado';
         } else if (toModify === 'actividad') {
@@ -41,7 +41,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
             //Graba la configuración
             await fs.writeFile('./config.json', JSON.stringify(config, null, 4), (err) => console.error);
-            await bot.user.setPresence({game: {name: config.game, type: config.type}});
+            await client.user.setPresence({game: {name: config.game, type: config.type}});
 
             changed = 'la actividad';   
         }
@@ -54,13 +54,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.blue)
             .setTimestamp()
-            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, bot.user.avatarURL())
+            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, client.user.avatarURL())
             .setTitle('📑 Auditoría')
             .setDescription(`${message.author.username} cambió ${changed} del bot a \`${content}\``);
 
         await loggingChannel.send(loggingEmbed);
         await message.channel.send(resultEmbed)
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     const noPrivilegesEmbed = new discord.MessageEmbed()
         .setColor(resources.red)
@@ -13,15 +13,15 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} El bot no tiene ninguna canción en la cola.`);
         
-        if (!bot.servers[message.guild.id]) return message.channel.send(noQueueEmbed);
+        if (!client.servers[message.guild.id]) return message.channel.send(noQueueEmbed);
         
         const ytdl = require(`ytdl-core-discord`);
         const moment = require(`moment`);
         const randomColor = require('randomcolor');
         
-        let info = await ytdl.getInfo(bot.servers[message.guild.id].nowplaying.link);
-        let server = bot.servers[message.guild.id];
-        let progress = await bot.voiceDispatcher.streamTime;
+        let info = await ytdl.getInfo(client.servers[message.guild.id].nowplaying.link);
+        let server = client.servers[message.guild.id];
+        let progress = await client.voiceDispatcher.streamTime;
         
         let total = info.player_response.videoDetails.lengthSeconds * 1000;
         let percentage = Math.floor((progress * 100) / total);
@@ -42,6 +42,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         message.channel.send(progressEmbed);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

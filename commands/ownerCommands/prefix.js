@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //$prefix (nuevo prefijo) (todos | staff | owner)
 
@@ -49,7 +49,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.blue)
             .setTimestamp()
-            .setFooter(bot.user.username, bot.user.avatarURL())
+            .setFooter(client.user.username, client.user.avatarURL())
             .setTitle('📑 Auditoría')
             .setDescription(`${message.author.username} cambió el prefijo ${prefixType} a \`${newPrefix}\``);
 
@@ -88,6 +88,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await message.channel.send(successEmbed);
         }
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

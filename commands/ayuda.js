@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!ayuda
     
@@ -36,28 +36,28 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 if (reaction.emoji.name === '📓') {
                     await message.delete()
                     
-                    require(`../commands/normas.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/normas.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === 'pilkobot') {
                     await message.delete()
                     
-                    require(`../commands/pilko.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/pilko.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 }  else if (reaction.emoji.name === '🤖') {
                     await message.delete()
                     
                     resources.valueCheck = userID;
-                    require(`../commands/comandos.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/comandos.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === '🎖') {
                     await message.delete()
                     
-                    require(`../commands/rangos.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/rangos.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 } else if (reaction.emoji.name === 'ℹ') {
                     await message.delete()
                     
-                    require(`../commands/info.js`).run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/info.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
                     
                 }
             })
@@ -66,6 +66,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             });
         });
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //-restart
     
@@ -12,20 +12,20 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(4886754)
             .setTimestamp()
-            .setFooter(bot.user.username, bot.user.avatarURL())
+            .setFooter(client.user.username, client.user.avatarURL())
             .setTitle('📑 Auditoría')
-            .setDescription(`**${message.author.tag}** reinició a **${bot.user.username}**`);
+            .setDescription(`**${message.author.tag}** reinició a **${client.user.username}**`);
 
         // Destrucción de la actividad
-        bot.destroy();
-        console.log(`${new Date().toLocaleString()} 》Deteniendo ${bot.user.username} . . .`);
+        client.destroy();
+        console.log(`${new Date().toLocaleString()} 》Deteniendo ${client.user.username} . . .`);
         
          // Inicio de sesión del bot
-        bot.login(keys.token);
-        console.log(`${new Date().toLocaleString()} 》Iniciando ${bot.user.username} . . .\n`);
-        bot.emit('ready');
+        client.login(keys.token);
+        console.log(`${new Date().toLocaleString()} 》Iniciando ${client.user.username} . . .\n`);
+        client.emit('ready');
         loggingChannel.send(loggingEmbed);
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

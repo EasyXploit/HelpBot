@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
     //-ban (@usuario | id) (motivo)
     
@@ -23,7 +23,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         const user = await resources.fetchUser(args[0]);
         if (!user) return message.channel.send(notToBanEmbed);
         
-        const moderator = await message.guild.members.fetch(message.author);
+        const moderator = await resources.fetchMember(message.guild, message.author.id);
         const member = await resources.fetchMember(message.guild, user.id);
 
         if (member) {
@@ -49,13 +49,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
-            .setDescription(`El usuario <@${user.id}> ha sido baneado, ¿alguien más? ${resources.drakeban}`);
+            .setDescription(`El usuario ${user.tag} ha sido baneado, ¿alguien más? ${resources.banned}`);
 
         let toDMEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setAuthor(`[BANEADO]`, message.guild.iconURL())
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
-            .addField(`Moderador`, `@${message.author.tag}`, true)
+            .addField(`Moderador`, message.author.tag, true)
             .addField(`Razón`, reason, true)
             .addField(`Duración`, `∞`, true);
 
@@ -67,6 +67,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await message.channel.send(successEmbed);
 
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 };

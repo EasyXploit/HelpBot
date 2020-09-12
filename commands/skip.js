@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     const noPrivilegesEmbed = new discord.MessageEmbed()
         .setColor(resources.red)
@@ -15,7 +15,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let notAvailableEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${bot.user.id}>.`);
+            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
 
         //Comprueba si el bot tiene o no una conexión a un canal de voz en el servidor
         if (!message.guild.voice) return message.channel.send(notPlayingEmbed);
@@ -25,7 +25,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!voiceChannel) return message.channel.send(notAvailableEmbed);
 
         //Comprueba si el miembro está en el mismo canal que el bot
-        if (message.member.voice.channelID !== message.guild.member(bot.user).voice.channelID) return message.channel.send(notAvailableEmbed);
+        if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(notAvailableEmbed);
 
         let noTalkPermissionEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
@@ -40,7 +40,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let tooBigEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Solo puedes hacer skip de \`${(bot.servers[message.guild.id].queue.length + 1)}\` canciones.`);
+            .setDescription(`${resources.RedTick} Solo puedes hacer skip de \`${(client.servers[message.guild.id].queue.length + 1)}\` canciones.`);
         
         //Si se especifica una cantidad, se skipearan en consecuencia
         if (args[0]) {
@@ -54,10 +54,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setDescription(`${resources.RedTick} No puedes omitir más de una canción con el modo loop activado.`);
             
             //Comprueba si está activado el modo aleatorio
-            if (bot.servers[message.guild.id].shuffle === true) return message.channel.send(tooMuchSkipsRandomEmbed);
+            if (client.servers[message.guild.id].shuffle === true) return message.channel.send(tooMuchSkipsRandomEmbed);
 
             //Comprueba si está activado el modo loop
-            if (bot.servers[message.guild.id].loop === true) return message.channel.send(tooMuchSkipsLoopEmbed);
+            if (client.servers[message.guild.id].loop === true) return message.channel.send(tooMuchSkipsLoopEmbed);
             
             //Comprueba si se ha proporcionado un número entero
             if (isNaN(args[0])) return message.channel.send(NaNEmbed);
@@ -66,16 +66,16 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             if (args[0] === `0`) return message.channel.send(`Quieres jugar sucio eh ...`);
             
             //Comprueba si el valor introducido es válido
-            if (args[0] > (bot.servers[message.guild.id].queue.length + 1)) return message.channel.send(tooBigEmbed);
+            if (args[0] > (client.servers[message.guild.id].queue.length + 1)) return message.channel.send(tooBigEmbed);
             
             //Cambia la cola
-            await bot.servers[message.guild.id].queue.splice(0, args[0] - 1)
+            await client.servers[message.guild.id].queue.splice(0, args[0] - 1)
         }
 
         //Omite la reproducción y manda un mensaje de confirmación
         await message.channel.send(`⏭ | Canción omitida`);
-        await bot.voiceDispatcher.end();
+        await client.voiceDispatcher.end();
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

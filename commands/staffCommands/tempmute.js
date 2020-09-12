@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
     //-tempmute (@usuario | id) (xS | xM | xH | xD) (motivo)
     
@@ -18,50 +18,37 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
         const member = await resources.fetchMember(message.guild, args[0]);
         if (!member) return message.channel.send(notToMuteEmbed);
+
         if (member.user.bot) return message.channel.send(noBotsEmbed);
         
         //Esto comprueba si se ha proporcionado una unidad de medida de tiempo
         if (!args[1]) return message.channel.send(noCorrectTimeEmbed);
         
-        let moderator = await message.guild.members.fetch(message.author);
+        let moderator = await resources.fetchMember(message.guild, message.author.id);
         
         //Se comprueba si puede banear al usuario
         if (moderator.id !== message.guild.owner.id) {
             if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send(noPrivilegesEmbed)
-        }
-
-        //Comprueba si existe el rol silenciado, y de no existir, lo crea
-        let role = message.guild.roles.cache.find(r => r.name === 'Silenciado');
-        if (!role) {
-            role = await message.guild.createRole({
-                name: 'Silenciado',
-                color: '#818386',
-                permissions: []
-            });
-            
-            let botMember = message.guild.members.cache.get(bot.user.id);
-            await message.guild.setRolePosition(role, botMember.roles.highest.position - 1);
-            
-            message.guild.channels.forEach(async (channel, id) => {
-                await channel.overwritePermissions (role, {
-                    SEND_MESSAGES: false,
-                    ADD_REACTIONS: false,
-                    SPEAK: false
-                });
-            });
         };
+
+        //Comprueba si existe el rol silenciado, sino lo crea
+        const mutedRole = await resources.checkMutedRole(message.guild);
 
         let alreadyMutedEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Este usuario ya esta silenciado`);
 
+        //Comprueba si el usuario tiene el rol silenciado, sino se lo añade
+        if (member.roles.cache.has(mutedRole.id)) return message.channel.send(alreadyMutedEmbed);
+        member.roles.add(mutedRole);
+
+        //Propaga el rol silenciado
+        resources.spreadMutedRole(message.guild);
+
         let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
-            .setDescription(`El usuario <@${member.id}> ha sido silenciado, ¿alguien más?`);
-
-        //Comprueba si este susuario ya estaba silenciado
-        if (member.roles.cache.has(role.id)) return message.channel.send(alreadyMutedEmbed);
+            .setDescription(`El usuario **${member.user.tag}** ha sido silenciado, ¿alguien más?`);
         
         //Comprueba la longitud del tiempo proporcionado
         if (args[1].length < 2) return message.channel.send(noCorrectTimeEmbed);
@@ -78,21 +65,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let milliseconds;
 
-        function stoms(seg) {
-            milliseconds = seg * 1000
-        }
-
-        function mtoms(min) {
-            milliseconds = min * 60000
-        }
-
-        function htoms(hour) {
-            milliseconds = hour * 3600000
-        }
-
-        function dtoms(day) {
-            milliseconds = day * 86400000
-        } 
+        function stoms(seg) {milliseconds = seg * 1000}
+        function mtoms(min) {milliseconds = min * 60000}
+        function htoms(hour) {milliseconds = hour * 3600000}
+        function dtoms(day) {milliseconds = day * 86400000} 
 
         switch (measure) {
             case 's':
@@ -125,13 +101,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setDescription(`${resources.RedTick} Los moderadores deben adjuntar una razón`);
 
             if (reason === 'Indefinida' && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(undefinedReasoneEmbed);
-        }
+        };
 
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setAuthor(`${member.user.tag} ha sido SILENCIADO`, member.user.displayAvatarURL())
-            .addField('Miembro', `<@${member.id}>`, true)
-            .addField('Moderador', `<@${message.author.id}>`, true)
+            .addField('Miembro', member.user.tag, true)
+            .addField('Moderador', message.author.tag, true)
             .addField('Razón', reason, true)
             .addField('Duración', args[1], true);
 
@@ -143,12 +119,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .addField('Razón', reason, true)
             .addField('Duración', args[1], true);
 
-        bot.mutes[member.id] = {
+        client.mutes[member.id] = {
             time: Date.now() + milliseconds
-        }
-        await member.roles.add(role);
+        };
 
-        fs.writeFile('./storage/mutes.json', JSON.stringify(bot.mutes, null, 4), async err => {
+        fs.writeFile('./storage/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
             if (err) throw err;
 
             await message.channel.send(successEmbed);
@@ -156,6 +131,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await member.send(toDMEmbed);
         });
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
     // -poll (new | end) [id]
 
@@ -126,7 +126,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
                         const moment = require('moment');
                         let remainingTime = '∞';
-                        if (duration !== 0) remainingTime = `${Math.floor((duration) / (60*60*24*1000))}d ${moment().startOf('day').milliseconds(duration).format('HH:mm')}`;
+                        if (duration !== 0) {
+                            let remainingDays = Math.floor((duration) / (60*60*24*1000));
+                            let remainingHours = Math.floor((duration - (remainingDays * 86400000)) / (60*60*1000));
+                            let remainingMinutes = Math.floor((duration - (remainingHours * 3600000) - (remainingDays * 86400000)) / (60*1000));
+                            remainingTime = `${remainingDays}d ${remainingHours}h ${remainingMinutes}m`
+                        };
 
                         let resultEmbed = new discord.MessageEmbed()
                             .setColor(0x2AB7F1)
@@ -141,14 +146,14 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                             };
 
                             if (duration !== 0) {
-                                bot.polls[poll.id] = {
+                                client.polls[poll.id] = {
                                     duration: Date.now() + duration,
                                     channel: message.channel.id,
                                     title: title,
                                     options: options
                                 }
                         
-                                fs.writeFile('./storage/polls.json', JSON.stringify(bot.polls, null, 4), async err => {
+                                fs.writeFile('./storage/polls.json', JSON.stringify(client.polls, null, 4), async err => {
                                     if (err) throw err;
                                 });
                             };
@@ -164,16 +169,16 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setColor(resources.red2)
                 .setDescription(`${resources.RedTick} La encuesta con ID ${args[1]} no se ha podido encontrar`);
 
-            if (!bot.polls[args[1]]) return message.channel.send(notFoundEmbed);
+            if (!client.polls[args[1]]) return message.channel.send(notFoundEmbed);
 
-            let channel = await bot.channels.fetch(bot.polls[args[1]].channel);
+            let channel = await client.channels.fetch(client.polls[args[1]].channel);
             let poll = await channel.messages.fetch(args[1])
 
             if (!poll) return message.channel.send(notFoundEmbed);
 
-            bot.polls[args[1]].duration = Date.now();
+            client.polls[args[1]].duration = Date.now();
 
-            fs.writeFile(`./storage/polls.json`, JSON.stringify(bot.polls), async err => {
+            fs.writeFile(`./storage/polls.json`, JSON.stringify(client.polls), async err => {
                 if (err) throw err;
             });
         } else {
@@ -181,6 +186,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         }
 
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     };
 };

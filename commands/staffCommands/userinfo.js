@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
     //-userinfo (@usuario | id)
 
@@ -44,10 +44,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         //Comprueba el número de warns del usuario
         let warns;
-        if (!bot.warns[member.id]) {
+        if (!client.warns[member.id]) {
             warns = 0
         } else {
-            warns = bot.warns[member.id].length;
+            warns = client.warns[member.id].length;
         }
         
         let lastMessage;
@@ -79,7 +79,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 permissions: []
             });
             
-            let botMember = message.guild.members.cache.get(bot.user.id);
+            let botMember = message.guild.members.cache.get(client.user.id);
             await message.guild.setRolePosition(role, botMember.roles.highest.position - 1);
             
             message.guild.channels.forEach(async (channel, id) => {
@@ -92,19 +92,19 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         };
 
         let sanction;
-        if (bot.mutes[member.id]) {
-            sanction = `Silenciado hasta ${new Date(bot.mutes[member.id].time).toLocaleString()}`;
+        if (client.mutes[member.id]) {
+            sanction = `Silenciado hasta ${new Date(client.mutes[member.id].time).toLocaleString()}`;
         } else if (member.roles.cache.has(role.id)) {
             sanction = 'Silenciado indefinidamente';
         }
 
         let infractionsCount = 0;
-        if (bot.warns[member.id]) infractionsCount = Object.keys(bot.warns[member.id]).length;
+        if (client.warns[member.id]) infractionsCount = Object.keys(client.warns[member.id]).length;
 
         let resultEmbed = new discord.MessageEmbed()
             .setColor(member.displayHexColor)
             .setTitle(`🙍 Información de usuario`)
-            .setDescription(`Mostrando información acerca del usuario <@${member.id}>\nSanción actual: \`${sanction || 'Ninguna'}\``)
+            .setDescription(`Mostrando información acerca del usuario **${member.user.tag}**\nSanción actual: \`${sanction || 'Ninguna'}\``)
             .setThumbnail(user.displayAvatarURL())
             .addField(`🏷 TAG completo`, user.tag, true)
             .addField(`🆔 ID del usuario`, member.id, true)
@@ -119,6 +119,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
 
     //-kick (@usuario | id) (motivo)
     
@@ -18,7 +18,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
         const member = await resources.fetchMember(message.guild, args[0]);
         if (!member) return message.channel.send(notToKickEmbed);
-        let moderator = await message.guild.members.fetch(message.author);
+        let moderator = await resources.fetchMember(message.guild, message.author.id);
         
         //Se comprueba si puede banear al usuario
         if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send(noPrivilegesEmbed)
@@ -33,7 +33,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
-            .setDescription(`El usuario <@${member.id}> ha sido expulsado, ¿alguien más?`);
+            .setDescription(`El usuario **${member.user.tag}** ha sido expulsado, ¿alguien más?`);
 
         let toDMEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
@@ -46,6 +46,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await member.kick(reason);
         await message.channel.send(successEmbed);
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

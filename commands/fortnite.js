@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!fortnite "usuario" "solo/duo/squad/lifetime" "pc/xbl/psn"
     
@@ -162,6 +162,6 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             message.channel.send(errorEmbed);
         });
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

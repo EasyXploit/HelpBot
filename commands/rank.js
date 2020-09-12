@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
     //!rank (@usuario)
     
@@ -10,11 +10,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         const member = await resources.fetchMember(message.guild, args[0] || message.author.id);
         if (!member) return message.channel.send(notFoundEmbed);
 
-        if (message.guild.id in bot.stats === false) {
-            bot.stats[message.guild.id] = {};
+        if (message.guild.id in client.stats === false) {
+            client.stats[message.guild.id] = {};
         };
 
-        const guildStats = bot.stats[message.guild.id];
+        const guildStats = client.stats[message.guild.id];
 
         if (member.id in guildStats === false) {
             guildStats[member.id] = {
@@ -28,19 +28,33 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         const userStats = guildStats[member.id];
         const xpToNextLevel = 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100;
 
+        let nonXP;
+        for (let i = 0; i < config.nonXPRoles.length; i++) {
+            if (await member.roles.cache.find(r => r.id === config.nonXPRoles[i])) {
+                nonXP = true;
+                break;
+            };
+        };
+
         let resultEmbed = new discord.MessageEmbed()
             .setColor(resources.gold)
             .setTitle(`🏆 Rango`)
-            .setDescription(`Mostrando el rango del usuario <@${member.id}>`)
+            .setDescription(`Mostrando el rango del usuario **${member.user.tag}**`)
             .setThumbnail(member.user.displayAvatarURL())
             .addField(`Nivel actual`, userStats.level, true)
             .addField(`XP Total`, userStats.totalXP, true)
-            .addField(`XP para el siguiente nivel`, xpToNextLevel - userStats.actualXP, true);
+            
             //Mostrar next reward
+
+        if (nonXP) {
+            resultEmbed.addField(`XP para el siguiente nivel`, '\`No puedes subir de nivel\`', true);
+        } else {
+            resultEmbed.addField(`XP para el siguiente nivel`, xpToNextLevel - userStats.actualXP, true);
+        };
         
         message.channel.send(resultEmbed);
 
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     };
 };

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     const noPrivilegesEmbed = new discord.MessageEmbed()
         .setColor(resources.red)
@@ -15,9 +15,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} El bot no tiene ninguna canción en la cola.`);
         
-        if (!bot.servers[message.guild.id]) return message.channel.send(noQueueEmbed);
+        if (!client.servers[message.guild.id]) return message.channel.send(noQueueEmbed);
         
-        let server = bot.servers[message.guild.id];
+        let server = client.servers[message.guild.id];
         
         let queueEmbed = new discord.MessageEmbed()
                 .setColor(randomColor())
@@ -25,12 +25,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n● Duración: \`${server.nowplaying.duration}\`.\n ● Requerida por: \`${server.nowplaying.requestedBy}\``)
                 .setFooter(`© ${new Date().getFullYear()} República Gamer S.L. | BETA Pública`, resources.server.iconURL());
         
-        if (!bot.servers[message.guild.id].queue[0]) {
+        if (!client.servers[message.guild.id].queue[0]) {
             
             //Si no hay cola, envia nowPlaying
             message.channel.send(queueEmbed);
-        } else if (!bot.servers[message.guild.id].queue[1]) {
-            let serverQueue = bot.servers[message.guild.id].queue
+        } else if (!client.servers[message.guild.id].queue[1]) {
+            let serverQueue = client.servers[message.guild.id].queue
             let queueList = `\`1.\` [${serverQueue[0].title}](${serverQueue[0].link}) | \`${serverQueue[0].duration} ${serverQueue[0].requestedBy}\`\n\n`;
             
             queueEmbed.addField(`A continuación`, queueList, true)
@@ -38,7 +38,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
         } else {
             
-            let serverQueue = bot.servers[message.guild.id].queue
+            let serverQueue = client.servers[message.guild.id].queue
             let queueList = `\`1.\` [${serverQueue[0].title}](${serverQueue[0].link}) | \`${serverQueue[0].duration} ${serverQueue[0].requestedBy}\`\n\n`;
             
             for (let id = 1; id < serverQueue.length; id++) {
@@ -49,6 +49,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             message.channel.send(queueEmbed);
         }
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

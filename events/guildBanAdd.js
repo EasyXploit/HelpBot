@@ -1,4 +1,4 @@
-exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => {
+exports.run = async (guild, user, discord, fs, config, keys, client, resources) => {
 
     try {
         //Previene que continue la ejecución si el servidor no es la República Gamer
@@ -6,32 +6,32 @@ exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => 
 
         async function sendLogEmbed(executor, reason, time) {
             if (user.bot) {
-                if (user.id === bot.user.id) return;
+                if (user.id === client.user.id) return;
 
                 const loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.orange)
                     .addField(`📤 Auditoría`, `El **BOT** <@${user.tag}> fue baneado del servidor`);
 
-                await bot.channels.cache.get(config.loggingChannel).send(loggingEmbed)
+                await client.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             } else {
                 let moderador = executor;
                 let razon = reason;
 
                 if (reason.includes('Moderador: ')) {
-                    moderador = await bot.users.fetch(reason.split(', ')[0].substring(11));
+                    moderador = await client.users.fetch(reason.split(', ')[0].substring(11));
                     razon = reason.split(', Razón: ')[1];
                 }
 
                 const loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.red)
                     .setAuthor(`${user.tag} ha sido BANEADO`, user.displayAvatarURL())
-                    .addField(`Miembro`, `<@${user.id}>`, true)
-                    .addField(`ID`, `${user.id}`, true)
-                    .addField(`Moderador`, `<@${moderador.id || 'Desconocido'}>`, true)
+                    .addField(`Miembro`, user.tag, true)
+                    .addField(`ID`, user.id, true)
+                    .addField(`Moderador`, `${moderador.tag || 'Desconocido'}`, true)
                     .addField(`Razón`, razon || 'Desconocida', true)
                     .addField(`Duración`, time || 'Desconocida', true);
 
-                await bot.channels.cache.get(config.loggingChannel).send(loggingEmbed)
+                await client.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             }
         }
 
@@ -43,7 +43,6 @@ exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => 
         const banLog = fetchedLogs.entries.first();
 
         if (!banLog) {
-            console.log(`${new Date().toLocaleString()} 》${user.tag} fue baneado en ${guild.name} pero no se encontró un registro de auditoría que lo corrobore.`);
             return sendLogEmbed();
         } 
     
@@ -58,10 +57,8 @@ exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => 
                 reason = reason.split('Razón: ').pop();
             }
 
-            console.log(`${new Date().toLocaleString()} 》${user.tag} fue baneado en ${guild.name} por ${executor.tag} durante ${time} por ${reason}.`);
             sendLogEmbed(executor, reason, time);
         } else {
-            console.log(`${new Date().toLocaleString()} 》${user.tag} fue baneado de ${guild.name} pero la búsqueda de un registro en la auditoría fue inconcluyente.`);
             sendLogEmbed();
         }
 
@@ -82,6 +79,6 @@ exports.run = async (guild, user, discord, fs, config, keys, bot, resources) => 
             .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp();
         
         //Se envía el mensaje al canal de depuración
-        await bot.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
+        await client.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
     }
 }

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //$edit <ID del canal> <ID del mensaje> <nuevo contenido>
     
@@ -26,6 +26,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         msg.edit(newEmbed);
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

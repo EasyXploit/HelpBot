@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
     //-warn (@miembro | id) (razón)
     
@@ -24,7 +24,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let reason = args.slice(1).join(" ");
         if (!reason) return message.channel.send(undefinedReasonEmbed);
           
-        let moderator = await message.guild.members.fetch(message.author);
+        let moderator = await resources.fetchMember(message.guild, message.author.id);
         
         //Se comprueba si puede advertir al usuario
         if (moderator.id !== message.guild.owner.id) {
@@ -33,9 +33,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         message.delete();
 
-        require('../../utils/infractionsHandler.js').run(discord, fs, config, bot, resources, loggingChannel, message, message.guild, member, reason, 2, message.author)
+        require('../../utils/infractionsHandler.js').run(discord, fs, config, client, resources, loggingChannel, message, message.guild, member, reason, 2, message.author)
 
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

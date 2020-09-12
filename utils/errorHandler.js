@@ -1,4 +1,4 @@
-exports.run = async (discord, config, bot, message, args, command, e) => {
+exports.run = async (discord, config, client, message, args, command, e) => {
     
     //Se comprueba si el error es provocado por la invocación de un comando no existente
     if (e.toLocaleString().includes('Cannot find module') || e.toLocaleString().includes('Cannot send messages to this user')) return;
@@ -7,7 +7,7 @@ exports.run = async (discord, config, bot, message, args, command, e) => {
     console.error('\n' + new Date().toLocaleString() + ' 》' + e.stack + '\n');
     
     //Se declara el canal de depuración
-    const debuggingChannel = bot.channels.cache.get(config.debuggingChannel);
+    const debuggingChannel = client.channels.cache.get(config.debuggingChannel);
     
     //Se declara el archivo de recursos
     const resources = require(`./resources.js`);

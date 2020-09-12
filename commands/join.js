@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     const noPrivilegesEmbed = new discord.MessageEmbed()
         .setColor(resources.red)
@@ -29,10 +29,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (message.guild.voice && message.guild.voice.channel) {
             
             //Si está en otra sala diferente
-            if (message.member.voice.channelID !== message.guild.member(bot.user).voice.channelID) return message.channel.send(alreadyInChannelEmbed);
+            if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(alreadyInChannelEmbed);
             
             //Si está en la sala del miembro
-            if (message.member.voice.channelID === message.guild.member(bot.user).voice.channelID) return message.channel.send(alreadyInYourChannelEmbed);
+            if (message.member.voice.channelID === message.guild.member(client.user).voice.channelID) return message.channel.send(alreadyInYourChannelEmbed);
         }
 
         let noConnectPermissionEmbed = new discord.MessageEmbed()
@@ -60,16 +60,16 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         voiceChannel.join().then(connection => {
             
             //Almacena la conexión en una variable global
-            bot.voiceConnection = connection;
+            client.voiceConnection = connection;
                     
             //Cambia el estatus a "NO DISPONIBLE"
-            bot.voiceStatus = false;
+            client.voiceStatus = false;
             
             //Manda un mensaje de confirmación
             message.channel.send(`⏺ | Me he unido al canal`);
 
         }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
     //!sound (término | list)
 
@@ -44,8 +44,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             let voiceChannel = message.member.voice.channel;
             if (!voiceChannel) return message.channel.send(noChannelEmbed);
             
-            if (bot.voiceStatus) {
-                bot.voiceStatus = false;
+            if (client.voiceStatus) {
+                client.voiceStatus = false;
                 
                 let playingEmbed = new discord.MessageEmbed()
                     .setColor(resources.green2)
@@ -66,7 +66,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
                     dispatcher.on("finish", reason => {
                         voiceChannel.leave();
-                        bot.voiceStatus = true;
+                        client.voiceStatus = true;
                     });
                 }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));
                 return;
@@ -75,6 +75,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             }
         }
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

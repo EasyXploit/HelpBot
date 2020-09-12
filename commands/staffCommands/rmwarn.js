@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
     //-rmwarn (@miembro | id) (id de sanción | all) (razón)
     
@@ -36,7 +36,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let reason = args.slice(2).join(" ") || 'Indefinida';
         if (reason === 'Indefinida' && message.author.id !== message.guild.ownerID) return message.channel.send(undefinedReasonEmbed);
           
-        let moderator = await message.guild.members.fetch(message.author);
+        let moderator = await resources.fetchMember(message.guild, message.author.id);
         
         //Se comprueba si puede des-advertir al usuario
         if (moderator.id !== message.guild.owner.id) {
@@ -46,64 +46,81 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         message.delete();
 
         //Comprueba si el usuario tiene warns
-        if (!bot.warns[member.id]) return message.channel.send(noWarnsEmbed);
+        if (!client.warns[member.id]) return message.channel.send(noWarnsEmbed);
 
-        let successEmbed, loggingEmbed;
+        let successEmbed, loggingEmbed, toDMEmbed;
 
         if (warnID === 'all') {
             if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
 
             successEmbed = new discord.MessageEmbed()
                 .setColor(resources.green2)
-                .setDescription(`${resources.GreenTick} Se han retirado todas las advertencias al usuario <@${member.id}>`);
+                .setDescription(`${resources.GreenTick} Se han retirado todas las advertencias al usuario **${member.user.tag}**`);
+
+            toDMEmbed = new discord.MessageEmbed()
+                .setColor(resources.green)
+                .setAuthor('[DES-SANCIONADO]', message.guild.iconURL())
+                .setDescription(`<@${member.id}>, se te han retirado todas la sanciones`)
+                .addField('Moderador', message.author.tag, true)
+                .addField('Razón', reason, true);
 
             loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue)
                 .setTitle('📑 Auditoría')
                 .setDescription('Se han retirado todas las advertencias.')
                 .setTimestamp()
-                .setFooter(bot.user.username, bot.user.avatarURL())
+                .setFooter(client.user.username, client.user.avatarURL())
                 .addField('Fecha:', new Date().toLocaleString(), true)
-                .addField('Emisor:', `<@${message.author.id}>`, true)
+                .addField('Moderador:', message.author.tag, true)
                 .addField('Miembro:', member.user.tag, true)
                 .addField('Razón:', reason, true);
 
-            delete bot.warns[member.id];
+            delete client.warns[member.id];
         } else {
-            if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id) && bot.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send(noPrivilegesEmbed);
+            if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id) && client.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send(noPrivilegesEmbed);
 
             successEmbed = new discord.MessageEmbed()
                 .setColor(resources.green2)
-                .setDescription(`${resources.GreenTick} Se ha retirado la advertencia con ID **${warnID}** al usuario <@${member.id}>`);
+                .setDescription(`${resources.GreenTick} Se ha retirado la advertencia con ID **${warnID}** al usuario **${member.user.tag}**`);
+
+            toDMEmbed = new discord.MessageEmbed()
+                .setColor(resources.green)
+                .setAuthor('[DES-SANCIONADO]', message.guild.iconURL())
+                .setDescription(`<@${member.id}>, se te ha retirado la sanción con ID \`${warnID}\``)
+                .addField('Moderador', message.author.tag, true)
+                .addField('ID de advertencia:', warnID, true)
+                .addField('Sanción:', client.warns[member.id][warnID].reason, true)
+                .addField('Razón', reason, true);
 
             loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue)
                 .setTitle('📑 Auditoría')
                 .setDescription('Se ha retirado una advertencia.')
                 .setTimestamp()
-                .setFooter(bot.user.username, bot.user.avatarURL())
+                .setFooter(client.user.username, client.user.avatarURL())
                 .addField('Fecha:', new Date().toLocaleString(), true)
-                .addField('Emisor:', `<@${message.author.id}>`, true)
+                .addField('Moderador:', message.author.tag, true)
                 .addField('ID de advertencia:', warnID, true)
-                .addField('Sanción:', bot.warns[member.id][warnID].reason, true)
+                .addField('Sanción:', client.warns[member.id][warnID].reason, true)
                 .addField('Miembro:', member.user.tag, true)
                 .addField('Razón:', reason, true);
 
             //Resta el warn indicado
-            delete bot.warns[member.id][warnID];
+            delete client.warns[member.id][warnID];
             
             //Si se queda en 0 warns, se borra la entrada del JSON
-            if (Object.keys(bot.warns[member.id]).length === 0) delete bot.warns[member.id];
+            if (Object.keys(client.warns[member.id]).length === 0) delete client.warns[member.id];
         }
 
         //Escribe el resultado en el JSON
-        fs.writeFile('./storage/warns.json', JSON.stringify(bot.warns, null, 4), async err => {
+        fs.writeFile('./storage/warns.json', JSON.stringify(client.warns, null, 4), async err => {
             if (err) throw err;
 
-            await message.channel.send(successEmbed);
             await loggingChannel.send(loggingEmbed);
+            await member.send(toDMEmbed);
+            await message.channel.send(successEmbed);
         });
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

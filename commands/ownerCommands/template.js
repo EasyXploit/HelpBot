@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //$template (plantilla)
     
@@ -46,15 +46,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .addField(`${resources.chevron18} Nivel 15 ‣ PLATINO V`, `Te permite **mencionar a todos** y **controlar la música**.`, true)
                 .addField(`● Estadísticas`, 'Usa `!rank` para conocer tu nivel\n[Ver la tabla de clasificación](https://mee6.xyz/leaderboard/374945492133740544)')
                 .attachFiles(`./resources/images/banners/ranks.png`);
-
-            let embed5 = new discord.MessageEmbed()
-                .setColor(resources.gold)
-                .setThumbnail(`https://i.imgur.com/TU8U8wq.png`)
-                .setAuthor(`ROLES ASIGNABLES`, `https://i.imgur.com/TU8U8wq.png`)
-                .addField(`● ¿Que son?`, `Los roles asignables te permiten añadir __tus propios roles__ basados en tus **intereses**, **videojuegos** y **región**.`, true)
-                .addField(`● ¿Como los uso?`, `Desde el canal <#440905255073349635>, puedes reaccionar al mensaje de configuración con los emojis correspondientes a los roles que quieres asignarte`, true);
             
-            let embed6 = new discord.MessageEmbed()
+            let embed5 = new discord.MessageEmbed()
                 .setColor(resources.gold)
                 .setThumbnail(`https://i.imgur.com/0l3jSuV.png`)
                 .setAuthor(`RANGO SUPPORTER`, `https://i.imgur.com/0l3jSuV.png`)
@@ -62,7 +55,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .addField(`🞘 Pasos a seguir:`, `:one: Genera una invitación instantánea. [Ver cómo](https://support.discordapp.com/hc/es/articles/208866998-Invitaci%C3%B3n-Instant%C3%A1nea-101)\n:two: Invita a 5 personas _(procura que se unan y se queden)_.\n:three: ¡Recibirás tu rol cuando se unan 5! _(lo perderás si se van)_.`, true)
                 .addField(`🞘 Comandos:`, 'Usa `+invites` para conocer a cuantos has invitado.\nUsa `+leaderboard` para ver la tabla de clasificacion.', true);
 
-            let embed7 = new discord.MessageEmbed()
+            let embed6 = new discord.MessageEmbed()
                 .setColor(resources.gold)
                 .setAuthor(`ENLACE DE INVITACIÓN PERMANENTE`, `https://i.imgur.com/teglfDA.png`)
                 .setThumbnail(`https://i.imgur.com/teglfDA.png`)
@@ -75,7 +68,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await message.channel.send(embed4);
             await message.channel.send(embed5);
             await message.channel.send(embed6);
-            await message.channel.send(embed7);
             await message.channel.send(cfg.serverInvite);
             
         } else if (args[0] === `sorteo`) {
@@ -117,11 +109,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
             
-            let member = await message.guild.members.fetch(message.mentions.users.first() || bot.users.fetch(args[1]));
+            let member = await message.guild.members.fetch(message.mentions.users.first() || client.users.fetch(args[1]));
             if (!member) return message.channel.send(noUserEmbed);
             if (member.user.bot) return message.channel.send(noBotsEmbed);
             
-            await message.delete().then(bot.emit(`guildMemberAdd`, member));
+            await message.delete().then(client.emit(`guildMemberAdd`, member));
             await message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 1000})});
         } else if (args[0] === `despedida`) {
             let noUserEmbed = new discord.MessageEmbed()
@@ -138,61 +130,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             
             if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
             
-            let member = await message.guild.members.fetch(message.mentions.users.first() || bot.users.fetch(args[1]));
+            let member = await message.guild.members.fetch(message.mentions.users.first() || client.users.fetch(args[1]));
             if (!member) return message.channel.send(noUserEmbed);
             if (member.user.bot) return message.channel.send(noBotsEmbed);
             
-            await message.delete().then(bot.emit(`guildMemberRemove`, member));
+            await message.delete().then(client.emit(`guildMemberRemove`, member));
             await message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 1000})});
-        } else if (args[0] === `roles1`) {
-            message.delete();
-
-            const europe = await bot.emojis.cache.get('538773808673325075');
-            const latam = await bot.emojis.cache.get('538773808773857291');
-            
-            let channel = message.guild.channels.find( c => c.id === `440905255073349635`);
-            let msg = await channel.fetchMessage(`538869679234744330`);
-            
-            let embed = new discord.MessageEmbed()
-                .setColor(resources.gray)
-                .setAuthor(`ELIGE TUS ROLES`, `https://i.imgur.com/TU8U8wq.png`)
-                .setThumbnail(`https://i.imgur.com/TU8U8wq.png`)
-                .setDescription(`Reacciona con el emoji correspondiente al rol que quieras asignarte. En cualquier momento puedes quitarte un rol retirando tu reacción.`)
-                .addField(`Región`, '● Reacciona con ' + europe + ' para asignarte el rol `@EUROPA`\n● Reacciona con ' + latam + ' para asignarte el rol `@LATINOAMÉRICA`', true)
-                .addField(`Configuraciones`, '● Reacciona con :newspaper: para asignarte recibir actualizaciones de los videojuegos que te asignes en la sección de "Videojuegos"', true)
-            
-            msg.edit(newEmbed);
-        } else if (args[0] === `roles2`) {
-            message.delete();
-
-            const r6 = await bot.emojis.cache.get('538773808648028190');
-            const csgo = await bot.emojis.cache.get('538865510432112670');
-            const fortnite = await bot.emojis.cache.get('538774033634820117');
-            const lol = await bot.emojis.cache.get('538773808891559949');
-            const apex = await bot.emojis.cache.get('543093735836221462');
-            
-            let channel = message.guild.channels.find( c => c.id === `440905255073349635`);
-            let msg = await channel.fetchMessage(`538869690626342924`);
-            
-            let embed = new discord.MessageEmbed()
-                .setColor(resources.gray)
-                .setThumbnail(`https://i.imgur.com/Nz65AFB.png`)
-                .addField(`Videojuegos principales`, '● Reacciona con ' + r6 + ' para asignarte el rol `@RAINBOW SIX`\n● Reacciona con ' + csgo + ' para asignarte el rol `@CS:GO`\n● Reacciona con ' + fortnite + ' para asignarte el rol `@FORTNITE`\n● Reacciona con ' + lol + ' para asignarte el rol `@LOL`\n● Reacciona con ' + apex + ' para asignarte el rol `@APEX LEGENDS`', true)
-            
-            msg.edit(embed);
-        } else if (args[0] === `roles3`) {
-            message.delete();
-            
-            let channel = message.guild.channels.find( c => c.id === `440905255073349635`);
-            let msg = await channel.fetchMessage(`538869701141331999`);
-            
-            let embed = new discord.MessageEmbed()
-                .setColor(resources.gray)
-                .setThumbnail(`https://i.imgur.com/WdWMdgt.png`)
-                .addField(`Otros videojuegos`, '● Reacciona con 🔫 para asignarte el rol `@PUBG`\n● Reacciona con 🚀 para asignarte el rol `@ROCKET LEAGUE`\n● Reacciona con ⛏ para asignarte el rol `@MINECRAFT`\n● Reacciona con ⚜ para asignarte el rol `@BATTLEFIELD`\n● Reacciona con 🚔 para asignarte el rol `@GTA V`\n● Reacciona con 📦 para asignarte el rol `@ROBLOX`\n● Reacciona con ⚡ para asignarte el rol `@OVERWATCH`\n● Reacciona con 🛫 para asignarte el rol `@BO4`\n● Reacciona con 🌲 para asignarte el rol `@TERRARIA`\n● Reacciona con 🏡 para asignarte el rol `@STARDEW VALLEY`\n● Reacciona con 🗡 para asignarte el rol `@BRAWLHALLA`\n● Reacciona con 🐲 para asignarte el rol `@ARK`\n● Reacciona con 💎 para asignarte el rol `@PAYDAY`', true)
-                .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
-            
-            msg.edit(embed);
         } else if (args[0] === `oposiciones`) {
             message.delete();
             
@@ -205,65 +148,23 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .attachFiles(`./resources/images/banners/oppositions.png`);
             
             message.channel.send(embed);
-        } else if (args[0] === `pwned`) {
+        } else if (args[0] === `test`) {
 
-            const fetch = require('node-fetch');
-
-            fetch(`https://haveibeenpwned.com/api/v3/breach/${args[1]}`)
-                .then(res => res.text())
-                .then(body => message.channel.send(`Hubo una brecha de seguridad para el dominio ${args[1]}`));
-            
-        } else if (args[0] === `migrated`) {
-
-            const stats = Object.entries(bot.stats[message.guild.id]).map((e) => ( { [e[0]]: e[1] } ));
-
-            for (let i = 0; i < stats.length; i++) {
-                Object.keys(stats[i]).forEach(async (id) => {
-                    
-                    let member = await resources.fetchMember(message.guild, id);
-                    if (!member) return;
-
-                    let embed = new discord.MessageEmbed()
-                        .setColor(resources.gold)
-                        .setTitle('NUEVO SISTEMA DE PUNTUACIÓN')
-                        .setURL('https://discord.gg/vkSBZC7')
-                        .setAuthor('NEWSLETTER', bot.user.displayAvatarURL(), 'https://discord.gg/vkSBZC7')
-                        .setDescription(`¡Hola <@${message.author.id}>!\nTe mandamos este mensaje para informarte de un reciente cambio que afecta a la gran mayoría de los usuarios de la República Gamer.`)
-                        .setThumbnail('https://i.imgur.com/8RjlLEA.png')
-                        .addFields(
-                            { name: ' 🞄 ¿Qué ha cambiado? 🆕', value: 'Se trata de un cambio en el sistema de recompensas del servidor, que ha obligado a reconstruir la __tabla de clasificación desde 0__, pero para hacer esta transición lo más amena posible, hemos decidido realizar una __migración de todos los puntos de experiencia, niveles y roles__ que habías alcanzado con el sistema anterior.' },
-                            { name: ' 🞄 ¿He perdido algo? 🧭', value: 'Lo único que no hemos podido conservar son los puntos de experiencia que habías ganado __entre tu nivel actual y el siguiente nivel que ibas a alcanzar__, pero estamos convencidos de que eso no será un gran inconveniente. Puedes usar el comando `!rank` para ver tus XP y nivel actuales.' },
-                            { name: ' 🞄 ¿Por qué me cuentas esto? 🤷', value: 'Si llevas tiempo sin visitarnos, tal vez sea este el mejor momento para volver a participar en la comunidad. _Estamos __trabajando duro__ en mejorar la experiencia de nuestros usuarios y nos alegraría verte de nuevo por estos lares._'},
-                            { name: ' 🞄 ¿Qué hay de nuevo? 🌍', value: 'Estamos trabajando en nuevas características y mejoras que irán llegando poco a poco a la comunidad, pero de igual forma te agradeceríamos cualquier sugerencia que tuvieras para mejorar la comunidad. Usa el comando `$suggest` en los canales de la comunidad.'},
-                        )
-                        .setImage('https://i.imgur.com/IeExpLO.png')
-                        .setTimestamp()
-                        .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
-
-                    if (stats[i][id].level == args[1]) await member.send(embed);
-                });
+            var ids = [357526716601860107, 382910451165691905, 369613284003020804, 532371239587676190, 376070268818423840];
+            function getMember(id){ // sample async action
+                return message.guild.members.fetch(id).displayName;
             };
+            // map over forEach since it returns
 
-        } else if (args[0] === `testEmbed`) {
+            var actions = ids.map(id => getMember(id)); // run the function over all items
 
-            let embed = new discord.MessageEmbed()
-                .setColor(resources.gold)
-                .setTitle('NUEVO SISTEMA DE PUNTUACIÓN')
-                .setURL('https://discord.gg/vkSBZC7')
-                .setAuthor('NEWSLETTER', bot.user.displayAvatarURL(), 'https://discord.gg/vkSBZC7')
-                .setDescription(`¡Hola <@${message.author.id}>!\nTe mandamos este mensaje para informarte de un reciente cambio que afecta a la gran mayoría de los usuarios de la República Gamer.`)
-                .setThumbnail('https://i.imgur.com/8RjlLEA.png')
-                .addFields(
-                    { name: ' 🞄 ¿Qué ha cambiado? 🆕', value: 'Se trata de un cambio en el sistema de recompensas del servidor, que ha obligado a reconstruir la __tabla de clasificación desde 0__, pero para hacer esta transición lo más amena posible, hemos decidido realizar una __migración de todos los puntos de experiencia, niveles y roles__ que habías alcanzado con el sistema anterior.' },
-                    { name: ' 🞄 ¿He perdido algo? 🧭', value: 'Lo único que no hemos podido conservar son los puntos de experiencia que habías ganado __entre tu nivel actual y el siguiente nivel que ibas a alcanzar__, pero estamos convencidos de que eso no será un gran inconveniente. Puedes usar el comando `!rank` para ver tus XP y nivel actuales.' },
-                    { name: ' 🞄 ¿Por qué me cuentas esto? 🤷', value: 'Si llevas tiempo sin visitarnos, tal vez sea este el mejor momento para volver a participar en la comunidad. _Estamos __trabajando duro__ en mejorar la experiencia de nuestros usuarios y nos alegraría verte de nuevo por estos lares._'},
-                    { name: ' 🞄 ¿Qué hay de nuevo? 🌍', value: 'Estamos trabajando en nuevas características y mejoras que irán llegando poco a poco a la comunidad, pero de igual forma te agradeceríamos cualquier sugerencia que tuvieras para mejorar la comunidad. Usa el comando `$suggest` en los canales de la comunidad.'},
-                )
-                .setImage('https://i.imgur.com/IeExpLO.png')
-                .setTimestamp()
-                .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
+            // we now have a promises array and we want to wait for it
 
-            await message.channel.send(embed);
+            var results = Promise.all(actions); // pass array of promises
+
+            results.then(data => // or just .then(console.log)
+                console.log(data)
+            );
 
 
         } else {
@@ -273,6 +174,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             message.channel.send(noArgsEmbed);
         }
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

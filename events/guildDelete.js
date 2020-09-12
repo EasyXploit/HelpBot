@@ -1,17 +1,15 @@
-exports.run = async (event, discord, fs, config, keys, bot, resources) => {
+exports.run = async (event, discord, fs, config, keys, client, resources) => {
     
     try {
-        console.log(`${new Date().toLocaleString()} 》${bot.user.username} abandonó la guild: ${event.name}`)
-
         let debuggingEmbed = new discord.MessageEmbed()
             .setColor(resources.orange)
             .setThumbnail(event.iconURL())
-            .setAuthor(`${bot.user.username} abandonó una guild`, bot.user.displayAvatarURL())
+            .setAuthor(`${client.user.username} abandonó una guild`, client.user.displayAvatarURL())
             .addField(`🏷 Nombre`, event.name, true)
             .addField(`🆔 ID`, event.id, true)
             .setTimestamp();
 
-        await bot.channels.cache.get(config.debuggingChannel).send(debuggingEmbed);
+        await client.channels.cache.get(config.debuggingChannel).send(debuggingEmbed);
     } catch (e) {
 
         let error = e.stack;
@@ -29,6 +27,6 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp();
         
         //Se envía el mensaje al canal de depuración
-        await bot.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
+        await client.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
     }
 }

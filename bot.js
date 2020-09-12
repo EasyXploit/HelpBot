@@ -27,7 +27,7 @@ const moment = require('moment');
 const config = require('./config.json');
 const filters = require('./utils/automod/filters.json');
 const keys = require('./keys.json');
-const bot = new discord.Client({
+const client = new discord.Client({
     fetchAllMembers: true,
     disableEveryone: true,
     disabledEvents: ['TYPING_START', 'TYPING_STOP'],
@@ -38,58 +38,93 @@ const bot = new discord.Client({
 //RECURSOS GLOBALES
 let resources = require('./utils/resources.js');
 const automodFilters = require('./utils/automod/automodFilters.js')
-const leveling = require('./utils/leveling/leveling.js')
 
 //USUARIOS QUE USARON COMANDOS RECIENTEMENTE
 const talkedRecently = new Set();
 
 //DATOS PERSISTENTES
-bot.mutes = JSON.parse(fs.readFileSync('./storage/mutes.json', 'utf-8'));
-bot.bans = JSON.parse(fs.readFileSync('./storage/bans.json', 'utf-8'));
-bot.polls = JSON.parse(fs.readFileSync('./storage/polls.json', 'utf-8'));
-bot.stats = JSON.parse(fs.readFileSync('./storage/stats.json', 'utf-8'));
-bot.warns = JSON.parse(fs.readFileSync('./storage/warns.json', 'utf-8'));
+client.mutes = JSON.parse(fs.readFileSync('./storage/mutes.json', 'utf-8'));
+client.bans = JSON.parse(fs.readFileSync('./storage/bans.json', 'utf-8'));
+client.polls = JSON.parse(fs.readFileSync('./storage/polls.json', 'utf-8'));
+client.stats = JSON.parse(fs.readFileSync('./storage/stats.json', 'utf-8'));
+client.warns = JSON.parse(fs.readFileSync('./storage/warns.json', 'utf-8'));
 
 //VOZ
-bot.servers = {}; //Almacena la cola y otros datos
-bot.voiceStatus = true; //Almacena la disponiblidad del bot
-bot.voiceDispatcher; //Almacena el dispatcher
-bot.voiceConnection; //Almacena la conexión
+client.servers = {}; //Almacena la cola y otros datos
+client.voiceStatus = true; //Almacena la disponiblidad del bot
+client.voiceDispatcher; //Almacena el dispatcher
+client.voiceConnection; //Almacena la conexión
+client.usersVoiceStates = {}; //Almacena los cambios de estado de vvoz de los usuarios
 
 // COMPROBACIÓN DE INICIO DE SESIÓN Y PRESENCIA
-bot.on('ready', async () => {
+client.on('ready', async () => {
     try {
-        const debuggingChannel = bot.channels.cache.get(config.debuggingChannel);
+        const debuggingChannel = client.channels.cache.get(config.debuggingChannel);
 
         //Presencia
-        await bot.user.setPresence({
+        await client.user.setPresence({
             status: config.status,
             activity: {
-                name: `${bot.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`,
+                name: `${client.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`,
                 type: config.type
             }
         });
 
         //Recursos globales
-        resources.run(discord, bot);
+        resources.run(discord, client);
         resources = require('./utils/resources.js');
 
+        //Comprobación del estado de voz de los usuarios
+        let voiceStates = resources.server.voiceStates.cache;
+        voiceStates.forEach(async voiceState => {
+
+            //No sigue si es un bot, el canal de AFK, un canal prohibido o un rol prohibido
+            const member = await resources.fetchMember(voiceState.guild, voiceState.id);
+            if (!member) return;
+
+            let nonXPRole;
+            for (let i = 0; i < config.nonXPRoles.length; i++) {
+                if (await member.roles.cache.find(r => r.id === config.nonXPRoles[i])) {
+                    nonXPRole = true;
+                    break;
+                };
+            };
+
+            if (member.user.bot || config.nonXPChannels.includes(voiceState.channelID) || voiceState.channelID === voiceState.guild.afkChannel.id || nonXPRole) {
+                if (client.usersVoiceStates[voiceState.id]) {
+                    //Borra el registro del miembro que ha dejado el canal de voz
+                    delete client.usersVoiceStates[voiceState.id];
+                }
+                return;
+            };
+
+            if (client.usersVoiceStates[voiceState.id]) {
+                client.usersVoiceStates[voiceState.id].channelID = voiceState.channelID
+            } else  {
+                client.usersVoiceStates[voiceState.id] = {
+                    guild: voiceState.guild.id,
+                    channelID: voiceState.channelID,
+                    last_xpReward: Date.now()
+                };
+            };
+        });
+
         //Carga de intervalos
-        require('./utils/intervals.js').run(discord, bot, fs, resources, moment, config);
+        require('./utils/intervals.js').run(discord, client, fs, resources, moment, config);
 
         //Auditoría
-        console.log(` 》${bot.user.username} iniciado correctamente \n  ● Estatus: ${config.status}\n  ● Tipo de actividad: ${config.type}\n  ● Actividad: ${config.game}\n`);
+        console.log(` 》${client.user.username} iniciado correctamente \n  ● Estatus: ${config.status}\n  ● Tipo de actividad: ${config.type}\n  ● Actividad: ${config.game}\n`);
 
         let statusEmbed = new discord.MessageEmbed()
             .setTitle('📑 Estado de ejecución')
             .setColor(resources.gold)
-            .setDescription(`${bot.user.username} iniciado correctamente`)
+            .setDescription(`${client.user.username} iniciado correctamente`)
             .addField('Estatus:', config.status, true)
             .addField('Tipo de actividad:', config.type, true)
-            .addField('Actividad:', `${bot.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`, true)
-            .addField('Usuarios:', bot.users.cache.filter(user => !user.bot).size, true)
+            .addField('Actividad:', `${client.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`, true)
+            .addField('Usuarios:', client.users.cache.filter(user => !user.bot).size, true)
             .addField('Versión:', package.version, true)
-            .setFooter(`${bot.user.username} • Este mensaje se borrará en 10s`, bot.user.avatarURL());
+            .setFooter(`${client.user.username} • Este mensaje se borrará en 10s`, client.user.avatarURL());
         debuggingChannel.send(statusEmbed).then(msg => {msg.delete({timeout: 10000})});
         debuggingChannel.send(`<@${config.botOwner}>`).then(msg => {msg.delete({timeout: 1000})});
     } catch (e) {
@@ -106,12 +141,16 @@ fs.readdir('./events/', async (err, files) => {
         let eventName = file.split(`.`)[0];
 
         if (eventName === 'guildBanAdd') {
-            bot.on(eventName, (guild, user) => {
-                eventFunction.run(guild, user, discord, fs, config, keys, bot, resources);
+            client.on(eventName, (guild, user) => {
+                eventFunction.run(guild, user, discord, fs, config, keys, client, resources);
+            });
+        } else if (eventName === 'voiceStateUpdate') {
+            client.on(eventName, (oldState, newState) => {
+                eventFunction.run(oldState, newState, discord, fs, config, keys, client, resources);
             });
         } else {
-            bot.on(eventName, event => {
-                eventFunction.run(event, discord, fs, config, keys, bot, resources);
+            client.on(eventName, event => {
+                eventFunction.run(event, discord, fs, config, keys, client, resources);
             });
         }
 
@@ -121,11 +160,11 @@ fs.readdir('./events/', async (err, files) => {
 });
 
 // MANEJADOR DE COMANDOS
-bot.on('message', async message => {
+client.on('message', async message => {
     
-    const debuggingChannel = bot.channels.cache.get(config.debuggingChannel);
-    const loggingChannel = bot.channels.cache.get(config.loggingChannel);
-    const pilkoChatChannel = bot.channels.cache.get(config.pilkoChatChannel);
+    const debuggingChannel = client.channels.cache.get(config.debuggingChannel);
+    const loggingChannel = client.channels.cache.get(config.loggingChannel);
+    const pilkoChatChannel = client.channels.cache.get(config.pilkoChatChannel);
 
     if (message.channel.id === '550420589458751526' && message.author.id !== '359333470771740683' && message.author.id !== '474051954998509571') return message.delete({timeout: 5000});
 
@@ -144,12 +183,10 @@ bot.on('message', async message => {
 
             let spamMessage = message.content.slice(6 + args[0].length);
             
-            console.log(spamMessage);
-            
             let loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setAuthor(`${member.user.tag} ha sido BANEADO`, member.user.displayAvatarURL())
-                .addField('Miembro', `<@${member.id}>`, true)
+                .addField('Miembro', member.user.tag, true)
                 .addField('Moderador', '<@468149377412890626>', true)
                 .addField('Razón', 'Spam vía MD', true)
                 .addField('Mensaje', spamMessage, true)
@@ -159,11 +196,9 @@ bot.on('message', async message => {
             
             return;
         } else {
-            console.log(`${new Date().toLocaleString()} 》DM: ${message.author.username} (ID: ${message.author.id}) > ${message.content}`);
-
             const noDMEmbed = new discord.MessageEmbed()
                 .setColor(resources.gray)
-                .setDescription(`${resources.GrayTick} | Por el momento, los comandos de **${bot.user.username}** solo está disponible desde el servidor de la **República Gamer**.`);
+                .setDescription(`${resources.GrayTick} | Por el momento, los comandos de **${client.user.username}** solo está disponible desde el servidor de la **República Gamer**.`);
             
             if (message.content.startsWith(config.prefix) || message.content.startsWith(config.staffPrefix) || message.content.startsWith(config.ownerPrefix)) return await message.author.send(noDMEmbed);
             
@@ -192,7 +227,7 @@ bot.on('message', async message => {
                     }
 
                     await automodFilters[key](message).then(match => {
-                        if (match) require('./utils/infractionsHandler.js').run(discord, fs, config, bot, resources, loggingChannel, message, message.guild, message.member, filters[key].reason, filters[key].action, bot.user, message.content)
+                        if (match) require('./utils/infractionsHandler.js').run(discord, fs, config, client, resources, loggingChannel, message, message.guild, message.member, filters[key].reason, filters[key].action, client.user, message.content)
                     });
                 }
             })();
@@ -200,7 +235,8 @@ bot.on('message', async message => {
     })();
 
 
-    if (!message.content.startsWith(config.prefix) && !message.content.startsWith(config.staffPrefix) && !message.content.startsWith(config.ownerPrefix)) return await leveling(discord, fs, bot, config, resources, message);
+    //Llama al manejador de leveling
+    if (!message.content.startsWith(config.prefix) && !message.content.startsWith(config.staffPrefix) && !message.content.startsWith(config.ownerPrefix) && !config.nonXPChannels.includes(message.channel.id)) return await resources.addXP(fs, config, message.member, message.guild, 'message', message.channel);
 
     const prefix = message.content.slice(0, 1);
     // Función para eliminar el prefijo, extraer el comando y sus argumentos (en caso de tenerlos)
@@ -211,8 +247,6 @@ bot.on('message', async message => {
 
     // Función para ejecutar el comando
     try {
-        let commandImput = `${new Date().toLocaleString()} 》${message.author.username} introdujo el comando: ${command.slice(-0, -3)} en el canal: ${message.channel.name} de la guild: ${message.guild.name}`;
-
         let waitEmbed = new discord.MessageEmbed().setColor(resources.red2).setDescription(`${resources.RedTick} Debes esperar 2 segundos antes de usar este comando`);
         if (talkedRecently.has(message.author.id)) return message.channel.send(waitEmbed).then(msg => {
             msg.delete({timeout: 1000})
@@ -220,8 +254,7 @@ bot.on('message', async message => {
 
         if (prefix === config.prefix) { // EVERYONE
             let commandFile = require(`./commands/${command}`);
-            console.log(commandImput);
-            commandFile.run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+            commandFile.run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
 
             talkedRecently.add(message.author.id);
             setTimeout(() => {
@@ -239,8 +272,7 @@ bot.on('message', async message => {
 
             if (!message.member.roles.cache.has(staffRole.id) && message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed)
 
-            console.log(commandImput);
-            commandFile.run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed);
+            commandFile.run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed);
         } else if (prefix === config.ownerPrefix) { // OWNER
             let commandFile = require(`./commands/ownerCommands/${command}`);
             if (!commandFile) return;
@@ -249,31 +281,24 @@ bot.on('message', async message => {
                 .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para ejecutar este comando`);
 
             if (message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed);
-            console.log(commandImput);
-            commandFile.run(discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources);
+            commandFile.run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
         } else {
             return;
         }
     } catch (e) {
-        require(`./utils/errorHandler.js`).run(discord, config, bot, message, args, command, e);
+        require(`./utils/errorHandler.js`).run(discord, config, client, message, args, command, e);
     }
 });
 
 // Debugging
-bot.on(`error`, (e) => {
+client.on(`error`, (e) => {
     if (e.message.includes(`ECONNRESET`)) return console.log(`${new Date().toLocaleString()} ERROR 》La conexión fue cerrada inesperadamente.\n`)
     console.error(`${new Date().toLocaleString()} 》ERROR: ${e.stack}`)
 });
 
-bot.on(`warn`, (e) => console.warn(`${new Date().toLocaleString()} 》WARN: ${e.stack}`));
-
-bot.on('shardError', error => {
-    console.error('Una conexión websocket encontró un error:', error);
-});
-
-process.on('unhandledRejection', error => {
-	console.error('Rechazo de promesa no manejada:', error);
-});
+client.on(`warn`, error => console.warn(`${new Date().toLocaleString()} 》WARN: ${error.stack}`));
+client.on('shardError', error => console.error('Una conexión websocket encontró un error:', error));
+process.on('unhandledRejection', error => console.error(`${new Date().toLocaleString()} Rechazo de promesa no manejada:`, error));
 
 // Inicio de sesión del bot
-bot.login(keys.token);
+client.login(keys.token);

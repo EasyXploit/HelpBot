@@ -1,4 +1,4 @@
-exports.run = async (event, discord, fs, config, keys, bot, resources) => {
+exports.run = async (event, discord, fs, config, keys, client, resources) => {
     
     try {
 
@@ -7,21 +7,21 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
 
         async function sendLogEmbed(executor, reason) {
             if (event.user.bot) {
-                if (event.user.id === bot.user.id) return;
+                if (event.user.id === client.user.id) return;
                 const loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.orange)
                     .addField(`📤 Auditoría`, `El **BOT** @${event.user.tag} fue expulsado del servidor`);
                 
-                await bot.channels.cache.get(config.loggingChannel).send(loggingEmbed)
+                await client.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             } else {
                 const loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.red)
                     .setAuthor(`${event.user.tag} ha sido EXPULSADO`, event.user.displayAvatarURL())
                     .addField(`Miembro`, `<@${event.user.id}>`, true)
-                    .addField(`Moderador`, `<@${executor.id || 'Desconocido'}>`, true)
+                    .addField(`Moderador`, `${executor.tag || 'Desconocido'}`, true)
                     .addField(`Razón`, reason || 'Desconocida', true);
 
-                await bot.channels.cache.get(config.loggingChannel).send(loggingEmbed)
+                await client.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             }
         }
         
@@ -39,10 +39,8 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             if (!reason) reason = `Indefinida`
         
             if (target.id === event.user.id) {
-                console.log(`${new Date().toLocaleString()} 》${event.user.tag} fue expulsado de ${event.guild.name} por ${executor.tag} debido a ${reason}.`);
                 sendLogEmbed(executor, reason);
             } else {
-                console.log(`${new Date().toLocaleString()} 》${event.user.tag} left the guild, audit log fetch was inconclusive.`);
                 sendLogEmbed();
             }
         } else {
@@ -54,8 +52,6 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
 
             if (fetchedBans.entries.first() && (fetchedBans.entries.first().createdTimestamp > (Date.now() - 5000))) return;
 
-            console.log(`${new Date().toLocaleString()} 》${event.user.tag} abandonó la guild: ${event.guild.name}.`);
-
             let loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.orange)
                 .setThumbnail(event.user.displayAvatarURL())
@@ -65,7 +61,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                 .addField(`🆔 ID del usuario`, event.user.id, true)
                 .setFooter(event.guild.name, event.guild.iconURL()).setTimestamp()
             
-            return await bot.channels.cache.get(config.loggingChannel).send(loggingEmbed);
+            return await client.channels.cache.get(config.loggingChannel).send(loggingEmbed);
         }
     } catch (e) {
 
@@ -86,6 +82,6 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp();
         
         //Se envía el mensaje al canal de depuración
-        await bot.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
+        await client.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
     }
 }

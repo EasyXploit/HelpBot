@@ -1,12 +1,9 @@
-exports.run = async (event, discord, fs, config, keys, bot, resources) => {
+exports.run = async (event, discord, fs, config, keys, client, resources) => {
     
     try {
         
         //Comprobación de servidor provisional
         if (event.id === `374945492133740544` || event.id === `430436498937217036`) {
-        
-            console.log(`${new Date().toLocaleString()} 》${bot.user.username} se unió a la guild: ${event.name}`)
-
             let large = `No`;
             let verified = `No`;
 
@@ -23,7 +20,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             let debuggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue2)
                 .setThumbnail(event.iconURL())
-                .setAuthor(`${bot.user.username} ha sido añadido a una nueva guild`, bot.user.displayAvatarURL())
+                .setAuthor(`${client.user.username} ha sido añadido a una nueva guild`, client.user.displayAvatarURL())
                 .addField(`🏷 Nombre`, event.name, true)
                 .addField(`🆔 ID`, event.id, true)
                 .addField(`👑 Propietario`, event.owner + ' (ID: ' + event.ownerID + ')', true)
@@ -34,12 +31,12 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                 .addField(`${resources.GreenTick} Verificado`, verified, true)
                 .setTimestamp()
 
-            await bot.channels.cache.get(config.debuggingChannel).send(debuggingEmbed)
+            await client.channels.cache.get(config.debuggingChannel).send(debuggingEmbed)
 
         } else {
             const cantJoinEmbed = new discord.MessageEmbed()
                 .setColor(resources.gray)
-                .setDescription(`${resources.GrayTick} | Por el momento, ${bot.user.username} solo está disponible en la [República Gamer](${config.serverInvite}).`);
+                .setDescription(`${resources.GrayTick} | Por el momento, ${client.user.username} solo está disponible en la [República Gamer](${config.serverInvite}).`);
 
             event.owner.send(cantJoinEmbed)
             event.leave();
@@ -61,6 +58,6 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp();
         
         //Se envía el mensaje al canal de depuración
-        await bot.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
+        await client.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
     }
 }

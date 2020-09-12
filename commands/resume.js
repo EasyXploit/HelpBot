@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     const noPrivilegesEmbed = new discord.MessageEmbed()
         .setColor(resources.red)
@@ -15,7 +15,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let notAvailableEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${bot.user.id}>.`);
+            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
         
         let notPausedEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
@@ -29,10 +29,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!voiceChannel) return message.channel.send(notAvailableEmbed);
 
         //Comprueba si el miembro está en el mismo canal que el bot
-        if (message.member.voice.channelID !== message.guild.member(bot.user).voice.channelID) return message.channel.send(notAvailableEmbed);
+        if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(notAvailableEmbed);
         
         //Comprueba si la reproducción ya está pausada
-        if (!bot.voiceDispatcher.paused) return message.channel.send(notPausedEmbed);
+        if (!client.voiceDispatcher.paused) return message.channel.send(notPausedEmbed);
         
         let noTalkPermissionEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
@@ -42,9 +42,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!voiceChannel.speakable) return message.channel.send(noTalkPermissionEmbed)
 
         //Reanuda la reproducción y manda un mensaje de confirmación
-        await bot.voiceDispatcher.resume();
+        await client.voiceDispatcher.resume();
         await message.channel.send(`▶ | Cola reanudada`);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

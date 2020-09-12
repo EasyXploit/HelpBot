@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!moneda
     
@@ -11,6 +11,6 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .setDescription(`¡Salió __**${datos[Math.floor(Math.random() * datos.length)]}**__!`);
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

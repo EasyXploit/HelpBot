@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
     //-stop
     
@@ -8,23 +8,23 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
-            .setDescription(`Deteniendo ${bot.user.username} . . .`); 
+            .setDescription(`Deteniendo ${client.user.username} . . .`); 
 
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.orange)
             .setTimestamp()
-            .setFooter(bot.user.username, bot.user.avatarURL())
+            .setFooter(client.user.username, client.user.avatarURL())
             .setTitle('📑 Auditoría')
-            .setDescription(`**${message.author.tag}** detuvo a **${bot.user.username}**. \nEl bot tendrá que ser arrancado manualmente`);
+            .setDescription(`**${message.author.tag}** detuvo a **${client.user.username}**. \nEl bot tendrá que ser arrancado manualmente`);
 
-        console.log(`${new Date().toLocaleString()} 》Deteniendo ${bot.user.username} a petición de ${message.author.username}`);
+        console.log(`${new Date().toLocaleString()} 》Deteniendo ${client.user.username} a petición de ${message.author.username}`);
         
         await message.channel.send(successEmbed);
         await loggingChannel.send(loggingEmbed);
         
-        await bot.destroy();
+        await client.destroy();
         process.exit();
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!memes
     
@@ -11,6 +11,6 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
             .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
         message.channel.send(helpEmbed);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

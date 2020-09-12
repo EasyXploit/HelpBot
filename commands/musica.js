@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!musica
     
@@ -6,7 +6,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let helpEmbed1 = new discord.MessageEmbed()
             .setColor(resources.gold)
             .setAuthor(`Reproducción de música`, `https://cdn.discordapp.com/avatars/235088799074484224/16c197c4c3f0eb808f9bceb6e1075e71.png?`)
-            .setDescription(`Estos comandos te permiten reproducir canciones mediante ${bot.user.username}\n(esta funcionalidad solo está disponible para el **STAFF** y los miembros  **VIP**) ${resources.beta}`)
+            .setDescription(`Estos comandos te permiten reproducir canciones mediante ${client.user.username}\n(esta funcionalidad solo está disponible para el **STAFF** y los miembros  **VIP**) ${resources.beta}`)
             .addField(`${config.prefix}play (URL de YouTube | término | nada)`, `Busca una canción en YouTube para reproducirla a continuación, o añadirla a la cola.`)
             .addField(`${config.prefix}resume`, `Reanuda la reproducción (si está pausada)`)
             .addField(`${config.prefix}pause`, `Pausa la reproducción`)
@@ -31,6 +31,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         await message.channel.send(helpEmbed1);
         await message.channel.send(helpEmbed2);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

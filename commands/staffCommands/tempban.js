@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
     //-tempban (@usuario | id) (xS | xM | xH | xD) (motivo)
     
@@ -27,7 +27,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         const user = await resources.fetchUser(args[0]);
         if (!user) return message.channel.send(notToBanEmbed);
         
-        let moderator = await message.guild.members.fetch(message.author);
+        let moderator = await resources.fetchMember(message.guild, message.author.id);
         const member = await resources.fetchMember(message.guild, user.id);
 
         if (member) {
@@ -99,39 +99,30 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
-            .setDescription(`El usuario <@${user.id}> ha sido baneado, ¿alguien más? ${resources.drakeban}`);
-
-        let loggingEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setAuthor(`${user.tag} ha sido BANEADO`, user.displayAvatarURL())
-            .addField(`Miembro`, `<@${user.id}>`, true)
-            .addField(`Moderador`, `<@${message.author.id}>`, true)
-            .addField(`Razón`, reason, true)
-            .addField(`Duración`, args[1], true);
+            .setDescription(`El usuario ${user.tag} ha sido baneado, ¿alguien más? ${resources.banned}`);
 
         let toDMEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setAuthor(`[BANEADO]`, message.guild.iconURL())
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
-            .addField(`Moderador`, `@${message.author.tag}`, true)
+            .addField(`Moderador`, message.author.tag, true)
             .addField(`Razón`, reason, true)
             .addField(`Duración`, args[1], true);
         
-        bot.bans[user.id] = {
+        client.bans[user.id] = {
             time: Date.now() + milliseconds
         }
 
-        fs.writeFile(`./storage/bans.json`, JSON.stringify(bot.bans, null, 4), async err => {
+        fs.writeFile(`./storage/bans.json`, JSON.stringify(client.bans, null, 4), async err => {
             if (err) throw err;
 
             if (member) {
                 await user.send(toDMEmbed);
             }
             await message.guild.members.ban(user, {reason: `Duración: ${args[1]}, Razón: ${reason}`});
-            await loggingChannel.send(loggingEmbed);
             await message.channel.send(successEmbed);
         });
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

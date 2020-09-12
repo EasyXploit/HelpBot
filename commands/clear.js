@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
     const noPrivilegesEmbed = new discord.MessageEmbed()
         .setColor(resources.red)
@@ -12,7 +12,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let noConnectionEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
-            .setDescription(`${resources.RedTick} <@${bot.user.id}> no está conectado a ninguna sala.`);
+            .setDescription(`${resources.RedTick} <@${client.user.id}> no está conectado a ninguna sala.`);
         
         let noChannelEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
@@ -20,7 +20,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let notAvailableEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${bot.user.id}>.`);
+            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
         
         let noDispatcherEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
@@ -38,21 +38,21 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!voiceChannel) return message.channel.send(noChannelEmbed);
         
         //Comprueba si el bot está en el mismo canal que el miembro
-        if (message.member.voice.channelID !== message.guild.member(bot.user).voice.channelID) return message.channel.send(notAvailableEmbed);
+        if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(notAvailableEmbed);
         
         //Comprueba si hay reproducción
-        if (!bot.voiceDispatcher) return message.channel.send(noDispatcherEmbed);
+        if (!client.voiceDispatcher) return message.channel.send(noDispatcherEmbed);
         
         //Comprueba si hay cola
-        if (!bot.servers[message.guild.id] || bot.servers[message.guild.id].queue <= 0) return message.channel.send(noQueueEmbed);
+        if (!client.servers[message.guild.id] || client.servers[message.guild.id].queue <= 0) return message.channel.send(noQueueEmbed);
         
         //Borra la cola
-        bot.servers[message.guild.id].queue = [];
+        client.servers[message.guild.id].queue = [];
         
         //Manda un mensaje de confirmación
         await message.channel.send(`${resources.GreenTick} | Cola eliminada`);
 
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
     const noPrivilegesEmbed = new discord.MessageEmbed()
         .setColor(resources.red)
@@ -14,7 +14,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let noConnectionEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
-            .setDescription(`${resources.RedTick} <@${bot.user.id}> no está conectado a ninguna sala.`);
+            .setDescription(`${resources.RedTick} <@${client.user.id}> no está conectado a ninguna sala.`);
         
         let noChannelEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
@@ -22,7 +22,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let notAvailableEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${bot.user.id}>.`);
+            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
 
         let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
@@ -44,13 +44,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!voiceChannel) return message.channel.send(noChannelEmbed);
         
         //Comprueba si el bot está en el mismo canal que el miembro
-        if (message.member.voice.channelID !== message.guild.member(bot.user).voice.channelID) return message.channel.send(notAvailableEmbed);
+        if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(notAvailableEmbed);
         
         //Comprueba si se han proporcionado argumentos
         if (!args[0]) return message.channel.send(noCorrectSyntaxEmbed);
         
         //Comprueba si hay reproducción
-        if (!bot.voiceDispatcher) return message.channel.send(noDispatcherEmbed);
+        if (!client.voiceDispatcher) return message.channel.send(noDispatcherEmbed);
 
         //Comprueba si el bot tiene permiso para hablar
         if (!voiceChannel.speakable) return message.channel.send(noTalkPermissionEmbed)
@@ -82,11 +82,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             };
 
             //Sube la canción a la cola en el primer puesto
-            await bot.servers[message.guild.id].queue.splice(0, 0, newQueueItem);
+            await client.servers[message.guild.id].queue.splice(0, 0, newQueueItem);
             
             //Omite la reproducción y manda un mensaje de confirmación
             await message.channel.send(`⏭ | Canción omitida`)
-            await bot.voiceDispatcher.end();
+            await client.voiceDispatcher.end();
         }
 
         //Si se proporciona una URL de YouTube, busca con esa url, de lo contrario buscará la URL mediante tubesearch
@@ -122,6 +122,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             });
         };
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

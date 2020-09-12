@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
     //-unban (id) (motivo)
     
@@ -28,9 +28,9 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         await message.guild.members.unban(user.id);
         
-        if (bot.bans.hasOwnProperty(user.id)) {
-            await delete bot.bans[user.id];
-            await fs.writeFile(`./storage/bans.json`, JSON.stringify(bot.bans), async err => {
+        if (client.bans.hasOwnProperty(user.id)) {
+            await delete client.bans[user.id];
+            await fs.writeFile(`./storage/bans.json`, JSON.stringify(client.bans), async err => {
                 if (err) throw err;
             });
         };
@@ -43,8 +43,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.green)
             .setAuthor(`${user.tag} ha sido DESBANEADO`, user.displayAvatarURL())
-            .addField(`Usuario`, `@${user.tag}`, true)
-            .addField(`Moderador`, `<@${message.author.id}>`, true)
+            .addField(`Usuario`, user.tag, true)
+            .addField(`Moderador`, message.author.tag, true)
             .addField(`Razón`, reason, true)
 
         await loggingChannel.send(loggingEmbed);
@@ -56,7 +56,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setDescription(`${resources.RedTick} Este usuario no ha sido baneado`);
             message.channel.send(notBannedEmbed);
         } else {
-            require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+            require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
         }
     }
 }

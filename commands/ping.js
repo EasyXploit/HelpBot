@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!ping
     
@@ -25,7 +25,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         }
 
         //TIEMPO DE RESPUESTA DEL WEBSOCKET
-        let websocketPing = Math.floor(bot.ws.ping);
+        let websocketPing = Math.floor(client.ws.ping);
         let websocketPingEmbed;
 
         if (websocketPing <= 180) {
@@ -63,13 +63,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setTitle('Tiempo de actividad: ')
                 .setDescription(`:stopwatch: | ${day} días, ${hour} horas, ${minute} minutos y ${seconds} segundos`);
         }
-        convertMS(bot.uptime);
+        convertMS(client.uptime);
 
         //ENVIO DE EMBEDS
         await message.channel.send(botPingEmbed);
         await message.channel.send(websocketPingEmbed);
         await message.channel.send(uptimeEmbed);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
     //-slowmode (off | segundos [5-30]) (razón)
     
@@ -8,7 +8,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} La sintaxis de este comando es ${config.staffPrefix}slowmode (off | segundos [5-30]) (razón)`);
+            .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.staffPrefix}slowmode (off | segundos [5-30]) (razón)\``);
 
         if (args[0] === 'off') {
             if (!message.channel.rateLimitPerUser) return message.channel.send(noCorrectSyntaxEmbed).then(msg => {msg.delete({timeout: 5000})});
@@ -23,8 +23,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setTitle('📑 Auditoría')
                 .setDescription('Se ha des-habilitado el modo lento.')
                 .setTimestamp()
-                .setFooter(bot.user.username, bot.user.avatarURL())
-                .addField('Moderador:', `<@${message.author.id}>`, true)
+                .setFooter(client.user.username, client.user.avatarURL())
+                .addField('Moderador:', message.author.tag, true)
                 .addField('Canal:', `<#${message.channel.id}>`, true);
 
             await message.channel.setRateLimitPerUser(0);
@@ -57,8 +57,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 .setTitle('📑 Auditoría')
                 .setDescription('Se ha habilitado el modo lento.')
                 .setTimestamp()
-                .setFooter(bot.user.username, bot.user.avatarURL())
-                .addField('Moderador:', `<@${message.author.id}>`, true)
+                .setFooter(client.user.username, client.user.avatarURL())
+                .addField('Moderador:', message.author.tag, true)
                 .addField('Duración:', `${seconds}s`, true)
                 .addField('Canal:', `<#${message.channel.id}>`, true)
                 .addField('Razón:', reason, true);
@@ -68,6 +68,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             await message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 5000})});
         };
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     };
 };

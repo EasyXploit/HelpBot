@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
     const noPrivilegesEmbed = new discord.MessageEmbed()
         .setColor(resources.red)
@@ -22,11 +22,11 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let notAvailableEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${bot.user.id}>.`);
+            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
 
         let noConnectionEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
-            .setDescription(`${resources.RedTick} <@${bot.user.id}> no está conectado a ninguna sala.`);
+            .setDescription(`${resources.RedTick} <@${client.user.id}> no está conectado a ninguna sala.`);
 
         //Comprueba si se han introducido argumentos
         if (!args[0]) { //En este caso, "play" funcionará como "resume"
@@ -47,10 +47,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             if (!voiceChannel) return message.channel.send(noConnectionEmbed);
 
             //Comprueba si el miembro está en el mismo canal que el bot
-            if (message.member.voice.channelID !== message.guild.member(bot.user).voice.channelID) return message.channel.send(notAvailableEmbed);
+            if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(notAvailableEmbed);
 
             //Comprueba si la reproducción no está pausada
-            if (!bot.voiceDispatcher.paused) return message.channel.send(notPausedEmbed);
+            if (!client.voiceDispatcher.paused) return message.channel.send(notPausedEmbed);
 
             let noTalkPermissionEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
@@ -60,7 +60,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             if (!voiceChannel.speakable) return message.channel.send(noTalkPermissionEmbed)
 
             //Reanuda la reproducción y manda un mensaje de confirmación
-            bot.voiceDispatcher.resume();
+            client.voiceDispatcher.resume();
             message.channel.send(`▶ | Cola reanudada`);
 
         } else if (args[0]) { //En este caso, "play" funcionará como "join" y reproducirá/añadirá a la cola
@@ -119,8 +119,8 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                 if (!message.guild.voice || !message.guild.voice.channel) { //Ejecuta esto si no está conectado
 
                     //Comprueba si la guild tiene una cola de reproducción
-                    if (!bot.servers[message.guild.id]) {
-                        bot.servers[message.guild.id] = {
+                    if (!client.servers[message.guild.id]) {
+                        client.servers[message.guild.id] = {
                             queue: [],
                             nowplaying: {},
                             shuffle: false,
@@ -153,10 +153,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                     voiceChannel.join().then(connection => {
 
                         //Almacena la conexión en una variable global
-                        bot.voiceConnection = connection;
+                        client.voiceConnection = connection;
 
                         //Cambia el estatus a "NO DISPONIBLE"
-                        bot.voiceStatus = false;
+                        client.voiceStatus = false;
 
                         //Genera la información de la cola
                         let newQueueItem = {
@@ -167,16 +167,16 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         };
 
                         //Sube la canción a la cola
-                        bot.servers[message.guild.id].queue.push(newQueueItem);
+                        client.servers[message.guild.id].queue.push(newQueueItem);
 
                         //Ejecuta la función de reproducción
-                        require(`../utils/reproductionManager.js`).run(discord, fs, bot, resources, message, info, ytdl, moment, randomColor);
+                        require(`../utils/reproductionManager.js`).run(discord, fs, client, resources, message, info, ytdl, moment, randomColor);
 
                     }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));
-                } else if (message.member.voice.channelID === message.guild.member(bot.user).voice.channelID) {
+                } else if (message.member.voice.channelID === message.guild.member(client.user).voice.channelID) {
                     //Comprueba si la guild tiene una cola de reproducción
-                    if (!bot.servers[message.guild.id]) {
-                        bot.servers[message.guild.id] = {
+                    if (!client.servers[message.guild.id]) {
+                        client.servers[message.guild.id] = {
                             queue: [],
                             nowplaying: {},
                             shuffle: false,
@@ -184,7 +184,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         }
                     }
                     //Comprueba si hay algo en reproducción
-                    if (!bot.voiceDispatcher) {
+                    if (!client.voiceDispatcher) {
 
                         //Genera la información de la cola
                         let newQueueItem = {
@@ -195,10 +195,10 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         };
 
                         //Sube la canción a la cola
-                        bot.servers[message.guild.id].queue.push(newQueueItem);
+                        client.servers[message.guild.id].queue.push(newQueueItem);
 
                         //Ejecuta la función de reproducción
-                        require(`../utils/reproductionManager.js`).run(discord, bot, resources, message, info, ytdl, moment, randomColor);
+                        require(`../utils/reproductionManager.js`).run(discord, client, resources, message, info, ytdl, moment, randomColor);
                     } else {
                         //Genera la información de la cola
                         let newQueueItem = {
@@ -209,7 +209,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
                         };
 
                         //Sube la canción a la cola
-                        bot.servers[message.guild.id].queue.push(newQueueItem);
+                        client.servers[message.guild.id].queue.push(newQueueItem);
 
                         //Ejecuta la función para mostrar que se ha encolado
                         queued(message);
@@ -248,6 +248,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             });
         }
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

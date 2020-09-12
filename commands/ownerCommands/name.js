@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //$name (nombre)
 
@@ -18,12 +18,12 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             .setDescription(`${resources.RedTick} Este nombre de usuario ya ha sido configurado`);
 
         //Se comprueba si el nombre de usuario proporcionado es igual al ya configurado
-        if (nickname === bot.user.username) return message.channel.send(actuallyConfiguredEmbed);
+        if (nickname === client.user.username) return message.channel.send(actuallyConfiguredEmbed);
 
-        console.log(`\n${new Date().toLocaleString()} 》Se procederá a cambiar el nombre de usuario ${bot.user.username} a ${nickname}`);
+        console.log(`\n${new Date().toLocaleString()} 》Se procederá a cambiar el nombre de usuario ${client.user.username} a ${nickname}`);
 
         //Se cambia el username
-        await bot.user.setUsername(nickname);
+        await client.user.setUsername(nickname);
 
         let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green2)
@@ -33,13 +33,13 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.blue)
             .setTimestamp()
-            .setFooter(bot.user.username, bot.user.avatarURL())
+            .setFooter(client.user.username, client.user.avatarURL())
             .setTitle('📑 Auditoría')
             .setDescription(`${message.author.username} cambió el nombre del bot a ${nickname}`);
 
         await message.channel.send(successEmbed);
         await loggingChannel.send(loggingEmbed);
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

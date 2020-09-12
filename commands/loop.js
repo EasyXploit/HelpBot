@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
     let disabledEmbed = new discord.MessageEmbed()
         .setColor(resources.gray)
@@ -19,7 +19,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         
         let noConnectionEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
-            .setDescription(`${resources.RedTick} <@${bot.user.id}> no está conectado a ninguna sala.`);
+            .setDescription(`${resources.RedTick} <@${client.user.id}> no está conectado a ninguna sala.`);
         
         let noChannelEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
@@ -27,7 +27,7 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
 
         let notAvailableEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${bot.user.id}>.`);
+            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
         
         let noDispatcherEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
@@ -45,23 +45,23 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
         if (!voiceChannel) return message.channel.send(noChannelEmbed);
         
         //Comprueba si el bot está en el mismo canal que el miembro
-        if (message.member.voice.channelID !== message.guild.member(bot.user).voice.channelID) return message.channel.send(notAvailableEmbed);
+        if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(notAvailableEmbed);
         
         //Comprueba si hay reproducción
-        if (!bot.voiceDispatcher) return message.channel.send(noDispatcherEmbed);
+        if (!client.voiceDispatcher) return message.channel.send(noDispatcherEmbed);
         
         //Comprueba si hay cola
-        if (!bot.servers[message.guild.id]) return message.channel.send(noQueueEmbed);
+        if (!client.servers[message.guild.id]) return message.channel.send(noQueueEmbed);
         
-        if (bot.servers[message.guild.id].loop === false) {
+        if (client.servers[message.guild.id].loop === false) {
             //Activa el modo loop
-            bot.servers[message.guild.id].loop = true;
+            client.servers[message.guild.id].loop = true;
 
             //Manda un mensaje de confirmación
             message.channel.send(`🔂 | He activado el modo loop`);
-        } else if (bot.servers[message.guild.id].loop === true) {
+        } else if (client.servers[message.guild.id].loop === true) {
             //Desactiva el modo loop
-            bot.servers[message.guild.id].loop = false;
+            client.servers[message.guild.id].loop = false;
 
             //Manda un mensaje de confirmación
             message.channel.send(`🔂 | He desactivado el modo loop`);
@@ -69,6 +69,6 @@ exports.run = async (discord, fs, config, keys, bot, message, args, command, log
             return message.channel.send(`Error`);
         }
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

@@ -1,11 +1,11 @@
-exports.run = async (event, discord, fs, config, keys, bot, resources) => {
+exports.run = async (event, discord, fs, config, keys, client, resources) => {
     
     try {
         //Previene que continue la ejecución si el servidor no es la República Gamer
         if (event.guild.id !== `374945492133740544`) return;
 
-        const loggingChannel = bot.channels.cache.get(config.loggingChannel);
-        const welcomeChannel = bot.channels.cache.get(config.welcomeChannel);
+        const loggingChannel = client.channels.cache.get(config.loggingChannel);
+        const welcomeChannel = client.channels.cache.get(config.welcomeChannel);
 
         if (!event.user.bot) {
 
@@ -29,8 +29,6 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                     loggingChannel.send(errorEmbed);
                 })
 
-                console.log(`${new Date().toLocaleString()} 》@${event.user.username} intentó unirse a la República Gamer, pero fue baneado por que no está permitido utilizar enlaces como nombre de usuario`)
-
                 let preventAccessEmbed = new discord.MessageEmbed()
                     .setColor(resources.red)
                     .setTitle(`📑 Auditoría`)
@@ -42,10 +40,6 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                 loggingChannel.send(preventAccessEmbed);
 
             } else  {
-
-                console.log(`${new Date().toLocaleString()} 》@${event.user.tag} se unió a la guild: ${event.guild.name}`)
-
-
                 /* --- CANVAS --- */
 
                 // Pass the entire Canvas object because you'll need to access its width, as well its context
@@ -131,7 +125,7 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
                     .setImage(`https://i.imgur.com/IeExpLO.png`)
                     .setTitle(`Hola **${event.user.username}**, bienvenido a la __República Gamer__ :tada:`)
                     .setDescription(`**¡Nos alegra que hayas decidido unirte a nuestra comunidad!**\nA continuación, te mostramos una breve guía sobre como empezar a participar en nuestro servidor. __¡Esperamos que lo pases bien!__`)
-                    .addField(`Guía de inicio rápido:`, `:one: Entra en <#498455357853794304> y dedica unos segundos a leer las breves normas que rigen nuestra comunidad. Además, aprenderás a usar a los bots, a como obtener ayuda y a como subir de nivel.\n:two: Entra en <#440905255073349635> y elige los roles de tu preferencia. Esto desbloqueará catacterísticas especiales para determinados videojuegos. ${resources.beta}\n:three: Entra en \`⚡ | Crear sala\` para crear ¡tu propia sala temporal! (recuerda que desparecerá si no hay nadie en ella).\n:four: ¡Tan solo diviértete y trae a tus amigos para que nos conozcan! Mándales este enlace de invitación: https://discord.gg/eWx72Jy`, true)
+                    .addField(`Guía de inicio rápido:`, `:one: Entra en <#498455357853794304> y dedica unos segundos a leer las breves normas que rigen nuestra comunidad. Además, aprenderás a usar a los bots, a como obtener ayuda y a como subir de nivel.\n:two: Entra en \`⚡ | Crear sala\` para crear ¡tu propia sala temporal! (recuerda que desparecerá si no hay nadie en ella).\n:three: ¡Tan solo diviértete y trae a tus amigos para que nos conozcan! Mándales este enlace de invitación: https://discord.gg/eWx72Jy`, true)
                     .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
 
                 //await welcomeChannel.send(channelWelcomeEmbed);
@@ -170,6 +164,6 @@ exports.run = async (event, discord, fs, config, keys, bot, resources) => {
             .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp();
         
         //Se envía el mensaje al canal de depuración
-        await bot.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
+        await client.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
     }
 }

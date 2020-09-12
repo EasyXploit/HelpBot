@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, bot, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!ppt <piedra | papel | tijeras>
     
@@ -81,12 +81,12 @@ exports.run = (discord, fs, config, keys, bot, message, args, command, loggingCh
 
         const resultEmbed = new discord.MessageEmbed()
             .setColor(0xF74A4A)
-            .setTitle(`${message.member.displayName} ${emojiOpponentChoose} VS ${emojiChoose} ${bot.user.username}`)
+            .setTitle(`${message.member.displayName} ${emojiOpponentChoose} VS ${emojiChoose} ${client.user.username}`)
             .setDescription(`__Resultado:__ ¡${result}!`)
             .setFooter(`| ${reason}`, resources.server.iconURL());
 
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, bot, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }
 }

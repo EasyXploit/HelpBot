@@ -1,18 +1,18 @@
-exports.run = async (discord, fs, bot, resources, message, info, ytdl, moment, randomColor) => {
+exports.run = async (discord, fs, client, resources, message, info, ytdl, moment, randomColor) => {
 
     try {
         //Función para reproducir
         async function play(connection, message) {
             
-            let server = bot.servers[message.guild.id];
+            let server = client.servers[message.guild.id];
 
             let toPlay = 0;
 
-            if (bot.servers[message.guild.id].shuffle === true) toPlay = Math.floor(Math.random() * (bot.servers[message.guild.id].queue.length - 1));
+            if (client.servers[message.guild.id].shuffle === true) toPlay = Math.floor(Math.random() * (client.servers[message.guild.id].queue.length - 1));
 
             try {
                 //Reproduce la canción
-                bot.voiceDispatcher = connection.play(await ytdl(server.queue[toPlay].link), {type: 'opus'});
+                client.voiceDispatcher = connection.play(await ytdl(server.queue[toPlay].link), {type: 'opus'});
             } catch (e) {
                 console.log(`${new Date().toLocaleString()} 》${e}`);
             }
@@ -29,9 +29,9 @@ exports.run = async (discord, fs, bot, resources, message, info, ytdl, moment, r
             let upNext = `Nada`;
 
             if (server.queue[1]) {
-                if (bot.servers[message.guild.id].shuffle === true) {
+                if (client.servers[message.guild.id].shuffle === true) {
                     upNext = `Aleatorio`;
-                } else if (bot.servers[message.guild.id].shuffle === false) {
+                } else if (client.servers[message.guild.id].shuffle === false) {
                     upNext = `[${server.queue[1].title}](${server.queue[1].link})`;
                 }
             } else {
@@ -53,9 +53,9 @@ exports.run = async (discord, fs, bot, resources, message, info, ytdl, moment, r
             //Envía un mensaje de confirmación y elimina de la cola la canción actual
             message.channel.send(playingEmbed);
             
-            if (bot.servers[message.guild.id].shuffle === true) {
-                bot.servers[message.guild.id].queue.splice(toPlay, 1);
-            } else if (bot.servers[message.guild.id].shuffle === false) {
+            if (client.servers[message.guild.id].shuffle === true) {
+                client.servers[message.guild.id].queue.splice(toPlay, 1);
+            } else if (client.servers[message.guild.id].shuffle === false) {
                 server.queue.shift();
             } else {
                 return message.channel.send(`Error`);
@@ -70,13 +70,13 @@ exports.run = async (discord, fs, bot, resources, message, info, ytdl, moment, r
                 requestedBy: message.member.displayName
             };
 
-            bot.voiceDispatcher.on(`finish`, reason => {
+            client.voiceDispatcher.on(`finish`, reason => {
 
                 //Si queda algo en la cola
                 if (server.queue[0]) {
 
                     //Vuelve a cargar la función de reproducción
-                    play(bot.voiceConnection, message);
+                    play(client.voiceConnection, message);
 
                 } else {
 
@@ -85,24 +85,24 @@ exports.run = async (discord, fs, bot, resources, message, info, ytdl, moment, r
 
                     //Aborta la conexión
                     connection.disconnect();
-                    delete bot.servers[message.guild.id];
+                    delete client.servers[message.guild.id];
 
                     //Cambia el estatus a "DISPONIBLE"
-                    bot.voiceStatus = true;
+                    client.voiceStatus = true;
                 }
             })
 
             //Se dispara si el dispatcher tiene información de depuración a mostrar
-            bot.voiceDispatcher.on(`debug`, debug => {
+            client.voiceDispatcher.on(`debug`, debug => {
                 console.log(`${new Date().toLocaleString()} 》Dispatcher (debug): ${debug}`)
             });
 
             //Se dispara si ocurre un error durante el streaming
-            bot.voiceDispatcher.on(`error`, error => {
+            client.voiceDispatcher.on(`error`, error => {
                 console.log(`${new Date().toLocaleString()} 》Dispatcher error: ${error}`)
             });
         }
-        play(bot.voiceConnection, message)
+        play(client.voiceConnection, message)
     } catch (e) {
         console.log(`${new Date().toLocaleString()} 》Error: ${e}`)
     }

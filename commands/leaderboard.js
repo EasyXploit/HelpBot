@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
-    //!leaderboard
+    //!leaderboard [pág.]
 
     try {
         //Almacena las entradas de la leaderboard

@@ -16,7 +16,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         .addField(`🎖 ${config.prefix}rangos`, 'Muestra los rangos del servidor, la tabla de puntuaciones y tu nivel.')
         .addField(`ℹ ${config.prefix}info`, 'Muestra información acerca del proyecto')
         .addField(`🥇 ${config.prefix}rank`, 'Muestra tu rango actual')
-        .addField(`🏆 ${config.prefix}leaderboard`, 'Muestra la tabla de clasificación')
+        .addField(`🏆 ${config.prefix}leaderboard [pág.]`, 'Muestra la tabla de clasificación')
         .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
 
     await message.channel.send(helpEmbed).then(async function (msg) {

@@ -14,7 +14,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField(`⚡ ${config.prefix}salas`, 'Muestra la ayuda para crear salas de voz.')
             .addField(`🎵 ${config.prefix}musica`, 'Muestra la ayuda para reproducir música en las salas de voz.')
             .addField(`🎶 ${config.prefix}dj`, `Muestra los comandos para controlar la música (solo DJs) ${resources.beta}.`)
-            .addField(`🎭 ${config.prefix}memes`, 'Muestra la ayuda para enviar memes y efectos sonoros.')
             .addField(`${resources.boxbot} ${config.prefix}boxbot`, 'Muestra la ayuda para jugar a <@413728456942288896> en <#433376010688397312>');
         
         let originUser = resources.valueCheck;

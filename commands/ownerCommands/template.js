@@ -44,7 +44,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .addField(`${resources.chevron5} Nivel 5 ‣ PLATA V`, `Permite usar emojis externos${resources.nitro} y acceder a sorteos públicos.`, true)
                 .addField(`${resources.chevron15} Nivel 10 ‣ ORO V`, `Permite **adjuntar archivos** y **cambiar tu propio apodo**.`, true)
                 .addField(`${resources.chevron18} Nivel 15 ‣ PLATINO V`, `Te permite **mencionar a todos** y **controlar la música**.`, true)
-                .addField(`● Estadísticas`, 'Usa `!rank` para conocer tu nivel\n[Ver la tabla de clasificación](https://mee6.xyz/leaderboard/374945492133740544)')
+                .addField(`● Estadísticas`, 'Usa `!rank` para conocer tu nivel\nUsa `!leaderboard` para ver la tabla de clasificación')
                 .attachFiles(`./resources/images/banners/ranks.png`);
             
             let embed5 = new discord.MessageEmbed()

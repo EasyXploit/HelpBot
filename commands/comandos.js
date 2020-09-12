@@ -17,28 +17,27 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField(`:performing_arts: ${config.prefix}memes`, 'Muestra la ayuda para enviar memes y efectos sonoros.')
             .addField(`${resources.boxbot} ${config.prefix}boxbot`, 'Muestra la ayuda para jugar a <@413728456942288896> en <#433376010688397312>');
         
-    let originUser = resources.valueCheck;
-    resources.valueCheck = 'null';
-        
-    if (originUser === 'null') {
-        originUser = message.author.id;
-    }
-        
-    await message.channel.send(helpEmbed).then(async function (message) {
-        
-        await message.react(resources.pilkobot);
-        await message.react('⚡');
-        await message.react('🎵');
-        await message.react('🎶');
-        await message.react('🎭');
-        await message.react(resources.boxbot);
+        let originUser = resources.valueCheck;
+        resources.valueCheck = 'null';
+            
+        if (originUser === 'null') {
+            originUser = message.author.id;
+        }
+            
+        await message.channel.send(helpEmbed).then(async function (message) {
+            
+            await message.react(resources.pilkobot);
+            await message.react('⚡');
+            await message.react('🎵');
+            await message.react('🎶');
+            await message.react('🎭');
+            await message.react(resources.boxbot);
 
-        const filter = (reaction, user) => {
-            return ['pilkobot', '⚡', '🎵', '🎶', '🎭', 'boxbot'].includes(reaction.emoji.name) && user.id === originUser;
-        };
+            const filter = (reaction, user) => {
+                return ['pilkobot', '⚡', '🎵', '🎶', '🎭', 'boxbot'].includes(reaction.emoji.name) && user.id === originUser;
+            };
 
-        message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-            .then(async collected => {
+            message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] }).then(async collected => {
                 const reaction = collected.first();
 
                 if (reaction.emoji.name === 'pilkobot') {
@@ -60,8 +59,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     await message.delete()
                     require(`../commands/boxbot.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
                 } 
-            })
-            .catch(() => {
+            }).catch(() => {
                 return;
             });
         });

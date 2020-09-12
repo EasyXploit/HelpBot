@@ -27,12 +27,11 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
         const fromLang = langs[args[0]];
         const toLang = langs[args[1]];
         
-        if (!fromLang || !toLang) return message.channel.send(noCorrectCodeEmbed);
+        if (!fromLang || !toLang || args[1] === 'auto') return message.channel.send(noCorrectCodeEmbed);
         
-        const toTranslate = message.content.slice(command.length - 2 + args[0].length + 1 + args[0].length + 2);
+        const toTranslate = args.slice(2).join(' ');
         
-        
-        translate(toTranslate, { from: fromLang, to: toLang }).then(res => {
+        translate(toTranslate, { from: args[0], to: args[1] }).then(res => {
             message.delete();
             
             let resultEmbed = new discord.MessageEmbed()

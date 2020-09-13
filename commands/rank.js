@@ -17,12 +17,11 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         const guildStats = client.stats[message.guild.id];
 
         if (member.id in guildStats === false) {
-            guildStats[member.id] = {
-                totalXP: 0,
-                actualXP: 0,
-                level: 0,
-                last_message: 0
-            };
+            let noXPEmbed = new discord.MessageEmbed()
+                .setColor(resources.red2)
+                .setDescription(`${resources.RedTick} ${member} no tiene puntos de XP`);
+
+            return message.channel.send(noXPEmbed);
         };
         
         const userStats = guildStats[member.id];

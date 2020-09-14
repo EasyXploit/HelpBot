@@ -1,12 +1,5 @@
 exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
-    let staffRole = message.guild.roles.cache.get(config.botStaff);
-    const noPrivilegesEmbed = new discord.MessageEmbed()
-        .setColor(resources.red)
-        .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
-
-    if (!message.member.roles.cache.has(staffRole.id) && message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed)
-
     //!replay
 
     try {

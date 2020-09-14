@@ -34,9 +34,7 @@ exports.run = async (discord, fs, client, resources, message, info, ytdl, moment
                 } else if (client.servers[message.guild.id].shuffle === false) {
                     upNext = `[${server.queue[1].title}](${server.queue[1].link})`;
                 }
-            } else {
-                upNext = `Nada`;
-            }
+            };
 
             let playingEmbed = new discord.MessageEmbed()
                 .setColor(randomColor())

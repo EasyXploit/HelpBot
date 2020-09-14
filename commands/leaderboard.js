@@ -25,8 +25,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         //Almacena la página actual y las totales
         let position = 1;
-        const pages = Math.ceil(entries.length / 10); //MAL
-        console.log(pages);
+        const pages = Math.ceil(entries.length / 10);
 
         if (args[0] && !isNaN(args[0]) && args[0] > 0 && args[0] <= pages) position = args[0];
 
@@ -51,7 +50,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setColor(resources.gold)
                 .setTitle(`:trophy: Tabla de clasificación`)
                 .setDescription(await loadBoard(10 * position - 9, 10 * position))
-                .setFooter(`Página ${position} de ${pages}`);
+                .setFooter(`Página ${position} de ${pages}`, resources.server.iconURL());
 
             if (embed) {
                 await embed.edit(leaderboard).then(async embed => {awaitReactions(embed)});

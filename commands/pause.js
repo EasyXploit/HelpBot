@@ -1,11 +1,5 @@
 exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    const noPrivilegesEmbed = new discord.MessageEmbed()
-        .setColor(resources.red)
-        .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
-
-    if (!message.member.roles.cache.has(config.botStaff) && !message.member.roles.cache.has(`375376646771048449`)) return message.channel.send(noPrivilegesEmbed)
-    
     //!pause
 
     try {

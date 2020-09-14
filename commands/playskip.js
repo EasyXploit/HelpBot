@@ -64,8 +64,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 let notFoundEmbed = new discord.MessageEmbed()
                     .setColor(resources.red)
                     .setDescription(`${resources.RedTick} No se ha podido localizar el vídeo.`);
-                return message.channel.send(notFoundEmbed)
-            }
+                    
+                return message.channel.send(notFoundEmbed);
+            };
 
             //Genera la información de la cola
             let newQueueItem = {
@@ -79,7 +80,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             await client.servers[message.guild.id].queue.splice(0, 0, newQueueItem);
             
             //Omite la reproducción y manda un mensaje de confirmación
-            await message.channel.send(`⏭ | Canción omitida`)
+            await message.channel.send(`⏭ | Canción omitida`);
             await client.voiceDispatcher.end();
         }
 
@@ -98,7 +99,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             };
 
             //Manda el mensaje "buscando ..."
-            message.channel.send(`🔎 | Buscando \`${args.join(` `)}\` ...`)
+            message.channel.send(`🔎 | Buscando \`${args.join(` `)}\` ...`);
 
             //Realiza la búsqueda
             search(args.join(` `), opts, function(err, result) {

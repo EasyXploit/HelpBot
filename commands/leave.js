@@ -23,6 +23,12 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         //Cambia el estatus a "DISPONIBLE"
         client.voiceStatus = true;
+
+        //Vacia el dispatcher
+        client.voiceDispatcher = false;
+
+        //Vacia la conexión
+        client.voiceConnection = false;
         
         //Manda un mensaje de confirmación
         await message.channel.send(`⏏ | He abandonado el canal`);

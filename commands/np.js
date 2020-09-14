@@ -26,7 +26,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             progressBar[0] = `🔘`;
         } else if (percentage > 10) {
             progressBar[percentage.toString().slice(0, 1)] = `🔘`;
-        }
+        };
         
         let progressEmbed = new discord.MessageEmbed()
             .setColor(randomColor())

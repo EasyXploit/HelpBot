@@ -24,10 +24,10 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             //Si no hay cola, envia nowPlaying
             message.channel.send(queueEmbed);
         } else if (!client.servers[message.guild.id].queue[1]) {
-            let serverQueue = client.servers[message.guild.id].queue
+            let serverQueue = client.servers[message.guild.id].queue;
             let queueList = `\`1.\` [${serverQueue[0].title}](${serverQueue[0].link}) | \`${serverQueue[0].duration} ${serverQueue[0].requestedBy}\`\n\n`;
             
-            queueEmbed.addField(`A continuación`, queueList, true)
+            queueEmbed.addField(`A continuación`, queueList, true);
             message.channel.send(queueEmbed);
             
         } else {
@@ -39,7 +39,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 queueList = queueList + '`' + (id + 1) + `.\` [${serverQueue[id].title}](${serverQueue[id].link}) | \`${serverQueue[id].duration} ${serverQueue[id].requestedBy}\`\n\n`;
             }
             
-            queueEmbed.addField(`A continuación`, queueList, true)
+            queueEmbed.addField(`A continuación`, queueList, true);
             message.channel.send(queueEmbed);
         }
     } catch (e) {

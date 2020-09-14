@@ -27,7 +27,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             
             //Si está en la sala del miembro
             if (message.member.voice.channelID === message.guild.member(client.user).voice.channelID) return message.channel.send(alreadyInYourChannelEmbed);
-        }
+        };
 
         let noConnectPermissionEmbed = new discord.MessageEmbed()
             .setColor(resources.red)

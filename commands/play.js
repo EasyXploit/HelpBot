@@ -62,10 +62,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             let noChannelEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} Debes estar conectado a un canal de voz.`);
-
-            let noCorrectSyntaxEmbed = new discord.MessageEmbed()
-                .setColor(resources.red)
-                .setDescription(`${resources.RedTick} La sintaxis de este comando es: \`${config.prefix}play (URL de YouTube | término | nada)\``);
             
             let noTalkPermissionEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
@@ -89,13 +85,19 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 try {
                     info = await ytdl.getInfo(query);
                     details = info.player_response.videoDetails;
+
+                    let durationExcededEmbed = new discord.MessageEmbed()
+                        .setColor(resources.red)
+                        .setDescription(`${resources.RedTick} No puedo reproducir canciones con una duración mayor a 3 horas.`);
+
+                    if (details.lengthSeconds > 10800) return message.channel.send(durationExcededEmbed);
                 } catch (e) {
                     console.log(e);
                     let notFoundEmbed = new discord.MessageEmbed()
                         .setColor(resources.red)
                         .setDescription(`${resources.RedTick} No se ha podido localizar el vídeo.`);
                     return message.channel.send(notFoundEmbed)
-                }
+                };
 
                 //Función para comprobar la cola de reproducción
                 async function queued(message) {
@@ -107,10 +109,10 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                         .setDescription(`[${details.title}](${info.video_url})\n\n● **Autor:** \`${details.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(details.lengthSeconds).format('H:mm:ss')}\``)
                         .setFooter(`© ${new Date().getFullYear()} República Gamer S.L. | BETA Pública`, resources.server.iconURL());
                     message.channel.send(queuedEmbed);
-                }
+                };
 
                 //Comprueba si el bot tiene o no una conexión a un canal de voz
-                if (!message.guild.voice || !message.guild.voice.channel) { //Ejecuta esto si no está conectado
+                if (!message.guild.voice || !message.guild.voice.channel || !client.voiceConnection) { //Ejecuta esto si no está conectado
 
                     //Comprueba si la guild tiene una cola de reproducción
                     if (!client.servers[message.guild.id]) {
@@ -119,8 +121,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                             nowplaying: {},
                             shuffle: false,
                             loop: false
-                        }
-                    }
+                        };
+                    };
 
                     let noConnectPermissionEmbed = new discord.MessageEmbed()
                         .setColor(resources.red)
@@ -164,10 +166,12 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                         client.servers[message.guild.id].queue.push(newQueueItem);
 
                         //Ejecuta la función de reproducción
-                        require(`../utils/reproductionManager.js`).run(discord, fs, client, resources, message, info, ytdl, moment, randomColor);
+                        require(`../utils/reproductionManager.js`).run(discord, client, resources, message, info, ytdl, moment, randomColor);
 
                     }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));
+
                 } else if (message.member.voice.channelID === message.guild.member(client.user).voice.channelID) {
+
                     //Comprueba si la guild tiene una cola de reproducción
                     if (!client.servers[message.guild.id]) {
                         client.servers[message.guild.id] = {
@@ -175,8 +179,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                             nowplaying: {},
                             shuffle: false,
                             loop: false
-                        }
-                    }
+                        };
+                    };
+
                     //Comprueba si hay algo en reproducción
                     if (!client.voiceDispatcher) {
 

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, resources, message, info, ytdl, moment, randomColor) => {
+exports.run = async (discord, client, resources, message, info, ytdl, moment, randomColor) => {
 
     try {
         //Función para reproducir
@@ -15,16 +15,10 @@ exports.run = async (discord, fs, client, resources, message, info, ytdl, moment
                 client.voiceDispatcher = connection.play(await ytdl(server.queue[toPlay].link), {type: 'opus'});
             } catch (e) {
                 console.log(`${new Date().toLocaleString()} 》${e}`);
-            }
+            };
             
             info = await ytdl.getInfo(server.queue[toPlay].link);
             let details = info.player_response.videoDetails;
-
-            let durationExcededEmbed = new discord.MessageEmbed()
-                .setColor(resources.red)
-                .setDescription(`${resources.RedTick} No puedo reproducir canciones con una duración mayor a 3 horas.`);
-
-            if (details.lengthSeconds > 10800) return message.channel.send(durationExcededEmbed);
 
             let upNext = `Nada`;
 
@@ -33,7 +27,7 @@ exports.run = async (discord, fs, client, resources, message, info, ytdl, moment
                     upNext = `Aleatorio`;
                 } else if (client.servers[message.guild.id].shuffle === false) {
                     upNext = `[${server.queue[1].title}](${server.queue[1].link})`;
-                }
+                };
             };
 
             let playingEmbed = new discord.MessageEmbed()
@@ -57,7 +51,7 @@ exports.run = async (discord, fs, client, resources, message, info, ytdl, moment
                 server.queue.shift();
             } else {
                 return message.channel.send(`Error`);
-            }
+            };
 
 
             //Actualiza nowplaying
@@ -87,21 +81,21 @@ exports.run = async (discord, fs, client, resources, message, info, ytdl, moment
 
                     //Cambia el estatus a "DISPONIBLE"
                     client.voiceStatus = true;
-                }
-            })
+                };
+            });
 
             //Se dispara si el dispatcher tiene información de depuración a mostrar
             client.voiceDispatcher.on(`debug`, debug => {
-                console.log(`${new Date().toLocaleString()} 》Dispatcher (debug): ${debug}`)
+                console.log(`${new Date().toLocaleString()} 》Dispatcher (debug): ${debug}`);
             });
 
             //Se dispara si ocurre un error durante el streaming
             client.voiceDispatcher.on(`error`, error => {
-                console.log(`${new Date().toLocaleString()} 》Dispatcher error: ${error}`)
+                console.log(`${new Date().toLocaleString()} 》Dispatcher error: ${error}`);
             });
         }
-        play(client.voiceConnection, message)
+        play(client.voiceConnection, message);
     } catch (e) {
-        console.log(`${new Date().toLocaleString()} 》Error: ${e}`)
+        console.log(`${new Date().toLocaleString()} 》Error: ${e}`);
     }
 }

@@ -54,6 +54,7 @@ client.servers = {}; //Almacena la cola y otros datos
 client.voiceStatus = true; //Almacena la disponiblidad del bot
 client.voiceDispatcher; //Almacena el dispatcher
 client.voiceConnection; //Almacena la conexión
+client.voiceTimeout; //Almacena los timeouts de reproducción finalizada
 client.usersVoiceStates = {}; //Almacena los cambios de estado de voz de los usuarios
 
 // COMPROBACIÓN DE INICIO DE SESIÓN Y PRESENCIA

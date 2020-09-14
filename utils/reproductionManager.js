@@ -75,12 +75,16 @@ exports.run = async (discord, client, resources, message, info, ytdl, moment, ra
                     //Manda un mensaje de abandono
                     message.channel.send(`⏏ | Reproducción finalizada`);
 
-                    //Aborta la conexión
-                    connection.disconnect();
-                    delete client.servers[message.guild.id];
+                    client.voiceTimeout = setTimeout(() => {
+                        //Aborta la conexión
+                        connection.disconnect();
+                        delete client.servers[message.guild.id];
 
-                    //Cambia el estatus a "DISPONIBLE"
-                    client.voiceStatus = true;
+                        //Cambia el estatus a "DISPONIBLE"
+                        client.voiceStatus = true;
+
+                        client.voiceTimeout = null;
+                    }, 60000);
                 };
             });
 

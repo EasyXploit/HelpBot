@@ -172,6 +172,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
                 } else if (message.member.voice.channelID === message.guild.member(client.user).voice.channelID) {
 
+                    //Si hay un timeout, lo quita
+                    if (client.voiceTimeout) clearTimeout(client.voiceTimeout);
+
                     //Comprueba si la guild tiene una cola de reproducción
                     if (!client.servers[message.guild.id]) {
                         client.servers[message.guild.id] = {
@@ -183,8 +186,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     };
 
                     //Comprueba si hay algo en reproducción
-                    if (!client.voiceDispatcher) {
-
+                    if (!client.voiceDispatcher || client.voiceTimeout) {
                         //Genera la información de la cola
                         let newQueueItem = {
                             link: info.video_url,

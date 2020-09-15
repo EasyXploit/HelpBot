@@ -18,7 +18,8 @@
         "action": 3,
         "reason": "Demasiadas mayúsulas",
         "bypassRoles": ["374949036555239434"],
-        "bypassChannels": []
+        "bypassChannels": [],
+        "minimumLength": 30
     },
     "links": {
         "status": false,

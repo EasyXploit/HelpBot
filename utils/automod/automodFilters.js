@@ -17,7 +17,7 @@ async function invites(message) {
 //Mayúsculas
 async function uppercase(message) {
 
-    if (message.content.length < 15) return false;
+    if (message.content.length < filters.uppercase.minimumLength) return false;
     if (message.content.replace(/[^A-Z]/g, "").length > (message.content.length / 100) * 75) return true;
 };
 

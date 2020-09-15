@@ -47,7 +47,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         if (isNaN(days) || days < 1 || days > 7) return message.channel.send(incorrectTimeEmbed);
 
         //Esto comprueba si se debe proporcionar razón
-        let reason = args.slice(2)
+        let reason = args.slice(2).join(" ");
         if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send(noReasonEmbed);
         if (!reason) reason = `Indefinida`;
 

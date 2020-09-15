@@ -48,10 +48,10 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setDescription(`${resources.RedTick} No puedes omitir más de una canción con el modo loop activado.`);
             
             //Comprueba si está activado el modo aleatorio
-            if (client.servers[message.guild.id].shuffle === true) return message.channel.send(tooMuchSkipsRandomEmbed);
+            if (client.servers[message.guild.id].mode === 'shuffle') return message.channel.send(tooMuchSkipsRandomEmbed);
 
             //Comprueba si está activado el modo loop
-            if (client.servers[message.guild.id].loop === true) return message.channel.send(tooMuchSkipsLoopEmbed);
+            if (client.servers[message.guild.id].mode === 'loop' || client.servers[message.guild.id].mode === 'loopqueue') return message.channel.send(tooMuchSkipsLoopEmbed);
             
             //Comprueba si se ha proporcionado un número entero
             if (isNaN(args[0])) return message.channel.send(NaNEmbed);
@@ -64,7 +64,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             
             //Cambia la cola
             await client.servers[message.guild.id].queue.splice(0, args[0] - 1)
-        }
+        };
 
         //Omite la reproducción y manda un mensaje de confirmación
         await message.channel.send(`⏭ | Canción omitida`);

@@ -11,7 +11,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField(`⏭ ${config.prefix}playskip (URL de YouTube | término)`, `Reproduce la canción inmediatamente (a pesar de la cola)`, true)
             .addField(`➡ ${config.prefix}skip (cantidad opcional)`, `Omite la canción actual (o más si se especifica cantidad)`, true)
             .addField(`❎ ${config.prefix}remove (posición)`, `Elimina una canción de la cola de reproducción`, true)
-            .addField(`🔂 ${config.prefix}replay`, `Vuelve a reproducir la canción actual desde el principio`, true)
+            .addField(`↩ ${config.prefix}replay`, `Vuelve a reproducir la canción actual desde el principio`, true)
             .addField(`↪ ${config.prefix}move (posición 1) (posición 2)`, `Cambia la ubicación de una canción en la cola`, true)
             .addField(`▶ ${config.prefix}resume`, `Reanuda la reproducción (si está pausada)`, true)
             .addField(`⏸ ${config.prefix}pause`, `Pausa la reproducción`, true)
@@ -21,6 +21,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField(`➿ ${config.prefix}np`, `Muestra el estado de la canción actual`, true)
             .addField(`❌ ${config.prefix}clear`, `Elimina toda la cola de reproducción`, true)
             .addField(`🔀 ${config.prefix}shuffle`, `Activa el modo aleatorio en la cola`, true)
+            .addField(`🔂 ${config.prefix}loop`, `Activa el modo bucle en la canción`, true)
+            .addField(`🔁 ${config.prefix}loopqueue`, `Activa el modo bucle en la cola`, true)
             .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
         
             let helpEmbed2 = new discord.MessageEmbed()

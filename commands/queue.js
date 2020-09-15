@@ -12,12 +12,29 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         if (!client.servers[message.guild.id]) return message.channel.send(noQueueEmbed);
         
         let server = client.servers[message.guild.id];
+
+        let footer = `© ${new Date().getFullYear()} República Gamer S.L.`;
+        if (server.mode) {
+            switch (server.mode) {
+                case 'shuffle':
+                    footer = footer + ` | 🔀`;
+                    break;
+            
+                case 'loop':
+                    footer = footer + ` | 🔂`;
+                    break;
+
+                case 'loopqueue':
+                    footer = footer + ` | 🔁`;
+                    break;
+            };
+        };
         
         let queueEmbed = new discord.MessageEmbed()
                 .setColor(randomColor())
                 .setAuthor(`Cola de reproducción - Ahora mismo:`, `https://i.imgur.com/lvShSwa.png`)
                 .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n● Duración: \`${server.nowplaying.duration}\`.\n ● Requerida por: \`${server.nowplaying.requestedBy}\``)
-                .setFooter(`© ${new Date().getFullYear()} República Gamer S.L. | BETA Pública`, resources.server.iconURL());
+                .setFooter(footer, resources.server.iconURL());
         
         if (!client.servers[message.guild.id].queue[0]) {
             

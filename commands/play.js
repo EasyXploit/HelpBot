@@ -102,25 +102,41 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 //Función para comprobar la cola de reproducción
                 async function queued(message) {
 
+                    let footer = `© ${new Date().getFullYear()} República Gamer S.L.`;
+                    if (client.servers[message.guild.id].mode) {
+                        switch (client.servers[message.guild.id].mode) {
+                            case 'shuffle':
+                                footer = footer + ` | 🔀`;
+                                break;
+                        
+                            case 'loop':
+                                footer = footer + ` | 🔂`;
+                                break;
+
+                            case 'loopqueue':
+                                footer = footer + ` | 🔁`;
+                                break;
+                        };
+                    };
+
                     let queuedEmbed = new discord.MessageEmbed()
                         .setColor(randomColor())
                         .setThumbnail(details.thumbnail.thumbnails[3].url)
                         .setAuthor(`Añadido a la cola 🎶`, `https://i.imgur.com/lvShSwa.png`)
                         .setDescription(`[${details.title}](${info.video_url})\n\n● **Autor:** \`${details.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(details.lengthSeconds).format('H:mm:ss')}\``)
-                        .setFooter(`© ${new Date().getFullYear()} República Gamer S.L. | BETA Pública`, resources.server.iconURL());
+                        .setFooter(footer, resources.server.iconURL());
                     message.channel.send(queuedEmbed);
                 };
 
                 //Comprueba si el bot tiene o no una conexión a un canal de voz
-                if (!message.guild.voice || !message.guild.voice.channel || !client.voiceConnection) { //Ejecuta esto si no está conectado
+                if (!message.guild.voice  || !message.guild.voice.channel || !client.voiceConnection) { //Ejecuta esto si no está conectado
 
                     //Comprueba si la guild tiene una cola de reproducción
                     if (!client.servers[message.guild.id]) {
                         client.servers[message.guild.id] = {
                             queue: [],
                             nowplaying: {},
-                            shuffle: false,
-                            loop: false
+                            mode: false
                         };
                     };
 
@@ -171,22 +187,23 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));
 
                 } else if (message.member.voice.channelID === message.guild.member(client.user).voice.channelID) {
-
-                    //Si hay un timeout, lo quita
-                    if (client.voiceTimeout) clearTimeout(client.voiceTimeout);
-
                     //Comprueba si la guild tiene una cola de reproducción
                     if (!client.servers[message.guild.id]) {
                         client.servers[message.guild.id] = {
                             queue: [],
                             nowplaying: {},
-                            shuffle: false,
-                            loop: false
+                            mode: false
                         };
                     };
 
                     //Comprueba si hay algo en reproducción
                     if (!client.voiceDispatcher || client.voiceTimeout) {
+                        //Si hay un timeout, lo quita
+                        if (client.voiceTimeout) {
+                            clearTimeout(client.voiceTimeout);
+                            client.voiceTimeout = null;
+                        };
+
                         //Genera la información de la cola
                         let newQueueItem = {
                             link: info.video_url,

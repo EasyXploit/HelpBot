@@ -8,7 +8,7 @@ exports.run = async (discord, client, resources, message, info, ytdl, moment, ra
 
             let toPlay = 0;
 
-            if (client.servers[message.guild.id].shuffle === true) toPlay = Math.floor(Math.random() * (client.servers[message.guild.id].queue.length - 1));
+            if (client.servers[message.guild.id].mode === 'shuffle') toPlay = Math.floor(Math.random() * (client.servers[message.guild.id].queue.length - 1));
 
             try {
                 //Reproduce la canción
@@ -23,10 +23,29 @@ exports.run = async (discord, client, resources, message, info, ytdl, moment, ra
             let upNext = `Nada`;
 
             if (server.queue[1]) {
-                if (client.servers[message.guild.id].shuffle === true) {
+                if (client.servers[message.guild.id].mode === 'shuffle') {
                     upNext = `Aleatorio`;
-                } else if (client.servers[message.guild.id].shuffle === false) {
+                } else if (client.servers[message.guild.id].mode === 'loop') {
+                    upNext = `[${server.queue[0].title}](${server.queue[0].link})`;
+                } else {
                     upNext = `[${server.queue[1].title}](${server.queue[1].link})`;
+                };
+            };
+
+            let footer = `© ${new Date().getFullYear()} República Gamer S.L.`;
+            if (server.mode) {
+                switch (server.mode) {
+                    case 'shuffle':
+                        footer = footer + ` | 🔀`;
+                        break;
+                
+                    case 'loop':
+                        footer = footer + ` | 🔂`;
+                        break;
+
+                    case 'loopqueue':
+                        footer = footer + ` | 🔁`;
+                        break;
                 };
             };
 
@@ -37,20 +56,30 @@ exports.run = async (discord, client, resources, message, info, ytdl, moment, ra
                 .setDescription(`[${details.title}](${info.video_url})\n\n● **Autor:** \`${details.author}\`\n● **Duración:** \`${moment().startOf('day').milliseconds(details.lengthSeconds * 1000).format('HH:mm:ss')}\``)
                 .addField(`Solicitado por:`, server.queue[toPlay].requestedBy, true)
                 .addField(`Siguiente:`, upNext, true)
-                .setFooter(`© ${new Date().getFullYear()} República Gamer S.L. | BETA Pública`, resources.server.iconURL());
-
-            //Ajusta el bitrate del oncoder de Opus actual
-            //connection.player.setBitrate(96);
+                .setFooter(footer, resources.server.iconURL());
 
             //Envía un mensaje de confirmación y elimina de la cola la canción actual
             message.channel.send(playingEmbed);
             
-            if (client.servers[message.guild.id].shuffle === true) {
+            if (client.servers[message.guild.id].mode === 'shuffle') {
                 client.servers[message.guild.id].queue.splice(toPlay, 1);
-            } else if (client.servers[message.guild.id].shuffle === false) {
+            } else if (client.servers[message.guild.id].mode === 'loopqueue') {
+                //Genera la información de la cola
+                let newQueueItem = {
+                    link: server.nowplaying.link,
+                    title: server.nowplaying.title,
+                    duration: server.nowplaying.duration,
+                    requestedBy: server.nowplaying.requestedBy
+                };
+
+                //Sube la canción a la cola
+                client.servers[message.guild.id].queue.push(newQueueItem);
+
+                //Quita el primer elemento de la cola
                 server.queue.shift();
-            } else {
-                return message.channel.send(`Error`);
+            } else if (!client.servers[message.guild.id].mode) {
+                //Quita el primer elemento de la cola
+                server.queue.shift();
             };
 
 

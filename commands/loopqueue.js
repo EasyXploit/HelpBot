@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
-    //!shuffle
+    //!loopqueue
 
     try {
         
@@ -41,20 +41,20 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let server = client.servers[message.guild.id];
         
         //Comprueba si hay cola
-        if (!server || server.queue <= 0) return message.channel.send(noQueueEmbed);
+        if (!server || server.queue < 0) return message.channel.send(noQueueEmbed);
         
-        if (server.mode !== 'shuffle') {
-            //Activa el modo shuffle
-            server.mode = 'shuffle';
+        if (server.mode !== 'loopqueue') {
+            //Activa el modo Loop
+            server.mode = 'loopqueue';
 
             //Manda un mensaje de confirmación
-            message.channel.send(`🔀 | He activado el modo aleatorio`);
-        } else if (server.mode === 'shuffle') {
-            //Desactiva el modo shuffle
+            message.channel.send(`🔁 | He activado el modo bucle en la cola`);
+        } else if (server.mode === 'loopqueue') {
+            //Desactiva el modo Loop
             server.mode = false;
 
             //Manda un mensaje de confirmación
-            message.channel.send(`▶ | He desactivado el modo aleatorio`);
+            message.channel.send(`▶ | He desactivado el modo bucle en la cola`);
         };
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);

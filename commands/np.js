@@ -27,12 +27,29 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         } else if (percentage > 10) {
             progressBar[percentage.toString().slice(0, 1)] = `🔘`;
         };
+
+        let footer = `© ${new Date().getFullYear()} República Gamer S.L.`;
+        if (server.mode) {
+            switch (server.mode) {
+                case 'shuffle':
+                    footer = footer + ` | 🔀`;
+                    break;
+            
+                case 'loop':
+                    footer = footer + ` | 🔂`;
+                    break;
+
+                case 'loopqueue':
+                    footer = footer + ` | 🔁`;
+                    break;
+            };
+        };
         
         let progressEmbed = new discord.MessageEmbed()
             .setColor(randomColor())
             .setAuthor(`Ahora mismo:`, `https://i.imgur.com/lvShSwa.png`)
             .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n${progressBar.join(``)} ${percentage}%\n\`${moment().startOf('day').milliseconds(progress).format('H:mm:ss')} / ${moment().startOf('day').milliseconds(total).format('HH:mm:ss')}\``)
-            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L. | BETA Pública`, resources.server.iconURL());
+            .setFooter(footer, resources.server.iconURL());
         
         message.channel.send(progressEmbed);
     } catch (e) {

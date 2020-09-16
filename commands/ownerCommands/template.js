@@ -93,7 +93,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setAuthor('¡VÓTANOS!', 'https://i.imgur.com/pIWa9r4.png')
                 .setDescription('Con tu voto, nos ayudas a ser más visibles para el resto del mundo, por lo que el servidor crecerá gracias a tí. Danos una manita para arriba votando en estas páginas:')
                 .addField('Topg.gg', '[VOTAR](https://top.gg/servers/374945492133740544/vote)', true)
-                .addField('TrackyServer', '[VOTAR](https://trackyserver.com/servers/...)', true)
+                .addField('TrackyServer', '[VOTAR](https://www.trackyserver.com/es/server/repblica-gamer-606898)', true)
                 .addField('Disboard', '[RESEÑAR](https://disboard.org/es/review/create/374945492133740544)', true)
                 .attachFiles(`./resources/images/banners/vote.png`);
 
@@ -217,7 +217,12 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             message.channel.send(embed);
         } else if (args[0] === `test`) {
 
-            var ids = [357526716601860107, 382910451165691905, 369613284003020804, 532371239587676190, 376070268818423840];
+            var ytpl = require('ytpl');
+
+            const playlist = await ytpl('https://www.youtube.com/watch?v=QEWV6fiYaDU&list=PLt7bG0K25iXjELn5boulLpFCB5ezpxsNL');
+            console.log(playlist);
+
+            /*var ids = [357526716601860107, 382910451165691905, 369613284003020804, 532371239587676190, 376070268818423840];
             function getMember(id){ // sample async action
                 return message.guild.members.fetch(id).displayName;
             };
@@ -231,7 +236,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             results.then(data => // or just .then(console.log)
                 console.log(data)
-            );
+            );*/
 
 
         } else {

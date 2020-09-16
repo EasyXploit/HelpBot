@@ -102,7 +102,7 @@ exports.run = async (discord, client, resources, message, info, ytdl, moment, ra
                 } else {
 
                     //Manda un mensaje de abandono
-                    message.channel.send(`⏏ | Reproducción finalizada`);
+                    message.channel.send(`⏹ | Reproducción finalizada`);
 
                     client.voiceTimeout = setTimeout(() => {
                         //Aborta la conexión

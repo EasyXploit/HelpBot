@@ -125,6 +125,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                         .setAuthor(`Añadido a la cola 🎶`, `https://i.imgur.com/lvShSwa.png`)
                         .setDescription(`[${details.title}](${info.video_url})\n\n● **Autor:** \`${details.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(details.lengthSeconds).format('H:mm:ss')}\``)
                         .setFooter(footer, resources.server.iconURL());
+
                     message.channel.send(queuedEmbed);
                 };
 
@@ -243,27 +244,62 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             const keys = require('../configs/keys.json');
 
             const opts = {
-                maxResults: 1,
+                maxResults: 10,
                 key: keys.youtube
             };
 
             //Manda el mensaje "buscando ..."
             message.channel.send(`🔎 | Buscando \`${args.join(` `)}\` ...`)
 
-            //Realiza la búsqueda
-            search(args.join(` `), opts, function(err, result) {
-                if(err) return console.log(err);
+            if (args[0].startsWith('http')) {
+                reproduction(args[0]);
+            } else {
+                //Realiza la búsqueda
+                search(args.join(` `), opts, async function(err, results) {
+                    if(err) return console.log(err);
 
-                let noResultsEmbed = new discord.MessageEmbed()
-                    .setColor(resources.red)
-                    .setDescription(`${resources.RedTick} No se ha encontrado ningún resultado que encaje con ${args.join(' ')}.`);
+                    let noResultsEmbed = new discord.MessageEmbed()
+                        .setColor(resources.red)
+                        .setDescription(`${resources.RedTick} No se ha encontrado ningún resultado que encaje con ${args.join(' ')}.`);
 
-                //Comprueba si se han obtenido resultados
-                if (!result) return message.channel.send(noResultsEmbed);
-                
-                //Almacena los datos de la canción
-                reproduction(result[0].link);
-            });
+                    //Comprueba si se han obtenido resultados
+                    if (!results) return message.channel.send(noResultsEmbed);
+
+                    if (results.length == 1) {
+                        reproduction(results[0].link);
+                    } else {
+                        let formattedResults = '';
+                        for (let i = 0; i < results.length; i++) formattedResults = `${formattedResults}\n\`${i + 1}.\` - [${results[i].title}](${results[i].link})`;
+
+                        let resultsEmbed = new discord.MessageEmbed()
+                            .setColor(randomColor())
+                            .setAuthor(`Elige una canción 🎶`, `https://i.imgur.com/lvShSwa.png`)
+                            .setDescription(formattedResults)
+                            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
+
+                        await message.channel.send(resultsEmbed).then(async msg => {
+                            await msg.channel.awaitMessages(m => m.author.id === message.author.id, {max: 1, time: 60000}).then(async collected => {
+                                let option = collected.first().content;
+                                collected.first().delete();
+                                option = parseInt(option);
+
+                                let incorrectOptionEmbed = new discord.MessageEmbed()
+                                    .setColor(resources.red)
+                                    .setDescription(`${resources.RedTick} Debes escoger una canción de la lista.`);
+
+                                if (isNaN(option) || option < 1 || option > 10) return message.channel.send(incorrectOptionEmbed);
+
+                                await msg.delete();
+
+                                //Almacena los datos de la canción
+                                reproduction(results[option - 1].link);
+
+
+                            }).catch(() => msg.delete().then(reproduction(results[0].link)));
+                        });
+                    };
+                });
+            };
         }
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);

@@ -1,4 +1,4 @@
-exports.run = async (discord, client, resources, message, info, ytdl, moment, randomColor) => {
+exports.run = async (discord, client, resources, message, ytdl, moment, randomColor) => {
 
     try {
         //Función para reproducir
@@ -17,8 +17,7 @@ exports.run = async (discord, client, resources, message, info, ytdl, moment, ra
                 console.log(`${new Date().toLocaleString()} 》${e}`);
             };
             
-            info = await ytdl.getInfo(server.queue[toPlay].link);
-            let details = info.player_response.videoDetails;
+            let info = server.queue[toPlay];
 
             let upNext = `Nada`;
 
@@ -51,9 +50,9 @@ exports.run = async (discord, client, resources, message, info, ytdl, moment, ra
 
             let playingEmbed = new discord.MessageEmbed()
                 .setColor(randomColor())
-                .setThumbnail(details.thumbnail.thumbnails[3].url)
+                .setThumbnail(info.thumbnail)
                 .setAuthor(`Reproduciendo 🎶`, `https://i.imgur.com/lvShSwa.png`)
-                .setDescription(`[${details.title}](${info.video_url})\n\n● **Autor:** \`${details.author}\`\n● **Duración:** \`${moment().startOf('day').milliseconds(details.lengthSeconds * 1000).format('HH:mm:ss')}\``)
+                .setDescription(`[${info.title}](${info.link})\n\n● **Autor:** \`${info.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(info.lengthSeconds).format('H:mm:ss')}\``)
                 .addField(`Solicitado por:`, server.queue[toPlay].requestedBy, true)
                 .addField(`Siguiente:`, upNext, true)
                 .setFooter(footer, resources.server.iconURL());
@@ -85,9 +84,9 @@ exports.run = async (discord, client, resources, message, info, ytdl, moment, ra
 
             //Actualiza nowplaying
             server.nowplaying = {
-                title: details.title,
-                link: info.video_url,
-                duration: moment().startOf('day').seconds(details.lengthSeconds).format('H:mm:ss'),
+                title: info.title,
+                link: info.link,
+                duration: moment().startOf('day').seconds(info.lengthSeconds).format('H:mm:ss'),
                 requestedBy: message.member.displayName
             };
 

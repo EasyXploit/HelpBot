@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    //!skip (cantidad opcional)
+    //!skip (cantidad opcional | all)
 
     try {
         let notPlayingEmbed = new discord.MessageEmbed()
@@ -12,7 +12,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
 
         //Comprueba si el bot tiene o no una conexión a un canal de voz en el servidor
-        if (!message.guild.voice) return message.channel.send(notPlayingEmbed);
+        if (!message.guild.voice || !client.voiceDispatcher) return message.channel.send(notPlayingEmbed);
         
         //Comprueba si el miembro está en un canal de voz
         let voiceChannel = message.member.voice.channel;
@@ -38,36 +38,41 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         
         //Si se especifica una cantidad, se skipearan en consecuencia
         if (args[0]) {
-            
-            let tooMuchSkipsRandomEmbed = new discord.MessageEmbed()
-                .setColor(resources.red)
-                .setDescription(`${resources.RedTick} No puedes omitir más de una canción con el modo aleatorio activado.`);
 
-            let tooMuchSkipsLoopEmbed = new discord.MessageEmbed()
-                .setColor(resources.red)
-                .setDescription(`${resources.RedTick} No puedes omitir más de una canción con el modo loop activado.`);
-            
-            //Comprueba si está activado el modo aleatorio
-            if (client.servers[message.guild.id].mode === 'shuffle') return message.channel.send(tooMuchSkipsRandomEmbed);
+            if (args[0] === 'all') {
+                //Cambia la cola
+                await client.servers[message.guild.id].queue.splice(0, client.servers[message.guild.id].queue.length);
+            } else {
+                let tooMuchSkipsRandomEmbed = new discord.MessageEmbed()
+                    .setColor(resources.red)
+                    .setDescription(`${resources.RedTick} No puedes omitir más de una canción con el modo aleatorio activado.`);
 
-            //Comprueba si está activado el modo loop
-            if (client.servers[message.guild.id].mode === 'loop' || client.servers[message.guild.id].mode === 'loopqueue') return message.channel.send(tooMuchSkipsLoopEmbed);
-            
-            //Comprueba si se ha proporcionado un número entero
-            if (isNaN(args[0])) return message.channel.send(NaNEmbed);
-            
-            //Comprueba si no es 0
-            if (args[0] === `0`) return message.channel.send(`Quieres jugar sucio eh ...`);
-            
-            //Comprueba si el valor introducido es válido
-            if (args[0] > (client.servers[message.guild.id].queue.length + 1)) return message.channel.send(tooBigEmbed);
-            
-            //Cambia la cola
-            await client.servers[message.guild.id].queue.splice(0, args[0] - 1)
+                let tooMuchSkipsLoopEmbed = new discord.MessageEmbed()
+                    .setColor(resources.red)
+                    .setDescription(`${resources.RedTick} No puedes omitir más de una canción con el modo loop activado.`);
+                
+                //Comprueba si está activado el modo aleatorio
+                if (client.servers[message.guild.id].mode === 'shuffle') return message.channel.send(tooMuchSkipsRandomEmbed);
+
+                //Comprueba si está activado el modo loop
+                if (client.servers[message.guild.id].mode === 'loop' || client.servers[message.guild.id].mode === 'loopqueue') return message.channel.send(tooMuchSkipsLoopEmbed);
+                
+                //Comprueba si se ha proporcionado un número entero
+                if (isNaN(args[0])) return message.channel.send(NaNEmbed);
+                
+                //Comprueba si no es 0
+                if (args[0] === `0`) return message.channel.send(`Quieres jugar sucio eh ...`);
+                
+                //Comprueba si el valor introducido es válido
+                if (args[0] > (client.servers[message.guild.id].queue.length + 1)) return message.channel.send(tooBigEmbed);
+                
+                //Cambia la cola
+                await client.servers[message.guild.id].queue.splice(0, args[0] - 1);
+            };
         };
 
         //Omite la reproducción y manda un mensaje de confirmación
-        await message.channel.send(`⏭ | Canción omitida`);
+        await message.channel.send(`⏭ | Canción/es omitida/s`);
         await client.voiceDispatcher.end();
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);

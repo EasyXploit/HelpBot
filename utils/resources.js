@@ -202,6 +202,20 @@ exports.run = (discord, client) => {
     };
     module.exports.addXP = addXP;
 
+    //Función para convertir de HH:MM:SS a Segundos
+    function hmsToSeconds(str) {
+        var p = str.split(':'),
+            s = 0, m = 1;
+    
+        while (p.length > 0) {
+            s += m * parseInt(p.pop(), 10);
+            m *= 60;
+        }
+    
+        return s;
+    };
+    module.exports.hmsToSeconds = hmsToSeconds;
+
 
     //COLORES
     const gold = '0xFFC857';

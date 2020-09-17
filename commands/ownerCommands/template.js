@@ -217,12 +217,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             message.channel.send(embed);
         } else if (args[0] === `test`) {
 
-            var ytpl = require('ytpl');
-
-            const playlist = await ytpl('https://www.youtube.com/watch?v=QEWV6fiYaDU&list=PLt7bG0K25iXjELn5boulLpFCB5ezpxsNL');
-            console.log(playlist);
-
-            /*var ids = [357526716601860107, 382910451165691905, 369613284003020804, 532371239587676190, 376070268818423840];
+            var ids = [357526716601860107, 382910451165691905, 369613284003020804, 532371239587676190, 376070268818423840];
             function getMember(id){ // sample async action
                 return message.guild.members.fetch(id).displayName;
             };
@@ -236,9 +231,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             results.then(data => // or just .then(console.log)
                 console.log(data)
-            );*/
-
-
+            );
         } else {
             let noArgsEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)

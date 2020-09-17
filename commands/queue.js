@@ -4,6 +4,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
     try {
         const randomColor = require('randomcolor');
+        const moment = require(`moment`);
         
         let noQueueEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
@@ -37,12 +38,11 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setFooter(footer, resources.server.iconURL());
         
         if (!client.servers[message.guild.id].queue[0]) {
-            
             //Si no hay cola, envia nowPlaying
             message.channel.send(queueEmbed);
         } else if (!client.servers[message.guild.id].queue[1]) {
             let serverQueue = client.servers[message.guild.id].queue;
-            let queueList = `\`1.\` [${serverQueue[0].title}](${serverQueue[0].link}) | \`${serverQueue[0].duration} ${serverQueue[0].requestedBy}\`\n\n`;
+            let queueList = `\`1.\` [${serverQueue[0].title}](${serverQueue[0].link}) | \`${moment().startOf('day').seconds(serverQueue[0].lengthSeconds).format('H:mm:ss')}\` | ${serverQueue[0].requestedBy}\n`;
             
             queueEmbed.addField(`A continuación`, queueList, true);
             message.channel.send(queueEmbed);
@@ -50,10 +50,10 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         } else {
             
             let serverQueue = client.servers[message.guild.id].queue
-            let queueList = `\`1.\` [${serverQueue[0].title}](${serverQueue[0].link}) | \`${serverQueue[0].duration} ${serverQueue[0].requestedBy}\`\n\n`;
+            let queueList = `\`1.\` [${serverQueue[0].title}](${serverQueue[0].link}) | \`${moment().startOf('day').seconds(serverQueue[0].lengthSeconds).format('H:mm:ss')}\` | ${serverQueue[0].requestedBy}\n`;
             
             for (let id = 1; id < serverQueue.length; id++) {
-                queueList = queueList + '`' + (id + 1) + `.\` [${serverQueue[id].title}](${serverQueue[id].link}) | \`${serverQueue[id].duration} ${serverQueue[id].requestedBy}\`\n\n`;
+                queueList = queueList + '`' + (id + 1) + `.\` [${serverQueue[id].title}](${serverQueue[id].link}) | \`${moment().startOf('day').seconds(serverQueue[id].lengthSeconds).format('H:mm:ss')}\` | ${serverQueue[id].requestedBy}\n`;
             }
             
             queueEmbed.addField(`A continuación`, queueList, true);

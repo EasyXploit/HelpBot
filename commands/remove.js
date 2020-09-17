@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
-    //!remove (posición)
+    //!remove (posición | all)
 
     try {
         
@@ -47,29 +47,36 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         //Comprueba si hay cola
         if (!client.servers[message.guild.id] || client.servers[message.guild.id].queue <= 0) return message.channel.send(noQueueEmbed);
         
-        let isNaNEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes proporcionar un número entero.`);
-        
-        let tooBigEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} La canción Nº\`${args[0]}\` no está añadida a la cola.`);
+        if (args[0] === 'all') {
+            //Elimina el elemento de la cola
+            await client.servers[message.guild.id].queue.splice(0, client.servers[message.guild.id].queue.length);
+            
+            //Manda un mensaje de confirmación
+            await message.channel.send(`${resources.GreenTick} | He eliminado todas las canciones de la cola`);
+        } else {
+            let isNaNEmbed = new discord.MessageEmbed()
+                .setColor(resources.red)
+                .setDescription(`${resources.RedTick} Debes proporcionar un número entero.`);
+            
+            let tooBigEmbed = new discord.MessageEmbed()
+                .setColor(resources.red)
+                .setDescription(`${resources.RedTick} La canción Nº\`${args[0]}\` no está añadida a la cola.`);
 
-        //Comprueba si se ha proporcionado un número entero
-        if (isNaN(args[0])) return message.channel.send(isNaNEmbed);
-        
-        //Comprueba si no es 0
-        if (args[0] === `0`) return message.channel.send(`Quieres jugar sucio eh ...`);
-        
-        //Comprueba si el valor introducido es válido
-        if (args[0] > (client.servers[message.guild.id].queue.length)) return message.channel.send(tooBigEmbed);
-        
-        //Elimina el elemento de la cola
-        await client.servers[message.guild.id].queue.splice(args[0] - 1, 1);
-        
-        //Manda un mensaje de confirmación
-        await message.channel.send(`${resources.GreenTick} | He eliminado la canción de la cola`);
-
+            //Comprueba si se ha proporcionado un número entero
+            if (isNaN(args[0])) return message.channel.send(isNaNEmbed);
+            
+            //Comprueba si no es 0
+            if (args[0] === `0`) return message.channel.send(`Quieres jugar sucio eh ...`);
+            
+            //Comprueba si el valor introducido es válido
+            if (args[0] > (client.servers[message.guild.id].queue.length)) return message.channel.send(tooBigEmbed);
+            
+            //Elimina el elemento de la cola
+            await client.servers[message.guild.id].queue.splice(args[0] - 1, 1);
+            
+            //Manda un mensaje de confirmación
+            await message.channel.send(`${resources.GreenTick} | He eliminado la canción de la cola`);
+        };
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }

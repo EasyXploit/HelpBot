@@ -4,12 +4,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
     try {
 
-        /* ---- */
-
-        //if(message.guild.voice) message.guild.voice.kick();
-
-        /* ---- */
-
         const ytdl = require(`ytdl-core-discord`);
         const moment = require(`moment`);
         const randomColor = require('randomcolor');
@@ -72,62 +66,28 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             if (!voiceChannel) return message.channel.send(noChannelEmbed);
 
             //Comprueba si el bot tiene permiso para hablar
-            if (!voiceChannel.speakable) return message.channel.send(noTalkPermissionEmbed)
+            if (!voiceChannel.speakable) return message.channel.send(noTalkPermissionEmbed);
 
-            //Datos de la canción a reproducir
-            let info;
-            let details;
+            //Función para generar el footer
+            function getFooter() {
+                let footer = `© ${new Date().getFullYear()} República Gamer S.L.`;
+                if (client.servers[message.guild.id] && client.servers[message.guild.id].mode) {
+                    switch (client.servers[message.guild.id].mode) {
+                        case 'shuffle':
+                            footer = footer + ` | 🔀`;
+                    
+                        case 'loop':
+                            footer = footer + ` | 🔂`;
+
+                        case 'loopqueue':
+                            footer = footer + ` | 🔁`;
+                    };
+                };
+                return footer;
+            };
             
             //Función para almacenar la información
-            async function reproduction(query) {
-                
-                //Busca la información
-                try {
-                    info = await ytdl.getInfo(query);
-                    details = info.player_response.videoDetails;
-
-                    let durationExcededEmbed = new discord.MessageEmbed()
-                        .setColor(resources.red)
-                        .setDescription(`${resources.RedTick} No puedo reproducir canciones con una duración mayor a 3 horas.`);
-
-                    if (details.lengthSeconds > 10800) return message.channel.send(durationExcededEmbed);
-                } catch (e) {
-                    console.log(e);
-                    let notFoundEmbed = new discord.MessageEmbed()
-                        .setColor(resources.red)
-                        .setDescription(`${resources.RedTick} No se ha podido localizar el vídeo.`);
-                    return message.channel.send(notFoundEmbed)
-                };
-
-                //Función para comprobar la cola de reproducción
-                async function queued(message) {
-
-                    let footer = `© ${new Date().getFullYear()} República Gamer S.L.`;
-                    if (client.servers[message.guild.id].mode) {
-                        switch (client.servers[message.guild.id].mode) {
-                            case 'shuffle':
-                                footer = footer + ` | 🔀`;
-                                break;
-                        
-                            case 'loop':
-                                footer = footer + ` | 🔂`;
-                                break;
-
-                            case 'loopqueue':
-                                footer = footer + ` | 🔁`;
-                                break;
-                        };
-                    };
-
-                    let queuedEmbed = new discord.MessageEmbed()
-                        .setColor(randomColor())
-                        .setThumbnail(details.thumbnail.thumbnails[3].url)
-                        .setAuthor(`Añadido a la cola 🎶`, `https://i.imgur.com/lvShSwa.png`)
-                        .setDescription(`[${details.title}](${info.video_url})\n\n● **Autor:** \`${details.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(details.lengthSeconds).format('H:mm:ss')}\``)
-                        .setFooter(footer, resources.server.iconURL());
-
-                    message.channel.send(queuedEmbed);
-                };
+            async function reproduction(info, silent) {
 
                 //Comprueba si el bot tiene o no una conexión a un canal de voz
                 if (!message.guild.voice  || !message.guild.voice.channel || !client.voiceConnection) { //Ejecuta esto si no está conectado
@@ -171,19 +131,11 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                         //Cambia el estatus a "NO DISPONIBLE"
                         client.voiceStatus = false;
 
-                        //Genera la información de la cola
-                        let newQueueItem = {
-                            link: info.video_url,
-                            title: details.title,
-                            duration: moment().startOf('day').seconds(details.lengthSeconds).format('H:mm:ss'),
-                            requestedBy: message.member.displayName
-                        };
-
                         //Sube la canción a la cola
-                        client.servers[message.guild.id].queue.push(newQueueItem);
+                        client.servers[message.guild.id].queue.push(info);
 
                         //Ejecuta la función de reproducción
-                        require(`../utils/reproductionManager.js`).run(discord, client, resources, message, info, ytdl, moment, randomColor);
+                        require(`../utils/reproductionManager.js`).run(discord, client, resources, message, ytdl, moment, randomColor);
 
                     }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));
 
@@ -205,58 +157,99 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                             client.voiceTimeout = null;
                         };
 
-                        //Genera la información de la cola
-                        let newQueueItem = {
-                            link: info.video_url,
-                            title: details.title,
-                            duration: moment().startOf('day').seconds(details.lengthSeconds).format('H:mm:ss'),
-                            requestedBy: message.member.displayName
-                        };
-
                         //Sube la canción a la cola
-                        client.servers[message.guild.id].queue.push(newQueueItem);
+                        client.servers[message.guild.id].queue.push(info);
 
                         //Ejecuta la función de reproducción
-                        require(`../utils/reproductionManager.js`).run(discord, client, resources, message, info, ytdl, moment, randomColor);
+                        require(`../utils/reproductionManager.js`).run(discord, client, resources, message, ytdl, moment, randomColor);
                     } else {
-                        //Genera la información de la cola
-                        let newQueueItem = {
-                            link: info.video_url,
-                            title: details.title,
-                            duration: moment().startOf('day').seconds(details.lengthSeconds).format('H:mm:ss'),
-                            requestedBy: message.member.displayName
-                        };
-
                         //Sube la canción a la cola
-                        client.servers[message.guild.id].queue.push(newQueueItem);
+                        client.servers[message.guild.id].queue.push(info);
 
-                        //Ejecuta la función para mostrar que se ha encolado
-                        queued(message);
-                    }
+                        if (!silent) {
+                            let queuedEmbed = new discord.MessageEmbed()
+                                .setColor(randomColor())
+                                .setThumbnail(info.thumbnail)
+                                .setAuthor(`Añadido a la cola 🎶`, `https://i.imgur.com/lvShSwa.png`)
+                                .setDescription(`[${info.title}](${info.link})\n\n● **Autor:** \`${info.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(info.lengthSeconds).format('H:mm:ss')}\``)
+                                .setFooter(getFooter(), resources.server.iconURL());
+
+                            message.channel.send(queuedEmbed);
+                        };
+                    };
                 } else {
                     //Hace saber que no estás en el mismo canal que el bot
                     return message.channel.send(notAvailableEmbed);
-                }
-            }
+                };
+            };
 
-            //Si se proporciona una URL de YouTube, busca con esa url, de lo contrario buscará la URL mediante tubesearch
-            const search = require('youtube-search');
-            const keys = require('../configs/keys.json');
+            async function addPlaylist (string) {
+                const ytpl = require('ytpl');
+                const playlist = await ytpl(string);
 
-            const opts = {
-                maxResults: 10,
-                key: keys.youtube
+                for (let i = 0; i < playlist.items.length; i++) {
+                    if (playlist.items[i].title === '[Private video]' || resources.hmsToSeconds(playlist.items[i].duration) > 10800) delete playlist.items[i];
+                };
+
+                for (let i = 0; i < playlist.items.length; i++) {
+                    let result = playlist.items[i];
+                    if (!result) continue;
+
+                    let info = {
+                        link: result.url,
+                        title: result.title,
+                        lengthSeconds: resources.hmsToSeconds(result.duration),
+                        author: result.author.name,
+                        thumbnail: result.thumbnail,
+                        requestedBy: message.member.displayName
+                    };
+
+                    //Sube la canción a la cola
+                    if (i == 0) {
+                        let playlistEmbed = new discord.MessageEmbed()
+                            .setColor(randomColor())
+                            .setAuthor(`Playlist añadida a la cola 🎶`, `https://i.imgur.com/lvShSwa.png`)
+                            .setDescription(`[${playlist.title}](${playlist.url})\n\n● **Autor:** \`${playlist.author.name}\`\n● **Pistas:** \`${playlist.total_items}\``)
+                            .addField(`Solicitado por:`, message.member.displayName, true)
+                            .setFooter(getFooter(), resources.server.iconURL());
+
+                        message.channel.send(playlistEmbed);
+
+                        reproduction(info, true);
+                    } else {
+                        client.servers[message.guild.id].queue.push(info);
+                    };
+                };
             };
 
             //Manda el mensaje "buscando ..."
-            message.channel.send(`🔎 | Buscando \`${args.join(` `)}\` ...`)
+            message.channel.send(`🔎 | Buscando \`${args.join(` `)}\` ...`);
 
             if (args[0].startsWith('http')) {
-                reproduction(args[0]);
+                if (args[0].match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/)) {
+                    addPlaylist(args[0]);
+                } else {
+                    let yt_info = await ytdl.getInfo(args[0]);
+                    let details = yt_info.player_response.videoDetails;
+
+                    let info = {
+                        link: yt_info.video_url,
+                        title: details.title,
+                        lengthSeconds: details.lengthSeconds,
+                        author: details.author,
+                        thumbnail: details.thumbnail.thumbnails[3].url,
+                        requestedBy: message.member.displayName
+                    };
+
+                    reproduction(info);
+                };
             } else {
+                //Almacena el motor de búsqueda
+                const search = require('ytsr');
+
                 //Realiza la búsqueda
-                search(args.join(` `), opts, async function(err, results) {
-                    if(err) return console.log(err);
+                await search(args.join(` `), {limit: 10}).then(async result => {
+                    const results = result.items;
 
                     let noResultsEmbed = new discord.MessageEmbed()
                         .setColor(resources.red)
@@ -266,10 +259,34 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     if (!results) return message.channel.send(noResultsEmbed);
 
                     if (results.length == 1) {
-                        reproduction(results[0].link);
+
+                        let info = {
+                            link: results[0].link,
+                            title: results[0].title,
+                            lengthSeconds: resources.hmsToSeconds(results[0].duration),
+                            author: results[0].author.name,
+                            thumbnail: results[0].thumbnail,
+                            requestedBy: message.member.displayName
+                        };
+
+                        reproduction(info);
                     } else {
                         let formattedResults = '';
-                        for (let i = 0; i < results.length; i++) formattedResults = `${formattedResults}\n\`${i + 1}.\` - [${results[i].title}](${results[i].link})`;
+                        let pointer = 1;
+                        let asociatedPositions = {};
+                        for (let i = 0; i < results.length; i++) {
+                            if (results[i].type === 'playlist' || (results[i].type === 'video' && results[i].duration && results[i].title !== '[Private video]' && resources.hmsToSeconds(results[i].duration) < 10800)) {
+                                asociatedPositions[pointer] = i;
+                                let title = results[i].title;
+                                if (title.length > 40) title = `${title.slice(0, 40)} ...`;
+                                if (results[i].type === 'playlist') {
+                                    formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${results[i].link}) | \`${results[i].type}\``;
+                                } else {
+                                    formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${results[i].link}) | \`${results[i].duration}\``;
+                                };
+                                pointer ++;
+                            };
+                        };
 
                         let resultsEmbed = new discord.MessageEmbed()
                             .setColor(randomColor())
@@ -287,15 +304,33 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                                     .setColor(resources.red)
                                     .setDescription(`${resources.RedTick} Debes escoger una canción de la lista.`);
 
-                                if (isNaN(option) || option < 1 || option > 10) return message.channel.send(incorrectOptionEmbed);
+                                if (isNaN(option) || option < 1 || option > pointer - 1) return message.channel.send(incorrectOptionEmbed);
+
+                                option = asociatedPositions[option];
 
                                 await msg.delete();
 
-                                //Almacena los datos de la canción
-                                reproduction(results[option - 1].link);
+                                if (results[option].type === 'playlist') {
+                                    addPlaylist(results[option].link);
+                                } else if (results[option].type === 'video') {
+                                    let info = {
+                                        link: results[option].link,
+                                        title: results[option].title,
+                                        lengthSeconds: resources.hmsToSeconds(results[option].duration),
+                                        author: results[option].author.name,
+                                        thumbnail: results[option].thumbnail,
+                                        requestedBy: message.member.displayName
+                                    };
+                
+                                    reproduction(info);
+                                } else {
+                                    let incorrectTypeEmbed = new discord.MessageEmbed()
+                                        .setColor(resources.red)
+                                        .setDescription(`${resources.RedTick} No se puede reproducir este resultado.`);
 
-
-                            }).catch(() => msg.delete().then(reproduction(results[0].link)));
+                                    return message.channel.send(incorrectTypeEmbed);
+                                };
+                            }).catch(() => msg.delete());
                         });
                     };
                 });

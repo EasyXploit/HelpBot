@@ -21,7 +21,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         //Almacena la página actual y las totales
         let position = 1;
-        const pages = Math.ceil(serverQueue.length / 5);
+        let pages = Math.ceil(serverQueue.length / 5);
+        if (pages == 0) pages = 1;
 
         //Almacena la página que introduce el usuario (si lo hace)
         if (args[0] && !isNaN(args[0]) && args[0] > 0 && args[0] <= pages) position = args[0];
@@ -65,9 +66,13 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             //Elige si se ha de enviar el embed o editarlo
             if (embed) {
-                await embed.edit(queueEmbed).then(async embed => {awaitReactions(embed)});
+                await embed.edit(queueEmbed).then(async embed => {
+                    if ((Math.ceil(serverQueue.length / 5)) != 0) awaitReactions(embed);
+                });
             } else {
-                await message.channel.send(queueEmbed).then(async embed => {awaitReactions(embed)});
+                await message.channel.send(queueEmbed).then(async embed => {
+                    if ((Math.ceil(serverQueue.length / 5)) != 0) awaitReactions(embed);
+                });
             };
         };
 

@@ -24,8 +24,6 @@ console.log(`》Iniciando aplicación «\n――――――――――――�
 const discord = require('discord.js');
 const fs = require('fs');
 const moment = require('moment');
-const config = require('./configs/config.json');
-const filters = require('./utils/automod/filters.json');
 const keys = require('./configs/keys.json');
 const client = new discord.Client({
     fetchAllMembers: true,
@@ -34,6 +32,11 @@ const client = new discord.Client({
     autoReconnect: true,
     retryLimit: Infinity 
 });
+
+//CONFIGURACIONES
+const config = require('./configs/config.json');
+const filters = require('./utils/automod/filters.json');
+const commandsConfig = require('./configs/commands.json');
 
 //RECURSOS GLOBALES
 let resources = require('./utils/resources.js');
@@ -242,7 +245,8 @@ client.on('message', async message => {
     const prefix = message.content.slice(0, 1);
     // Función para eliminar el prefijo, extraer el comando y sus argumentos (en caso de tenerlos)
     const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-    const command = args.shift().toLowerCase() + `.js`;
+    const cmd = args.shift().toLowerCase();
+    const command = cmd + `.js`;
 
     if (command.length <= 0) return console.error(`${new Date().toLocaleString()} 》No hubo ningún comando a cargar`);
 
@@ -254,9 +258,40 @@ client.on('message', async message => {
         });
 
         if (prefix === config.prefix) { // EVERYONE
+
+            //Almacena la configuración del comando
+            let cfg = commandsConfig[cmd];
+
+            //Devuelve si el comando está deshabilitado
+            if (!cfg.enabled) return;
+
+            //Devuelve si el canal no está autorizado
+            if (cfg.whitelistedChannels.length > 0 && !cfg.whitelistedChannels.includes(message.channel.id)) return;
+            if (cfg.blacklistedChannels.length > 0 && cfg.whitelistedChannels.includes(message.channel.id)) return;
+
+            //Devuelve si el rol no está autorizado
+            if (cfg.whitelistedRoles.length > 0) {
+                let authorized;
+                for (let i = 0; i < cfg.whitelistedRoles.length; i++) {
+                    if (message.member.roles.cache.find(r => r.id === cfg.whitelistedRoles[i])) {
+                        authorized = true;
+                        break;
+                    };
+                };
+                if (!authorized) return;
+            } else if (cfg.blacklistedRoles.length > 0) {
+                for (let i = 0; i < cfg.blacklistedRoles.length; i++) {
+                    if (message.member.roles.cache.find(r => r.id === cfg.blacklistedRoles[i])) {
+                        return;
+                    };
+                };
+            };
+
+            //Ejecuta el comando
             let commandFile = require(`./commands/${command}`);
             commandFile.run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
 
+            //Añade un cooldown
             talkedRecently.add(message.author.id);
             setTimeout(() => {
                 talkedRecently.delete(message.author.id);

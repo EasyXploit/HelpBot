@@ -17,7 +17,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField(`⏸ ${config.prefix}pause`, `Pausa la reproducción`, true)
             .addField(`⏺ ${config.prefix}join`, `Hace que el bot se una a tu canal de voz`, true)
             .addField(`⏏ ${config.prefix}leave`, `Hace que el bot abandone el canal de voz actual`, true)
-            .addField(`📑 ${config.prefix}queue`, `Muestra la cola de reproducción actual`, true)
+            .addField(`📑 ${config.prefix}queue (página | nada)`, `Muestra la cola de reproducción actual`, true)
             .addField(`➿ ${config.prefix}np`, `Muestra el estado de la canción actual`, true)
             .addField(`❌ ${config.prefix}clear`, `Elimina toda la cola de reproducción`, true)
             .addField(`🔀 ${config.prefix}shuffle`, `Activa el modo aleatorio en la cola`, true)

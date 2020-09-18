@@ -8,7 +8,7 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
 
             let toPlay = 0;
 
-            if (client.servers[message.guild.id].mode === 'shuffle') toPlay = Math.floor(Math.random() * (client.servers[message.guild.id].queue.length - 1));
+            if (server.mode === 'shuffle') toPlay = Math.floor(Math.random() * (server.queue.length - 1));
 
             try {
                 //Reproduce la canción
@@ -106,6 +106,9 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
                     client.voiceTimeout = setTimeout(() => {
                         //Aborta la conexión
                         connection.disconnect();
+
+                        message.channel.send(`⏏ | He abandonado el canal`);
+
                         delete client.servers[message.guild.id];
 
                         //Cambia el estatus a "DISPONIBLE"
@@ -125,9 +128,9 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
             client.voiceDispatcher.on(`error`, error => {
                 console.log(`${new Date().toLocaleString()} 》Dispatcher error: ${error}`);
             });
-        }
+        };
         play(client.voiceConnection, message);
     } catch (e) {
         console.log(`${new Date().toLocaleString()} 》Error: ${e}`);
-    }
-}
+    };
+};

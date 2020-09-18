@@ -1,65 +1,113 @@
 exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
-    //!queue
+    //!queue (página | nada)
 
     try {
         const randomColor = require('randomcolor');
         const moment = require(`moment`);
         
+        //Devuelve si no hay cola
         let noQueueEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} El bot no tiene ninguna canción en la cola.`);
         
         if (!client.servers[message.guild.id]) return message.channel.send(noQueueEmbed);
         
+        //Almacena el servidor
         let server = client.servers[message.guild.id];
 
-        let footer = `© ${new Date().getFullYear()} República Gamer S.L.`;
-        if (server.mode) {
-            switch (server.mode) {
-                case 'shuffle':
-                    footer = footer + ` | 🔀`;
-                    break;
-            
-                case 'loop':
-                    footer = footer + ` | 🔂`;
-                    break;
+        //Almacena la cola
+        let serverQueue = client.servers[message.guild.id].queue;
 
-                case 'loopqueue':
-                    footer = footer + ` | 🔁`;
-                    break;
+        //Almacena la página actual y las totales
+        let position = 1;
+        const pages = Math.ceil(serverQueue.length / 5);
+
+        //Almacena la página que introduce el usuario (si lo hace)
+        if (args[0] && !isNaN(args[0]) && args[0] > 0 && args[0] <= pages) position = args[0];
+
+        //Función para generar el mensaje de cola
+        async function generateEmbed(fromRange, toRange, embed) {
+
+             //Carga el footer
+            let footer = `Página ${position} de ${pages}`;
+            if (server.mode) {
+                switch (server.mode) {
+                    case 'shuffle': footer = footer + ` | 🔀`; break;
+                    case 'loop': footer = footer + ` | 🔂`; break;
+                    case 'loopqueue': footer = footer + ` | 🔁`; break;
+                };
+            };
+            
+            //Carga el embed de la cola
+            let queueEmbed = new discord.MessageEmbed()
+                    .setColor(randomColor())
+                    .setAuthor(`Cola de reproducción - Ahora mismo:`, `https://i.imgur.com/lvShSwa.png`)
+                    .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n● Duración: \`${server.nowplaying.duration}\`.\n ● Requerida por: \`${server.nowplaying.requestedBy}\``)
+                    .setFooter(footer, resources.server.iconURL());
+            
+            //Si hay cola, carga la cola en el embed
+            if (serverQueue[0]) {
+                serverQueue = client.servers[message.guild.id].queue; //Por si acaso, recarga la cola
+                let queueList = '';
+                
+                //Genera la página de la cola
+                for (let id = fromRange - 1; id < toRange; id++) {
+                    if (!serverQueue[id]) break; //Si no hay resultado, para la ejecución
+                    let title = serverQueue[id].title; //Almacena el título
+                    if (title.length > 40) title = `${title.slice(0, 40)} ...`; //Acorta el título si es demasiado largo
+                    queueList = `${queueList}\`${id + 1}.\` [${title}](${serverQueue[id].link}) | \`${moment().startOf('day').seconds(serverQueue[id].lengthSeconds).format('H:mm:ss')}\` | ${serverQueue[id].requestedBy}\n`;
+                };
+                
+                //Añade el campo al embed
+                queueEmbed.addField(`A continuación`, queueList, true);
+            };
+
+            //Elige si se ha de enviar el embed o editarlo
+            if (embed) {
+                await embed.edit(queueEmbed).then(async embed => {awaitReactions(embed)});
+            } else {
+                await message.channel.send(queueEmbed).then(async embed => {awaitReactions(embed)});
             };
         };
+
+        //Función para manejar el menú de reacciones
+        async function awaitReactions(embed) {
+            if (embed.reactions) await embed.reactions.removeAll(); //Borra todas las reacciones previas (si tiene)
+
+            //Reacciona con el menú correspondiente según la página
+            if (position > 1) await embed.react('⏮');
+            if (position > 1) await embed.react('◀');
+            if (position < pages) await embed.react('▶');
+            if (position < pages) await embed.react('⏭');
+
+            //Crea el filtro de reacciones según la página
+            const filter = (reaction, user) => {
+                let validReactions = [];
+                if (position > 1) validReactions.push('⏮', '◀');
+                if (position < pages) validReactions.push('▶', '⏭');
+                return validReactions.includes(reaction.emoji.name) && user.id === message.author.id;
+            };
+
+            //Inicializa un listener de reaccciones en función del filtro
+            embed.awaitReactions(filter, { max: 1, time: 60000, errors: [`time`] }).then(async collected => {
+                const reaction = collected.first();
+
+                //Según el emoji reaccionado, actualiza el contador consecutivamente
+                if (reaction.emoji.name === '⏮' && position > 1) position = 1;
+                if (reaction.emoji.name === '◀' && position > 1) position = position - 1;
+                if (reaction.emoji.name === '▶' && position < pages) position = position + 1;
+                if (reaction.emoji.name === '⏭' && position < pages) position = pages;
+
+                //Carga la nueva página
+                generateEmbed(5 * position - 4, 5 * position, embed);
+            }).catch(() => embed.reactions.removeAll());
+        };
+
+        //Llama a la primera página
+        generateEmbed(5 * position - 4, 5 * position);
         
-        let queueEmbed = new discord.MessageEmbed()
-                .setColor(randomColor())
-                .setAuthor(`Cola de reproducción - Ahora mismo:`, `https://i.imgur.com/lvShSwa.png`)
-                .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n● Duración: \`${server.nowplaying.duration}\`.\n ● Requerida por: \`${server.nowplaying.requestedBy}\``)
-                .setFooter(footer, resources.server.iconURL());
-        
-        if (!client.servers[message.guild.id].queue[0]) {
-            //Si no hay cola, envia nowPlaying
-            message.channel.send(queueEmbed);
-        } else if (!client.servers[message.guild.id].queue[1]) {
-            let serverQueue = client.servers[message.guild.id].queue;
-            let queueList = `\`1.\` [${serverQueue[0].title}](${serverQueue[0].link}) | \`${moment().startOf('day').seconds(serverQueue[0].lengthSeconds).format('H:mm:ss')}\` | ${serverQueue[0].requestedBy}\n`;
-            
-            queueEmbed.addField(`A continuación`, queueList, true);
-            message.channel.send(queueEmbed);
-            
-        } else {
-            
-            let serverQueue = client.servers[message.guild.id].queue
-            let queueList = `\`1.\` [${serverQueue[0].title}](${serverQueue[0].link}) | \`${moment().startOf('day').seconds(serverQueue[0].lengthSeconds).format('H:mm:ss')}\` | ${serverQueue[0].requestedBy}\n`;
-            
-            for (let id = 1; id < serverQueue.length; id++) {
-                queueList = queueList + '`' + (id + 1) + `.\` [${serverQueue[id].title}](${serverQueue[id].link}) | \`${moment().startOf('day').seconds(serverQueue[id].lengthSeconds).format('H:mm:ss')}\` | ${serverQueue[id].requestedBy}\n`;
-            }
-            
-            queueEmbed.addField(`A continuación`, queueList, true);
-            message.channel.send(queueEmbed);
-        }
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
-    }
-}
+    };
+};

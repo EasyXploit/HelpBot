@@ -56,10 +56,10 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 await embed.edit(leaderboard).then(async embed => {awaitReactions(embed)});
             } else {
                 await message.channel.send(leaderboard).then(async embed => {awaitReactions(embed)});
-            }
+            };
         };
 
-        //Función para manejarr el menú de reacciones
+        //Función para manejar el menú de reacciones
         async function awaitReactions(embed) {
             if (embed.reactions) await embed.reactions.removeAll(); //Borra todas las reacciones previas (si tiene)
 

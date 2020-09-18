@@ -22,7 +22,7 @@
     },
     "boxbot": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852", "433376010688397312"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []

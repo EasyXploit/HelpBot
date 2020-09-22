@@ -42,33 +42,37 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         
         //Comprueba si hay cola
         if (!server || server.queue < 0) return message.channel.send(noQueueEmbed);
-        
-        if (server.mode !== 'loop') {
-            //Activa el modo Loop
-            server.mode = 'loop';
 
-            //Vuelve a añadir la canción al inicio de la cola
-            let newQueueItem = {
-                link: server.nowplaying.link,
-                title: server.nowplaying.title,
-                duration: server.nowplaying.duration,
-                requestedBy: server.nowplaying.requestedBy
+        //Comprueba si es necesaria una votación
+        if (await resources.evaluateDjOrVotes(message, 'loop')) {
+            if (server.mode !== 'loop') {
+                //Activa el modo Loop
+                server.mode = 'loop';
+    
+                //Vuelve a añadir la canción al inicio de la cola
+                let newQueueItem = {
+                    link: server.nowplaying.link,
+                    title: server.nowplaying.title,
+                    duration: server.nowplaying.duration,
+                    requestedBy: server.nowplaying.requestedBy,
+                    requestedById: server.nowplaying.requestedById
+                };
+    
+                //Sube la canción a la cola
+                server.queue.unshift(newQueueItem);
+    
+                //Manda un mensaje de confirmación
+                message.channel.send(`🔂 | He activado el modo bucle`);
+            } else if (server.mode === 'loop') {
+                //Desactiva el modo Loop
+                server.mode = false;
+    
+                //Borra el primer elemento de la cola
+                server.queue.shift();
+    
+                //Manda un mensaje de confirmación
+                message.channel.send(`▶ | He desactivado el modo bucle`);
             };
-
-            //Sube la canción a la cola
-            server.queue.unshift(newQueueItem);
-
-            //Manda un mensaje de confirmación
-            message.channel.send(`🔂 | He activado el modo bucle`);
-        } else if (server.mode === 'loop') {
-            //Desactiva el modo Loop
-            server.mode = false;
-
-            //Borra el primer elemento de la cola
-            server.queue.shift();
-
-            //Manda un mensaje de confirmación
-            message.channel.send(`▶ | He desactivado el modo bucle`);
         };
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);

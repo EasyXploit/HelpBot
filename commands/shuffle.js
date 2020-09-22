@@ -42,19 +42,22 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         
         //Comprueba si hay cola
         if (!server || server.queue <= 0) return message.channel.send(noQueueEmbed);
-        
-        if (server.mode !== 'shuffle') {
-            //Activa el modo shuffle
-            server.mode = 'shuffle';
 
-            //Manda un mensaje de confirmación
-            message.channel.send(`🔀 | He activado el modo aleatorio`);
-        } else if (server.mode === 'shuffle') {
-            //Desactiva el modo shuffle
-            server.mode = false;
-
-            //Manda un mensaje de confirmación
-            message.channel.send(`▶ | He desactivado el modo aleatorio`);
+        //Comprueba si es necesaria una votación
+        if (await resources.evaluateDjOrVotes(message, 'shuffle')) {
+            if (server.mode !== 'shuffle') {
+                //Activa el modo shuffle
+                server.mode = 'shuffle';
+    
+                //Manda un mensaje de confirmación
+                message.channel.send(`🔀 | He activado el modo aleatorio`);
+            } else if (server.mode === 'shuffle') {
+                //Desactiva el modo shuffle
+                server.mode = false;
+    
+                //Manda un mensaje de confirmación
+                message.channel.send(`▶ | He desactivado el modo aleatorio`);
+            };
         };
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);

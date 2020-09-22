@@ -42,13 +42,23 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setDescription(`${resources.RedTick} La sala está llena.`);
 
         //Comprueba si el bot tiene permiso para conectarse
-        if (!voiceChannel.joinable) return message.channel.send(noConnectPermissionEmbed)
+        if (!voiceChannel.joinable || client.musicConfig.forbiddenChannels.includes(voiceChannel.id)) return message.channel.send(noConnectPermissionEmbed)
         
         //Comprueba si la sala es de AFK
         if (message.member.voice.channelID === message.guild.afkChannelID) return message.channel.send(noAfkRoomEmbed)
         
         //Comprueba la sala está llena
-        if (voiceChannel.full) return message.channel.send(fullRoomEmbed)
+        if (voiceChannel.full) return message.channel.send(fullRoomEmbed);
+
+        //Comprueba si la guild tiene una cola de reproducción
+        if (!client.servers[message.guild.id]) {
+            client.servers[message.guild.id] = {
+                queue: [],
+                votes: {},
+                nowplaying: {},
+                mode: false
+            };
+        };
 
         //Se une a la sala
         voiceChannel.join().then(connection => {

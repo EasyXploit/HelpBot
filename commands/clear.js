@@ -39,13 +39,15 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         
         //Comprueba si hay cola
         if (!client.servers[message.guild.id] || client.servers[message.guild.id].queue <= 0) return message.channel.send(noQueueEmbed);
-        
-        //Borra la cola
-        client.servers[message.guild.id].queue = [];
-        
-        //Manda un mensaje de confirmación
-        await message.channel.send(`${resources.GreenTick} | Cola eliminada`);
 
+        //Comprueba si es necesaria una votación
+        if (await resources.evaluateDjOrVotes(message, 'clear')) {
+            //Borra la cola
+            client.servers[message.guild.id].queue = [];
+            
+            //Manda un mensaje de confirmación
+            await message.channel.send(`${resources.GreenTick} | Cola eliminada`);
+        };
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }

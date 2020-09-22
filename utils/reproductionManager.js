@@ -68,7 +68,8 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
                     link: server.nowplaying.link,
                     title: server.nowplaying.title,
                     duration: server.nowplaying.duration,
-                    requestedBy: server.nowplaying.requestedBy
+                    requestedBy: server.nowplaying.requestedBy,
+                    requestedById: nowplaying.requestedById
                 };
 
                 //Sube la canción a la cola
@@ -87,7 +88,8 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
                 title: info.title,
                 link: info.link,
                 duration: moment().startOf('day').seconds(info.lengthSeconds).format('H:mm:ss'),
-                requestedBy: message.member.displayName
+                requestedBy: message.member.displayName,
+                requestedById: message.member.id
             };
 
             client.voiceDispatcher.on(`finish`, reason => {
@@ -104,6 +106,7 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
                     message.channel.send(`⏹ | Reproducción finalizada`);
 
                     client.voiceTimeout = setTimeout(() => {
+
                         //Aborta la conexión
                         connection.disconnect();
 

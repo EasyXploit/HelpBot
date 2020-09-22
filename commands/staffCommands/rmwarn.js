@@ -78,7 +78,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             delete client.warns[member.id];
         } else {
             if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id) && client.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send(noPrivilegesEmbed);
-
+            
             successEmbed = new discord.MessageEmbed()
                 .setColor(resources.green2)
                 .setDescription(`${resources.GreenTick} Se ha retirado la advertencia con ID **${warnID}** al usuario **${member.user.tag}**`);

@@ -216,6 +216,60 @@ exports.run = (discord, client) => {
     };
     module.exports.hmsToSeconds = hmsToSeconds;
 
+    //Función para evaluar si se necesitan votos o puede continuar
+    async function evaluateDjOrVotes(message, command, index) {
+
+        //Calcula a qué posición de la cola ha de acceder para realizar comprobaciones
+        if (index == 0) {
+            if (message.member.id === client.servers[message.guild.id].nowplaying.requestedById) return true;
+        } else if (index > 0) {
+            if (message.member.id === client.servers[message.guild.id].queue[index - 1].requestedById) return true;
+        };
+        
+        //Comprueba si el miembro es DJ, y de serlo omite la comprobación de votos
+        for (let i = 0; i < client.musicConfig.djRoles.length; i++) {
+            if (await message.member.roles.cache.find(r => r.id === client.musicConfig.djRoles[i])) {
+                return true;
+            };
+        };
+
+        //Variable necesaria para calcular los votos y los permisos
+        let actualVotes;
+
+        //Crea e inicializa el contador de votos raíz si no lo estaba ya
+        if (!client.servers[message.guild.id].votes[command]) client.servers[message.guild.id].votes[command] = [];
+        let counter = client.servers[message.guild.id].votes[command];
+
+        //Si se activa el modo "por usuario"
+        if (index) {
+            if (!counter[index]) counter[index] = []; //Crea e inicializa el contador de votos hijo si no lo estaba ya
+            if (!counter[index].includes(message.member.id)) counter[index].push(message.member.id); //Si el miembro no ha votado, añade su voto
+            actualVotes = counter[index].length; //Actualiza el contador de votos
+        } else {
+            if (!counter.includes(message.member.id)) counter.push(message.member.id); //Si el miembro no ha votado, añade su voto
+            actualVotes = counter.length; //Actualiza el contador de votos
+        };
+
+        //Graba el nuevo contador de votos
+        client.servers[message.guild.id].votes[command] = counter;
+
+        //Almacena variables necesarias para calcular los votos
+        const memberCount = message.member.voice.channel.members.size - 1;
+        const actualPercentage = (actualVotes / memberCount) * 100;
+        const requiredPercentage = client.musicConfig.votesPercentage;
+        const requiredVotes = Math.round((actualVotes * requiredPercentage) / actualPercentage);
+
+        //Maneja la cantidad de votos necesarios para realizar la acción
+        if (actualPercentage < client.musicConfig.votesPercentage) {
+            message.channel.send(`🗳 | Votos necesarios: \`${actualVotes}\` de \`${requiredVotes}\``);
+            return false;
+        } else {
+            client.servers[message.guild.id].votes[command] = 0;
+            return true;
+        };
+    };
+    module.exports.evaluateDjOrVotes = evaluateDjOrVotes;
+
 
     //COLORES
     const gold = '0xFFC857';
@@ -273,6 +327,9 @@ exports.run = (discord, client) => {
     
     const beta = client.emojis.cache.get('496633935174828034');
     module.exports.beta = beta;
+
+    const dj = client.emojis.cache.get('757768901693145249');
+    module.exports.dj = dj;
     
     const fortnite = client.emojis.cache.get('496633644954419210');
     module.exports.fortnite = fortnite;

@@ -28,10 +28,13 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         //Comprueba si la reproducción ya está pausada
         if (client.voiceDispatcher.paused) return message.channel.send(alreadyPausedEmbed);
 
-        //Reanuda la reproducción y manda un mensaje de confirmación
-        await client.voiceDispatcher.pause();
-        await message.channel.send(`⏸ | Cola pausada`);
+        //Comprueba si es necesaria una votación
+        if (await resources.evaluateDjOrVotes(message, 'pause')) {
+            //Reanuda la reproducción y manda un mensaje de confirmación
+            await client.voiceDispatcher.pause();
+            await message.channel.send(`⏸ | Cola pausada`);
+        };
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
-    }
-}
+    };
+};

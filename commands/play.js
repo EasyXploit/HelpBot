@@ -45,13 +45,19 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setDescription(`${resources.RedTick} No tengo permiso para hablar en esta sala.`);
 
             //Comprueba si el bot tiene permiso para hablar
-            if (!voiceChannel.speakable) return message.channel.send(noTalkPermissionEmbed)
+            if (!voiceChannel.speakable) return message.channel.send(noTalkPermissionEmbed);
 
-            //Reanuda la reproducción y manda un mensaje de confirmación
-            client.voiceDispatcher.resume();
-            message.channel.send(`▶ | Cola reanudada`);
-
+            //Comprueba si es necesaria una votación
+            if (await resources.evaluateDjOrVotes(message, 'play')) {
+                //Reanuda la reproducción y manda un mensaje de confirmación
+                client.voiceDispatcher.resume();
+                message.channel.send(`▶ | Cola reanudada`);
+            };
         } else if (args[0]) { //En este caso, "play" funcionará como "join" y reproducirá/añadirá a la cola
+
+            let noConnectPermissionEmbed = new discord.MessageEmbed()
+                .setColor(resources.red)
+                .setDescription(`${resources.RedTick} No tengo permiso para conectarme a esta sala.`);
 
             let noChannelEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
@@ -61,12 +67,22 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No tengo permiso para hablar en esta sala.`);
 
+            let fullRoomEmbed = new discord.MessageEmbed()
+                .setColor(resources.red)
+                .setDescription(`${resources.RedTick} La sala está llena.`);
+
             //Comprueba si el miembro está en un canal de voz
             let voiceChannel = message.member.voice.channel;
             if (!voiceChannel) return message.channel.send(noChannelEmbed);
 
             //Comprueba si el bot tiene permiso para hablar
-            if (!voiceChannel.speakable) return message.channel.send(noTalkPermissionEmbed);
+            if (!voiceChannel.speakable || !voiceChannel.joinable || client.musicConfig.forbiddenChannels.includes(voiceChannel.id) || message.member.voice.channelID === message.guild.afkChannelID) return message.channel.send(noTalkPermissionEmbed);
+
+            //Comprueba si el bot tiene permiso para conectarse
+            if (!voiceChannel.joinable) return message.channel.send(noConnectPermissionEmbed)
+
+            //Comprueba si la sala está llena
+            if (voiceChannel.full) return message.channel.send(fullRoomEmbed);
 
             //Función para generar el footer
             function getFooter() {
@@ -96,31 +112,11 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     if (!client.servers[message.guild.id]) {
                         client.servers[message.guild.id] = {
                             queue: [],
+                            votes: {},
                             nowplaying: {},
                             mode: false
                         };
                     };
-
-                    let noConnectPermissionEmbed = new discord.MessageEmbed()
-                        .setColor(resources.red)
-                        .setDescription(`${resources.RedTick} No tengo permiso para conectarme a esta sala.`);
-
-                    let noAfkRoomEmbed = new discord.MessageEmbed()
-                        .setColor(resources.red)
-                        .setDescription(`${resources.RedTick} No puedo unirme al canal de AFK.`);
-
-                    let fullRoomEmbed = new discord.MessageEmbed()
-                        .setColor(resources.red)
-                        .setDescription(`${resources.RedTick} La sala está llena.`);
-
-                    //Comprueba si el bot tiene permiso para conectarse
-                    if (!voiceChannel.joinable) return message.channel.send(noConnectPermissionEmbed)
-
-                    //Comprueba si la sala es de AFK
-                    if (message.member.voice.channelID === message.guild.afkChannelID) return message.channel.send(noAfkRoomEmbed)
-
-                    //Comprueba si la sala está llena
-                    if (voiceChannel.full) return message.channel.send(fullRoomEmbed)
 
                     //Se une al canal de voz donde se encuentra el miembro
                     voiceChannel.join().then(connection => {
@@ -144,6 +140,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     if (!client.servers[message.guild.id]) {
                         client.servers[message.guild.id] = {
                             queue: [],
+                            votes: {},
                             nowplaying: {},
                             mode: false
                         };
@@ -208,7 +205,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                         lengthSeconds: resources.hmsToSeconds(result.duration),
                         author: result.author.name,
                         thumbnail: result.thumbnail,
-                        requestedBy: message.member.displayName
+                        requestedBy: message.member.displayName,
+                        requestedById: message.member.id
                     };
 
                     //Sube la canción a la cola en la posición que marca el contador
@@ -278,7 +276,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                         lengthSeconds: details.lengthSeconds,
                         author: details.author,
                         thumbnail: details.thumbnail.thumbnails[3].url,
-                        requestedBy: message.member.displayName
+                        requestedBy: message.member.displayName,
+                        requestedById: message.member.id
                     };
 
                     //Llama a la función de reproducción
@@ -309,7 +308,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                             lengthSeconds: resources.hmsToSeconds(results[0].duration),
                             author: results[0].author.name,
                             thumbnail: results[0].thumbnail,
-                            requestedBy: message.member.displayName
+                            requestedBy: message.member.displayName,
+                            requestedById: message.member.id
                         };
 
                         //Llama a la función de reproducción
@@ -376,7 +376,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                                         lengthSeconds: resources.hmsToSeconds(results[option].duration),
                                         author: results[option].author.name,
                                         thumbnail: results[option].thumbnail,
-                                        requestedBy: message.member.displayName
+                                        requestedBy: message.member.displayName,
+                                        requestedById: message.member.id
                                     };
                 
                                     //Llama a la función de reproducción

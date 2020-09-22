@@ -35,13 +35,23 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let tooBigEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Solo puedes hacer skip de \`${(client.servers[message.guild.id].queue.length + 1)}\` canciones.`);
+
+        async function skip() {
+            //Omite la reproducción y manda un mensaje de confirmación
+            await message.channel.send(`⏭ | Canción/es omitida/s`);
+            await client.voiceDispatcher.end();
+        };
         
         //Si se especifica una cantidad, se skipearan en consecuencia
         if (args[0]) {
 
             if (args[0] === 'all') {
-                //Cambia la cola
-                await client.servers[message.guild.id].queue.splice(0, client.servers[message.guild.id].queue.length);
+                //Comprueba si es necesaria una votación
+                if (await resources.evaluateDjOrVotes(message, 'skip-all')) {
+                    //Cambia la cola
+                    await client.servers[message.guild.id].queue.splice(0, client.servers[message.guild.id].queue.length);
+                    await skip();
+                };
             } else {
                 let tooMuchSkipsRandomEmbed = new discord.MessageEmbed()
                     .setColor(resources.red)
@@ -66,15 +76,20 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 //Comprueba si el valor introducido es válido
                 if (args[0] > (client.servers[message.guild.id].queue.length + 1)) return message.channel.send(tooBigEmbed);
                 
-                //Cambia la cola
-                await client.servers[message.guild.id].queue.splice(0, args[0] - 1);
+                //Comprueba si es necesaria una votación
+                if (await resources.evaluateDjOrVotes(message, `skip-${args[0]}`)) {
+                    //Cambia la cola
+                    await client.servers[message.guild.id].queue.splice(0, args[0] - 1);
+                    await skip();
+                };
+            };
+        } else {
+            //Comprueba si es necesaria una votación
+            if (await resources.evaluateDjOrVotes(message, 'skip', 0)) {
+                await skip();
             };
         };
-
-        //Omite la reproducción y manda un mensaje de confirmación
-        await message.channel.send(`⏭ | Canción/es omitida/s`);
-        await client.voiceDispatcher.end();
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
-    }
-}
+    };
+};

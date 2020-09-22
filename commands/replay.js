@@ -32,24 +32,27 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         
         //Comprueba si hay reproducción
         if (!client.voiceDispatcher) return message.channel.send(noDispatcherEmbed);
+
+        //Comprueba si es necesaria una votación
+        if (await resources.evaluateDjOrVotes(message, 'replay')) {
+            let nowplaying = client.servers[message.guild.id].nowplaying;
         
-        let nowplaying = client.servers[message.guild.id].nowplaying;
-        
-        //Genera la información de la cola
-        let newQueueItem = {
-            link: nowplaying.link,
-            title: nowplaying.title,
-            duration: nowplaying.duration,
-            requestedBy: nowplaying.requestedBy
+            //Genera la información de la cola
+            let newQueueItem = {
+                link: nowplaying.link,
+                title: nowplaying.title,
+                duration: nowplaying.duration,
+                requestedBy: nowplaying.requestedBy,
+                requestedById: nowplaying.requestedById
+            };
+
+            //Sube la canción a la cola en el primer puesto y hace skip
+            await client.servers[message.guild.id].queue.splice(0, 0, newQueueItem);
+            await client.voiceDispatcher.end();
+            
+            //Manda un mensaje de confirmación
+            await message.channel.send(`${resources.GreenTick} | La canción se volverá a reproducir`);
         };
-
-        //Sube la canción a la cola en el primer puesto y hace skip
-        await client.servers[message.guild.id].queue.splice(0, 0, newQueueItem);
-        await client.voiceDispatcher.end();
-        
-        //Manda un mensaje de confirmación
-        await message.channel.send(`${resources.GreenTick} | La canción se volverá a reproducir`);
-
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }

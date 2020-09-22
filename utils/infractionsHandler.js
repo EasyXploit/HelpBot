@@ -23,13 +23,15 @@ exports.run = async (discord, fs, config, client, resources, loggingChannel, mes
             });
         };
 
+        let durartion = Math.floor(time/(24000*1000*60*60)) + "d " + Math.floor(time/(1000*60*60)) + ":" + Math.floor(time/(1000*60))%60 + ":" + Math.floor(time/1000)%60 || '∞';
+
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setAuthor(`${member.user.tag} ha sido SILENCIADO`, member.user.displayAvatarURL())
             .addField('Miembro', member.user.tag, true)
             .addField('Moderador', moderator.tag, true)
             .addField('Razón', 'Demasiadas advertencias', true)
-            .addField('Duración', new Date(parseInt(time)).toLocaleString() || '∞', true);
+            .addField('Duración', durartion, true);
 
         let toDMEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
@@ -37,7 +39,7 @@ exports.run = async (discord, fs, config, client, resources, loggingChannel, mes
             .setDescription(`${member.user.tag}, has sido silenciado en ${guild.name}`)
             .addField('Moderador', moderator.tag, true)
             .addField('Razón', 'Demasiadas advertencias', true)
-            .addField('Duración', new Date(parseInt(time)).toLocaleString() || '∞', true);
+            .addField('Duración', durartion, true);
 
         await loggingChannel.send(loggingEmbed);
         await member.send(toDMEmbed);

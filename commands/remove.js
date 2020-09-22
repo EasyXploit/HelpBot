@@ -48,11 +48,15 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         if (!client.servers[message.guild.id] || client.servers[message.guild.id].queue <= 0) return message.channel.send(noQueueEmbed);
         
         if (args[0] === 'all') {
-            //Elimina el elemento de la cola
-            await client.servers[message.guild.id].queue.splice(0, client.servers[message.guild.id].queue.length);
-            
-            //Manda un mensaje de confirmación
-            await message.channel.send(`${resources.GreenTick} | He eliminado todas las canciones de la cola`);
+
+            //Comprueba si es necesaria una votación
+            if (await resources.evaluateDjOrVotes(message, 'remove-all')) {
+                //Elimina el elemento de la cola
+                await client.servers[message.guild.id].queue.splice(0, client.servers[message.guild.id].queue.length);
+                
+                //Manda un mensaje de confirmación
+                await message.channel.send(`${resources.GreenTick} | He eliminado todas las canciones de la cola`);
+            };
         } else {
             let isNaNEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
@@ -70,14 +74,17 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             
             //Comprueba si el valor introducido es válido
             if (args[0] > (client.servers[message.guild.id].queue.length)) return message.channel.send(tooBigEmbed);
-            
-            //Elimina el elemento de la cola
-            await client.servers[message.guild.id].queue.splice(args[0] - 1, 1);
-            
-            //Manda un mensaje de confirmación
-            await message.channel.send(`${resources.GreenTick} | He eliminado la canción de la cola`);
+
+            //Comprueba si es necesaria una votación
+            if (await resources.evaluateDjOrVotes(message, 'remove', args[0])) {
+                //Elimina el elemento de la cola
+                await client.servers[message.guild.id].queue.splice(args[0] - 1, 1);
+                
+                //Manda un mensaje de confirmación
+                await message.channel.send(`${resources.GreenTick} | He eliminado la canción de la cola`);
+            };
         };
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
-    }
-}
+    };
+};

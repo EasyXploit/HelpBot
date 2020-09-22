@@ -17,8 +17,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
         const member = await resources.fetchMember(message.guild, args[0]);
-        if (!member) return message.channel.send(noUserEmbed);
-        if (member.user.bot) return message.channel.send(notToWarnEmbed);
+        if (!member) return message.channel.send(notToWarnEmbed);
+        if (member.user.bot) return message.channel.send(noBotsEmbed);
 
         //Esto comprueba si se ha aportado alguna razón
         let reason = args.slice(1).join(" ");

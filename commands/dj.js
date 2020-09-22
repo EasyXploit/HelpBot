@@ -6,7 +6,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let noPrivilegesEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setTitle(`${resources.RedTick} Ocurrió un error`)
-            .setDescription(`${message.author.username}, no dispones de privilegios suficientes para ejecutar este comando.\nSolo aquellos que hayan alcanzado el rango **EXPERTOS** pueden usar esta característica.`);
+            .setDescription(`${message.author.username}, no dispones de privilegios suficientes para ejecutar este comando.\nSolo aquellos que hayan alcanzado el rango **Platino V** pueden usar esta característica.`);
     
         if(!message.member.roles.cache.find(r=> r.name === `DJ`)) return message.channel.send(noPrivilegesEmbed);
 

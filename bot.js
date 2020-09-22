@@ -38,6 +38,9 @@ const config = require('./configs/config.json');
 const filters = require('./utils/automod/filters.json');
 const commandsConfig = require('./configs/commands.json');
 
+//CONFIGURACIONES GLOBALES
+client.musicConfig = require('./configs/music.json');
+
 //RECURSOS GLOBALES
 let resources = require('./utils/resources.js');
 const automodFilters = require('./utils/automod/automodFilters.js')
@@ -263,7 +266,7 @@ client.on('message', async message => {
             let cfg = commandsConfig[cmd];
 
             //Devuelve si el comando está deshabilitado
-            if (!cfg.enabled) return;
+            if (!cfg || !cfg.enabled) return;
 
             //Devuelve si el canal no está autorizado
             if (cfg.whitelistedChannels.length > 0 && !cfg.whitelistedChannels.includes(message.channel.id)) return;

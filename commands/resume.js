@@ -35,9 +35,12 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         //Comprueba si el bot tiene permiso para hablar
         if (!voiceChannel.speakable) return message.channel.send(noTalkPermissionEmbed)
 
-        //Reanuda la reproducción y manda un mensaje de confirmación
-        await client.voiceDispatcher.resume();
-        await message.channel.send(`▶ | Cola reanudada`);
+        //Comprueba si es necesaria una votación
+        if (await resources.evaluateDjOrVotes(message, 'resume')) {
+            //Reanuda la reproducción y manda un mensaje de confirmación
+            await client.voiceDispatcher.resume();
+            await message.channel.send(`▶ | Cola reanudada`);
+        };
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }

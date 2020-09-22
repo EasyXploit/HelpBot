@@ -63,20 +63,22 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         
         //Comprueba si el valor introducido es válido
         if (args[0] > (client.servers[message.guild.id].queue.length) || args[1] > (client.servers[message.guild.id].queue.length)) return message.channel.send(tooBigEmbed);
-        
-        //Obtiene el objeto a desplazar
-        let toMove = await client.servers[message.guild.id].queue[args[0] - 1];
-        
-        //Elimina el objeto
-        await client.servers[message.guild.id].queue.splice(args[0] - 1, 1);
-        
-        //Lo vuelve a introducir en la ubicación especificada
-        await client.servers[message.guild.id].queue.splice(args[1] - 1, 0, toMove);
-        
-        //Manda un mensaje de confirmación
-        await message.channel.send(`${resources.GreenTick} | He reubicado la canción en la cola`);
 
+        //Comprueba si es necesaria una votación
+        if (await resources.evaluateDjOrVotes(message, 'move')) {
+            //Obtiene el objeto a desplazar
+            let toMove = await client.servers[message.guild.id].queue[args[0] - 1];
+            
+            //Elimina el objeto
+            await client.servers[message.guild.id].queue.splice(args[0] - 1, 1);
+            
+            //Lo vuelve a introducir en la ubicación especificada
+            await client.servers[message.guild.id].queue.splice(args[1] - 1, 0, toMove);
+            
+            //Manda un mensaje de confirmación
+            await message.channel.send(`${resources.GreenTick} | He reubicado la canción en la cola`);
+        };
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
-    }
-}
+    };
+};

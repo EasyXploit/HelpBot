@@ -2,8 +2,8 @@
     "forbiddenChannels": ["486645163469307928", "374945492716617731"],
     "djRoles": ["393912865096204299", "428631949029015562", "375376646771048449", "740248376821416118"],
     "votesPercentage": 75,
-    
-    "userQueueLimit": 0,
+    "preventDuplicates": true,
+
     "queueLimit": 0,
-    "preventDuplicates": false
+    "userQueueLimit": 0
 }

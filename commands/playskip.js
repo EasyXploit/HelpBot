@@ -80,6 +80,15 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 await client.voiceDispatcher.end();
             };
 
+            //Función para prevenir duplicados
+            async function preventDupes(link) {
+                if (!client.servers[message.guild.id]) return false;
+                if (link === client.servers[message.guild.id].nowplaying.link) return true;
+                for (let i = 0; i < client.servers[message.guild.id].queue.length; i++) {
+                    if (link === client.servers[message.guild.id].queue[i].link) return true;
+                };
+            };
+
             //Función para añadir todas las canciones de una playlist a la cola
             async function addPlaylist (string) {
 
@@ -107,6 +116,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                         requestedBy: message.member.displayName,
                         requestedById: message.member.id
                     };
+
+                    //Comprueba si es un duplicado
+                    if (client.musicConfig.preventDuplicates && await preventDupes(info.link)) continue;
 
                     //Sube la canción a la cola en la posición que marca el contador
                     if (i == 0) {
@@ -169,6 +181,13 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                         requestedById: message.member.id
                     };
 
+                    //Comprueba si es un duplicado
+                    let duplicatedEmbed = new discord.MessageEmbed()
+                        .setColor(resources.red)
+                        .setDescription(`${resources.RedTick} Esta canción ya está en la cola.`);
+
+                    if (client.musicConfig.preventDuplicates && await preventDupes(info.link)) return message.channel.send(duplicatedEmbed);
+
                     //Llama a la función de reproducción
                     reproduction(info);
                 };
@@ -200,6 +219,13 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                             requestedBy: message.member.displayName,
                             requestedById: message.member.id
                         };
+
+                        //Comprueba si es un duplicado
+                        let duplicatedEmbed = new discord.MessageEmbed()
+                            .setColor(resources.red)
+                            .setDescription(`${resources.RedTick} Esta canción ya está en la cola.`);
+
+                        if (client.musicConfig.preventDuplicates && await preventDupes(info.link)) return message.channel.send(duplicatedEmbed);
 
                         //Llama a la función de reproducción
                         reproduction(info);
@@ -268,6 +294,13 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                                         requestedBy: message.member.displayName,
                                         requestedById: message.member.id
                                     };
+
+                                    //Comprueba si es un duplicado
+                                    let duplicatedEmbed = new discord.MessageEmbed()
+                                        .setColor(resources.red)
+                                        .setDescription(`${resources.RedTick} Esta canción ya está en la cola.`);
+
+                                    if (client.musicConfig.preventDuplicates && await preventDupes(info.link)) return message.channel.send(duplicatedEmbed);
                 
                                     //Llama a la función de reproducción
                                     reproduction(info);
@@ -288,5 +321,5 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         };
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
-    }
-}
+    };
+};

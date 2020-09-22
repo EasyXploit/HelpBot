@@ -219,6 +219,9 @@ exports.run = (discord, client) => {
     //Función para evaluar si se necesitan votos o puede continuar
     async function evaluateDjOrVotes(message, command, index) {
 
+        //Omite si no hay roles de DJ
+        if (client.musicConfig.djRoles.length == 0) return true;
+
         //Calcula a qué posición de la cola ha de acceder para realizar comprobaciones
         if (index == 0) {
             if (message.member.id === client.servers[message.guild.id].nowplaying.requestedById) return true;

@@ -3,7 +3,7 @@
     "djRoles": ["393912865096204299", "428631949029015562", "375376646771048449", "740248376821416118"],
     "votesPercentage": 75,
     "preventDuplicates": true,
+    "queueLimit": 100,
 
-    "queueLimit": 0,
     "userQueueLimit": 0
 }

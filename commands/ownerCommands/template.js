@@ -116,7 +116,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setThumbnail('https://i.imgur.com/n2pPl4m.png')
                 .setAuthor('EMPUJA EL SERVIDOR', 'https://i.imgur.com/n2pPl4m.png')
                 .setDescription('Una buena forma de ayudarnos, es haciendo **"bump"** en la lista de servidores de [Disborad](https://disboard.org/). Para ello, solo debes seguir estos pasos:')
-                .addField('🞘 Pasos a seguir:', ':one: Dirígete al canal de <#388699973866225676>.\n:two: Escribe el comando `!d bump`.\n\nSi han pasado más de 2h, __¡habrás dado un empujoncito al server!__, de lo contrario tendrás que esperar un tiempo antes de volver a hacer bump (puede que otro miembro ya lo haya hecho 😬).')
+                .addField('🞘 Pasos a seguir:', ':one: Dirígete al canal de <#757980935693140008>.\n:two: Escribe el comando `!d bump`.\n\nSi han pasado más de 2h, __¡habrás dado un empujoncito al server!__, de lo contrario tendrás que esperar un tiempo antes de volver a hacer bump (puede que otro miembro ya lo haya hecho 😬).')
                 .attachFiles(`./resources/images/banners/bump.png`);
 
             await message.channel.send(embed1);

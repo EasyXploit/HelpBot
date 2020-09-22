@@ -30,6 +30,10 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} No tengo permiso para hablar en esta sala.`);
         
+        let fullQueueEmbed = new discord.MessageEmbed()
+            .setColor(resources.red)
+            .setDescription(`${resources.RedTick} La cola de reproducción está llena.`);
+        
         //Comprueba si el bot tiene o no una conexión a un canal de voz
         if (!message.guild.voice) return message.channel.send(noConnectionEmbed);
 
@@ -70,7 +74,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             };
 
             //Función para almacenar la información
-            async function reproduction(info, playlist) {
+            async function reproduction(info) {
 
                 //Sube la canción a la cola en el primer puesto
                 await client.servers[message.guild.id].queue.splice(0, 0, info);
@@ -120,6 +124,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     //Comprueba si es un duplicado
                     if (client.musicConfig.preventDuplicates && await preventDupes(info.link)) continue;
 
+                    //Comprueba si la cola de reproducción está llena
+                    if (client.musicConfig.queueLimit !== 0 && client.servers[message.guild.id] && client.servers[message.guild.id].queue.length >= client.musicConfig.queueLimit) break;
+
                     //Sube la canción a la cola en la posición que marca el contador
                     if (i == 0) {
                         //Notifica la playlist y comienza a reproducirla/añadirla a la cola
@@ -150,6 +157,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     //Si se trata de una URL de Playlist, la maneja directamente
                     addPlaylist(args[0]);
                 } else {
+                    //Comprueba si la cola de reproducción está llena
+                    if (client.musicConfig.queueLimit !== 0 && client.servers[message.guild.id] && client.servers[message.guild.id].queue.length >= client.musicConfig.queueLimit) return message.channel.send(fullQueueEmbed);
+
                     //Busca los metadatos
                     let yt_info = await ytdl.getInfo(args[0]);
 
@@ -208,6 +218,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
                     //Si solo hay un resultado, no muestra menú
                     if (results.length == 1) {
+
+                        //Comprueba si la cola de reproducción está llena
+                        if (client.musicConfig.queueLimit !== 0 && client.servers[message.guild.id] && client.servers[message.guild.id].queue.length >= client.musicConfig.queueLimit) return message.channel.send(fullQueueEmbed);
 
                         //Crea el objeto
                         let info = {
@@ -283,6 +296,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                                 if (results[option].type === 'playlist') {
                                     addPlaylist(results[option].link); //Maneja la playlist
                                 } else if (results[option].type === 'video') {
+
+                                    //Comprueba si la cola de reproducción está llena
+                                    if (client.musicConfig.queueLimit !== 0 && client.servers[message.guild.id] && client.servers[message.guild.id].queue.length >= client.musicConfig.queueLimit) return message.channel.send(fullQueueEmbed);
 
                                     //Crea el objeto de la cola
                                     let info = {

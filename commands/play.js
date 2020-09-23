@@ -105,6 +105,19 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 };
                 return footer;
             };
+
+            //Función para generar una entrada de la cola
+            async function infoGenerator(link, data) {
+                return {
+                    link: link,
+                    title: data.title,
+                    lengthSeconds: resources.hmsToSeconds(data.duration),
+                    author: data.author.name,
+                    thumbnail: data.thumbnail,
+                    requestedBy: message.member.displayName,
+                    requestedById: message.member.id
+                };
+            };
             
             //Función para almacenar la información
             async function reproduction(info, silent) {
@@ -185,18 +198,27 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 };
             };
 
+            //Variable para almacenar la cantidad de dupes
+            let dupesCount = 0;
+
             //Función para prevenir duplicados
             async function preventDupes(link) {
                 if (!client.servers[message.guild.id]) return false;
-                if (link === client.servers[message.guild.id].nowplaying.link) return true;
+                if (link === client.servers[message.guild.id].nowplaying.link) {
+                    dupesCount++;
+                    return true;
+                };
                 for (let i = 0; i < client.servers[message.guild.id].queue.length; i++) {
-                    if (link === client.servers[message.guild.id].queue[i].link) return true;
+                    if (link === client.servers[message.guild.id].queue[i].link) {
+                        dupesCount++;
+                        return true;
+                    };
                 };
             };
 
             //Función para añadir todas las canciones de una playlist a la cola
             async function addPlaylist (string) {
-
+                
                 //Obtiene los metadatos
                 const ytpl = require('ytpl');
                 const playlist = await ytpl(string);
@@ -212,21 +234,16 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     if (!result) continue; //Omite si el resultado fue borrado por el "for" anterior
 
                     //Crea el objeto de la cola
-                    let info = {
-                        link: result.url,
-                        title: result.title,
-                        lengthSeconds: resources.hmsToSeconds(result.duration),
-                        author: result.author.name,
-                        thumbnail: result.thumbnail,
-                        requestedBy: message.member.displayName,
-                        requestedById: message.member.id
-                    };
+                    let info = await infoGenerator(result.url, result);
 
                     //Comprueba si es un duplicado
                     if (client.musicConfig.preventDuplicates && await preventDupes(info.link)) continue;
 
                     //Comprueba si la cola de reproducción está llena
-                    if (client.musicConfig.queueLimit !== 0 && client.servers[message.guild.id] && client.servers[message.guild.id].queue.length >= client.musicConfig.queueLimit) break;
+                    if (client.musicConfig.queueLimit !== 0 && client.servers[message.guild.id] && client.servers[message.guild.id].queue.length >= client.musicConfig.queueLimit) {
+                        message.channel.send(fullQueueEmbed);
+                        break;
+                    };
 
                     //Sube la canción a la cola en la posición que marca el contador
                     if (i == 0) {
@@ -257,6 +274,13 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                         waitUntilNotNull();
                     };
                 };
+
+                //Si hubieron cancines omitidas, lo advierte
+                let dupesCountEmbed = new discord.MessageEmbed()
+                    .setColor(resources.orange)
+                    .setDescription(`${resources.OrangeTick} Se han omitido \`${dupesCount}\` canciones duplicadas.`);
+
+                if (dupesCount > 0) message.channel.send(dupesCountEmbed).then(msg => {msg.delete({timeout: 10000})});
             };
 
             //Manda el mensaje "buscando ..."
@@ -292,15 +316,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     if (details.isLiveContent || details.isPrivate) return message.channel.send(unsupportedTypeEmbed);
 
                     //Crea el objeto de la cola
-                    let info = {
-                        link: yt_info.video_url,
-                        title: details.title,
-                        lengthSeconds: details.lengthSeconds,
-                        author: details.author,
-                        thumbnail: details.thumbnail.thumbnails[3].url,
-                        requestedBy: message.member.displayName,
-                        requestedById: message.member.id
-                    };
+                    let info = await infoGenerator(yt_info.video_url, details);
 
                     //Comprueba si es un duplicado
                     let duplicatedEmbed = new discord.MessageEmbed()
@@ -333,16 +349,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                         //Comprueba si la cola de reproducción está llena
                         if (client.musicConfig.queueLimit !== 0 && client.servers[message.guild.id] && client.servers[message.guild.id].queue.length >= client.musicConfig.queueLimit) return message.channel.send(fullQueueEmbed);
 
-                        //Crea el objeto
-                        let info = {
-                            link: results[0].link,
-                            title: results[0].title,
-                            lengthSeconds: resources.hmsToSeconds(results[0].duration),
-                            author: results[0].author.name,
-                            thumbnail: results[0].thumbnail,
-                            requestedBy: message.member.displayName,
-                            requestedById: message.member.id
-                        };
+                        //Crea el objeto de la cola
+                        let info = await infoGenerator(results[0].link, results[0]);
 
                         //Comprueba si es un duplicado
                         let duplicatedEmbed = new discord.MessageEmbed()
@@ -410,17 +418,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
                                     //Comprueba si la cola de reproducción está llena
                                     if (client.musicConfig.queueLimit !== 0 && client.servers[message.guild.id] && client.servers[message.guild.id].queue.length >= client.musicConfig.queueLimit) return message.channel.send(fullQueueEmbed);
-
+                                    
                                     //Crea el objeto de la cola
-                                    let info = {
-                                        link: results[option].link,
-                                        title: results[option].title,
-                                        lengthSeconds: resources.hmsToSeconds(results[option].duration),
-                                        author: results[option].author.name,
-                                        thumbnail: results[option].thumbnail,
-                                        requestedBy: message.member.displayName,
-                                        requestedById: message.member.id
-                                    };
+                                    let info = await infoGenerator(results[option].link, results[option]);
 
                                     //Comprueba si es un duplicado
                                     let duplicatedEmbed = new discord.MessageEmbed()

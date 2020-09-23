@@ -1,6 +1,6 @@
 {
   "name": "pilkobot",
-  "version": "2.12.6",
+  "version": "2.12.7",
   "description": "PilkoBot es un bot para uso exclusivo de los usuario de la República Gamer",
   "main": "bot.js",
   "scripts": {
@@ -30,7 +30,7 @@
     "ffmpeg": "0.0.4",
     "fortnite": "^4.1.1",
     "libsodium-wrappers": "^0.7.8",
-    "moment": "^2.28.0",
+    "moment": "^2.29.0",
     "node-fetch": "^2.6.1",
     "random": "^2.2.0",
     "random-puppy": "^1.1.0",
@@ -38,7 +38,7 @@
     "translate": "^1.0.3",
     "urban-dictionary": "^2.2.1",
     "weather-js": "^2.0.0",
-    "ytdl-core-discord": "^1.2.1",
+    "ytdl-core-discord": "^1.2.3",
     "ytpl": "^1.0.1",
     "ytsr": "^1.0.1"
   },

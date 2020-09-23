@@ -4,33 +4,40 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
         //Función para reproducir
         async function play(connection, message) {
             
+            //Almacena la información de reproducción del servidor
             let server = client.servers[message.guild.id];
 
+            //Almacena la posición a roproducir de la cola
             let toPlay = 0;
 
+            //Aleatoriza la canción elegida de la cola
             if (server.mode === 'shuffle') toPlay = Math.floor(Math.random() * (server.queue.length - 1));
 
+            //Reproduce la canción
             try {
-                //Reproduce la canción
                 client.voiceDispatcher = connection.play(await ytdl(server.queue[toPlay].link), {type: 'opus'});
             } catch (e) {
                 console.log(`${new Date().toLocaleString()} 》${e}`);
             };
             
+            //Almacena la información de la entrada de la cola
             let info = server.queue[toPlay];
 
+            //Almacena una variable para guardar el título la siguiente canción
             let upNext = `Nada`;
 
+            //Calcula cual es el título de la siguiente canción, si es que hay
             if (server.queue[1]) {
-                if (client.servers[message.guild.id].mode === 'shuffle') {
+                if (client.servers[message.guild.id].mode === 'shuffle') { //Caso aleatorio
                     upNext = `Aleatorio`;
-                } else if (client.servers[message.guild.id].mode === 'loop') {
+                } else if (client.servers[message.guild.id].mode === 'loop') { //Caso loop
                     upNext = `[${server.queue[0].title}](${server.queue[0].link})`;
-                } else {
+                } else { //Caso normal / loopqueue
                     upNext = `[${server.queue[1].title}](${server.queue[1].link})`;
                 };
             };
 
+            //Genera el footer
             let footer = `© ${new Date().getFullYear()} República Gamer S.L.`;
             if (server.mode) {
                 switch (server.mode) {
@@ -48,6 +55,7 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
                 };
             };
 
+            //Embed con la información de la canción en reproducción
             let playingEmbed = new discord.MessageEmbed()
                 .setColor(randomColor())
                 .setThumbnail(info.thumbnail)
@@ -57,13 +65,14 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
                 .addField(`Siguiente:`, upNext, true)
                 .setFooter(footer, resources.server.iconURL());
 
-            //Envía un mensaje de confirmación y elimina de la cola la canción actual
+            //Envía un mensaje de confirmación
             message.channel.send(playingEmbed);
             
-            if (client.servers[message.guild.id].mode === 'shuffle') {
+            //Elimina de la cola la canción actual
+            if (client.servers[message.guild.id].mode === 'shuffle') { //Si el modo aleatorio está activado
                 client.servers[message.guild.id].queue.splice(toPlay, 1);
-            } else if (client.servers[message.guild.id].mode === 'loopqueue') {
-                //Genera la información de la cola
+            } else if (client.servers[message.guild.id].mode === 'loopqueue') { //Si el modo de cola en bucle está activado
+                //Regenera la información de la cola
                 let newQueueItem = {
                     link: server.nowplaying.link,
                     title: server.nowplaying.title,
@@ -72,7 +81,7 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
                     requestedById: nowplaying.requestedById
                 };
 
-                //Sube la canción a la cola
+                //Vuelve a subir la canción al final de la cola
                 client.servers[message.guild.id].queue.push(newQueueItem);
 
                 //Quita el primer elemento de la cola
@@ -92,6 +101,7 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
                 requestedById: message.member.id
             };
 
+            //Cuando la reproducción ha finalizado
             client.voiceDispatcher.on(`finish`, reason => {
 
                 //Si queda algo en la cola
@@ -105,18 +115,22 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
                     //Manda un mensaje de abandono
                     message.channel.send(`⏹ | Reproducción finalizada`);
 
+                    //Crea un contador que para demorar un minuto la salida del canal y la destrucción del dispatcher
                     client.voiceTimeout = setTimeout(() => {
 
                         //Aborta la conexión
                         connection.disconnect();
 
+                        //Confirma la acción
                         message.channel.send(`⏏ | He abandonado el canal`);
 
+                        //Bora la información de reproducción del server
                         delete client.servers[message.guild.id];
 
                         //Cambia el estatus a "DISPONIBLE"
                         client.voiceStatus = true;
 
+                        //Vacía la variable del timeout
                         client.voiceTimeout = null;
                     }, 60000);
                 };
@@ -132,6 +146,7 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
                 console.log(`${new Date().toLocaleString()} 》Dispatcher error: ${error}`);
             });
         };
+        //Reproduce la canción
         play(client.voiceConnection, message);
     } catch (e) {
         console.log(`${new Date().toLocaleString()} 》Error: ${e}`);

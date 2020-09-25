@@ -168,6 +168,9 @@ fs.readdir('./events/', async (err, files) => {
 
 // MANEJADOR DE COMANDOS
 client.on('message', async message => {
+
+    //Previene que continue la ejecución si el servidor no es la República Gamer
+    if (message.guild && message.guild.id !== `374945492133740544`) return;
     
     const debuggingChannel = client.channels.cache.get(config.debuggingChannel);
     const loggingChannel = client.channels.cache.get(config.loggingChannel);

@@ -11,7 +11,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} El bot no tiene ninguna canción en la cola.`);
         
-        if (!client.servers[message.guild.id]) return message.channel.send(noQueueEmbed);
+        if (!client.servers[message.guild.id] || !client.servers[message.guild.id].nowplaying) return message.channel.send(noQueueEmbed);
         
         //Almacena el servidor
         let server = client.servers[message.guild.id];

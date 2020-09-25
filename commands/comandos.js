@@ -13,7 +13,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField(`${resources.pilkobot} ${config.prefix}pilko`, 'Muestra los comandos de <@446041159853408257> ')
             .addField(`⚡ ${config.prefix}salas`, 'Muestra la ayuda para crear salas de voz.')
             .addField(`🎵 ${config.prefix}musica`, 'Muestra la ayuda para reproducir música en las salas de voz.')
-            .addField(`🎶 ${config.prefix}dj`, `Muestra los comandos para controlar la música (solo DJs) ${resources.beta}.`)
             .addField(`${resources.boxbot} ${config.prefix}boxbot`, 'Muestra la ayuda para jugar a <@413728456942288896> en <#433376010688397312>');
         
         let originUser = resources.valueCheck;
@@ -28,12 +27,10 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             await msg.react(resources.pilkobot);
             await msg.react('⚡');
             await msg.react('🎵');
-            await msg.react('🎶');
-            await msg.react('🎭');
             await msg.react(resources.boxbot);
 
             const filter = (reaction, user) => {
-                return ['pilkobot', '⚡', '🎵', '🎶', '🎭', 'boxbot'].includes(reaction.emoji.name) && user.id === originUser;
+                return ['pilkobot', '⚡', '🎵', 'boxbot'].includes(reaction.emoji.name) && user.id === originUser;
             };
 
             msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] }).then(async collected => {
@@ -48,21 +45,15 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 } else if (reaction.emoji.name === '🎵') {
                     await msg.delete()
                     require(`../commands/musica.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
-                } else if (reaction.emoji.name === '🎶') {
-                    await msg.delete()
-                    require(`../commands/dj.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
-                } else if (reaction.emoji.name === '🎭') {
-                    await msg.delete()
-                    require(`../commands/memes.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
-                }   else if (reaction.emoji.name === 'boxbot') {
+                } else if (reaction.emoji.name === 'boxbot') {
                     await msg.delete()
                     require(`../commands/boxbot.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
-                } 
+                };
             }).catch(() => {
                 return;
             });
         });
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
-    }
-}
+    };
+;}

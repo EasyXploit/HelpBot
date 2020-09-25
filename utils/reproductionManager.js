@@ -91,7 +91,6 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
                 server.queue.shift();
             };
 
-
             //Actualiza nowplaying
             server.nowplaying = {
                 title: info.title,
@@ -112,8 +111,17 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
 
                 } else {
 
+                    //Vacia nowplaying
+                    server.nowplaying = null;
+
+                    //Reproduce el efecto de despedida
+                    client.voiceDispatcher = client.voiceConnection.play('./resources/audios/rafacundo.mp3');
+
                     //Manda un mensaje de abandono
                     message.channel.send(`⏹ | Reproducción finalizada`);
+
+                    //Vacia nowplaying
+                    server.nowplaying = null;
 
                     //Crea un contador que para demorar un minuto la salida del canal y la destrucción del dispatcher
                     client.voiceTimeout = setTimeout(() => {
@@ -133,6 +141,7 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
                         //Vacía la variable del timeout
                         client.voiceTimeout = null;
                     }, 60000);
+
                 };
             });
 
@@ -146,6 +155,7 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
                 console.log(`${new Date().toLocaleString()} 》Dispatcher error: ${error}`);
             });
         };
+
         //Reproduce la canción
         play(client.voiceConnection, message);
     } catch (e) {

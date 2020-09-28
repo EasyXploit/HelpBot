@@ -31,13 +31,15 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send(noPrivilegesEmbed)
         }
         
+        //Se comprueba si el usuario ya estaba baneado
         let bans = await message.guild.fetchBans();
-        let isBanned;
-        
-        await bans.forEach( async ban => {
-            if(ban.id === user.id) return isBanned = ban.id;
-        });
-        if (isBanned) return message.channel.send(alreadyBannedEmbed);
+
+        async function checkBans (bans) {
+            for (const item of bans) if (item[0] === user.id) return true;
+        };
+
+        let banned = await checkBans(bans);
+        if (banned) return message.channel.send(alreadyBannedEmbed);
 
         let toDeleteCount = command.length - 2 + args[0].length + 2;
 
@@ -59,13 +61,10 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField(`Razón`, reason, true)
             .addField(`Duración`, `∞`, true);
 
-        if (member) {
-            await user.send(toDMEmbed);
-        }
+        if (member) await user.send(toDMEmbed);
 
         await message.guild.members.ban(user, {reason: `Moderador: ${message.author.id}, Razón: ${reason}`});
         await message.channel.send(successEmbed);
-
     } catch (e) {
         require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     }

@@ -35,13 +35,15 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send(noPrivilegesEmbed)
         }
         
+        //Se comprueba si el usuario ya estaba baneado
         let bans = await message.guild.fetchBans();
-        let isBanned;
-        
-        await bans.forEach( async ban => {
-            if(ban.id === user.id) return isBanned = ban.id;
-        });
-        if (isBanned) return message.channel.send(alreadyBannedEmbed);
+
+        async function checkBans (bans) {
+            for (const item of bans) if (item[0] === user.id) return true;
+        };
+
+        let banned = await checkBans(bans);
+        if (banned) return message.channel.send(alreadyBannedEmbed);
 
         //Comprueba la longitud del tiempo proporcionado
         if (!args[1] || args[1].length < 2) return message.channel.send(noCorrectTimeEmbed);

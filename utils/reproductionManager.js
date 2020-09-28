@@ -14,11 +14,7 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
             if (server.mode === 'shuffle') toPlay = Math.floor(Math.random() * (server.queue.length - 1));
 
             //Reproduce la canción
-            try {
-                client.voiceDispatcher = connection.play(await ytdl(server.queue[toPlay].link), {type: 'opus'});
-            } catch (e) {
-                console.log(`${new Date().toLocaleString()} 》${e}`);
-            };
+            client.voiceDispatcher = connection.play(await ytdl(server.queue[toPlay].link), {type: 'opus'});
             
             //Almacena la información de la entrada de la cola
             let info = server.queue[toPlay];
@@ -114,32 +110,35 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
                     //Vacia nowplaying
                     server.nowplaying = null;
 
-                    //Reproduce el efecto de despedida
-                    client.voiceDispatcher = client.voiceConnection.play('./resources/audios/rafacundo.mp3');
-
                     //Manda un mensaje de abandono
                     message.channel.send(`⏹ | Reproducción finalizada`);
 
                     //Vacia nowplaying
                     server.nowplaying = null;
 
+                    //Cambia el estatus a "DISPONIBLE"
+                    client.voiceStatus = true;
+
                     //Crea un contador que para demorar un minuto la salida del canal y la destrucción del dispatcher
                     client.voiceTimeout = setTimeout(() => {
 
-                        //Aborta la conexión
-                        connection.disconnect();
+                        //Reproduce el efecto de despedida
+                        client.voiceDispatcher = client.voiceConnection.play('./resources/audios/rafacundo.mp3');
 
-                        //Confirma la acción
-                        message.channel.send(`⏏ | He abandonado el canal`);
+                        //Aborta la conexión después de despedirse
+                        setTimeout(() => {
+                            //Aborta la conexión
+                            connection.disconnect();
 
-                        //Bora la información de reproducción del server
-                        delete client.servers[message.guild.id];
+                            //Confirma la acción
+                            message.channel.send(`⏏ | He abandonado el canal`);
 
-                        //Cambia el estatus a "DISPONIBLE"
-                        client.voiceStatus = true;
+                            //Bora la información de reproducción del server
+                            delete client.servers[message.guild.id];
 
-                        //Vacía la variable del timeout
-                        client.voiceTimeout = null;
+                            //Vacía la variable del timeout
+                            client.voiceTimeout = null;
+                        }, 3000);
                     }, 60000);
 
                 };

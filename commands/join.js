@@ -72,6 +72,28 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             //Manda un mensaje de confirmación
             message.channel.send(`⏺ | Me he unido al canal`);
 
+            //Crea un contador que para demorar un minuto la salida del canal y la destrucción del dispatcher
+            client.voiceTimeout = setTimeout(() => {
+
+                //Reproduce el efecto de despedida
+                client.voiceDispatcher = client.voiceConnection.play('./resources/audios/rafacundo.mp3');
+
+                //Aborta la conexión después de despedirse
+                setTimeout(() => {
+                    //Aborta la conexión
+                    connection.disconnect();
+
+                    //Confirma la acción
+                    message.channel.send(`⏏ | He abandonado el canal`);
+
+                    //Bora la información de reproducción del server
+                    delete client.servers[message.guild.id];
+
+                    //Vacía la variable del timeout
+                    client.voiceTimeout = null;
+                }, 3000);
+            }, 60000);
+
         }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);

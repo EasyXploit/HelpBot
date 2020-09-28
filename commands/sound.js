@@ -44,8 +44,14 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             let voiceChannel = message.member.voice.channel;
             if (!voiceChannel) return message.channel.send(noChannelEmbed);
             
-            if (client.voiceStatus) {
+            if (client.voiceStatus || (voiceChannel.id === message.guild.member(client.user).voice.channelID && !client.voiceDispatcher)) {
                 client.voiceStatus = false;
+
+                //Si hay un timeout, lo quita
+                if (client.voiceTimeout) {
+                    clearTimeout(client.voiceTimeout);
+                    client.voiceTimeout = null;
+                };
                 
                 let playingEmbed = new discord.MessageEmbed()
                     .setColor(resources.green2)

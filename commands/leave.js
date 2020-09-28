@@ -11,16 +11,23 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que ${client.user.username}.`);
 
+        
+
         //Comprueba si hay una conexión de voz
         if (!message.guild.voice) return message.channel.send(notInChannelEmbed);
 
         //Comprueba si está en la sala del miembro
-        if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(notInYourChannelEmbed);
+        let joined;
+        message.member.voice.channel.members.forEach(member => {
+            if (member.user.id === client.user.id) joined = member;
+        });
+
+        if (!joined) return message.channel.send(notInYourChannelEmbed);
 
         //Comprueba si es necesaria una votación
         if (await resources.evaluateDjOrVotes(message, 'leave')) {
             //Aborta la conexión
-            client.voiceConnection.disconnect();
+            joined.voice.kick();
             if (client.servers[message.guild.id]) delete client.servers[message.guild.id];
 
             //Cambia el estatus a "DISPONIBLE"

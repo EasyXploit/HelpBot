@@ -75,8 +75,10 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             //Crea un contador que para demorar un minuto la salida del canal y la destrucción del dispatcher
             client.voiceTimeout = setTimeout(() => {
 
+                const fileNames = fs.readdirSync(`./resources/audios/`);
+
                 //Reproduce el efecto de despedida
-                client.voiceDispatcher = client.voiceConnection.play('./resources/audios/rafacundo.mp3');
+                client.voiceDispatcher = client.voiceConnection.play(`./resources/audios/${fileNames[Math.floor(Math.random() * fileNames.length)]}`);
 
                 //Aborta la conexión después de despedirse
                 setTimeout(() => {

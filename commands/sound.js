@@ -3,15 +3,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
     //!sound (término | list)
 
     try {
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} La sintaxis de este comando es:` + '`' + config.prefix + 'sound (término)`');
-        
         let notAvailableEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} El bot no está disponible. Inténtalo más tarde.`);
-        
-        if (!args[0]) return message.channel.send(noCorrectSyntaxEmbed);
         
         let fileNames = fs.readdirSync(`./resources/audios/`);
         let newFileNames = [];
@@ -33,7 +27,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} Debes estar conectado a un canal de voz.`);
 
-            let sound = args.join(` `);
+            let sound;
+            if (args[0]) sound = args.join(` `);
+            if (!args[0]) sound = newFileNames[Math.floor(Math.random() * newFileNames.length)]
 
             let soundNotFoundEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)

@@ -96,21 +96,56 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 break;
         };
 
+        //Almacena las recompensas por nivel
+        const rewards = require('../../utils/leveling/rewards.json');
+
+        //Función para asignar recompensas
+        async function assignRewards() {
+
+            let toReward;
+
+            for (let i = 0; i < rewards.length; i++) {
+                let reward = rewards[i];
+
+                if (reward.requiredLevel !== level) {
+                    reward.roles.forEach(async role => {
+                        if (member.roles.cache.has(role)) await member.roles.remove(role);
+                    });
+                };
+
+                if (reward.requiredLevel <= level && level !== 0) toReward = reward.roles;
+            };
+
+            if (toReward) {
+                toReward.forEach(async role => {
+                    if (!member.roles.cache.has(role)) await member.roles.add(role);
+                });
+            };
+        };
+
         if (newValue > oldValue) { //Cambia el nivel y el XP actual
             let xpCount = newValue;
-            while ((5 * Math.pow(level, 3) + 50 * level + 100) < (newValue + 1)) {
+            while ((5 * Math.pow(level, 3) + 50 * level + 100) <= newValue) {
                 level++;
-                if (xpCount >= (5 * Math.pow(level, 3) + 50 * level + 100)) xpCount = xpCount - (5 * Math.pow(level, 3) + 50 * level + 100);
+                const xpToNextLevel = 5 * Math.pow(level, 3) + 50 * level + 100;
+                if (xpCount >= xpToNextLevel) xpCount = xpCount - xpToNextLevel;
             }
             client.stats[message.guild.id][member.id].actualXP = xpCount;
-            client.stats[message.guild.id][member.id].level = level;
+            
+            if (level !== client.stats[message.guild.id][member.id].level) {
+                client.stats[message.guild.id][member.id].level = level;
+                await assignRewards();
+            };
         } else if (newValue < oldValue) {
 
             //Cambia el nivel
             for (let i = 0;; i++) {
                 if ((5 * Math.pow(i, 3) + 50 * i + 100) > newValue) {
                     level = i;
-                    client.stats[message.guild.id][member.id].level = level;
+                    if (level !== client.stats[message.guild.id][member.id].level) {
+                        client.stats[message.guild.id][member.id].level = level;
+                        await assignRewards();
+                    };
                     break;
                 };
             };

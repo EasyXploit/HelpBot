@@ -150,7 +150,8 @@ exports.run = (discord, client) => {
                 const xpToNextLevel = 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100;
 
                 //Comprueba si el miembro ha de subir de nivel
-                if (userStats.actualXP >= xpToNextLevel) {
+                if (userStats.totalXP >= xpToNextLevel) {
+                    console.log('SUBIÓ DE NIVEL')
                     userStats.level++;
                     userStats.actualXP = userStats.actualXP - xpToNextLevel;
 

@@ -11,7 +11,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField(`${resources.chevron} Lvl 0 ‣ PLATA I`, 'Es el primer rol que recibes al unirte a la comunidad.')
             .addField(`${resources.chevron5} Lvl 5 ‣ PLATA V`, `Permite usar emojis externos ${resources.nitro} y acceder a sorteos públicos.`)
             .addField(`${resources.chevron15} Lvl 10 ‣ ORO V`, 'Permite **adjuntar archivos** y **cambiar tu propio apodo**.')
-            .addField(`${resources.chevron18} Lvl 15 ‣ PLATINO V`, 'Te permite **mencionar a todos** y **controlar la música**.')
+            .addField(`${resources.chevron18} Lvl 15 ‣ PLATINO V`, 'Te permite **controlar la música**.')
             .addField('● Estadísticas', 'Usa `!rank` para conocer tu nivel\nUsa `!leaderboard` para ver la tabla de clasificación');
         
         await message.channel.send(helpEmbed);

@@ -43,7 +43,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .addField(`${resources.chevron} Lvl 0 ‣ PLATA I`, `Es el primer rol que recibes al unirte a la comunidad.`, true)
                 .addField(`${resources.chevron5} Lvl 5 ‣ PLATA V`, `Permite usar emojis externos${resources.nitro} y acceder a sorteos públicos.`, true)
                 .addField(`${resources.chevron15} Lvl 10 ‣ ORO V`, `Permite **adjuntar archivos** y **cambiar tu propio apodo**.`, true)
-                .addField(`${resources.chevron18} Lvl 15 ‣ PLATINO V`, `Te permite **mencionar a todos** y **controlar la música**.`, true)
+                .addField(`${resources.chevron18} Lvl 15 ‣ PLATINO V`, `Te permite **controlar la música**.`, true)
                 .addField(`● Estadísticas`, 'Usa `!rank` para conocer tu nivel\nUsa `!leaderboard` para ver la tabla de clasificación')
                 .attachFiles(`./resources/images/banners/ranks.png`);
 

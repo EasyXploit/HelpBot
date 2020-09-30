@@ -96,7 +96,7 @@ exports.run = (discord, client) => {
                 await channel.updateOverwrite(mutedRole, {
                     SEND_MESSAGES: false,
                     ADD_REACTIONS: false,
-                    SPEAK: false
+                    CONNECT: false
                 });
             };
         });

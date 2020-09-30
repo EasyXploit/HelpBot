@@ -3,6 +3,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
     //!rank (@usuario)
     
     try {
+
         let notFoundEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`);
@@ -35,6 +36,48 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             };
         };
 
+        //Función para calcular cual es la siguiente recompensa que le corresponde al miembro
+        async function nextReward() {
+            //Almacena el fichero de las recompensas
+            const rewards = require('../utils/leveling/rewards.json');
+
+            //Función para encontrar la siguiente recompensa
+            function wichReward() {
+                for (let i = 0; i < rewards.length; i++) {
+                    if (rewards[i].requiredLevel >= userStats.level + 1) return rewards[i].roles;
+                };
+            };
+
+            //Busca una posible próxima recompensa
+            let nextRewards = wichReward();
+
+            //Próxima recompensa por defecto
+            let yourRewards = 'Ninguna';
+
+            //Si se encontró una próxima recompensa
+            if (nextRewards) {
+                let roleNames = []; //Almacena los nombres de los roles
+
+                //Crea una promesa para que se resuelva cuando haya acabado de buscar los nombres de todos los roles
+                const getRewards = new Promise((resolve, reject) => {
+
+                    //Para cada ID de rol, busca su nombre
+                    nextRewards.forEach(async (value, index, array) => {
+                        const role = await message.guild.roles.fetch(value);
+                        roleNames.push(role.name);
+                        if (index === array.length -1) resolve();
+                    });
+                });
+                
+                //Graba el resultado en la variable "yourRewards"
+                await getRewards.then(() => {
+                    yourRewards = roleNames.join(', ');
+                });
+            };
+
+            return yourRewards;
+        };
+
         let resultEmbed = new discord.MessageEmbed()
             .setColor(resources.gold)
             .setTitle(`🥇 Rango`)
@@ -42,13 +85,13 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setThumbnail(member.user.displayAvatarURL())
             .addField(`Nivel actual`, userStats.level, true)
             .addField(`XP Total`, userStats.totalXP, true)
-            
-            //Mostrar next reward
 
         if (nonXP) {
             resultEmbed.addField(`XP para el siguiente nivel`, '\`No puedes subir de nivel\`', true);
+            resultEmbed.addField(`Siguiente recompensa`, '\`No puedes ganar recompensas\`', true);
         } else {
             resultEmbed.addField(`XP para el siguiente nivel`, xpToNextLevel - userStats.actualXP, true);
+            resultEmbed.addField(`Siguiente recompensa`, await nextReward(), true);
         };
         
         message.channel.send(resultEmbed);

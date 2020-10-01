@@ -66,7 +66,7 @@ exports.run = (discord, client) => {
         if (!mutedRole) {
             mutedRole = await guild.roles.create({
                 data: {
-                    name: 'Silenciado',
+                    name: '🔇 SILENCIADO',
                     color: '#818386',
                     permissions: []
                 },
@@ -151,7 +151,6 @@ exports.run = (discord, client) => {
 
                 //Comprueba si el miembro ha de subir de nivel
                 if (userStats.totalXP >= xpToNextLevel) {
-                    console.log('SUBIÓ DE NIVEL')
                     userStats.level++;
                     userStats.actualXP = userStats.actualXP - xpToNextLevel;
 

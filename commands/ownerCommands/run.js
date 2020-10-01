@@ -39,12 +39,13 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setColor(resources.gold)
                 .setThumbnail(`https://i.imgur.com/vDgiPwT.png`)
                 .setAuthor(`NIVELES`, `https://i.imgur.com/vDgiPwT.png`)
-                .setDescription(`Los usuarios que participan __activamente__ en la comunidad adquieren puntos de **EXP**, y al alcanzar determinados niveles se obtienen rangos que aportan la siguientes _ventajas_:`)
-                .addField(`${resources.chevron} Lvl 0 ‣ PLATA I`, `Es el primer rol que recibes al unirte a la comunidad.`, true)
-                .addField(`${resources.chevron5} Lvl 5 ‣ PLATA V`, `Permite usar emojis externos${resources.nitro} y acceder a sorteos públicos.`, true)
-                .addField(`${resources.chevron15} Lvl 10 ‣ ORO V`, `Permite **adjuntar archivos** y **cambiar tu propio apodo**.`, true)
-                .addField(`${resources.chevron18} Lvl 15 ‣ PLATINO V`, `Te permite **controlar la música**.`, true)
-                .addField(`● Estadísticas`, 'Usa `!rank` para conocer tu nivel\nUsa `!leaderboard` para ver la tabla de clasificación')
+                .setDescription('Los usuarios que participan __activamente__ en la comunidad (tanto en canales de texto cómo en canales de voz) adquieren puntos de **EXP**, y al alcanzar determinados niveles se obtienen rangos que aportan la siguientes _ventajas_:')
+                .addField(`${resources.chevron} Lvl 1 ‣ NOVATO I`, 'Permite **publicar en <#428234707927564299>**.\nObtienes __50 créditos__ de bienvenida.')
+                .addField(`${resources.chevron5} Lvl 5 ‣ NOVATO V`, 'Permite **adjuntar archivos** e **insertar enlaces**.\nObtienes __100 créditos__.')
+                .addField(`${resources.chevron9} Lvl 10 ‣ PROFESIONAL V`, `Permite **cambiar tu apodo** y **usar emojis externos**${resources.nitro}.\nObtienes __200 créditos__.`)
+                .addField(`${resources.chevron15} Lvl 15 ‣ EXPERTO V`, 'Permite **manejar la música** y **enviar mensajes TTS**.\nObtienes __300 créditos__.')
+                .addField(`${resources.chevron18} Lvl 15 ‣ VETERANO V`, 'Permiite utilizar la  **prioridad de palabra**.\nObtienes __400 créditos__.')
+                .addField('● Estadísticas', 'Usa `!rank` para conocer tu nivel.\nUsa `!leaderboard` para ver la tabla de clasificación.')
                 .attachFiles(`./resources/images/banners/ranks.png`);
 
             let embed5 = new discord.MessageEmbed()
@@ -215,6 +216,55 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .attachFiles(`./resources/images/banners/oppositions.png`);
             
             message.channel.send(embed);
+        } else if (args[0] === `cuadrarStats`) {
+
+            let startingEmbed = new discord.MessageEmbed()
+                .setColor(resources.gray)
+                .setTitle(`${resources.GrayTick} Encuadrando stats`)
+                .setDescription('Comenzando operación de encudre de la tabla de clasificación.\nRevisa el terminal para evaluar el progreso del programa.');
+
+            console.log(`${new Date().toLocaleString()} 》Comenzando operación de encudre de stats ...\n\n`);
+            message.channel.send(startingEmbed);
+
+            const guildStats = client.stats[message.guild.id];
+            const IDs = Object.keys(guildStats);
+
+            let index = 0;
+            let interval = setInterval(async function() {
+
+                let member = await resources.fetchMember(message.guild, IDs[index]);
+                let userStats = guildStats[member.id];
+
+                //USAR SOLO EN CASO DE QUERER CUADRAR NIVELES CON NUEVOS RANGOS SUPERIORES
+                const barrierValue = 15;
+                if (userStats && userStats.level > barrierValue) userStats.level = barrierValue;
+
+                if (member && userStats.level > 0) {
+                    if (userStats.totalXP <= 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) console.log(`Miembro ${member.displayName} omitido\n- - - - - -`);
+                    while (userStats.totalXP >= 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) {
+                        await resources.addXP(fs, config, member, message.guild, 'voice').then(
+                            console.log(`Miembro ${member.displayName} actualizado\n- - - - - -`)
+                        );
+                    };
+                } else {
+                    console.log(`Usuario ${IDs[index]} omitido\n- - - - - -`);
+                };
+                
+                index++;
+
+                if (index === IDs.length) {
+                    clearInterval(interval);
+
+                    let finishedEmbed = new discord.MessageEmbed()
+                        .setColor(resources.green2)
+                        .setTitle(`${resources.GreenTick} Stats encuadradas`)
+                        .setDescription('La operación de encuadre de estadísticas ha finalizado.\nPor favor, efectúe una revisión manual para confirmar su efectividad.');
+
+                    console.log(`\n\n${new Date().toLocaleString()} 》Operación finalizada`);
+                    message.channel.send(finishedEmbed);
+                };
+            }, 1000);
+
         } else if (args[0] === `test`) {
 
             var ids = [357526716601860107, 382910451165691905, 369613284003020804, 532371239587676190, 376070268818423840];

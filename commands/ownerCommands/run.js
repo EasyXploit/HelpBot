@@ -237,8 +237,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 let userStats = guildStats[member.id];
 
                 //USAR SOLO EN CASO DE QUERER CUADRAR NIVELES CON NUEVOS RANGOS SUPERIORES
-                const barrierValue = 15;
-                if (userStats && userStats.level > barrierValue) userStats.level = barrierValue;
+                //const barrierValue = 15;
+                //if (userStats && userStats.level > barrierValue) userStats.level = barrierValue;
 
                 if (member && userStats.level > 0) {
                     if (userStats.totalXP <= 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) console.log(`Miembro ${member.displayName} omitido\n- - - - - -`);
@@ -259,7 +259,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     let finishedEmbed = new discord.MessageEmbed()
                         .setColor(resources.green2)
                         .setTitle(`${resources.GreenTick} Stats encuadradas`)
-                        .setDescription('La operación de encuadre de estadísticas ha finalizado.\nPor favor, efectúe una revisión manual para confirmar su efectividad.');
+                        .setDescription('La operación de encuadre de estadísticas ha finalizado.\nPor favor, realice una revisión manual para confirmar su efectividad.');
 
                     console.log(`\n\n${new Date().toLocaleString()} 》Operación finalizada`);
                     message.channel.send(finishedEmbed);
@@ -268,7 +268,56 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         } else if (args[0] === `test`) {
 
-            var ids = [357526716601860107, 382910451165691905, 369613284003020804, 532371239587676190, 376070268818423840];
+            /*let startingEmbed = new discord.MessageEmbed()
+                .setColor(resources.gray)
+                .setTitle(`${resources.GrayTick} Ajustando stats`)
+                .setDescription('Comenzando operación de ajuste de la tabla de clasificación.\nRevisa el terminal para evaluar el progreso del programa.');
+
+            console.log(`${new Date().toLocaleString()} 》Comenzando operación de encudre de stats ...\n\n`);
+            message.channel.send(startingEmbed);
+
+            const guildStats = client.stats[message.guild.id];
+            const IDs = Object.keys(guildStats);
+
+            let index = 0;
+            let interval = setInterval(async function() {
+
+                let member = await resources.fetchMember(message.guild, IDs[index]);
+                let userStats = guildStats[member.id];
+
+                if (member && Math.sign(userStats.actualXP) === -1) {
+
+                    //Almacena el XP para avanzar al siguiente nivel
+                    const xpToNextLevel = 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100
+
+                    //Ajusta las stats del miembro
+                    userStats.actualXP = xpToNextLevel - userStats.totalXP;
+
+                    //Guarda las nuevas estadísticas del usuario
+                    fs.writeFile(`./storage/stats.json`, JSON.stringify(client.stats, null, 4), async err => {
+                        if (err) throw err;
+                        console.log(`La XP actual de ${member.displayName} ha sido sustituida por ${userStats.actualXP}`);
+                    });
+                } else {
+                    console.log(`Usuario ${member.displayName || IDs[index]} omitido\n`);
+                };
+                
+                index++;
+
+                if (index === IDs.length) {
+                    clearInterval(interval);
+
+                    let finishedEmbed = new discord.MessageEmbed()
+                        .setColor(resources.green2)
+                        .setTitle(`${resources.GreenTick} Stats ajustadas`)
+                        .setDescription('La operación de ajuste de estadísticas ha finalizado.\nPor favor, realice una revisión manual para confirmar su efectividad.');
+
+                    console.log(`\n\n${new Date().toLocaleString()} 》Operación finalizada`);
+                    message.channel.send(finishedEmbed);
+                };
+            }, 1000);*/
+
+            /*var ids = [357526716601860107, 382910451165691905, 369613284003020804, 532371239587676190, 376070268818423840];
             function getMember(id){ // sample async action
                 return message.guild.members.fetch(id).displayName;
             };
@@ -282,7 +331,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             results.then(data => // or just .then(console.log)
                 console.log(data)
-            );
+            );*/
         } else {
             let noArgsEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)

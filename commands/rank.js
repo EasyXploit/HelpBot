@@ -83,15 +83,15 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setTitle(`🥇 Rango`)
             .setDescription(`Mostrando el rango del usuario **${member.user.tag}**`)
             .setThumbnail(member.user.displayAvatarURL())
-            .addField(`Nivel actual`, userStats.level, true)
-            .addField(`XP Total`, userStats.totalXP, true)
+            .addField(`Nivel actual`, `\`${userStats.level}\``, true)
+            .addField(`XP Total`, `\`${userStats.totalXP}\``, true)
 
         if (nonXP) {
             resultEmbed.addField(`XP para el siguiente nivel`, '\`No puedes subir de nivel\`', true);
             resultEmbed.addField(`Siguiente recompensa`, '\`No puedes ganar recompensas\`', true);
         } else {
-            resultEmbed.addField(`XP para el siguiente nivel`, xpToNextLevel - userStats.actualXP, true);
-            resultEmbed.addField(`Siguiente recompensa`, await nextReward(), true);
+            resultEmbed.addField(`XP para el siguiente nivel`, `\`${xpToNextLevel - userStats.totalXP}\``, true);
+            resultEmbed.addField(`Siguiente recompensa`, `\`${await nextReward()}\``, true);
         };
         
         message.channel.send(resultEmbed);

@@ -152,7 +152,7 @@ exports.run = (discord, client) => {
                 //Comprueba si el miembro ha de subir de nivel
                 if (userStats.totalXP >= xpToNextLevel) {
                     userStats.level++;
-                    userStats.actualXP = userStats.actualXP - xpToNextLevel;
+                    userStats.actualXP = (5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) - userStats.totalXP;
 
                     //Almacena las recompensas por nivel
                     const rewards = require('./leveling/rewards.json');

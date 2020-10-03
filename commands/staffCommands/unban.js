@@ -47,6 +47,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField(`Moderador`, message.author.tag, true)
             .addField(`Razón`, reason, true)
 
+        await message.delete();
         await loggingChannel.send(loggingEmbed);
         await message.channel.send(successEmbed);
     } catch (e) {

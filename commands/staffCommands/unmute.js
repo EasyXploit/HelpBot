@@ -58,6 +58,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             });
         };
         
+        await message.delete();
         await message.channel.send(successEmbed);
         await loggingChannel.send(loggingEmbed);
         await member.send(toDMEmbed);

@@ -118,9 +118,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         fs.writeFile(`./storage/bans.json`, JSON.stringify(client.bans, null, 4), async err => {
             if (err) throw err;
 
-            if (member) {
-                await user.send(toDMEmbed);
-            }
+            await message.delete();
+
+            if (member) await user.send(toDMEmbed);
             await message.guild.members.ban(user, {reason: `Duración: ${args[1]}, Razón: ${reason}`});
             await message.channel.send(successEmbed);
         });

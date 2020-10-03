@@ -126,6 +126,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         fs.writeFile('./storage/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
             if (err) throw err;
 
+            await message.delete();
             await message.channel.send(successEmbed);
             await loggingChannel.send(loggingEmbed);
             await member.send(toDMEmbed);

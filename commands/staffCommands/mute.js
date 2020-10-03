@@ -64,6 +64,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField('Razón', reason, true)
             .addField('Duración', '∞', true);
 
+        await message.delete();
         await message.channel.send(successEmbed);
         await loggingChannel.send(loggingEmbed);
         await member.send(toDMEmbed);

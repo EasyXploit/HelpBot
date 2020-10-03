@@ -42,6 +42,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField(`Moderador`, message.author.tag, true)
             .addField(`Razón`, reason, true)
 
+        await message.delete();
         await member.send(toDMEmbed);
         await member.kick(reason);
         await message.channel.send(successEmbed);

@@ -13,6 +13,7 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
             .addField(`👦 ${config.prefix}avatar (@usuario)`,  `Muestra tu avatar o el de cualquier usuario.`)
             .addField(`🌦 ${config.prefix}weather (ubicación)`,  `Obtiene información metereológica acerca de la ubicación proporcionada.`)
             .addField(`🎭 ${config.prefix}meme`, `Muestra un meme aleatorio en Español.`)
+            .addField(`💟 ${config.prefix}love (@usuario | nada)`, `Inicia un test de afinidad amorosa con alguien.`)
             .addField(`🐈 ${config.prefix}catfacts`, `Muestra un dato curioso aleatorio sobre los gatos.`)
             .addField(`🐕 ${config.prefix}dogfacts`, `Muestra un dato curioso aleatorio sobre los perros.`)
             .addField(`🎲 ${config.prefix}dado`, `Lanzará un dado.`)

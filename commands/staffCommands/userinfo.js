@@ -70,26 +70,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             matches.push(translations[perm]);
         });
 
-        //Comprueba si existe el rol silenciado, y de no existir, lo crea
-        let role = message.guild.roles.cache.find(r => r.name === 'Silenciado');
-        if (!role) {
-            role = await message.guild.createRole({
-                name: 'Silenciado',
-                color: '#818386',
-                permissions: []
-            });
-            
-            let botMember = message.guild.members.cache.get(client.user.id);
-            await message.guild.setRolePosition(role, botMember.roles.highest.position - 1);
-            
-            message.guild.channels.forEach(async (channel, id) => {
-                await channel.overwritePermissions (role, {
-                    SEND_MESSAGES: false,
-                    ADD_REACTIONS: false,
-                    SPEAK: false
-                });
-            });
-        };
+        //Comprueba si existe el rol silenciado, sino lo crea
+        let role = await resources.checkMutedRole(message.guild);
 
         let sanction;
         if (client.mutes[member.id]) {

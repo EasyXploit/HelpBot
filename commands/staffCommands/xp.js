@@ -3,6 +3,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
     //-xp (@miembro | id) (set | add | remove | clear) <cantidad>
     
     try {
+        if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
+        
         let unknownMemberEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Debes mencionar a un miembro o escribir su id`);

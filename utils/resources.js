@@ -60,7 +60,7 @@ exports.run = (discord, client) => {
     async function checkMutedRole(guild) {
 
         //Busca el rol silenciado
-        let mutedRole = await guild.roles.cache.find(r => r.name === 'Silenciado');
+        let mutedRole = await guild.roles.cache.find(r => r.name === '🔇 SILENCIADO');
 
         //Si no existe el rol silenciado, lo crea
         if (!mutedRole) {
@@ -84,7 +84,7 @@ exports.run = (discord, client) => {
     //Función para propagar el rol silenciado
     async function spreadMutedRole(guild) {
          //Busca el rol silenciado
-        let mutedRole = await guild.roles.cache.find(r => r.name === 'Silenciado');
+        let mutedRole = await guild.roles.cache.find(r => r.name === '🔇 SILENCIADO');
         //Para cada canal, añade el permiso para el rol
         await guild.channels.cache.forEach(async (channel) => {
 

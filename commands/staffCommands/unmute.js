@@ -26,9 +26,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} Este usuario no esta silenciado`);
 
-        //Comprueba si este susuario ya estaba silenciado
-        const mutedRole = await message.guild.roles.cache.find(r => r.name === 'Silenciado');
-        if (!mutedRole || !member.roles.cache.has(mutedRole.id)) return message.channel.send(notMutedEmbed);
+        //Comprueba si existe el rol silenciado, sino lo crea
+        let mutedRole = await resources.checkMutedRole(message.guild);
+        if (!member.roles.cache.has(mutedRole.id)) return message.channel.send(notMutedEmbed);
         
         let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green2)

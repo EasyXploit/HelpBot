@@ -166,7 +166,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     if (!result) continue; //Omite si el resultado fue borrado por el "for" anterior
 
                     //Crea el objeto de la cola
-                    let info = await infoGenerator(result.url, result);
+                    let info = await infoGenerator(result, result.url);
 
                     //Comprueba si es un duplicado
                     if (client.musicConfig.preventDuplicates && await preventDupes(info.link)) continue;
@@ -221,6 +221,13 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             //Si se proporciona un parámetro de búsqueda, se muestra el menú. Si es una URL, busca los metadatos directamente
             if (args[0].startsWith('http')) {
+
+                let notSupportedEmbed = new discord.MessageEmbed()
+                    .setColor(resources.red)
+                    .setDescription(`${resources.RedTick} El bot solo puede reproducir música desde YouTube.`);
+
+                if (!args[0].includes('youtu')) return message.channel.send(notSupportedEmbed);
+
                 if (args[0].match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/)) {
                     //Si se trata de una URL de Playlist, la maneja directamente
                     addPlaylist(args[0]);
@@ -291,7 +298,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                         if (authorizedSongs === 0) return message.channel.send(fullUserQueueEmbed);
 
                         //Crea el objeto de la cola
-                        let info = await infoGenerator(results[0].link, results[0]);
+                        let info = await infoGenerator(results[0], results[0].link);
 
                         //Comprueba si es un duplicado
                         let duplicatedEmbed = new discord.MessageEmbed()
@@ -315,6 +322,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                             if (results[i].type === 'playlist' || (results[i].type === 'video' && results[i].duration && results[i].title !== '[Private video]' && resources.hmsToSeconds(results[i].duration) < 10800)) {
                                 asociatedPositions[pointer] = i; //Crea la asociación puntero-posición
                                 let title = results[i].title; //Almacena el título
+                                title.replace('*', '').replace('_', '').replace('|', '').replace('(', '').replace(')', '').replace('[', '').replace(']', ''); //Elimina signos que alteren la forma en la que se muestra la entrada
                                 if (title.length > 40) title = `${title.slice(0, 40)} ...`; //Acorta el título si es demasiado largo
                                 if (results[i].type === 'playlist') { //Si se trata de una playlist, almacena el string "playlist" en vez de la duración de la pista
                                     formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${results[i].link}) | \`${results[i].type}\``;
@@ -365,7 +373,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                                     if (authorizedSongs === 0) return message.channel.send(fullUserQueueEmbed);
 
                                     //Crea el objeto de la cola
-                                    let info = await infoGenerator(results[option].link, results[option]);
+                                    let info = await infoGenerator(results[option], results[option].link);
 
                                     //Comprueba si es un duplicado
                                     let duplicatedEmbed = new discord.MessageEmbed()

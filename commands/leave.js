@@ -11,8 +11,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que ${client.user.username}.`);
 
-        
-
         //Comprueba si hay una conexión de voz
         if (!message.guild.voice) return message.channel.send(notInChannelEmbed);
 

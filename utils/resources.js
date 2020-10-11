@@ -222,11 +222,16 @@ exports.run = (discord, client) => {
         //Omite si no hay roles de DJ
         if (client.musicConfig.djRoles.length == 0) return true;
 
+        let server = client.servers[message.guild.id];
+
+        //Omite si no hay reproducción
+        if (!server || !server.nowplaying || !server.nowplaying.requestedById) return true;
+
         //Calcula a qué posición de la cola ha de acceder para realizar comprobaciones
         if (index == 0) {
-            if (message.member.id === client.servers[message.guild.id].nowplaying.requestedById) return true;
+            if (message.member.id === server.nowplaying.requestedById) return true;
         } else if (index > 0) {
-            if (message.member.id === client.servers[message.guild.id].queue[index - 1].requestedById) return true;
+            if (message.member.id === server.queue[index - 1].requestedById) return true;
         };
         
         //Comprueba si el miembro es DJ, y de serlo omite la comprobación de votos
@@ -240,8 +245,8 @@ exports.run = (discord, client) => {
         let actualVotes;
 
         //Crea e inicializa el contador de votos raíz si no lo estaba ya
-        if (!client.servers[message.guild.id].votes[command]) client.servers[message.guild.id].votes[command] = [];
-        let counter = client.servers[message.guild.id].votes[command];
+        if (!server.votes[command]) server.votes[command] = [];
+        let counter = server.votes[command];
 
         //Si se activa el modo "por usuario"
         if (index) {
@@ -254,7 +259,7 @@ exports.run = (discord, client) => {
         };
 
         //Graba el nuevo contador de votos
-        client.servers[message.guild.id].votes[command] = counter;
+        server.votes[command] = counter;
 
         //Almacena variables necesarias para calcular los votos
         const memberCount = message.member.voice.channel.members.size - 1;
@@ -267,7 +272,7 @@ exports.run = (discord, client) => {
             message.channel.send(`🗳 | Votos necesarios: \`${actualVotes}\` de \`${requiredVotes}\``);
             return false;
         } else {
-            client.servers[message.guild.id].votes[command] = 0;
+            server.votes[command] = 0;
             return true;
         };
     };

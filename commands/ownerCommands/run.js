@@ -63,7 +63,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             await message.channel.send(embed5);
             await message.channel.send(cfg.serverInvite);
             
-        } else if (args[0] === `apoyanos`) {
+        } else if (args[0] === `ayudanos`) {
             message.delete();
 
             let embed1 = new discord.MessageEmbed()
@@ -77,7 +77,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setAuthor('DONATIVOS', 'https://i.imgur.com/E26Kl1A.png')
                 .setDescription('Hemos habilitado una nueva forma de apoyar directamente al desarrollo de la comunidad, permitiendo aceptar vestros donativos. Como recompensa, y en función del tipo de suscripción elegida, puedes optar por uno de los siguientes rangos:\n\n⬖ **RANGO VIP** 🔒\n⬖ **RANGO SUPPORTER** 💓')
                 
-                .addField('¿Qué ventajas tengo? ¿Cómo puedo donar?', 'Para obtener detalles acerca de las ventajas de cada rango y adquirir uno, haz clic en [este enlace](https://donatebot.io/checkout/374945492133740544).\n\nTambién es posible adquirir un rango para otra persona, además de poder donar cualquier cantidad que desees.')
+                .addField('¿Qué ventajas tengo? ¿Cómo puedo donar?', 'Para obtener detalles acerca de las ventajas de cada rango y adquirir uno, haz clic en [este enlace](https://donatebot.io/checkout/374945492133740544).\n\nTambién es posible adquirir un rango para otra persona, además de poder donar cualquier cantidad que desees.\n\n⮚ [**DONAR**](https://donatebot.io/checkout/374945492133740544) ⮘')
                 .attachFiles(`./resources/images/banners/donate.png`);
 
             let supporterEmbed = new discord.MessageEmbed()
@@ -88,6 +88,13 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .addField('🞘 Pasos a seguir:', ':one: Genera una invitación instantánea. [Ver cómo](https://support.discordapp.com/hc/es/articles/208866998-Invitaci%C3%B3n-Instant%C3%A1nea-101)\n:two: Invita a 5 personas _(procura que se unan y se queden)_.\n:three: ¡Recibirás tu rol cuando se unan 5! _(lo perderás si se van)_.', true)
                 .addField('🞘 Comandos:', 'Usa `+invites` para conocer a cuantos has invitado.\nUsa `+leaderboard` para ver la tabla de clasificacion.', true)
                 .attachFiles(`./resources/images/banners/support.png`);
+
+            let boostEmbed = new discord.MessageEmbed()
+                .setColor(resources.gold)
+                .setThumbnail('https://i.imgur.com/SdgPR5G.png')
+                .setAuthor('BOOSTEA LA COMUNIDAD', 'https://i.imgur.com/SdgPR5G.png')
+                .setDescription('Con cada mejora del servidor nos ayudas a desbloquear __nuevos niveles__ y más __ventajas para todos los miembros__ del servidor, cómo **espacios para emojis**, **mejor calidad de audio**,** mejor calidad de retransmisión**, mejora en el **límite de carga de ficheros** y algunos ajustes de **personalización** adicionales para la comunidad.\n\n⮚ [**MÁS INFORMACIÓN**](https://support.discord.com/hc/es/articles/360028038352) ⮘')
+                .attachFiles('./resources/images/banners/boost.png');
 
             let voteEmbed = new discord.MessageEmbed()
                 .setColor(resources.gold)
@@ -124,6 +131,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             await message.channel.send(embed1);
             await message.channel.send(donateEmbed);
             await message.channel.send(supporterEmbed);
+            await message.channel.send(boostEmbed);
             await message.channel.send(voteEmbed);
             await message.channel.send(reviewEmbed);
             await message.channel.send(inviteEmbed);
@@ -144,25 +152,26 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             let giveawayEmbed = new discord.MessageEmbed()
                 .setColor(resources.gold)
-                .setTitle(`:tada: SORTEO DE UN VIDEOJUEGO A ELEGIR·`)
-                .setDescription(`Hemos organizado un nuevo sorteo para todos aquellos que compartan la comunidad con sus amigos, para que de esta forma nos conozca cada vez más gente.\n\nEn esta ocasión sorteamos **Un videojuego a elegir**`)
-                .setThumbnail(`https://i.imgur.com/YUOdN5X.png`)
+                .setTitle(':tada: :tada: :tada: NUEVO SORTEO :tada: :tada: :tada:\n\n 3 MESES DE XBOX GAME PASS (PC)')
+                .setDescription(`Hemos organizado un nuevo sorteo para todos aquellos que __participen activamente en la comunidad__, para los que __boosteen el servidor__ y para los que __compartan la comunidad con sus amigos__.\n\nEn esta ocasión sorteamos **3 meses de Xbox Game Pass para PC** _(solo para aquellos que nunca antes hayan tenido Game Pass)_`)
+                .setThumbnail(`https://i.imgur.com/QlKAlpY.png`)
 
             let basesEmbed = new discord.MessageEmbed()
                 .setColor(resources.gold)
-                .setTitle(`Bases del sorteo`)
-                .setDescription(`El sorteo comienza el día **1** de **ENERO** y finalizará el día **14** de **ENERO** de 2019\n\nSolo aquellos jugadores que hayan invitado a otras __5 personas__ a través de un __enlace de invitación personalizado__ _(y se hayan unido al servidor)_, podrán participar en el sorteo.\n\nUna vez se hayan unido 5 personas con tu invitación, recibirás en rango <@&447475457617821698>, el cual te permite acceder al canal del sorteo.\n\nEste sorteo tendrá una duración máxima de **14 días** desde la fecha de publicación del evento _(podrá ser finalizado prematuramente)_.\n\n**De resultar ganador, podrás elegir entre:**\n\n➢ Player Unknowns Battlegrounds  _(Steam)_\n➢ Grand Theft Auto V  _(Social Club)_\n➢ Counter Strike: Global Offensive  _(Steam)_\n➢ Rainbow Six Siege  _(Uplay)_\n➢ Rocket League  _(Steam)_\n➢ Ghost Recon Wildlands  _(Uplay)_\n➢ Los Sims 4  _(Origin)_\n➢ Battlefield 1  _(Origin)_\n➢ Dark Souls 3  _(Steam)_\n➢ DOOM  _(Steam)_\n➢ Watch Dogs 2  _(Uplay)_\n➢ The Witcher 3: Wild Hunt GOTY Edition  _(GOG Galaxy)_\n➢ Far Cry 4  _(Uplay)_\n➢ Minecraft  _(Mojang)_\n➢ The Elder Scrolls V: Skyrim Special Edition  _(Steam)_\n➢ Arma III  _(Steam)_\n➢ Civilization V: Complete Edition  _(Steam)_\n➢ Killing Floor 2  _(Steam)_\n➢ Titanfall 2  _(Origin)_\n➢ Age of Empires: Definitive Edition  _(Microsoft Store)_\n➢ Just Cause 3  _(Steam)_\n➢ Plants vs. Zombies: Garden Warfare 2  _(Origin)_`)
+                .setTitle(`📑 BASES DEL SORTEO`)
+                .setDescription(`El sorteo comienza oficialmente el día **11 de OCTUBRE** de 2020 y finalizará el día **25 de OCTUBRE** de 2020.\n\n**Solo debes cumplir 1 de estos requisitos**:\n\n➢ Haber alcanzado el rango <@&393536958187569153>\n➢ Haber **boosteado el servidor**\n➢ Haber **traido 5 personas** con una __ invitación personalizada__\n\nEste sorteo tendrá una duración máxima de **14 días** desde la fecha de publicación del evento _(podrá ser finalizado prematuramente)_.`)
                 .setThumbnail(`https://i.imgur.com/qfamqUv.png`)
 
             let entryEmbed = new discord.MessageEmbed()
                 .setColor(resources.gold)
-                .setTitle(`Entrada al sorteo`)
-                .setDescription(`Participa en el sorteo desde: <#529383165551181824>.\n(solo verás el canal cuando obtengas el rango <@&447475457617821698>).`)
+                .setTitle(`🗳 ENTRADA AL SORTEO`)
+                .setDescription(`Participa en el sorteo desde: <#764505966158807070>.\n(solo verás el canal cuando cumplas los requisitos).`)
                 .setThumbnail(`https://i.imgur.com/jRVtTSF.png`)
 
             await message.channel.send(giveawayEmbed);
             await message.channel.send(basesEmbed);
             await message.channel.send(entryEmbed);
+
         } else if (args[0] === `bienvenida`) {
             let noUserEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)

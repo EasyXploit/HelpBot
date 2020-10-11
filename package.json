@@ -26,6 +26,7 @@
     "asciiart-logo": "^0.1.7",
     "bufferutil": "^4.0.0",
     "canvas": "^2.6.1",
+    "cleverbot-free": "^1.0.4",
     "discord.js": "^12.3.1",
     "ffmpeg": "0.0.4",
     "fortnite": "^4.1.1",

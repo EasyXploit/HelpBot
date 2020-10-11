@@ -24,6 +24,7 @@ console.log(`》Iniciando aplicación «\n――――――――――――�
 const discord = require('discord.js');
 const fs = require('fs');
 const moment = require('moment');
+const cleverbot = require('cleverbot-free');
 const keys = require('./configs/keys.json');
 const client = new discord.Client({
     fetchAllMembers: true,
@@ -62,6 +63,9 @@ client.voiceDispatcher; //Almacena el dispatcher
 client.voiceConnection; //Almacena la conexión
 client.voiceTimeout; //Almacena los timeouts de reproducción finalizada
 client.usersVoiceStates = {}; //Almacena los cambios de estado de voz de los usuarios
+
+//DMs
+client.dmContexts = {};
 
 // COMPROBACIÓN DE INICIO DE SESIÓN Y PRESENCIA
 client.on('ready', async () => {
@@ -210,16 +214,32 @@ client.on('message', async message => {
                 .setColor(resources.gray)
                 .setDescription(`${resources.GrayTick} | Por el momento, los comandos de **${client.user.username}** solo está disponible desde el servidor de la **República Gamer**.`);
             
+            if (!message.content) return;
             if (message.content.startsWith(config.prefix) || message.content.startsWith(config.staffPrefix) || message.content.startsWith(config.ownerPrefix)) return await message.author.send(noDMEmbed);
-            
+ 
             const pilkoChatEmbed = new discord.MessageEmbed()
-                .setColor(resources.gold)
+                .setColor(resources.blue2)
                 .setAuthor(`Mensaje de: ${message.author.tag}`, message.author.displayAvatarURL())
                 .setDescription(message.content);
 
-            return await pilkoChatChannel.send(pilkoChatEmbed);
-        }
-    }
+            await pilkoChatChannel.send(pilkoChatEmbed);
+
+            if (!client.dmContexts[message.author.id]) client.dmContexts[message.author.id] = ['Hablemos en Español'];
+
+            return await cleverbot(message.content, client.dmContexts[message.author.id]).then(async response => {
+                if (client.dmContexts[message.author.id].push(message.content));
+
+                await message.author.send(response);
+
+                const pilkoChatEmbed = new discord.MessageEmbed()
+                    .setColor(resources.gold)
+                    .setAuthor(`Mensaje de: ${client.user.username}`, client.user.displayAvatarURL())
+                    .setDescription(response);
+
+                await pilkoChatChannel.send(pilkoChatEmbed);
+            });
+        };
+    };
 
     //FILTROS DE AUTO-MODERACIÓN
     (async () => {

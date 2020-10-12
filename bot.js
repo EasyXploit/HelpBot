@@ -227,7 +227,7 @@ client.on('message', async message => {
             if (!client.dmContexts[message.author.id]) client.dmContexts[message.author.id] = ['Hablemos en Español'];
 
             return await cleverbot(message.content, client.dmContexts[message.author.id]).then(async response => {
-                if (client.dmContexts[message.author.id].push(message.content));
+                if (client.dmContexts[message.author.id] && !message.content.includes('http')) client.dmContexts[message.author.id].push(message.content);
 
                 await message.author.send(response);
 

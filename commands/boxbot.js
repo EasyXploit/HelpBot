@@ -1,16 +1,21 @@
-exports.run = (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
     
     //!boxbot
     
     try {
-        let helpEmbed = new discord.MessageEmbed()
+        let helpEmbed1 = new discord.MessageEmbed()
             .setColor(resources.gold)
             .setAuthor('AYUDA', 'http://i.imgur.com/sYyH2IM.png')
             .setTitle(`BoxBot, el minijuego ${resources.boxbot}`)
-            .setDescription('**Recuerda que estos comandos sólo pueden ser utilizados en los canales de texto <#433376010688397312> y <#760952548873601047>**\n\n• `b!buy [objeto]` _permite comprar un objeto._\n• `b!claim` _te otorga una recompensa por votar por @BoxBot._\n• `b!cooldowns` _muestra los tiempos de espera._\n• `b!daily` _te otorga una recompensa diaria._\n• `b!grank` _muestra tu rango en el top global._\n• `b!gtop` _muestra el top global de servidores._\n• `b!health [objeto]` _usar un objeto para recuperar salud._\n• `b!image [objeto]` _muestra un objeto._\n• `b!inventory [@usuario]` _muestra el inventario (tuyo o de alguien)._\n• `b!items` _muestra una lista con todos los objetos._\n• `b!killfeed` _muestra el feed de muertes._\n• `b!level [@usuario]` _muestra tu nivel o el de otro usuario._\n• `b!money [@usuario]` _muestra tu dinero o el de otro usuario._\n• `b!notify` _activa las notivifaciones via MD._\n• `b!optin` _te permite jugar en un servidor._\n• `b!optout` _te excluye de jugar en un servidor._\n• `b!profile [@usuario]` _muestra el perfil de un usuario._\n• `b!rank [@usuario]` _muestra el rango de un usuario._\n• `b!sell [objeto]` _vende un objeto de tu inventario._\n• `b!sellall` _vende todo tu inventario._\n• `b!top` _muestra el top del servidor._\n• `b!trade [@usuario]` _permite intecambiar con otro usuario._\n• `b!trivia` _inicia un trivia con recompensa._\n• `b!unbox` _abre una caja nueva al azar._\n• `b!use [objeto]` _sirve para utilizar un objeto._\n• `b!value [@usuario]` _muestra el valor de un inventario._\n• `b!weekly` _te otorga una recompensa semanal._')
-            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
-        message.channel.send(helpEmbed);
+            .setDescription('**Recuerda que estos comandos sólo pueden ser utilizados en los canales de texto <#433376010688397312> y <#760952548873601047>**\n\n⏰ __**Cooldowns:**__\n• `b!cooldowns <@usuario>` _Muestra los tiempos de espera._\n• `b!hourly` _Otorga 1 caja común cada hora._\n• `b!daily` _Otorga 1 caja rara cada día._\n• `b!weekly` _Otorga una caja ultra rara cada semana._\n• `b!trivia` _Inicia un trivia con recompensa._\n• `b!claim` _Te recompensa por votar cada 12h._\n• `b!coinflip <cantidad>` _Te permite apostar tu dinero a cara o cruz._\n\n🔫 __**Objetos y cantidades:**__\n• `b!health <@usuario>` _Permite visualizar el estado de salud._\n• `b!image <objeto>` _Te muestra la imagen del objeto._\n• `b!inventory <@usuario>` _Abre un inventario._\n• `b!items` _Muestra el listado de objetos._\n• `b!item <objeto>` _Muestra la info. de un objeto._\n• `b!money <@usuario>` _Muestra la cantidad de dinero._\n• `b!value <@usuario>` _Muestra el valor de un inventario._\n\n🛡 __**Acciones:**__\n• `b!use <objeto>` _Te permite usar un objeto._\n• `b!heal <objeto>` _Te permite curarte con un objeto._\n• `b!buy <objeto>` _Te permite comprar un objeto (ver `b!items` para saber cual)._\n• `b!sell <objeto>` _Te permite vender un objeto (ver `b!items` para saber cual)._\n• `b!sellall <categoría>` _Vende todos los objetos de un categoría (o todos)._\n• `b!trade <@usuario>` _Te permite intercambiar objetos con otro usuario._\n\n📊 __**Estadísticas:**__\n• `b!profile <@usuario>` _Te permite ver el perfil de un usuario._\n• `b!players` _Te permite ver quienes están jugando a BoxBot._\n• `b!top` _Muestra la tabla de clasificación local._\n• `b!gtop` _Muestra la tabla de clasificación global._\n• `b!changelog` _Muestra la lista de cambios de esta versión de BoxBot._\n• `b!ping` _Calcula la latencia/tiempo de respuesta de BoxBot._\n\n⚙ __**Ajustes:**__\n• `b!settings` _Muestra tus ajustes._\n• `b!optin` _Te permite jugar en el servidor._\n• `b!optout` _Te excluye de jugar en un servidor._');
+
+        let helpEmbed2 = new discord.MessageEmbed()
+            .setColor(resources.gold)
+            .setDescription('🏳️‍🌈 __**Skins (Patreon):**__\n• `b!pclaim` _Recoge tus créditos mensuales._\n• `b!credits` _Muestra tu cantidad actual de créditos._\n• `b!usecredit` _Desbloquea una skin gastando 1 crédito._\n• `b!skins` _Muestra tu inventario de skins._\n• `b!skinequip <objeto;;skin>` _Equipa una skin en un arma._\n• `b!skinunequip <objeto;;skin>` _Quita una skin de un arma._\n• `b!equipallskins` _Equipa todas las skins._');
+
+        await message.channel.send(helpEmbed1);
+        await message.channel.send(helpEmbed2);
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
-    }
-}
+    };
+};

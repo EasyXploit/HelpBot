@@ -182,7 +182,7 @@ client.on('message', async message => {
 
     if (message.channel.id === '550420589458751526' && message.author.id !== '359333470771740683' && message.author.id !== '474051954998509571') return message.delete({timeout: 5000});
 
-    if (message.author.bot) return;
+    if (message.author.bot || message.type !== 'DEFAULT') return;
     if (message.channel.type === 'dm') {
         if (message.author.id === '507668335547252747' || message.author.id === '468149377412890626') {
             let prefix = message.content.slice(0, 1);
@@ -263,7 +263,6 @@ client.on('message', async message => {
             })();
         };
     })();
-
 
     //Llama al manejador de leveling
     if (!message.content.startsWith(config.prefix) && !message.content.startsWith(config.staffPrefix) && !message.content.startsWith(config.ownerPrefix) && !config.nonXPChannels.includes(message.channel.id)) return await resources.addXP(fs, config, message.member, message.guild, 'message', message.channel);

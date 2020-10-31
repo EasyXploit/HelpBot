@@ -386,7 +386,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             } else {
                 //Almacena el motor de búsqueda
                 const search = require('ytsr');
-
+                
                 //Realiza la búsqueda
                 await search(args.join(` `), {limit: 10}).then(async result => {
                     const results = result.items;

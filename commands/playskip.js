@@ -298,7 +298,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                         if (authorizedSongs === 0) return message.channel.send(fullUserQueueEmbed);
 
                         //Crea el objeto de la cola
-                        let info = await infoGenerator(results[0], results[0].link);
+                        let info = await infoGenerator(results[0], results[0].url);
 
                         //Comprueba si es un duplicado
                         let duplicatedEmbed = new discord.MessageEmbed()
@@ -373,7 +373,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                                     if (authorizedSongs === 0) return message.channel.send(fullUserQueueEmbed);
 
                                     //Crea el objeto de la cola
-                                    let info = await infoGenerator(results[option], results[option].link);
+                                    let info = await infoGenerator(results[option], results[option].url);
 
                                     //Comprueba si es un duplicado
                                     let duplicatedEmbed = new discord.MessageEmbed()

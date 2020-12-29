@@ -40,7 +40,7 @@
     "weather-js": "^2.0.0",
     "ytdl-core-discord": "^1.2.3",
     "ytpl": "^1.0.1",
-    "ytsr": "^1.0.1"
+    "ytsr": "3.2.1"
   },
   "devDependencies": {}
 }

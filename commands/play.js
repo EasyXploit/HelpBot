@@ -112,12 +112,13 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             //Función para generar una entrada de la cola
             async function infoGenerator(data, link, lengthSeconds, thumbnail) {
+                console.log(data);
                 return {
                     link: link,
                     title: data.title,
                     lengthSeconds: lengthSeconds || resources.hmsToSeconds(data.duration),
                     author: data.author.name,
-                    thumbnail: thumbnail || data.thumbnail,
+                    thumbnail: thumbnail || data.bestThumbnail.url,
                     requestedBy: message.member.displayName,
                     requestedById: message.member.id
                 };

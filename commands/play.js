@@ -112,7 +112,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             //Función para generar una entrada de la cola
             async function infoGenerator(data, link, lengthSeconds, thumbnail) {
-                console.log(data);
                 return {
                     link: link,
                     title: data.title,
@@ -390,7 +389,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 
                 //Realiza la búsqueda
                 await search(args.join(` `), {limit: 10}).then(async result => {
-                    console.log(result);
                     const results = result.items;
 
                     let noResultsEmbed = new discord.MessageEmbed()

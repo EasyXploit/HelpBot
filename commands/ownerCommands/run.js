@@ -152,21 +152,21 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             let giveawayEmbed = new discord.MessageEmbed()
                 .setColor(resources.gold)
-                .setTitle(':tada: :tada: :tada: NUEVO SORTEO :tada: :tada: :tada:\n\n 3 MESES DE XBOX GAME PASS (PC)')
-                .setDescription(`Hemos organizado un nuevo sorteo para todos aquellos que __participen activamente en la comunidad__, para los que __boosteen el servidor__ y para los que __compartan la comunidad con sus amigos__.\n\nEn esta ocasión sorteamos **3 meses de Xbox Game Pass para PC** _(solo para aquellos que nunca antes hayan tenido Game Pass)_`)
-                .setThumbnail(`https://i.imgur.com/QlKAlpY.png`)
+                .setTitle('🎄 🎊 🎄 SORTEO DE NAVIDAD 🎄 🎊 🎄')
+                .setDescription('**¡HO HO HO!** Llega la navidad y Papá Noel viene cargado de regalos para los miembros de la comunidad que __participen activamente en la comunidad__, para los que __boosteen el servidor__ y para los que __compartan la comunidad con sus amigos__!\n\n**ESTO ES LO QUE PUEDES GANAR:**\n\n➢ 2 claves de Red Dead Online (Epic)\n➢ 1 clave de PayDay 2 (Steam)\n➢ 1 clave de Discord Nitro (Normal)\n➢ 3 meses de Xbox Game Pass (PC)')
+                .setThumbnail('https://i.imgur.com/G3XjaFA.png')
 
             let basesEmbed = new discord.MessageEmbed()
                 .setColor(resources.gold)
                 .setTitle(`📑 BASES DEL SORTEO`)
-                .setDescription(`El sorteo comienza oficialmente el día **11 de OCTUBRE** de 2020 y finalizará el día **25 de OCTUBRE** de 2020.\n\n**Solo debes cumplir 1 de estos requisitos**:\n\n➢ Haber alcanzado el rango <@&393536958187569153>\n➢ Haber **boosteado el servidor**\n➢ Haber **traido 5 personas** con una __ invitación personalizada__\n\nEste sorteo tendrá una duración máxima de **14 días** desde la fecha de publicación del evento _(podrá ser finalizado prematuramente)_.`)
-                .setThumbnail(`https://i.imgur.com/qfamqUv.png`)
+                .setDescription(`El sorteo comienza oficialmente el día **15 de DICIEMBRE** de 2020 y finalizará el día **25 de DICIEMBRE** de 2020.\n\n**SOLO DEBES CUMPLIR 1 DE ESTOS REQUISITOS**:\n\n➢ Haber alcanzado el rango <@&393536958187569153>\n➢ Haber **boosteado el servidor**\n➢ Haber **traido 5 personas** con una __ invitación personalizada__\n\nEste sorteo tendrá una duración máxima de **10 días** desde la fecha de publicación del evento _(podrá ser finalizado prematuramente)_.`)
+                .setThumbnail('https://i.imgur.com/zilbaLQ.png')
 
             let entryEmbed = new discord.MessageEmbed()
                 .setColor(resources.gold)
                 .setTitle(`🗳 ENTRADA AL SORTEO`)
-                .setDescription(`Participa en el sorteo desde: <#764505966158807070>.\n(solo verás el canal cuando cumplas los requisitos).`)
-                .setThumbnail(`https://i.imgur.com/jRVtTSF.png`)
+                .setDescription(`Participa en el sorteo desde: <#788164998408568872>.\n(solo verás el canal cuando cumplas 1 requisito).`)
+                .setThumbnail('https://i.imgur.com/if6itZS.png')
 
             await message.channel.send(giveawayEmbed);
             await message.channel.send(basesEmbed);

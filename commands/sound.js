@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
-    //!sound (término | list)
+    //!sound (nada | término | list)
 
     try {
         let notAvailableEmbed = new discord.MessageEmbed()
@@ -10,9 +10,11 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let fileNames = fs.readdirSync(`./resources/audios/`);
         let newFileNames = [];
         
-        for (var f = 0; f < fileNames.length - 1; f++) {
-            newFileNames.push(fileNames[f].slice(0, -4));
-        }
+        for (var file = 0; file < fileNames.length - 1; file++) {
+            newFileNames.push(fileNames[file].slice(0, -4));
+        };
+
+        if (fileNames.includes('zorra.mp3')) newFileNames.push('zorra'); //PROVISIONAL (no sé por qué no lo coge de normal)
         
         if (args[0] === `list`) {
             let listEmbed = new discord.MessageEmbed()

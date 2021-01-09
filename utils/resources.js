@@ -360,14 +360,8 @@ exports.run = (discord, client) => {
     const nitro = client.emojis.cache.get('496633448686157826');
     module.exports.nitro = nitro;
     
-    const verified = client.emojis.cache.get('496633324010471424');
-    module.exports.verified = verified;
-    
     const boxbot = client.emojis.cache.get('497178946149023744');
     module.exports.boxbot = boxbot;
-    
-    const drakeban = client.emojis.cache.get('497381029011521593');
-    module.exports.drakeban = drakeban;
     
     const translate = client.emojis.cache.get('503248605814063105');
     module.exports.translate = translate;
@@ -375,27 +369,18 @@ exports.run = (discord, client) => {
     const rythm = client.emojis.cache.get('507187604031275008');
     module.exports.rythm = rythm;
     
-    const rythm2 = client.emojis.cache.get('507187615402033155');
-    module.exports.rythm2 = rythm2;
-
-    const chevron10 = client.emojis.cache.get('497133468535226389');
-    module.exports.chevron10 = chevron10;
+    const chevron1 = client.emojis.cache.get('497133469110108189');
+    module.exports.chevron1 = chevron1;
     
-    const chevron11 = client.emojis.cache.get('497133469495721986');
-    module.exports.chevron11 = chevron11;
+    const chevron2 = client.emojis.cache.get('497133468791341116');
+    module.exports.chevron2 = chevron2;
     
-    const chevron = client.emojis.cache.get('497133469110108189');
-    module.exports.chevron = chevron;
+    const chevron3 = client.emojis.cache.get('497133468741009411');
+    module.exports.chevron3 = chevron3;
     
-    const chevron5 = client.emojis.cache.get('497133468791341116');
+    const chevron4 = client.emojis.cache.get('497133469059645460');
+    module.exports.chevron4 = chevron4;
+    
+    const chevron5 = client.emojis.cache.get('497133469529538560');
     module.exports.chevron5 = chevron5;
-    
-    const chevron9 = client.emojis.cache.get('497133468741009411');
-    module.exports.chevron9 = chevron9;
-    
-    const chevron15 = client.emojis.cache.get('497133469059645460');
-    module.exports.chevron15 = chevron15;
-    
-    const chevron18 = client.emojis.cache.get('497133469529538560');
-    module.exports.chevron18 = chevron18;
 }

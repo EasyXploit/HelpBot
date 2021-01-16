@@ -74,26 +74,18 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             //Crea un contador que para demorar un minuto la salida del canal y la destrucción del dispatcher
             client.voiceTimeout = setTimeout(() => {
+                
+                //Aborta la conexión
+                connection.disconnect();
 
-                const fileNames = fs.readdirSync(`./resources/audios/`);
+                //Confirma la acción
+                message.channel.send(`⏏ | He abandonado el canal`);
 
-                //Reproduce el efecto de despedida
-                client.voiceDispatcher = client.voiceConnection.play(`./resources/audios/${fileNames[Math.floor(Math.random() * fileNames.length)]}`);
+                //Bora la información de reproducción del server
+                delete client.servers[message.guild.id];
 
-                //Aborta la conexión después de despedirse
-                setTimeout(() => {
-                    //Aborta la conexión
-                    connection.disconnect();
-
-                    //Confirma la acción
-                    message.channel.send(`⏏ | He abandonado el canal`);
-
-                    //Bora la información de reproducción del server
-                    delete client.servers[message.guild.id];
-
-                    //Vacía la variable del timeout
-                    client.voiceTimeout = null;
-                }, 3000);
+                //Vacía la variable del timeout
+                client.voiceTimeout = null;
             }, 60000);
 
         }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));

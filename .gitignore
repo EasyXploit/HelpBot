@@ -7,3 +7,4 @@ nodemon.json
 /node_modules
 /useful
 *.mp3
+/.VSCodeCounter

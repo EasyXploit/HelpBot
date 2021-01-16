@@ -186,9 +186,10 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setDescription(`${resources.GreenTick} ¡Listo!`);
             
             if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
-            
-            let member = await message.guild.members.fetch(message.mentions.users.first() || client.users.fetch(args[1]));
+
+            const member = await resources.fetchMember(message.guild, args[1]);
             if (!member) return message.channel.send(noUserEmbed);
+
             if (member.user.bot) return message.channel.send(noBotsEmbed);
             
             await message.delete().then(client.emit(`guildMemberAdd`, member));

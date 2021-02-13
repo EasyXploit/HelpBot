@@ -17,7 +17,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
         const user = await resources.fetchUser(args[0]);
-        if (!user) return message.channel.send(notToBanEmbed);
+        if (!user) return message.channel.send(notToUnbanEmbed);
 
         let toDeleteCount = command.length - 2 + args[0].length + 2;
 

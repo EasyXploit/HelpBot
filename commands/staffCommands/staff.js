@@ -34,7 +34,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField(`💭 ${config.staffPrefix}send (mensaje)`, `Envía un mensaje desde ${client.user.username}`)
             .addField(`📬 ${config.staffPrefix}dm (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)`, 'Envio de mensajes directos')
             .addField(`📊 ${config.staffPrefix}poll (nada | new | end) [id]`, 'Envia una encuesta al canal actual')
-            .addField(`🏆 ${config.staffPrefix}xp (@miembro | id) (set | add | remove | clear) [cantidad]`, 'Modifica la cantidad de XP de un miembro')
+            .addField(`🏆 ${config.staffPrefix}xp (@miembro | id) (set | add | remove | clear) [cantidad]`, `Modifica la cantidad de XP de un miembro${resources.shield}`)
             .setFooter(`© ${new Date().getFullYear()} República Gamer S.L. | Escudo: Solo para Supervisores`, message.guild.iconURL());
         
         message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 1000})});

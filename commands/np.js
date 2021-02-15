@@ -6,8 +6,10 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let noQueueEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} El bot no tiene ninguna canción en la cola.`);
+
+        console.log(client.servers[message.guild.id].nowplaying);
         
-        if (!client.servers[message.guild.id]) return message.channel.send(noQueueEmbed);
+        if (!client.servers[message.guild.id].nowplaying || Object.entries(client.servers[message.guild.id].nowplaying).length === 0) return message.channel.send(noQueueEmbed);
         
         const ytdl = require(`ytdl-core-discord`);
         const moment = require(`moment`);

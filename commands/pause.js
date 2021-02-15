@@ -10,7 +10,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let notAvailableEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
-        
+
         let alreadyPausedEmbed = new discord.MessageEmbed()
             .setColor(resources.red)
             .setDescription(`${resources.RedTick} El bot ya está pausado.`);
@@ -24,9 +24,12 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         //Comprueba si el miembro está en el mismo canal que el bot
         if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(notAvailableEmbed);
+
+        //Comprueba si no hay reproducción
+        if (!client.servers[message.guild.id].nowplaying || Object.entries(client.servers[message.guild.id].nowplaying).length === 0) return message.channel.send(notPlayingEmbed);
         
         //Comprueba si la reproducción ya está pausada
-        if (client.voiceDispatcher.paused) return message.channel.send(alreadyPausedEmbed);
+        if (!client.voiceDispatcher || client.voiceDispatcher.paused) return message.channel.send(alreadyPausedEmbed);
 
         //Comprueba si es necesaria una votación
         if (await resources.evaluateDjOrVotes(message, 'pause')) {

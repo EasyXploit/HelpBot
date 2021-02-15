@@ -371,7 +371,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     if (details.isLiveContent || details.isPrivate) return message.channel.send(unsupportedTypeEmbed);
 
                     //Crea el objeto de la cola
-                    let info = await infoGenerator(details, details.video_url, details.lengthSeconds, details.thumbnail.thumbnails[0].url);
+                    let info = await infoGenerator(details, details.video_url, details.lengthSeconds, details.thumbnails[0].url);
 
                     //Comprueba si es un duplicado
                     let duplicatedEmbed = new discord.MessageEmbed()

@@ -15,7 +15,7 @@ exports.run = async (guild, user, discord, fs, config, keys, client, resources) 
                 await client.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             } else {
                 let moderador = executor;
-                let razon = reason;
+                let razon = reason || 'Indefinida';
 
                 if (reason.includes('Moderador: ')) {
                     moderador = await client.users.fetch(reason.split(', ')[0].substring(11));

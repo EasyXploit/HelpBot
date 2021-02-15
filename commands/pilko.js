@@ -28,8 +28,7 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
             .addField(`🔫 ${config.prefix}psychopass (@usuario | nada)`, `Hará que el sistema Sibyl diga el coeficiente criminal del sujeto.`)
             .addField(`🔢 ${config.prefix}calcula (número 1) (+ | - | * | / | round | pow | sqrt | abs | ceil | floor | sin | cos) (número 2 si procede)`, `Resolverá la operación matemática expresada`)
             .addField(`🔮 ${config.prefix}paulo`, `Comando que envía frases aleatorias de Paulo Coelho`)
-            .addField(`⏱ ${config.prefix}ping`, `Comprueba el tiempo de respuesta entre el cliente y ${client.user.username}`)
-            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
+            .addField(`⏱ ${config.prefix}ping`, `Comprueba el tiempo de respuesta entre el cliente y ${client.user.username}`);
         message.channel.send(helpEmbed);
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);

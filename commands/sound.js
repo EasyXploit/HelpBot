@@ -20,8 +20,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             let listEmbed = new discord.MessageEmbed()
                 .setColor(0xCCCCCC)
                 .setTitle(`🎙 Lista de grabaciones`)
-                .setDescription(`\`\`\`${newFileNames.join(`    `)}\`\`\``)
-                .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
+                .setDescription(`\`\`\`${newFileNames.join(`    `)}\`\`\``);
             message.channel.send(listEmbed);
         } else {
             

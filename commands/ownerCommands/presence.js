@@ -54,7 +54,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.blue)
             .setTimestamp()
-            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, client.user.avatarURL())
             .setTitle('📑 Auditoría')
             .setDescription(`${message.author.username} cambió ${changed} del bot a \`${content}\``);
 

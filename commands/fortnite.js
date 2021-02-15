@@ -56,8 +56,7 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
                     .addField('Ratio B/M', kd, true)
                     .addField('Bajas por partida', kills_per_match, true)
                     .addField('Puntuación por partida', score_per_match, true)
-                    .addField('Top 5', top_5 + ' veces', true)
-                    .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
+                    .addField('Top 5', top_5 + ' veces', true);
                 message.channel.send(resultEmbed);
             } else if (gamemode === 'duo') {
                 let duostats = stats.duo;
@@ -84,8 +83,7 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
                     .addField('Ratio B/M', kd, true)
                     .addField('Bajas por partida', kills_per_match, true)
                     .addField('Puntuación por partida', score_per_match, true)
-                    .addField('Top 5', top_5 + ' veces', true)
-                    .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
+                    .addField('Top 5', top_5 + ' veces', true);
                 message.channel.send(resultEmbed);
             } else if (gamemode === 'squad') {
                 let squadstats = stats.squad;
@@ -112,8 +110,7 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
                     .addField('Ratio B/M', kd, true)
                     .addField('Bajas por partida', kills_per_match, true)
                     .addField('Puntuación por partida', score_per_match, true)
-                    .addField('Top 3', top3 + ' veces', true)
-                    .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
+                    .addField('Top 3', top3 + ' veces', true);
                 message.channel.send(resultEmbed);
             } else if (gamemode === 'lifetime') {
                 let lifetime = stats.lifetime;
@@ -126,13 +123,11 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
                 let kd = lifetime[11] ['K/d'];
                 let top3 = lifetime[1] ['Top 3s'];
 
-                let footer = '';
+                let footer;
 
                 if (wins >= 1000) {
                     thumbnail = 'https://image.fnbr.co/misc/5ab282b5ca60ff23958a3e77/icon.png';
                     footer = '¡Vaya! Al parecer estás muy enganchado a este juego ...';
-                } else {
-                    footer = `© ${new Date().getFullYear()} República Gamer S.L.`;
                 }
 
                 let resultEmbed = new discord.MessageEmbed()
@@ -141,14 +136,16 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
                     .setTitle('Modo de juego: LIFETIME')
                     .setDescription(`Mostrando las estadísticas de __${data.username}__ en __${platform.toUpperCase()}__`)
                     .setThumbnail(thumbnail)
-                    .setFooter(footer,resources.server.iconURL())
                     .addField('Puntuación', score, true)
                     .addField('Partidas jugadas', matches, true) 
                     .addField('Victorias', wins, true)
                     .addField('Victorias (%)', winsper, true)
                     .addField('Bajas', kills, true)
                     .addField('Ratio B/M', kd, true)
-                    .addField('Top 3', `${top3} veces`, true)
+                    .addField('Top 3', `${top3} veces`, true);
+
+                if (footer) resultEmbed.setFooter(footer,resources.server.iconURL())
+                
                 message.channel.send(resultEmbed);
             } else {
                 message.channel.send(noCorrectSyntaxEmbed);

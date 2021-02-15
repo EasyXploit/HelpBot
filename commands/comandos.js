@@ -9,7 +9,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setThumbnail('http://i.imgur.com/g31RYSS.png')
             .setAuthor('COMANDOS', 'http://i.imgur.com/E3nPnZY.png')
             .setTitle('Comandos de los bots del servidor')
-            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL())
             .addField(`${resources.pilkobot} ${config.prefix}pilko`, 'Muestra los comandos de <@446041159853408257> ')
             .addField(`⚡ ${config.prefix}salas`, 'Muestra la ayuda para crear salas de voz.')
             .addField(`🎵 ${config.prefix}musica`, 'Muestra la ayuda para reproducir música en las salas de voz.')

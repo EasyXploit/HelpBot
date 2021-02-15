@@ -94,7 +94,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             //Función para generar el footer
             function getFooter() {
-                let footer = `© ${new Date().getFullYear()} República Gamer S.L.`;
+                let footer = 'República Gamer';
                 if (client.servers[message.guild.id] && client.servers[message.guild.id].mode) {
                     switch (client.servers[message.guild.id].mode) {
                         case 'shuffle':
@@ -448,8 +448,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                         let resultsEmbed = new discord.MessageEmbed()
                             .setColor(randomColor())
                             .setAuthor(`Elige una canción 🎶`, `https://i.imgur.com/lvShSwa.png`)
-                            .setDescription(formattedResults)
-                            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
+                            .setDescription(formattedResults);
 
                         //Se espera a que el usuario elija una canción de la lista
                         await message.channel.send(resultsEmbed).then(async msg => {

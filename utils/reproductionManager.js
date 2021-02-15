@@ -34,7 +34,7 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
             };
 
             //Genera el footer
-            let footer = `© ${new Date().getFullYear()} República Gamer S.L.`;
+            let footer = 'República Gamer';
             if (server.mode) {
                 switch (server.mode) {
                     case 'shuffle':

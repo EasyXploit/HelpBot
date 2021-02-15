@@ -28,7 +28,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             progressBar[percentage.toString().slice(0, 1)] = `🔘`;
         };
 
-        let footer = `© ${new Date().getFullYear()} República Gamer S.L.`;
+        let footer = 'República Gamer';
         if (server.mode) {
             switch (server.mode) {
                 case 'shuffle':

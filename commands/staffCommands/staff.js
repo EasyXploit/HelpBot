@@ -10,7 +10,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setDescription(`${resources.GreenTick} ¡Te he enviado los detalles por Mensaje Directo!`);
 
         let helpEmbed = new discord.MessageEmbed()
-            .setColor(0x2BBDC4)
+            .setColor(resources.gold)
             .setThumbnail('https://i.imgur.com/iODevD9.png')
             .setAuthor('STAFF', 'https://i.imgur.com/iODevD9.png')
             .setTitle('Comandos para el Staff del servidor')
@@ -35,7 +35,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField(`📬 ${config.staffPrefix}dm (autor | anonimo | broadcast) (@usuario | id / nada) (mensaje a enviar)`, 'Envio de mensajes directos')
             .addField(`📊 ${config.staffPrefix}poll (nada | new | end) [id]`, 'Envia una encuesta al canal actual')
             .addField(`🏆 ${config.staffPrefix}xp (@miembro | id) (set | add | remove | clear) [cantidad]`, `Modifica la cantidad de XP de un miembro${resources.shield}`)
-            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L. | Escudo: Solo para Supervisores`, message.guild.iconURL());
+            .setFooter(`Escudo: Solo para Supervisores`, message.guild.iconURL());
         
         message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 1000})});
         message.author.send(helpEmbed);

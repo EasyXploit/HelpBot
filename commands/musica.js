@@ -22,8 +22,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField(`❌ ${config.prefix}clear ${resources.dj}`, `Elimina toda la cola de reproducción`, true)
             .addField(`🔀 ${config.prefix}shuffle ${resources.dj}`, `Activa el modo aleatorio en la cola`, true)
             .addField(`🔂 ${config.prefix}loop ${resources.dj}`, `Activa el modo bucle en la canción`, true)
-            .addField(`🔁 ${config.prefix}loopqueue ${resources.dj}`, `Activa el modo bucle en la cola\n\n_Si un comando tiene la etiqueta ${resources.dj}, quiere decir que se requerirá una votación en el caso de que no estés solo en la sala. Los DJ pueden omitir esta votación._\n\n• Usa el prefijo \`>\` para controlar a ${resources.rythm} <@235088799074484224>`, true)
-            .setFooter(`© ${new Date().getFullYear()} República Gamer S.L.`, resources.server.iconURL());
+            .addField(`🔁 ${config.prefix}loopqueue ${resources.dj}`, `Activa el modo bucle en la cola\n\n_Si un comando tiene la etiqueta ${resources.dj}, quiere decir que se requerirá una votación en el caso de que no estés solo en la sala. Los DJ pueden omitir esta votación._\n\n• Usa el prefijo \`>\` para controlar a ${resources.rythm} <@235088799074484224>`, true);
     
         
         await message.channel.send(helpEmbed);

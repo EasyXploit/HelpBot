@@ -231,10 +231,10 @@ client.on('message', async message => {
 
                     let dmChannel = message.author.dmChannel;
 
-                    setTimeout(() => {
+                    setTimeout(async () => {
                         dmChannel.startTyping();
 
-                        setTimeout(() => {
+                        setTimeout(async () => {
                             dmChannel.stopTyping();
                             message.author.send(response);
 
@@ -244,7 +244,7 @@ client.on('message', async message => {
                                 .setDescription(response);
 
                             await pilkoChatChannel.send(pilkoChatEmbed);
-                        }, Math.floor(Math.random() * (10000 - 5000 + 1) + 5000));
+                        }, Math.floor(Math.random() * (8000 - 5000 + 1) + 5000));
                     }, Math.floor(Math.random() * (3000 - 2000 + 1) + 2000));
             });
         };

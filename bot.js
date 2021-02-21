@@ -229,14 +229,23 @@ client.on('message', async message => {
             return await cleverbot(message.content, client.dmContexts[message.author.id]).then(async response => {
                 if (client.dmContexts[message.author.id] && !message.content.includes('http')) client.dmContexts[message.author.id].push(message.content);
 
-                await message.author.send(response);
+                    let dmChannel = message.author.dmChannel;
 
-                const pilkoChatEmbed = new discord.MessageEmbed()
-                    .setColor(resources.gold)
-                    .setAuthor(`Mensaje de: ${client.user.username}`, client.user.displayAvatarURL())
-                    .setDescription(response);
+                    setTimeout(() => {
+                        dmChannel.startTyping();
 
-                await pilkoChatChannel.send(pilkoChatEmbed);
+                        setTimeout(() => {
+                            dmChannel.stopTyping();
+                            message.author.send(response);
+
+                            const pilkoChatEmbed = new discord.MessageEmbed()
+                                .setColor(resources.gold)
+                                .setAuthor(`Mensaje de: ${client.user.username}`, client.user.displayAvatarURL())
+                                .setDescription(response);
+
+                            await pilkoChatChannel.send(pilkoChatEmbed);
+                        }, Math.floor(Math.random() * (10000 - 5000 + 1) + 5000));
+                    }, Math.floor(Math.random() * (3000 - 2000 + 1) + 2000));
             });
         };
     };

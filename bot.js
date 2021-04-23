@@ -69,17 +69,24 @@ client.dmContexts = {};
 
 // COMPROBACIÓN DE INICIO DE SESIÓN Y PRESENCIA
 client.on('ready', async () => {
+
     try {
+        client.homeGuild = await client.guilds.fetch('374945492133740544');
         const debuggingChannel = client.channels.cache.get(config.debuggingChannel);
 
         //Presencia
-        await client.user.setPresence({
-            status: config.status,
-            activity: {
-                name: `${client.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`,
-                type: config.type
-            }
-        });
+        setInterval(async () => {
+            console.log(client.homeGuild);
+            let usersCount = client.homeGuild.members.cache.filter(member => !member.user.bot).size;
+
+            await client.user.setPresence({
+                status: config.status,
+                activity: {
+                    name: `${usersCount} usuarios | ${config.game}`,
+                    type: config.type
+                }
+            });
+        }, 10000);
 
         //Recursos globales
         resources.run(discord, client);

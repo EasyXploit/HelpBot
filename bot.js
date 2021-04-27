@@ -75,18 +75,13 @@ client.on('ready', async () => {
         const debuggingChannel = client.channels.cache.get(config.debuggingChannel);
 
         //Presencia
-        setInterval(async () => {
-            console.log(client.homeGuild);
-            let usersCount = client.homeGuild.members.cache.filter(member => !member.user.bot).size;
-
-            await client.user.setPresence({
-                status: config.status,
-                activity: {
-                    name: `${usersCount} usuarios | ${config.game}`,
-                    type: config.type
-                }
-            });
-        }, 10000);
+        await client.user.setPresence({
+            status: config.status,
+            activity: {
+                name: `${client.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`,
+                type: config.type
+            }
+        });
 
         //Recursos globales
         resources.run(discord, client);

@@ -204,4 +204,17 @@ exports.run = (discord, client, fs, resources, moment, config) => {
             }
         });
     }, 60000);
+
+    //Presencia
+    client.setInterval(async () => {
+        let usersCount = client.homeGuild.members.cache.filter(member => !member.user.bot).size;
+
+        await client.user.setPresence({
+            status: config.status,
+            activity: {
+                name: `${usersCount} usuarios | ${config.game}`,
+                type: config.type
+            }
+        });
+    }, 60000);
 };

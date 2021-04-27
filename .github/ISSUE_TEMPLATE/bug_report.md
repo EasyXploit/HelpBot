@@ -23,7 +23,7 @@ Una descripción clara y concisa de lo que esperabas que sucediera.
 **Capturas de pantalla:**
 Si corresponde, agrega capturas de pantalla para ayudar a explicar el problema.
 
-**Escenario (complete la siguiente información):**
+**Escenario:**
   - SO: [p. Ej. Windows, iOS, Android, Windows]
   - Navegador (si procede) [p. Ej. Chrome, Safari]
   - Versión de Discord (si procede) [p. Ej. Stable 83109 (d96f01a)]

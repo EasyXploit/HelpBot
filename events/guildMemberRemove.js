@@ -14,12 +14,20 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
                 
                 await client.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             } else {
+                let moderador = executor;
+                let razon = reason || 'Indefinida';
+
+                if (reason.includes('Moderador: ')) {
+                    moderador = await client.users.fetch(reason.split(', ')[0].substring(11));
+                    razon = reason.split(', Razón: ')[1];
+                }
+
                 const loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.red)
                     .setAuthor(`${event.user.tag} ha sido EXPULSADO`, event.user.displayAvatarURL())
                     .addField(`Miembro`, `<@${event.user.id}>`, true)
-                    .addField(`Moderador`, `${executor.tag || 'Desconocido'}`, true)
-                    .addField(`Razón`, reason || 'Desconocida', true);
+                    .addField(`Moderador`, `${moderador.tag || 'Desconocido'}`, true)
+                    .addField(`Razón`, razon || 'Indefinida', true);
 
                 await client.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             }

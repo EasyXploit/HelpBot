@@ -16,7 +16,15 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
 
             if(prohibitedNames.some(word => event.user.username.toLowerCase().includes(word))) {
 
-                await event.guild.members.kick(event.user, {reason: `Moderador: ${client.user.id}, Razón: No está permitido utilizar enlaces como nombre de usuario.`})
+                let toDMEmbed = new discord.MessageEmbed()
+                    .setColor(resources.red2)
+                    .setAuthor('[EXPULSADO]', event.guild.iconURL())
+                    .setDescription(`<@${event.user.id}>, has sido expulsado de ${event.guild.name}`)
+                    .addField('Moderador', client.user, true)
+                    .addField('Razón', 'No está permitido utilizar enlaces como nombre de usuario.', true)
+
+                await event.user.send(toDMEmbed);
+                await event.kick(event.user, {reason: `Moderador: ${client.user.id}, Razón: No está permitido utilizar enlaces como nombre de usuario.`})
 
                 .catch ((err) => {
                     console.error(`${new Date().toLocaleString()} 》${err}`);
@@ -26,18 +34,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
                         .setTitle(`${resources.RedTick} Ocurrió un error`)
                         .setDescription(`Ocurrió un error durante la ejecución del evento "guildMemberAdd".\nEl usuario ${event.user.username} no fue expulsado automáticamente de la comunidad, por lo que será necesario emprender acciones de forma manual.`);
                     loggingChannel.send(errorEmbed);
-                })
-
-                let preventAccessEmbed = new discord.MessageEmbed()
-                    .setColor(resources.red)
-                    .setTitle(`📑 Auditoría`)
-                    .setDescription(`@${event.user.username} intentó unirse a la República Gamer, pero fue baneado por que no está permitido utilizar enlaces como nombre de usuario`)
-                    .addField(`🏷 TAG completo`, event.user.tag, true)
-                    .addField(`🆔 ID del usuario`, event.user.id, true)
-                    .addField(`📝 Fecha de registro`, event.user.createdAt.toLocaleString(), true)
-                    .setTimestamp();
-                loggingChannel.send(preventAccessEmbed);
-
+                });
             } else  {
                 /* --- CANVAS --- */
 

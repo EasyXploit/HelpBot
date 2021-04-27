@@ -17,19 +17,14 @@ exports.run = async (guild, user, discord, fs, config, keys, client, resources) 
                 let moderador = executor;
                 let razon = reason || 'Indefinida';
 
-                if (reason.includes('Moderador: ')) {
-                    moderador = await client.users.fetch(reason.split(', ')[0].substring(11));
-                    razon = reason.split(', Razón: ')[1];
-                }
-
                 const loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.red)
                     .setAuthor(`${user.tag} ha sido BANEADO`, user.displayAvatarURL())
                     .addField(`Miembro`, user.tag, true)
                     .addField(`ID`, user.id, true)
                     .addField(`Moderador`, `${moderador.tag || 'Desconocido'}`, true)
-                    .addField(`Razón`, razon || 'Desconocida', true)
-                    .addField(`Duración`, time || 'Desconocida', true);
+                    .addField(`Razón`, razon || 'Indefinida', true)
+                    .addField(`Duración`, time || 'Indefinida', true);
 
                 await client.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             }
@@ -50,12 +45,11 @@ exports.run = async (guild, user, discord, fs, config, keys, client, resources) 
         let time = '∞'
     
         if (target.id === user.id) {
-            if (!reason) reason = `Indefinida`
+            if (!reason) reason = 'Indefinida';
 
-            if (reason.includes('Duración')) {
-                time = reason.split('Duración: ').pop().split(',')[0];
-                reason = reason.split('Razón: ').pop();
-            }
+            if (reason.includes('Duración: ')) time = reason.split('Duración: ').pop().split(',')[0];
+            if (reason.includes('Moderador: ')) executor = await client.users.fetch(reason.split(', ')[0].substring(11));
+            if (reason.includes('Razón: ')) reason = reason.split('Razón: ').pop();
 
             sendLogEmbed(executor, reason, time);
         } else {

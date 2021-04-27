@@ -28,7 +28,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         //Esto comprueba si se debe proporcionar razón
         let reason = message.content.slice(toDeleteCount)
         if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send(noReasonEmbed);
-        if (!reason) reason = `Indefinida`;
+        if (!reason) reason = 'Indefinida';
 
         let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green2)
@@ -38,13 +38,13 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let toDMEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
             .setAuthor(`[EXPULSADO]`, message.guild.iconURL())
-            .setDescription(`<@${member.id}>, has sido expulsado en ${message.guild.name}`)
+            .setDescription(`<@${member.id}>, has sido expulsado de ${message.guild.name}`)
             .addField(`Moderador`, message.author.tag, true)
             .addField(`Razón`, reason, true)
 
         await message.delete();
         await member.send(toDMEmbed);
-        await member.kick(reason);
+        await member.kick(`Moderador: ${message.author.id}, Razón: ${reason}`);
         await message.channel.send(successEmbed);
     } catch (e) {
         require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);

@@ -96,7 +96,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         //Esto comprueba si se debe proporcionar razón
         let reason = message.content.slice(toDeleteCount)
         if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send(noReasonEmbed);
-        if (!reason) reason = `Indefinida`;
+        if (!reason) reason = 'Indefinida';
 
         let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green2)
@@ -121,7 +121,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             await message.delete();
 
             if (member) await user.send(toDMEmbed);
-            await message.guild.members.ban(user, {reason: `Duración: ${args[1]}, Razón: ${reason}`});
+            await message.guild.members.ban(user, {reason: `Moderador: ${message.author.id}, Duración: ${args[1]}, Razón: ${reason}`});
             await message.channel.send(successEmbed);
         });
     } catch (e) {

@@ -1,6 +1,6 @@
 ---
-name: Bug report
-about: Create a report to help us improve the bot
+name: Reporte de bug
+about: Crea un informe de error para ayudarnos a mejorar el bot.
 title: "[BUG]"
 labels: bug
 assignees: dperales555
@@ -25,8 +25,8 @@ Si corresponde, agrega capturas de pantalla para ayudar a explicar el problema.
 
 **Escenario:**
   - SO: [p. Ej. Windows, iOS, Android, Windows]
-  - Navegador (si procede) [p. Ej. Chrome, Safari]
-  - Versión de Discord (si procede) [p. Ej. Stable 83109 (d96f01a)]
+  - Navegador: [p. Ej. Chrome, Safari]
+  - Versión de Discord: [p. Ej. Stable 83109 (d96f01a)]
 
 **Contexto adicional:**
 Agrega aquí cualquier otro contexto sobre el problema.

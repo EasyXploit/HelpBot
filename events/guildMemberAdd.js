@@ -16,7 +16,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
 
             if(prohibitedNames.some(word => event.user.username.toLowerCase().includes(word))) {
 
-                await event.guild.members.ban(event.user, {reason: `Moderador: ${client.user.id}, Razón: No está permitido utilizar enlaces como nombre de usuario.`})
+                await event.guild.members.kick(event.user, {reason: `Moderador: ${client.user.id}, Razón: No está permitido utilizar enlaces como nombre de usuario.`})
 
                 .catch ((err) => {
                     console.error(`${new Date().toLocaleString()} 》${err}`);

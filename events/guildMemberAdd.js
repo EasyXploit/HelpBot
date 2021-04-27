@@ -10,14 +10,13 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
         if (!event.user.bot) {
 
             const images = ['https://i.imgur.com/lDuMuSb.png', 'https://i.imgur.com/MJvm6NC.png', 'https://i.imgur.com/nPsX8TS.png', 'https://i.imgur.com/0dNTAZn.png', 'https://i.imgur.com/jiPcHl5.png', 'https://i.imgur.com/MQzdNf3.png', 'https://i.imgur.com/Z8MUU6q.png', 'https://i.imgur.com/XhHJfq0.png', 'https://i.imgur.com/O8TfwdN.png', 'https://i.imgur.com/sWbMJK2.png', 'https://i.imgur.com/ex700S4.png', 'https://i.imgur.com/GsLLEng.png'];
-
             const welcomes = [`Hola <@${event.user.id}> 🎇, bienvenid@ a la **República Gamer**. Recuerda leer la <#498455357853794304>\nPor lo demás, ¡Pásalo bien :wink:!`, `Hola <@${event.user.id}> ⚡, bienvenido a la comunidad. Esperamos que lo pases bien, pero antes de nada, recuerda echar un vistazo a la <#498455357853794304> 🔥`, `Hola <@${event.user.id}> 🎊, ¡gracias por entrar a formar parte de nuestra comunidad!. Antes de continuar, recuerda leer la <#498455357853794304>. ¡Cada vez somos más! 🏆`, `Hola <@${event.user.id}> 🏅, bienvenid@ a la **República Gamer**. Recuerda leer la <#498455357853794304>, ¡y no te olvides de invitar a tus amigos!\nPor lo demás, ¡Pásalo bien 🎮!`]
 
             const prohibitedNames = [`http://`, `https://`, `discord.gg`, `www.`, `.tv`, `twitch.tv`, `.net`, `.com`, `twitter.com`, `paypal.me`, `.me`, `donate.`, `.gg`, `binzy`];
 
             if(prohibitedNames.some(word => event.user.username.toLowerCase().includes(word))) {
 
-                event.guild.member(event.user).ban(`No está permitido utilizar enlaces como nombre de usuario`)
+                await event.guild.members.ban(event.user, {reason: `Moderador: ${client.user.id}, Razón: No está permitido utilizar enlaces como nombre de usuario.`})
 
                 .catch ((err) => {
                     console.error(`${new Date().toLocaleString()} 》${err}`);
@@ -25,7 +24,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
                     let errorEmbed = new discord.MessageEmbed()
                         .setColor(resources.red)
                         .setTitle(`${resources.RedTick} Ocurrió un error`)
-                        .setDescription(`Ocurrió un error durante la ejecución del evento ${event}\nEl usuario ${event.user.username} no fue expulsado automáticamente de la comunidad, por lo que será necesario emprender acciones de forma manual.`);
+                        .setDescription(`Ocurrió un error durante la ejecución del evento "guildMemberAdd".\nEl usuario ${event.user.username} no fue expulsado automáticamente de la comunidad, por lo que será necesario emprender acciones de forma manual.`);
                     loggingChannel.send(errorEmbed);
                 })
 

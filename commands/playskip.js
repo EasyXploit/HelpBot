@@ -322,7 +322,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                             if (results[i].type === 'playlist' || (results[i].type === 'video' && results[i].duration && results[i].title !== '[Private video]' && resources.hmsToSeconds(results[i].duration) < 10800)) {
                                 asociatedPositions[pointer] = i; //Crea la asociación puntero-posición
                                 let title = results[i].title; //Almacena el título
-                                title.replace('*', '').replace('_', '').replace('|', '').replace('(', '').replace(')', '').replace('[', '').replace(']', ''); //Elimina signos que alteren la forma en la que se muestra la entrada
+                                title = title.replace('*', '').replace('_', '').replace('|', '').replace('(', '').replace(')', '').replace('[', '').replace(']', ''); //Elimina signos que alteren la forma en la que se muestra la entrada
                                 if (title.length > 40) title = `${title.slice(0, 40)} ...`; //Acorta el título si es demasiado largo
                                 if (results[i].type === 'playlist') { //Si se trata de una playlist, almacena el string "playlist" en vez de la duración de la pista
                                     formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${results[i].url}) | \`${results[i].type}\``;

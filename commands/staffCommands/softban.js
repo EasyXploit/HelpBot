@@ -67,7 +67,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         await message.delete();
         if (member) await user.send(toDMEmbed);
-        await message.guild.members.ban(user, {days: days, reason: `Moderador: ${message.author.id}, Razón: ${reason}`});
+        await message.guild.members.ban(user, {days: days, reason: `Moderador: ${message.author.id}, Días de mensajes borrados: ${days}, Razón: ${reason}`});
         await message.channel.send(successEmbed);
 
     } catch (e) {

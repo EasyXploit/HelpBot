@@ -4,7 +4,7 @@ exports.run = async (guild, user, discord, fs, config, keys, client, resources) 
         //Previene que continue la ejecución si el servidor no es la República Gamer
         if (guild.id !== `374945492133740544`) return;
 
-        async function sendLogEmbed(executor, reason, time) {
+        async function sendLogEmbed(executor, reason, time, days) {
             if (user.bot) {
                 if (user.id === client.user.id) return;
 
@@ -24,7 +24,8 @@ exports.run = async (guild, user, discord, fs, config, keys, client, resources) 
                     .addField(`ID`, user.id, true)
                     .addField(`Moderador`, `${moderador.tag || 'Desconocido'}`, true)
                     .addField(`Razón`, razon || 'Indefinida', true)
-                    .addField(`Duración`, time || 'Indefinida', true);
+                    .addField(`Duración`, time || 'Indefinida', true)
+                    .addField(`Días de mensajes borrados`, days || 'Ninguno', true);
 
                 await client.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             }
@@ -43,15 +44,17 @@ exports.run = async (guild, user, discord, fs, config, keys, client, resources) 
     
         let { executor, target, reason } = banLog;
         let time = '∞'
+        let days;
     
         if (target.id === user.id) {
             if (!reason) reason = 'Indefinida';
 
             if (reason.includes('Duración: ')) time = reason.split('Duración: ').pop().split(',')[0];
+            if (reason.includes('Días de mensajes borrados: ')) days = reason.split('Días de mensajes borrados: ').pop().split(',')[0];
             if (reason.includes('Moderador: ')) executor = await client.users.fetch(reason.split(', ')[0].substring(11));
             if (reason.includes('Razón: ')) reason = reason.split('Razón: ').pop();
 
-            sendLogEmbed(executor, reason, time);
+            sendLogEmbed(executor, reason, time, days);
         } else {
             sendLogEmbed();
         }

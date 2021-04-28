@@ -325,9 +325,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                                 title.replace('*', '').replace('_', '').replace('|', '').replace('(', '').replace(')', '').replace('[', '').replace(']', ''); //Elimina signos que alteren la forma en la que se muestra la entrada
                                 if (title.length > 40) title = `${title.slice(0, 40)} ...`; //Acorta el título si es demasiado largo
                                 if (results[i].type === 'playlist') { //Si se trata de una playlist, almacena el string "playlist" en vez de la duración de la pista
-                                    formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${results[i].link}) | \`${results[i].type}\``;
+                                    formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${results[i].url}) | \`${results[i].type}\``;
                                 } else { //Si se trata de un vídeo, almacena la duración de la pista en vez de el string "playlist"
-                                    formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${results[i].link}) | \`${results[i].duration}\``;
+                                    formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${results[i].url}) | \`${results[i].duration}\``;
                                 };
                                 pointer ++; //Incremento de puntero
                             };

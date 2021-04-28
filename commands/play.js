@@ -249,7 +249,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 const ytpl = require('ytpl');
                 const playlist = await ytpl(string);
 
-                //Elimina de la lista todos aquellos resultados que sean privados, directos oo tengan una duración mayor a 3h
+                //Elimina de la lista todos aquellos resultados que sean privados, directos o tengan una duración mayor a 3h
                 for (let i = 0; i < playlist.items.length; i++) {
                     if (playlist.items[i].title === '[Private video]' || !playlist.items[i].duration || resources.hmsToSeconds(playlist.items[i].duration) > 10800) delete playlist.items[i];
                 };

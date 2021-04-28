@@ -29,7 +29,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         await msg.react('🏆');
 
         const filter = (reaction, user) => {
-            return ['📓', 'pilkobot', '🤖', '🎖', 'ℹ', '🥇', '🏆'].includes(reaction.emoji.name) && user.id === userID;
+            return ['📓', 'pilkoBot', '🤖', '🎖', 'ℹ', '🥇', '🏆'].includes(reaction.emoji.name) && user.id === userID;
         };
 
         msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
@@ -40,7 +40,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     await msg.delete()
                     require(`../commands/normas.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
                     
-                } else if (reaction.emoji.name === 'pilkobot') {
+                } else if (reaction.emoji.name === 'pilkoBot') {
                     await msg.delete()
                     require(`../commands/pilko.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
                     

@@ -36,6 +36,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             //Vacia la conexión
             client.voiceConnection = false;
+
+            //Anula el timeout de desconexión
+            clearTimeout(client.voiceTimeout);
             
             //Manda un mensaje de confirmación
             await message.channel.send(`⏏ | He abandonado el canal`);

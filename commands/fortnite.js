@@ -21,7 +21,7 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
 
         let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
-            .setDescription(resources.RedTick + ' La sintaxis de este comando es `' + config.prefix + 'fortnite "usuario" "solo/duo/squad/lifetime" "pc/xbl/psn"`');
+            .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.prefix}fortnite "usuario" "solo/duo/squad/lifetime" "pc/xbl/psn"\``);
 
         if (!username || !gamemode || !platform) return message.channel.send(noCorrectSyntaxEmbed);
         if (gamemode !== 'solo' && gamemode !== 'duo' && gamemode !== 'squad' && gamemode !== 'lifetime') return message.channel.send(noCorrectSyntaxEmbed);

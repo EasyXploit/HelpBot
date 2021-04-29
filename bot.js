@@ -41,6 +41,7 @@ const commandsConfig = require('./configs/commands.json');
 
 //CONFIGURACIONES GLOBALES
 client.musicConfig = require('./configs/music.json');
+client.homeGuild = config.homeGuild;
 
 //RECURSOS GLOBALES
 let resources = require('./utils/resources.js');
@@ -71,7 +72,7 @@ client.dmContexts = {};
 client.on('ready', async () => {
 
     try {
-        client.homeGuild = await client.guilds.fetch('374945492133740544');
+        client.homeGuild = await client.guilds.fetch(client.homeGuild);
         const debuggingChannel = client.channels.cache.get(config.debuggingChannel);
 
         //Presencia
@@ -176,7 +177,7 @@ fs.readdir('./events/', async (err, files) => {
 client.on('message', async message => {
 
     //Previene que continue la ejecución si el servidor no es la República Gamer
-    if (message.guild && message.guild.id !== `374945492133740544`) return;
+    if (message.guild && message.guild.id !== client.homeGuild) return;
     
     const debuggingChannel = client.channels.cache.get(config.debuggingChannel);
     const loggingChannel = client.channels.cache.get(config.loggingChannel);

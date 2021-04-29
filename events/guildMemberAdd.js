@@ -2,7 +2,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
     
     try {
         //Previene que continue la ejecución si el servidor no es la República Gamer
-        if (event.guild.id !== `374945492133740544`) return;
+        if (event.guild.id !== client.homeGuild) return;
 
         const loggingChannel = client.channels.cache.get(config.loggingChannel);
         const welcomeChannel = client.channels.cache.get(config.welcomeChannel);

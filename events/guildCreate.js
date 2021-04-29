@@ -3,7 +3,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
     try {
         
         //Comprobación de servidor provisional
-        if (event.id === `374945492133740544` || event.id === `430436498937217036`) {
+        if (event.id === client.homeGuild || event.id === `430436498937217036`) {
             let large = `No`;
             let verified = `No`;
 

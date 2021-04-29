@@ -4,11 +4,32 @@ exports.run = async (oldState, newState, discord, fs, config, keys, client, reso
         //Previene que continue la ejecución si el servidor no es la República Gamer
         if (newState.guild.id !== client.homeGuild.id) return;
 
-        if (newState.channelID != null) { //Si hay una nueva conexión o una antigua cambia
+        async function endVoiceTime() {
+            //Si el timestamp actual es superior a los MS de intervalo de ganancia de XP configurado, le asigna XP
+            if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].last_xpReward + config.XPVoiceMinutes)) {
+
+                //Almacena el miembro, y si está muteado o ensordecido, no hace nada
+                const member = await resources.fetchMember(newState.guild, newState.id);
+                if (!member || member.voice.mute || member.voice.deaf) return;
+
+                //Llama al manejador de leveling
+                await resources.addXP(fs, config, member, newState.guild, 'voice');
+            };
+            
+            //Borra el registro del miembro que ha dejado el canal de voz
+            delete client.usersVoiceStates[newState.id];
+        };
+
+        if (newState.channelID !== null) { //Si hay una nueva conexión o una antigua cambia
 
             //Almacena el miembro
             const member = await resources.fetchMember(newState.guild, newState.id);
             if (!member) return;
+
+            //Acaba el conteo de minutos si el miembro se queda solo o con únicamente bots en la sala
+            if (newState.channel.members.filter(m => !m.user.bot).size === 1 && client.usersVoiceStates[newState.id]) {
+                return endVoiceTime();
+            };
 
             //Calcula si el miembro tiene un rol que no puede ganar XP
             let nonXPRole;
@@ -39,20 +60,7 @@ exports.run = async (oldState, newState, discord, fs, config, keys, client, reso
                 };
             };
         } else if (newState.channelID == null) { //Si la conexión desaparece
-
-            //Si el timestamp actual es superior a los MS de intervalo de ganancia de XP configurado, le asigna XP
-            if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].last_xpReward + config.XPVoiceMinutes)) {
-
-                //Almacena el miembro, y si está muteado o ensordecido, no hace nada
-                const member = await resources.fetchMember(newState.guild, newState.id);
-                if (!member || member.voice.mute || member.voice.deaf) return;
-
-                //Llama al manejador de leveling
-                await resources.addXP(fs, config, member, newState.guild, 'voice');
-            };
-            
-            //Borra el registro del miembro que ha dejado el canal de voz
-            delete client.usersVoiceStates[newState.id];
+            endVoiceTime();
         };
 
     } catch (e) {

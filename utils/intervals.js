@@ -187,7 +187,7 @@ exports.run = (discord, client, fs, resources, moment, config) => {
 
             //Almacena el miembro y comprueba si está silenciado o ensordecido
             const member = await resources.fetchMember(guild, idKey);
-            if (!member || member.voice.mute || member.voice.deaf) return;
+            if (!member || member.voice.mute || member.voice.deaf || member.voice.channel.members.filter(m => !m.user.bot).size === 1) return;
 
             //Llama al manejador de leveling
             await resources.addXP(fs, config, member, guild, 'voice');

@@ -1,7 +1,7 @@
 exports.run = (discord, client) => {
     
     //SERVIDOR PRINCIPAL
-    const server = client.guilds.cache.get(client.homeGuild);
+    const server = client.guilds.cache.get(require('../configs/config.json').homeGuild);
     module.exports.server = server;
 
     //FUNCIONES

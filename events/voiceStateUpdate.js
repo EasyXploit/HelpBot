@@ -2,7 +2,7 @@ exports.run = async (oldState, newState, discord, fs, config, keys, client, reso
     
     try {
         //Previene que continue la ejecución si el servidor no es la República Gamer
-        if (newState.guild.id !== client.homeGuild) return;
+        if (newState.guild.id !== client.homeGuild.id) return;
 
         if (newState.channelID != null) { //Si hay una nueva conexión o una antigua cambia
 

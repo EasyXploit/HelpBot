@@ -72,7 +72,7 @@ client.dmContexts = {};
 client.on('ready', async () => {
 
     try {
-        client.homeGuild = await client.guilds.fetch(client.homeGuild);
+        client.homeGuild = client.guilds.cache.get(client.homeGuild);
         const debuggingChannel = client.channels.cache.get(config.debuggingChannel);
 
         //Presencia
@@ -177,7 +177,7 @@ fs.readdir('./events/', async (err, files) => {
 client.on('message', async message => {
 
     //Previene que continue la ejecución si el servidor no es la República Gamer
-    if (message.guild && message.guild.id !== client.homeGuild) return;
+    if (message.guild && message.guild.id !== client.homeGuild.id) return;
     
     const debuggingChannel = client.channels.cache.get(config.debuggingChannel);
     const loggingChannel = client.channels.cache.get(config.loggingChannel);

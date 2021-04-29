@@ -2,7 +2,7 @@ exports.run = async (guild, user, discord, fs, config, keys, client, resources) 
 
     try {
         //Previene que continue la ejecución si el servidor no es la República Gamer
-        if (guild.id !== client.homeGuild) return;
+        if (guild.id !== client.homeGuild.id) return;
 
         async function sendLogEmbed(executor, reason, time, days) {
             if (user.bot) {

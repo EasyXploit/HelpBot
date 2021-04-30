@@ -1,5 +1,5 @@
 # PilkoBot
-PilkoBot es un bot multifuncional para Discord desarrollado por el Staff de [República gamer](https://discord.com/channels/374945492133740544/498455357853794304/761979105079722074), cuyo uso a fecha de publicación de este documento es exclusivo de los usuarios de dicha comunidad.
+PilkoBot es un bot multifuncional para Discord desarrollado por el Staff de [República gamer](https://discord.gg/vkSBZC7), cuyo uso a fecha de publicación de este documento es exclusivo de los usuarios de dicha comunidad.
 
 
 ## Programado con

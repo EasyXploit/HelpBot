@@ -134,21 +134,22 @@ exports.run = async (discord, fs, config, client, resources, loggingChannel, mes
             moderator: moderator.id
         };
 
-        let loggingEmbed = new discord.MessageEmbed()
-            .setColor(resources.orange)
-            .setAuthor(`${member.user.tag} ha sido ADVERTIDO`, member.user.displayAvatarURL())
-            .addField(`Miembro`, member.user.tag, true)
-            .addField(`Moderador`, moderator.tag, true)
-            .addField(`Razón`, reason, true)
-            .addField(`Canal`, `<#${message.channel.id}>`, true)
-            .addField('Infracciones', Object.keys(client.warns[member.id]).length, true);
-        
-        if (msg) loggingEmbed.addField(`Mensaje`, msg, true);
-
         fs.writeFile(`./storage/warns.json`, JSON.stringify(client.warns, null, 4), async err => {
             if (err) throw err;
 
+            let loggingEmbed = new discord.MessageEmbed()
+                .setColor(resources.orange)
+                .setAuthor(`${member.user.tag} ha sido ADVERTIDO`, member.user.displayAvatarURL())
+                .addField(`Miembro`, member.user.tag, true)
+                .addField(`Moderador`, moderator.tag, true)
+                .addField(`Razón`, reason, true)
+                .addField(`Canal`, `<#${message.channel.id}>`, true)
+                .addField('Infracciones', Object.keys(client.warns[member.id]).length, true);
+
             await loggingChannel.send(loggingEmbed);
+
+            //Si procede, adjunta el mensaje filtrado
+            if (msg) loggingChannel.send(new discord.MessageAttachment(Buffer.from(`CONTENIDO DEL MENSAJE: \n${msg}`, 'utf-8'), `mensaje-filtrado-${Date.now()}.txt`))
         });
 
         const rules = require('./automod/automodRules.json');

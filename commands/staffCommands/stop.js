@@ -12,10 +12,10 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.orange)
-            .setDescription(`**${message.author.tag}** detuvo a **${client.user.username}**. \nEl bot tendrá que ser arrancado manualmente`);
             .setTitle('📑 Auditoría - [ESTADO DEL BOT]')
+            .setDescription(`**${message.author.tag}** detuvo a **${client.user.username}**. \nEl bot tendrá que ser arrancado manualmente.`);
 
-        console.log(`${new Date().toLocaleString()} 》Deteniendo ${client.user.username} a petición de ${message.author.username}`);
+        console.log(`${new Date().toLocaleString()} 》Deteniendo ${client.user.username} a petición de ${message.author.tag}.`);
         
         await message.channel.send(successEmbed);
         await loggingChannel.send(loggingEmbed);

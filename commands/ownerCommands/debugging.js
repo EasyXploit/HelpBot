@@ -35,8 +35,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.blue)
-            .setDescription(`${message.author.username} cambió el canal de depuración a <#${channel}>`);
             .setTitle('📑 Auditoría - [CANAL DE DEPURACIÓN]')
+            .setDescription(`${message.author.tag} cambió el canal de depuración a <#${channel}>`);
         
         await message.channel.send(completedEmbed);
         await loggingChannel.send(loggingEmbed);

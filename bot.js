@@ -341,7 +341,7 @@ client.on('message', async message => {
 
             const noPrivilegesEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
-                .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para realizar esta operación`);
+                .setDescription(`${resources.RedTick} ${message.author.tag}, no dispones de privilegios suficientes para realizar esta operación`);
 
             if (!message.member.roles.cache.has(staffRole.id) && message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed)
 
@@ -351,7 +351,7 @@ client.on('message', async message => {
             if (!commandFile) return;
             const noPrivilegesEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
-                .setDescription(`${resources.RedTick} ${message.author.username}, no dispones de privilegios suficientes para ejecutar este comando`);
+                .setDescription(`${resources.RedTick} ${message.author.tag}, no dispones de privilegios suficientes para ejecutar este comando`);
 
             if (message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed);
             commandFile.run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);

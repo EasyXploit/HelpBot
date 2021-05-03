@@ -14,7 +14,7 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
 
         let resultEmbed = new discord.MessageEmbed()
             .setColor(0x2E4052)
-            .setAuthor(`${message.author.username} dijo:`, message.author.avatarURL())
+            .setAuthor(`${message.author.tag} dijo:`, message.author.avatarURL())
             .setDescription(text);
         
         message.channel.send(resultEmbed);

@@ -177,10 +177,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
             
-            let noBotsEmbed = new discord.MessageEmbed()
-                .setColor(resources.red)
-                .setDescription(`${resources.RedTick} No puedes entablar una conversación con un bot`);
-            
             let successEmbed = new discord.MessageEmbed()
                 .setColor(resources.green2)
                 .setDescription(`${resources.GreenTick} ¡Listo!`);
@@ -189,8 +185,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             const member = await resources.fetchMember(message.guild, args[1]);
             if (!member) return message.channel.send(noUserEmbed);
-
-            if (member.user.bot) return message.channel.send(noBotsEmbed);
             
             await message.delete().then(client.emit(`guildMemberAdd`, member));
             await message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 1000})});
@@ -198,10 +192,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             let noUserEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
                 .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
-            
-            let noBotsEmbed = new discord.MessageEmbed()
-                .setColor(resources.red)
-                .setDescription(`${resources.RedTick} No puedes entablar una conversación con un bot`);
             
             let successEmbed = new discord.MessageEmbed()
                 .setColor(resources.green2)
@@ -211,7 +201,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             
             let member = await message.guild.members.fetch(message.mentions.users.first() || client.users.fetch(args[1]));
             if (!member) return message.channel.send(noUserEmbed);
-            if (member.user.bot) return message.channel.send(noBotsEmbed);
             
             await message.delete().then(client.emit(`guildMemberRemove`, member));
             await message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 1000})});

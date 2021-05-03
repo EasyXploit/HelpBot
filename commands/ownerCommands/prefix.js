@@ -11,14 +11,14 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
 
         //Se extrae el prefijo de los argumentos
-        const newPrefix = message.content.split(" ").slice(1, 2)[0];
+        const newPrefix = args[0];
         
         let tooLongEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Debes proporcionar un prefijo cuya longitud sea de 1 carácter`);
+            .setDescription(`${resources.RedTick} Debes proporcionar un prefijo cuya longitud sea menor o igual a 3 carácteres`);
         
-        //Se comprueba si el prefijo tiene una longitud de 1 carácter
-        if (newPrefix.length !== 1) return message.channel.send(tooLongEmbed);
+        //Se comprueba si el prefijo tiene una longitud adecuada
+        if (newPrefix.length > 3 || newPrefix.length < 1) return message.channel.send(tooLongEmbed);
         
         //Comprueba si se ha proporcionado correctamente el tipo de prefijo a sustituir
         if (args[1] !== 'todos' && args[1] !== 'staff' && args[1] !== 'owner') return message.channel.send(noCorrectSyntaxEmbed);

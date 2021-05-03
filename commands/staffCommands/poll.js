@@ -14,6 +14,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             let title;
             let duration = 0;
+            let providedDuration;
             let fields = [];
 
             let titleEmbed = new discord.MessageEmbed()
@@ -91,6 +92,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                                         milliseconds = dtoms(parameters[i].time);
                                         break;
                                 };
+                                providedDuration = result;
                                 duration = duration + milliseconds;
                             };
                         }
@@ -157,6 +159,15 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                                     if (err) throw err;
                                 });
                             };
+
+                            let loggingEmbed = new discord.MessageEmbed()
+                                .setColor(resources.blue)
+                                .setAuthor(`${message.member.user.tag} ha iniciado una ENCUESTA`, message.member.user.displayAvatarURL())
+                                .addField(`Título`, `__[${title}](${poll.url})__`, true)
+                                .addField(`Canal`, `<#${message.channel.id}>`, true)
+                                .addField(`Duración`, providedDuration, true);
+                            
+                            await loggingChannel.send(loggingEmbed);
                         });
                     });
                 });

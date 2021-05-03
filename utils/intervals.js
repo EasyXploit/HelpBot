@@ -94,6 +94,7 @@ exports.run = (discord, client, fs, resources, moment, config) => {
 
             let debuggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.orange)
+                .setFooter(client.user.username, client.user.avatarURL())
                 .setDescription(`${resources.OrangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);
             debuggingChannel.send(debuggingEmbed);
         }
@@ -149,7 +150,16 @@ exports.run = (discord, client, fs, resources, moment, config) => {
                     .addField('Resultados', results.join(' '));
 
                 await poll.reactions.removeAll();
-                await poll.edit(resultEmbed);
+                await poll.edit(resultEmbed).then(async poll => {
+
+                    let loggingEmbed = new discord.MessageEmbed()
+                        .setColor(resources.blue)
+                        .setTitle('📑 Auditoría - [ENCUESTAS]')
+                        .setDescription(`La encuesta "__[${client.polls[idKey].title}](${poll.url})__" ha finalizado en el canal <#${client.polls[idKey].channel}>.`);
+
+                    await loggingChannel.send(loggingEmbed)
+
+                });
 
                 delete client.polls[idKey];
                 fs.writeFile(`./storage/polls.json`, JSON.stringify(client.polls), async err => {

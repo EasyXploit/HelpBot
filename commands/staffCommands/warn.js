@@ -21,7 +21,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         if (member.user.bot) return message.channel.send(noBotsEmbed);
 
         //Esto comprueba si se ha aportado alguna razón
-        let reason = args.slice(1).join(" ");
+        let reason = args.slice(1).join(' ');
         if (!reason) return message.channel.send(undefinedReasonEmbed);
           
         let moderator = await resources.fetchMember(message.guild, message.author.id);

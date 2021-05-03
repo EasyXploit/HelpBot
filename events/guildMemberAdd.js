@@ -8,10 +8,6 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
         const welcomeChannel = client.channels.cache.get(config.welcomeChannel);
 
         if (!event.user.bot) {
-
-            const images = ['https://i.imgur.com/lDuMuSb.png', 'https://i.imgur.com/MJvm6NC.png', 'https://i.imgur.com/nPsX8TS.png', 'https://i.imgur.com/0dNTAZn.png', 'https://i.imgur.com/jiPcHl5.png', 'https://i.imgur.com/MQzdNf3.png', 'https://i.imgur.com/Z8MUU6q.png', 'https://i.imgur.com/XhHJfq0.png', 'https://i.imgur.com/O8TfwdN.png', 'https://i.imgur.com/sWbMJK2.png', 'https://i.imgur.com/ex700S4.png', 'https://i.imgur.com/GsLLEng.png'];
-            const welcomes = [`Hola <@${event.user.id}> 🎇, bienvenid@ a la **República Gamer**. Recuerda leer la <#498455357853794304>\nPor lo demás, ¡Pásalo bien :wink:!`, `Hola <@${event.user.id}> ⚡, bienvenido a la comunidad. Esperamos que lo pases bien, pero antes de nada, recuerda echar un vistazo a la <#498455357853794304> 🔥`, `Hola <@${event.user.id}> 🎊, ¡gracias por entrar a formar parte de nuestra comunidad!. Antes de continuar, recuerda leer la <#498455357853794304>. ¡Cada vez somos más! 🏆`, `Hola <@${event.user.id}> 🏅, bienvenid@ a la **República Gamer**. Recuerda leer la <#498455357853794304>, ¡y no te olvides de invitar a tus amigos!\nPor lo demás, ¡Pásalo bien 🎮!`]
-
             const prohibitedNames = [`http://`, `https://`, `discord.gg`, `www.`, `.tv`, `twitch.tv`, `.net`, `.com`, `twitter.com`, `paypal.me`, `.me`, `donate.`, `.gg`, `binzy`];
 
             if(prohibitedNames.some(word => event.user.username.toLowerCase().includes(word))) {
@@ -97,12 +93,6 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
                 await welcomeChannel.send(attachment);
 
                 /* --- --- */
-                
-                /*let channelWelcomeEmbed = new discord.MessageEmbed()
-                    .setColor(resources.gold)
-                    .setAuthor(`Bienvenido a la República Gamer @${event.user.username}`, event.user.displayAvatarURL())
-                    .setDescription(welcomes[Math.floor(Math.random() * welcomes.length)])
-                    .setThumbnail(images[Math.floor(Math.random() * images.length)]);*/
 
                 let loggingWelcomeEmbed = new discord.MessageEmbed()
                     .setColor(resources.green)

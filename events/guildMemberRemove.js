@@ -67,7 +67,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
                 .setAuthor(`Un miembro abandonó`, `https://i.imgur.com/2nZ23V4.png`)
                 .setDescription(`${event.user.username} abandonó el servidor`)
                 .addField(`🏷 TAG completo`, event.user.tag, true)
-                .addField(`🆔 ID del usuario`, event.user.id, true);
+                .addField(`🆔 ID del miembro`, event.user.id, true);
             
             return await client.channels.cache.get(config.loggingChannel).send(loggingEmbed);
         }

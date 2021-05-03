@@ -24,7 +24,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let pages = Math.ceil(serverQueue.length / 5);
         if (pages == 0) pages = 1;
 
-        //Almacena la página que introduce el usuario (si lo hace)
+        //Almacena la página que introduce el miembro (si lo hace)
         if (args[0] && !isNaN(args[0]) && args[0] > 0 && args[0] <= pages) position = args[0];
 
         //Función para generar el mensaje de cola

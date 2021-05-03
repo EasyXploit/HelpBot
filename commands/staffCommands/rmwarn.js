@@ -21,9 +21,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         
         let noWarnsEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Este usuario no tiene advertencias`);
+            .setDescription(`${resources.RedTick} Este miembro no tiene advertencias`);
 
-        //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
+        //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
         const member = await resources.fetchMember(message.guild, args[0]);
         if (!member) return message.channel.send(notToUnwarnEmbed);
         if (member.user.bot) return message.channel.send(noBotsEmbed);
@@ -38,14 +38,14 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
           
         let moderator = await resources.fetchMember(message.guild, message.author.id);
         
-        //Se comprueba si puede des-advertir al usuario
+        //Se comprueba si puede des-advertir al miembro
         if (moderator.id !== message.guild.owner.id) {
             if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send(noPrivilegesEmbed);
         }
         
         message.delete();
 
-        //Comprueba si el usuario tiene warns
+        //Comprueba si el miembro tiene warns
         if (!client.warns[member.id]) return message.channel.send(noWarnsEmbed);
 
         let successEmbed, loggingEmbed, toDMEmbed;
@@ -55,7 +55,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             successEmbed = new discord.MessageEmbed()
                 .setColor(resources.green2)
-                .setDescription(`${resources.GreenTick} Se han retirado todas las advertencias al usuario **${member.user.tag}**`);
+                .setDescription(`${resources.GreenTick} Se han retirado todas las advertencias al miembro **${member.user.tag}**`);
 
             toDMEmbed = new discord.MessageEmbed()
                 .setColor(resources.green)
@@ -79,7 +79,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             
             successEmbed = new discord.MessageEmbed()
                 .setColor(resources.green2)
-                .setDescription(`${resources.GreenTick} Se ha retirado la advertencia con ID **${warnID}** al usuario **${member.user.tag}**`);
+                .setDescription(`${resources.GreenTick} Se ha retirado la advertencia con ID **${warnID}** al miembro **${member.user.tag}**`);
 
             toDMEmbed = new discord.MessageEmbed()
                 .setColor(resources.green)

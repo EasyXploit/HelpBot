@@ -3,7 +3,7 @@ exports.run = (discord, client, fs, resources, moment, config) => {
     const debuggingChannel = client.channels.cache.get(config.debuggingChannel);
     const loggingChannel = client.channels.cache.get(config.loggingChannel);
 
-    //Comprobación de usuarios silenciados temporalmente
+    //Comprobación de miembros silenciados temporalmente
     client.setInterval(async () => {
         for (let idKey in client.mutes) {
             let time = client.mutes[idKey].time;
@@ -59,7 +59,7 @@ exports.run = (discord, client, fs, resources, moment, config) => {
         }
     }, 5000)
 
-    //Comprobación de usuarios baneados temporalmente
+    //Comprobación de miembros baneados temporalmente
     client.setInterval(async () => {
         for (let idKey in client.bans) {
             let time = client.bans[idKey].time;
@@ -198,7 +198,7 @@ exports.run = (discord, client, fs, resources, moment, config) => {
         };
     }, config.XPVoiceMinutes);
 
-    //Actualización de usuarios totales en presencia
+    //Actualización de miembros totales en presencia
     client.setInterval(async () => {
         if (config.game !== 'membersCount') return;
         let usersCount = client.homeGuild.members.cache.filter(member => !member.user.bot).size;
@@ -206,7 +206,7 @@ exports.run = (discord, client, fs, resources, moment, config) => {
         await client.user.setPresence({
             status: config.status,
             activity: {
-                name: `${usersCount} usuarios | !ayuda`,
+                name: `${usersCount} miembros | !ayuda`,
                 type: config.type
             }
         });

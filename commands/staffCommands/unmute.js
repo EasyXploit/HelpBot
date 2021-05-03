@@ -13,7 +13,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setColor(resources.red2)
             .setDescription(`${resources.RedTick} No puedes silenciar a un bot`);
 
-        //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
+        //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
         const member = await resources.fetchMember(message.guild, args[0]);
         if (!member) return message.channel.send(notToMuteEmbed);
 
@@ -24,7 +24,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         let notMutedEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Este usuario no esta silenciado`);
+            .setDescription(`${resources.RedTick} Este miembro no esta silenciado`);
 
         //Comprueba si existe el rol silenciado, sino lo crea
         let mutedRole = await resources.checkMutedRole(message.guild);
@@ -33,7 +33,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
-            .setDescription(`El usuario **${member.user.tag}** ha sido des-silenciado`);
+            .setDescription(`El miembro **${member.user.tag}** ha sido des-silenciado`);
 
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.green)

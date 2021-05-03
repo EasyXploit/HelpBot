@@ -84,7 +84,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
                 ctx.closePath();
                 ctx.clip();
 
-                //Añade el avatar del usuario
+                //Añade el avatar del miembro
                 const avatar = await Canvas.loadImage(event.user.displayAvatarURL({ format: 'jpg' }));
                 ctx.drawImage(avatar, 25, 25, 200, 200);
 
@@ -100,7 +100,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
                     .setAuthor('Nuevo miembro', 'https://i.imgur.com/A60x2Di.png')
                     .setDescription(`${event.user.username} se unió al servidor`)
                     .addField('🏷 TAG completo', event.user.tag, true)
-                    .addField('🆔 ID del usuario', event.user.id, true);
+                    .addField('🆔 ID del miembro', event.user.id, true);
 
                 let dmWelcomeEmbed = new discord.MessageEmbed()
                     .setColor(resources.gold)

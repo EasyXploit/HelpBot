@@ -5,7 +5,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
     try {
         let noUserEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
+            .setDescription(`${resources.RedTick} No has proporcionado un miembro válido`);
 
         let noBotsEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
@@ -17,7 +17,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let user = member.user;
         if (user.bot) return message.channel.send(noBotsEmbed);
 
-        //Comprueba el número de warns del usuario
+        //Comprueba el número de warns del miembro
         let warns;
         if (!client.warns[member.id]) {
             warns = 0
@@ -68,7 +68,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let resultEmbed = new discord.MessageEmbed()
             .setColor(resources.gold)
             .setTitle(`⚠ Infracciones`)
-            .setDescription(`Mostrando las infracciones del usuario **${member.user.tag}**\nSanción actual: \`${sanction || 'Ninguna'}\``)
+            .setDescription(`Mostrando las infracciones del miembro **${member.user.tag}**\nSanción actual: \`${sanction || 'Ninguna'}\``)
             .setThumbnail(user.displayAvatarURL())
             .addField(`Últimas 24h`, infractionsCount.day, true)
             .addField(`Últimos 7 días`, infractionsCount.week, true)

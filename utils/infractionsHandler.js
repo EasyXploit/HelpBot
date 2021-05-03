@@ -6,7 +6,7 @@ exports.run = async (discord, fs, config, client, resources, loggingChannel, mes
         //Comprueba si existe el rol silenciado, sino lo crea
         const mutedRole = await resources.checkMutedRole(message.guild);
 
-        //Comprueba si el usuario tiene el rol silenciado, sino se lo añade
+        //Comprueba si el miembro tiene el rol silenciado, sino se lo añade
         if (member.roles.cache.has(mutedRole.id)) return;
         member.roles.add(mutedRole);
 
@@ -107,7 +107,7 @@ exports.run = async (discord, fs, config, client, resources, loggingChannel, mes
     //Envía un mensaje de advertencia
     let publicWarnEmbed = new discord.MessageEmbed()
         .setColor(resources.orange)
-        .setDescription(`${resources.OrangeTick} El usuario **${member.user.tag}** ha sido advertido debido a **${reason}**`);
+        .setDescription(`${resources.OrangeTick} El miembro **${member.user.tag}** ha sido advertido debido a **${reason}**`);
 
     let toDMEmbed = new discord.MessageEmbed()
         .setColor(resources.orange)
@@ -126,7 +126,7 @@ exports.run = async (discord, fs, config, client, resources, loggingChannel, mes
 
     if (action === 2 || action === 3) { //Advierte si se ha de hacer
 
-        //Añade una nueva infracción para el usuario
+        //Añade una nueva infracción para el miembro
         if (!client.warns[member.id]) client.warns[member.id] = {};
         
         client.warns[member.id][Date.now()] = {

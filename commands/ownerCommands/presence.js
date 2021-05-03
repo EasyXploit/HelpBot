@@ -45,7 +45,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 await client.user.setPresence({
                     status: config.status,
                     activity: {
-                        name: `${usersCount} usuarios | !ayuda`,
+                        name: `${usersCount} miembros | !ayuda`,
                         type: config.type
                     }
                 });

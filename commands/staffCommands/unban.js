@@ -15,7 +15,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         if (!args[0]) return message.channel.send(notToUnbanEmbed);
 
-        //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
+        //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
         const user = await resources.fetchUser(args[0]);
         if (!user) return message.channel.send(notToUnbanEmbed);
 
@@ -38,7 +38,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
-            .setDescription(`El usuario ${user.tag} ha sido desbaneado`);
+            .setDescription(`El miembro ${user.tag} ha sido desbaneado`);
 
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.green)
@@ -54,7 +54,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         if (e.toString().includes(`Unknown Ban`)) {
             let notBannedEmbed = new discord.MessageEmbed()
                 .setColor(resources.red2)
-                .setDescription(`${resources.RedTick} Este usuario no ha sido baneado`);
+                .setDescription(`${resources.RedTick} Este miembro no ha sido baneado`);
             message.channel.send(notBannedEmbed);
         } else {
             require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);

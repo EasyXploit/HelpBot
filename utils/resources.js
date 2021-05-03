@@ -70,7 +70,7 @@ exports.run = (discord, client) => {
                     color: '#818386',
                     permissions: []
                 },
-                reason: 'Rol para gestionar usuarios silenciados'
+                reason: 'Rol para gestionar miembros silenciados'
             });
             
             //Asigna el rol a la posición más alta posible
@@ -126,7 +126,7 @@ exports.run = (discord, client) => {
             };
             if (nonXP) return;
 
-            //Almacena la tabla de clasificación del usuario, y si no existe la crea
+            //Almacena la tabla de clasificación del miembro, y si no existe la crea
             if (member.id in guildStats === false) {
                 guildStats[member.id] = {
                     totalXP: 0,
@@ -190,7 +190,7 @@ exports.run = (discord, client) => {
                     if (mode === 'voice') member.send(levelUpEmbed);
                 };
 
-                //Guarda las nuevas estadísticas del usuario
+                //Guarda las nuevas estadísticas del miembro
                 fs.writeFile(`./storage/stats.json`, JSON.stringify(client.stats, null, 4), async err => {
                     if (err) throw err;
                 });
@@ -248,7 +248,7 @@ exports.run = (discord, client) => {
         if (!server.votes[command]) server.votes[command] = [];
         let counter = server.votes[command];
 
-        //Si se activa el modo "por usuario"
+        //Si se activa el modo "por miembro"
         if (index) {
             if (!counter[index]) counter[index] = []; //Crea e inicializa el contador de votos hijo si no lo estaba ya
             if (!counter[index].includes(message.member.id)) counter[index].push(message.member.id); //Si el miembro no ha votado, añade su voto

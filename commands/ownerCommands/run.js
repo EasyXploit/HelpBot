@@ -24,11 +24,11 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setAuthor(`REGLAMENTO DE LA COMUNIDAD`, `https://i.imgur.com/jAiDAvR.png`)
                 .setDescription('Este servidor se apoya en los [**Términos de Servicio**](https://discordapp.com/terms) y las [**Directivas de la comunidad de Discord**](https://discordapp.com/guidelines). Participar en la comunidad supone la aceptación de las normas expuestas en este documento.')
                 .addField(`:one: No está permitido publicar contenido inadecuado:`, `Es decir, todo lo relacionado con pornografía, drogas y apuestas. Tampoco contenido que pueda alentar el odio hacia una etnia, religión o cualquier otro colectivo/individuo. De la misma forma están prohibidas las actitudes tóxicas, faltas de respeto, el acoso, el gore y/o crueldad animal y el envío de pornografía infantil o estafas.`)
-                .addField(`:two: Está prohibido hacer spam:`, `No puedes enviar links hacia otros servidores de Discord _(tanto invitaciones como URL redireccionadas o spam relacionado)_, ni links de afiliado ni spamear (incluyendo mensajes directos). Tampoco puedes abusar de las menciones a los demás usuarios y también está prohibido hacer _flood_ de chat. De igual forma, no publiques enlaces de invitación de este servidor en otros servidores sin su consentimiento.`)
-                .addField(`:three: No abuses de las menciones:`, 'No está permitido excederse utilizando las menciones a personas, a __roles__, o a `@everyone` y `@here`. _Las menciones abusivas pueden ser realmente molestas y pueden llevar a los usuario a silenciar el servidor._')
+                .addField(`:two: Está prohibido hacer spam:`, `No puedes enviar links hacia otros servidores de Discord _(tanto invitaciones como URL redireccionadas o spam relacionado)_, ni links de afiliado ni spamear (incluyendo mensajes directos). Tampoco puedes abusar de las menciones a los demás miembros y también está prohibido hacer _flood_ de chat. De igual forma, no publiques enlaces de invitación de este servidor en otros servidores sin su consentimiento.`)
+                .addField(`:three: No abuses de las menciones:`, 'No está permitido excederse utilizando las menciones a personas, a __roles__, o a `@everyone` y `@here`. _Las menciones abusivas pueden ser realmente molestas y pueden llevar a los miembro a silenciar el servidor._')
                 .addField(`:four: Respeta las temáticas:`, `Has de usar los canales de texto/voz adecuados en cada caso. Lee los temas de los canales para más información.`)
                 .addField(':five: Uso adecuado de cuentas:', 'Así cómo no está permitido publicar contenido inadecuado, la misma norma aplica para los nombres de usuario. No está permitido emplear nombres de usuario de Discord o apodos inadecuados, cómo palabras ofensivas, enlaces o carácteres ilegibles por sistemas automatizados. Por otro lado, tampoco se permite el empleo de cuentas múltiples para unirse a la comunidad y/o eventualmente, sobrepasar las sanciones aplicadas a las cuentas.')
-                .addField(`:six: No busques vacíos legales:`, 'No intentes hacer algo que obviamente pueda resultar inadecuado tanto para el staff como para el resto de usuarios de la comunidad.\n\n```La infracción de la normativa conllevará desde sanciones administrativas (warn, mute, ban o kick) hasta avisos a las autoridades (en el caso de actividades ilegales).```')
+                .addField(`:six: No busques vacíos legales:`, 'No intentes hacer algo que obviamente pueda resultar inadecuado tanto para el staff como para el resto de miembros de la comunidad.\n\n```La infracción de la normativa conllevará desde sanciones administrativas (warn, mute, ban o kick) hasta avisos a las autoridades (en el caso de actividades ilegales).```')
                 .attachFiles(`./resources/images/banners/rules.png`);
             
             let embed3 = new discord.MessageEmbed()
@@ -40,7 +40,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setColor(resources.gold)
                 .setThumbnail(`https://i.imgur.com/vDgiPwT.png`)
                 .setAuthor(`NIVELES`, `https://i.imgur.com/vDgiPwT.png`)
-                .setDescription('Los usuarios que participan __activamente__ en la comunidad (tanto en canales de texto cómo en canales de voz) adquieren puntos de **EXP**, y al alcanzar determinados niveles se obtienen rangos que aportan la siguientes _ventajas_:')
+                .setDescription('Los miembros que participan __activamente__ en la comunidad (tanto en canales de texto cómo en canales de voz) adquieren puntos de **EXP**, y al alcanzar determinados niveles se obtienen rangos que aportan la siguientes _ventajas_:')
                 .addField(`${resources.chevron1} Lvl 1 ‣ NOVATO I`, 'Permite **publicar en <#428234707927564299>**.\nObtienes __50 créditos__ de bienvenida.')
                 .addField(`${resources.chevron2} Lvl 5 ‣ NOVATO V`, 'Permite **adjuntar archivos** e **insertar enlaces**.\nObtienes __100 créditos__.')
                 .addField(`${resources.chevron3} Lvl 10 ‣ PROFESIONAL V`, `Permite **cambiar tu apodo** y **usar emojis externos**${resources.nitro}.\nObtienes __200 créditos__.`)
@@ -84,7 +84,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setColor(resources.gold)
                 .setThumbnail('https://i.imgur.com/0l3jSuV.png')
                 .setAuthor('RANGO SUPPORTER', 'https://i.imgur.com/0l3jSuV.png')
-                .setDescription('Aquellos usuarios que traen a __gente nueva__ a la comunidad son recompensados con el rango **@SUPPORTER**, que permite acceder a varias ventajas, entre las que destacan el **acceso preferente a los sorteos**, poder **cambiar su propio apodo** y usar **emojis externos**.')
+                .setDescription('Aquellos miembros que traen a __gente nueva__ a la comunidad son recompensados con el rango **@SUPPORTER**, que permite acceder a varias ventajas, entre las que destacan el **acceso preferente a los sorteos**, poder **cambiar su propio apodo** y usar **emojis externos**.')
                 .addField('🞘 Pasos a seguir:', ':one: Genera una invitación instantánea. [Ver cómo](https://support.discordapp.com/hc/es/articles/208866998-Invitaci%C3%B3n-Instant%C3%A1nea-101)\n:two: Invita a 5 personas _(procura que se unan y se queden)_.\n:three: ¡Recibirás tu rol cuando se unan 5! _(lo perderás si se van)_.', true)
                 .addField('🞘 Comandos:', 'Usa `+invites` para conocer a cuantos has invitado.\nUsa `+leaderboard` para ver la tabla de clasificacion.', true)
                 .attachFiles(`./resources/images/banners/support.png`);
@@ -110,7 +110,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setColor(resources.gold)
                 .setThumbnail('https://i.imgur.com/teuQnub.png')
                 .setAuthor('ESCRIBE UNA RESEÑA', 'https://i.imgur.com/teuQnub.png')
-                .setDescription('En la **República Gamer** nos tomamos muy en serio la opinión de nuestros usuarios y __tratamos de mejorar constantemente__ en base a vuestros _comentarios_ y _sugerencias_.\n\nPor ello, te agradeceríamos que nos escribieras **una reseña** para que así el resto del mundo pueda ver que tal lo estamos haciendo y si merece la pena unirse a la comunidad.\n\n⮚ [**ESCRIBIR UNA RESEÑA**](https://disboard.org/es/review/create/374945492133740544) ⮘')
+                .setDescription('En la **República Gamer** nos tomamos muy en serio la opinión de nuestros miembros y __tratamos de mejorar constantemente__ en base a vuestros _comentarios_ y _sugerencias_.\n\nPor ello, te agradeceríamos que nos escribieras **una reseña** para que así el resto del mundo pueda ver que tal lo estamos haciendo y si merece la pena unirse a la comunidad.\n\n⮚ [**ESCRIBIR UNA RESEÑA**](https://disboard.org/es/review/create/374945492133740544) ⮘')
                 .attachFiles(`./resources/images/banners/review.png`);
 
             let inviteEmbed = new discord.MessageEmbed()
@@ -175,7 +175,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         } else if (args[0] === `bienvenida`) {
             let noUserEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
-                .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
+                .setDescription(`${resources.RedTick} No has proporcionado un miembro válido`);
             
             let successEmbed = new discord.MessageEmbed()
                 .setColor(resources.green2)
@@ -191,7 +191,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         } else if (args[0] === `despedida`) {
             let noUserEmbed = new discord.MessageEmbed()
                 .setColor(resources.red)
-                .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
+                .setDescription(`${resources.RedTick} No has proporcionado un miembro válido`);
             
             let successEmbed = new discord.MessageEmbed()
                 .setColor(resources.green2)
@@ -292,13 +292,13 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     //Ajusta las stats del miembro
                     userStats.actualXP = xpToNextLevel - userStats.totalXP;
 
-                    //Guarda las nuevas estadísticas del usuario
+                    //Guarda las nuevas estadísticas del miembro
                     fs.writeFile(`./storage/stats.json`, JSON.stringify(client.stats, null, 4), async err => {
                         if (err) throw err;
                         console.log(`La XP actual de ${member.displayName} ha sido sustituida por ${userStats.actualXP}`);
                     });
                 } else {
-                    console.log(`Usuario ${member.displayName || IDs[index]} omitido\n`);
+                    console.log(`Miembro ${member.displayName || IDs[index]} omitido\n`);
                 };
                 
                 index++;

@@ -7,7 +7,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
             let large = `No`;
             let verified = `No`;
 
-            //Comprueba si el servidor supera los 250 usuarios
+            //Comprueba si el servidor supera los 250 miembros
             if (event.large === true) {
                 large = `Si`
             };

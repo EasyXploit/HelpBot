@@ -12,7 +12,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             
         let noUserEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
+            .setDescription(`${resources.RedTick} No has proporcionado un miembro válido`);
         
         //Busca y almacena el miembro
         const member = await resources.fetchMember(message.guild, args[1]);

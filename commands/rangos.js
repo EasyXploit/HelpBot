@@ -7,7 +7,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setColor(16762967)
             .setThumbnail('https://i.imgur.com/vDgiPwT.png')
             .setAuthor('NIVELES', 'https://i.imgur.com/vDgiPwT.png')
-            .setDescription('Los usuarios que participan __activamente__ en la comunidad (tanto en canales de texto cómo en canales de voz) adquieren puntos de **EXP**, y al alcanzar determinados niveles se obtienen rangos que aportan la siguientes _ventajas_:')
+            .setDescription('Los miembros que participan __activamente__ en la comunidad (tanto en canales de texto cómo en canales de voz) adquieren puntos de **EXP**, y al alcanzar determinados niveles se obtienen rangos que aportan la siguientes _ventajas_:')
             .addField(`${resources.chevron1} Lvl 1 ‣ NOVATO I`, 'Permite **publicar en <#428234707927564299>**.\nObtienes __50 créditos__ de bienvenida.')
             .addField(`${resources.chevron2} Lvl 5 ‣ NOVATO V`, 'Permite **adjuntar archivos** e **insertar enlaces**.\nObtienes __100 créditos__.')
             .addField(`${resources.chevron3} Lvl 10 ‣ PROFESIONAL V`, `Permite **cambiar tu apodo** y **usar emojis externos**${resources.nitro}.\nObtienes __200 créditos__.`)

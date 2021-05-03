@@ -15,12 +15,12 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         if (!args[0]) return message.channel.send(notToKickEmbed);
 
-        //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
+        //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
         const member = await resources.fetchMember(message.guild, args[0]);
         if (!member) return message.channel.send(notToKickEmbed);
         let moderator = await resources.fetchMember(message.guild, message.author.id);
         
-        //Se comprueba si puede banear al usuario
+        //Se comprueba si puede expulsar al miembro
         if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send(noPrivilegesEmbed)
 
         let toDeleteCount = command.length - 2 + args[0].length + 2;
@@ -33,7 +33,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green2)
             .setTitle(`${resources.GreenTick} Operación completada`)
-            .setDescription(`El usuario **${member.user.tag}** ha sido expulsado, ¿alguien más?`);
+            .setDescription(`El miembro **${member.user.tag}** ha sido expulsado, ¿alguien más?`);
 
         let toDMEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)

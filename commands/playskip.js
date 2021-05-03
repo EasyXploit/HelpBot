@@ -119,20 +119,20 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 };
             };
 
-            //Función para comprrobar cuantas canciones puede subirr un usuario a la cola
+            //Función para comprobar cuantas canciones puede subir un miembro a la cola
             async function authorizedLimit(memberID) {
 
                 //Devuelve false si no hay límite
                 if (client.musicConfig.userQueueLimit === 0) return false;
 
-                //Almacena variables para calcular el límite del usuario y cuantas ha subido
+                //Almacena variables para calcular el límite del miembro y cuantas ha subido
                 const authorized = client.musicConfig.userQueueLimit;
                 let submitted = 0;
 
                 //Devuelve el total si aún no hay cola o está vacía
                 if (!client.servers[message.guild.id] || client.servers[message.guild.id].queue.length < 1) return authorized;
 
-                //Calcula cuantas canciones tiene el usuario en la cola
+                //Calcula cuantas canciones tiene el miembro en la cola
                 for (let i = 0; i < client.servers[message.guild.id].queue.length; i++) {
                     if (memberID === client.servers[message.guild.id].queue[i].requestedById) submitted++;
                 };
@@ -153,7 +153,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     if (playlist.items[i].title === '[Private video]' || !playlist.items[i].duration || resources.hmsToSeconds(playlist.items[i].duration) > 10800) delete playlist.items[i];
                 };
 
-                //Comprueba si el usuario puede añadir más canciones a la cola
+                //Comprueba si el miembro puede añadir más canciones a la cola
                 const authorizedSongs = await authorizedLimit(message.member.id);
                 if (authorizedSongs === 0) return message.channel.send(fullUserQueueEmbed);
 
@@ -235,7 +235,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     //Comprueba si la cola de reproducción está llena
                     if (client.musicConfig.queueLimit !== 0 && client.servers[message.guild.id] && client.servers[message.guild.id].queue.length >= client.musicConfig.queueLimit) return message.channel.send(fullQueueEmbed);
 
-                    //Comprueba si el usuario puede añadir más canciones a la cola
+                    //Comprueba si el miembro puede añadir más canciones a la cola
                     let authorizedSongs = await authorizedLimit(message.member.id);
                     if (authorizedSongs === 0) return message.channel.send(fullUserQueueEmbed);
 
@@ -293,7 +293,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                         //Comprueba si la cola de reproducción está llena
                         if (client.musicConfig.queueLimit !== 0 && client.servers[message.guild.id] && client.servers[message.guild.id].queue.length >= client.musicConfig.queueLimit) return message.channel.send(fullQueueEmbed);
 
-                        //Comprueba si el usuario puede añadir más canciones a la cola
+                        //Comprueba si el miembro puede añadir más canciones a la cola
                         let authorizedSongs = await authorizedLimit(message.member.id);
                         if (authorizedSongs === 0) return message.channel.send(fullUserQueueEmbed);
 
@@ -339,7 +339,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                             .setAuthor(`Elige una canción 🎶`, `https://i.imgur.com/lvShSwa.png`)
                             .setDescription(formattedResults);
 
-                        //Se espera a que el usuario elija una canción de la lista
+                        //Se espera a que el miembro elija una canción de la lista
                         await message.channel.send(resultsEmbed).then(async msg => {
                             await msg.channel.awaitMessages(m => m.author.id === message.author.id, {max: 1, time: 60000}).then(async collected => {
                                 let option = collected.first().content; //Almacena la opción elegida
@@ -367,7 +367,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                                     //Comprueba si la cola de reproducción está llena
                                     if (client.musicConfig.queueLimit !== 0 && client.servers[message.guild.id] && client.servers[message.guild.id].queue.length >= client.musicConfig.queueLimit) return message.channel.send(fullQueueEmbed);
 
-                                    //Comprueba si el usuario puede añadir más canciones a la cola
+                                    //Comprueba si el miembro puede añadir más canciones a la cola
                                     let authorizedSongs = await authorizedLimit(message.member.id);
                                     if (authorizedSongs === 0) return message.channel.send(fullUserQueueEmbed);
 
@@ -392,7 +392,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
                                     return message.channel.send(incorrectTypeEmbed);
                                 };
-                            }).catch(() => msg.delete()); //Si el usuario no responde, borra el menú
+                            }).catch(() => msg.delete()); //Si el miembro no responde, borra el menú
                         });
                     };
                 });

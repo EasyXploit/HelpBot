@@ -23,12 +23,12 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         let noXPEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Este usuario no tiene XP`);
+            .setDescription(`${resources.RedTick} Este miembro no tiene XP`);
         
 
         if (!args[0]) return message.channel.send(unknownMemberEmbed);
 
-        //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID y no es un bot
+        //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID y no es un bot
         const member = await resources.fetchMember(message.guild, args[0]);
         if (!member) return message.channel.send(unknownMemberEmbed);
         if (member.user.bot) return message.channel.send(noBotsEmbed);
@@ -43,7 +43,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         };
         const guildStats = client.stats[message.guild.id];
 
-        //Almacena la tabla de clasificación del usuario, y si no existe la crea
+        //Almacena la tabla de clasificación del miembro, y si no existe la crea
         if (member.id in guildStats === false) {
             guildStats[member.id] = {
                 totalXP: 0,
@@ -54,16 +54,16 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         };
         const userStats = guildStats[member.id];
 
-        //Comprueba si se le puede restar esa cantidad al usuario
+        //Comprueba si se le puede restar esa cantidad al miembro
         if (args[1] === 'remove' && userStats.totalXP < args[2]) return message.channel.send(incorrectQuantityEmbed);
 
-        //Comprueba si se le puede quitar el XP al usuario
+        //Comprueba si se le puede quitar el XP al miembro
         if (args[1] === 'clear' && userStats.totalXP == 0) return message.channel.send(noXPEmbed);  
 
         //Almacena el moderador
         let moderator = await resources.fetchMember(message.guild, message.author.id);
         
-        //Se comprueba si puede añadir XP al usuario en función de la jerarquía de roles
+        //Se comprueba si puede añadir XP al miembro en función de la jerarquía de roles
         if (moderator.id !== message.guild.owner.id) {
             if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send(noPrivilegesEmbed);
         };
@@ -161,7 +161,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         let successEmbed = new discord.MessageEmbed()
             .setColor(resources.green2)
-            .setDescription(`${resources.GreenTick} Se ha modificado la cantidad de XP del usuario **${member.user.tag}**.`);
+            .setDescription(`${resources.GreenTick} Se ha modificado la cantidad de XP del miembro **${member.user.tag}**.`);
 
         let toDMEmbed = new discord.MessageEmbed()
             .setColor(resources.green)

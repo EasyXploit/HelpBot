@@ -14,7 +14,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setThumbnail('https://i.imgur.com/iODevD9.png')
             .setAuthor('STAFF', 'https://i.imgur.com/iODevD9.png')
             .setTitle('Comandos para el Staff del servidor')
-            .addField(`🔄 ${config.staffPrefix}restart`, 'Reinicia a ' + client.user.username)
+            .addField(`🔄 ${config.staffPrefix}restart`, `Reinicia a ${client.user.username}.`)
             .addField(`:stop_button: ${config.staffPrefix}stop`, `Detiene a ${client.user.username} ${resources.shield}`)
             .addField(`🙍 ${config.staffPrefix}userinfo (@usuario | id | nada)`, 'Muestra información acerca del usuario mencionado')
             .addField(`🖥 ${config.staffPrefix}serverinfo`, 'Muestra información acerca de la guild actual')

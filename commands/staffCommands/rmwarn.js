@@ -97,7 +97,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .addField('Fecha:', new Date().toLocaleString(), true)
                 .addField('Moderador:', message.author.tag, true)
                 .addField('ID de advertencia:', warnID, true)
-                .addField('Sanción:', client.warns[member.id][warnID].reason, true)
+                .addField('Advertencia:', client.warns[member.id][warnID].reason, true)
                 .addField('Miembro:', member.user.tag, true)
                 .addField('Razón:', reason, true);
 

@@ -97,8 +97,6 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
                 await welcomeChannel.send(attachment);
 
                 /* --- --- */
-
-
                 
                 /*let channelWelcomeEmbed = new discord.MessageEmbed()
                     .setColor(resources.gold)
@@ -109,18 +107,18 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
                 let loggingWelcomeEmbed = new discord.MessageEmbed()
                     .setColor(resources.green)
                     .setThumbnail(event.user.displayAvatarURL())
-                    .setAuthor(`Nuevo miembro`, `https://i.imgur.com/A60x2Di.png`)
+                    .setAuthor('Nuevo miembro', 'https://i.imgur.com/A60x2Di.png')
                     .setDescription(`${event.user.username} se unió al servidor`)
-                    .addField(`🏷 TAG completo`, event.user.tag, true)
+                    .addField('🏷 TAG completo', event.user.tag, true)
                     .addField('🆔 ID del usuario', event.user.id, true);
 
                 let dmWelcomeEmbed = new discord.MessageEmbed()
                     .setColor(resources.gold)
-                    .setAuthor(`REPÚBLICA GAMER`, event.user.displayAvatarURL())
-                    .setImage(`https://i.imgur.com/IeExpLO.png`)
+                    .setAuthor('REPÚBLICA GAMER', event.user.displayAvatarURL())
+                    .setImage('https://i.imgur.com/IeExpLO.png')
                     .setTitle(`Hola **${event.user.username}**, bienvenido a la __República Gamer__ :tada:`)
-                    .setDescription(`**¡Nos alegra que hayas decidido unirte a nuestra comunidad!**\nA continuación, te mostramos una breve guía sobre como empezar a participar en nuestro servidor. __¡Esperamos que lo pases bien!__`)
-                    .addField(`Guía de inicio rápido:`, `:one: Entra en <#498455357853794304> y dedica unos segundos a leer las breves normas que rigen nuestra comunidad. Además, aprenderás a usar a los bots, a como obtener ayuda y a como subir de nivel.\n:two: Entra en \`⚡ | Crear sala\` para crear ¡tu propia sala temporal! (recuerda que desparecerá si no hay nadie en ella).\n:three: ¡Tan solo diviértete y trae a tus amigos para que nos conozcan! Mándales este enlace de invitación: https://discord.gg/eWx72Jy\n\n**AVISO:** Debes haber verificado tu cuenta de Discord desde el enlace de confirmación enviado a tu dirección de correo electrónico para poder participar en la comunidad.`, true);
+                    .setDescription('**¡Nos alegra que hayas decidido unirte a nuestra comunidad!**\nA continuación, te mostramos una breve guía sobre como empezar a participar en nuestro servidor. __¡Esperamos que lo pases bien!__')
+                    .addField('Guía de inicio rápido:', ':one: Entra en <#498455357853794304> y dedica unos segundos a leer las breves normas que rigen nuestra comunidad. Además, aprenderás a usar a los bots, a como obtener ayuda y a como subir de nivel.\n:two: Entra en \`⚡ | Crear sala\` para crear ¡tu propia sala temporal! (recuerda que desparecerá si no hay nadie en ella).\n:three: ¡Tan solo diviértete y trae a tus amigos para que nos conozcan! Mándales este enlace de invitación: https://discord.gg/eWx72Jy\n\n**AVISO:** Debes haber verificado tu cuenta de Discord desde el enlace de confirmación enviado a tu dirección de correo electrónico para poder participar en la comunidad.', true);
 
                 //await welcomeChannel.send(channelWelcomeEmbed);
                 await loggingChannel.send(loggingWelcomeEmbed);
@@ -128,12 +126,11 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
                 
             }
         } else {
-            if (event.guild.member(event.user).roles.cache.has(`426789294007517205`)) return;
-            event.guild.member(event.user).roles.add(`426789294007517205`);
+            if (event.guild.member(event.user).roles.cache.has('426789294007517205')) return;
+            event.guild.member(event.user).roles.add('426789294007517205');
 
             let loggingWelcomeBotEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue)
-                .setTimestamp()
                 .setTitle('📑 Auditoría - [BOTS]')
                 .setDescription(`El **BOT** @${event.user.tag} fue añadido al servidor.`);
             loggingChannel.send(loggingWelcomeBotEmbed)
@@ -150,10 +147,10 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
         //Se muestra el error en el canal de depuración
         let debuggEmbed = new discord.MessageEmbed()
             .setColor(resources.brown)
-            .setTitle(`📋 Depuración`)
-            .setDescription(`Se declaró un error durante la ejecución de un evento`)
-            .addField(`Evento:`, `guildMemberAdd`, true)
-            .addField(`Fecha:`, new Date().toLocaleString(), true)
+            .setTitle('📋 Depuración')
+            .setDescription('Se declaró un error durante la ejecución de un evento')
+            .addField('Evento:', 'guildMemberAdd', true)
+            .addField('Fecha:', new Date().toLocaleString(), true)
             .addField('Error:', `\`\`\`${error}\`\`\``);
         
         //Se envía el mensaje al canal de depuración

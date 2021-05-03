@@ -1,34 +1,20 @@
 exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
-    //-dm (autor | anonimo) (@usuario | id) (embed | normal) (mensaje a enviar)
+    //-broadcast (autor | anonimo) (embed | normal) (mensaje a enviar)
     
     try {
+
+        if (message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed);
         
         let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.ownerPrefix}dm (autor | anonimo) (@usuario | id) (embed | normal) (mensaje a enviar)\``);
+            .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.ownerPrefix}broadcast (autor | anonimo) (embed | normal) (mensaje a enviar)\``);
         
-        if (args.length < 4 || (args[0] !== 'autor' && args[0] !== 'anonimo') || (args[2] !== 'embed' && args[2] !== 'normal')) return message.channel.send(noCorrectSyntaxEmbed);
+        if (args.length < 3 || (args[0] !== 'autor' && args[0] !== 'anonimo') || (args[1] !== 'embed' && args[1] !== 'normal')) return message.channel.send(noCorrectSyntaxEmbed);
             
-        let noUserEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
-        
-        //Busca y almacena el miembro
-        const member = await resources.fetchMember(message.guild, args[1]);
-
-        let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} No puedes entablar una conversación con un bot`);
-
-        if (!member) return message.channel.send(noUserEmbed);
-        
-        //Devuelve un error si el objetivo es un bot
-        if (member.user.bot) return message.channel.send(noBotsEmbed);
-
         let mode = args[0];
-        let type = args[2];
-        let body = args.slice(3).join(' ');
+        let type = args[1];
+        let body = args.slice(2).join(' ');
         let resultMessage = body;
 
         await message.delete()
@@ -37,7 +23,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             case 'autor':
                 if (type === 'embed') {
                     resultMessage = new discord.MessageEmbed()
-                        .setAuthor(`Mensaje de ${message.author.tag}`, message.author.avatarURL())
+                        .setAuthor(`Mensaje de: ${message.author.tag}`, message.author.avatarURL())
                         .setColor(resources.gold)
                         .setDescription(body);
                 } else if (type === 'normal') {
@@ -54,13 +40,27 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 break;
         };
 
-        await member.user.send(resultMessage);
+        let sendingEmbed = new discord.MessageEmbed()
+            .setColor(resources.gray)
+            .setDescription(`${resources.GrayTick} El mensaje está siendo enviado`);
 
         let confirmEmbed = new discord.MessageEmbed()
             .setColor(resources.green2)
             .setDescription(`${resources.GreenTick} ¡Mensaje enviado!`);
+            
+        await message.channel.send(sendingEmbed);
 
-        await message.channel.send(confirmEmbed);
+        let i = 0;
+        let interval = setInterval(function(){
+            let member = message.guild.members.cache.array()[i]
+            if (!member.user.bot) member.user.send(resultMessage)
+                .then(console.log(`${new Date().toLocaleString()} 》Mensaje de broadcast enviado a ${member.user.tag}`));
+            i++;
+            if(i === message.guild.members.cache.array().length) {
+                clearInterval(interval);
+                message.channel.send(confirmEmbed);
+            }
+        }, 10000);
     } catch (e) {
         require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
     };

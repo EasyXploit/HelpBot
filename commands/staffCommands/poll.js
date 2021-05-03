@@ -126,7 +126,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                             options = options + `${emojiOptions[count]} ${fields[count]}\n\n`
                         };
 
-                        const moment = require('moment');
                         let remainingTime = '∞';
                         if (duration !== 0) {
                             let remainingDays = Math.floor((duration) / (60*60*24*1000));

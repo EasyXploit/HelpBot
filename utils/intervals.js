@@ -200,22 +200,13 @@ exports.run = (discord, client, fs, resources, moment, config) => {
 
     //Actualización de usuarios totales en presencia
     client.setInterval(async () => {
-        await client.user.setPresence({
-            activity: {
-                name: `${client.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`,
-                type: config.type
-            }
-        });
-    }, 60000);
-
-    //Presencia
-    client.setInterval(async () => {
+        if (config.game !== 'membersCount') return;
         let usersCount = client.homeGuild.members.cache.filter(member => !member.user.bot).size;
 
         await client.user.setPresence({
             status: config.status,
             activity: {
-                name: `${usersCount} usuarios | ${config.game}`,
+                name: `${usersCount} usuarios | !ayuda`,
                 type: config.type
             }
         });

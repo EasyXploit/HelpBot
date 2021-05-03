@@ -1,12 +1,12 @@
 exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
-    //$presence (status | activity) (online | offline | idle | dnd - nombre de la actividad)
+    //$presence (status | activity) (online | offline | idle | dnd - membersCount - nombre de la actividad)
     
     try {
 
         let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} La sintaxis del comando es \`${config.ownerPrefix}presence (status | activity) (online | offline | idle | dnd - nombreDeLaAtividad)\``);
+            .setDescription(`${resources.RedTick} La sintaxis del comando es \`${config.ownerPrefix}presence (status | activity) (online | offline | idle | dnd - membersCount - nombre de la actividad)\``);
 
         if (!args[0] || !args[1]) return message.channel.send(noCorrectSyntaxEmbed);
 
@@ -36,7 +36,28 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             //Graba la configuración
             await fs.writeFile('./configs/config.json', JSON.stringify(config, null, 4), (err) => console.error);
-            await client.user.setPresence({game: {name: config.game, type: config.type}});
+
+            if (newValue === 'membersCount') {
+                config.game = 'membersCount';
+
+                let usersCount = client.homeGuild.members.cache.filter(member => !member.user.bot).size;
+
+                await client.user.setPresence({
+                    status: config.status,
+                    activity: {
+                        name: `${usersCount} usuarios | !ayuda`,
+                        type: config.type
+                    }
+                });
+            } else {
+                await client.user.setPresence({
+                    status: config.status,
+                    activity: {
+                        name: config.game,
+                        type: config.type
+                    }
+                });
+            };
 
             changed = 'la actividad';   
         };
@@ -55,5 +76,5 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         await message.channel.send(resultEmbed)
     } catch (e) {
         require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
-    }
-}
+    };
+};

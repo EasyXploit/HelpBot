@@ -75,15 +75,6 @@ client.on('ready', async () => {
         client.homeGuild = client.guilds.cache.get(client.homeGuild);
         const debuggingChannel = client.channels.cache.get(config.debuggingChannel);
 
-        //Presencia
-        await client.user.setPresence({
-            status: config.status,
-            activity: {
-                name: `${client.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`,
-                type: config.type
-            }
-        });
-
         //Recursos globales
         resources.run(discord, client);
         resources = require('./utils/resources.js');
@@ -135,7 +126,7 @@ client.on('ready', async () => {
             .setDescription(`${client.user.username} iniciado correctamente`)
             .addField('Estatus:', config.status, true)
             .addField('Tipo de actividad:', config.type, true)
-            .addField('Actividad:', `${client.users.cache.filter(user => !user.bot).size} usuarios | ${config.game}`, true)
+            .addField('Actividad:', config.game, true)
             .addField('Usuarios:', client.users.cache.filter(user => !user.bot).size, true)
             .addField('Versión:', package.version, true)
             .setFooter(`${client.user.username} • Este mensaje se borrará en 10s`, client.user.avatarURL());

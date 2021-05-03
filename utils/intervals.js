@@ -111,7 +111,7 @@ exports.run = (discord, client, fs, resources, moment, config) => {
                 poll = await channel.messages.fetch(idKey);
             } catch (e) {
                 delete client.polls[idKey];
-                return fs.writeFile(`./storage/polls.json`, JSON.stringify(client.polls), async err => {
+                return fs.writeFile(`./storage/polls.json`, JSON.stringify(client.polls, null, 4), async err => {
                     if (err) throw err;
                 });
             };

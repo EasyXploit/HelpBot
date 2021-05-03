@@ -136,7 +136,7 @@ exports.run = async (discord, fs, config, client, resources, loggingChannel, mes
 
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.orange)
-            .setAuthor(`${member.user.tag} ha sido SANCIONADO`, member.user.displayAvatarURL())
+            .setAuthor(`${member.user.tag} ha sido ADVERTIDO`, member.user.displayAvatarURL())
             .addField(`Miembro`, member.user.tag, true)
             .addField(`Moderador`, moderator.tag, true)
             .addField(`Razón`, reason, true)

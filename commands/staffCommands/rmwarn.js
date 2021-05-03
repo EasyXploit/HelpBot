@@ -1,6 +1,6 @@
 exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
     
-    //-rmwarn (@miembro | id) (id de sanción | all) (razón)
+    //-rmwarn (@miembro | id) (id de advertencia | all) (razón)
     
     try {
         let notToUnwarnEmbed = new discord.MessageEmbed()
@@ -59,8 +59,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             toDMEmbed = new discord.MessageEmbed()
                 .setColor(resources.green)
-                .setAuthor('[DES-SANCIONADO]', message.guild.iconURL())
-                .setDescription(`<@${member.id}>, se te han retirado todas la sanciones`)
+                .setAuthor('[DES-ADVERTIDO]', message.guild.iconURL())
+                .setDescription(`<@${member.id}>, se te han retirado todas la advertencias.`)
                 .addField('Moderador', message.author.tag, true)
                 .addField('Razón', reason, true);
 
@@ -85,11 +85,11 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             toDMEmbed = new discord.MessageEmbed()
                 .setColor(resources.green)
-                .setAuthor('[DES-SANCIONADO]', message.guild.iconURL())
-                .setDescription(`<@${member.id}>, se te ha retirado la sanción con ID \`${warnID}\``)
+                .setAuthor('[DES-ADVERTIDO]', message.guild.iconURL())
+                .setDescription(`<@${member.id}>, se te ha retirado la advertencia con ID \`${warnID}\``)
                 .addField('Moderador', message.author.tag, true)
                 .addField('ID de advertencia:', warnID, true)
-                .addField('Sanción:', client.warns[member.id][warnID].reason, true)
+                .addField('Advertencia:', client.warns[member.id][warnID].reason, true)
                 .addField('Razón', reason, true);
 
             loggingEmbed = new discord.MessageEmbed()

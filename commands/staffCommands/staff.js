@@ -21,7 +21,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField(`🔖 ${config.staffPrefix}roleinfo (@rol | rol | id)`, 'Muestra información acerca de un rol')
             .addField(`${resources.OrangeTick} ${config.staffPrefix}warn (@miembro | id) (razón)`, 'Advierte a un usuario')
             .addField(`📑 ${config.staffPrefix}infractions (@miembro | id | nada)`, `Visualiza las infracciones de un usuario`)
-            .addField(`📤 ${config.staffPrefix}rmwarn (@miembro | id) (id de sanción | all) (razón)`, `Retira una advertencia a un usuario`)
+            .addField(`📤 ${config.staffPrefix}rmwarn (@miembro | id) (id de advertencia | all) (razón)`, `Retira una advertencia a un usuario`)
             .addField(`🔇 ${config.staffPrefix}mute (@usuario | id) (motivo)`, `Silencia a un usuario${resources.shield}`)
             .addField(`🔈 ${config.staffPrefix}tempmute (@usuario | id) (xS | xM | xH | xD) (motivo)`, 'Silencia a un usuario de forma temporal')
             .addField(`🔊 ${config.staffPrefix}unmute (@usuario | id) (motivo)`, `Des-silencia a un usuario${resources.shield}`)

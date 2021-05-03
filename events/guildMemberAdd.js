@@ -112,8 +112,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
                     .setAuthor(`Nuevo miembro`, `https://i.imgur.com/A60x2Di.png`)
                     .setDescription(`${event.user.username} se unió al servidor`)
                     .addField(`🏷 TAG completo`, event.user.tag, true)
-                    .addField(`🆔 ID del usuario`, event.user.id, true)
-                    .setFooter(event.guild.name, event.guild.iconURL()).setTimestamp()
+                    .addField('🆔 ID del usuario', event.user.id, true);
 
                 let dmWelcomeEmbed = new discord.MessageEmbed()
                     .setColor(resources.gold)
@@ -155,8 +154,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
             .addField(`Evento:`, `guildMemberAdd`, true)
             .addField(`Fecha:`, new Date().toLocaleString(), true)
-            .addField(`Error:`, `\`\`\`${error}\`\`\``)
-            .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp();
+            .addField('Error:', `\`\`\`${error}\`\`\``);
         
         //Se envía el mensaje al canal de depuración
         await client.channels.cache.get(config.debuggingChannel).send(debuggEmbed);

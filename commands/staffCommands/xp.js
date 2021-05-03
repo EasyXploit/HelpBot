@@ -175,8 +175,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setColor(resources.blue)
             .setTitle('📑 Auditoría - [SISTEMA DE XP]')
             .setDescription(`Se ha modificado la cantidad de XP de **${member.user.tag}**.`)
-            .setTimestamp()
-            .setFooter(client.user.username, client.user.avatarURL())
             .addField('Fecha:', new Date().toLocaleString(), true)
             .addField('Moderador:', message.author.tag, true)
             .addField('Miembro:', member.user.tag, true)

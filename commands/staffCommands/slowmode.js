@@ -22,8 +22,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setColor(resources.blue)
                 .setTitle('📑 Auditoría - [MODO LENTO]')
                 .setDescription('Se ha des-habilitado el modo lento.')
-                .setTimestamp()
-                .setFooter(client.user.username, client.user.avatarURL())
                 .addField('Moderador:', message.author.tag, true)
                 .addField('Canal:', `<#${message.channel.id}>`, true);
 
@@ -56,8 +54,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setColor(resources.blue)
                 .setTitle('📑 Auditoría - [MODO LENTO]')
                 .setDescription('Se ha habilitado el modo lento.')
-                .setTimestamp()
-                .setFooter(client.user.username, client.user.avatarURL())
                 .addField('Moderador:', message.author.tag, true)
                 .addField('Duración:', `${seconds}s`, true)
                 .addField('Canal:', `<#${message.channel.id}>`, true)

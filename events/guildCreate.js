@@ -28,8 +28,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
                 .addField(`🌍 Región`, event.region, true)
                 .addField(`🆙 Large guild (+250)`, large, true)
                 .addField(`👥 Miembros`, event.members.filter(m => !m.user.bot).size, true)
-                .addField(`${resources.GreenTick} Verificado`, verified, true)
-                .setTimestamp()
+                .addField(`${resources.GreenTick} Verificado`, verified, true);
 
             await client.channels.cache.get(config.debuggingChannel).send(debuggingEmbed)
 
@@ -54,8 +53,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
             .addField(`Evento:`, `guildCreate`, true)
             .addField(`Fecha:`, new Date().toLocaleString(), true)
-            .addField(`Error:`, `\`\`\`${error}\`\`\``)
-            .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp();
+            .addField(`Error:`, `\`\`\`${error}\`\`\``);
         
         //Se envía el mensaje al canal de depuración
         await client.channels.cache.get(config.debuggingChannel).send(debuggEmbed);

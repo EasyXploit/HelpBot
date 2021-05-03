@@ -35,8 +35,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.blue)
-            .setTimestamp()
-            .setFooter(client.user.username, client.user.avatarURL())
             .setDescription(`${message.author.username} cambió el canal de depuración a <#${channel}>`);
             .setTitle('📑 Auditoría - [CANAL DE DEPURACIÓN]')
         

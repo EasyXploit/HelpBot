@@ -94,8 +94,6 @@ exports.run = (discord, client, fs, resources, moment, config) => {
 
             let debuggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.orange)
-                .setTimestamp()
-                .setFooter(client.user.username, client.user.avatarURL())
                 .setDescription(`${resources.OrangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);
             debuggingChannel.send(debuggingEmbed);
         }

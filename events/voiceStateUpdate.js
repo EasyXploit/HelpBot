@@ -76,8 +76,7 @@ exports.run = async (oldState, newState, discord, fs, config, keys, client, reso
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
             .addField(`Evento:`, `voiceStateUpdate`, true)
             .addField(`Fecha:`, new Date().toLocaleString(), true)
-            .addField(`Error:`, `\`\`\`${error}\`\`\``)
-            .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp();
+            .addField(`Error:`, `\`\`\`${error}\`\`\``);
         
         //Se envía el mensaje al canal de depuración
         await client.channels.cache.get(config.debuggingChannel).send(debuggEmbed);

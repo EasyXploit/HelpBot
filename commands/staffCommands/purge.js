@@ -47,8 +47,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             let loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue)
-                .setTimestamp()
-                .setFooter(client.user.username, client.user.avatarURL())
                 .setTitle('📑 Auditoría - [PURGA DE MENSAJES]')
                 .setDescription(`${message.author.tag} eliminó ${count} mensajes del canal <#${channel.id}>`);
             
@@ -73,8 +71,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             let loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue)
-                .setTimestamp()
-                .setFooter(client.user.username, client.user.avatarURL())
                 .setTitle('📑 Auditoría - [PURGA DE MENSAJES]')
                 .setDescription(`${message.author.tag} eliminó ${count} mensajes del canal <#${channel.id}>`);
             

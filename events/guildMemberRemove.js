@@ -67,8 +67,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
                 .setAuthor(`Un miembro abandonó`, `https://i.imgur.com/2nZ23V4.png`)
                 .setDescription(`${event.user.username} abandonó el servidor`)
                 .addField(`🏷 TAG completo`, event.user.tag, true)
-                .addField(`🆔 ID del usuario`, event.user.id, true)
-                .setFooter(event.guild.name, event.guild.iconURL()).setTimestamp()
+                .addField(`🆔 ID del usuario`, event.user.id, true);
             
             return await client.channels.cache.get(config.loggingChannel).send(loggingEmbed);
         }
@@ -87,8 +86,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
             .addField(`Evento:`, `guildMemberRemove`, true)
             .addField(`Fecha:`, new Date().toLocaleString(), true)
-            .addField(`Error:`, `\`\`\`${error}\`\`\``)
-            .setFooter(new Date().toLocaleString(), resources.server.iconURL()).setTimestamp();
+            .addField(`Error:`, `\`\`\`${error}\`\`\``);
         
         //Se envía el mensaje al canal de depuración
         await client.channels.cache.get(config.debuggingChannel).send(debuggEmbed);

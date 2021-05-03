@@ -54,7 +54,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setDescription(`${message.author.username} cambió el prefijo ${prefixType} a \`${newPrefix}\``);
 
         if (args[1] === 'todos') {
-            if (newPrefix === config.prefix) return message.channel.send(actuallyConfiguredEmbed);
+            if (newPrefix === config.prefix || newPrefix === config.staffPrefix || newPrefix === config.ownerPrefix) return message.channel.send(actuallyConfiguredEmbed);
             
             //Graba el nuevo prefijo
             config.prefix = newPrefix;
@@ -65,7 +65,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             await loggingChannel.send(loggingEmbed);
             await message.channel.send(successEmbed);
         } else if (args[1] === 'staff') {
-            if (newPrefix === config.staffPrefix) return message.channel.send(actuallyConfiguredEmbed);
+            if (newPrefix === config.prefix || newPrefix === config.staffPrefix || newPrefix === config.ownerPrefix) return message.channel.send(actuallyConfiguredEmbed);
             
             //Graba el nuevo prefijo
             config.staffPrefix = newPrefix;
@@ -76,7 +76,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             await loggingChannel.send(loggingEmbed);
             await message.channel.send(successEmbed);
         } else if (args[1] === 'owner') {
-            if (newPrefix === config.ownerPrefix) return message.channel.send(actuallyConfiguredEmbed);
+            if (newPrefix === config.prefix || newPrefix === config.staffPrefix || newPrefix === config.ownerPrefix) return message.channel.send(actuallyConfiguredEmbed);
             
             //Graba el nuevo prefijo
             config.ownerPrefix = newPrefix;

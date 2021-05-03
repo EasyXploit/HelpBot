@@ -103,20 +103,13 @@ exports.run = (discord, client, fs, resources, moment, config) => {
     //Comprobación de encuestas expiradas
     client.setInterval(async () => {
         for (let idKey in client.polls) {
-            let channel;
+            let channel, poll;
             let duration = client.polls[idKey].duration;
 
             try {
                 channel = await client.channels.fetch(client.polls[idKey].channel);
+                poll = await channel.messages.fetch(idKey);
             } catch (e) {
-                delete client.polls[idKey];
-                return fs.writeFile(`./storage/polls.json`, JSON.stringify(client.polls), async err => {
-                    if (err) throw err;
-                });
-            };
-
-            let poll = await channel.messages.fetch(idKey);
-            if (!poll) {
                 delete client.polls[idKey];
                 return fs.writeFile(`./storage/polls.json`, JSON.stringify(client.polls), async err => {
                     if (err) throw err;

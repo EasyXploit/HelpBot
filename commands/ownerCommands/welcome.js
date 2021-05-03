@@ -37,8 +37,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setColor(resources.blue)
             .setTimestamp()
             .setFooter(client.user.username, client.user.avatarURL())
-            .setTitle('📑 Auditoría')
             .setDescription(`${message.author.username} cambió el canal de bienvenida a <#${channel}>`);
+            .setTitle('📑 Auditoría - [CANAL DE BIENVENIDA]')
         
         await message.channel.send(completedEmbed);
         await loggingChannel.send(loggingEmbed);

@@ -50,8 +50,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setColor(resources.blue)
             .setTimestamp()
             .setFooter(client.user.username, client.user.avatarURL())
-            .setTitle('📑 Auditoría')
             .setDescription(`${message.author.username} cambió el prefijo ${prefixType} a \`${newPrefix}\``);
+            .setTitle('📑 Auditoría - [PREFIJO]')
 
         if (args[1] === 'todos') {
             if (newPrefix === config.prefix || newPrefix === config.staffPrefix || newPrefix === config.ownerPrefix) return message.channel.send(actuallyConfiguredEmbed);

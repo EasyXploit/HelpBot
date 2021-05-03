@@ -173,7 +173,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.blue)
-            .setTitle('📑 Auditoría')
+            .setTitle('📑 Auditoría - [SISTEMA DE XP]')
             .setDescription(`Se ha modificado la cantidad de XP de **${member.user.tag}**.`)
             .setTimestamp()
             .setFooter(client.user.username, client.user.avatarURL())

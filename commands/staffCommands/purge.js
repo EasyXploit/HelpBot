@@ -49,7 +49,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setColor(resources.blue)
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL())
-                .setTitle('📑 Auditoría')
+                .setTitle('📑 Auditoría - [PURGA DE MENSAJES]')
                 .setDescription(`${message.author.tag} eliminó ${count} mensajes del canal <#${channel.id}>`);
             
             try {
@@ -75,7 +75,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 .setColor(resources.blue)
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL())
-                .setTitle('📑 Auditoría')
+                .setTitle('📑 Auditoría - [PURGA DE MENSAJES]')
                 .setDescription(`${message.author.tag} eliminó ${count} mensajes del canal <#${channel.id}>`);
             
             try {

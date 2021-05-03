@@ -20,7 +20,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue)
-                .setTitle('📑 Auditoría')
+                .setTitle('📑 Auditoría - [MODO LENTO]')
                 .setDescription('Se ha des-habilitado el modo lento.')
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL())
@@ -54,7 +54,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue)
-                .setTitle('📑 Auditoría')
+                .setTitle('📑 Auditoría - [MODO LENTO]')
                 .setDescription('Se ha habilitado el modo lento.')
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL())

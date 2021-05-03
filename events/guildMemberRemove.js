@@ -10,7 +10,8 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
                 if (event.user.id === client.user.id) return;
                 const loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.orange)
-                    .addField(`📤 Auditoría`, `El **BOT** @${event.user.tag} fue expulsado del servidor`);
+                    .setTitle('📑 Auditoría - [BOTS]')
+                    .setDescription(`El **BOT** @${event.user.tag} fue expulsado del servidor.`);
                 
                 await client.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             } else {

@@ -66,7 +66,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue)
-                .setTitle('📑 Auditoría')
+                .setTitle('📑 Auditoría - [INFRACCIONES]')
                 .setDescription('Se han retirado todas las advertencias.')
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL())
@@ -94,7 +94,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             loggingEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue)
-                .setTitle('📑 Auditoría')
+                .setTitle('📑 Auditoría - [INFRACCIONES]')
                 .setDescription('Se ha retirado una advertencia.')
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL())

@@ -10,7 +10,8 @@ exports.run = async (guild, user, discord, fs, config, keys, client, resources) 
 
                 const loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.orange)
-                    .addField(`📤 Auditoría`, `El **BOT** <@${user.tag}> fue baneado del servidor`);
+                    .setTitle('📑 Auditoría - [BOTS]')
+                    .setDescription(`El **BOT** <@${event.user.tag}> fue baneado del servidor.`);
 
                 await client.channels.cache.get(config.loggingChannel).send(loggingEmbed)
             } else {

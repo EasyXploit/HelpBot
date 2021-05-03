@@ -54,8 +54,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(resources.blue)
             .setTimestamp()
-            .setTitle('📑 Auditoría')
             .setDescription(`${message.author.username} cambió ${changed} del bot a \`${content}\``);
+            .setTitle('📑 Auditoría - [PRESENCIA]')
 
         await loggingChannel.send(loggingEmbed);
         await message.channel.send(resultEmbed)

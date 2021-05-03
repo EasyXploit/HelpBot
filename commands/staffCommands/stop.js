@@ -14,8 +14,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setColor(resources.orange)
             .setTimestamp()
             .setFooter(client.user.username, client.user.avatarURL())
-            .setTitle('📑 Auditoría')
             .setDescription(`**${message.author.tag}** detuvo a **${client.user.username}**. \nEl bot tendrá que ser arrancado manualmente`);
+            .setTitle('📑 Auditoría - [ESTADO DEL BOT]')
 
         console.log(`${new Date().toLocaleString()} 》Deteniendo ${client.user.username} a petición de ${message.author.username}`);
         

@@ -135,7 +135,8 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
             let loggingWelcomeBotEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue)
                 .setTimestamp()
-                .addField(`📑 Auditoría`, `El **BOT** @${event.user.username} fue añadido al servidor ↙`);
+                .setTitle('📑 Auditoría - [BOTS]')
+                .setDescription(`El **BOT** @${event.user.tag} fue añadido al servidor.`);
             loggingChannel.send(loggingWelcomeBotEmbed)
             return;
         }

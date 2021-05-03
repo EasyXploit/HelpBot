@@ -47,7 +47,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             switch (type) {
                 case 'autor':
                     resultEmbed = new discord.MessageEmbed()
-                        .setAuthor('Mensaje de: ' + message.author.username, message.author.avatarURL())
+                        .setAuthor(`Mensaje de: ${message.author.tag}`, message.author.avatarURL())
                         .setColor(resources.gold)
                         .setDescription(toDM);
                 

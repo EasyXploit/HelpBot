@@ -68,12 +68,12 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let resultEmbed = new discord.MessageEmbed()
             .setColor(resources.gold)
             .setTitle(`⚠ Infracciones`)
-            .setDescription(`Mostrando las infracciones del miembro **${member.user.tag}**\nSanción actual: \`${sanction || 'Ninguna'}\``)
+            .setDescription(`Mostrando las advertencias del miembro **${member.user.tag}**\nSanción actual: \`${sanction || 'Ninguna'}\``)
             .setThumbnail(user.displayAvatarURL())
             .addField(`Últimas 24h`, infractionsCount.day, true)
             .addField(`Últimos 7 días`, infractionsCount.week, true)
             .addField(`Total`, infractionsCount.total, true)
-            .addField(`Últimas 10 infracciones`, lastWarns || 'Ninguna');
+            .addField(`Últimas 10 advertencias`, lastWarns || 'Ninguna');
         
         message.channel.send(resultEmbed);
     } catch (e) {

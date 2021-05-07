@@ -9,9 +9,27 @@ async function swearWords(message) {
 
 //Invitaciones
 async function invites(message) {
-    
-    const invites = ['discord.gg', '.gg/', '.gg /', '. gg /', '. gg/', 'discord .gg /', 'discord.gg /', 'discord .gg/', 'discord .gg', 'discord . gg', 'discord. gg', 'discord gg', 'discordgg', 'discord gg /'];
-    if (invites.some(word => message.content.toLowerCase().includes(word))) return true;
+
+    //Filtra el texto en busca de códigos de invitación
+    let detectedInvites = message.content.match(/(https?:\/\/)?(www.)?(discord.(gg|io|me|li)|discordapp.com\/invite)\/[^\s\/]+?(?=\b)/gm);
+
+    //Si se encontraron invitaciones, se comprueba que no sean de la guild
+    if (detectedInvites) {
+        let legitInvites = 0;
+
+        await message.guild.fetchInvites().then(guildInvites => {
+
+            let inviteCodes = Array.from(guildInvites.keys());
+
+            detectedInvites.forEach(filteredInvite => {
+                inviteCodes.forEach(inviteCode => {
+                    if (filteredInvite.includes(inviteCode)) legitInvites++;
+                });
+            });
+        });
+
+        if (legitInvites < detectedInvites.length) return true;
+    };
 };
 
 //Mayúsculas

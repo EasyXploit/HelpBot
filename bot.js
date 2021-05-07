@@ -200,16 +200,12 @@ client.on('message', async message => {
                 .addField('Mensaje', spamMessage, true)
                 .addField('Duración', '∞', true);
             
-            await loggingChannel.send(loggingEmbed).then(resources.server.ban(member.id, {reason: 'Spam vía MD'}));
+            await loggingChannel.send(loggingEmbed).then(resources.server.ban(member.id, {reason: 'Spam vía MD a usuario cebo'}));
             
             return;
         } else {
-            const noDMEmbed = new discord.MessageEmbed()
-                .setColor(resources.gray)
-                .setDescription(`${resources.GrayTick} | Por el momento, los comandos de **${client.user.username}** solo está disponible desde el servidor de la **República Gamer**.`);
             
             if (!message.content) return;
-            if (message.content.startsWith(config.prefix) || message.content.startsWith(config.staffPrefix) || message.content.startsWith(config.ownerPrefix)) return await message.author.send(noDMEmbed);
  
             const pilkoChatEmbed = new discord.MessageEmbed()
                 .setColor(resources.blue2)
@@ -217,6 +213,65 @@ client.on('message', async message => {
                 .setDescription(message.content);
 
             await pilkoChatChannel.send(pilkoChatEmbed);
+
+            //Filtra el texto en busca de códigos de invitación
+            let detectedInvites = message.content.match(/(https?:\/\/)?(www.)?(discord.(gg|io|me|li)|discordapp.com\/invite)\/[^\s\/]+?(?=\b)/gm);
+
+            //Si se encontraron invitaciones, se comprueba que no sean de la guild
+            if (detectedInvites) {
+                let legitInvites = 0;
+
+                await client.homeGuild.fetchInvites().then(guildInvites => {
+
+                    let inviteCodes = Array.from(guildInvites.keys());
+
+                    detectedInvites.forEach(filteredInvite => {
+                        inviteCodes.forEach(inviteCode => {
+                            if (filteredInvite.includes(inviteCode)) legitInvites++;
+                        });
+                    });
+                });
+
+                console.log(legitInvites);
+                console.log(detectedInvites.length);
+
+                //Si alguna no lo es, lo banea
+                if (legitInvites < detectedInvites.length) {
+                    const member = await resources.fetchMember(client.homeGuild, message.author.id);
+                    if ((member.joinedTimestamp + 1800000) < Date.now()) {
+                        client.bans[member.id] = {
+                            time: Date.now() + 1209600000
+                        };
+
+                        let toDMEmbed = new discord.MessageEmbed()
+                            .setColor(resources.red2)
+                            .setAuthor('[EXPULSADO]', client.homeGuild.iconURL())
+                            .setDescription(`<@${member.id}>, has sido expulsado de ${client.homeGuild.name}`)
+                            .addField('Moderador', client.user.tag, true)
+                            .addField('Razón', 'Spam vía MD', true);
+
+                        await member.send(toDMEmbed);
+                        return await member.kick(`Moderador: ${client.user.id}, Razón: Spam vía MD al bot`);
+                    } else {
+                        let toDMEmbed = new discord.MessageEmbed()
+                            .setColor(resources.red)
+                            .setAuthor(`[BANEADO]`, client.homeGuild.iconURL())
+                            .setDescription(`<@${member.id}>, has sido baneado en ${client.homeGuild.name}`)
+                            .addField('Moderador', client.user.tag, true)
+                            .addField('Razón', 'Spam vía MD', true)
+                            .addField('Duración', '14d', true);
+
+                        await member.send(toDMEmbed);
+                        return await client.homeGuild.members.ban(member, {reason: `Moderador: ${client.user.id}, Duración: 14d, Razón: Spam vía MD al bot`});
+                    };
+                };
+            };
+
+            const noDMEmbed = new discord.MessageEmbed()
+                .setColor(resources.gray)
+                .setDescription(`${resources.GrayTick} | Por el momento, los comandos de **${client.user.username}** solo está disponible desde el servidor de la **República Gamer**.`);
+
+            if (message.content.startsWith(config.prefix) || message.content.startsWith(config.staffPrefix) || message.content.startsWith(config.ownerPrefix)) return await message.author.send(noDMEmbed);
 
             if (!client.dmContexts[message.author.id]) client.dmContexts[message.author.id] = ['Hablemos en Español'];
 
@@ -260,7 +315,7 @@ client.on('message', async message => {
                     }
 
                     await automodFilters[key](message).then(match => {
-                        if (match) require('./utils/infractionsHandler.js').run(discord, fs, config, client, resources, loggingChannel, message, message.guild, message.member, filters[key].reason, filters[key].action, client.user, message.content)
+                        if (match) require('./utils/infractionsHandler.js').run(discord, fs, config, client, resources, loggingChannel, message, message.guild, message.member, filters[key].reason, filters[key].action, client.user, message.content);
                     });
                 }
             })();

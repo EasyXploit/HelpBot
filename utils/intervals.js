@@ -67,11 +67,10 @@ exports.run = (discord, client, fs, resources, moment, config) => {
             let user = await client.users.fetch(idKey);
 
             if (Date.now() > time) {
+
                 let loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.green)
                     .setAuthor(`${user.tag} ha sido DES-BANEADO`, user.displayAvatarURL())
-
-                await guild.members.unban(idKey);
                     .addField('Usuario', user.tag, true)
                     .addField('Moderador', `<@${client.user.id}>`, true)
                     .addField('Razón', 'Venció la amonestación', true);
@@ -80,7 +79,12 @@ exports.run = (discord, client, fs, resources, moment, config) => {
                 fs.writeFile('./storage/bans.json', JSON.stringify(client.bans, null, 4), async err => {
                     if (err) throw err;
 
-                    await loggingChannel.send(loggingEmbed);
+                    try {
+                        await guild.members.unban(idKey);
+                        await loggingChannel.send(loggingEmbed);
+                    } catch (e) {
+                        if (e.toString().includes(`Unknown Ban`)) return;
+                    };
                 });
             };
         };

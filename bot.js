@@ -115,7 +115,7 @@ client.on('ready', async () => {
         });
 
         //Carga de intervalos
-        require('./utils/intervals.js').run(discord, client, fs, resources, moment, config);
+        require('./utils/intervals.js').run(discord, client, fs, resources, config);
 
         //Auditoría
         console.log(` 》${client.user.username} iniciado correctamente \n  ● Estatus: ${config.status}\n  ● Tipo de actividad: ${config.type}\n  ● Actividad: ${config.game}\n`);

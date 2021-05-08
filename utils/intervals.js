@@ -1,4 +1,4 @@
-exports.run = (discord, client, fs, resources, moment, config) => {
+exports.run = (discord, client, fs, resources, config) => {
 
     const debuggingChannel = client.channels.cache.get(config.debuggingChannel);
     const loggingChannel = client.channels.cache.get(config.loggingChannel);

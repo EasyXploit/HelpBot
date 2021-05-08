@@ -232,9 +232,6 @@ client.on('message', async message => {
                     });
                 });
 
-                console.log(legitInvites);
-                console.log(detectedInvites.length);
-
                 //Si alguna no lo es, lo banea
                 if (legitInvites < detectedInvites.length) {
                     const member = await resources.fetchMember(client.homeGuild, message.author.id);

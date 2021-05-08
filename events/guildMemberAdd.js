@@ -104,7 +104,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
 
                 let dmWelcomeEmbed = new discord.MessageEmbed()
                     .setColor(resources.gold)
-                    .setAuthor('REPÚBLICA GAMER', event.user.displayAvatarURL())
+                    .setAuthor('REPÚBLICA GAMER', client.homeGuild.iconURL())
                     .setImage('https://i.imgur.com/IeExpLO.png')
                     .setTitle(`Hola **${event.user.username}**, bienvenido a la __República Gamer__ :tada:`)
                     .setDescription('**¡Nos alegra que hayas decidido unirte a nuestra comunidad!**\nA continuación, te mostramos una breve guía sobre como empezar a participar en nuestro servidor. __¡Esperamos que lo pases bien!__')

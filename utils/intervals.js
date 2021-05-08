@@ -70,11 +70,11 @@ exports.run = (discord, client, fs, resources, moment, config) => {
                 let loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.green)
                     .setAuthor(`${user.tag} ha sido DES-BANEADO`, user.displayAvatarURL())
-                    .addField(`Usuario`, user.tag, true)
-                    .addField(`Moderador`, `<@${client.user.id}>`, true)
-                    .addField(`Razón`, `Venció la amonestación`, true);
 
                 await guild.members.unban(idKey);
+                    .addField('Usuario', user.tag, true)
+                    .addField('Moderador', `<@${client.user.id}>`, true)
+                    .addField('Razón', 'Venció la amonestación', true);
 
                 delete client.bans[idKey];
                 fs.writeFile('./storage/bans.json', JSON.stringify(client.bans, null, 4), async err => {
@@ -82,9 +82,9 @@ exports.run = (discord, client, fs, resources, moment, config) => {
 
                     await loggingChannel.send(loggingEmbed);
                 });
-            }
-        }
-    }, 5000)
+            };
+        };
+    }, 5000);
 
     //Comprobación del tiempo de respuesta del Websocket
     client.setInterval(async () => {

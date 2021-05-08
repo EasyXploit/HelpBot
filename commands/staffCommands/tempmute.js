@@ -5,7 +5,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
     try {
         let notToMuteEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Debes mencionar a un miembro o escribir su id`);
+            .setDescription(`${resources.RedTick} No se ha encontrado al miembro. Debes mencionarlo o escribir su id`);
 
         let noBotsEmbed = new discord.MessageEmbed()
             .setColor(resources.red2)

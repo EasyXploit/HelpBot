@@ -49,7 +49,7 @@ exports.run = (discord, client, fs, resources, moment, config) => {
                 await member.roles.remove(role);
 
                 delete client.mutes[idKey];
-                fs.writeFile(`./storage/mutes.json`, JSON.stringify(client.mutes), async err => {
+                fs.writeFile(`./storage/mutes.json`, JSON.stringify(client.mutes, null, 4), async err => {
                     if (err) throw err;
 
                     await loggingChannel.send(loggingEmbed);
@@ -77,7 +77,7 @@ exports.run = (discord, client, fs, resources, moment, config) => {
                 await guild.members.unban(idKey);
 
                 delete client.bans[idKey];
-                fs.writeFile(`./storage/bans.json`, JSON.stringify(client.bans), async err => {
+                fs.writeFile('./storage/bans.json', JSON.stringify(client.bans, null, 4), async err => {
                     if (err) throw err;
 
                     await loggingChannel.send(loggingEmbed);

@@ -12,10 +12,10 @@ exports.run = (discord, client, fs, resources, config) => {
 
                 let guild = client.guilds.cache.get(resources.server.id);
             
-                let role = guild.roles.cache.find(r => r.name === `Silenciado`)
+                let role = guild.roles.cache.find(r => r.name === '🔇 SILENCIADO')
                 if (!role) continue;
 
-                const member = await resources.fetchMember(message.guild, args[1]);
+                const member = await resources.fetchMember(guild, idKey);
                 if (!member) {
                     delete client.mutes[idKey];
                     fs.writeFile('storage/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
@@ -23,13 +23,14 @@ exports.run = (discord, client, fs, resources, config) => {
 
                         let loggingEmbed = new discord.MessageEmbed()
                             .setColor(resources.green)
-                            .setAuthor(`${client.mutes[idKey].tag} ha sido DES-SILENCIADO, pero no se encontraba en el servidor`)
+                            .setAuthor('Un usuario ha sido DES-SILENCIADO, pero no se encontraba en el servidor')
                             .addField('ID', idKey, true)
                             .addField('Moderador', `<@${client.user.id}>`, true)
                             .addField('Razón', 'Venció la amonestación', true);
 
-                        return await loggingChannel.send(loggingEmbed);
+                        await loggingChannel.send(loggingEmbed);
                     });
+                    return;
                 };
 
                 let loggingEmbed = new discord.MessageEmbed()

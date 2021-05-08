@@ -17,16 +17,16 @@ exports.run = (discord, client, fs, resources, config) => {
 
                 const member = await resources.fetchMember(message.guild, args[1]);
                 if (!member) {
-                    await delete client.mutes[idKey];
-                    fs.writeFile(`storage/mutes.json`, JSON.stringify(client.mutes), async err => {
+                    delete client.mutes[idKey];
+                    fs.writeFile('storage/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
                         if (err) throw err;
 
                         let loggingEmbed = new discord.MessageEmbed()
                             .setColor(resources.green)
                             .setAuthor(`${client.mutes[idKey].tag} ha sido DES-SILENCIADO, pero no se encontraba en el servidor`)
-                            .addField(`ID`, idKey, true)
-                            .addField(`Moderador`, `<@${client.user.id}>`, true)
-                            .addField(`Razón`, `Venció la amonestación`, true);
+                            .addField('ID', idKey, true)
+                            .addField('Moderador', `<@${client.user.id}>`, true)
+                            .addField('Razón', 'Venció la amonestación', true);
 
                         return await loggingChannel.send(loggingEmbed);
                     });
@@ -35,29 +35,29 @@ exports.run = (discord, client, fs, resources, config) => {
                 let loggingEmbed = new discord.MessageEmbed()
                     .setColor(resources.green)
                     .setAuthor(`${member.user.tag} ha sido DES-SILENCIADO`, member.user.displayAvatarURL())
-                    .addField(`Miembro`, member.user.tag, true)
-                    .addField(`Moderador`, `<@${client.user.id}>`, true)
-                    .addField(`Razón`, `Venció la amonestación`, true);
+                    .addField('Miembro', member.user.tag, true)
+                    .addField('Moderador', `<@${client.user.id}>`, true)
+                    .addField('Razón', 'Venció la amonestación', true);
 
                 let toDMEmbed = new discord.MessageEmbed()
                     .setColor(resources.green)
-                    .setAuthor(`[DES-SILENCIADO]`, guild.iconURL())
+                    .setAuthor('[DES-SILENCIADO]', guild.iconURL())
                     .setDescription(`${member.user.tag}, has sido des-silenciado en ${guild.name}`)
-                    .addField(`Moderador`, client.user.id, true)
-                    .addField(`Razón`, `Venció la amonestación`, true);
+                    .addField('Moderador', `<@${client.user.id}>`, true)
+                    .addField('Razón', 'Venció la amonestación', true);
 
                 await member.roles.remove(role);
 
                 delete client.mutes[idKey];
-                fs.writeFile(`./storage/mutes.json`, JSON.stringify(client.mutes, null, 4), async err => {
+                fs.writeFile('./storage/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
                     if (err) throw err;
 
                     await loggingChannel.send(loggingEmbed);
                     await member.send(toDMEmbed);
                 });
-            }
-        }
-    }, 5000)
+            };
+        };
+    }, 5000);
 
     //Comprobación de miembros baneados temporalmente
     client.setInterval(async () => {
@@ -83,7 +83,7 @@ exports.run = (discord, client, fs, resources, config) => {
                         await guild.members.unban(idKey);
                         await loggingChannel.send(loggingEmbed);
                     } catch (e) {
-                        if (e.toString().includes(`Unknown Ban`)) return;
+                        if (e.toString().includes('Unknown Ban')) return;
                     };
                 });
             };
@@ -101,8 +101,8 @@ exports.run = (discord, client, fs, resources, config) => {
                 .setFooter(client.user.username, client.user.avatarURL())
                 .setDescription(`${resources.OrangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);
             debuggingChannel.send(debuggingEmbed);
-        }
-    }, 60000)
+        };
+    }, 60000);
 
     //Comprobación de encuestas expiradas
     client.setInterval(async () => {
@@ -115,7 +115,7 @@ exports.run = (discord, client, fs, resources, config) => {
                 poll = await channel.messages.fetch(idKey);
             } catch (e) {
                 delete client.polls[idKey];
-                return fs.writeFile(`./storage/polls.json`, JSON.stringify(client.polls, null, 4), async err => {
+                return fs.writeFile('./storage/polls.json', JSON.stringify(client.polls, null, 4), async err => {
                     if (err) throw err;
                 });
             };
@@ -159,7 +159,7 @@ exports.run = (discord, client, fs, resources, config) => {
                 });
 
                 delete client.polls[idKey];
-                fs.writeFile(`./storage/polls.json`, JSON.stringify(client.polls), async err => {
+                fs.writeFile('./storage/polls.json', JSON.stringify(client.polls, null, 4), async err => {
                     if (err) throw err;
                 });
             } else {

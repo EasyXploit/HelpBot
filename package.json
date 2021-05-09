@@ -1,14 +1,14 @@
 {
   "name": "pilkobot",
   "version": "2.17.3",
-  "description": "PilkoBot es un bot para uso exclusivo de los miembros de la República Gamer",
+  "description": "PilkoBot es un bot multifuncional para Discord desarrollado por el Staff de República Gamer, cuyo uso a fecha de publicación de este documento es exclusivo de los usuarios de dicha comunidad.",
   "main": "bot.js",
   "scripts": {
     "start": "nodemon ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/danielperales555/PilkoBot.git"
+    "url": "git+https://github.com/EasyXploit/PilkoBot.git"
   },
   "keywords": [
     "discord-bot",
@@ -17,9 +17,9 @@
   "author": "Daniel Perales Mauriz",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/danielperales555/PilkoBot/issues"
+    "url": "https://github.com/EasyXploit/PilkoBot/issues"
   },
-  "homepage": "https://github.com/danielperales555/PilkoBot#readme",
+  "homepage": "https://github.com/EasyXploit/PilkoBot#readme",
   "dependencies": {
     "@discordjs/opus": "^0.4.0",
     "@iamtraction/google-translate": "^1.1.2",

@@ -1,9 +1,9 @@
-const filters = require(`../../utils/automod/filters.json`);
+const filters = require('../configs/automodFilters.json');
 
 //Palabras malsonantes
 async function swearWords(message) {
 
-    const words = require('../../resources/texts/swearWords.json');
+    const words = require('../configs/bannedWords.json');
     if (words.some(word => message.content.toLowerCase().includes(word))) return true;
 };
 

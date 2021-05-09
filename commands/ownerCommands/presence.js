@@ -1,78 +1,70 @@
 exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
 
-    //$presence (status | activity) (online | offline | idle | dnd - membersCount - nombre de la actividad)
+    //$presence (status | name | type | membersCount) (online | offline | idle | dnd - PLAYING | STREAMING | LISTENING | WATCHING | COMPETING - nombre de la actividad - enable | disable)
     
     try {
 
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} La sintaxis del comando es \`${config.ownerPrefix}presence (status | activity) (online | offline | idle | dnd - membersCount - nombre de la actividad)\``);
+        const noCorrectSyntaxEmbed = new discord.MessageEmbed()
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} La sintaxis del comando es \`${client.config.prefixes.ownerPrefix}presence (status | name | type | membersCount) (online | offline | idle | dnd - PLAYING | STREAMING | LISTENING | WATCHING | COMPETING - nombre de la actividad - enable | disable)\``);
 
         if (!args[0] || !args[1]) return message.channel.send(noCorrectSyntaxEmbed);
 
-        let toModify = args[0];
+        let option = args[0].toLowerCase();
         let newValue = args.slice(1).join(' ');
         let changed;
 
-        if (toModify !== 'status' && toModify !== 'activity') return message.channel.send(noCorrectSyntaxEmbed);
+        if (option !== 'status' && option !== 'name' && option !== 'type' && option !== 'memberscount') return message.channel.send(noCorrectSyntaxEmbed);
 
         let actuallyConfiguredEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Esta configuración ya ha sido aplicada`);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} Esta configuración ya ha sido aplicada`);
 
-        if (toModify === 'status') {
-            if (newValue !== 'online' && newValue !== 'invisible' && newValue !== 'idle' && newValue !== 'dnd') return message.channel.send(noCorrectSyntaxEmbed);
-            if (newValue === config.status) return message.channel.send(actuallyConfiguredEmbed);
-            config.status = newValue;
-
-            //Graba la configuración
-            await fs.writeFile('./configs/config.json', JSON.stringify(config, null, 4), (err) => console.error);
-            await client.user.setStatus(config.status);
-
+        if (option === 'status') { //ESTADO DEL BOT
+            if (newValue.toLowerCase() !== 'online' && newValue.toLowerCase() !== 'invisible' && newValue.toLowerCase() !== 'idle' && newValue.toLowerCase() !== 'dnd') return message.channel.send(noCorrectSyntaxEmbed);
+            if (newValue.toLowerCase() === client.config.presence.status) return message.channel.send(actuallyConfiguredEmbed);
+            client.config.presence.status = newValue.toLowerCase();
             changed = 'el estado';
-        } else if (toModify === 'activity') {
-            if (newValue === config.game) return message.channel.send(actuallyConfiguredEmbed);
-            config.game = newValue;
-
-            //Graba la configuración
-            await fs.writeFile('./configs/config.json', JSON.stringify(config, null, 4), (err) => console.error);
-
-            if (newValue === 'membersCount') {
-                config.game = 'membersCount';
-
-                let usersCount = client.homeGuild.members.cache.filter(member => !member.user.bot).size;
-
-                await client.user.setPresence({
-                    status: config.status,
-                    activity: {
-                        name: `${usersCount} miembros | !ayuda`,
-                        type: config.type
-                    }
-                });
-            } else {
-                await client.user.setPresence({
-                    status: config.status,
-                    activity: {
-                        name: config.game,
-                        type: config.type
-                    }
-                });
-            };
-
+        } else if (option === 'type') { //TIPO DE ACTIVIDAD DEL BOT
+            if (newValue.toUpperCase() !== 'PLAYING' && newValue.toUpperCase() !== 'STREAMING' && newValue.toUpperCase() !== 'LISTENING' && newValue.toUpperCase() !== 'WATCHING' && newValue.toUpperCase() !== 'COMPETING') return message.channel.send(noCorrectSyntaxEmbed);
+            if (newValue.toUpperCase() === client.config.presence.type) return message.channel.send(actuallyConfiguredEmbed);
+            client.config.presence.type = newValue.toUpperCase();
+            changed = 'el tipo';   
+        } else if (option === 'name') { //NOMBRE DE LA ACTIVIDAD DEL BOT
+            if (newValue === client.config.presence.name) return message.channel.send(actuallyConfiguredEmbed);
+            client.config.presence.name = newValue;
             changed = 'la actividad';   
+        } else if (option === 'memberscount') { //CONTEO DE MIEMBROS DE LA GUILD
+            if (newValue.toLowerCase() !== 'enable' && newValue.toLowerCase() !== 'disable') return message.channel.send(noCorrectSyntaxEmbed);
+            if (newValue.toLowerCase() === 'enable' && client.config.presence.membersCount || newValue.toLowerCase() === 'disable' && !client.config.presence.membersCount) return message.channel.send(actuallyConfiguredEmbed);
+            newValue.toLowerCase() === 'enable' ? client.config.presence.membersCount = true : client.config.presence.membersCount = false;
+            changed = 'el conteo de miembros';
         };
 
-        let resultEmbed = new discord.MessageEmbed()
-            .setColor(resources.green2)
-            .setTitle(`${resources.GreenTick} Operación en marcha`)
+        //Graba la configuración
+        await fs.writeFile('./configs/presence.json', JSON.stringify(client.config.presence, null, 4), (err) => console.error);
+
+        //Ajusta la nueva presencia
+        await client.user.setPresence({
+            status: client.config.presence.status,
+            activity: {
+                name: client.config.presence.membersCount ? `${client.homeGuild.members.cache.filter(member => !member.user.bot).size} miembros | ${client.config.presence.name}` : client.config.presence.name,
+                type: client.config.presence.type
+            }
+        });
+
+        const resultEmbed = new discord.MessageEmbed()
+            .setColor(client.colors.green2)
+            .setTitle(`${client.emotes.greenTick} Operación en marcha`)
             .setDescription(`Cambiaste ${changed} del bot a \`${newValue}\`.\nEsta operación podría tardar unos minutos en completarse.`)
 
-        let loggingEmbed = new discord.MessageEmbed()
-            .setColor(resources.blue)
+        const loggingEmbed = new discord.MessageEmbed()
+            .setColor(client.colors.blue)
             .setTitle('📑 Auditoría - [PRESENCIA]')
             .setDescription(`${message.author.tag} cambió ${changed} del bot a \`${newValue}\`.`);
 
-        await loggingChannel.send(loggingEmbed);
+        //Confirma la aplicación de los cambios
+        await client.loggingChannel.send(loggingEmbed);
         await message.channel.send(resultEmbed)
     } catch (e) {
         require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);

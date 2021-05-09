@@ -1,6 +1,6 @@
 {
   "name": "pilkobot",
-  "version": "2.17.3",
+  "version": "3.0.0",
   "description": "PilkoBot es un bot multifuncional para Discord desarrollado por el Staff de República Gamer, cuyo uso a fecha de publicación de este documento es exclusivo de los usuarios de dicha comunidad.",
   "main": "bot.js",
   "scripts": {

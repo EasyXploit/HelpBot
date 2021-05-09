@@ -45,7 +45,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
         if (!client.voiceDispatcher) return message.channel.send(noDispatcherEmbed);
         
         //Comprueba si hay cola
-        if (!client.servers[message.guild.id] || client.servers[message.guild.id].queue <= 0) return message.channel.send(noQueueEmbed);
+        if (!client.queues[message.guild.id] || client.queues[message.guild.id].queue <= 0) return message.channel.send(noQueueEmbed);
         
         let isNaNEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
@@ -62,18 +62,18 @@ exports.run = async (discord, fs, client, message, args, command) => {
         if (args[0] === `0` || args[1] === `0`) return message.channel.send(`Quieres jugar sucio eh ...`);
         
         //Comprueba si el valor introducido es válido
-        if (args[0] > (client.servers[message.guild.id].queue.length) || args[1] > (client.servers[message.guild.id].queue.length)) return message.channel.send(tooBigEmbed);
+        if (args[0] > (client.queues[message.guild.id].queue.length) || args[1] > (client.queues[message.guild.id].queue.length)) return message.channel.send(tooBigEmbed);
 
         //Comprueba si es necesaria una votación
         if (await client.functions.evaluateDjOrVotes(message, 'move')) {
             //Obtiene el objeto a desplazar
-            let toMove = await client.servers[message.guild.id].queue[args[0] - 1];
+            let toMove = await client.queues[message.guild.id].queue[args[0] - 1];
             
             //Elimina el objeto
-            await client.servers[message.guild.id].queue.splice(args[0] - 1, 1);
+            await client.queues[message.guild.id].queue.splice(args[0] - 1, 1);
             
             //Lo vuelve a introducir en la ubicación especificada
-            await client.servers[message.guild.id].queue.splice(args[1] - 1, 0, toMove);
+            await client.queues[message.guild.id].queue.splice(args[1] - 1, 0, toMove);
             
             //Manda un mensaje de confirmación
             await message.channel.send(`${client.emotes.greenTick} | He reubicado la canción en la cola`);

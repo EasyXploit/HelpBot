@@ -61,9 +61,9 @@ exports.run = async (discord, fs, client, message, args, command) => {
         if (await client.functions.evaluateDjOrVotes(message, 'playskip', 0)) {
             //Función para generar el footer
             function getFooter() {
-                if (client.servers[message.guild.id] && client.servers[message.guild.id].mode) {
-                    switch (client.servers[message.guild.id].mode) {
                 let footer = client.homeGuild.name;
+                if (client.queues[message.guild.id] && client.queues[message.guild.id].mode) {
+                    switch (client.queues[message.guild.id].mode) {
                         case 'shuffle':
                             footer = footer + ` | 🔀`;
                     
@@ -94,7 +94,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
             async function reproduction(info) {
 
                 //Sube la canción a la cola en el primer puesto
-                await client.servers[message.guild.id].queue.splice(0, 0, info);
+                await client.queues[message.guild.id].queue.splice(0, 0, info);
                 
                 //Omite la reproducción y manda un mensaje de confirmación
                 await message.channel.send(`⏭ | Canción omitida`);
@@ -106,13 +106,13 @@ exports.run = async (discord, fs, client, message, args, command) => {
 
             //Función para prevenir duplicados
             async function preventDupes(link) {
-                if (!client.servers[message.guild.id]) return false;
-                if (client.servers[message.guild.id].nowplaying && link === client.servers[message.guild.id].nowplaying.link) {
+                if (!client.queues[message.guild.id]) return false;
+                if (client.queues[message.guild.id].nowplaying && link === client.queues[message.guild.id].nowplaying.link) {
                     dupesCount++;
                     return true;
                 };
-                for (let i = 0; i < client.servers[message.guild.id].queue.length; i++) {
-                    if (link === client.servers[message.guild.id].queue[i].link) {
+                for (let i = 0; i < client.queues[message.guild.id].queue.length; i++) {
+                    if (link === client.queues[message.guild.id].queue[i].link) {
                         dupesCount++;
                         return true;
                     };
@@ -130,11 +130,11 @@ exports.run = async (discord, fs, client, message, args, command) => {
                 let submitted = 0;
 
                 //Devuelve el total si aún no hay cola o está vacía
-                if (!client.servers[message.guild.id] || client.servers[message.guild.id].queue.length < 1) return authorized;
+                if (!client.queues[message.guild.id] || client.queues[message.guild.id].queue.length < 1) return authorized;
 
                 //Calcula cuantas canciones tiene el miembro en la cola
-                for (let i = 0; i < client.servers[message.guild.id].queue.length; i++) {
-                    if (memberID === client.servers[message.guild.id].queue[i].requestedById) submitted++;
+                for (let i = 0; i < client.queues[message.guild.id].queue.length; i++) {
+                    if (memberID === client.queues[message.guild.id].queue[i].requestedById) submitted++;
                 };
 
                 //Devuelve las canciones autorizadas restantes
@@ -197,7 +197,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
                         reproduction(info);
                     } else {
                         //Sube la canción a la cola
-                        client.servers[message.guild.id].queue.splice(i, 0, info);
+                        client.queues[message.guild.id].queue.splice(i, 0, info);
                     };
                 };
 

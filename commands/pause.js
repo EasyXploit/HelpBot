@@ -26,7 +26,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
         if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(notAvailableEmbed);
 
         //Comprueba si no hay reproducción
-        if (!client.servers[message.guild.id].nowplaying || Object.entries(client.servers[message.guild.id].nowplaying).length === 0) return message.channel.send(notPlayingEmbed);
+        if (!client.queues[message.guild.id].nowplaying || Object.entries(client.queues[message.guild.id].nowplaying).length === 0) return message.channel.send(notPlayingEmbed);
         
         //Comprueba si la reproducción ya está pausada
         if (!client.voiceDispatcher || client.voiceDispatcher.paused) return message.channel.send(alreadyPausedEmbed);

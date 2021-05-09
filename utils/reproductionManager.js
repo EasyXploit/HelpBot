@@ -5,7 +5,7 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
         async function play(connection, message) {
             
             //Almacena la información de reproducción del servidor
-            let server = client.servers[message.guild.id];
+            let server = client.queues[message.guild.id];
 
             //Almacena la posición a roproducir de la cola
             let toPlay = 0;
@@ -24,9 +24,9 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
 
             //Calcula cual es el título de la siguiente canción, si es que hay
             if (server.queue[1]) {
-                if (client.servers[message.guild.id].mode === 'shuffle') { //Caso aleatorio
+                if (client.queues[message.guild.id].mode === 'shuffle') { //Caso aleatorio
                     upNext = `Aleatorio`;
-                } else if (client.servers[message.guild.id].mode === 'loop') { //Caso loop
+                } else if (client.queues[message.guild.id].mode === 'loop') { //Caso loop
                     upNext = `[${server.queue[0].title}](${server.queue[0].link})`;
                 } else { //Caso normal / loopqueue
                     upNext = `[${server.queue[1].title}](${server.queue[1].link})`;
@@ -65,9 +65,9 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
             message.channel.send(playingEmbed);
             
             //Elimina de la cola la canción actual
-            if (client.servers[message.guild.id].mode === 'shuffle') { //Si el modo aleatorio está activado
-                client.servers[message.guild.id].queue.splice(toPlay, 1);
-            } else if (client.servers[message.guild.id].mode === 'loopqueue') { //Si el modo de cola en bucle está activado
+            if (client.queues[message.guild.id].mode === 'shuffle') { //Si el modo aleatorio está activado
+                client.queues[message.guild.id].queue.splice(toPlay, 1);
+            } else if (client.queues[message.guild.id].mode === 'loopqueue') { //Si el modo de cola en bucle está activado
                 //Regenera la información de la cola
                 let newQueueItem = {
                     link: server.nowplaying.link,
@@ -78,11 +78,11 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
                 };
 
                 //Vuelve a subir la canción al final de la cola
-                client.servers[message.guild.id].queue.push(newQueueItem);
+                client.queues[message.guild.id].queue.push(newQueueItem);
 
                 //Quita el primer elemento de la cola
                 server.queue.shift();
-            } else if (!client.servers[message.guild.id].mode) {
+            } else if (!client.queues[message.guild.id].mode) {
                 //Quita el primer elemento de la cola
                 server.queue.shift();
             };
@@ -129,7 +129,7 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
                         message.channel.send(`⏏ | He abandonado el canal`);
 
                         //Bora la información de reproducción del server
-                        delete client.servers[message.guild.id];
+                        delete client.queues[message.guild.id];
 
                         //Vacía la variable del timeout
                         client.voiceTimeout = null;

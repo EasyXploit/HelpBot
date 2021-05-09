@@ -38,12 +38,12 @@ exports.run = async (discord, fs, client, message, args, command) => {
         if (!client.voiceDispatcher) return message.channel.send(noDispatcherEmbed);
         
         //Comprueba si hay cola
-        if (!client.servers[message.guild.id] || client.servers[message.guild.id].queue <= 0) return message.channel.send(noQueueEmbed);
+        if (!client.queues[message.guild.id] || client.queues[message.guild.id].queue <= 0) return message.channel.send(noQueueEmbed);
 
         //Comprueba si es necesaria una votación
         if (await client.functions.evaluateDjOrVotes(message, 'clear')) {
             //Borra la cola
-            client.servers[message.guild.id].queue = [];
+            client.queues[message.guild.id].queue = [];
             
             //Manda un mensaje de confirmación
             await message.channel.send(`${client.emotes.greenTick} | Cola eliminada`);

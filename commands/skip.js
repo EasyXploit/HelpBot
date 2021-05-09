@@ -49,7 +49,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
                 //Comprueba si es necesaria una votación
                 if (await client.functions.evaluateDjOrVotes(message, 'skip-all')) {
                     //Cambia la cola
-                    await client.servers[message.guild.id].queue.splice(0, client.servers[message.guild.id].queue.length);
+                    await client.queues[message.guild.id].queue.splice(0, client.queues[message.guild.id].queue.length);
                     await skip();
                 };
             } else {
@@ -62,10 +62,10 @@ exports.run = async (discord, fs, client, message, args, command) => {
                     .setDescription(`${client.emotes.redTick} No puedes omitir más de una canción con el modo loop activado.`);
                 
                 //Comprueba si está activado el modo aleatorio
-                if (client.servers[message.guild.id].mode === 'shuffle') return message.channel.send(tooMuchSkipsRandomEmbed);
+                if (client.queues[message.guild.id].mode === 'shuffle') return message.channel.send(tooMuchSkipsRandomEmbed);
 
                 //Comprueba si está activado el modo loop
-                if (client.servers[message.guild.id].mode === 'loop' || client.servers[message.guild.id].mode === 'loopqueue') return message.channel.send(tooMuchSkipsLoopEmbed);
+                if (client.queues[message.guild.id].mode === 'loop' || client.queues[message.guild.id].mode === 'loopqueue') return message.channel.send(tooMuchSkipsLoopEmbed);
                 
                 //Comprueba si se ha proporcionado un número entero
                 if (isNaN(args[0])) return message.channel.send(NaNEmbed);
@@ -74,12 +74,12 @@ exports.run = async (discord, fs, client, message, args, command) => {
                 if (args[0] === `0`) return message.channel.send(`Quieres jugar sucio eh ...`);
                 
                 //Comprueba si el valor introducido es válido
-                if (args[0] > (client.servers[message.guild.id].queue.length + 1)) return message.channel.send(tooBigEmbed);
+                if (args[0] > (client.queues[message.guild.id].queue.length + 1)) return message.channel.send(tooBigEmbed);
                 
                 //Comprueba si es necesaria una votación
                 if (await client.functions.evaluateDjOrVotes(message, `skip-${args[0]}`)) {
                     //Cambia la cola
-                    await client.servers[message.guild.id].queue.splice(0, args[0] - 1);
+                    await client.queues[message.guild.id].queue.splice(0, args[0] - 1);
                     await skip();
                 };
             };

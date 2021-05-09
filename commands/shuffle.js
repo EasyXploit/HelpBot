@@ -38,7 +38,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
         if (!client.voiceDispatcher) return message.channel.send(noDispatcherEmbed);
 
         //Almacena la información del servidor
-        let server = client.servers[message.guild.id];
+        let server = client.queues[message.guild.id];
         
         //Comprueba si hay cola
         if (!server || server.queue <= 0) return message.channel.send(noQueueEmbed);

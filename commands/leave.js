@@ -26,7 +26,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
         if (await client.functions.evaluateDjOrVotes(message, 'leave')) {
             //Aborta la conexión
             joined.voice.kick();
-            if (client.servers[message.guild.id]) delete client.servers[message.guild.id];
+            if (client.queues[message.guild.id]) delete client.queues[message.guild.id];
 
             //Cambia el estatus a "DISPONIBLE"
             client.voiceStatus = true;

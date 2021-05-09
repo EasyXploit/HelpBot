@@ -43,8 +43,8 @@ client.polls = JSON.parse(fs.readFileSync('./databases/polls.json', 'utf-8')); /
 client.stats = JSON.parse(fs.readFileSync('./databases/stats.json', 'utf-8')); //Estadísticas de los miembros
 client.warns = JSON.parse(fs.readFileSync('./databases/warns.json', 'utf-8')); //Advertencias de los usuarios
 
-//VOZ
-client.servers = {}; //Almacena la cola y otros datos
+//Datos de voz
+client.queues = {}; //Almacena la cola y otros datos
 client.voiceStatus = true; //Almacena la disponiblidad del bot
 client.voiceDispatcher; //Almacena el dispatcher
 client.voiceConnection; //Almacena la conexión
@@ -92,6 +92,7 @@ client.on('warn', error => console.warn(`${new Date().toLocaleString()} 》WARN:
 client.on('shardError', error => console.error('Una conexión al websocket encontró un error:', error));
 process.on('unhandledRejection', error => {
     if (!error.toLocaleString().includes('Cannot send messages to this user')) console.error(`${new Date().toLocaleString()} Rechazo de promesa no manejada:`, error);
+});
 
 //INICIO DE SESIÓN DEL BOT
 client.login(client.config.keys.token);

@@ -45,14 +45,14 @@ exports.run = async (discord, fs, client, message, args, command) => {
         if (!client.voiceDispatcher) return message.channel.send(noDispatcherEmbed);
         
         //Comprueba si hay cola
-        if (!client.servers[message.guild.id] || client.servers[message.guild.id].queue <= 0) return message.channel.send(noQueueEmbed);
+        if (!client.queues[message.guild.id] || client.queues[message.guild.id].queue <= 0) return message.channel.send(noQueueEmbed);
         
         if (args[0] === 'all') {
 
             //Comprueba si es necesaria una votación
             if (await client.functions.evaluateDjOrVotes(message, 'remove-all')) {
                 //Elimina el elemento de la cola
-                await client.servers[message.guild.id].queue.splice(0, client.servers[message.guild.id].queue.length);
+                await client.queues[message.guild.id].queue.splice(0, client.queues[message.guild.id].queue.length);
                 
                 //Manda un mensaje de confirmación
                 await message.channel.send(`${client.emotes.greenTick} | He eliminado todas las canciones de la cola`);
@@ -73,12 +73,12 @@ exports.run = async (discord, fs, client, message, args, command) => {
             if (args[0] === `0`) return message.channel.send(`Quieres jugar sucio eh ...`);
             
             //Comprueba si el valor introducido es válido
-            if (args[0] > (client.servers[message.guild.id].queue.length)) return message.channel.send(tooBigEmbed);
+            if (args[0] > (client.queues[message.guild.id].queue.length)) return message.channel.send(tooBigEmbed);
 
             //Comprueba si es necesaria una votación
             if (await client.functions.evaluateDjOrVotes(message, 'remove', args[0])) {
                 //Elimina el elemento de la cola
-                await client.servers[message.guild.id].queue.splice(args[0] - 1, 1);
+                await client.queues[message.guild.id].queue.splice(args[0] - 1, 1);
                 
                 //Manda un mensaje de confirmación
                 await message.channel.send(`${client.emotes.greenTick} | He eliminado la canción de la cola`);

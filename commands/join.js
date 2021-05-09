@@ -51,8 +51,8 @@ exports.run = async (discord, fs, client, message, args, command) => {
         if (voiceChannel.full) return message.channel.send(fullRoomEmbed);
 
         //Comprueba si la guild tiene una cola de reproducción
-        if (!client.servers[message.guild.id]) {
-            client.servers[message.guild.id] = {
+        if (!client.queues[message.guild.id]) {
+            client.queues[message.guild.id] = {
                 queue: [],
                 votes: {},
                 nowplaying: {},
@@ -82,7 +82,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
                 message.channel.send(`⏏ | He abandonado el canal`);
 
                 //Bora la información de reproducción del server
-                delete client.servers[message.guild.id];
+                delete client.queues[message.guild.id];
 
                 //Vacía la variable del timeout
                 client.voiceTimeout = null;

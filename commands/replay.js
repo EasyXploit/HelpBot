@@ -47,7 +47,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
             };
 
             //Sube la canción a la cola en el primer puesto y hace skip
-            await client.servers[message.guild.id].queue.splice(0, 0, newQueueItem);
+            await client.queues[message.guild.id].queue.splice(0, 0, newQueueItem);
             await client.voiceDispatcher.end();
             
             //Manda un mensaje de confirmación

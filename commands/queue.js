@@ -11,13 +11,13 @@ exports.run = async (discord, fs, client, message, args, command) => {
             .setColor(client.colors.red)
             .setDescription(`${client.emotes.redTick} El bot no tiene ninguna canción en la cola.`);
         
-        if (!client.servers[message.guild.id] || !client.servers[message.guild.id].nowplaying || Object.entries(client.servers[message.guild.id].nowplaying).length === 0) return message.channel.send(noQueueEmbed);
+        if (!client.queues[message.guild.id] || !client.queues[message.guild.id].nowplaying || Object.entries(client.queues[message.guild.id].nowplaying).length === 0) return message.channel.send(noQueueEmbed);
         
         //Almacena el servidor
-        let server = client.servers[message.guild.id];
+        let server = client.queues[message.guild.id];
 
         //Almacena la cola
-        let serverQueue = client.servers[message.guild.id].queue;
+        let serverQueue = client.queues[message.guild.id].queue;
 
         //Almacena la página actual y las totales
         let position = 1;
@@ -49,7 +49,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
             
             //Si hay cola, carga la cola en el embed
             if (serverQueue[0]) {
-                serverQueue = client.servers[message.guild.id].queue; //Por si acaso, recarga la cola
+                serverQueue = client.queues[message.guild.id].queue; //Por si acaso, recarga la cola
                 let queueList = '';
                 
                 //Genera la página de la cola

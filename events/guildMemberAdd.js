@@ -5,9 +5,9 @@ exports.run = async (event, discord, fs, client) => {
         if (event.guild.id !== client.homeGuild.id) return;
 
         if (!event.user.bot) {
-            const prohibitedNames = [`http://`, `https://`, `discord.gg`, `www.`, `.tv`, `twitch.tv`, `.net`, `.com`, `twitter.com`, `paypal.me`, `.me`, `donate.`, `.gg`, `binzy`];
+            const forbiddenNames = [`http://`, `https://`, `discord.gg`, `www.`, `.tv`, `twitch.tv`, `.net`, `.com`, `twitter.com`, `paypal.me`, `.me`, `donate.`, `.gg`, `binzy`];
 
-            if(prohibitedNames.some(word => event.user.username.toLowerCase().includes(word))) {
+            if (forbiddenNames.some(word => event.user.username.toLowerCase().includes(word))) {
 
                 let toDMEmbed = new discord.MessageEmbed()
                     .setColor(client.colors.red2)

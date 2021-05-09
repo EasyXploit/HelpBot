@@ -100,16 +100,6 @@ exports.run = async (event, discord, fs, client) => {
                     .addField('🏷 TAG completo', event.user.tag, true)
                     .addField('🆔 ID del miembro', event.user.id, true);
 
-                let dmWelcomeEmbed = new discord.MessageEmbed()
-                    .setColor(resources.gold)
-                    .setAuthor('REPÚBLICA GAMER', client.homeGuild.iconURL())
-                    .setImage('https://i.imgur.com/IeExpLO.png')
-                    .setTitle(`Hola **${event.user.username}**, bienvenido a la __República Gamer__ :tada:`)
-                    .setDescription('**¡Nos alegra que hayas decidido unirte a nuestra comunidad!**\nA continuación, te mostramos una breve guía sobre como empezar a participar en nuestro servidor. __¡Esperamos que lo pases bien!__')
-                    .addField('Guía de inicio rápido:', `:one: Entra en <#498455357853794304> y dedica unos segundos a leer las breves normas que rigen nuestra comunidad. Además, aprenderás a usar a los bots, a como obtener ayuda y a como subir de nivel.\n:two: Entra en \`⚡ | Crear sala\` para crear ¡tu propia sala temporal! (recuerda que desparecerá si no hay nadie en ella).\n:three: ¡Tan solo diviértete y trae a tus amigos para que nos conozcan! Mándales este enlace de invitación:${config.serverInvite}`, true);
-
-                //await welcomeChannel.send(channelWelcomeEmbed);
-                await event.user.send(dmWelcomeEmbed);
                 await client.loggingChannel.send(loggingWelcomeEmbed);
             };
         } else {

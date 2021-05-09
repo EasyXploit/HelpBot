@@ -1,7 +1,7 @@
 exports.run = async (event, discord, fs, client) => {
     
     try {
-        //Previene que continue la ejecución si el servidor no es la República Gamer
+        //Previene que continue la ejecución si el servidor no es el principal
         if (event.guild.id !== client.homeGuild.id) return;
 
         if (!event.user.bot) {

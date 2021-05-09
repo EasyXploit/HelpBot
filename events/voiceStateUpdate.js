@@ -1,7 +1,7 @@
 exports.run = async (oldState, newState, discord, fs, client) => {
     
     try {
-        //Previene que continue la ejecución si el servidor no es la República Gamer
+        //Previene que continue la ejecución si el servidor no es el principal
         if (newState.guild.id !== client.homeGuild.id) return;
 
         async function endVoiceTime() {

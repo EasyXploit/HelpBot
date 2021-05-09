@@ -1,24 +1,6 @@
-'use-strict';
-
-const logo = require('asciiart-logo');
-const package = require('./package.json');
-
-console.log(
-    logo({
-        name: 'PilkoBot',
-        font: 'Speed',
-        lineChars: 15,
-        padding: 5,
-        margin: 2
-    })
-    .emptyLine()
-    .right(`Versión ${package.version}`)
-    .emptyLine()
-    .wrap(`PilkoBot es un bot multifuncional desarrollado por el Staff de la comunidad, cuyo uso es exclusivo de los miembros de la República Gamer, por lo que no está permitido su uso fuera de los servidores administrados por la República Gamer S.L..`)
-    .render()
-);
-
-console.log(`》Iniciando aplicación «\n―――――――――――――――――――――――― \n${new Date().toLocaleString()}\n`);
+//Logo de arranque
+const { splash } = require('./utils/splashLogo.js');
+console.log(`${splash}\n》Iniciando aplicación «\n―――――――――――――――――――――――― \n${new Date().toLocaleString()}\n`);
 
 //DEPENDENCIAS GLOBALES
 const discord = require('discord.js');

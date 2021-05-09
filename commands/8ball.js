@@ -1,12 +1,12 @@
-exports.run = (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = (discord, fs, client, message, args, command) => {
     
     //!8ball (pregunta)
     
     try {
         let notToAnswerEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setTitle(`${resources.RedTick} Debes preguntarme algo`)
-            .setDescription(`La sintaxis de este comando es \`${config.prefix}8ball (pregunta)\``);
+            .setColor(client.colors.red2)
+            .setTitle(`${client.emotes.redTick} Debes preguntarme algo`)
+            .setDescription(`La sintaxis de este comando es \`${client.config.prefixes.mainPrefix}8ball (pregunta)\``);
     
         if (!args[0]) return message.channel.send(notToAnswerEmbed);
 
@@ -18,6 +18,6 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
 
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

@@ -1,15 +1,15 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
     
     //!leave
 
     try {
         let notInChannelEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} El bot no está en ningún canal de voz.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} El bot no está en ningún canal de voz.`);
         
         let notInYourChannelEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que ${client.user.username}.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Debes estar en el mismo canal de voz que ${client.user.username}.`);
 
         //Comprueba si hay una conexión de voz
         if (!message.guild.voice) return message.channel.send(notInChannelEmbed);
@@ -23,7 +23,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         if (!joined) return message.channel.send(notInYourChannelEmbed);
 
         //Comprueba si es necesaria una votación
-        if (await resources.evaluateDjOrVotes(message, 'leave')) {
+        if (await client.functions.evaluateDjOrVotes(message, 'leave')) {
             //Aborta la conexión
             joined.voice.kick();
             if (client.servers[message.guild.id]) delete client.servers[message.guild.id];
@@ -44,7 +44,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             await message.channel.send(`⏏ | He abandonado el canal`);
         };
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }
 

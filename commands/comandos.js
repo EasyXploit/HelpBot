@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
     
     //!comandos
     
@@ -9,13 +9,13 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .setThumbnail('http://i.imgur.com/g31RYSS.png')
             .setAuthor('COMANDOS', 'http://i.imgur.com/E3nPnZY.png')
             .setTitle('Comandos de los bots del servidor')
-            .addField(`${resources.pilkobot} ${config.prefix}pilko`, 'Muestra los comandos de <@446041159853408257> ')
-            .addField(`⚡ ${config.prefix}salas`, 'Muestra la ayuda para crear salas de voz.')
-            .addField(`🎵 ${config.prefix}musica`, 'Muestra la ayuda para reproducir música en las salas de voz.')
-            .addField(`${resources.boxbot} ${config.prefix}boxbot`, 'Muestra la ayuda para jugar a <@413728456942288896> en <#433376010688397312>');
+            .addField(`${client.emotes.pilkobot} ${client.config.prefixes.mainPrefix}pilko`, 'Muestra los comandos de <@446041159853408257> ')
+            .addField(`⚡ ${client.config.prefixes.mainPrefix}salas`, 'Muestra la ayuda para crear salas de voz.')
+            .addField(`🎵 ${client.config.prefixes.mainPrefix}musica`, 'Muestra la ayuda para reproducir música en las salas de voz.')
+            .addField(`${client.emotes.boxbot} ${client.config.prefixes.mainPrefix}boxbot`, 'Muestra la ayuda para jugar a <@413728456942288896> en <#433376010688397312>');
         
-        let originUser = resources.valueCheck;
-        resources.valueCheck = 'null';
+        let originUser = client.valueCheck;
+        client.valueCheck = 'null';
             
         if (originUser === 'null') {
             originUser = message.author.id;
@@ -23,36 +23,36 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             
         await message.channel.send(helpEmbed).then(async function (msg) {
             
-            await msg.react(resources.pilkobot);
+            await msg.react(client.emotes.pilkobot);
             await msg.react('⚡');
             await msg.react('🎵');
-            await msg.react(resources.boxbot);
+            await msg.react(client.emotes.boxbot);
 
             const filter = (reaction, user) => {
-                return ['pilkobot', '⚡', '🎵', 'boxbot'].includes(reaction.emoji.name) && user.id === originUser;
+                return ['pilkoBot', '⚡', '🎵', 'boxBot'].includes(reaction.emoji.name) && user.id === originUser;
             };
 
             msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] }).then(async collected => {
                 const reaction = collected.first();
 
-                if (reaction.emoji.name === 'pilkobot') {
+                if (reaction.emoji.name === 'pilkoBot') {
                     await msg.delete()
-                    require(`../commands/pilko.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/pilko.js`).run(discord, fs, client, message, args, command);
                 } else if (reaction.emoji.name === '⚡') {
                     await msg.delete()
-                    require(`../commands/salas.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/salas.js`).run(discord, fs, client, message, args, command);
                 } else if (reaction.emoji.name === '🎵') {
                     await msg.delete()
-                    require(`../commands/musica.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
-                } else if (reaction.emoji.name === 'boxbot') {
+                    require(`../commands/musica.js`).run(discord, fs, client, message, args, command);
+                } else if (reaction.emoji.name === 'boxBot') {
                     await msg.delete()
-                    require(`../commands/boxbot.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/boxbot.js`).run(discord, fs, client, message, args, command);
                 };
             }).catch(() => {
                 return;
             });
         });
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     };
 ;}

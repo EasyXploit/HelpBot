@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = (discord, fs, client, message, args, command) => {
     
     //!urban (término)
     
@@ -6,9 +6,9 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
         const urban = module.require('urban-dictionary');
         
         let notToSearchEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setTitle(`${resources.RedTick} Debes proporcionarme un término de búsqueda`)
-            .setDescription(`La sintaxis de este comando es \`${config.prefix}urban (término)\``);
+            .setColor(client.colors.red2)
+            .setTitle(`${client.emotes.redTick} Debes proporcionarme un término de búsqueda`)
+            .setDescription(`La sintaxis de este comando es \`${client.config.prefixes.mainPrefix}urban (término)\``);
     
         if (!args[0]) return message.channel.send(notToSearchEmbed);
         
@@ -27,14 +27,14 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
             message.channel.send(resultEmbed);
         }).catch((error) => {
             let noDataEmbed = new discord.MessageEmbed()
-                .setColor(resources.red2)
-                .setDescription(`${resources.RedTick} No se ha encontrado ningún resultado que coincida con \`${searchTerm}\``);
+                .setColor(client.colors.red2)
+                .setDescription(`${client.emotes.redTick} No se ha encontrado ningún resultado que coincida con \`${searchTerm}\``);
             
             if (error.toString().includes(`is undefined`)) {
                 message.channel.send(noDataEmbed);
             }
         })
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

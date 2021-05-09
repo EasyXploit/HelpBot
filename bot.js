@@ -2,12 +2,8 @@
 const { splash } = require('./utils/splashLogo.js');
 console.log(`${splash}\n》Iniciando aplicación «\n―――――――――――――――――――――――― \n${new Date().toLocaleString()}\n`);
 
-//DEPENDENCIAS GLOBALES
+//Carga del cliente
 const discord = require('discord.js');
-const fs = require('fs');
-const moment = require('moment');
-const cleverbot = require('cleverbot-free');
-const keys = require('./configs/keys.json');
 const client = new discord.Client({
     fetchAllMembers: true,
     disableEveryone: true,
@@ -16,28 +12,36 @@ const client = new discord.Client({
     retryLimit: Infinity 
 });
 
-//CONFIGURACIONES
-const config = require('./configs/config.json');
-const filters = require('./utils/automod/filters.json');
-const commandsConfig = require('./configs/commands.json');
+//Acceso al sistema de archivos
+const fs = require('fs');
 
-//CONFIGURACIONES GLOBALES
-client.musicConfig = require('./configs/music.json');
-client.homeGuild = config.homeGuild;
+//Configuraciones globales
+client.config = {
+    keys: require('./configs/keys.json'),
+    guild: require('./configs/guild.json'),
+    automodFilters: require('./configs/automodFilters.json'),
+    automodRules: require('./configs/automodRules.json'),
+    prefixes: require('./configs/prefixes.json'),
+    commands: require('./configs/commands.json'),
+    presence: require('./configs/presence.json'),
+    music: require('./configs/music.json'),
+    voice: require('./configs/voice.json')
+};
 
-//RECURSOS GLOBALES
-let resources = require('./utils/resources.js');
-const automodFilters = require('./utils/automod/automodFilters.js')
+//Dependencias globales
+client.colors = require('./resources/data/colors.json'); //Colores globales
+client.cleverbot = require('cleverbot-free'); //Cleverbot
+client.automodFiltering = require('./utils/automodFiltering.js'); //Filtros de moderación
 
-//USUARIOS QUE USARON COMANDOS RECIENTEMENTE
-const talkedRecently = new Set();
+//Cooldowns de los usuarios
+client.cooldownedUsers = new Set();
 
-//DATOS PERSISTENTES
-client.mutes = JSON.parse(fs.readFileSync('./storage/mutes.json', 'utf-8'));
-client.bans = JSON.parse(fs.readFileSync('./storage/bans.json', 'utf-8'));
-client.polls = JSON.parse(fs.readFileSync('./storage/polls.json', 'utf-8'));
-client.stats = JSON.parse(fs.readFileSync('./storage/stats.json', 'utf-8'));
-client.warns = JSON.parse(fs.readFileSync('./storage/warns.json', 'utf-8'));
+//Bases de datos (mediante ficheros)
+client.mutes = JSON.parse(fs.readFileSync('./databases/mutes.json', 'utf-8')); //Usuarios silenciados temporalmente
+client.bans = JSON.parse(fs.readFileSync('./databases/bans.json', 'utf-8')); //Usuarios baneados temporalmente
+client.polls = JSON.parse(fs.readFileSync('./databases/polls.json', 'utf-8')); //Encuestas en marcha
+client.stats = JSON.parse(fs.readFileSync('./databases/stats.json', 'utf-8')); //Estadísticas de los miembros
+client.warns = JSON.parse(fs.readFileSync('./databases/warns.json', 'utf-8')); //Advertencias de los usuarios
 
 //VOZ
 client.servers = {}; //Almacena la cola y otros datos
@@ -47,45 +51,47 @@ client.voiceConnection; //Almacena la conexión
 client.voiceTimeout; //Almacena los timeouts de reproducción finalizada
 client.usersVoiceStates = {}; //Almacena los cambios de estado de voz de los usuarios
 
-//DMs
+//Contexto de los MDs
 client.dmContexts = {};
 
-// MANEJADOR DE EVENTOS
+//Manejador de eventos
 fs.readdir('./events/', async (err, files) => {
 
     if (err) return console.error(`${new Date().toLocaleString()} 》No se ha podido completar la carga de los eventos.\n${err.stack}`);
+    
+    //Precarga cada uno de los eventos
     files.forEach(file => {
         let eventFunction = require(`./events/${file}`);
         let eventName = file.split(`.`)[0];
 
         if (eventName === 'guildBanAdd') {
             client.on(eventName, (guild, user) => {
-                eventFunction.run(guild, user, discord, fs, config, keys, client, resources);
+                eventFunction.run(guild, user, discord, fs, client);
             });
         } else if (eventName === 'voiceStateUpdate') {
             client.on(eventName, (oldState, newState) => {
-                eventFunction.run(oldState, newState, discord, fs, config, keys, client, resources);
+                eventFunction.run(oldState, newState, discord, fs, client);
             });
         } else {
             client.on(eventName, event => {
-                eventFunction.run(event, discord, fs, config, keys, client, resources);
+                eventFunction.run(event, discord, fs, client);
             });
-        }
+        };
 
         console.log(` - Evento [${eventName}] cargado`);
     });
-    console.log('\n');
 });
 
-// Debugging
-client.on(`error`, (e) => {
-    if (e.message.includes(`ECONNRESET`)) return console.log(`${new Date().toLocaleString()} ERROR 》La conexión fue cerrada inesperadamente.\n`)
+//DEBUGGING
+client.on('error', (e) => {
+    if (e.message.includes('ECONNRESET')) return console.log(`${new Date().toLocaleString()} ERROR 》La conexión fue cerrada inesperadamente.\n`)
     console.error(`${new Date().toLocaleString()} 》ERROR: ${e.stack}`)
 });
 
-client.on(`warn`, error => console.warn(`${new Date().toLocaleString()} 》WARN: ${error.stack}`));
-client.on('shardError', error => console.error('Una conexión websocket encontró un error:', error));
-process.on('unhandledRejection', error => console.error(`${new Date().toLocaleString()} Rechazo de promesa no manejada:`, error));
+client.on('warn', error => console.warn(`${new Date().toLocaleString()} 》WARN: ${error.stack}`));
+client.on('shardError', error => console.error('Una conexión al websocket encontró un error:', error));
+process.on('unhandledRejection', error => {
+    if (!error.toLocaleString().includes('Cannot send messages to this user')) console.error(`${new Date().toLocaleString()} Rechazo de promesa no manejada:`, error);
 
-// Inicio de sesión del bot
-client.login(keys.token);
+//INICIO DE SESIÓN DEL BOT
+client.login(client.config.keys.token);

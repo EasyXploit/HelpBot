@@ -1,14 +1,14 @@
 {
     "8ball": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "avatar": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
@@ -29,21 +29,21 @@
     },
     "calcula": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "catfacts": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "clear": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
@@ -57,14 +57,14 @@
     },
     "dado": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "di": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
@@ -78,14 +78,14 @@
     },
     "dogfacts": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "elige": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
@@ -106,63 +106,63 @@
     },
     "join": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "leaderboard": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "leave": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "loop": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "loopqueue": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "love": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "meme": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852", "428522486687203339"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "moneda": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "move": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
@@ -183,21 +183,21 @@
     },
     "np": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "paulo": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "pause": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
@@ -211,49 +211,49 @@
     },
     "ping": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "play": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "playskip": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "ppt": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "pptls": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "psychopass": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "queue": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
@@ -267,35 +267,35 @@
     },
     "rank": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "remove": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "replay": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "resume": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "reves": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
@@ -309,21 +309,21 @@
     },
     "shuffle": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "skip": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
     "sound": {
         "enabled": true,
-        "whitelistedChannels": ["388699973866225676", "429336008241315852"],
+        "whitelistedChannels": [],
         "blacklistedChannels": [],
         "whitelistedRoles": [],
         "blacklistedRoles": []

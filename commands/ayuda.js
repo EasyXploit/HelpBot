@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
     
     //!ayuda
     
@@ -6,22 +6,22 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         const userID = message.author.id;
         
         let helpEmbed = new discord.MessageEmbed()
-        .setColor(resources.gold)
+        .setColor(client.colors.gold)
         .setAuthor('AYUDA', 'http://i.imgur.com/sYyH2IM.png')
         .setTitle('Sistema de ayuda del servidor')
         .setThumbnail('http://i.imgur.com/sYyH2IM.png')
-        .addField(`📓 ${config.prefix}normas`, 'Muestra las normas del servidor.')
-        .addField(`${resources.pilkobot} ${config.prefix}pilko`, 'Muestra los comandos de <@446041159853408257> ')
-        .addField(`:robot: ${config.prefix}comandos`, 'Muestra los comandos de los bots.')
-        .addField(`🎖 ${config.prefix}rangos`, 'Muestra los rangos del servidor, la tabla de puntuaciones y tu nivel.')
-        .addField(`ℹ ${config.prefix}info`, 'Muestra información acerca del proyecto')
-        .addField(`🥇 ${config.prefix}rank`, 'Muestra tu rango actual')
-        .addField(`🏆 ${config.prefix}leaderboard [pág.]`, 'Muestra la tabla de clasificación');
+        .addField(`📓 ${client.config.prefixes.mainPrefix}normas`, 'Muestra las normas del servidor.')
+        .addField(`${client.emotes.pilkobot} ${client.config.prefixes.mainPrefix}pilko`, 'Muestra los comandos de <@446041159853408257> ')
+        .addField(`:robot: ${client.config.prefixes.mainPrefix}comandos`, 'Muestra los comandos de los bots.')
+        .addField(`🎖 ${client.config.prefixes.mainPrefix}rangos`, 'Muestra los rangos del servidor, la tabla de puntuaciones y tu nivel.')
+        .addField(`ℹ ${client.config.prefixes.mainPrefix}info`, 'Muestra información acerca del proyecto')
+        .addField(`🥇 ${client.config.prefixes.mainPrefix}rank`, 'Muestra tu rango actual')
+        .addField(`🏆 ${client.config.prefixes.mainPrefix}leaderboard [pág.]`, 'Muestra la tabla de clasificación');
 
     await message.channel.send(helpEmbed).then(async function (msg) {
         
         await msg.react('📓');
-        await msg.react(resources.pilkobot);
+        await msg.react(client.emotes.pilkobot);
         await msg.react('🤖');
         await msg.react('🎖');
         await msg.react('ℹ');
@@ -38,32 +38,32 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
                 if (reaction.emoji.name === '📓') {
                     await msg.delete()
-                    require(`../commands/normas.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/normas.js`).run(discord, fs, client, message, args, command);
                     
                 } else if (reaction.emoji.name === 'pilkoBot') {
                     await msg.delete()
-                    require(`../commands/pilko.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/pilko.js`).run(discord, fs, client, message, args, command);
                     
                 }  else if (reaction.emoji.name === '🤖') {
                     await msg.delete()
-                    resources.valueCheck = userID;
-                    require(`../commands/comandos.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
+                    client.valueCheck = userID;
+                    require(`../commands/comandos.js`).run(discord, fs, client, message, args, command);
                     
                 } else if (reaction.emoji.name === '🎖') {
                     await msg.delete()
-                    require(`../commands/rangos.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/rangos.js`).run(discord, fs, client, message, args, command);
                     
                 } else if (reaction.emoji.name === 'ℹ') {
                     await msg.delete()
-                    require(`../commands/info.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/info.js`).run(discord, fs, client, message, args, command);
                     
                 } else if (reaction.emoji.name === '🥇') {
                     await msg.delete()
-                    require(`../commands/rank.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/rank.js`).run(discord, fs, client, message, args, command);
                     
                 } else if (reaction.emoji.name === '🏆') {
                     await msg.delete()
-                    require(`../commands/leaderboard.js`).run(discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources);
+                    require(`../commands/leaderboard.js`).run(discord, fs, client, message, args, command);
                     
                 }
             })
@@ -72,6 +72,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             });
         });
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

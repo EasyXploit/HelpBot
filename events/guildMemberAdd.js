@@ -1,11 +1,8 @@
-exports.run = async (event, discord, fs, config, keys, client, resources) => {
+exports.run = async (event, discord, fs, client) => {
     
     try {
         //Previene que continue la ejecución si el servidor no es la República Gamer
         if (event.guild.id !== client.homeGuild.id) return;
-
-        const loggingChannel = client.channels.cache.get(config.loggingChannel);
-        const welcomeChannel = client.channels.cache.get(config.welcomeChannel);
 
         if (!event.user.bot) {
             const prohibitedNames = [`http://`, `https://`, `discord.gg`, `www.`, `.tv`, `twitch.tv`, `.net`, `.com`, `twitter.com`, `paypal.me`, `.me`, `donate.`, `.gg`, `binzy`];
@@ -13,7 +10,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
             if(prohibitedNames.some(word => event.user.username.toLowerCase().includes(word))) {
 
                 let toDMEmbed = new discord.MessageEmbed()
-                    .setColor(resources.red2)
+                    .setColor(client.colors.red2)
                     .setAuthor('[EXPULSADO]', event.guild.iconURL())
                     .setDescription(`<@${event.user.id}>, has sido expulsado de ${event.guild.name}`)
                     .addField('Moderador', client.user, true)
@@ -26,10 +23,11 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
                     console.error(`${new Date().toLocaleString()} 》${err}`);
 
                     let errorEmbed = new discord.MessageEmbed()
-                        .setColor(resources.red)
-                        .setTitle(`${resources.RedTick} Ocurrió un error`)
+                        .setColor(client.colors.red)
+                        .setTitle(`${client.emotes.redTick} Ocurrió un error`)
                         .setDescription(`Ocurrió un error durante la ejecución del evento "guildMemberAdd".\nEl usuario ${event.user.username} no fue expulsado automáticamente de la comunidad, por lo que será necesario emprender acciones de forma manual.`);
-                    loggingChannel.send(errorEmbed);
+                        
+                    client.loggingChannel.send(errorEmbed);
                 });
             } else  {
                 /* --- CANVAS --- */
@@ -90,12 +88,12 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
 
                 //Adjunta y envía la foto
                 const attachment = new discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
-                await welcomeChannel.send(attachment);
+                await client.welcomeChannel.send(attachment);
 
                 /* --- --- */
 
                 let loggingWelcomeEmbed = new discord.MessageEmbed()
-                    .setColor(resources.green)
+                    .setColor(client.colors.green)
                     .setThumbnail(event.user.displayAvatarURL())
                     .setAuthor('Nuevo miembro', 'https://i.imgur.com/A60x2Di.png')
                     .setDescription(`${event.user.username} se unió al servidor`)
@@ -111,21 +109,20 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
                     .addField('Guía de inicio rápido:', `:one: Entra en <#498455357853794304> y dedica unos segundos a leer las breves normas que rigen nuestra comunidad. Además, aprenderás a usar a los bots, a como obtener ayuda y a como subir de nivel.\n:two: Entra en \`⚡ | Crear sala\` para crear ¡tu propia sala temporal! (recuerda que desparecerá si no hay nadie en ella).\n:three: ¡Tan solo diviértete y trae a tus amigos para que nos conozcan! Mándales este enlace de invitación:${config.serverInvite}`, true);
 
                 //await welcomeChannel.send(channelWelcomeEmbed);
-                await loggingChannel.send(loggingWelcomeEmbed);
                 await event.user.send(dmWelcomeEmbed);
-                
-            }
+                await client.loggingChannel.send(loggingWelcomeEmbed);
+            };
         } else {
             if (event.guild.member(event.user).roles.cache.has('426789294007517205')) return;
             event.guild.member(event.user).roles.add('426789294007517205');
 
             let loggingWelcomeBotEmbed = new discord.MessageEmbed()
-                .setColor(resources.blue)
+                .setColor(client.colors.blue)
                 .setTitle('📑 Auditoría - [BOTS]')
                 .setDescription(`El **BOT** @${event.user.tag} fue añadido al servidor.`);
-            loggingChannel.send(loggingWelcomeBotEmbed)
-            return;
-        }
+
+            return client.loggingChannel.send(loggingWelcomeBotEmbed);
+        };
     } catch (e) {
 
         if (e.toLocaleString().includes('Cannot send messages to this user')) return;
@@ -136,7 +133,7 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
 
         //Se muestra el error en el canal de depuración
         let debuggEmbed = new discord.MessageEmbed()
-            .setColor(resources.brown)
+            .setColor(client.colors.brown)
             .setTitle('📋 Depuración')
             .setDescription('Se declaró un error durante la ejecución de un evento')
             .addField('Evento:', 'guildMemberAdd', true)
@@ -144,6 +141,6 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
             .addField('Error:', `\`\`\`${error}\`\`\``);
         
         //Se envía el mensaje al canal de depuración
-        await client.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
-    }
-}
+        await client.debuggingChannel.send(debuggEmbed);
+    };
+};

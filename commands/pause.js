@@ -1,19 +1,19 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
     
     //!pause
 
     try {
         let notPlayingEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} No hay ninguna canción en cola/reproducción.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} No hay ninguna canción en cola/reproducción.`);
         
         let notAvailableEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
 
         let alreadyPausedEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} El bot ya está pausado.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} El bot ya está pausado.`);
 
         //Comprueba si el bot tiene o no una conexión a un canal de voz en el servidor
         if (!message.guild.voice) return message.channel.send(notPlayingEmbed);
@@ -32,12 +32,12 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         if (!client.voiceDispatcher || client.voiceDispatcher.paused) return message.channel.send(alreadyPausedEmbed);
 
         //Comprueba si es necesaria una votación
-        if (await resources.evaluateDjOrVotes(message, 'pause')) {
+        if (await client.functions.evaluateDjOrVotes(message, 'pause')) {
             //Reanuda la reproducción y manda un mensaje de confirmación
             await client.voiceDispatcher.pause();
             await message.channel.send(`⏸ | Cola pausada`);
         };
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     };
 };

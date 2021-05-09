@@ -1,19 +1,19 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
 
     //-roleinfo (@rol | rol | id)
 
     try {
         let noCorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.staffPrefix}roleinfo (@rol | rol | id)\``);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} La sintaxis de este comando es \`${client.config.prefixes.staffPrefix}roleinfo (@rol | rol | id)\``);
 
         if (!args[0]) return message.channel.send(noCorrectSyntaxEmbed);
 
-        await resources.fetchRole(message.guild, args[0]).then(role => {
+        await client.functions.fetchRole(message.guild, args[0]).then(role => {
 
             let roleNotFoundEmbed = new discord.MessageEmbed()
-                .setColor(resources.red2)
-                .setDescription(`${resources.RedTick} El rol no se ha podido encontrar`);
+                .setColor(client.colors.red2)
+                .setDescription(`${client.emotes.redTick} El rol no se ha podido encontrar`);
 
             if (!role) return message.channel.send(roleNotFoundEmbed);
 
@@ -54,6 +54,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

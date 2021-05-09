@@ -1,14 +1,14 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
 
     //!rank (@usuario)
     
     try {
 
         let notFoundEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`);
 
-        const member = await resources.fetchMember(message.guild, args[0] || message.author.id);
+        const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);
         if (!member) return message.channel.send(notFoundEmbed);
 
         if (message.guild.id in client.stats === false) {
@@ -19,8 +19,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         if (member.id in guildStats === false) {
             let noXPEmbed = new discord.MessageEmbed()
-                .setColor(resources.red2)
-                .setDescription(`${resources.RedTick} ${member} no tiene puntos de XP`);
+                .setColor(client.colors.red2)
+                .setDescription(`${client.emotes.redTick} ${member} no tiene puntos de XP`);
 
             return message.channel.send(noXPEmbed);
         };
@@ -29,8 +29,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         const xpToNextLevel = 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100;
 
         let nonXP;
-        for (let i = 0; i < config.nonXPRoles.length; i++) {
-            if (await member.roles.cache.find(r => r.id === config.nonXPRoles[i])) {
+        for (let i = 0; i < client.config.voice.nonXPRoles.length; i++) {
+            if (await member.roles.cache.find(r => r.id === client.config.voice.nonXPRoles[i])) {
                 nonXP = true;
                 break;
             };
@@ -39,7 +39,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         //Función para calcular cual es la siguiente recompensa que le corresponde al miembro
         async function nextReward() {
             //Almacena el fichero de las recompensas
-            const rewards = require('../utils/leveling/rewards.json');
+            const rewards = require('../configs/levelingRewards.json');
 
             //Función para encontrar la siguiente recompensa
             function wichReward() {
@@ -79,7 +79,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         };
 
         let resultEmbed = new discord.MessageEmbed()
-            .setColor(resources.gold)
+            .setColor(client.colors.gold)
             .setTitle(`🥇 Rango`)
             .setDescription(`Mostrando el rango del miembro **${member.user.tag}**`)
             .setThumbnail(member.user.displayAvatarURL())
@@ -97,6 +97,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         message.channel.send(resultEmbed);
 
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     };
 };

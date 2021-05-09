@@ -1,4 +1,4 @@
-exports.run = async (discord, client, resources, message, ytdl, moment, randomColor) => {
+exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
 
     try {
         //Función para reproducir
@@ -34,7 +34,7 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
             };
 
             //Genera el footer
-            let footer = 'República Gamer';
+            let footer = client.homeGuild.name;
             if (server.mode) {
                 switch (server.mode) {
                     case 'shuffle':
@@ -59,7 +59,7 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
                 .setDescription(`[${info.title}](${info.link})\n\n● **Autor:** \`${info.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(info.lengthSeconds).format('H:mm:ss')}\``)
                 .addField(`Solicitado por:`, server.queue[toPlay].requestedBy, true)
                 .addField(`Siguiente:`, upNext, true)
-                .setFooter(footer, resources.server.iconURL());
+                .setFooter(footer, client.homeGuild.iconURL());
 
             //Envía un mensaje de confirmación
             message.channel.send(playingEmbed);
@@ -154,8 +154,8 @@ exports.run = async (discord, client, resources, message, ytdl, moment, randomCo
     } catch (e) {
 
         let apiErrorEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Límite de solicitudes a la API de YouTube alcanzado.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Límite de solicitudes a la API de YouTube alcanzado.`);
 
         //Se comprueba si el error es provocado por una limitación de API
         if (e.toLocaleString().includes('416') || e.toLocaleString().includes('429')) message.channel.send(apiErrorEmbed);

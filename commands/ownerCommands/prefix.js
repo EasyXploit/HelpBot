@@ -1,11 +1,11 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
     
     //$prefix (nuevo prefijo) (todos | staff | owner)
 
     try {
         let noCorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} La sintaxis de este comando es: \`${config.ownerPrefix}prefix (nuevo prefijo) (todos | staff | owner)\``);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} La sintaxis de este comando es: \`${client.config.prefixes.ownerPrefix}prefix (nuevo prefijo) (todos | staff | owner)\``);
 
         //Comprueba si se han proporcionado todos los argumentos
         if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
@@ -14,8 +14,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         const newPrefix = args[0];
         
         let tooLongEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Debes proporcionar un prefijo cuya longitud sea menor o igual a 3 carácteres`);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} Debes proporcionar un prefijo cuya longitud sea menor o igual a 3 carácteres`);
         
         //Se comprueba si el prefijo tiene una longitud adecuada
         if (newPrefix.length > 3 || newPrefix.length < 1) return message.channel.send(tooLongEmbed);
@@ -38,54 +38,54 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         }
         
         let actuallyConfiguredEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Este prefijo ya ha sido configurado`);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} Este prefijo ya ha sido configurado`);
         
         let successEmbed = new discord.MessageEmbed()
-            .setColor(resources.green2)
-            .setTitle(`${resources.GreenTick} Operación completada`)
+            .setColor(client.colors.green2)
+            .setTitle(`${client.emotes.greenTick} Operación completada`)
             .setDescription(`Cambiaste el prefijo ${prefixType} a \`${newPrefix}\``);
 
         let loggingEmbed = new discord.MessageEmbed()
-            .setColor(resources.blue)
+            .setColor(client.colors.blue)
             .setTitle('📑 Auditoría - [PREFIJO]')
             .setDescription(`${message.author.tag} cambió el prefijo ${prefixType} a \`${newPrefix}\``);
 
         if (args[1] === 'todos') {
-            if (newPrefix === config.prefix || newPrefix === config.staffPrefix || newPrefix === config.ownerPrefix) return message.channel.send(actuallyConfiguredEmbed);
+            if (newPrefix === client.config.prefix || newPrefix === client.config.prefixes.staffPrefix || newPrefix === client.config.prefixes.ownerPrefix) return message.channel.send(actuallyConfiguredEmbed);
             
             //Graba el nuevo prefijo
-            config.prefix = newPrefix;
-            await fs.writeFile('./configs/config.json', JSON.stringify(config, null, 4), (err) => console.error);
+            client.config.prefix = newPrefix;
+            await fs.writeFile('./configs/guild.json', JSON.stringify(config, null, 4), (err) => console.error);
             
             prefixType = 'general';
             
-            await loggingChannel.send(loggingEmbed);
+            await client.loggingChannel.send(loggingEmbed);
             await message.channel.send(successEmbed);
         } else if (args[1] === 'staff') {
-            if (newPrefix === config.prefix || newPrefix === config.staffPrefix || newPrefix === config.ownerPrefix) return message.channel.send(actuallyConfiguredEmbed);
+            if (newPrefix === client.config.prefix || newPrefix === client.config.prefixes.staffPrefix || newPrefix === client.config.prefixes.ownerPrefix) return message.channel.send(actuallyConfiguredEmbed);
             
             //Graba el nuevo prefijo
-            config.staffPrefix = newPrefix;
-            await fs.writeFile('./configs/config.json', JSON.stringify(config, null, 4), (err) => console.error);
+            client.config.prefixes.staffPrefix = newPrefix;
+            await fs.writeFile('./configs/guild.json', JSON.stringify(config, null, 4), (err) => console.error);
             
             prefixType = 'del staff';
             
-            await loggingChannel.send(loggingEmbed);
+            await client.loggingChannel.send(loggingEmbed);
             await message.channel.send(successEmbed);
         } else if (args[1] === 'owner') {
-            if (newPrefix === config.prefix || newPrefix === config.staffPrefix || newPrefix === config.ownerPrefix) return message.channel.send(actuallyConfiguredEmbed);
+            if (newPrefix === client.config.prefix || newPrefix === client.config.prefixes.staffPrefix || newPrefix === client.config.prefixes.ownerPrefix) return message.channel.send(actuallyConfiguredEmbed);
             
             //Graba el nuevo prefijo
-            config.ownerPrefix = newPrefix;
-            await fs.writeFile('./configs/config.json', JSON.stringify(config, null, 4), (err) => console.error);
+            client.config.prefixes.ownerPrefix = newPrefix;
+            await fs.writeFile('./configs/guild.json', JSON.stringify(config, null, 4), (err) => console.error);
             
             prefixType = 'del owner';
             
-            await loggingChannel.send(loggingEmbed);
+            await client.loggingChannel.send(loggingEmbed);
             await message.channel.send(successEmbed);
         }
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

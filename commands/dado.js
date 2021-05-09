@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = (discord, fs, client, message, args, command) => {
     
     //!dado
     
@@ -11,6 +11,6 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
             .setDescription(`¡Salió **${datos[Math.floor(Math.random() * datos.length)]}**!`);
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

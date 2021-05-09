@@ -1,4 +1,4 @@
-exports.run = async (event, discord, fs, config, keys, client, resources) => {
+exports.run = async (event, discord, fs, client) => {
     
     try {
         
@@ -34,8 +34,8 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
 
         } else {
             const cantJoinEmbed = new discord.MessageEmbed()
-                .setColor(resources.gray)
-                .setDescription(`${resources.GrayTick} | Por el momento, ${client.user.username} solo está disponible en la [República Gamer](${config.serverInvite}).`);
+                .setColor(client.colors.gray)
+                .setDescription(`${client.emotes.grayTick} | ${client.user.username} no está diseñado para funcionar en más de una guild.`);
 
             event.owner.send(cantJoinEmbed)
             event.leave();
@@ -47,8 +47,8 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
         error = error + ' ...';
 
         //Se muestra el error en el canal de depuración
-        let debuggEmbed = new discord.MessageEmbed()
-            .setColor(resources.brown)
+        const debuggEmbed = new discord.MessageEmbed()
+            .setColor(client.colors.brown)
             .setTitle(`📋 Depuración`)
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
             .addField(`Evento:`, `guildCreate`, true)
@@ -56,6 +56,6 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
             .addField(`Error:`, `\`\`\`${error}\`\`\``);
         
         //Se envía el mensaje al canal de depuración
-        await client.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
-    }
-}
+        await client.debuggingChannel.send(debuggEmbed);
+    };
+};

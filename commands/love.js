@@ -1,9 +1,9 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //!love (member)
     
     try {
-        let member = await resources.fetchMember(message.guild, args[0]);
+        let member = await client.functions.fetchMember(message.guild, args[0]);
 
         if (!member) member = message.guild.members.cache.filter(m => m.id !== message.author.id).random();
 
@@ -19,6 +19,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     };
 };

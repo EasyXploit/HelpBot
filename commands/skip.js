@@ -1,15 +1,15 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
     
     //!skip (cantidad opcional | all)
 
     try {
         let notPlayingEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} No hay ninguna canción en cola/reproducción.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} No hay ninguna canción en cola/reproducción.`);
         
         let notAvailableEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
 
         //Comprueba si el bot tiene o no una conexión a un canal de voz en el servidor
         if (!message.guild.voice || !client.voiceDispatcher) return message.channel.send(notPlayingEmbed);
@@ -22,19 +22,19 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(notAvailableEmbed);
 
         let noTalkPermissionEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} No tengo permiso para hablar en esta sala.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} No tengo permiso para hablar en esta sala.`);
 
         //Comprueba si el bot tiene permiso para hablar
         if (!voiceChannel.speakable) return message.channel.send(noTalkPermissionEmbed)
         
         let NaNEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes proporcionar un número entero.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Debes proporcionar un número entero.`);
         
         let tooBigEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Solo puedes hacer skip de \`${(client.servers[message.guild.id].queue.length + 1)}\` canciones.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Solo puedes hacer skip de \`${(client.queues[message.guild.id].queue.length + 1)}\` canciones.`);
 
         async function skip() {
             //Omite la reproducción y manda un mensaje de confirmación
@@ -47,19 +47,19 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
             if (args[0] === 'all') {
                 //Comprueba si es necesaria una votación
-                if (await resources.evaluateDjOrVotes(message, 'skip-all')) {
+                if (await client.functions.evaluateDjOrVotes(message, 'skip-all')) {
                     //Cambia la cola
                     await client.servers[message.guild.id].queue.splice(0, client.servers[message.guild.id].queue.length);
                     await skip();
                 };
             } else {
                 let tooMuchSkipsRandomEmbed = new discord.MessageEmbed()
-                    .setColor(resources.red)
-                    .setDescription(`${resources.RedTick} No puedes omitir más de una canción con el modo aleatorio activado.`);
+                    .setColor(client.colors.red)
+                    .setDescription(`${client.emotes.redTick} No puedes omitir más de una canción con el modo aleatorio activado.`);
 
                 let tooMuchSkipsLoopEmbed = new discord.MessageEmbed()
-                    .setColor(resources.red)
-                    .setDescription(`${resources.RedTick} No puedes omitir más de una canción con el modo loop activado.`);
+                    .setColor(client.colors.red)
+                    .setDescription(`${client.emotes.redTick} No puedes omitir más de una canción con el modo loop activado.`);
                 
                 //Comprueba si está activado el modo aleatorio
                 if (client.servers[message.guild.id].mode === 'shuffle') return message.channel.send(tooMuchSkipsRandomEmbed);
@@ -77,7 +77,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 if (args[0] > (client.servers[message.guild.id].queue.length + 1)) return message.channel.send(tooBigEmbed);
                 
                 //Comprueba si es necesaria una votación
-                if (await resources.evaluateDjOrVotes(message, `skip-${args[0]}`)) {
+                if (await client.functions.evaluateDjOrVotes(message, `skip-${args[0]}`)) {
                     //Cambia la cola
                     await client.servers[message.guild.id].queue.splice(0, args[0] - 1);
                     await skip();
@@ -85,11 +85,11 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             };
         } else {
             //Comprueba si es necesaria una votación
-            if (await resources.evaluateDjOrVotes(message, 'skip', 0)) {
+            if (await client.functions.evaluateDjOrVotes(message, 'skip', 0)) {
                 await skip();
             };
         };
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     };
 };

@@ -1,11 +1,11 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
     
     //$edit <ID del canal> <ID del mensaje> <nuevo contenido>
     
     try {
         let noCorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.ownerPrefix}edit <ID del canal> <ID del mensaje> <nuevo contenido>\``);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} La sintaxis de este comando es \`${client.config.prefixes.ownerPrefix}edit <ID del canal> <ID del mensaje> <nuevo contenido>\``);
         
         if (!args[0] || !args[1] || !args[2]) return message.channel.send(noCorrectSyntaxEmbed);
             
@@ -21,11 +21,11 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         message.delete();
 
         let newEmbed = new discord.MessageEmbed()
-            .setColor(resources.gold)
+            .setColor(client.colors.gold)
             .setDescription(newContent);
         
         msg.edit(newEmbed);
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

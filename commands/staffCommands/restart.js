@@ -1,16 +1,16 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
     
     //-restart
     
     try {
         let restartingEmbed = new discord.MessageEmbed()
             .setColor(12118406)
-            .setTitle(`${resources.GreenTick} Operación completada`)
+            .setTitle(`${client.emotes.greenTick} Operación completada`)
             .setDescription('Reiniciando PilkoBot . . .');
         message.channel.send(restartingEmbed);
 
         let loggingEmbed = new discord.MessageEmbed()
-            .setColor(resources.blue)
+            .setColor(client.colors.blue)
             .setTitle('📑 Auditoría - [ESTADO DEL BOT]')
             .setDescription(`**${message.author.tag}** reinició a **${client.user.username}**`);
 
@@ -19,11 +19,11 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         console.log(`${new Date().toLocaleString()} 》Deteniendo ${client.user.username} . . .`);
         
          // Inicio de sesión del bot
-        client.login(keys.token);
+        client.login(client.config.keys.token);
         console.log(`${new Date().toLocaleString()} 》Iniciando ${client.user.username} . . .\n`);
         client.emit('ready');
-        loggingChannel.send(loggingEmbed);
+        client.loggingChannel.send(loggingEmbed);
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

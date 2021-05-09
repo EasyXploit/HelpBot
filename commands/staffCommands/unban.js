@@ -1,22 +1,22 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //-unban (id) (motivo)
     
     try {
-        if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
+        if (message.author.id !== client.config.guild.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
 
         let notToUnbanEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Miembro no encontrado. Debes escribir el ID del miembro a desbanear`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Miembro no encontrado. Debes escribir el ID del miembro a desbanear`);
 
         let noReasonEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes proporcionar un motivo`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Debes proporcionar un motivo`);
 
         if (!args[0]) return message.channel.send(notToUnbanEmbed);
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
-        const user = await resources.fetchUser(args[0]);
+        const user = await client.functions.fetchUser(args[0]);
         if (!user) return message.channel.send(notToUnbanEmbed);
 
         let toDeleteCount = command.length - 2 + args[0].length + 2;
@@ -30,34 +30,34 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         
         if (client.bans.hasOwnProperty(user.id)) {
             await delete client.bans[user.id];
-            await fs.writeFile(`./storage/bans.json`, JSON.stringify(client.bans), async err => {
+            await fs.writeFile(`./databases/bans.json`, JSON.stringify(client.bans), async err => {
                 if (err) throw err;
             });
         };
 
         let successEmbed = new discord.MessageEmbed()
-            .setColor(resources.green2)
-            .setTitle(`${resources.GreenTick} Operación completada`)
+            .setColor(client.colors.green2)
+            .setTitle(`${client.emotes.greenTick} Operación completada`)
             .setDescription(`El miembro ${user.tag} ha sido desbaneado`);
 
         let loggingEmbed = new discord.MessageEmbed()
-            .setColor(resources.green)
+            .setColor(client.colors.green)
             .setAuthor(`${user.tag} ha sido DESBANEADO`, user.displayAvatarURL())
             .addField(`Usuario`, user.tag, true)
             .addField(`Moderador`, message.author.tag, true)
             .addField(`Razón`, reason, true)
 
         await message.delete();
-        await loggingChannel.send(loggingEmbed);
+        await client.loggingChannel.send(loggingEmbed);
         await message.channel.send(successEmbed);
     } catch (e) {
         if (e.toString().includes(`Unknown Ban`)) {
             let notBannedEmbed = new discord.MessageEmbed()
-                .setColor(resources.red2)
-                .setDescription(`${resources.RedTick} Este miembro no ha sido baneado`);
+                .setColor(client.colors.red2)
+                .setDescription(`${client.emotes.redTick} Este miembro no ha sido baneado`);
             message.channel.send(notBannedEmbed);
         } else {
-            require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+            require('../../utils/errorHandler.js').run(discord, client, message, args, command, e);
         }
     }
 }

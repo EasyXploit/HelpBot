@@ -1,16 +1,10 @@
-exports.run = async (discord, config, client, message, args, command, e) => {
+exports.run = async (discord, client, message, args, command, e) => {
     
     //Se comprueba si el error es provocado por la invocación de un comando no existente
     if (e.toLocaleString().includes('Cannot find module') || e.toLocaleString().includes('Cannot send messages to this user')) return;
 
     //Se muestra el error en consola
     console.error('\n' + new Date().toLocaleString() + ' 》' + e.stack + '\n');
-    
-    //Se declara el canal de depuración
-    const debuggingChannel = client.channels.cache.get(config.debuggingChannel);
-    
-    //Se declara el archivo de recursos
-    const resources = require(`./resources.js`);
     
     //Se comprueba si se han proporcionado argumentos
     let arguments;
@@ -26,7 +20,7 @@ exports.run = async (discord, config, client, message, args, command, e) => {
 
     //Se muestra el error en el canal de depuración
     let debuggEmbed = new discord.MessageEmbed()
-        .setColor(resources.brown)
+        .setColor(client.colors.brown)
         .setTitle('📋 Depuración')
         .setDescription('Se declaró un error durante la ejecución de un comando')
         .addField('Comando:', command.slice(-0, -3), true)
@@ -38,10 +32,10 @@ exports.run = async (discord, config, client, message, args, command, e) => {
         .addField('Error:', `\`\`\`${error}\`\`\``, true);
     
     let reportedEmbed = new discord.MessageEmbed()
-        .setColor(resources.red)
-        .setTitle(`${resources.RedTick} ¡Vaya! Algo fue mal ...`)
+        .setColor(client.colors.red)
+        .setTitle(`${client.emotes.redTick} ¡Vaya! Algo fue mal ...`)
         .setDescription('Lo hemos reportado al equipo de desarrollo');
     
     await message.channel.send(reportedEmbed);
-    await debuggingChannel.send(debuggEmbed);
-}
+    await client.debuggingChannel.send(debuggEmbed);
+};

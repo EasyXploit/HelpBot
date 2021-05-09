@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
     
     //!queue (página | nada)
 
@@ -8,8 +8,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         
         //Devuelve si no hay cola
         let noQueueEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} El bot no tiene ninguna canción en la cola.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} El bot no tiene ninguna canción en la cola.`);
         
         if (!client.servers[message.guild.id] || !client.servers[message.guild.id].nowplaying || Object.entries(client.servers[message.guild.id].nowplaying).length === 0) return message.channel.send(noQueueEmbed);
         
@@ -45,7 +45,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                     .setColor(randomColor())
                     .setAuthor(`Cola de reproducción - Ahora mismo:`, `https://i.imgur.com/lvShSwa.png`)
                     .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n● Duración: \`${server.nowplaying.duration}\`.\n ● Requerida por: \`${server.nowplaying.requestedBy}\``)
-                    .setFooter(footer, resources.server.iconURL());
+                    .setFooter(footer, client.homeGuild.iconURL());
             
             //Si hay cola, carga la cola en el embed
             if (serverQueue[0]) {
@@ -113,6 +113,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         generateEmbed(5 * position - 4, 5 * position);
         
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     };
 };

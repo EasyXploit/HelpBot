@@ -1,11 +1,11 @@
-exports.run = (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = (discord, fs, client, message, args, command) => {
     
     //!pptls <piedra | papel | tijeras | lagarto | spock>
     
     try {
         let notToAnswerEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.prefix}pptls <piedra | papel | tijeras | lagarto | spock>\``);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} La sintaxis de este comando es \`${client.config.prefixes.mainPrefix}pptls <piedra | papel | tijeras | lagarto | spock>\``);
 
         if (!args[0]) return message.channel.send(notToAnswerEmbed);
 
@@ -171,10 +171,10 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
             .setColor(0x00AFC4)
             .setTitle(`${message.member.displayName} ${emojiOpponentChoose} VS ${emojiChoose} ${client.user.username}`)
             .setDescription(`__Resultado:__ ¡${result}!`)
-            .setFooter(`| ${reason}`, resources.server.iconURL());
+            .setFooter(`| ${reason}`, client.homeGuild.iconURL());
 
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

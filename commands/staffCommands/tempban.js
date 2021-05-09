@@ -1,34 +1,34 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //-tempban (@usuario | id) (xS | xM | xH | xD) (motivo)
     
     try {
-        if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
+        if (message.author.id !== client.config.guild.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
         
         let notToBanEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID`);
 
         let noReasonEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes proporcionar un motivo`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Debes proporcionar un motivo`);
         
         let alreadyBannedEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Este usuario ya ha sido baneado`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Este usuario ya ha sido baneado`);
         
         let noCorrectTimeEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5s\`, \`10m\`, \`12h\` o \`3d\``);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5s\`, \`10m\`, \`12h\` o \`3d\``);
         
         if (!args[0]) return message.channel.send(notToBanEmbed);
     
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
-        const user = await resources.fetchUser(args[0]);
+        const user = await client.functions.fetchUser(args[0]);
         if (!user) return message.channel.send(notToBanEmbed);
         
-        let moderator = await resources.fetchMember(message.guild, message.author.id);
-        const member = await resources.fetchMember(message.guild, user.id);
+        let moderator = await client.functions.fetchMember(message.guild, message.author.id);
+        const member = await client.functions.fetchMember(message.guild, user.id);
 
         if (member) {
             //Se comprueba si puede banear al usuario
@@ -99,12 +99,12 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         if (!reason) reason = 'Indefinida';
 
         let successEmbed = new discord.MessageEmbed()
-            .setColor(resources.green2)
-            .setTitle(`${resources.GreenTick} Operación completada`)
-            .setDescription(`El usuario ${user.tag} ha sido baneado, ¿alguien más? ${resources.banned}`);
+            .setColor(client.colors.green2)
+            .setTitle(`${client.emotes.greenTick} Operación completada`)
+            .setDescription(`El usuario ${user.tag} ha sido baneado, ¿alguien más? ${client.emotes.banned}`);
 
         let toDMEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
+            .setColor(client.colors.red)
             .setAuthor(`[BANEADO]`, message.guild.iconURL())
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
             .addField(`Moderador`, message.author.tag, true)
@@ -115,7 +115,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             time: Date.now() + milliseconds
         }
 
-        fs.writeFile(`./storage/bans.json`, JSON.stringify(client.bans, null, 4), async err => {
+        fs.writeFile(`./databases/bans.json`, JSON.stringify(client.bans, null, 4), async err => {
             if (err) throw err;
 
             await message.delete();
@@ -125,6 +125,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             await message.channel.send(successEmbed);
         });
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

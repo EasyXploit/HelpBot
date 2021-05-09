@@ -1,4 +1,4 @@
-exports.run = async (event, discord, fs, config, keys, client, resources) => {
+exports.run = async (event, discord, fs, client) => {
     
     try {
         let debuggingEmbed = new discord.MessageEmbed()
@@ -25,6 +25,6 @@ exports.run = async (event, discord, fs, config, keys, client, resources) => {
             .addField(`Error:`, `\`\`\`${error}\`\`\``);
         
         //Se envía el mensaje al canal de depuración
-        await client.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
-    }
-}
+        await client.debuggingChannel.send(debuggEmbed);
+    };
+};

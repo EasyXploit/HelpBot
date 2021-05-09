@@ -1,22 +1,22 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //-warn (@miembro | id) (razón)
     
     try {
         let notToWarnEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Debes mencionar a un miembro o escribir su id`);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} Debes mencionar a un miembro o escribir su id`);
 
         let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} No puedes advertir a un bot`);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} No puedes advertir a un bot`);
         
         let undefinedReasonEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Se debe adjuntar una razón`);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} Se debe adjuntar una razón`);
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
-        const member = await resources.fetchMember(message.guild, args[0]);
+        const member = await client.functions.fetchMember(message.guild, args[0]);
         if (!member) return message.channel.send(notToWarnEmbed);
         if (member.user.bot) return message.channel.send(noBotsEmbed);
 
@@ -24,7 +24,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         let reason = args.slice(1).join(' ');
         if (!reason) return message.channel.send(undefinedReasonEmbed);
           
-        let moderator = await resources.fetchMember(message.guild, message.author.id);
+        let moderator = await client.functions.fetchMember(message.guild, message.author.id);
         
         //Se comprueba si puede advertir al miembro
         if (moderator.id !== message.guild.owner.id) {
@@ -33,9 +33,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         
         message.delete();
 
-        require('../../utils/infractionsHandler.js').run(discord, fs, config, client, resources, loggingChannel, message, message.guild, member, reason, 2, message.author)
+        require('../../utils/infractionsHandler.js').run(discord, fs, client, loggingChannel, message, message.guild, member, reason, 2, message.author)
 
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

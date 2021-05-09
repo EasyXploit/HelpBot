@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
     
     //!ping
     
@@ -20,7 +20,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         } else {
             botPingEmbed = new discord.MessageEmbed()
               .setTitle(`Tiempo de respuesta del bot: `)
-              .setColor(resources.red2)
+              .setColor(client.colors.red2)
               .setDescription(`:stopwatch: | ${botPing} ms`);
         }
 
@@ -41,7 +41,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         } else {
             websocketPingEmbed = new discord.MessageEmbed()
               .setTitle(`Tiempo de respuesta del Websocket: `)
-              .setColor(resources.red2)
+              .setColor(client.colors.red2)
               .setDescription(`:stopwatch: | ${websocketPing} ms`);
         }
 
@@ -59,7 +59,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             hour = hour % 24;
 
             uptimeEmbed = new discord.MessageEmbed()
-                .setColor(resources.gold)
+                .setColor(client.colors.gold)
                 .setTitle('Tiempo de actividad: ')
                 .setDescription(`:stopwatch: | ${day} días, ${hour} horas, ${minute} minutos y ${seconds} segundos`);
         }
@@ -70,6 +70,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         await message.channel.send(websocketPingEmbed);
         await message.channel.send(uptimeEmbed);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

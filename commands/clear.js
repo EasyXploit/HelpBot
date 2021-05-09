@@ -1,28 +1,28 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
 
     //!clear
 
     try {
         
         let noConnectionEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} <@${client.user.id}> no está conectado a ninguna sala.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} <@${client.user.id}> no está conectado a ninguna sala.`);
         
         let noChannelEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes estar conectado a un canal de voz.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Debes estar conectado a un canal de voz.`);
 
         let notAvailableEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
         
         let noDispatcherEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} No hay nada en reproducción.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} No hay nada en reproducción.`);
         
         let noQueueEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} No hay nada en la cola.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} No hay nada en la cola.`);
         
         //Comprueba si el bot tiene o no una conexión a un canal de voz
         if (!message.guild.voice) return message.channel.send(noConnectionEmbed);
@@ -41,14 +41,14 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         if (!client.servers[message.guild.id] || client.servers[message.guild.id].queue <= 0) return message.channel.send(noQueueEmbed);
 
         //Comprueba si es necesaria una votación
-        if (await resources.evaluateDjOrVotes(message, 'clear')) {
+        if (await client.functions.evaluateDjOrVotes(message, 'clear')) {
             //Borra la cola
             client.servers[message.guild.id].queue = [];
             
             //Manda un mensaje de confirmación
-            await message.channel.send(`${resources.GreenTick} | Cola eliminada`);
+            await message.channel.send(`${client.emotes.greenTick} | Cola eliminada`);
         };
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

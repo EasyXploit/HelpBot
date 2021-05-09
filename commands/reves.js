@@ -1,11 +1,11 @@
-exports.run = (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = (discord, fs, client, message, args, command) => {
     
     //!reves
     
     try {
         let notToAnswerEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Debes escribir el texto a invertir.\nLa sintaxis de este comando es \`${config.prefix}reves <texto>\``);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} Debes escribir el texto a invertir.\nLa sintaxis de este comando es \`${client.config.prefixes.mainPrefix}reves <texto>\``);
 
         if (!args[0]) return message.channel.send(notToAnswerEmbed);
 
@@ -16,6 +16,6 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
             .setDescription('📝 | ' + text);
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

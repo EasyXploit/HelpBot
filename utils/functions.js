@@ -1,12 +1,10 @@
 exports.run = (discord, client) => {
     
-    //SERVIDOR PRINCIPAL
-    const server = client.guilds.cache.get(require('../configs/config.json').homeGuild);
-    module.exports.server = server;
+    //Crea un objeto para almacenar todas las funciones
+    client.functions = {};
 
-    //FUNCIONES
     //Función para buscar miembros
-    async function fetchMember(guild, argument) {
+    client.functions.fetchMember = async (guild, argument) => {
         try {
             let result;
             const matches = argument.match(/^<@!?(\d+)>$/);
@@ -20,10 +18,9 @@ exports.run = (discord, client) => {
             return false;
         }
     };
-    module.exports.fetchMember = fetchMember;
 
     //Función para buscar usuarios
-    async function fetchUser(argument) {
+    client.functions.fetchUser = async  (argument) => {
         try {
             let result;
             const matches = argument.match(/^<@!?(\d+)>$/);
@@ -37,10 +34,9 @@ exports.run = (discord, client) => {
             return false;
         }
     };
-    module.exports.fetchUser = fetchUser;
 
     //Función para buscar roles
-    async function fetchRole(guild, argument) {
+    client.functions.fetchRole = async (guild, argument) => {
         try {
             let result;
             const matches = argument.match(/^<@&?(\d+)>$/);
@@ -54,10 +50,9 @@ exports.run = (discord, client) => {
             return false;
         }
     };
-    module.exports.fetchRole = fetchRole;
 
     //Función para comprobar si existe el rol silenciado, y de no existir, crearlo
-    async function checkMutedRole(guild) {
+    client.functions.checkMutedRole = async (guild) => {
 
         //Busca el rol silenciado
         let mutedRole = await guild.roles.cache.find(r => r.name === '🔇 SILENCIADO');
@@ -79,11 +74,10 @@ exports.run = (discord, client) => {
         };
         return mutedRole;
     };
-    module.exports.checkMutedRole = checkMutedRole;
 
     //Función para propagar el rol silenciado
-    async function spreadMutedRole(guild) {
-         //Busca el rol silenciado
+    client.functions.spreadMutedRole = async (guild) => {
+        //Busca el rol silenciado
         let mutedRole = await guild.roles.cache.find(r => r.name === '🔇 SILENCIADO');
         //Para cada canal, añade el permiso para el rol
         await guild.channels.cache.forEach(async (channel) => {
@@ -101,10 +95,9 @@ exports.run = (discord, client) => {
             };
         });
     };
-    module.exports.spreadMutedRole = spreadMutedRole;
 
     //Función para añadir XP (mode = message || voice)
-    async function addXP(fs, config, member, guild, mode, channel) {
+    client.functions.addXP = async (fs, member, guild, mode, channel) => {
         try {
             
             //Utilidad para generar números aletorios
@@ -118,8 +111,8 @@ exports.run = (discord, client) => {
 
             //Para comprobar si el rol puede ganar XP o no.
             let nonXP;
-            for (let i = 0; i < config.nonXPRoles.length; i++) {
-                if (await member.roles.cache.find(r => r.id === config.nonXPRoles[i])) {
+            for (let i = 0; i < client.config.voice.nonXPRoles.length; i++) {
+                if (await member.roles.cache.find(r => r.id === client.config.voice.nonXPRoles[i])) {
                     nonXP = true;
                     break;
                 };
@@ -155,7 +148,7 @@ exports.run = (discord, client) => {
                     userStats.actualXP = (5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) - userStats.totalXP;
 
                     //Almacena las recompensas por nivel
-                    const rewards = require('./leveling/rewards.json');
+                    const rewards = require('../configs/levelingRewards.json');
 
                     //Para cada recompensa, calcula si el miembro es elegible
                     for (let i = rewards.length - 1; i >= 0; i--) {
@@ -191,7 +184,7 @@ exports.run = (discord, client) => {
                 };
 
                 //Guarda las nuevas estadísticas del miembro
-                fs.writeFile(`./storage/stats.json`, JSON.stringify(client.stats, null, 4), async err => {
+                fs.writeFile(`./databases/stats.json`, JSON.stringify(client.stats, null, 4), async err => {
                     if (err) throw err;
                 });
             };
@@ -200,29 +193,27 @@ exports.run = (discord, client) => {
             return false;
         };
     };
-    module.exports.addXP = addXP;
 
     //Función para convertir de HH:MM:SS a Segundos
-    function hmsToSeconds(str) {
+    client.functions.hmsToSeconds = (str) => {
         var p = str.split(':'),
             s = 0, m = 1;
-    
+
         while (p.length > 0) {
             s += m * parseInt(p.pop(), 10);
             m *= 60;
         }
-    
+
         return s;
     };
-    module.exports.hmsToSeconds = hmsToSeconds;
 
     //Función para evaluar si se necesitan votos o puede continuar
-    async function evaluateDjOrVotes(message, command, index) {
+    client.functions.evaluateDjOrVotes = async (message, command, index) => {
 
         //Omite si no hay roles de DJ
-        if (client.musicConfig.djRoles.length == 0) return true;
+        if (client.config.music.djRoles.length == 0) return true;
 
-        let server = client.servers[message.guild.id];
+        let server = client.queues[message.guild.id];
 
         //Omite si no hay reproducción
         if (!server || !server.nowplaying || !server.nowplaying.requestedById) return true;
@@ -235,8 +226,8 @@ exports.run = (discord, client) => {
         };
         
         //Comprueba si el miembro es DJ, y de serlo omite la comprobación de votos
-        for (let i = 0; i < client.musicConfig.djRoles.length; i++) {
-            if (await message.member.roles.cache.find(r => r.id === client.musicConfig.djRoles[i])) {
+        for (let i = 0; i < client.config.music.djRoles.length; i++) {
+            if (await message.member.roles.cache.find(r => r.id === client.config.music.djRoles[i])) {
                 return true;
             };
         };
@@ -264,11 +255,11 @@ exports.run = (discord, client) => {
         //Almacena variables necesarias para calcular los votos
         const memberCount = message.member.voice.channel.members.size - 1;
         const actualPercentage = (actualVotes / memberCount) * 100;
-        const requiredPercentage = client.musicConfig.votesPercentage;
+        const requiredPercentage = client.config.music.votesPercentage;
         const requiredVotes = Math.round((actualVotes * requiredPercentage) / actualPercentage);
 
         //Maneja la cantidad de votos necesarios para realizar la acción
-        if (actualPercentage < client.musicConfig.votesPercentage) {
+        if (actualPercentage < client.config.music.votesPercentage) {
             message.channel.send(`🗳 | Votos necesarios: \`${actualVotes}\` de \`${requiredVotes}\``);
             return false;
         } else {
@@ -276,111 +267,4 @@ exports.run = (discord, client) => {
             return true;
         };
     };
-    module.exports.evaluateDjOrVotes = evaluateDjOrVotes;
-
-
-    //COLORES
-    const gold = '0xFFC857';
-    module.exports.gold = gold;
-    
-    const red = '0xF12F49';
-    module.exports.red = red;
-    
-    const red2 = '0xF04647';
-    module.exports.red2 = red2;
-    
-    const green = '0x3EB57B';
-    module.exports.green = green;
-    
-    const green2 = '0xB8E986';
-    module.exports.green2 = green2;
-    
-    const gray = '0xC6C9C6';
-    module.exports.gray = gray;
-    
-    const blue = '0x4A90E2';
-    module.exports.blue = blue;
-    
-    const blue2 = '0x7CD6F9';
-    module.exports.blue2 = blue2;
-    
-    const orange = '0xF8A41E';
-    module.exports.orange = orange;
-    
-    const brown = `0xCBAC88`;
-    module.exports.brown = brown;
-    
-    const lilac = `0xA3B3EE`;
-    module.exports.lilac = lilac;
-    
-    //VARIABLES MODIFICABLES
-    const valueCheck = 'null';
-    module.exports.valueCheck = valueCheck;
-    
-    //EMOJIS
-    const banned = client.emojis.cache.get('437727132660138024');
-    module.exports.banned = banned;
-
-    const GreenTick = client.emojis.cache.get('496633289726099478');
-    module.exports.GreenTick = GreenTick;
-    
-    const GrayTick = client.emojis.cache.get('496633289809854474');
-    module.exports.GrayTick = GrayTick;
-    
-    const RedTick = client.emojis.cache.get('496633289528836108');
-    module.exports.RedTick = RedTick;
-    
-    const OrangeTick = client.emojis.cache.get('499215590741901312');
-    module.exports.OrangeTick = OrangeTick;
-    
-    const beta = client.emojis.cache.get('496633935174828034');
-    module.exports.beta = beta;
-
-    const dj = client.emojis.cache.get('757768901693145249');
-    module.exports.dj = dj;
-    
-    const fortnite = client.emojis.cache.get('496633644954419210');
-    module.exports.fortnite = fortnite;
-    
-    const pilkobot = client.emojis.cache.get('496633714802032655');
-    module.exports.pilkobot = pilkobot;
-    
-    const republicagamer = client.emojis.cache.get('498288236607569962');
-    module.exports.republicagamer = republicagamer;
-    
-    const musicBox = client.emojis.cache.get('503128880933240832');
-    module.exports.musicBox = musicBox;
-    
-    const shield = client.emojis.cache.get('499209508275355648');
-    module.exports.shield = shield;
-    
-    const coin = client.emojis.cache.get('496634668758859786');
-    module.exports.coin = coin;
-    
-    const nitro = client.emojis.cache.get('496633448686157826');
-    module.exports.nitro = nitro;
-    
-    const boxbot = client.emojis.cache.get('497178946149023744');
-    module.exports.boxbot = boxbot;
-    
-    const translate = client.emojis.cache.get('503248605814063105');
-    module.exports.translate = translate;
-    
-    const rythm = client.emojis.cache.get('507187604031275008');
-    module.exports.rythm = rythm;
-    
-    const chevron1 = client.emojis.cache.get('497133469110108189');
-    module.exports.chevron1 = chevron1;
-    
-    const chevron2 = client.emojis.cache.get('497133468791341116');
-    module.exports.chevron2 = chevron2;
-    
-    const chevron3 = client.emojis.cache.get('497133468741009411');
-    module.exports.chevron3 = chevron3;
-    
-    const chevron4 = client.emojis.cache.get('497133469059645460');
-    module.exports.chevron4 = chevron4;
-    
-    const chevron5 = client.emojis.cache.get('497133469529538560');
-    module.exports.chevron5 = chevron5;
-}
+};

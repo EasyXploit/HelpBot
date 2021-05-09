@@ -1,13 +1,13 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
     
     //!psychopass (@usuario | nada)
     
     try {
         let notFoundEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`);
 
-        const member = await resources.fetchMember(message.guild, args[0] || message.author.id);
+        const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);
         if (!member) return message.channel.send(notFoundEmbed);
 
         const coefficient = Math.floor(Math.random() * 400);
@@ -28,6 +28,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

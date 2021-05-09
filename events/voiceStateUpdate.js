@@ -1,4 +1,4 @@
-exports.run = async (oldState, newState, discord, fs, config, keys, client, resources) => {
+exports.run = async (oldState, newState, discord, fs, client) => {
     
     try {
         //Previene que continue la ejecución si el servidor no es la República Gamer
@@ -6,14 +6,14 @@ exports.run = async (oldState, newState, discord, fs, config, keys, client, reso
 
         async function endVoiceTime() {
             //Si el timestamp actual es superior a los MS de intervalo de ganancia de XP configurado, le asigna XP
-            if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].last_xpReward + config.XPVoiceMinutes)) {
+            if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].last_xpReward + client.config.voice.XPVoiceMinutes)) {
 
                 //Almacena el miembro, y si está muteado o ensordecido, no hace nada
-                const member = await resources.fetchMember(newState.guild, newState.id);
+                const member = await client.functions.fetchMember(newState.guild, newState.id);
                 if (!member || member.voice.mute || member.voice.deaf) return;
 
                 //Llama al manejador de leveling
-                await resources.addXP(fs, config, member, newState.guild, 'voice');
+                await client.functions.addXP(fs, member, newState.guild, 'voice');
             };
             
             //Borra el registro del miembro que ha dejado el canal de voz
@@ -23,7 +23,7 @@ exports.run = async (oldState, newState, discord, fs, config, keys, client, reso
         if (newState.channelID !== null) { //Si hay una nueva conexión o una antigua cambia
 
             //Almacena el miembro
-            const member = await resources.fetchMember(newState.guild, newState.id);
+            const member = await client.functions.fetchMember(newState.guild, newState.id);
             if (!member) return;
 
             //Acaba el conteo de minutos si el miembro se queda solo o con únicamente bots en la sala
@@ -33,15 +33,15 @@ exports.run = async (oldState, newState, discord, fs, config, keys, client, reso
 
             //Calcula si el miembro tiene un rol que no puede ganar XP
             let nonXPRole;
-            for (let i = 0; i < config.nonXPRoles.length; i++) {
-                if (await member.roles.cache.find(r => r.id === config.nonXPRoles[i])) {
+            for (let i = 0; i < client.config.voice.nonXPRoles.length; i++) {
+                if (await member.roles.cache.find(r => r.id === client.config.voice.nonXPRoles[i])) {
                     nonXPRole = true;
                     break;
                 };
             };
 
             //No sigue si es un bot, el canal de AFK, un canal prohibido o un rol prohibido
-            if (member.user.bot || config.nonXPChannels.includes(newState.channelID) || newState.channelID === newState.guild.afkChannel.id || nonXPRole) {
+            if (member.user.bot || client.config.voice.nonXPChannels.includes(newState.channelID) || newState.channelID === newState.guild.afkChannel.id || nonXPRole) {
                 if (client.usersVoiceStates[newState.id]) {
                     //Borra el registro del miembro que ha dejado el canal de voz
                     delete client.usersVoiceStates[newState.id];
@@ -62,7 +62,6 @@ exports.run = async (oldState, newState, discord, fs, config, keys, client, reso
         } else if (newState.channelID == null) { //Si la conexión desaparece
             endVoiceTime();
         };
-
     } catch (e) {
 
         let error = e.stack;
@@ -71,7 +70,7 @@ exports.run = async (oldState, newState, discord, fs, config, keys, client, reso
 
         //Se muestra el error en el canal de depuración
         let debuggEmbed = new discord.MessageEmbed()
-            .setColor(resources.brown)
+            .setColor(client.colors.brown)
             .setTitle(`📋 Depuración`)
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
             .addField(`Evento:`, `voiceStateUpdate`, true)
@@ -79,7 +78,7 @@ exports.run = async (oldState, newState, discord, fs, config, keys, client, reso
             .addField(`Error:`, `\`\`\`${error}\`\`\``);
         
         //Se envía el mensaje al canal de depuración
-        await client.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
-    }
-}
+        await client.debuggingChannel.send(debuggEmbed);
+    };
+};
     

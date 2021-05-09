@@ -1,11 +1,11 @@
-exports.run = (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = (discord, fs, client, message, args, command) => {
     
     //!di (texto)
     
     try {   
         let noTextEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Debes escribir el contenido del mensaje`);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} Debes escribir el contenido del mensaje`);
 
         if (!args[0]) return message.channel.send(noTextEmbed);
         
@@ -19,6 +19,6 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
         
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

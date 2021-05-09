@@ -1,19 +1,19 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
     
     //!join
 
     try {
         let noChannelEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes estar conectado a un canal de voz.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Debes estar conectado a un canal de voz.`);
         
         let alreadyInChannelEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} El bot ya está en otra sala.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} El bot ya está en otra sala.`);
         
         let alreadyInYourChannelEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} El bot ya está en la sala.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} El bot ya está en la sala.`);
         
         //Comprueba si el miembro está en un canal de voz
         let voiceChannel = message.member.voice.channel;
@@ -30,19 +30,19 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         };
 
         let noConnectPermissionEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} No tengo permiso para conectarme a esta sala.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} No tengo permiso para conectarme a esta sala.`);
         
         let noAfkRoomEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} No puedo unirme al canal de AFK.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} No puedo unirme al canal de AFK.`);
         
         let fullRoomEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} La sala está llena.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} La sala está llena.`);
 
         //Comprueba si el bot tiene permiso para conectarse
-        if (!voiceChannel.joinable || client.musicConfig.forbiddenChannels.includes(voiceChannel.id)) return message.channel.send(noConnectPermissionEmbed)
+        if (!voiceChannel.joinable || client.config.music.forbiddenChannels.includes(voiceChannel.id)) return message.channel.send(noConnectPermissionEmbed)
         
         //Comprueba si la sala es de AFK
         if (message.member.voice.channelID === message.guild.afkChannelID) return message.channel.send(noAfkRoomEmbed)
@@ -90,6 +90,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

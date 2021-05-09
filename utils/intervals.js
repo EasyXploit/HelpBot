@@ -1,7 +1,4 @@
-exports.run = (discord, client, fs, resources, config) => {
-
-    const debuggingChannel = client.channels.cache.get(config.debuggingChannel);
-    const loggingChannel = client.channels.cache.get(config.loggingChannel);
+exports.run = (discord, client, fs) => {
 
     //Comprobación de miembros silenciados temporalmente
     client.setInterval(async () => {
@@ -10,38 +7,38 @@ exports.run = (discord, client, fs, resources, config) => {
 
             if (Date.now() > time) {
 
-                let guild = client.guilds.cache.get(resources.server.id);
+                let guild = client.guilds.cache.get(client.homeGuild.id);
             
                 let role = guild.roles.cache.find(r => r.name === '🔇 SILENCIADO')
                 if (!role) continue;
 
-                const member = await resources.fetchMember(guild, idKey);
+                const member = await client.functions.fetchMember(guild, idKey);
                 if (!member) {
                     delete client.mutes[idKey];
                     fs.writeFile('storage/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
                         if (err) throw err;
 
                         let loggingEmbed = new discord.MessageEmbed()
-                            .setColor(resources.green)
+                            .setColor(client.colors.green)
                             .setAuthor('Un usuario ha sido DES-SILENCIADO, pero no se encontraba en el servidor')
                             .addField('ID', idKey, true)
                             .addField('Moderador', `<@${client.user.id}>`, true)
                             .addField('Razón', 'Venció la amonestación', true);
 
-                        await loggingChannel.send(loggingEmbed);
+                        await client.loggingChannel.send(loggingEmbed);
                     });
                     return;
                 };
 
                 let loggingEmbed = new discord.MessageEmbed()
-                    .setColor(resources.green)
+                    .setColor(client.colors.green)
                     .setAuthor(`${member.user.tag} ha sido DES-SILENCIADO`, member.user.displayAvatarURL())
                     .addField('Miembro', member.user.tag, true)
                     .addField('Moderador', `<@${client.user.id}>`, true)
                     .addField('Razón', 'Venció la amonestación', true);
 
                 let toDMEmbed = new discord.MessageEmbed()
-                    .setColor(resources.green)
+                    .setColor(client.colors.green)
                     .setAuthor('[DES-SILENCIADO]', guild.iconURL())
                     .setDescription(`${member.user.tag}, has sido des-silenciado en ${guild.name}`)
                     .addField('Moderador', `<@${client.user.id}>`, true)
@@ -50,10 +47,10 @@ exports.run = (discord, client, fs, resources, config) => {
                 await member.roles.remove(role);
 
                 delete client.mutes[idKey];
-                fs.writeFile('./storage/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
+                fs.writeFile('./databases/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
                     if (err) throw err;
 
-                    await loggingChannel.send(loggingEmbed);
+                    await client.loggingChannel.send(loggingEmbed);
                     await member.send(toDMEmbed);
                 });
             };
@@ -64,25 +61,25 @@ exports.run = (discord, client, fs, resources, config) => {
     client.setInterval(async () => {
         for (let idKey in client.bans) {
             let time = client.bans[idKey].time;
-            let guild = client.guilds.cache.get(resources.server.id);
+            let guild = client.guilds.cache.get(client.homeGuild.id);
             let user = await client.users.fetch(idKey);
 
             if (Date.now() > time) {
 
                 let loggingEmbed = new discord.MessageEmbed()
-                    .setColor(resources.green)
+                    .setColor(client.colors.green)
                     .setAuthor(`${user.tag} ha sido DES-BANEADO`, user.displayAvatarURL())
                     .addField('Usuario', user.tag, true)
                     .addField('Moderador', `<@${client.user.id}>`, true)
                     .addField('Razón', 'Venció la amonestación', true);
 
                 delete client.bans[idKey];
-                fs.writeFile('./storage/bans.json', JSON.stringify(client.bans, null, 4), async err => {
+                fs.writeFile('./databases/bans.json', JSON.stringify(client.bans, null, 4), async err => {
                     if (err) throw err;
 
                     try {
                         await guild.members.unban(idKey);
-                        await loggingChannel.send(loggingEmbed);
+                        await client.loggingChannel.send(loggingEmbed);
                     } catch (e) {
                         if (e.toString().includes('Unknown Ban')) return;
                     };
@@ -98,10 +95,11 @@ exports.run = (discord, client, fs, resources, config) => {
             console.log(`${new Date().toLocaleString()} 》Tiempo de respuesta del Websocket elevado: ${ping} ms\n`);
 
             let debuggingEmbed = new discord.MessageEmbed()
-                .setColor(resources.orange)
+                .setColor(client.colors.orange)
                 .setFooter(client.user.username, client.user.avatarURL())
-                .setDescription(`${resources.OrangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);
-            debuggingChannel.send(debuggingEmbed);
+                .setDescription(`${client.emotes.orangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);
+
+            client.debuggingChannel.send(debuggingEmbed);
         };
     }, 60000);
 
@@ -116,7 +114,7 @@ exports.run = (discord, client, fs, resources, config) => {
                 poll = await channel.messages.fetch(idKey);
             } catch (e) {
                 delete client.polls[idKey];
-                return fs.writeFile('./storage/polls.json', JSON.stringify(client.polls, null, 4), async err => {
+                return fs.writeFile('./databases/polls.json', JSON.stringify(client.polls, null, 4), async err => {
                     if (err) throw err;
                 });
             };
@@ -151,16 +149,16 @@ exports.run = (discord, client, fs, resources, config) => {
                 await poll.edit(resultEmbed).then(async poll => {
 
                     let loggingEmbed = new discord.MessageEmbed()
-                        .setColor(resources.blue)
+                        .setColor(client.colors.blue)
                         .setTitle('📑 Auditoría - [ENCUESTAS]')
                         .setDescription(`La encuesta "__[${client.polls[idKey].title}](${poll.url})__" ha finalizado en el canal <#${client.polls[idKey].channel}>.`);
 
-                    await loggingChannel.send(loggingEmbed)
+                    await client.loggingChannel.send(loggingEmbed)
 
                 });
 
                 delete client.polls[idKey];
-                fs.writeFile('./storage/polls.json', JSON.stringify(client.polls, null, 4), async err => {
+                fs.writeFile('./databases/polls.json', JSON.stringify(client.polls, null, 4), async err => {
                     if (err) throw err;
                 });
             } else {
@@ -192,16 +190,16 @@ exports.run = (discord, client, fs, resources, config) => {
             const guild = client.guilds.cache.get(voiceState.guild);
 
             //Almacena el miembro y comprueba si está silenciado o ensordecido
-            const member = await resources.fetchMember(guild, idKey);
+            const member = await client.functions.fetchMember(guild, idKey);
             if (!member || member.voice.mute || member.voice.deaf || member.voice.channel.members.filter(m => !m.user.bot).size === 1) return;
 
             //Llama al manejador de leveling
-            await resources.addXP(fs, config, member, guild, 'voice');
+            await client.functions.addXP(fs, member, guild, 'voice');
 
             //Actualiza el timestamp de la última recompensa de XP
             client.usersVoiceStates[member.id].last_xpReward = Date.now();
         };
-    }, config.XPVoiceMinutes);
+    }, client.config.voice.XPVoiceMinutes);
 
     //Actualización de miembros totales en presencia
     client.setInterval(async () => {

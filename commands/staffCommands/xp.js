@@ -1,35 +1,35 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //-xp (@miembro | id) (set | add | remove | clear) <cantidad>
     
     try {
-        if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
+        if (message.author.id !== client.config.guild.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
         
         let unknownMemberEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Debes mencionar a un miembro o escribir su id`);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} Debes mencionar a un miembro o escribir su id`);
 
         let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Los bots no pueden ganar XP`);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} Los bots no pueden ganar XP`);
         
         let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.staffPrefix}xp (@miembro | id) (set | add | remove | clear) <cantidad>\``);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} La sintaxis de este comando es \`${client.config.prefixes.staffPrefix}xp (@miembro | id) (set | add | remove | clear) <cantidad>\``);
 
         let incorrectQuantityEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Debes proporcionar una cantidad válida`);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} Debes proporcionar una cantidad válida`);
 
         let noXPEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Este miembro no tiene XP`);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} Este miembro no tiene XP`);
         
 
         if (!args[0]) return message.channel.send(unknownMemberEmbed);
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID y no es un bot
-        const member = await resources.fetchMember(message.guild, args[0]);
+        const member = await client.functions.fetchMember(message.guild, args[0]);
         if (!member) return message.channel.send(unknownMemberEmbed);
         if (member.user.bot) return message.channel.send(noBotsEmbed);
 
@@ -61,7 +61,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         if (args[1] === 'clear' && userStats.totalXP == 0) return message.channel.send(noXPEmbed);  
 
         //Almacena el moderador
-        let moderator = await resources.fetchMember(message.guild, message.author.id);
+        let moderator = await client.functions.fetchMember(message.guild, message.author.id);
         
         //Se comprueba si puede añadir XP al miembro en función de la jerarquía de roles
         if (moderator.id !== message.guild.owner.id) {
@@ -99,7 +99,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         };
 
         //Almacena las recompensas por nivel
-        const rewards = require('../../utils/leveling/rewards.json');
+        const rewards = require('../../configs/levelingRewards.json');
 
         //Función para asignar recompensas
         async function assignRewards() {
@@ -160,11 +160,11 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         };
 
         let successEmbed = new discord.MessageEmbed()
-            .setColor(resources.green2)
-            .setDescription(`${resources.GreenTick} Se ha modificado la cantidad de XP del miembro **${member.user.tag}**.`);
+            .setColor(client.colors.green2)
+            .setDescription(`${client.emotes.greenTick} Se ha modificado la cantidad de XP del miembro **${member.user.tag}**.`);
 
         let toDMEmbed = new discord.MessageEmbed()
-            .setColor(resources.green)
+            .setColor(client.colors.green)
             .setAuthor('[XP MODIFICADO]', message.guild.iconURL())
             .setDescription(`<@${member.id}>, tu cantidad de XP ha sido modificada`)
             .addField('Moderador', message.author.tag, true)
@@ -172,7 +172,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField('Nuevo valor', newValue, true);
 
         let loggingEmbed = new discord.MessageEmbed()
-            .setColor(resources.blue)
+            .setColor(client.colors.blue)
             .setTitle('📑 Auditoría - [SISTEMA DE XP]')
             .setDescription(`Se ha modificado la cantidad de XP de **${member.user.tag}**.`)
             .addField('Fecha:', new Date().toLocaleString(), true)
@@ -182,15 +182,15 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField('Nuevo valor', newValue, true);
 
         //Escribe el resultado en el JSON
-        fs.writeFile('./storage/stats.json', JSON.stringify(client.stats, null, 4), async err => {
+        fs.writeFile('./databases/stats.json', JSON.stringify(client.stats, null, 4), async err => {
             if (err) throw err;
 
-            await loggingChannel.send(loggingEmbed);
+            await client.loggingChannel.send(loggingEmbed);
             await member.send(toDMEmbed);
             await message.channel.send(successEmbed);
         });
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, client, message, args, command, e);
     };
 };
 

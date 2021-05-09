@@ -1,10 +1,10 @@
-exports.run = (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = (discord, fs, client, message, args, command) => {
     
     //!normas
     
     try {
         let helpEmbed = new discord.MessageEmbed()
-            .setColor(resources.gold)
+            .setColor(client.colors.gold)
             .setThumbnail('http://i.imgur.com/jAiDAvR.png')
             .setAuthor('NORMAS', 'http://i.imgur.com/jAiDAvR.png')
             .setTitle('Normas del servidor')
@@ -17,6 +17,6 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
             .addField(':six: No busques vacíos legales:', 'No intentes hacer algo que obviamente pueda resultar inadecuado tanto para el staff como para el resto de miembros de la comunidad.\n\n```La infracción de la normativa conllevará desde sanciones administrativas (warn, mute, ban o kick) hasta avisos a las autoridades (en el caso de actividades ilegales).```');
         message.channel.send(helpEmbed);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

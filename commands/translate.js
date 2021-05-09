@@ -1,25 +1,25 @@
-exports.run = (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = (discord, fs, client, message, args, command) => {
     
     //!translate (idioma orígen) (idioma destino) (texto a traducir)
     
     try {
         const translate = require('@k3rn31p4nic/google-translate-api');
-        const langs = JSON.parse(fs.readFileSync(`./resources/texts/langs.json`, `utf-8`));
+        const langs = JSON.parse(fs.readFileSync(`./resources/data/langs.json`, `utf-8`));
         
         let noLanguageEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setTitle(`${resources.RedTick} Debes proporcionarme un lenguaje al que traducir`)
-            .setDescription('La sintaxis de este comando es `' + config.prefix +'translate (fromLang | auto) (toLang) (toTranslate)`');
+            .setColor(client.colors.red)
+            .setTitle(`${client.emotes.redTick} Debes proporcionarme un lenguaje al que traducir`)
+            .setDescription('La sintaxis de este comando es `' + client.config.prefixes.mainPrefix +'translate (fromLang | auto) (toLang) (toTranslate)`');
         
         let notToTranslateEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setTitle(`${resources.RedTick} Debes proporcionarme un término a traducir`)
-            .setDescription('La sintaxis de este comando es `' + config.prefix +'translate (fromLang | auto) (toLang) (toTranslate)`');
+            .setColor(client.colors.red)
+            .setTitle(`${client.emotes.redTick} Debes proporcionarme un término a traducir`)
+            .setDescription('La sintaxis de este comando es `' + client.config.prefixes.mainPrefix +'translate (fromLang | auto) (toLang) (toTranslate)`');
         
         let noCorrectCodeEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setTitle(`${resources.RedTick} Debes proporcionarme un lenguaje al que traducir`)
-            .setDescription('Debes introducir \n`' + config.prefix +'translate (fromLang | auto) (toLang) (toTranslate)`');
+            .setColor(client.colors.red)
+            .setTitle(`${client.emotes.redTick} Debes proporcionarme un lenguaje al que traducir`)
+            .setDescription('Debes introducir \n`' + client.config.prefixes.mainPrefix +'translate (fromLang | auto) (toLang) (toTranslate)`');
     
         if (!args[0]) return message.channel.send(noLanguageEmbed);
         if (!args[1]) return message.channel.send(notToTranslateEmbed);
@@ -35,7 +35,7 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
             message.delete();
             
             let resultEmbed = new discord.MessageEmbed()
-                .setColor(resources.blue)
+                .setColor(client.colors.blue)
                 .setThumbnail(`https://i.imgur.com/Gg66EoX.png`)
                 .setAuthor(`Traductor`, `https://i.imgur.com/Gg66EoX.png`)
                 .addField(`De ${fromLang} a ${toLang}:`, res.text, true)
@@ -46,6 +46,6 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
             console.log(`${new Date().toLocaleString()} 》Error durante la traducción: ${error}`)
           });
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

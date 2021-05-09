@@ -1,11 +1,11 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
     
     //-send (embed | normal) (texto)
     
     try {
         let noCorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} La sintaxis de este comando es \`-send (embed | normal) (texto)\`.`);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} La sintaxis de este comando es \`-send (embed | normal) (texto)\`.`);
 
         if (!args[0] || !args[1]) return message.channel.send(noCorrectSyntaxEmbed);
         
@@ -18,13 +18,13 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
 
         if (type === 'embed') {
             let resultEmbed = new discord.MessageEmbed()
-                .setColor(resources.gold)
+                .setColor(client.colors.gold)
                 .setDescription(body);
             message.channel.send(resultEmbed);
         } else if (type === 'normal') {
             message.channel.send(body);
         };
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

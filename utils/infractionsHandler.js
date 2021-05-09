@@ -1,24 +1,24 @@
-exports.run = async (discord, fs, config, client, resources, loggingChannel, message, guild, member, reason, action, moderator, msg) => {
+exports.run = async (discord, fs, client, message, guild, member, reason, action, moderator, msg) => {
 
     //Función para silenciar
     async function mute(time) {
 
         //Comprueba si existe el rol silenciado, sino lo crea
-        const mutedRole = await resources.checkMutedRole(message.guild);
+        const mutedRole = await client.functions.checkMutedRole(message.guild);
 
         //Comprueba si el miembro tiene el rol silenciado, sino se lo añade
         if (member.roles.cache.has(mutedRole.id)) return;
         member.roles.add(mutedRole);
 
         //Propaga el rol silenciado
-        resources.spreadMutedRole(message.guild);
+        client.functions.spreadMutedRole(message.guild);
 
         if (time) {
             client.mutes[member.id] = {
                 time: Date.now() + time
             };
 
-            fs.writeFile('./storage/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
+            fs.writeFile('./databases/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
                 if (err) throw err;
             });
         };
@@ -26,7 +26,7 @@ exports.run = async (discord, fs, config, client, resources, loggingChannel, mes
         let durartion = Math.floor(time/(24000*1000*60*60)) + "d " + Math.floor(time/(1000*60*60)) + ":" + Math.floor(time/(1000*60))%60 + ":" + Math.floor(time/1000)%60 || '∞';
 
         let loggingEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
+            .setColor(client.colors.red)
             .setAuthor(`${member.user.tag} ha sido SILENCIADO`, member.user.displayAvatarURL())
             .addField('Miembro', member.user.tag, true)
             .addField('Moderador', moderator.tag, true)
@@ -34,34 +34,34 @@ exports.run = async (discord, fs, config, client, resources, loggingChannel, mes
             .addField('Duración', durartion, true);
 
         let toDMEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
+            .setColor(client.colors.red)
             .setAuthor('[SILENCIADO]', guild.iconURL())
             .setDescription(`${member.user.tag}, has sido silenciado en ${guild.name}`)
             .addField('Moderador', moderator.tag, true)
             .addField('Razón', 'Demasiadas advertencias', true)
             .addField('Duración', durartion, true);
 
-        await loggingChannel.send(loggingEmbed);
+        await client.loggingChannel.send(loggingEmbed);
         await member.send(toDMEmbed);
     };
 
     //Función para expulsar
     async function kick() {
         let loggingEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
+            .setColor(client.colors.red2)
             .setAuthor(`${member.user.tag} ha sido EXPULSADO`, member.user.displayAvatarURL())
             .addField('Miembro', member.user.tag, true)
             .addField('Moderador', moderator.tag, true)
             .addField('Razón', 'Demasiadas advertencias', true);
 
         let toDMEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
+            .setColor(client.colors.red2)
             .setAuthor(`[EXPULSADO]`, guild.iconURL())
             .setDescription(`<@${member.id}>, has sido expulsado en ${guild.name}`)
             .addField(`Moderador`, moderator.tag, true)
             .addField(`Razón`, 'Demasiadas advertencias', true)
 
-        await loggingChannel.send(loggingEmbed);
+        await client.loggingChannel.send(loggingEmbed);
         await member.send(toDMEmbed);
 
         await member.kick(reason);
@@ -75,13 +75,13 @@ exports.run = async (discord, fs, config, client, resources, loggingChannel, mes
                 time: Date.now() + time
             }
     
-            fs.writeFile(`./storage/bans.json`, JSON.stringify(client.bans, null, 4), async err => {
+            fs.writeFile(`./databases/bans.json`, JSON.stringify(client.bans, null, 4), async err => {
                 if (err) throw err;
             });
         };
 
         let loggingEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
+            .setColor(client.colors.red2)
             .setAuthor(`${member.user.tag} ha sido BANEADO`, user.displayAvatarURL())
             .addField(`Miembro`, member.user.tag, true)
             .addField(`ID`, member.id, true)
@@ -90,14 +90,14 @@ exports.run = async (discord, fs, config, client, resources, loggingChannel, mes
             .addField(`Duración`, new Date(parseInt(time)).toLocaleString() || '∞', true);
 
         let toDMEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
+            .setColor(client.colors.red2)
             .setAuthor(`[BANEADO]`, message.guild.iconURL())
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
             .addField(`Moderador`, moderator.tag, true)
             .addField(`Razón`, 'Demasiadas advertencias', true)
             .addField(`Duración`, new Date(parseInt(time)).toLocaleString() || '∞', true);
 
-        await loggingChannel.send(loggingEmbed);
+        await client.loggingChannel.send(loggingEmbed);
         await member.send(toDMEmbed);
 
         await guild.members.ban(user, {reason: `Moderador: ${moderator.id}, Razón: Demasiadas advertencias`});
@@ -106,11 +106,11 @@ exports.run = async (discord, fs, config, client, resources, loggingChannel, mes
 
     //Envía un mensaje de advertencia
     let publicWarnEmbed = new discord.MessageEmbed()
-        .setColor(resources.orange)
-        .setDescription(`${resources.OrangeTick} El miembro **${member.user.tag}** ha sido advertido debido a **${reason}**`);
+        .setColor(client.colors.orange)
+        .setDescription(`${client.emotes.orangeTick} El miembro **${member.user.tag}** ha sido advertido debido a **${reason}**`);
 
     let toDMEmbed = new discord.MessageEmbed()
-        .setColor(resources.orange)
+        .setColor(client.colors.orange)
         .setAuthor(`[ADVERTIDO]`, guild.iconURL())
         .setDescription(`<@${member.id}>, has sido advertido en ${guild.name}`)
         .addField(`Moderador`, moderator.tag, true)
@@ -134,11 +134,11 @@ exports.run = async (discord, fs, config, client, resources, loggingChannel, mes
             moderator: moderator.id
         };
 
-        fs.writeFile(`./storage/warns.json`, JSON.stringify(client.warns, null, 4), async err => {
+        fs.writeFile(`./databases/warns.json`, JSON.stringify(client.warns, null, 4), async err => {
             if (err) throw err;
 
             let loggingEmbed = new discord.MessageEmbed()
-                .setColor(resources.orange)
+                .setColor(client.colors.orange)
                 .setAuthor(`${member.user.tag} ha sido ADVERTIDO`, member.user.displayAvatarURL())
                 .addField(`Miembro`, member.user.tag, true)
                 .addField(`Moderador`, moderator.tag, true)
@@ -146,16 +146,14 @@ exports.run = async (discord, fs, config, client, resources, loggingChannel, mes
                 .addField(`Canal`, `<#${message.channel.id}>`, true)
                 .addField('Infracciones', Object.keys(client.warns[member.id]).length, true);
 
-            await loggingChannel.send(loggingEmbed);
+            await client.loggingChannel.send(loggingEmbed);
 
             //Si procede, adjunta el mensaje filtrado
-            if (msg) loggingChannel.send(new discord.MessageAttachment(Buffer.from(`CONTENIDO DEL MENSAJE: \n${msg}`, 'utf-8'), `mensaje-filtrado-${Date.now()}.txt`))
+            if (msg) client.loggingChannel.send(new discord.MessageAttachment(Buffer.from(`CONTENIDO DEL MENSAJE: \n${msg}`, 'utf-8'), `mensaje-filtrado-${Date.now()}.txt`))
         });
 
-        const rules = require('./automod/automodRules.json');
-
-        for (let i = 0; i < rules.length; i++) {
-            let rule = rules[i];
+        for (let i = 0; i < client.config.automodRules.length; i++) {
+            let rule = client.config.automodRules[i];
             let warnsCount = 0;
 
             Object.keys(client.warns[member.id]).forEach(entry => {

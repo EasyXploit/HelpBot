@@ -1,13 +1,13 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
 
     //-userinfo (@usuario | id)
 
     try {
         let noUserEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} No has proporcionado un usuario válido`);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} No has proporcionado un usuario válido`);
 
-        const member = await resources.fetchMember(message.guild, args[0] || message.author.id);
+        const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);
         if (!member) return message.channel.send(noUserEmbed);
 
         let user = member.user;
@@ -62,7 +62,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             lastMessage = `Ninguno en caché`;
         }
 
-        let translations = require(`../../resources/texts/translations.json`);
+        let translations = require(`../../resources/data/permsTranslations.json`);
 
         let matches = [];
 
@@ -71,7 +71,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         });
 
         //Comprueba si existe el rol silenciado, sino lo crea
-        let role = await resources.checkMutedRole(message.guild);
+        let role = await client.functions.checkMutedRole(message.guild);
 
         let sanction;
         if (client.mutes[member.id]) {
@@ -101,6 +101,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

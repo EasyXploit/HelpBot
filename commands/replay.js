@@ -1,24 +1,24 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
 
     //!replay
 
     try {
         
         let noConnectionEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} <@${client.user.id}> no está conectado a ninguna sala.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} <@${client.user.id}> no está conectado a ninguna sala.`);
         
         let noChannelEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes estar conectado a un canal de voz.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Debes estar conectado a un canal de voz.`);
 
         let notAvailableEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
         
         let noDispatcherEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} No hay nada en reproducción.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} No hay nada en reproducción.`);
         
         //Comprueba si el bot tiene o no una conexión a un canal de voz
         if (!message.guild.voice) return message.channel.send(noConnectionEmbed);
@@ -34,8 +34,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         if (!client.voiceDispatcher) return message.channel.send(noDispatcherEmbed);
 
         //Comprueba si es necesaria una votación
-        if (await resources.evaluateDjOrVotes(message, 'replay')) {
-            let nowplaying = client.servers[message.guild.id].nowplaying;
+        if (await client.functions.evaluateDjOrVotes(message, 'replay')) {
+            let nowplaying = client.queues[message.guild.id].nowplaying;
         
             //Genera la información de la cola
             let newQueueItem = {
@@ -51,9 +51,9 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             await client.voiceDispatcher.end();
             
             //Manda un mensaje de confirmación
-            await message.channel.send(`${resources.GreenTick} | La canción se volverá a reproducir`);
+            await message.channel.send(`${client.emotes.greenTick} | La canción se volverá a reproducir`);
         };
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

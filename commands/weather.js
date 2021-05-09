@@ -1,4 +1,4 @@
-exports.run = (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = (discord, fs, client, message, args, command) => {
     
     //!weather (ubicación)
     
@@ -6,9 +6,9 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
         const weather = module.require('weather-js');
         
         let notToSearchEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setTitle(`${resources.RedTick} Debes proporcionarme un término de búsqueda`)
-            .setDescription(`La sintaxis de este comando es \`${config.prefix}weather (ubicación)\``);
+            .setColor(client.colors.red2)
+            .setTitle(`${client.emotes.redTick} Debes proporcionarme un término de búsqueda`)
+            .setDescription(`La sintaxis de este comando es \`${client.config.prefixes.mainPrefix}weather (ubicación)\``);
     
         if (!args[0]) return message.channel.send(notToSearchEmbed);
         
@@ -32,6 +32,6 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
             message.channel.send(resultEmbed);
         });
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

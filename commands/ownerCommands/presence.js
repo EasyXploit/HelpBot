@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
 
     //$presence (status | name | type | membersCount) (online | offline | idle | dnd - PLAYING | STREAMING | LISTENING | WATCHING | COMPETING - nombre de la actividad - enable | disable)
     
@@ -67,6 +67,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         await client.loggingChannel.send(loggingEmbed);
         await message.channel.send(resultEmbed)
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, client, message, args, command, e);
     };
 };

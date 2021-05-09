@@ -1,14 +1,14 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //-broadcast (autor | anonimo) (embed | normal) (mensaje a enviar)
     
     try {
 
-        if (message.author.id !== config.botOwner) return message.channel.send(noPrivilegesEmbed);
+        if (message.author.id !== client.config.guild.botOwner) return message.channel.send(noPrivilegesEmbed);
         
         let noCorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} La sintaxis de este comando es \`${config.ownerPrefix}broadcast (autor | anonimo) (embed | normal) (mensaje a enviar)\``);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} La sintaxis de este comando es \`${client.config.prefixes.ownerPrefix}broadcast (autor | anonimo) (embed | normal) (mensaje a enviar)\``);
         
         if (args.length < 3 || (args[0] !== 'autor' && args[0] !== 'anonimo') || (args[1] !== 'embed' && args[1] !== 'normal')) return message.channel.send(noCorrectSyntaxEmbed);
             
@@ -24,29 +24,29 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 if (type === 'embed') {
                     resultMessage = new discord.MessageEmbed()
                         .setAuthor(`Mensaje de: ${message.author.tag}`, message.author.avatarURL())
-                        .setColor(resources.gold)
+                        .setColor(client.colors.gold)
                         .setDescription(body);
                 } else if (type === 'normal') {
                     resultMessage = `**Mensaje de ${message.author.tag}:**\n${resultMessage}`
                 }
                 break;
             case 'anonimo':
-                if (message.author.id !== config.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
+                if (message.author.id !== client.config.guild.botOwner && !message.member.roles.cache.has(supervisorsRole.id)) return message.channel.send(noPrivilegesEmbed);
                 if (type === 'embed') {
                     resultMessage = new discord.MessageEmbed()
-                        .setColor(resources.gold)
+                        .setColor(client.colors.gold)
                         .setDescription(body);
                 }
                 break;
         };
 
         let sendingEmbed = new discord.MessageEmbed()
-            .setColor(resources.gray)
-            .setDescription(`${resources.GrayTick} El mensaje está siendo enviado`);
+            .setColor(client.colors.gray)
+            .setDescription(`${client.emotes.grayTick} El mensaje está siendo enviado`);
 
         let confirmEmbed = new discord.MessageEmbed()
-            .setColor(resources.green2)
-            .setDescription(`${resources.GreenTick} ¡Mensaje enviado!`);
+            .setColor(client.colors.green2)
+            .setDescription(`${client.emotes.greenTick} ¡Mensaje enviado!`);
             
         await message.channel.send(sendingEmbed);
 
@@ -62,6 +62,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             }
         }, 10000);
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, client, message, args, command, e);
     };
 };

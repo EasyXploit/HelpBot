@@ -1,17 +1,17 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //-infractions (@miembro | id)
 
     try {
         let noUserEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} No has proporcionado un miembro válido`);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} No has proporcionado un miembro válido`);
 
         let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} No puedes obtener información de un bot`);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} No puedes obtener información de un bot`);
 
-        const member = await resources.fetchMember(message.guild, args[0] || message.author.id);
+        const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);
         if (!member) return message.channel.send(noUserEmbed);
 
         let user = member.user;
@@ -56,7 +56,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         }
 
         //Comprueba si existe el rol silenciado, sino lo crea
-        let role = await resources.checkMutedRole(message.guild);
+        let role = await client.functions.checkMutedRole(message.guild);
 
         let sanction;
         if (client.mutes[member.id]) {
@@ -66,7 +66,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         }
 
         let resultEmbed = new discord.MessageEmbed()
-            .setColor(resources.gold)
+            .setColor(client.colors.gold)
             .setTitle(`⚠ Infracciones`)
             .setDescription(`Mostrando las advertencias del miembro **${member.user.tag}**\nSanción actual: \`${sanction || 'Ninguna'}\``)
             .setThumbnail(user.displayAvatarURL())
@@ -77,6 +77,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, client, message, args, command, e);
     };
 };

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
 
     //-serverinfo
 
@@ -28,7 +28,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         });
 
         let resultEmbed = new discord.MessageEmbed()
-            .setColor(resources.gold)
+            .setColor(client.colors.gold)
             .setAuthor(`Información del servidor`, guild.iconURL())
             .setDescription(`Mostrando información acerca de la guild ${guild.name}`)
             .setThumbnail(guild.iconURL())
@@ -43,10 +43,10 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             .addField(`🔖 Roles`, guild.roles.size, true)
             .addField(`👥 Miembros`, `${guild.memberCount} miembros\n${guild.members.cache.filter(m => m.user.presence.status == 'online' && !m.user.bot).size} online\n${guild.members.cache.filter(m => m.user.bot).size} bots, ${guild.members.cache.filter(m => !m.user.bot).size} humanos`, true)
             .addField(`💬 Canales`, `${guild.channels.cache.size} canales en total:\n${(categories.size - 1)} categorías\n${guild.channels.cache.filter(c => c.type === 'text').size} de texto, ${guild.channels.cache.filter(c => c.type === 'voice').size} de voz`, true)
-            .addField(`${resources.GreenTick} Verificado`, verified, true)
+            .addField(`${client.emotes.greenTick} Verificado`, verified, true)
 
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

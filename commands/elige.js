@@ -1,11 +1,11 @@
-exports.run = (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = (discord, fs, client, message, args, command) => {
     
     //!elige "opción1" "opción2" ...
     
     try {
         let notToAnswerEmbed = new discord.MessageEmbed()
-            .setColor(resources.red2)
-            .setDescription(`${resources.RedTick} Debes proporcionarme al menos 2 opciones.\nLa sintaxis de este comando es \`${config.prefix}elige "opción1" "opción2" ...\``);
+            .setColor(client.colors.red2)
+            .setDescription(`${client.emotes.redTick} Debes proporcionarme al menos 2 opciones.\nLa sintaxis de este comando es \`${client.config.prefixes.mainPrefix}elige "opción1" "opción2" ...\``);
 
         let options = message.content.slice(8).split('" "');
         let lastOption = options.slice(-1).join();
@@ -24,6 +24,6 @@ exports.run = (discord, fs, config, keys, client, message, args, command, loggin
 
         message.channel.send(resultEmbed);
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

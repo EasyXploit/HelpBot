@@ -1,7 +1,7 @@
-exports.run = async (guild, user, discord, fs, config, keys, client, resources) => {
+exports.run = async (guild, user, discord, fs, client) => {
 
     try {
-        //Previene que continue la ejecución si el servidor no es la República Gamer
+        //Previene que continue la ejecución si el servidor no es el principal
         if (guild.id !== client.homeGuild.id) return;
 
         async function sendLogEmbed(executor, reason, time, days) {
@@ -9,17 +9,17 @@ exports.run = async (guild, user, discord, fs, config, keys, client, resources) 
                 if (user.id === client.user.id) return;
 
                 const loggingEmbed = new discord.MessageEmbed()
-                    .setColor(resources.orange)
+                    .setColor(client.colors.orange)
                     .setTitle('📑 Auditoría - [BOTS]')
                     .setDescription(`El **BOT** <@${event.user.tag}> fue baneado del servidor.`);
 
-                await client.channels.cache.get(config.loggingChannel).send(loggingEmbed)
+                await client.channels.cache.get(client.config.guild.loggingChannel).send(loggingEmbed)
             } else {
                 let moderador = executor;
                 let razon = reason || 'Indefinida';
 
                 const loggingEmbed = new discord.MessageEmbed()
-                    .setColor(resources.red)
+                    .setColor(client.colors.red)
                     .setAuthor(`${user.tag} ha sido BANEADO`, user.displayAvatarURL())
                     .addField(`Miembro`, user.tag, true)
                     .addField(`ID`, user.id, true)
@@ -28,7 +28,7 @@ exports.run = async (guild, user, discord, fs, config, keys, client, resources) 
                     .addField(`Duración`, time || 'Indefinida', true)
                     .addField(`Días de mensajes borrados`, days || 'Ninguno', true);
 
-                await client.channels.cache.get(config.loggingChannel).send(loggingEmbed)
+                await client.channels.cache.get(client.config.guild.loggingChannel).send(loggingEmbed)
             }
         }
 
@@ -68,7 +68,7 @@ exports.run = async (guild, user, discord, fs, config, keys, client, resources) 
 
         //Se muestra el error en el canal de depuración
         let debuggEmbed = new discord.MessageEmbed()
-            .setColor(resources.brown)
+            .setColor(client.colors.brown)
             .setTitle(`📋 Depuración`)
             .setDescription(`Se declaró un error durante la ejecución de un evento`)
             .addField(`Evento:`, `guildBanAdd`, true)
@@ -76,6 +76,6 @@ exports.run = async (guild, user, discord, fs, config, keys, client, resources) 
             .addField(`Error:`, `\`\`\`${error}\`\`\``);
         
         //Se envía el mensaje al canal de depuración
-        await client.channels.cache.get(config.debuggingChannel).send(debuggEmbed);
-    }
-}
+        await client.debuggingChannel.send(debuggEmbed);
+    };
+};

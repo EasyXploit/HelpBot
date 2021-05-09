@@ -1,11 +1,11 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //!sound (nada | término | list)
 
     try {
         let notAvailableEmbed = new discord.MessageEmbed()
-            .setColor(resources.red)
-            .setDescription(`${resources.RedTick} El bot no está disponible. Inténtalo más tarde.`);
+            .setColor(client.colors.red)
+            .setDescription(`${client.emotes.redTick} El bot no está disponible. Inténtalo más tarde.`);
         
         let fileNames = fs.readdirSync(`./resources/audios/`);
         let newFileNames = [];
@@ -25,16 +25,16 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         } else {
             
             let noChannelEmbed = new discord.MessageEmbed()
-                .setColor(resources.red)
-                .setDescription(`${resources.RedTick} Debes estar conectado a un canal de voz.`);
+                .setColor(client.colors.red)
+                .setDescription(`${client.emotes.redTick} Debes estar conectado a un canal de voz.`);
 
             let sound;
             if (args[0]) sound = args.join(` `);
             if (!args[0]) sound = newFileNames[Math.floor(Math.random() * newFileNames.length)]
 
             let soundNotFoundEmbed = new discord.MessageEmbed()
-                .setColor(resources.red)
-                .setDescription(`${resources.RedTick} **${sound}** no existe.`);
+                .setColor(client.colors.red)
+                .setDescription(`${client.emotes.redTick} **${sound}** no existe.`);
 
             if (newFileNames.includes(sound) == false) return message.channel.send(soundNotFoundEmbed);
 
@@ -51,8 +51,8 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 };
                 
                 let playingEmbed = new discord.MessageEmbed()
-                    .setColor(resources.green2)
-                    .setDescription(`${resources.GreenTick} Reproduciendo **${sound}**.`);
+                    .setColor(client.colors.green2)
+                    .setDescription(`${client.emotes.greenTick} Reproduciendo **${sound}**.`);
                 
                 message.channel.send(playingEmbed);
 
@@ -78,6 +78,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
             }
         }
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     }
 }

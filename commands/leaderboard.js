@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, config, keys, client, message, args, command, loggingChannel, debuggingChannel, resources) => {
+exports.run = async (discord, fs, client, message, args, command) => {
 
     //!leaderboard [pág.]
 
@@ -36,7 +36,7 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
                 let entry = entries[i];
                 if (!entry) break;
 
-                let member = await resources.fetchMember(message.guild, entry.userID);
+                let member = await client.functions.fetchMember(message.guild, entry.userID);
                 if (!member) member = `<@${entry.userID}>`
                 board = `${board}\n**#${i + 1}** • \`${entry.totalXP} xp\` • \`lvl ${entry.lvl}\` • ${member}`;
 
@@ -47,10 +47,10 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         //Función para mostrar la primera leaderboard o actualizarla
         async function showLeaderboard(embed) {
             let leaderboard = new discord.MessageEmbed()
-                .setColor(resources.gold)
+                .setColor(client.colors.gold)
                 .setTitle(`:trophy: Tabla de clasificación`)
                 .setDescription(await loadBoard(10 * position - 9, 10 * position))
-                .setFooter(`Página ${position} de ${pages}`, resources.server.iconURL());
+                .setFooter(`Página ${position} de ${pages}`, client.homeGuild.iconURL());
 
             if (embed) {
                 await embed.edit(leaderboard).then(async embed => {awaitReactions(embed)});
@@ -96,6 +96,6 @@ exports.run = async (discord, fs, config, keys, client, message, args, command, 
         showLeaderboard();
 
     } catch (e) {
-        require('../utils/errorHandler.js').run(discord, config, client, message, args, command, e);
+        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     };
 };

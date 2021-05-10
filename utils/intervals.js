@@ -199,7 +199,7 @@ exports.run = (discord, client, fs) => {
             //Actualiza el timestamp de la última recompensa de XP
             client.usersVoiceStates[member.id].last_xpReward = Date.now();
         };
-    }, client.config.voice.XPVoiceMinutes);
+    }, client.config.voice.XPGainInterval);
 
     //Actualización de miembros totales en presencia
     client.setInterval(async () => {

@@ -1,5 +1,5 @@
 {
-    "XPVoiceMinutes": 60000
     "nonXPRoles": [],
     "nonXPChannels": [],
+    "XPGainInterval": 60000
 }

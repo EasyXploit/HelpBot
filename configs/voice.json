@@ -1,5 +1,5 @@
 {
-    "nonXPRoles": ["740290235862089738"],
-    "nonXPChannels": ["433376010688397312", "388699973866225676", "428234707927564299"],
     "XPVoiceMinutes": 60000
+    "nonXPRoles": [],
+    "nonXPChannels": [],
 }

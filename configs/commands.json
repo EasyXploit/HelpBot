@@ -34,13 +34,6 @@
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
-    "catfacts": {
-        "enabled": true,
-        "whitelistedChannels": [],
-        "blacklistedChannels": [],
-        "whitelistedRoles": [],
-        "blacklistedRoles": []
-    },
     "clear": {
         "enabled": true,
         "whitelistedChannels": [],
@@ -70,13 +63,6 @@
         "blacklistedRoles": []
     },
     "dj": {
-        "enabled": true,
-        "whitelistedChannels": [],
-        "blacklistedChannels": [],
-        "whitelistedRoles": [],
-        "blacklistedRoles": []
-    },
-    "dogfacts": {
         "enabled": true,
         "whitelistedChannels": [],
         "blacklistedChannels": [],

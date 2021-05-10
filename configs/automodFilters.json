@@ -3,21 +3,21 @@
         "status": true,
         "action": 3,
         "reason": "Palabras malsonantes",
-        "bypassRoles": ["374949036555239434"],
+        "bypassRoles": [],
         "bypassChannels": []
     },
     "invites": {
         "status": true,
         "action": 3,
         "reason": "Invitaciones no permitidas",
-        "bypassRoles": ["374949036555239434"],
+        "bypassRoles": [],
         "bypassChannels": []
     },
     "uppercase": {
         "status": true,
         "action": 3,
         "reason": "Demasiadas mayúsulas",
-        "bypassRoles": ["374949036555239434"],
+        "bypassRoles": [],
         "bypassChannels": [],
         "minimumLength": 30
     },
@@ -25,14 +25,14 @@
         "status": false,
         "action": 1,
         "reason": "No se permiten enlaces",
-        "bypassRoles": ["374949036555239434"],
-        "bypassChannels": ["740288558878687333", "428234707927564299", "472491041602404362"]
+        "bypassRoles": [],
+        "bypassChannels": []
     },
     "massEmoji": {
         "status": true,
         "action": 3,
         "reason": "Demasiados emojis",
-        "bypassRoles": ["374949036555239434"],
+        "bypassRoles": [],
         "bypassChannels": [],
         "quantity": 20
     },
@@ -40,7 +40,7 @@
         "status": true,
         "action": 3,
         "reason": "Demasiadas menciones",
-        "bypassRoles": ["374949036555239434"],
+        "bypassRoles": [],
         "bypassChannels": [],
         "quantity": 5
     },
@@ -48,7 +48,7 @@
         "status": true,
         "action": 3,
         "reason": "Demasiados spoilers",
-        "bypassRoles": ["374949036555239434"],
+        "bypassRoles": [],
         "bypassChannels": [],
         "quantity": 10
     },
@@ -56,7 +56,7 @@
         "status": true,
         "action": 3,
         "reason": "Texto repetitivo",
-        "bypassRoles": ["374949036555239434"],
+        "bypassRoles": [],
         "bypassChannels": []
     }
 }

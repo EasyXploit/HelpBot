@@ -1,86 +1,44 @@
 [
     {
         "requiredLevel": "1",
-        "roles": ["533356032085196811"]
+        "roles": []
     },
     {
         "requiredLevel": "2",
-        "roles": ["529597740565397515"]
+        "roles": []
     },
     {
         "requiredLevel": "3",
-        "roles": ["529597744034349056"]
+        "roles": []
     },
     {
         "requiredLevel": "4",
-        "roles": ["529597752427151360"]
+        "roles": []
     },
     {
         "requiredLevel": "5",
-        "roles": ["393536958187569153"],
+        "roles": [],
         "credits": 100
     },
     {
         "requiredLevel": "6",
-        "roles": ["529597748505477140"]
+        "roles": []
     },
     {
         "requiredLevel": "7",
-        "roles": ["529597757351133184"]
+        "roles": []
     },
     {
         "requiredLevel": "8",
-        "roles": ["529597754041958421"]
+        "roles": []
     },
     {
         "requiredLevel": "9",
-        "roles": ["529597760543129600"]
+        "roles": []
     },
     {
         "requiredLevel": "10",
-        "roles": ["393537392411279360"],
+        "roles": [],
         "credits": 200
-    },
-    {
-        "requiredLevel": "11",
-        "roles": ["529597750388719616"]
-    },
-    {
-        "requiredLevel": "12",
-        "roles": ["529597758483726337"]
-    },
-    {
-        "requiredLevel": "13",
-        "roles": ["529597755795046400"]
-    },
-    {
-        "requiredLevel": "14",
-        "roles": ["529597746227838997"]
-    },
-    {
-        "requiredLevel": "15",
-        "roles": ["393912865096204299", "435516312379326484"],
-        "credits": 300
-    },
-    {
-        "requiredLevel": "16",
-        "roles": ["760978993658593300", "435516312379326484"]
-    },
-    {
-        "requiredLevel": "17",
-        "roles": ["760978671640641577", "435516312379326484"]
-    },
-    {
-        "requiredLevel": "18",
-        "roles": ["760979086058192947", "435516312379326484"]
-    },
-    {
-        "requiredLevel": "19",
-        "roles": ["760979107214524446", "435516312379326484"]
-    },
-    {
-        "requiredLevel": "20",
-        "roles": ["760979109521129474", "435516312379326484"],
-        "credits": 400
     }
 ]

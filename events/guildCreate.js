@@ -4,8 +4,11 @@ exports.run = async (event, discord, fs, client) => {
         //Comprobación de servidor joineado
         if (!client.homeGuild || event.id === client.homeGuild) {
 
-            //Graba la nueva guild en la configuración
+            //Asigna la nueva guild en la configuración
+            client.config.guild.botOwner = event.ownerID;
             client.config.guild.homeGuild = event.id;
+
+            //Graba la nueva guild en la configuración
             await fs.writeFile('./configs/guild.json', JSON.stringify(config, null, 4), (err) => console.error);
 
             const botAddedEmbed = new discord.MessageEmbed()
@@ -25,16 +28,16 @@ exports.run = async (event, discord, fs, client) => {
 
         let error = e.stack;
         if (error.length > 1014) error = error.slice(0, 1014);
-        error = error + ' ...';
+        error = `${error} ...`;
 
         //Se muestra el error en el canal de depuración
         const debuggEmbed = new discord.MessageEmbed()
             .setColor(client.colors.brown)
-            .setTitle(`📋 Depuración`)
-            .setDescription(`Se declaró un error durante la ejecución de un evento`)
-            .addField(`Evento:`, `guildCreate`, true)
-            .addField(`Fecha:`, new Date().toLocaleString(), true)
-            .addField(`Error:`, `\`\`\`${error}\`\`\``);
+            .setTitle('📋 Depuración')
+            .setDescription('Se declaró un error durante la ejecución de un evento')
+            .addField('Evento:', 'guildCreate', true)
+            .addField('Fecha:', new Date().toLocaleString(), true)
+            .addField('Error:', `\`\`\`${error}\`\`\``);
         
         //Se envía el mensaje al canal de depuración
         await client.debuggingChannel.send(debuggEmbed);

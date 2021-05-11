@@ -18,34 +18,34 @@ exports.run = async (discord, fs, client, message, args, command) => {
             if (!role) return message.channel.send(roleNotFoundEmbed);
 
             let membersWithRole = message.guild.roles.cache.get(role.id).members.size;
-            let mentionable = `No`;
-            let hoisted = `Oculto`;
-            let managed = `Local`;
+            let mentionable = 'No';
+            let hoisted = 'Oculto';
+            let managed = 'Local';
 
             if (role.mentionable === true) {
-                mentionable = `Si`
+                mentionable = 'Si'
             };
             
             if (role.hoist === true) {
-                hoisted = `Visible`
+                hoisted = 'Visible'
             };
             
             if (role.managed === true) {
-                managed = `Externa`
+                managed = 'Externa'
             };
 
             let resultEmbed = new discord.MessageEmbed()
                 .setColor(role.hexColor)
-                .setTitle(`🔖 Información de rol`)
+                .setTitle('🔖 Información de rol')
                 .setDescription(`Mostrando información acerca del rol <@&${role.id}>`)
-                .addField(`🏷 Nombre del rol`, role.name, true)
-                .addField(`🆔 ID del rol`, role.id, true)
-                .addField(`👥 Miembros con el rol`, membersWithRole, true)
-                .addField(`🗣 Mencionable`, mentionable, true)
-                .addField(`👁️‍ Se muestra`, hoisted, true)
-                .addField(`🔰 Color`, role.hexColor, true)
-                .addField(`📝 Fecha de creación`, role.createdAt.toLocaleString(), true)
-                .addField(`⚙ Administración`, managed, true)
+                .addField('🏷 Nombre del rol', role.name, true)
+                .addField('🆔 ID del rol', role.id, true)
+                .addField('👥 Miembros con el rol', membersWithRole, true)
+                .addField('🗣 Mencionable', mentionable, true)
+                .addField('👁️‍ Se muestra', hoisted, true)
+                .addField('🔰 Color', role.hexColor, true)
+                .addField('📝 Fecha de creación', role.createdAt.toLocaleString(), true)
+                .addField('⚙ Administración', managed, true)
 
             message.channel.send(resultEmbed);
         }).catch(error => {

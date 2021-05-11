@@ -65,13 +65,9 @@ fs.readdir('./events/', async (err, files) => {
         let eventFunction = require(`./events/${file}`);
         let eventName = file.split(`.`)[0];
 
-        if (eventName === 'guildBanAdd') {
-            client.on(eventName, (guild, user) => {
-                eventFunction.run(guild, user, discord, fs, client);
-            });
-        } else if (eventName === 'voiceStateUpdate') {
-            client.on(eventName, (oldState, newState) => {
-                eventFunction.run(oldState, newState, discord, fs, client);
+        if (eventName === 'guildBanAdd' || eventName === 'voiceStateUpdate') {
+            client.on(eventName, (argument1, argument2) => {
+                eventFunction.run(argument1, argument2, discord, fs, client);
             });
         } else {
             client.on(eventName, event => {

@@ -16,8 +16,8 @@ exports.run = async (discord, fs, client, message, args, command) => {
             
             let embed1 = new discord.MessageEmbed()
                 .setColor(client.colors.gold)
-                .setDescription(`${client.emotes.republicagamer} **Bienvenido al servidor oficial de la República Gamer en Discord**\nA continuación te explicaremos la dinámica de este servidor:`)
-                .attachFiles(`./resources/images/banners/logo_banner.png`);
+                .setDescription(`${client.emotes.rg} **Bienvenido al servidor oficial de la República Gamer en Discord**\nA continuación te explicaremos la dinámica de este servidor:`)
+                .attachFiles('./resources/images/logos/logo_banner.png');
             
             let embed2 = new discord.MessageEmbed()
                 .setColor(client.colors.gold)
@@ -68,8 +68,8 @@ exports.run = async (discord, fs, client, message, args, command) => {
 
             let embed1 = new discord.MessageEmbed()
                 .setColor(client.colors.gold)
-                .attachFiles('./resources/images/banners/logo_banner.png');
                 .setDescription(`${client.emotes.rg} **¡Tu apoyo es importante para nosotros!**\nLo mejor que puedes hacer para apoyarnos es __participar activamente__ tanto en los _canales de texto_ como en los _canales de voz_, pero aquí te mostramos de que forma puedes __apoyar aun más__ el crecimiento de la comunidad.`)
+                .attachFiles('./resources/images/logos/logo_banner.png');
 
             let donateEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.gold)

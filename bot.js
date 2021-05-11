@@ -25,7 +25,8 @@ client.config = {
     commands: require('./configs/commands.json'),
     presence: require('./configs/presence.json'),
     music: require('./configs/music.json'),
-    voice: require('./configs/voice.json')
+    voice: require('./configs/voice.json'),
+    emotes: require('./configs/emotes.json'),
 };
 
 //Dependencias globales

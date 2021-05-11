@@ -33,7 +33,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
             
             let embed3 = new discord.MessageEmbed()
                 .setColor(client.colors.gold)
-                .setDescription(`:grey_question: Escribe \`!ayuda\` en cualquier canal de texto para acceder al sistema de ayuda.\n\n📓 Escribe \`!normas\` para mostrar las normas del servidor.\n\n${client.emotes.pilkobot} Escribe \`!pilko\` para mostrar los comandos de <@446041159853408257>.\n\n:robot: Escribe \`!comandos\` para mostrar los comandos de los bots.\n\n:military_medal: Escribe \`!rangos\` para mostrar los rangos, la tabla de puntuaciones y tu nivel.`)
+                .setDescription(`:grey_question: Escribe \`!ayuda\` en cualquier canal de texto para acceder al sistema de ayuda.\n\n📓 Escribe \`!normas\` para mostrar las normas del servidor.\n\n⚙ Escribe \`!comandos\` para mostrar los comandos de <@446041159853408257>.\n\n:robot: Escribe \`!bots\` para mostrar los comandos de los bots.\n\n:military_medal: Escribe \`!rangos\` para mostrar los rangos, la tabla de puntuaciones y tu nivel.`)
                 .attachFiles(`./resources/images/banners/help.png`);
             
             let embed4 = new discord.MessageEmbed()
@@ -68,8 +68,8 @@ exports.run = async (discord, fs, client, message, args, command) => {
 
             let embed1 = new discord.MessageEmbed()
                 .setColor(client.colors.gold)
-                .setDescription(`${client.emotes.republicagamer} **¡Tu apoyo es importante para nosotros!**\nLo mejor que puedes hacer para apoyarnos es __participar activamente__ tanto en los _canales de texto_ como en los _canales de voz_, pero aquí te mostramos de que forma puedes __apoyar aun más__ el crecimiento de la comunidad.`)
                 .attachFiles('./resources/images/banners/logo_banner.png');
+                .setDescription(`${client.emotes.rg} **¡Tu apoyo es importante para nosotros!**\nLo mejor que puedes hacer para apoyarnos es __participar activamente__ tanto en los _canales de texto_ como en los _canales de voz_, pero aquí te mostramos de que forma puedes __apoyar aun más__ el crecimiento de la comunidad.`)
 
             let donateEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.gold)

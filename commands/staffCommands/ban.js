@@ -51,7 +51,7 @@ exports.run = async (discord, fs, client, message, args, command, supervisorsRol
         let successEmbed = new discord.MessageEmbed()
             .setColor(client.colors.green2)
             .setTitle(`${client.emotes.greenTick} Operación completada`)
-            .setDescription(`El usuario ${user.tag} ha sido baneado, ¿alguien más? ${client.emotes.banned}`);
+            .setDescription(`El usuario ${user.tag} ha sido baneado, ¿alguien más?`);
 
         let toDMEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)

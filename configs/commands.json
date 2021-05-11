@@ -20,6 +20,13 @@
         "whitelistedRoles": [],
         "blacklistedRoles": []
     },
+    "bots": {
+        "enabled": true,
+        "whitelistedChannels": [],
+        "blacklistedChannels": [],
+        "whitelistedRoles": [],
+        "blacklistedRoles": []
+    },
     "boxbot": {
         "enabled": true,
         "whitelistedChannels": [],
@@ -182,13 +189,6 @@
         "blacklistedRoles": []
     },
     "pause": {
-        "enabled": true,
-        "whitelistedChannels": [],
-        "blacklistedChannels": [],
-        "whitelistedRoles": [],
-        "blacklistedRoles": []
-    },
-    "pilko": {
         "enabled": true,
         "whitelistedChannels": [],
         "blacklistedChannels": [],

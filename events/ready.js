@@ -1,6 +1,6 @@
 exports.run = async (event, discord, fs, client) => {
     try {
-        //Carga global de configuración de la guild
+        //Carga de configuración de la guild
         client.homeGuild = client.guilds.cache.get(client.config.guild.homeGuild);
         client.loggingChannel = client.channels.cache.get(client.config.guild.loggingChannel);
         client.debuggingChannel = client.channels.cache.get(client.config.guild.debuggingChannel);
@@ -11,7 +11,21 @@ exports.run = async (event, discord, fs, client) => {
         require('../utils/functions.js').run(discord, client);
         require('../utils/emotes.js').run(client);
 
-        //Comprobación del estado de voz de los usuarios
+        //Carga de presencia
+        await client.user.setPresence({
+            status: client.config.presence.status,
+            activity: {
+                name: client.config.presence.membersCount ? `${client.homeGuild.members.cache.filter(member => !member.user.bot).size} miembros | ${client.config.presence.name}` : client.config.presence.name,
+                type: client.config.presence.type
+            }
+        });
+        console.log(' - [OK] Carga de presencia.');
+
+        //Carga de intervalos
+        require('../utils/intervals.js').run(discord, client, fs);
+        console.log(' - [OK] Carga de intervalos.');
+
+        //Carga de estados de voz
         let voiceStates = client.homeGuild.voiceStates.cache;
         voiceStates.forEach(async voiceState => {
 
@@ -31,7 +45,7 @@ exports.run = async (event, discord, fs, client) => {
                 if (client.usersVoiceStates[voiceState.id]) {
                     //Borra el registro del miembro que ha dejado el canal de voz
                     delete client.usersVoiceStates[voiceState.id];
-                }
+                };
                 return;
             };
 
@@ -45,18 +59,6 @@ exports.run = async (event, discord, fs, client) => {
                 };
             };
         });
-
-        //Carga de presencia
-        await client.user.setPresence({
-            status: client.config.presence.status,
-            activity: {
-                name: client.config.presence.membersCount ? `${client.homeGuild.members.cache.filter(member => !member.user.bot).size} miembros | ${client.config.presence.name}` : client.config.presence.name,
-                type: client.config.presence.type
-            }
-        });
-
-        //Carga de intervalos
-        require('../utils/intervals.js').run(discord, client, fs);
 
         //Auditoría
         console.log(`\n 》${client.user.username} iniciado correctamente \n  ● Estado de actividad: ${client.config.presence.status}\n  ● Tipo de actividad: ${client.config.presence.type}\n  ● Nombre de actividad: ${client.config.presence.name}\n  ● ¿Conteo de miembros?: ${client.config.presence.membersCount}\n`);

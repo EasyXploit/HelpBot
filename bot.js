@@ -83,14 +83,7 @@ fs.readdir('./events/', async (err, files) => {
     });
 });
 
-//DEBUGGING
-client.on('error', (e) => {
-    if (e.message.includes('ECONNRESET')) return console.log(`${new Date().toLocaleString()} ERROR 》La conexión fue cerrada inesperadamente.\n`)
-    console.error(`${new Date().toLocaleString()} 》ERROR: ${e.stack}`)
-});
 
-client.on('warn', error => console.warn(`${new Date().toLocaleString()} 》WARN: ${error.stack}`));
-client.on('shardError', error => console.error('Una conexión al websocket encontró un error:', error));
 process.on('unhandledRejection', error => {
     if (!error.toLocaleString().includes('Cannot send messages to this user')) console.error(`${new Date().toLocaleString()} Rechazo de promesa no manejada:`, error);
 });

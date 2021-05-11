@@ -61,7 +61,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
             await message.channel.send(embed3);
             await message.channel.send(embed4);
             await message.channel.send(embed5);
-            await message.channel.send(cfg.serverInvite);
+            await message.channel.send('https://discord.gg/vkSBZC7');
             
         } else if (args[0] === `ayudanos`) {
             message.delete();
@@ -117,7 +117,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
                 .setColor(client.colors.gold)
                 .setThumbnail('https://i.imgur.com/lAuMp84.png')
                 .setAuthor('INVITA A TUS AMIGOS', 'https://i.imgur.com/lAuMp84.png')
-                .setDescription(`Una de las mejores formas de hacer crecer la comunidad es ... ¡con nuevos miembros!. Y además, ¿a que es más divertido charlar y jugar con amigos?\n\n**ENVÍA ESTE ENLACE A TUS AMIGOS:**\n[${client.config.guild.serverInvite}](${client.config.guild.serverInvite})\n\nAlternativamente, puedes generar [tu propio enlace de invitación](https://support.discordapp.com/hc/es/articles/208866998-Invitaci%C3%B3n-Instant%C3%A1nea-101), de esta forma las invitaciones contarán a la hora de adquirir el __rango Supporter__.`)
+                .setDescription(`Una de las mejores formas de hacer crecer la comunidad es ... ¡con nuevos miembros!. Y además, ¿a que es más divertido charlar y jugar con amigos?\n\n**ENVÍA ESTE ENLACE A TUS AMIGOS:**\n[https://discord.gg/vkSBZC7](https://discord.gg/vkSBZC7)\n\nAlternativamente, puedes generar [tu propio enlace de invitación](https://support.discordapp.com/hc/es/articles/208866998-Invitaci%C3%B3n-Instant%C3%A1nea-101), de esta forma las invitaciones contarán a la hora de adquirir el __rango Supporter__.`)
                 .attachFiles(`./resources/images/banners/invite.png`);
             
             let bumpEmbed = new discord.MessageEmbed()

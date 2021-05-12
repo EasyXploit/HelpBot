@@ -1,4 +1,4 @@
-exports.run = async (event, discord, fs, client) => {
+exports.run = async (event, client, discord) => {
     try {
         //Carga de configuración de la guild
         client.homeGuild = client.guilds.cache.get(client.config.guild.homeGuild);
@@ -22,7 +22,7 @@ exports.run = async (event, discord, fs, client) => {
         console.log(' - [OK] Carga de presencia.');
 
         //Carga de intervalos
-        require('../utils/intervals.js').run(discord, client, fs);
+        require('../utils/intervals.js').run(discord, client);
         console.log(' - [OK] Carga de intervalos.');
 
         //Carga de estados de voz

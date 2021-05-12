@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //!sound (nada | término | list)
 
@@ -7,7 +7,7 @@ exports.run = async (discord, fs, client, message, args, command, supervisorsRol
             .setColor(client.colors.red)
             .setDescription(`${client.emotes.redTick} El bot no está disponible. Inténtalo más tarde.`);
         
-        let fileNames = fs.readdirSync(`./resources/audios/`);
+        let fileNames = client.fs.readdirSync(`./resources/audios/`);
         let newFileNames = [];
         
         for (var file = 0; file < fileNames.length - 1; file++) {

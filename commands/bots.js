@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command) => {
+exports.run = async (discord, client, message, args, command) => {
     
     //!bots
     
@@ -37,16 +37,16 @@ exports.run = async (discord, fs, client, message, args, command) => {
 
                 if (reaction.emoji.name === '⚙') {
                     await msg.delete()
-                    require(`./comandos.js`).run(discord, fs, client, message, args, command);
+                    require(`./comandos.js`).run(discord, client, message, args, command);
                 } else if (reaction.emoji.name === '⚡') {
                     await msg.delete()
-                    require(`../commands/salas.js`).run(discord, fs, client, message, args, command);
+                    require(`../commands/salas.js`).run(discord, client, message, args, command);
                 } else if (reaction.emoji.name === '🎵') {
                     await msg.delete()
-                    require(`../commands/musica.js`).run(discord, fs, client, message, args, command);
+                    require(`../commands/musica.js`).run(discord, client, message, args, command);
                 } else if (reaction.emoji.name === 'boxBot') {
                     await msg.delete()
-                    require(`../commands/boxbot.js`).run(discord, fs, client, message, args, command);
+                    require(`../commands/boxbot.js`).run(discord, client, message, args, command);
                 };
             }).catch(() => {
                 return;

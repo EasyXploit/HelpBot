@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command) => {
+exports.run = async (discord, client, message, args, command) => {
     
     //!ayuda
     
@@ -36,32 +36,32 @@ exports.run = async (discord, fs, client, message, args, command) => {
 
                 if (reaction.emoji.name === '📓') {
                     await msg.delete()
-                    require(`../commands/normas.js`).run(discord, fs, client, message, args, command);
+                    require(`../commands/normas.js`).run(discord, client, message, args, command);
                     
                 } else if (reaction.emoji.name === '⚙') {
                     await msg.delete()
-                    require(`./comandos.js`).run(discord, fs, client, message, args, command);
+                    require(`./comandos.js`).run(discord, client, message, args, command);
                     
                 }  else if (reaction.emoji.name === '🤖') {
                     await msg.delete()
                     client.valueCheck = message.author.id;
-                    require(`./bots.js`).run(discord, fs, client, message, args, command);
+                    require(`./bots.js`).run(discord, client, message, args, command);
                     
                 } else if (reaction.emoji.name === '🎖') {
                     await msg.delete()
-                    require(`../commands/rangos.js`).run(discord, fs, client, message, args, command);
+                    require(`../commands/rangos.js`).run(discord, client, message, args, command);
                     
                 } else if (reaction.emoji.name === 'ℹ') {
                     await msg.delete()
-                    require(`../commands/info.js`).run(discord, fs, client, message, args, command);
+                    require(`../commands/info.js`).run(discord, client, message, args, command);
                     
                 } else if (reaction.emoji.name === '🥇') {
                     await msg.delete()
-                    require(`../commands/rank.js`).run(discord, fs, client, message, args, command);
+                    require(`../commands/rank.js`).run(discord, client, message, args, command);
                     
                 } else if (reaction.emoji.name === '🏆') {
                     await msg.delete()
-                    require(`../commands/leaderboard.js`).run(discord, fs, client, message, args, command);
+                    require(`../commands/leaderboard.js`).run(discord, client, message, args, command);
                 };
             })
             .catch(() => {

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command) => {
+exports.run = async (discord, client, message, args, command) => {
     
     //$prefix (nuevo prefijo) (todos | staff | owner)
 
@@ -56,7 +56,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
             
             //Graba el nuevo prefijo
             client.config.prefix = newPrefix;
-            await fs.writeFile('./configs/guild.json', JSON.stringify(config, null, 4), (err) => console.error);
+            await client.fs.writeFile('./configs/guild.json', JSON.stringify(config, null, 4), (err) => console.error);
             
             prefixType = 'general';
             
@@ -67,7 +67,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
             
             //Graba el nuevo prefijo
             client.config.prefixes.staffPrefix = newPrefix;
-            await fs.writeFile('./configs/guild.json', JSON.stringify(config, null, 4), (err) => console.error);
+            await client.fs.writeFile('./configs/guild.json', JSON.stringify(config, null, 4), (err) => console.error);
             
             prefixType = 'del staff';
             
@@ -78,7 +78,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
             
             //Graba el nuevo prefijo
             client.config.prefixes.ownerPrefix = newPrefix;
-            await fs.writeFile('./configs/guild.json', JSON.stringify(config, null, 4), (err) => console.error);
+            await client.fs.writeFile('./configs/guild.json', JSON.stringify(config, null, 4), (err) => console.error);
             
             prefixType = 'del owner';
             

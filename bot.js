@@ -12,9 +12,6 @@ const client = new discord.Client({
     retryLimit: Infinity 
 });
 
-//Acceso al sistema de archivos
-const fs = require('fs');
-
 //Configuraciones globales
 client.config = {
     keys: require('./configs/keys.json'),
@@ -33,16 +30,17 @@ client.config = {
 client.colors = require('./resources/data/colors.json'); //Colores globales
 client.cleverbot = require('cleverbot-free'); //Cleverbot
 client.automodFiltering = require('./utils/automodFiltering.js'); //Filtros de moderación
+client.fs = require('fs');                                          //Acceso al sistema de archivos
 
 //Cooldowns de los usuarios
 client.cooldownedUsers = new Set();
 
 //Bases de datos (mediante ficheros)
-client.mutes = JSON.parse(fs.readFileSync('./databases/mutes.json', 'utf-8')); //Usuarios silenciados temporalmente
-client.bans = JSON.parse(fs.readFileSync('./databases/bans.json', 'utf-8')); //Usuarios baneados temporalmente
-client.polls = JSON.parse(fs.readFileSync('./databases/polls.json', 'utf-8')); //Encuestas en marcha
-client.stats = JSON.parse(fs.readFileSync('./databases/stats.json', 'utf-8')); //Estadísticas de los miembros
-client.warns = JSON.parse(fs.readFileSync('./databases/warns.json', 'utf-8')); //Advertencias de los usuarios
+client.mutes = JSON.parse(client.fs.readFileSync('./databases/mutes.json', 'utf-8'));   //Usuarios silenciados temporalmente
+client.bans = JSON.parse(client.fs.readFileSync('./databases/bans.json', 'utf-8'));     //Usuarios baneados temporalmente
+client.polls = JSON.parse(client.fs.readFileSync('./databases/polls.json', 'utf-8'));   //Encuestas en marcha
+client.stats = JSON.parse(client.fs.readFileSync('./databases/stats.json', 'utf-8'));   //Estadísticas de los miembros
+client.warns = JSON.parse(client.fs.readFileSync('./databases/warns.json', 'utf-8'));   //Advertencias de los usuarios
 
 //Datos de voz
 client.queues = {}; //Almacena la cola y otros datos
@@ -55,8 +53,8 @@ client.usersVoiceStates = {}; //Almacena los cambios de estado de voz de los usu
 //Contexto de los MDs
 client.dmContexts = {};
 
-//Manejador de eventos
-fs.readdir('./events/', async (err, files) => {
+//Manejadores de eventos
+client.fs.readdir('./events/', async (err, files) => {
 
     if (err) return console.error(`${new Date().toLocaleString()} 》No se ha podido completar la carga de los eventos.\n${err.stack}`);
     
@@ -67,11 +65,11 @@ fs.readdir('./events/', async (err, files) => {
 
         if (eventName === 'guildBanAdd' || eventName === 'voiceStateUpdate') {
             client.on(eventName, (argument1, argument2) => {
-                eventFunction.run(argument1, argument2, discord, fs, client);
+                eventFunction.run(argument1, argument2, client, discord);
             });
         } else {
             client.on(eventName, event => {
-                eventFunction.run(event, discord, fs, client);
+                eventFunction.run(event, client, discord);
             });
         };
 

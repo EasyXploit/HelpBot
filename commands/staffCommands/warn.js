@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //-warn (@miembro | id) (razón)
     
@@ -33,7 +33,7 @@ exports.run = async (discord, fs, client, message, args, command, supervisorsRol
         
         message.delete();
 
-        require('../../utils/infractionsHandler.js').run(discord, fs, client, loggingChannel, message, message.guild, member, reason, 2, message.author)
+        require('../../utils/infractionsHandler.js').run(discord, client, loggingChannel, message, message.guild, member, reason, 2, message.author)
 
     } catch (e) {
         require('../../utils/errorHandler.js').run(discord, client, message, args, command, e);

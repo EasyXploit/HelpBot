@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command) => {
+exports.run = async (discord, client, message, args, command) => {
     
     //$edit <ID del canal> <ID del mensaje> <nuevo contenido>
     

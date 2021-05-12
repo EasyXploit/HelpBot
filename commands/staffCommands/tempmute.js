@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //-tempmute (@usuario | id) (xS | xM | xH | xD) (motivo)
     
@@ -123,7 +123,7 @@ exports.run = async (discord, fs, client, message, args, command, supervisorsRol
             time: Date.now() + milliseconds
         };
 
-        fs.writeFile('./databases/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
+        client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
             if (err) throw err;
 
             await message.delete();

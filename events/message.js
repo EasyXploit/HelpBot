@@ -1,4 +1,4 @@
-exports.run = async (message, discord, fs, client) => {
+exports.run = async (message, client, discord) => {
     //Previene que continue la ejecución si el servidor no es el principal
     if (message.guild && message.guild.id !== client.homeGuild.id) return;
 
@@ -112,7 +112,7 @@ exports.run = async (message, discord, fs, client) => {
                     }
 
                     await client.automodFiltering[key](message).then(match => {
-                        if (match) require('../utils/infractionsHandler.js').run(discord, fs, client, message, message.guild, message.member, client.config.automodFilters[key].reason, client.config.automodFilters[key].action, client.user, message.content);
+                        if (match) require('../utils/infractionsHandler.js').run(discord, client, message, message.guild, message.member, client.config.automodFilters[key].reason, client.config.automodFilters[key].action, client.user, message.content);
                     });
                 }
             })();
@@ -169,7 +169,7 @@ exports.run = async (message, discord, fs, client) => {
 
             //Ejecuta el comando
             let commandFile = require(`../commands/${command}`);
-            commandFile.run(discord, fs, client, message, args, command);
+            commandFile.run(discord, client, message, args, command);
 
             //Añade un cooldown
             client.cooldownedUsers.add(message.author.id);
@@ -188,7 +188,7 @@ exports.run = async (message, discord, fs, client) => {
 
             if (!message.member.roles.cache.has(staffRole.id) && message.author.id !== client.config.guild.botOwner) return message.channel.send(noPrivilegesEmbed)
 
-            commandFile.run(discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed);
+            commandFile.run(discord, client, message, args, command, supervisorsRole, noPrivilegesEmbed);
         } else if (prefix === client.config.prefixes.ownerPrefix) { // OWNER
             let commandFile = require(`../commands/ownerCommands/${command}`);
             if (!commandFile) return;
@@ -197,7 +197,7 @@ exports.run = async (message, discord, fs, client) => {
                 .setDescription(`${client.emotes.redTick} ${message.author.tag}, no dispones de privilegios suficientes para ejecutar este comando`);
 
             if (message.author.id !== client.config.guild.botOwner) return message.channel.send(noPrivilegesEmbed);
-            commandFile.run(discord, fs, client, message, args, command);
+            commandFile.run(discord, client, message, args, command);
         } else {
             return;
         }

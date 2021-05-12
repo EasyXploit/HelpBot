@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command) => {
+exports.run = async (discord, client, message, args, command) => {
 
     //$presence (status | name | type | membersCount) (online | offline | idle | dnd - PLAYING | STREAMING | LISTENING | WATCHING | COMPETING - nombre de la actividad - enable | disable)
     
@@ -42,7 +42,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
         };
 
         //Graba la configuración
-        await fs.writeFile('./configs/presence.json', JSON.stringify(client.config.presence, null, 4), (err) => console.error);
+        await client.fs.writeFile('./configs/presence.json', JSON.stringify(client.config.presence, null, 4), (err) => console.error);
 
         //Ajusta la nueva presencia
         await client.user.setPresence({

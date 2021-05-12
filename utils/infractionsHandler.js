@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, guild, member, reason, action, moderator, msg) => {
+exports.run = async (discord, client, message, guild, member, reason, action, moderator, msg) => {
 
     //Función para silenciar
     async function mute(time) {
@@ -18,7 +18,7 @@ exports.run = async (discord, fs, client, message, guild, member, reason, action
                 time: Date.now() + time
             };
 
-            fs.writeFile('./databases/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
+            client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
                 if (err) throw err;
             });
         };
@@ -75,7 +75,7 @@ exports.run = async (discord, fs, client, message, guild, member, reason, action
                 time: Date.now() + time
             }
     
-            fs.writeFile(`./databases/bans.json`, JSON.stringify(client.bans, null, 4), async err => {
+            client.fs.writeFile(`./databases/bans.json`, JSON.stringify(client.bans, null, 4), async err => {
                 if (err) throw err;
             });
         };
@@ -134,7 +134,7 @@ exports.run = async (discord, fs, client, message, guild, member, reason, action
             moderator: moderator.id
         };
 
-        fs.writeFile(`./databases/warns.json`, JSON.stringify(client.warns, null, 4), async err => {
+        client.fs.writeFile(`./databases/warns.json`, JSON.stringify(client.warns, null, 4), async err => {
             if (err) throw err;
 
             let loggingEmbed = new discord.MessageEmbed()

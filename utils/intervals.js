@@ -1,4 +1,4 @@
-exports.run = (discord, client, fs) => {
+exports.run = (discord, client) => {
 
     //Comprobación de miembros silenciados temporalmente
     client.setInterval(async () => {
@@ -15,7 +15,7 @@ exports.run = (discord, client, fs) => {
                 const member = await client.functions.fetchMember(guild, idKey);
                 if (!member) {
                     delete client.mutes[idKey];
-                    fs.writeFile('storage/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
+                    client.fs.writeFile('storage/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
                         if (err) throw err;
 
                         let loggingEmbed = new discord.MessageEmbed()
@@ -47,7 +47,7 @@ exports.run = (discord, client, fs) => {
                 await member.roles.remove(role);
 
                 delete client.mutes[idKey];
-                fs.writeFile('./databases/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
+                client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
                     if (err) throw err;
 
                     await client.loggingChannel.send(loggingEmbed);
@@ -74,7 +74,7 @@ exports.run = (discord, client, fs) => {
                     .addField('Razón', 'Venció la amonestación', true);
 
                 delete client.bans[idKey];
-                fs.writeFile('./databases/bans.json', JSON.stringify(client.bans, null, 4), async err => {
+                client.fs.writeFile('./databases/bans.json', JSON.stringify(client.bans, null, 4), async err => {
                     if (err) throw err;
 
                     try {
@@ -114,7 +114,7 @@ exports.run = (discord, client, fs) => {
                 poll = await channel.messages.fetch(idKey);
             } catch (e) {
                 delete client.polls[idKey];
-                return fs.writeFile('./databases/polls.json', JSON.stringify(client.polls, null, 4), async err => {
+                return client.fs.writeFile('./databases/polls.json', JSON.stringify(client.polls, null, 4), async err => {
                     if (err) throw err;
                 });
             };
@@ -158,7 +158,7 @@ exports.run = (discord, client, fs) => {
                 });
 
                 delete client.polls[idKey];
-                fs.writeFile('./databases/polls.json', JSON.stringify(client.polls, null, 4), async err => {
+                client.fs.writeFile('./databases/polls.json', JSON.stringify(client.polls, null, 4), async err => {
                     if (err) throw err;
                 });
             } else {
@@ -194,7 +194,7 @@ exports.run = (discord, client, fs) => {
             if (!member || member.voice.mute || member.voice.deaf || member.voice.channel.members.filter(m => !m.user.bot).size === 1) return;
 
             //Llama al manejador de leveling
-            await client.functions.addXP(fs, member, guild, 'voice');
+            await client.functions.addXP(member, guild, 'voice');
 
             //Actualiza el timestamp de la última recompensa de XP
             client.usersVoiceStates[member.id].last_xpReward = Date.now();

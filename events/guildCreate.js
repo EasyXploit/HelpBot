@@ -1,4 +1,4 @@
-exports.run = async (event, discord, fs, client) => {
+exports.run = async (event, client, discord) => {
     
     try {
         //Comprobación de servidor joineado
@@ -9,7 +9,7 @@ exports.run = async (event, discord, fs, client) => {
             client.config.guild.homeGuild = event.id;
 
             //Graba la nueva guild en la configuración
-            await fs.writeFile('./configs/guild.json', JSON.stringify(config, null, 4), (err) => console.error);
+            await client.fs.writeFile('./configs/guild.json', JSON.stringify(config, null, 4), (err) => console.error);
 
             const botAddedEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.blue2)

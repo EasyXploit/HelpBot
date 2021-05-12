@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command) => {
+exports.run = async (discord, client, message, args, command) => {
 
     // -poll (new | end) [id]
 
@@ -154,7 +154,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
                                     options: options
                                 }
                         
-                                fs.writeFile('./databases/polls.json', JSON.stringify(client.polls, null, 4), async err => {
+                                client.fs.writeFile('./databases/polls.json', JSON.stringify(client.polls, null, 4), async err => {
                                     if (err) throw err;
                                 });
                             };
@@ -188,7 +188,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
 
             client.polls[args[1]].duration = Date.now();
 
-            fs.writeFile(`./databases/polls.json`, JSON.stringify(client.polls), async err => {
+            client.fs.writeFile(`./databases/polls.json`, JSON.stringify(client.polls), async err => {
                 if (err) throw err;
             });
         } else {

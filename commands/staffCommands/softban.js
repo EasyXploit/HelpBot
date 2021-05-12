@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //-softban (@usuario | id) (1 - 7) (motivo)
     

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //-rmwarn (@miembro | id) (id de advertencia | all) (razón)
     
@@ -109,7 +109,7 @@ exports.run = async (discord, fs, client, message, args, command, supervisorsRol
         }
 
         //Escribe el resultado en el JSON
-        fs.writeFile('./databases/warns.json', JSON.stringify(client.warns, null, 4), async err => {
+        client.fs.writeFile('./databases/warns.json', JSON.stringify(client.warns, null, 4), async err => {
             if (err) throw err;
 
             await client.loggingChannel.send(loggingEmbed);

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //-unban (id) (motivo)
     
@@ -30,7 +30,7 @@ exports.run = async (discord, fs, client, message, args, command, supervisorsRol
         
         if (client.bans.hasOwnProperty(user.id)) {
             await delete client.bans[user.id];
-            await fs.writeFile(`./databases/bans.json`, JSON.stringify(client.bans), async err => {
+            await client.fs.writeFile(`./databases/bans.json`, JSON.stringify(client.bans), async err => {
                 if (err) throw err;
             });
         };

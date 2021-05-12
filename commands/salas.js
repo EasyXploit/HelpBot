@@ -1,4 +1,4 @@
-exports.run = (discord, fs, client, message, args, command) => {
+exports.run = (discord, client, message, args, command) => {
     
     //!salas
     

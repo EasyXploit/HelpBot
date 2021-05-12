@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command) => {
+exports.run = async (discord, client, message, args, command) => {
     
     //bienvenida (#canal | id)
     
@@ -26,7 +26,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
 
         //Graba el nuevo canal de bienvenida 
         client.config.guild.welcomeChannel = channel;
-        await fs.writeFile('./configs/guild.json', JSON.stringify(config, null, 4), (err) => console.error);
+        await client.fs.writeFile('./configs/guild.json', JSON.stringify(config, null, 4), (err) => console.error);
 
         let completedEmbed = new discord.MessageEmbed()
             .setColor(client.colors.green2)

@@ -1,4 +1,4 @@
-exports.run = async (oldState, newState, discord, fs, client) => {
+exports.run = async (oldState, newState, client, discord) => {
     
     try {
         //Previene que continue la ejecución si el servidor no es el principal
@@ -6,14 +6,14 @@ exports.run = async (oldState, newState, discord, fs, client) => {
 
         async function endVoiceTime() {
             //Si el timestamp actual es superior a los MS de intervalo de ganancia de XP configurado, le asigna XP
-            if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].last_xpReward + client.config.voice.XPGainInterval)) {
+            if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].last_xpReward + client.config.xp.XPGainInterval)) {
 
                 //Almacena el miembro, y si está muteado o ensordecido, no hace nada
                 const member = await client.functions.fetchMember(newState.guild, newState.id);
                 if (!member || member.voice.mute || member.voice.deaf) return;
 
                 //Llama al manejador de leveling
-                await client.functions.addXP(fs, member, newState.guild, 'voice');
+                await client.functions.addXP(member, newState.guild, 'voice');
             };
             
             //Borra el registro del miembro que ha dejado el canal de voz
@@ -81,4 +81,3 @@ exports.run = async (oldState, newState, discord, fs, client) => {
         await client.debuggingChannel.send(debuggEmbed);
     };
 };
-    

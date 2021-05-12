@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //-tempban (@usuario | id) (xS | xM | xH | xD) (motivo)
     
@@ -115,7 +115,7 @@ exports.run = async (discord, fs, client, message, args, command, supervisorsRol
             time: Date.now() + milliseconds
         }
 
-        fs.writeFile(`./databases/bans.json`, JSON.stringify(client.bans, null, 4), async err => {
+        client.fs.writeFile(`./databases/bans.json`, JSON.stringify(client.bans, null, 4), async err => {
             if (err) throw err;
 
             await message.delete();

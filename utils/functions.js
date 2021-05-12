@@ -97,7 +97,7 @@ exports.run = (discord, client) => {
     };
 
     //Función para añadir XP (mode = message || voice)
-    client.functions.addXP = async (fs, member, guild, mode, channel) => {
+    client.functions.addXP = async (member, guild, mode, channel) => {
         try {
             
             //Utilidad para generar números aletorios
@@ -184,7 +184,7 @@ exports.run = (discord, client) => {
                 };
 
                 //Guarda las nuevas estadísticas del miembro
-                fs.writeFile(`./databases/stats.json`, JSON.stringify(client.stats, null, 4), async err => {
+                client.fs.writeFile(`./databases/stats.json`, JSON.stringify(client.stats, null, 4), async err => {
                     if (err) throw err;
                 });
             };

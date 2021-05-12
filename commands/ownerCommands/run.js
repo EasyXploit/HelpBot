@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command) => {
+exports.run = async (discord, client, message, args, command) => {
     
     //$template (plantilla)
     
@@ -242,7 +242,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
                 if (member && userStats.level > 0) {
                     if (userStats.totalXP <= 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) console.log(`Miembro ${member.displayName} omitido\n- - - - - -`);
                     while (userStats.totalXP >= 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) {
-                        await client.functions.addXP(fs, member, message.guild, 'voice').then(
+                        await client.functions.addXP(member, message.guild, 'voice').then(
                             console.log(`Miembro ${member.displayName} actualizado\n- - - - - -`)
                         );
                     };
@@ -293,7 +293,7 @@ exports.run = async (discord, fs, client, message, args, command) => {
                     userStats.actualXP = xpToNextLevel - userStats.totalXP;
 
                     //Guarda las nuevas estadísticas del miembro
-                    fs.writeFile(`./databases/stats.json`, JSON.stringify(client.stats, null, 4), async err => {
+                    client.fs.writeFile(`./databases/stats.json`, JSON.stringify(client.stats, null, 4), async err => {
                         if (err) throw err;
                         console.log(`La XP actual de ${member.displayName} ha sido sustituida por ${userStats.actualXP}`);
                     });

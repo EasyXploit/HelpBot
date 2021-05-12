@@ -1,4 +1,4 @@
-exports.run = (discord, fs, client, message, args, command) => {
+exports.run = (discord, client, message, args, command) => {
     
     //!calcula (número 1) (+ | - | * | / | round | pow | sqrt | abs | ceil | floor | sin | cos) (número 2 si procede)
     

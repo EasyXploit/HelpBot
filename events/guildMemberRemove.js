@@ -1,4 +1,4 @@
-exports.run = async (event, discord, fs, client) => {
+exports.run = async (event, client, discord) => {
     
     try {
 

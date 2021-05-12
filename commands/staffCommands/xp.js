@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //-xp (@miembro | id) (set | add | remove | clear) <cantidad>
     
@@ -182,7 +182,7 @@ exports.run = async (discord, fs, client, message, args, command, supervisorsRol
             .addField('Nuevo valor', newValue, true);
 
         //Escribe el resultado en el JSON
-        fs.writeFile('./databases/stats.json', JSON.stringify(client.stats, null, 4), async err => {
+        client.fs.writeFile('./databases/stats.json', JSON.stringify(client.stats, null, 4), async err => {
             if (err) throw err;
 
             await client.loggingChannel.send(loggingEmbed);

@@ -1,4 +1,4 @@
-exports.run = async (discord, fs, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
     
     //-unmute (@usuario | id) (motivo)
     
@@ -53,7 +53,7 @@ exports.run = async (discord, fs, client, message, args, command, supervisorsRol
         
         if (client.mutes.hasOwnProperty(member.id)) {
             delete client.mutes[member.id];
-            await fs.writeFile('./databases/mutes.json', JSON.stringify(client.mutes), async err => {
+            await client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.mutes), async err => {
                 if (err) throw err;
             });
         };

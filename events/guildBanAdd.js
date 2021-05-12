@@ -1,4 +1,4 @@
-exports.run = async (guild, user, discord, fs, client) => {
+exports.run = async (guild, user, client, discord) => {
 
     try {
         //Previene que continue la ejecución si el servidor no es el principal

@@ -6,10 +6,12 @@ exports.run = async (event, client, discord) => {
         client.debuggingChannel = client.channels.cache.get(client.config.guild.debuggingChannel);
         client.welcomeChannel = client.channels.cache.get(client.config.guild.welcomeChannel);
         client.pilkoChatChannel = client.channels.cache.get(client.config.guild.pilkoChatChannel);
+        console.log('\n - [OK] Carga de configuración de la guild.');
 
         //Carga de recursos globales
         require('../utils/functions.js').run(discord, client);
         require('../utils/emotes.js').run(client);
+        console.log(' - [OK] Carga de recursos globales.');
 
         //Carga de presencia
         await client.user.setPresence({
@@ -59,25 +61,12 @@ exports.run = async (event, client, discord) => {
                 };
             };
         });
+        console.log(' - [OK] Carga de estados de voz.');
 
         //Auditoría
         console.log(`\n 》${client.user.username} iniciado correctamente \n  ● Estado de actividad: ${client.config.presence.status}\n  ● Tipo de actividad: ${client.config.presence.type}\n  ● Nombre de actividad: ${client.config.presence.name}\n  ● ¿Conteo de miembros?: ${client.config.presence.membersCount}\n`);
-
-        const package = require('../package.json');
-
-        let statusEmbed = new discord.MessageEmbed()
-            .setTitle('📑 Estado de ejecución')
-            .setColor(client.colors.gold)
-            .setDescription(`${client.user.username} iniciado correctamente`)
-            .addField('Estatus:', client.config.presence.status, true)
-            .addField('Tipo de actividad:', client.config.presence.type, true)
-            .addField('Actividad:', client.config.presence.name, true)
-            .addField('Usuarios:', client.users.cache.filter(user => !user.bot).size, true)
-            .addField('Versión:', package.version, true)
-            .setFooter(`${client.user.username} • Este mensaje se borrará en 10s`, client.user.avatarURL());
-        client.debuggingChannel.send(statusEmbed).then(msg => {msg.delete({timeout: 10000})});
-        client.debuggingChannel.send(`<@${client.config.guild.botOwner}>`).then(msg => {msg.delete({timeout: 1000})});
+        client.debuggingChannel.send(`${client.user.username} iniciado correctamente [<@${client.config.guild.botOwner}>]`).then(msg => {msg.delete({timeout: 5000})});
     } catch (e) {
-        console.error(`${new Date().toLocaleString()} 》${e.stack}`);
+        return console.error(`${new Date().toLocaleString()} 》${e.stack}`);
     };
 };

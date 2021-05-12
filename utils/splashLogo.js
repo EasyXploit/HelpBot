@@ -13,5 +13,6 @@ module.exports = {
     .right(`V. ${packageConfig.version}`)
     .emptyLine()
     .wrap(packageConfig.description)
-    .render()
+    .render(),
+    divider: `\n》Iniciando aplicación «\n―――――――――――――――――――――――― \n${new Date().toLocaleString()}\n`
 };

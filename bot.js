@@ -1,8 +1,9 @@
 //Logo de arranque
-const { splash } = require('./utils/splashLogo.js');
-console.log(`${splash}\n》Iniciando aplicación «\n―――――――――――――――――――――――― \n${new Date().toLocaleString()}\n`);
+const { splash, divider } = require('./utils/splashLogo.js');
+console.log(splash, divider);
 
 //Carga del cliente
+console.log('- Iniciando cliente ...');
 const discord = require('discord.js');
 const client = new discord.Client({
     fetchAllMembers: true,
@@ -11,6 +12,7 @@ const client = new discord.Client({
     autoReconnect: true,
     retryLimit: Infinity 
 });
+console.log('- ¡Cliente iniciado correctamente!\n');
 
 //Configuraciones globales
 client.config = {
@@ -73,7 +75,7 @@ client.fs.readdir('./events/', async (err, files) => {
             });
         };
 
-        console.log(` - Evento [${eventName}] cargado`);
+        console.log(` - [OK] Evento [${eventName}]`);
     });
 });
 
@@ -82,5 +84,6 @@ process.on('unhandledRejection', error => {
     if (!error.toLocaleString().includes('Cannot send messages to this user')) console.error(`${new Date().toLocaleString()} Rechazo de promesa no manejada:`, error);
 });
 
-//INICIO DE SESIÓN DEL BOT
-client.login(client.config.keys.token);
+//Inicio de sesión del bot
+console.log('- Iniciando sesión ...\n')
+client.login(client.config.keys.token).then(() => console.log('\n - ¡Sesion iniciada correctamente!'));

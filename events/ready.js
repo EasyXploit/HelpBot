@@ -36,14 +36,14 @@ exports.run = async (event, client, discord) => {
             if (!member) return;
 
             let nonXPRole;
-            for (let i = 0; i < client.config.voice.nonXPRoles.length; i++) {
-                if (await member.roles.cache.find(r => r.id === client.config.voice.nonXPRoles[i])) {
+            for (let i = 0; i < client.config.xp.nonXPRoles.length; i++) {
+                if (await member.roles.cache.find(r => r.id === client.config.xp.nonXPRoles[i])) {
                     nonXPRole = true;
                     break;
                 };
             };
 
-            if (member.user.bot || client.config.voice.nonXPChannels.includes(voiceState.channelID) || voiceState.channelID === voiceState.guild.afkChannel.id || nonXPRole) {
+            if (member.user.bot || client.config.xp.nonXPChannels.includes(voiceState.channelID) || voiceState.channelID === voiceState.guild.afkChannel.id || nonXPRole) {
                 if (client.usersVoiceStates[voiceState.id]) {
                     //Borra el registro del miembro que ha dejado el canal de voz
                     delete client.usersVoiceStates[voiceState.id];

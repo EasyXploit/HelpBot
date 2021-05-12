@@ -120,7 +120,7 @@ exports.run = async (message, client, discord) => {
     })();
 
     //Llama al manejador de leveling
-    if (!message.content.startsWith(client.config.prefixes.mainPrefix) && !message.content.startsWith(client.config.prefixes.staffPrefix) && !message.content.startsWith(client.config.prefixes.ownerPrefix) && !client.config.voice.nonXPChannels.includes(message.channel.id)) return await client.functions.addXP(fs, message.member, message.guild, 'message', message.channel);
+    if (!message.content.startsWith(client.config.prefixes.mainPrefix) && !message.content.startsWith(client.config.prefixes.staffPrefix) && !message.content.startsWith(client.config.prefixes.ownerPrefix) && !client.config.xp.nonXPChannels.includes(message.channel.id)) return await client.functions.addXP(message.member, message.guild, 'message', message.channel);
 
     const prefix = message.content.slice(0, 1);
     // Función para eliminar el prefijo, extraer el comando y sus argumentos (en caso de tenerlos)

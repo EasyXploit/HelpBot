@@ -111,8 +111,8 @@ exports.run = (discord, client) => {
 
             //Para comprobar si el rol puede ganar XP o no.
             let nonXP;
-            for (let i = 0; i < client.config.voice.nonXPRoles.length; i++) {
-                if (await member.roles.cache.find(r => r.id === client.config.voice.nonXPRoles[i])) {
+            for (let i = 0; i < client.config.xp.nonXPRoles.length; i++) {
+                if (await member.roles.cache.find(r => r.id === client.config.xp.nonXPRoles[i])) {
                     nonXP = true;
                     break;
                 };

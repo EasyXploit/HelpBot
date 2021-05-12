@@ -29,8 +29,8 @@ exports.run = async (discord, client, message, args, command) => {
         const xpToNextLevel = 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100;
 
         let nonXP;
-        for (let i = 0; i < client.config.voice.nonXPRoles.length; i++) {
-            if (await member.roles.cache.find(r => r.id === client.config.voice.nonXPRoles[i])) {
+        for (let i = 0; i < client.config.xp.nonXPRoles.length; i++) {
+            if (await member.roles.cache.find(r => r.id === client.config.xp.nonXPRoles[i])) {
                 nonXP = true;
                 break;
             };

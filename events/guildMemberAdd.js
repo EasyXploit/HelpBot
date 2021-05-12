@@ -5,7 +5,7 @@ exports.run = async (event, client, discord) => {
         if (event.guild.id !== client.homeGuild.id) return;
 
         if (!event.user.bot) {
-            const forbiddenNames = [`http://`, `https://`, `discord.gg`, `www.`, `.tv`, `twitch.tv`, `.net`, `.com`, `twitter.com`, `paypal.me`, `.me`, `donate.`, `.gg`, `binzy`];
+            const forbiddenNames = ['http://', 'https://', 'discord.gg', 'www.', '.tv', 'twitch.tv', '.net', '.com', 'twitter.com', 'paypal.me', '.me', 'donate.', '.gg', 'binzy'];
 
             if (forbiddenNames.some(word => event.user.username.toLowerCase().includes(word))) {
 
@@ -118,8 +118,7 @@ exports.run = async (event, client, discord) => {
         if (e.toLocaleString().includes('Cannot send messages to this user')) return;
 
         let error = e.stack;
-        if (error.length > 1014) error = error.slice(0, 1014);
-        error = error + ' ...';
+        if (error.length > 1014) error = `${error.slice(0, 1014)} ...`;
 
         //Se muestra el error en el canal de depuración
         let debuggEmbed = new discord.MessageEmbed()

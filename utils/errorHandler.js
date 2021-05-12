@@ -4,19 +4,14 @@ exports.run = async (discord, client, message, args, command, e) => {
     if (e.toLocaleString().includes('Cannot find module') || e.toLocaleString().includes('Cannot send messages to this user')) return;
 
     //Se muestra el error en consola
-    console.error('\n' + new Date().toLocaleString() + ' 》' + e.stack + '\n');
+    console.error(`\n${new Date().toLocaleString()} 》${e.stack}\n`);
     
     //Se comprueba si se han proporcionado argumentos
-    let arguments;
-    if (args.length < 1) {
-        arguments = 'Ninguno';
-    } else {
-        arguments = args.join(' ');
-    }
+    let arguments = 'Ninguno';
+    if (args.length > 0) arguments = args.join(' ');
 
     let error = e.stack;
-    if (error.length > 1014) error = error.slice(0, 1014);
-    error = error + ' ...';
+    if (error.length > 1014) error = `${error.slice(0, 1014)} ...`;
 
     //Se muestra el error en el canal de depuración
     let debuggEmbed = new discord.MessageEmbed()
@@ -27,7 +22,7 @@ exports.run = async (discord, client, message, args, command, e) => {
         .addField('Argumentos:', arguments, true)
         .addField('Origen:', message.guild.name, true)
         .addField('Canal:', message.channel, true)
-        .addField('Autor:', '<@' + message.author.id + '>', true)
+        .addField('Autor:', `<@${message.author.id}>`, true)
         .addField('Fecha:', new Date().toLocaleString(), true)
         .addField('Error:', `\`\`\`${error}\`\`\``, true);
     

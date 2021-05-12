@@ -27,8 +27,7 @@ exports.run = async (event, client, discord) => {
     } catch (e) {
 
         let error = e.stack;
-        if (error.length > 1014) error = error.slice(0, 1014);
-        error = `${error} ...`;
+        if (error.length > 1014) error = `${error.slice(0, 1014)} ...`;
 
         //Se muestra el error en el canal de depuración
         const debuggEmbed = new discord.MessageEmbed()

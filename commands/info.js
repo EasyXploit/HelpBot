@@ -18,5 +18,5 @@ exports.run = (discord, client, message, args, command) => {
         message.channel.send(resultEmbed);
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
-    }
-}
+    };
+};

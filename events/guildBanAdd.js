@@ -21,12 +21,12 @@ exports.run = async (guild, user, client, discord) => {
                 const loggingEmbed = new discord.MessageEmbed()
                     .setColor(client.colors.red)
                     .setAuthor(`${user.tag} ha sido BANEADO`, user.displayAvatarURL())
-                    .addField(`Miembro`, user.tag, true)
-                    .addField(`ID`, user.id, true)
-                    .addField(`Moderador`, `${moderador.tag || 'Desconocido'}`, true)
-                    .addField(`Razón`, razon || 'Indefinida', true)
-                    .addField(`Duración`, time || 'Indefinida', true)
-                    .addField(`Días de mensajes borrados`, days || 'Ninguno', true);
+                    .addField('Miembro', user.tag, true)
+                    .addField('ID', user.id, true)
+                    .addField('Moderador', moderador.tag || 'Desconocido', true)
+                    .addField('Razón', razon || 'Indefinida', true)
+                    .addField('Duración', time || 'Indefinida', true)
+                    .addField('Días de mensajes borrados', days || 'Ninguno', true);
 
                 await client.channels.cache.get(client.config.guild.loggingChannel).send(loggingEmbed)
             }
@@ -63,17 +63,16 @@ exports.run = async (guild, user, client, discord) => {
     } catch (e) {
 
         let error = e.stack;
-        if (error.length > 1014) error = error.slice(0, 1014);
-        error = error + ' ...';
+        if (error.length > 1014) error = `${error.slice(0, 1014)} ...`;
 
         //Se muestra el error en el canal de depuración
         let debuggEmbed = new discord.MessageEmbed()
             .setColor(client.colors.brown)
-            .setTitle(`📋 Depuración`)
-            .setDescription(`Se declaró un error durante la ejecución de un evento`)
-            .addField(`Evento:`, `guildBanAdd`, true)
-            .addField(`Fecha:`, new Date().toLocaleString(), true)
-            .addField(`Error:`, `\`\`\`${error}\`\`\``);
+            .setTitle('📋 Depuración')
+            .setDescription('Se declaró un error durante la ejecución de un evento')
+            .addField('Evento:', 'guildBanAdd', true)
+            .addField('Fecha:', new Date().toLocaleString(), true)
+            .addField('Error:', `\`\`\`${error}\`\`\``);
         
         //Se envía el mensaje al canal de depuración
         await client.debuggingChannel.send(debuggEmbed);

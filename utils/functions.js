@@ -174,7 +174,7 @@ exports.run = (discord, client) => {
                     };
 
                     let levelUpEmbed = new discord.MessageEmbed()
-                        .setColor(gold)
+                        .setColor(client.colors.gold)
                         .setAuthor(`¡Subiste de nivel!`, member.user.displayAvatarURL())
                         .setDescription(`Enhorabuena <@${member.id}>, has subido al nivel **${userStats.level}**`);
 

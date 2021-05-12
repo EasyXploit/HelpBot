@@ -26,9 +26,9 @@ exports.run = async (event, client, discord) => {
                 const loggingEmbed = new discord.MessageEmbed()
                     .setColor(client.colors.red)
                     .setAuthor(`${event.user.tag} ha sido EXPULSADO`, event.user.displayAvatarURL())
-                    .addField(`Miembro`, `<@${event.user.id}>`, true)
-                    .addField(`Moderador`, `${moderador.tag || 'Desconocido'}`, true)
-                    .addField(`Razón`, razon || 'Indefinida', true);
+                    .addField('Miembro', `<@${event.user.id}>`, true)
+                    .addField('Moderador', moderador.tag || 'Desconocido', true)
+                    .addField('Razón', razon || 'Indefinida', true);
 
                 await client.channels.cache.get(client.config.guild.loggingChannel).send(loggingEmbed)
             }
@@ -45,7 +45,7 @@ exports.run = async (event, client, discord) => {
         
             let { executor, target, reason } = kickLog;
 
-            if (!reason) reason = `Indefinida`
+            if (!reason) reason = 'Indefinida'
         
             if (target.id === event.user.id) {
                 sendLogEmbed(executor, reason);
@@ -64,29 +64,26 @@ exports.run = async (event, client, discord) => {
             let loggingEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.orange)
                 .setThumbnail(event.user.displayAvatarURL())
-                .setAuthor(`Un miembro abandonó`, `https://i.imgur.com/2nZ23V4.png`)
+                .setAuthor('Un miembro abandonó', 'https://i.imgur.com/2nZ23V4.png')
                 .setDescription(`${event.user.username} abandonó el servidor`)
-                .addField(`🏷 TAG completo`, event.user.tag, true)
-                .addField(`🆔 ID del miembro`, event.user.id, true);
+                .addField('🏷 TAG completo', event.user.tag, true)
+                .addField('🆔 ID del miembro', event.user.id, true);
             
             return await client.channels.cache.get(client.config.guild.loggingChannel).send(loggingEmbed);
         }
     } catch (e) {
 
-        console.log(e);
-
         let error = e.stack;
-        if (error.length > 1014) error = error.slice(0, 1014);
-        error = error + ' ...';
+        if (error.length > 1014) error = `${error.slice(0, 1014)} ...`;
 
         //Se muestra el error en el canal de depuración
         let debuggEmbed = new discord.MessageEmbed()
             .setColor(client.colors.brown)
-            .setTitle(`📋 Depuración`)
-            .setDescription(`Se declaró un error durante la ejecución de un evento`)
-            .addField(`Evento:`, `guildMemberRemove`, true)
-            .addField(`Fecha:`, new Date().toLocaleString(), true)
-            .addField(`Error:`, `\`\`\`${error}\`\`\``);
+            .setTitle('📋 Depuración')
+            .setDescription('Se declaró un error durante la ejecución de un evento')
+            .addField('Evento:', 'guildMemberRemove', true)
+            .addField('Fecha:', new Date().toLocaleString(), true)
+            .addField('Error:', `\`\`\`${error}\`\`\``);
         
         //Se envía el mensaje al canal de depuración
         await client.debuggingChannel.send(debuggEmbed);

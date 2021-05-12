@@ -1,3 +1,8 @@
+//Gestión de promesas rechazadas y no manejadas
+process.on('unhandledRejection', error => {
+    if (!error.toLocaleString().includes('Cannot send messages to this user')) console.error(`${new Date().toLocaleString()} 》Rechazo de promesa no manejada:`, error);
+});
+
 //Logo de arranque
 const { splash, divider } = require('./utils/splashLogo.js');
 console.log(splash, divider);
@@ -16,26 +21,28 @@ console.log('- ¡Cliente iniciado correctamente!\n');
 
 //Configuraciones globales
 client.config = {
-    keys: require('./configs/keys.json'),
-    guild: require('./configs/guild.json'),
-    automodFilters: require('./configs/automodFilters.json'),
-    automodRules: require('./configs/automodRules.json'),
-    prefixes: require('./configs/prefixes.json'),
-    commands: require('./configs/commands.json'),
-    presence: require('./configs/presence.json'),
-    music: require('./configs/music.json'),
-    emotes: require('./configs/emotes.json'),
+    keys: require('./configs/keys.json'),                       //Tokens de autenticación
+    guild: require('./configs/guild.json'),                     //Configuraciones de la guild base
+    automodFilters: require('./configs/automodFilters.json'),   //Filtros de moderación automática
+    automodRules: require('./configs/automodRules.json'),       //Reglas de moderación automática
+    prefixes: require('./configs/prefixes.json'),               //Configuración de prefijos del bot
+    commands: require('./configs/commands.json'),               //Configuración de comandos
+    presence: require('./configs/presence.json'),               //Configuración de presencia
+    music: require('./configs/music.json'),                     //Configuración de música
     xp: require('./configs/xp.json'),                           //Configuración de XP
+    emotes: require('./configs/emotes.json'),                   //Configuración de emotes
 };
 
 //Dependencias globales
-client.colors = require('./resources/data/colors.json'); //Colores globales
-client.cleverbot = require('cleverbot-free'); //Cleverbot
-client.automodFiltering = require('./utils/automodFiltering.js'); //Filtros de moderación
 client.fs = require('fs');                                          //Acceso al sistema de archivos
+client.cleverbot = require('cleverbot-free');                       //API de Cleverbot
+client.colors = require('./resources/data/colors.json');            //Colores globales
+client.automodFiltering = require('./utils/automodFiltering.js');   //Filtros (auto-moderación)
 
-//Cooldowns de los usuarios
-client.cooldownedUsers = new Set();
+//Datos de usuarios
+client.usersVoiceStates = {};           //Cambios de estado de voz de los usuarios
+client.cooldownedUsers = new Set();     //Cooldowns de los usuarios
+client.dmContexts = {};                 //Contexto de los MDs
 
 //Bases de datos (mediante ficheros)
 client.mutes = JSON.parse(client.fs.readFileSync('./databases/mutes.json', 'utf-8'));   //Usuarios silenciados temporalmente
@@ -45,15 +52,11 @@ client.stats = JSON.parse(client.fs.readFileSync('./databases/stats.json', 'utf-
 client.warns = JSON.parse(client.fs.readFileSync('./databases/warns.json', 'utf-8'));   //Advertencias de los usuarios
 
 //Datos de voz
-client.queues = {}; //Almacena la cola y otros datos
-client.voiceStatus = true; //Almacena la disponiblidad del bot
-client.voiceDispatcher; //Almacena el dispatcher
-client.voiceConnection; //Almacena la conexión
-client.voiceTimeout; //Almacena los timeouts de reproducción finalizada
-client.usersVoiceStates = {}; //Almacena los cambios de estado de voz de los usuarios
-
-//Contexto de los MDs
-client.dmContexts = {};
+client.queues = {};         //Almacena la cola y otros datos
+client.voiceStatus = true;  //Almacena la disponiblidad del bot
+client.voiceDispatcher;     //Almacena el dispatcher
+client.voiceConnection;     //Almacena la conexión
+client.voiceTimeout;        //Almacena los timeouts de reproducción finalizada
 
 //Manejadores de eventos
 client.fs.readdir('./events/', async (err, files) => {
@@ -62,9 +65,10 @@ client.fs.readdir('./events/', async (err, files) => {
     
     //Precarga cada uno de los eventos
     files.forEach(file => {
-        let eventFunction = require(`./events/${file}`);
-        let eventName = file.split(`.`)[0];
+        const eventFunction = require(`./events/${file}`);
+        const eventName = file.split('.')[0];
 
+        //Pasa 2 parámetros si se trata de un enevento con dos de ellos
         if (eventName === 'guildBanAdd' || eventName === 'voiceStateUpdate') {
             client.on(eventName, (argument1, argument2) => {
                 eventFunction.run(argument1, argument2, client, discord);
@@ -77,11 +81,6 @@ client.fs.readdir('./events/', async (err, files) => {
 
         console.log(` - [OK] Evento [${eventName}]`);
     });
-});
-
-
-process.on('unhandledRejection', error => {
-    if (!error.toLocaleString().includes('Cannot send messages to this user')) console.error(`${new Date().toLocaleString()} Rechazo de promesa no manejada:`, error);
 });
 
 //Inicio de sesión del bot

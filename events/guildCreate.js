@@ -1,28 +1,36 @@
-exports.run = async (event, client, discord) => {
+exports.run = async (guild, client, discord) => {
     
     try {
-        //Comprobación de servidor joineado
-        if (!client.homeGuild || event.id === client.homeGuild) {
 
-            //Asigna la nueva guild en la configuración
-            client.config.guild.botOwner = event.ownerID;
-            client.config.guild.homeGuild = event.id;
+        //Listado de guilds a las que el bot está unido
+        const cachedGuilds = client.guilds.cache;
 
-            //Graba la nueva guild en la configuración
-            await client.fs.writeFile('./configs/guild.json', JSON.stringify(config, null, 4), (err) => console.error);
+        //Almacena los IDs de las guilds alcanzables
+        const guildsIDs = cachedGuilds.map(guild => guild.id);
+        
+        //Comprueba cuantas guilds hay disponibles
+        if (cachedGuilds.size === 1) {
 
-            const botAddedEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.blue2)
-                .setDescription(`${event.owner}, **${client.user.username}** ha sido añadido a tu servidor (${event.name}).`)
+            //Comprueba si la guild está configurada
+            if (!client.config.guild.homeGuild || !guildsIDs.includes(client.config.guild.homeGuild)) {
+                
+                //Borra todas las configuraciones y bases de datos de la anterior guild (si la hubiera)
+                if (client.config.guild.homeGuild) await require('../utils/eraseConfig.js').run(client);
 
-            await event.owner.send(botAddedEmbed);
+                //Almacena la nueva configuración de la guild
+                await require('../utils/storeNewGuildConfig.js').run(discord, client, cachedGuilds.first());
+            };
+
+            //Cargar config. en memoria + arranque del sistema completo
+            await require('../utils/systemLoad.js').run(discord, client);
+
         } else {
-            const cantJoinEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.gray)
-                .setDescription(`${client.emotes.grayTick} | ${client.user.username} no está diseñado para funcionar en más de una guild.`);
 
-            await event.owner.send(cantJoinEmbed)
-            await event.leave();
+            //Lanza una advertencia por consola
+            console.log(`\n 》${client.user.username} no está diseñado para funcionar en más de un servidor.`);
+
+            //Abandona la guild
+            await guild.leave();
         };
     } catch (e) {
 
@@ -40,5 +48,7 @@ exports.run = async (event, client, discord) => {
         
         //Se envía el mensaje al canal de depuración
         await client.debuggingChannel.send(debuggEmbed);
+    } catch (error) {
+        console.log(`${new Date().toLocaleString()} 》${e.stack}`);
     };
 };

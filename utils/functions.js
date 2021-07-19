@@ -267,4 +267,69 @@ exports.run = (discord, client) => {
             return true;
         };
     };
+
+    //Función para cargar los emojis necesarios en la guild base
+    client.functions.uploadSystemEmojis = async () => {
+
+        /* - - - EXPERIMENTAL - - - */
+
+        //TIER 0: 50 emojis + 50 animojis
+        //TIER 1: 100 emojis + 100 animojis
+        //TIER 2: 150 emojis + 150 animojis
+        //TIER 3: 250 emojis + 250 animojis
+
+        //Cálculo de umbral de emojis por tier de guild
+        let emojisThreshold;
+
+        switch (client.homeGuild.premiumTier) {
+            case 0:
+                emojisThreshold = 50;
+                break;
+            case 1:
+                emojisThreshold = 100;
+                break;
+            case 2:
+                emojisThreshold = 150;
+                break;
+            case 3:
+                emojisThreshold = 250;
+                break;
+        };
+
+        //Listado de emojis normales (sin animar) de la guild
+        const normalGuildEmojis = client.homeGuild.emojis.cache.filter(emoji => !emoji.animated).map(emoji => emoji.id);
+
+        //Listado de emojis a cargar en la guild
+        const emojis = Object.keys(client.config.customEmojis);
+
+        //Creación de nuevos emojis en la guild
+        if ((normalGuildEmojis.length + emojis.length) <= emojisThreshold) {
+
+            //Promesa para comprobar la existencia de los customEmojis, y crearlos en caso negativo
+            const emojiCreation = new Promise((resolve, reject) => {
+                emojis.forEach(async (emojiName, index, array) => {
+    
+                    //Omite este emoji si ya está presente en la guild
+                    if (normalGuildEmojis.includes(client.config.customEmojis[emojiName])) return;
+    
+                    //Crea el emoji
+                    await client.homeGuild.emojis.create(`./resources/emojis/${emojiName}.png`, emojiName, `Necesario para el funcionamiento de ${client.user.username}.`)
+                        .then(emoji => {
+                            client.config.customEmojis[emojiName] = emoji.id;
+                            console.log(`- Emoji [${emoji.name}] creado satisfactoriamente.`)
+                        });
+    
+                    //Resuelve la promesa
+                    if (index === array.length -1) resolve();
+                });
+            });
+            
+            //Graba los nuevos customEmojis en la configuración tras resolver la promesa
+            emojiCreation.then(async () => {
+                await client.fs.writeFile('./configs/customEmojis.json', JSON.stringify(client.config.customEmojis, null, 4), (err) => console.error);
+            });
+        } else {
+            console.log(`No habían espacios para emojis suficientes.\nNecesitas al menos ${emojis.length} espacios.\nSe usarán emojis Unicode en su lugar.`);
+        };
+    };
 };

@@ -184,14 +184,6 @@
 		"whitelistedRoles": ["everyone"],
 		"blacklistedRoles": []
 	},
-	"love": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
-	},
 	"meme": {
 		"enabled": true,
 		"deleteInvocationCommand": false,
@@ -310,14 +302,6 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
-	},
-	"psychopass": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": ["everyone"],
 		"blacklistedRoles": []
 	},
 	"purge": {

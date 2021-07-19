@@ -41,7 +41,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
             .addField('Razón', 'Demasiadas advertencias', true)
             .addField('Duración', durartion, true);
 
-        await client.loggingChannel.send(loggingEmbed);
+        await client.functions.loggingManager(loggingEmbed);
         await member.send(toDMEmbed);
     };
 
@@ -61,7 +61,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
             .addField(`Moderador`, moderator.tag, true)
             .addField(`Razón`, 'Demasiadas advertencias', true)
 
-        await client.loggingChannel.send(loggingEmbed);
+        await client.functions.loggingManager(loggingEmbed);
         await member.send(toDMEmbed);
 
         await member.kick(reason);
@@ -97,7 +97,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
             .addField(`Razón`, 'Demasiadas advertencias', true)
             .addField(`Duración`, new Date(parseInt(time)).toLocaleString() || '∞', true);
 
-        await client.loggingChannel.send(loggingEmbed);
+        await client.functions.loggingManager(loggingEmbed);
         await member.send(toDMEmbed);
 
         await guild.members.ban(user, {reason: `Moderador: ${moderator.id}, Razón: Demasiadas advertencias`});
@@ -149,7 +149,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
                 .addField(`Canal`, `<#${message.channel.id}>`, true)
                 .addField('Infracciones', Object.keys(client.warns[member.id]).length, true);
 
-            await client.loggingChannel.send(loggingEmbed);
+            await client.functions.loggingManager(loggingEmbed);
 
             //Si procede, adjunta el mensaje filtrado
             if (msg) client.loggingChannel.send(new discord.MessageAttachment(Buffer.from(`CONTENIDO DEL MENSAJE: \n${msg}`, 'utf-8'), `mensaje-filtrado-${Date.now()}.txt`))

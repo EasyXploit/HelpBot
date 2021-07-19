@@ -332,6 +332,84 @@ exports.run = (discord, client) => {
             console.log(`No habían espacios para emojis suficientes.\nNecesitas al menos ${emojis.length} espacios.\nSe usarán emojis Unicode en su lugar.`);
         };
     };
+
+    //Función para gestionar el envío de registros al canal de auditoría
+    client.functions.loggingManager = async (embed) => {
+
+        //Comprobar si el canal está configurado y almacenado en memoria
+        if (client.config.guild.loggingChannel && client.loggingChannel) {
+
+            try {
+                //Carga los permisos del bot en el canal de logging
+                const channelPermissions = client.loggingChannel.permissionsFor(client.user);
+                const missingPermission = ((channelPermissions & 0x800) !== 0x800 || (channelPermissions & 0x4000) !== 0x4000);
+
+                //Comprueba si el bot tiene permisos para mandar el embed
+                if (!missingPermission) {
+                    await client.loggingChannel.send(embed); //Enviar el mensaje al canal
+                } else {
+                    //Advertir por consola de que no se tienen permisos
+                    console.error(`${new Date().toLocaleString()} 》Error: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces.`);
+                };
+            } catch (error) {
+                //Si el canal no es accesible
+                if (error.toString().includes('DiscordAPIError')) {
+
+                    console.log(error);
+
+                    //Borrarlo de la config y descargarlo de la memoria
+                    client.config.guild.loggingChannel = '';
+                    client.loggingChannel = null;
+
+                    //Graba la nueva configuración en el almacenamiento
+                    await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error);
+
+                    //Advertir por consola
+                    console.error(`${new Date().toLocaleString()} 》Error: No se puede tener acceso al canal de auditoría.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
+                } else {
+                    console.error(`${new Date().toLocaleString()} 》Error durante la ejecución del loggingManager:`, error);
+                };
+            };
+        };
+    };
+
+    //Función para gestionar el envío de registros al canal de depuración
+    client.functions.debuggingManager = async (embed) => {
+        
+        //Comprobar si el canal está configurado y almacenado en memoria
+        if (client.config.guild.debuggingChannel && client.debuggingChannel) {
+
+            try {
+                //Carga los permisos del bot en el canal de debugging
+                const channelPermissions = client.debuggingChannel.permissionsFor(client.user);
+                const missingPermission = ((channelPermissions & 0x800) !== 0x800 || (channelPermissions & 0x4000) !== 0x4000);
+
+                //Comprueba si el bot tiene permisos para mandar el embed
+                if (!missingPermission) {
+                    await client.debuggingChannel.send(embed); //Enviar el mensaje al canal
+                } else {
+                    //Advertir por consola de que no se tienen permisos
+                    console.error(`${new Date().toLocaleString()} 》Error: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces.`);
+                };
+            } catch (error) {
+                //Si el canal no es accesible
+                if (error.toString().includes('DiscordAPIError')) {
+                    //Borrarlo de la config y descargarlo de la memoria
+                    client.config.guild.debuggingChannel = '';
+                    client.debuggingChannel = null;
+
+                    //Graba la nueva configuración en el almacenamiento
+                    await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error);
+
+                    //Advertir por consola
+                    console.error(`${new Date().toLocaleString()} 》Error: No se puede tener acceso al canal de depuración.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
+                } else {
+                    console.error(`${new Date().toLocaleString()} 》Error durante la ejecución del debuggingManager:`, error);
+                };
+            };
+        };
+    };
+
     //Función para gestionar los errores en los comandos
     client.functions.commandErrorHandler = async (e, message, command, args) => {
         //Se comprueba si el error es provocado por la invocación de un comando no existente

@@ -25,7 +25,7 @@ exports.run = (discord, client) => {
                             .addField('Moderador', `<@${client.user.id}>`, true)
                             .addField('Razón', 'Venció la amonestación', true);
 
-                        await client.loggingChannel.send(loggingEmbed);
+                        await client.functions.loggingManager(loggingEmbed);
                     });
                     return;
                 };
@@ -50,7 +50,7 @@ exports.run = (discord, client) => {
                 client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
                     if (err) throw err;
 
-                    await client.loggingChannel.send(loggingEmbed);
+                    await client.functions.loggingManager(loggingEmbed);
                     await member.send(toDMEmbed);
                 });
             };
@@ -79,7 +79,7 @@ exports.run = (discord, client) => {
 
                     try {
                         await guild.members.unban(idKey);
-                        await client.loggingChannel.send(loggingEmbed);
+                        await client.functions.loggingManager(loggingEmbed);
                     } catch (error) {
                         if (e.toString().includes('Unknown Ban')) return;
                     };
@@ -99,7 +99,7 @@ exports.run = (discord, client) => {
                 .setFooter(client.user.username, client.user.avatarURL())
                 .setDescription(`${client.customEmojis.orangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);
 
-            client.debuggingChannel.send(debuggingEmbed);
+            if (client.debuggingChannel) client.debuggingChannel.send(debuggingEmbed);
         };
     }, 60000);
 

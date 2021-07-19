@@ -1,15 +1,19 @@
 exports.run = async (message, client, discord) => {
 
+    //Previene la ejecución si el mensaje fue enviado por un bot o por el sistema
     if (message.author.bot || message.type !== 'DEFAULT') return;
+
+    //Si el mensaje proviene de un MD
     if (message.channel.type === 'dm') {
         if (!message.content) return;
 
-        const pilkoChatEmbed = new discord.MessageEmbed()
+        //Envía un mensaje al botChatChannel
+        const botChatEmbed = new discord.MessageEmbed()
             .setColor(client.colors.blue2)
             .setAuthor(`Mensaje de: ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}))
             .setDescription(message.content);
 
-        await client.botChatChannel.send(pilkoChatEmbed);
+        await client.botChatChannel.send(botChatEmbed);
 
         //Filtra el texto en busca de códigos de invitación
         let detectedInvites = message.content.match(/(https?:\/\/)?(www.)?(discord.(gg|io|me|li)|discordapp.com\/invite)\/[^\s\/]+?(?=\b)/gm);
@@ -61,12 +65,16 @@ exports.run = async (message, client, discord) => {
             };
         };
 
-        const noDMEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.gray)
-            .setDescription(`${client.customEmojis.grayTick} | Por el momento, los comandos de **${client.user.username}** solo está disponible desde el servidor.`);
+        //Advierte de que los comandos no funcionan por MD
+        if (message.content.startsWith(client.config.guild.prefix)) {
+            const noDMEmbed = new discord.MessageEmbed()
+                .setColor(client.colors.gray)
+                .setDescription(`${client.customEmojis.grayTick} | Por el momento, los comandos de **${client.user.username}** solo está disponible desde el servidor.`);
 
-        if (message.content.startsWith(client.config.guild.prefix) || message.content.startsWith(client.config.guild.prefix) || message.content.startsWith(client.config.guild.prefix)) return await message.author.send(noDMEmbed);
-
+            return await message.author.send(noDMEmbed);
+        };
+        
+        //Respuestas conversacionales de Cleverbot
         if (!client.dmContexts[message.author.id]) client.dmContexts[message.author.id] = ['Hablemos en Español'];
 
         return await client.cleverbot(message.content, client.dmContexts[message.author.id]).then(async response => {

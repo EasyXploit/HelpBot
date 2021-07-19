@@ -53,6 +53,6 @@ exports.run = async (event, client, discord) => {
             console.log(`\n 》${client.user.username} está a la espera de ser añadido a un servidor ...`);
         };
     } catch (error) {
-        return console.error(`${new Date().toLocaleString()} 》${e.stack}`);
+        return console.error(`${new Date().toLocaleString()} 》${error.stack}`);
     };
 };

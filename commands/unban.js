@@ -49,7 +49,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         await client.functions.loggingManager(loggingEmbed);
         await message.channel.send(successEmbed);
     } catch (error) {
-        if (e.toString().includes(`Unknown Ban`)) {
+        if (error.toString().includes(`Unknown Ban`)) {
             let notBannedEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.red2)
                 .setDescription(`${client.customEmojis.redTick} Este miembro no ha sido baneado`);

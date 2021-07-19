@@ -408,19 +408,19 @@ exports.run = (discord, client) => {
     };
 
     //Función para gestionar los errores en los comandos
-    client.functions.commandErrorHandler = async (e, message, command, args) => {
+    client.functions.commandErrorHandler = async (error, message, command, args) => {
         //Se comprueba si el error es provocado por la invocación de un comando no existente
         if (error.toLocaleString().includes('Cannot find module') || error.toLocaleString().includes('Cannot send messages to this user')) return;
 
         //Se muestra el error en consola
-        console.error(`\n${new Date().toLocaleString()} 》${e.stack}\n`);
+        console.error(`\n${new Date().toLocaleString()} 》${error.stack}\n`);
         
         //Se comprueba si se han proporcionado argumentos
         let arguments = 'Ninguno';
         if (args.length > 0) arguments = args.join(' ');
 
-        let error = e;
-        if (error.length > 1014) error = `${error.slice(0, 1014)} ...`;
+        let errorString = error;
+        if (errorString.length > 1014) errorString = `${errorString.slice(0, 1014)} ...`;
 
         //Se muestra el error en el canal de depuración
         let debuggEmbed = new discord.MessageEmbed()
@@ -433,7 +433,7 @@ exports.run = (discord, client) => {
             .addField('Canal:', message.channel, true)
             .addField('Autor:', `<@${message.author.id}>`, true)
             .addField('Fecha:', new Date().toLocaleString(), true)
-            .addField('Error:', `\`\`\`${error.stack}\`\`\``, true);
+            .addField('Error:', `\`\`\`${errorString.stack}\`\`\``, true);
         
         let reportedEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
@@ -445,9 +445,9 @@ exports.run = (discord, client) => {
     };
 
     //Función para gestionar los errores en los eventos
-    client.functions.eventErrorHandler = async (e, eventName) => {
-        let error = e;
-        if (error.length > 1014) error = `${error.slice(0, 1014)} ...`;
+    client.functions.eventErrorHandler = async (error, eventName) => {
+        let errorString = error;
+        if (errorString.length > 1014) errorString = `${errorString.slice(0, 1014)} ...`;
 
         //Se muestra el error en el canal de depuración
         let debuggEmbed = new discord.MessageEmbed()
@@ -456,7 +456,7 @@ exports.run = (discord, client) => {
             .setDescription('Se declaró un error durante la ejecución de un evento')
             .addField('Evento:', eventName, true)
             .addField('Fecha:', new Date().toLocaleString(), true)
-            .addField('Error:', `\`\`\`${error.stack}\`\`\``);
+            .addField('Error:', `\`\`\`${errorString.stack}\`\`\``);
         
         //Se envía el mensaje al canal de depuración
         await client.functions.debuggingManager(debuggEmbed);

@@ -81,7 +81,7 @@ exports.run = (discord, client) => {
                         await guild.members.unban(idKey);
                         await client.functions.loggingManager(loggingEmbed);
                     } catch (error) {
-                        if (e.toString().includes('Unknown Ban')) return;
+                        if (error.toString().includes('Unknown Ban')) return;
                     };
                 });
             };

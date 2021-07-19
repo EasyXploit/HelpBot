@@ -25,7 +25,6 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .addField(`📝 ${client.config.guild.prefix}reves (texto)`, `${client.user.username} le dará la vuelta al texto que especifiques.`)
             .addField(`💭 ${client.config.guild.prefix}di (texto)`, `Hará que ${client.user.username} repita lo que escribas.`)
             .addField(`🔫 ${client.config.guild.prefix}psychopass (@usuario | nada)`, `Hará que el sistema Sibyl diga el coeficiente criminal del sujeto.`)
-            .addField(`🔮 ${client.config.guild.prefix}paulo`, `Comando que envía frases aleatorias de Paulo Coelho`)
             .addField(`⏱ ${client.config.guild.prefix}ping`, `Comprueba el tiempo de respuesta entre el cliente y ${client.user.username}`);
         message.channel.send(helpEmbed);
     } catch (error) {

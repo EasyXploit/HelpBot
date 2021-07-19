@@ -240,14 +240,6 @@
 		"whitelistedRoles": ["everyone"],
 		"blacklistedRoles": []
 	},
-	"paulo": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
-	},
 	"pause": {
 		"enabled": true,
 		"deleteInvocationCommand": false,

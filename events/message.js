@@ -126,17 +126,12 @@ exports.run = async (message, client, discord) => {
     // Función para eliminar el prefijo, extraer el comando y sus argumentos (en caso de tenerlos)
     const args = message.content.slice(client.config.guild.prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
-    const command = cmd + `.js`;
+    const command = `${cmd}.js`;
 
     if (command.length <= 0) return console.error(`${new Date().toLocaleString()} 》No hubo ningún comando a cargar`);
 
     // Función para ejecutar el comando
     try {
-        let waitEmbed = new discord.MessageEmbed().setColor(client.colors.red2).setDescription(`${client.emotes.redTick} Debes esperar 2 segundos antes de usar este comando`);
-        if (client.cooldownedUsers.has(message.author.id)) return message.channel.send(waitEmbed).then(msg => {
-            msg.delete({timeout: 1000})
-        });
-
         //Comprueba si es un comando con prefijo
         if (message.content.startsWith(client.config.guild.prefix)) {
             let waitEmbed = new discord.MessageEmbed().setColor(client.colors.red2).setDescription(`${client.customEmojis.redTick} Debes esperar 2 segundos antes de usar este comando`);

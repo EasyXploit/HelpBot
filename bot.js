@@ -1,6 +1,6 @@
 //Gestión de promesas rechazadas y no manejadas
 process.on('unhandledRejection', error => {
-    if (!error.toLocaleString().includes('Cannot send messages to this user')) console.error(`${new Date().toLocaleString()} 》Rechazo de promesa no manejada:`, error);
+    if (!error.toString().includes('Cannot send messages to this user')) console.error(`${new Date().toLocaleString()} 》Rechazo de promesa no manejada:`, error);
 });
 
 //Logo de arranque

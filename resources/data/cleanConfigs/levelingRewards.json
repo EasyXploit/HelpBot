@@ -1,0 +1,44 @@
+[
+    {
+        "requiredLevel": "1",
+        "roles": []
+    },
+    {
+        "requiredLevel": "2",
+        "roles": []
+    },
+    {
+        "requiredLevel": "3",
+        "roles": []
+    },
+    {
+        "requiredLevel": "4",
+        "roles": []
+    },
+    {
+        "requiredLevel": "5",
+        "roles": [],
+        "credits": 100
+    },
+    {
+        "requiredLevel": "6",
+        "roles": []
+    },
+    {
+        "requiredLevel": "7",
+        "roles": []
+    },
+    {
+        "requiredLevel": "8",
+        "roles": []
+    },
+    {
+        "requiredLevel": "9",
+        "roles": []
+    },
+    {
+        "requiredLevel": "10",
+        "roles": [],
+        "credits": 200
+    }
+]

@@ -1,0 +1,8 @@
+{
+    "forbiddenChannels": [],
+    "djRoles": [],
+    "votesPercentage": 75,
+    "preventDuplicates": true,
+    "queueLimit": 100,
+    "userQueueLimit": 50
+}

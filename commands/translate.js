@@ -3,7 +3,8 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     //!translate (idioma orígen) (idioma destino) (texto a traducir)
     
     try {
-        const translate = require('@k3rn31p4nic/google-translate-api');
+
+        const translate = require('@iamtraction/google-translate');
         const langs = JSON.parse(client.fs.readFileSync('./resources/data/langs.json', 'utf-8'));
         
         let noLanguageEmbed = new discord.MessageEmbed()

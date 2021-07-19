@@ -2,9 +2,6 @@ exports.run = async (message, client, discord) => {
     //Previene que continue la ejecución si el servidor no es el principal
     if (message.guild && message.guild.id !== client.homeGuild.id) return;
 
-    //Función específica RG - Canal de sugerencias
-    if (message.channel.id === '550420589458751526' && message.author.id !== '359333470771740683' && message.author.id !== '474051954998509571') return message.delete({timeout: 5000});
-
     if (message.author.bot || message.type !== 'DEFAULT') return;
     if (message.channel.type === 'dm') {
         if (!message.content) return;

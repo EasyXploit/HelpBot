@@ -170,6 +170,9 @@ exports.run = async (message, client, discord) => {
                 };
             };
 
+            //Borra el mensaje de invocación si se ha configurado para ello
+            if (commandConfig.deleteInvocationCommand) await message.delete();
+
             //Ejecuta el comando
             require(`../commands/${command}`).run(discord, client, message, args, command, commandConfig);
 

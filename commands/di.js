@@ -9,7 +9,6 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         if (!args[0]) return message.channel.send(noTextEmbed);
         
-        message.delete();
         const text = message.content.slice(4);
 
         let resultEmbed = new discord.MessageEmbed()

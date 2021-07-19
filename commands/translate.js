@@ -32,7 +32,6 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         const toTranslate = args.slice(2).join(' ');
         
         translate(toTranslate, { from: args[0], to: args[1] }).then(res => {
-            message.delete();
             
             let resultEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.blue)

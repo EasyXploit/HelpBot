@@ -1,4 +1,4 @@
-exports.run = async (discord, client, message, args, command) => {
+exports.run = async (discord, client, message, args, command, commandConfig) => {
 
     //!rank (@usuario)
     
@@ -38,8 +38,6 @@ exports.run = async (discord, client, message, args, command) => {
 
         //Función para calcular cual es la siguiente recompensa que le corresponde al miembro
         async function nextReward() {
-            //Almacena el fichero de las recompensas
-            const rewards = require('../configs/levelingRewards.json');
 
             //Función para encontrar la siguiente recompensa
             function wichReward() {

@@ -1,4 +1,4 @@
-exports.run = async (discord, client, message, args, command) => {
+exports.run = async (discord, client, message, args, command, commandConfig) => {
 
     //!playskip (URL de YouTube | término)
 

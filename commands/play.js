@@ -1,4 +1,4 @@
-exports.run = async (discord, client, message, args, command) => {
+exports.run = async (discord, client, message, args, command, commandConfig) => {
 
     //!play (URL de YouTube | término | nada)
 

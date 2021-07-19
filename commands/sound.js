@@ -1,4 +1,4 @@
-exports.run = async (discord, client, message, args, command, supervisorsRole, noPrivilegesEmbed) => {
+exports.run = async (discord, client, message, args, command, commandConfig) => {
     
     //!sound (nada | término | list)
 

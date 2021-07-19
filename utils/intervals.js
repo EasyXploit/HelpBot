@@ -32,7 +32,7 @@ exports.run = (discord, client) => {
 
                 let loggingEmbed = new discord.MessageEmbed()
                     .setColor(client.colors.green)
-                    .setAuthor(`${member.user.tag} ha sido DES-SILENCIADO`, member.user.displayAvatarURL())
+                    .setAuthor(`${member.user.tag} ha sido DES-SILENCIADO`, member.user.displayAvatarURL({dynamic: true}))
                     .addField('Miembro', member.user.tag, true)
                     .addField('Moderador', `<@${client.user.id}>`, true)
                     .addField('Razón', 'Venció la amonestación', true);

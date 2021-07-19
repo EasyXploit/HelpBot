@@ -11,7 +11,7 @@ exports.run = async (message, client, discord) => {
 
         const pilkoChatEmbed = new discord.MessageEmbed()
             .setColor(client.colors.blue2)
-            .setAuthor(`Mensaje de: ${message.author.tag}`, message.author.displayAvatarURL())
+            .setAuthor(`Mensaje de: ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}))
             .setDescription(message.content);
 
         await client.botChatChannel.send(pilkoChatEmbed);
@@ -87,8 +87,8 @@ exports.run = async (message, client, discord) => {
                         message.author.send(response);
 
                         const pilkoChatEmbed = new discord.MessageEmbed()
-                            .setAuthor(`Mensaje de: ${client.user.username}`, client.user.displayAvatarURL())
                             .setColor(client.colors.primary)
+                            .setAuthor(`Mensaje de: ${client.user.username}`, client.user.displayAvatarURL({dynamic: true}))
                             .setDescription(response);
 
                         await client.botChatChannel.send(pilkoChatEmbed);

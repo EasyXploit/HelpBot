@@ -27,7 +27,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
 
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setAuthor(`${member.user.tag} ha sido SILENCIADO`, member.user.displayAvatarURL())
+            .setAuthor(`${member.user.tag} ha sido SILENCIADO`, member.user.displayAvatarURL({dynamic: true}))
             .addField('Miembro', member.user.tag, true)
             .addField('Moderador', moderator.tag, true)
             .addField('Razón', 'Demasiadas advertencias', true)
@@ -49,7 +49,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
     async function kick() {
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
-            .setAuthor(`${member.user.tag} ha sido EXPULSADO`, member.user.displayAvatarURL())
+            .setAuthor(`${member.user.tag} ha sido EXPULSADO`, member.user.displayAvatarURL({dynamic: true}))
             .addField('Miembro', member.user.tag, true)
             .addField('Moderador', moderator.tag, true)
             .addField('Razón', 'Demasiadas advertencias', true);
@@ -82,7 +82,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
 
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
-            .setAuthor(`${member.user.tag} ha sido BANEADO`, user.displayAvatarURL())
+            .setAuthor(`${member.user.tag} ha sido BANEADO`, user.displayAvatarURL({dynamic: true}))
             .addField(`Miembro`, member.user.tag, true)
             .addField(`ID`, member.id, true)
             .addField(`Moderador`, moderator.tag, true)
@@ -139,7 +139,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
 
             let loggingEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.orange)
-                .setAuthor(`${member.user.tag} ha sido ADVERTIDO`, member.user.displayAvatarURL())
+                .setAuthor(`${member.user.tag} ha sido ADVERTIDO`, member.user.displayAvatarURL({dynamic: true}))
                 .addField(`Miembro`, member.user.tag, true)
                 .addField(`Moderador`, moderator.tag, true)
                 .addField(`Razón`, reason, true)

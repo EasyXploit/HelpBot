@@ -94,7 +94,7 @@ exports.run = async (event, client, discord) => {
 
                 let loggingWelcomeEmbed = new discord.MessageEmbed()
                     .setColor(client.colors.green)
-                    .setThumbnail(event.user.displayAvatarURL())
+                    .setThumbnail(event.user.displayAvatarURL({dynamic: true}))
                     .setAuthor('Nuevo miembro', 'https://i.imgur.com/A60x2Di.png')
                     .setDescription(`${event.user.username} se unió al servidor`)
                     .addField('🏷 TAG completo', event.user.tag, true)

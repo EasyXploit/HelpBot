@@ -82,7 +82,7 @@ exports.run = async (discord, client, message, args, command) => {
             .setColor(client.colors.primary)
             .setTitle(`🥇 Rango`)
             .setDescription(`Mostrando el rango del miembro **${member.user.tag}**`)
-            .setThumbnail(member.user.displayAvatarURL())
+            .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
             .addField(`Nivel actual`, `\`${userStats.level}\``, true)
             .addField(`XP Total`, `\`${userStats.totalXP}\``, true)
 

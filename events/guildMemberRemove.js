@@ -25,7 +25,7 @@ exports.run = async (event, client, discord) => {
 
                 const loggingEmbed = new discord.MessageEmbed()
                     .setColor(client.colors.red)
-                    .setAuthor(`${event.user.tag} ha sido EXPULSADO`, event.user.displayAvatarURL())
+                    .setAuthor(`${event.user.tag} ha sido EXPULSADO`, event.user.displayAvatarURL({dynamic: true}))
                     .addField('Miembro', `<@${event.user.id}>`, true)
                     .addField('Moderador', moderador.tag || 'Desconocido', true)
                     .addField('Razón', razon || 'Indefinida', true);
@@ -63,7 +63,7 @@ exports.run = async (event, client, discord) => {
 
             let loggingEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.orange)
-                .setThumbnail(event.user.displayAvatarURL())
+                .setThumbnail(event.user.displayAvatarURL({dynamic: true}))
                 .setAuthor('Un miembro abandonó', 'https://i.imgur.com/2nZ23V4.png')
                 .setDescription(`${event.user.username} abandonó el servidor`)
                 .addField('🏷 TAG completo', event.user.tag, true)

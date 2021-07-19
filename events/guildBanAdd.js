@@ -20,7 +20,7 @@ exports.run = async (guild, user, client, discord) => {
 
                 const loggingEmbed = new discord.MessageEmbed()
                     .setColor(client.colors.red)
-                    .setAuthor(`${user.tag} ha sido BANEADO`, user.displayAvatarURL())
+                    .setAuthor(`${user.tag} ha sido BANEADO`, user.displayAvatarURL({dynamic: true}))
                     .addField('Miembro', user.tag, true)
                     .addField('ID', user.id, true)
                     .addField('Moderador', moderador.tag || 'Desconocido', true)

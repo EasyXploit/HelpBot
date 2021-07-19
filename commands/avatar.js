@@ -14,8 +14,8 @@ exports.run = async (discord, client, message, args, command) => {
             .setColor(client.colors.primary)
             .setAuthor(`Avatar de @${user.tag}`)
             .setTitle('URL del Avatar')
-            .setImage(user.displayAvatarURL())
-            .setURL(user.displayAvatarURL());
+            .setImage(user.displayAvatarURL({ size: 4096, dynamic: true}))
+            .setURL(user.displayAvatarURL({dynamic: true}));
         message.channel.send(avatarEmbed);
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     } catch (error) {

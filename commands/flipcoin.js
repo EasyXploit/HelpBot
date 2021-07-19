@@ -1,6 +1,6 @@
 exports.run = async (discord, client, message, args, command, commandConfig) => {
     
-    //!moneda
+    //!flipcoin
     
     try {
         const datos = ['CARA', 'CARA', 'CARA', 'CARA', 'CARA', 'CRUZ', 'CRUZ', 'CRUZ', 'CRUZ', 'CRUZ', 'CANTO.. ¿CANTO?'];

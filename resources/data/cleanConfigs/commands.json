@@ -39,7 +39,7 @@
 		"whitelistedRoles": ["everyone"],
 		"blacklistedRoles": []
 	},
-	"comandos": {
+	"commands": {
 		"enabled": true,
 		"deleteInvocationCommand": false,
 		"whitelistedChannels": [],
@@ -47,7 +47,7 @@
 		"whitelistedRoles": ["everyone"],
 		"blacklistedRoles": []
 	},
-	"dado": {
+	"dice": {
 		"enabled": true,
 		"deleteInvocationCommand": false,
 		"whitelistedChannels": [],
@@ -80,7 +80,7 @@
 		"whitelistedRoles": [],
 		"blacklistedRoles": []
 	},
-	"elige": {
+	"choose": {
 		"enabled": true,
 		"deleteInvocationCommand": false,
 		"whitelistedChannels": [],
@@ -184,7 +184,7 @@
 		"whitelistedRoles": ["everyone"],
 		"blacklistedRoles": []
 	},
-	"moneda": {
+	"flipcoin": {
 		"enabled": true,
 		"deleteInvocationCommand": false,
 		"whitelistedChannels": [],
@@ -200,7 +200,7 @@
 		"whitelistedRoles": ["everyone"],
 		"blacklistedRoles": []
 	},
-	"musica": {
+	"music": {
 		"enabled": true,
 		"deleteInvocationCommand": false,
 		"whitelistedChannels": [],
@@ -264,7 +264,7 @@
 		"whitelistedRoles": [],
 		"blacklistedRoles": []
 	},
-	"ppt": {
+	"rps": {
 		"enabled": true,
 		"deleteInvocationCommand": false,
 		"whitelistedChannels": [],
@@ -272,7 +272,7 @@
 		"whitelistedRoles": ["everyone"],
 		"blacklistedRoles": []
 	},
-	"pptls": {
+	"rpsls": {
 		"enabled": true,
 		"deleteInvocationCommand": false,
 		"whitelistedChannels": [],
@@ -352,7 +352,7 @@
 		"whitelistedRoles": ["everyone"],
 		"blacklistedRoles": []
 	},
-	"reves": {
+	"reverse": {
 		"enabled": true,
 		"deleteInvocationCommand": false,
 		"whitelistedChannels": [],

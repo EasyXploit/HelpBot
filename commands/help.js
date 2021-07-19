@@ -8,7 +8,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         .setAuthor('AYUDA', 'http://i.imgur.com/sYyH2IM.png')
         .setTitle(`Sistema de ayuda de ${client.user.username}`)
         .setThumbnail('http://i.imgur.com/sYyH2IM.png')
-        .addField(`⚙ ${client.config.guild.prefix}comandos`, 'Muestra los comandos de <@446041159853408257>.')
+        .addField(`⚙ ${client.config.guild.prefix}commands`, 'Muestra los comandos de <@446041159853408257>.')
         .addField(`ℹ ${client.config.guild.prefix}info`, 'Muestra información acerca del proyecto.')
         .addField(`🥇 ${client.config.guild.prefix}rank`, 'Muestra tu rango actual.')
         .addField(`🏆 ${client.config.guild.prefix}leaderboard [pág.]`, 'Muestra la tabla de clasificación.');
@@ -30,7 +30,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                 if (reaction.emoji.name === '⚙') {
                     await msg.delete()
-                    require(`./comandos.js`).run(discord, client, message, args, command, commandConfig);
+                    require(`./commands.js`).run(discord, client, message, args, command, commandConfig);
                     
                 } else if (reaction.emoji.name === 'ℹ') {
                     await msg.delete()

@@ -1,11 +1,11 @@
 exports.run = async (discord, client, message, args, command, commandConfig) => {
     
-    //!ppt <piedra | papel | tijeras>
+    //!rps <piedra | papel | tijeras>
     
     try {
         let notToAnswerEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}ppt <piedra | papel | tijeras>\``);
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}rps <piedra | papel | tijeras>\``);
 
         if (!args[0]) return message.channel.send(notToAnswerEmbed);
 

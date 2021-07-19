@@ -1,6 +1,6 @@
 exports.run = async (discord, client, message, args, command, commandConfig) => {
     
-    //!musica
+    //!music
     
     try {
         let helpEmbed = new discord.MessageEmbed()

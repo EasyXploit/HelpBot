@@ -1,6 +1,6 @@
 exports.run = async (discord, client, message, args, command, commandConfig) => {
     
-    //!dado
+    //!dice
     
     try {
         const datos = ['1', '2', '3', '4', '5', '6'];

@@ -1,11 +1,11 @@
 exports.run = async (discord, client, message, args, command, commandConfig) => {
     
-    //!elige "opción1" "opción2" ...
+    //!choose "opción1" "opción2" ...
     
     try {
         let notToAnswerEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
-            .setDescription(`${client.customEmojis.redTick} Debes proporcionarme al menos 2 opciones.\nLa sintaxis de este comando es \`${client.config.guild.prefix}elige "opción1" "opción2" ...\``);
+            .setDescription(`${client.customEmojis.redTick} Debes proporcionarme al menos 2 opciones.\nLa sintaxis de este comando es \`${client.config.guild.prefix}choose "opción1" "opción2" ...\``);
 
         let options = message.content.slice(8).split('" "');
         let lastOption = options.slice(-1).join();

@@ -52,7 +52,7 @@ exports.run = async (discord, client, message, args, command) => {
             .setFooter(footer, client.homeGuild.iconURL());
         
         message.channel.send(progressEmbed);
-        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     } catch (error) {
+        await client.functions.commandErrorHandler(error, message, command, args);
     }
 }

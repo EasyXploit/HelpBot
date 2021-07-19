@@ -15,7 +15,7 @@ exports.run = (discord, client, message, args, command) => {
             .setColor(0xA37044)
             .setDescription('📝 | ' + text);
         message.channel.send(resultEmbed);
-        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     } catch (error) {
+        await client.functions.commandErrorHandler(error, message, command, args);
     }
 }

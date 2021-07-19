@@ -31,7 +31,7 @@ exports.run = (discord, client, message, args, command) => {
                 .addField(`💧 Humedad`, `${current.humidity}%`, true);
             message.channel.send(resultEmbed);
         });
-        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     } catch (error) {
+        await client.functions.commandErrorHandler(error, message, command, args);
     }
 }

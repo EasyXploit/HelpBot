@@ -29,7 +29,7 @@ exports.run = (discord, client, message, args, command) => {
             .addField(`🔮 ${client.config.prefixes.mainPrefix}paulo`, `Comando que envía frases aleatorias de Paulo Coelho`)
             .addField(`⏱ ${client.config.prefixes.mainPrefix}ping`, `Comprueba el tiempo de respuesta entre el cliente y ${client.user.username}`);
         message.channel.send(helpEmbed);
-        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     } catch (error) {
+        await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

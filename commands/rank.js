@@ -43,8 +43,8 @@ exports.run = async (discord, client, message, args, command) => {
 
             //Función para encontrar la siguiente recompensa
             function wichReward() {
-                for (let i = 0; i < rewards.length; i++) {
-                    if (rewards[i].requiredLevel >= userStats.level + 1) return rewards[i].roles;
+                for (let i = 0; i < client.config.levelingRewards.length; i++) {
+                    if (client.config.levelingRewards[i].requiredLevel >= userStats.level + 1) return client.config.levelingRewards[i].roles;
                 };
             };
 
@@ -96,7 +96,7 @@ exports.run = async (discord, client, message, args, command) => {
         
         message.channel.send(resultEmbed);
 
-        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     } catch (error) {
+        await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

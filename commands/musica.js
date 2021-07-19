@@ -25,7 +25,7 @@ exports.run = async (discord, client, message, args, command) => {
             .addField(`🔁 ${client.config.prefixes.mainPrefix}loopqueue *`, `Activa el modo bucle en la cola\n\n_Si un comando tiene la etiqueta (*), quiere decir que se requerirá una votación en el caso de que no estés solo en la sala. Los DJ pueden omitir esta votación._\n\n• Usa el prefijo \`>\` para controlar a ${client.emotes.rythm} <@235088799074484224>`, true);
         
         await message.channel.send(helpEmbed);
-        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     } catch (error) {
+        await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

@@ -113,23 +113,8 @@ exports.run = async (event, client, discord) => {
 
             return client.loggingChannel.send(loggingWelcomeBotEmbed);
         };
-    } catch (e) {
-
-        if (e.toLocaleString().includes('Cannot send messages to this user')) return;
-
-        let error = e.stack;
-        if (error.length > 1014) error = `${error.slice(0, 1014)} ...`;
-
-        //Se muestra el error en el canal de depuración
-        let debuggEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.brown)
-            .setTitle('📋 Depuración')
-            .setDescription('Se declaró un error durante la ejecución de un evento')
-            .addField('Evento:', 'guildMemberAdd', true)
-            .addField('Fecha:', new Date().toLocaleString(), true)
-            .addField('Error:', `\`\`\`${error}\`\`\``);
-        
-        //Se envía el mensaje al canal de depuración
-        await client.debuggingChannel.send(debuggEmbed);
+    } catch (error) {
+        if (error.toLocaleString().includes('Cannot send messages to this user')) return;
+        await client.functions.eventErrorHandler(error, 'guildMemberAdd');
     };
 };

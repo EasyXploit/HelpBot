@@ -332,4 +332,60 @@ exports.run = (discord, client) => {
             console.log(`No habían espacios para emojis suficientes.\nNecesitas al menos ${emojis.length} espacios.\nSe usarán emojis Unicode en su lugar.`);
         };
     };
+    //Función para gestionar los errores en los comandos
+    client.functions.commandErrorHandler = async (e, message, command, args) => {
+        //Se comprueba si el error es provocado por la invocación de un comando no existente
+        if (error.toLocaleString().includes('Cannot find module') || error.toLocaleString().includes('Cannot send messages to this user')) return;
+
+        //Se muestra el error en consola
+        console.error(`\n${new Date().toLocaleString()} 》${e.stack}\n`);
+        
+        //Se comprueba si se han proporcionado argumentos
+        let arguments = 'Ninguno';
+        if (args.length > 0) arguments = args.join(' ');
+
+        let error = e;
+        if (error.length > 1014) error = `${error.slice(0, 1014)} ...`;
+
+        //Se muestra el error en el canal de depuración
+        let debuggEmbed = new discord.MessageEmbed()
+            .setColor(client.colors.brown)
+            .setTitle('📋 Depuración')
+            .setDescription('Se declaró un error durante la ejecución de un comando')
+            .addField('Comando:', command.slice(-0, -3), true)
+            .addField('Argumentos:', arguments, true)
+            .addField('Origen:', message.guild.name, true)
+            .addField('Canal:', message.channel, true)
+            .addField('Autor:', `<@${message.author.id}>`, true)
+            .addField('Fecha:', new Date().toLocaleString(), true)
+            .addField('Error:', `\`\`\`${error.stack}\`\`\``, true);
+        
+        let reportedEmbed = new discord.MessageEmbed()
+            .setColor(client.colors.red)
+            .setTitle(`${client.customEmojis.redTick} ¡Vaya! Algo fue mal ...`)
+            .setDescription('Lo hemos reportado al equipo de desarrollo');
+        
+        await message.channel.send(reportedEmbed);
+        await client.functions.debuggingManager(debuggEmbed);
+    };
+
+    //Función para gestionar los errores en los eventos
+    client.functions.eventErrorHandler = async (e, eventName) => {
+        let error = e;
+        if (error.length > 1014) error = `${error.slice(0, 1014)} ...`;
+
+        //Se muestra el error en el canal de depuración
+        let debuggEmbed = new discord.MessageEmbed()
+            .setColor(client.colors.brown)
+            .setTitle('📋 Depuración')
+            .setDescription('Se declaró un error durante la ejecución de un evento')
+            .addField('Evento:', eventName, true)
+            .addField('Fecha:', new Date().toLocaleString(), true)
+            .addField('Error:', `\`\`\`${error.stack}\`\`\``);
+        
+        //Se envía el mensaje al canal de depuración
+        await client.functions.debuggingManager(debuggEmbed);
+    };
+
+    console.log(' - [OK] Carga de funciones globales.');
 };

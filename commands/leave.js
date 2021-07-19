@@ -43,8 +43,8 @@ exports.run = async (discord, client, message, args, command) => {
             //Manda un mensaje de confirmación
             await message.channel.send(`⏏ | He abandonado el canal`);
         };
-        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     } catch (error) {
+        await client.functions.commandErrorHandler(error, message, command, args);
     }
 }
 

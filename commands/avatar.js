@@ -17,7 +17,7 @@ exports.run = async (discord, client, message, args, command) => {
             .setImage(user.displayAvatarURL({ size: 4096, dynamic: true}))
             .setURL(user.displayAvatarURL({dynamic: true}));
         message.channel.send(avatarEmbed);
-        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     } catch (error) {
+        await client.functions.commandErrorHandler(error, message, command, args);
     }
 }

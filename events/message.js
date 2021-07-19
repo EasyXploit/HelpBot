@@ -201,7 +201,8 @@ exports.run = async (message, client, discord) => {
         } else {
             return;
         }
-    } catch (e) {
-        require(`../utils/errorHandler.js`).run(discord, client, message, args, command, e);
+        };
+    } catch (error) {
+        await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

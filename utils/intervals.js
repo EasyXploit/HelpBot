@@ -68,7 +68,7 @@ exports.run = (discord, client) => {
 
                 let loggingEmbed = new discord.MessageEmbed()
                     .setColor(client.colors.green)
-                    .setAuthor(`${user.tag} ha sido DES-BANEADO`, user.displayAvatarURL())
+                    .setAuthor(`${user.tag} ha sido DES-BANEADO`, user.displayAvatarURL({dynamic: true}))
                     .addField('Usuario', user.tag, true)
                     .addField('Moderador', `<@${client.user.id}>`, true)
                     .addField('Razón', 'Venció la amonestación', true);

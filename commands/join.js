@@ -88,8 +88,8 @@ exports.run = async (discord, client, message, args, command) => {
                 client.voiceTimeout = null;
             }, 60000);
 
-        }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));
-        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+        }).catch(err => console.log(`${new Date().toLocaleString()} 》${err.stack}`));
     } catch (error) {
+        await client.functions.commandErrorHandler(error, message, command, args);
     }
 }

@@ -16,7 +16,7 @@ exports.run = (discord, client, message, args, command) => {
             .addField('📊 Estadísticas', `${client.guilds.cache.size} servidores\n${client.users.cache.filter(user => !user.bot).size} miembros\nV ${package.version}`, true)
             .addField('🗂 Librerias', '● discord.js\n● flaticon', true);
         message.channel.send(resultEmbed);
-        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     } catch (error) {
+        await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

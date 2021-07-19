@@ -37,7 +37,7 @@ exports.run = async (discord, client, message, args, command) => {
             await client.voiceDispatcher.pause();
             await message.channel.send(`⏸ | Cola pausada`);
         };
-        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     } catch (error) {
+        await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

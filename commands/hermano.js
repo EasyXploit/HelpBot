@@ -10,7 +10,7 @@ exports.run = (discord, client, message, args, command) => {
             .setAuthor('El Pilko', 'https://cdn.discordapp.com/avatars/223945607662927872/1b2170a1d14e3d46d97254e999a98431.png?')
             .setTitle('¡HERMANO, QUE ME DA LA PUTA RISA!');
         message.channel.send(resultEmbed);
-        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     } catch (error) {
+        await client.functions.commandErrorHandler(error, message, command, args);
     }
 }

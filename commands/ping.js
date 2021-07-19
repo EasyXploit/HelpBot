@@ -69,7 +69,7 @@ exports.run = async (discord, client, message, args, command) => {
         await message.channel.send(botPingEmbed);
         await message.channel.send(websocketPingEmbed);
         await message.channel.send(uptimeEmbed);
-        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     } catch (error) {
+        await client.functions.commandErrorHandler(error, message, command, args);
     }
 }

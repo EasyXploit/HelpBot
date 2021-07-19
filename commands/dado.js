@@ -10,7 +10,7 @@ exports.run = (discord, client, message, args, command) => {
             .setTitle('Lanzaste un dado ...  🎲')
             .setDescription(`¡Salió **${datos[Math.floor(Math.random() * datos.length)]}**!`);
         message.channel.send(resultEmbed);
-        require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     } catch (error) {
+        await client.functions.commandErrorHandler(error, message, command, args);
     }
 }

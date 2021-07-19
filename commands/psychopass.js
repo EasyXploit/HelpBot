@@ -27,7 +27,7 @@ exports.run = async (discord, client, message, args, command) => {
             .setDescription(`**${member.displayName}${result}`)
 
         message.channel.send(resultEmbed);
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     }
 }

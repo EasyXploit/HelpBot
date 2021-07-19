@@ -74,7 +74,7 @@ exports.run = async (discord, client, message, args, command) => {
                 message.channel.send(`▶ | He desactivado el modo bucle`);
             };
         };
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     };
 }

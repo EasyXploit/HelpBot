@@ -17,7 +17,7 @@ exports.run = (discord, client, message, args, command) => {
             .setDescription(`:8ball: | ${data[Math.floor(Math.random() * data.length)]}`, message.member.displayName);
 
         message.channel.send(resultEmbed);
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
-    }
-}
+    } catch (error) {
+    };
+};

@@ -18,7 +18,7 @@ exports.run = async (discord, client, message, args, command, supervisorsRole, n
             .setDescription(`El amor de ${member} por ${message.member}:\n${loveLevel} ${Math.floor(love)}%`);
 
         message.channel.send(resultEmbed);
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     };
 };

@@ -34,7 +34,7 @@ exports.run = async (discord, client, message, args, command) => {
             if (error.toString().includes('No results found')) return message.channel.send(noResultEmbed);
             require('../utils/errorHandler.js').run(discord, client, message, args, command, error);
         });
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     };
 };

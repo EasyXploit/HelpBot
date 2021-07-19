@@ -10,7 +10,7 @@ exports.run = (discord, client, message, args, command) => {
             .setTitle('Lanzaste una moneda ...  🪙')
             .setDescription(`¡Salió __**${datos[Math.floor(Math.random() * datos.length)]}**__!`);
         message.channel.send(resultEmbed);
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     }
 }

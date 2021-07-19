@@ -23,7 +23,7 @@ exports.run = (discord, client, message, args, command) => {
             .setDescription(`🎯 | _"${options[Math.floor(Math.random() * options.length)]}"_ ${texts[Math.floor(Math.random() * texts.length)]} ${message.member.displayName}`);
 
         message.channel.send(resultEmbed);
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     }
 }

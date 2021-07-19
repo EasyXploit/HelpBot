@@ -5,7 +5,6 @@ exports.run = async (discord, client, message, args, command) => {
     try {
         let noQueueEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-        console.log(client.queues[message.guild.id].nowplaying);
             .setDescription(`${client.customEmojis.redTick} El bot no tiene ninguna canción en la cola.`);
         
         if (!client.queues[message.guild.id].nowplaying || Object.entries(client.queues[message.guild.id].nowplaying).length === 0) return message.channel.send(noQueueEmbed);
@@ -53,7 +52,7 @@ exports.run = async (discord, client, message, args, command) => {
             .setFooter(footer, client.homeGuild.iconURL());
         
         message.channel.send(progressEmbed);
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     }
 }

@@ -77,7 +77,7 @@ exports.run = async (discord, client, message, args, command, supervisorsRole, n
                 return message.channel.send(notAvailableEmbed);
             }
         }
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     }
 }

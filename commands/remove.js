@@ -84,7 +84,7 @@ exports.run = async (discord, client, message, args, command) => {
                 await message.channel.send(`${client.customEmojis.greenTick} | He eliminado la canción de la cola`);
             };
         };
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     };
 };

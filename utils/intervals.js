@@ -15,7 +15,7 @@ exports.run = (discord, client) => {
                 const member = await client.functions.fetchMember(guild, idKey);
                 if (!member) {
                     delete client.mutes[idKey];
-                    client.fs.writeFile('storage/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
+                    client.fs.writeFile('databases/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
                         if (err) throw err;
 
                         let loggingEmbed = new discord.MessageEmbed()
@@ -80,7 +80,7 @@ exports.run = (discord, client) => {
                     try {
                         await guild.members.unban(idKey);
                         await client.loggingChannel.send(loggingEmbed);
-                    } catch (e) {
+                    } catch (error) {
                         if (e.toString().includes('Unknown Ban')) return;
                     };
                 });
@@ -112,7 +112,7 @@ exports.run = (discord, client) => {
             try {
                 channel = await client.channels.fetch(client.polls[idKey].channel);
                 poll = await channel.messages.fetch(idKey);
-            } catch (e) {
+            } catch (error) {
                 delete client.polls[idKey];
                 return client.fs.writeFile('./databases/polls.json', JSON.stringify(client.polls, null, 4), async err => {
                     if (err) throw err;
@@ -212,6 +212,8 @@ exports.run = (discord, client) => {
                 name: name,
                 type: client.config.presence.type
             }
-        });
+        }).catch(console.error);
     }, 60000);
+
+    console.log(' - [OK] Carga de intervalos.');
 };

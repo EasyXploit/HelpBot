@@ -4,7 +4,7 @@ exports.run = async (discord, client, message, args, command) => {
     
     try {
         let helpEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.gold)
+            .setColor(client.colors.primary)
             .setAuthor('Reproducción de música', 'https://i.imgur.com/SidVFnv.png')
             .setDescription(`Estos comandos te permiten reproducir canciones desde YouTube en los canales de voz permitidos mediante ${client.user.username}`)
             .addField(`⏯ ${client.config.prefixes.mainPrefix}play (URL de YouTube | término | nada)`, 'Busca una canción o playlist en YouTube para reproducirla a continuación, o añadirla a la cola.', true)
@@ -25,7 +25,7 @@ exports.run = async (discord, client, message, args, command) => {
             .addField(`🔁 ${client.config.prefixes.mainPrefix}loopqueue *`, `Activa el modo bucle en la cola\n\n_Si un comando tiene la etiqueta (*), quiere decir que se requerirá una votación en el caso de que no estés solo en la sala. Los DJ pueden omitir esta votación._\n\n• Usa el prefijo \`>\` para controlar a ${client.emotes.rythm} <@235088799074484224>`, true);
         
         await message.channel.send(helpEmbed);
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     };
 };

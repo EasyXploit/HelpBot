@@ -11,13 +11,13 @@ exports.run = async (discord, client, message, args, command) => {
         if (!user) return message.channel.send(notFoundEmbed);
 
         const avatarEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.gold)
+            .setColor(client.colors.primary)
             .setAuthor(`Avatar de @${user.tag}`)
             .setTitle('URL del Avatar')
             .setImage(user.displayAvatarURL())
             .setURL(user.displayAvatarURL());
         message.channel.send(avatarEmbed);
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     }
 }

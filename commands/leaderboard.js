@@ -47,7 +47,7 @@ exports.run = async (discord, client, message, args, command) => {
         //Función para mostrar la primera leaderboard o actualizarla
         async function showLeaderboard(embed) {
             let leaderboard = new discord.MessageEmbed()
-                .setColor(client.colors.gold)
+                .setColor(client.colors.primary)
                 .setTitle(`:trophy: Tabla de clasificación`)
                 .setDescription(await loadBoard(10 * position - 9, 10 * position))
                 .setFooter(`Página ${position} de ${pages}`, client.homeGuild.iconURL());
@@ -95,7 +95,7 @@ exports.run = async (discord, client, message, args, command) => {
         //Llama la primera leaderboard
         showLeaderboard();
 
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     };
 };

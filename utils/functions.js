@@ -14,7 +14,7 @@ exports.run = (discord, client) => {
                 result = await guild.members.fetch(argument);
             }
             if (result && typeof result !== 'undefined') return result;
-        } catch (e) {
+        } catch (error) {
             return false;
         }
     };
@@ -30,7 +30,7 @@ exports.run = (discord, client) => {
                 result = await client.users.fetch(argument);
             }
             if (result && typeof result !== 'undefined') return result;
-        } catch (e) {
+        } catch (error) {
             return false;
         }
     };
@@ -46,7 +46,7 @@ exports.run = (discord, client) => {
                 result = await guild.roles.fetch(argument);
             }
             if (result && typeof result !== 'undefined') return result;
-        } catch (e) {
+        } catch (error) {
             return false;
         }
     };
@@ -174,8 +174,8 @@ exports.run = (discord, client) => {
                     };
 
                     let levelUpEmbed = new discord.MessageEmbed()
-                        .setColor(client.colors.gold)
                         .setAuthor(`¡Subiste de nivel!`, member.user.displayAvatarURL())
+                        .setColor(client.colors.primary)
                         .setDescription(`Enhorabuena <@${member.id}>, has subido al nivel **${userStats.level}**`);
 
                     //Manda el mensaje de subida de nivel
@@ -188,7 +188,7 @@ exports.run = (discord, client) => {
                     if (err) throw err;
                 });
             };
-        } catch (e) {
+        } catch (error) {
             console.log(e);
             return false;
         };

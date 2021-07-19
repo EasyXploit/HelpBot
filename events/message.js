@@ -2,6 +2,7 @@ exports.run = async (message, client, discord) => {
     //Previene que continue la ejecución si el servidor no es el principal
     if (message.guild && message.guild.id !== client.homeGuild.id) return;
 
+    //Función específica RG - Canal de sugerencias
     if (message.channel.id === '550420589458751526' && message.author.id !== '359333470771740683' && message.author.id !== '474051954998509571') return message.delete({timeout: 5000});
 
     if (message.author.bot || message.type !== 'DEFAULT') return;
@@ -13,7 +14,7 @@ exports.run = async (message, client, discord) => {
             .setAuthor(`Mensaje de: ${message.author.tag}`, message.author.displayAvatarURL())
             .setDescription(message.content);
 
-        await client.pilkoChatChannel.send(pilkoChatEmbed);
+        await client.botChatChannel.send(pilkoChatEmbed);
 
         //Filtra el texto en busca de códigos de invitación
         let detectedInvites = message.content.match(/(https?:\/\/)?(www.)?(discord.(gg|io|me|li)|discordapp.com\/invite)\/[^\s\/]+?(?=\b)/gm);
@@ -86,11 +87,11 @@ exports.run = async (message, client, discord) => {
                         message.author.send(response);
 
                         const pilkoChatEmbed = new discord.MessageEmbed()
-                            .setColor(client.colors.gold)
                             .setAuthor(`Mensaje de: ${client.user.username}`, client.user.displayAvatarURL())
+                            .setColor(client.colors.primary)
                             .setDescription(response);
 
-                        await client.pilkoChatChannel.send(pilkoChatEmbed);
+                        await client.botChatChannel.send(pilkoChatEmbed);
                     }, Math.floor(Math.random() * (8000 - 5000 + 1) + 5000));
                 }, Math.floor(Math.random() * (3000 - 2000 + 1) + 2000));
         });
@@ -140,17 +141,17 @@ exports.run = async (message, client, discord) => {
         if (prefix === client.config.prefixes.mainPrefix) { // EVERYONE
 
             //Almacena la configuración del comando
-            let cfg = client.config.commands[cmd];
+            let commandConfig = client.config.commands[cmd];
 
             //Devuelve si el comando está deshabilitado
-            if (!cfg || !cfg.enabled) return;
+            if (!commandConfig || !commandConfig.enabled) return;
 
             //Devuelve si el canal no está autorizado
-            if (cfg.whitelistedChannels.length > 0 && !cfg.whitelistedChannels.includes(message.channel.id)) return;
-            if (cfg.blacklistedChannels.length > 0 && cfg.whitelistedChannels.includes(message.channel.id)) return;
+            if (commandConfig.whitelistedChannels.length > 0 && !commandConfig.whitelistedChannels.includes(message.channel.id)) return;
+            if (commandConfig.blacklistedChannels.length > 0 && commandConfig.whitelistedChannels.includes(message.channel.id)) return;
 
-            //Devuelve si el rol no está autorizado
-            if (cfg.whitelistedRoles.length > 0) {
+            //No continúa si el rol no está autorizado
+            if (commandConfig.whitelistedRoles.length > 0) { //Si la lista blanca contiene entradas
                 let authorized;
                 for (let i = 0; i < cfg.whitelistedRoles.length; i++) {
                     if (message.member.roles.cache.find(r => r.id === cfg.whitelistedRoles[i])) {
@@ -168,8 +169,7 @@ exports.run = async (message, client, discord) => {
             };
 
             //Ejecuta el comando
-            let commandFile = require(`../commands/${command}`);
-            commandFile.run(discord, client, message, args, command);
+            require(`../commands/${command}`).run(discord, client, message, args, command, commandConfig);
 
             //Añade un cooldown
             client.cooldownedUsers.add(message.author.id);

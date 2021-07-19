@@ -59,7 +59,7 @@ exports.run = async (discord, client, message, args, command) => {
             hour = hour % 24;
 
             uptimeEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.gold)
+                .setColor(client.colors.primary)
                 .setTitle('Tiempo de actividad: ')
                 .setDescription(`:stopwatch: | ${day} días, ${hour} horas, ${minute} minutos y ${seconds} segundos`);
         }
@@ -69,7 +69,7 @@ exports.run = async (discord, client, message, args, command) => {
         await message.channel.send(botPingEmbed);
         await message.channel.send(websocketPingEmbed);
         await message.channel.send(uptimeEmbed);
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     }
 }

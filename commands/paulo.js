@@ -10,7 +10,7 @@ exports.run = (discord, client, message, args, command) => {
             .setDescription(`🔮 | "${data[Math.floor(Math.random() * data.length)]}"`)
             .setFooter('- Paulo Coelho', );
         message.channel.send(resultEmbed);
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     }
 }

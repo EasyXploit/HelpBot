@@ -4,7 +4,7 @@ exports.run = (discord, client, message, args, command) => {
     
     try {
         let helpEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.gold)
+            .setColor(client.colors.primary)
             .setThumbnail(`https://i.imgur.com/cTW63kf.png`)
             .setAuthor(client.user.username, client.user.avatarURL())
             .setDescription(`Comandos de ${client.user.username}`)
@@ -29,7 +29,7 @@ exports.run = (discord, client, message, args, command) => {
             .addField(`🔮 ${client.config.prefixes.mainPrefix}paulo`, `Comando que envía frases aleatorias de Paulo Coelho`)
             .addField(`⏱ ${client.config.prefixes.mainPrefix}ping`, `Comprueba el tiempo de respuesta entre el cliente y ${client.user.username}`);
         message.channel.send(helpEmbed);
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     };
 };

@@ -151,14 +151,14 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
         //Reproduce la canción
         play(client.voiceConnection, message);
 
-    } catch (e) {
+    } catch (error) {
 
         let apiErrorEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
             .setDescription(`${client.customEmojis.redTick} Límite de solicitudes a la API de YouTube alcanzado.`);
 
         //Se comprueba si el error es provocado por una limitación de API
-        if (e.toLocaleString().includes('416') || e.toLocaleString().includes('429')) message.channel.send(apiErrorEmbed);
+        if (error.toLocaleString().includes('416') || error.toLocaleString().includes('429')) message.channel.send(apiErrorEmbed);
 
         console.log(`${new Date().toLocaleString()} 》Error: ${e}`);
     };

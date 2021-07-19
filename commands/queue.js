@@ -112,7 +112,7 @@ exports.run = async (discord, client, message, args, command) => {
         //Llama a la primera página
         generateEmbed(5 * position - 4, 5 * position);
         
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     };
 };

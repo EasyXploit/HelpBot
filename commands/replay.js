@@ -53,7 +53,7 @@ exports.run = async (discord, client, message, args, command) => {
             //Manda un mensaje de confirmación
             await message.channel.send(`${client.customEmojis.greenTick} | La canción se volverá a reproducir`);
         };
-    } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
+    } catch (error) {
     }
 }

@@ -30,68 +30,6 @@ exports.run = async (event, client, discord) => {
                     client.loggingChannel.send(errorEmbed);
                 });
             } else  {
-                /* --- CANVAS --- */
-
-                // Pass the entire Canvas object because you'll need to access its width, as well its context
-                const applyText = (canvas, text) => {
-                    const ctx = canvas.getContext('2d');
-
-                    // Declare a base size of the font
-                    let fontSize = 70;
-
-                    do {
-                        // Assign the font to the context and decrement it so it can be measured again
-                        ctx.font = `${fontSize -= 10}px sans-serif`;
-                        // Compare pixel width of the text to the canvas minus the approximate avatar size
-                    } while (ctx.measureText(text).width > canvas.width - 300);
-
-                    // Return the result to use in the actual canvas
-                    return ctx.font;
-                };
-
-                const Canvas = require('canvas');
-                
-                //Crea el lienzo
-                const canvas = Canvas.createCanvas(675, 250); //Inicializa el lienzo. 700x250px
-                const ctx = canvas.getContext('2d'); //Almacena el contexto (que es el lienzo) e indica que se trabajará con herramientas en 2D
-
-                //Añade un fondo negro al lienzo
-                ctx.beginPath();
-                ctx.rect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "#090A0B";
-                ctx.fill();
-
-                //Crea un borde
-                ctx.strokeStyle = '#FFC857';
-                ctx.lineWidth = 3;
-                ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
-                // Slightly smaller text placed above the member's display name
-                ctx.font = '28px sans-serif';
-                ctx.fillStyle = '#ffffff';
-                ctx.fillText('¡Bienvenid@ al servidor,', canvas.width / 2.5, canvas.height / 3.5);
-
-                // Añade el nombre de usuario
-                ctx.font = applyText(canvas, `${event.displayName}!`);
-                ctx.fillStyle = '#ffffff';
-                ctx.fillText(event.displayName, canvas.width / 2.5, canvas.height / 1.8);
-
-                //Redondea el marco del avatar
-                ctx.beginPath();
-                ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
-                ctx.closePath();
-                ctx.clip();
-
-                //Añade el avatar del miembro
-                const avatar = await Canvas.loadImage(event.user.displayAvatarURL({ format: 'jpg' }));
-                ctx.drawImage(avatar, 25, 25, 200, 200);
-
-                //Adjunta y envía la foto
-                const attachment = new discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
-                await client.welcomeChannel.send(attachment);
-
-                /* --- --- */
-
                 let loggingWelcomeEmbed = new discord.MessageEmbed()
                     .setColor(client.colors.green)
                     .setThumbnail(event.user.displayAvatarURL({dynamic: true}))

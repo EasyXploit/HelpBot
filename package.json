@@ -26,7 +26,6 @@
     "@iamtraction/google-translate": "^1.1.2",
     "asciiart-logo": "^0.2.6",
     "bufferutil": "^4.0.3",
-    "canvas": "^2.7.0",
     "cleverbot-free": "^1.1.6",
     "discord-memes": "^1.2.9",
     "discord.js": "^12.5.3",

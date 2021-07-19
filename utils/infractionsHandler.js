@@ -107,7 +107,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
     //Envía un mensaje de advertencia
     let publicWarnEmbed = new discord.MessageEmbed()
         .setColor(client.colors.orange)
-        .setDescription(`${client.emotes.orangeTick} El miembro **${member.user.tag}** ha sido advertido debido a **${reason}**`);
+        .setDescription(`${client.customEmojis.orangeTick} El miembro **${member.user.tag}** ha sido advertido debido a **${warnReason}**`);
 
     let toDMEmbed = new discord.MessageEmbed()
         .setColor(client.colors.orange)

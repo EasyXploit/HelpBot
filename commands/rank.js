@@ -6,7 +6,7 @@ exports.run = async (discord, client, message, args, command) => {
 
         let notFoundEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`);
+            .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`);
 
         const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);
         if (!member) return message.channel.send(notFoundEmbed);
@@ -20,7 +20,7 @@ exports.run = async (discord, client, message, args, command) => {
         if (member.id in guildStats === false) {
             let noXPEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.red2)
-                .setDescription(`${client.emotes.redTick} ${member} no tiene puntos de XP`);
+                .setDescription(`${client.customEmojis.redTick} ${member} no tiene puntos de XP`);
 
             return message.channel.send(noXPEmbed);
         };

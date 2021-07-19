@@ -30,7 +30,7 @@ client.config = {
     presence: require('./configs/presence.json'),               //Configuración de presencia
     music: require('./configs/music.json'),                     //Configuración de música
     xp: require('./configs/xp.json'),                           //Configuración de XP
-    emotes: require('./configs/emotes.json'),                   //Configuración de emotes
+    customEmojis: require('./configs/customEmojis.json'),       //Configuración de customEmojis
 };
 
 //Dependencias globales

@@ -5,7 +5,7 @@ exports.run = (discord, client, message, args, command) => {
     try {
         let notToAnswerEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
-            .setDescription(`${client.emotes.redTick} Debes proporcionarme al menos 2 opciones.\nLa sintaxis de este comando es \`${client.config.prefixes.mainPrefix}elige "opción1" "opción2" ...\``);
+            .setDescription(`${client.customEmojis.redTick} Debes proporcionarme al menos 2 opciones.\nLa sintaxis de este comando es \`${client.config.guild.prefix}elige "opción1" "opción2" ...\``);
 
         let options = message.content.slice(8).split('" "');
         let lastOption = options.slice(-1).join();

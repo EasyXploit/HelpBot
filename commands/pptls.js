@@ -5,7 +5,7 @@ exports.run = (discord, client, message, args, command) => {
     try {
         let notToAnswerEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
-            .setDescription(`${client.emotes.redTick} La sintaxis de este comando es \`${client.config.prefixes.mainPrefix}pptls <piedra | papel | tijeras | lagarto | spock>\``);
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}pptls <piedra | papel | tijeras | lagarto | spock>\``);
 
         if (!args[0]) return message.channel.send(notToAnswerEmbed);
 

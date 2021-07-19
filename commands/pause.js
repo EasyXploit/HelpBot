@@ -5,15 +5,15 @@ exports.run = async (discord, client, message, args, command) => {
     try {
         let notPlayingEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} No hay ninguna canción en cola/reproducción.`);
+            .setDescription(`${client.customEmojis.redTick} No hay ninguna canción en cola/reproducción.`);
         
         let notAvailableEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
+            .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
 
         let alreadyPausedEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} El bot ya está pausado.`);
+            .setDescription(`${client.customEmojis.redTick} El bot ya está pausado.`);
 
         //Comprueba si el bot tiene o no una conexión a un canal de voz en el servidor
         if (!message.guild.voice) return message.channel.send(notPlayingEmbed);

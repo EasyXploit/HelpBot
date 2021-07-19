@@ -5,9 +5,8 @@ exports.run = async (discord, client, message, args, command) => {
     try {
         let noQueueEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} El bot no tiene ninguna canción en la cola.`);
-
         console.log(client.queues[message.guild.id].nowplaying);
+            .setDescription(`${client.customEmojis.redTick} El bot no tiene ninguna canción en la cola.`);
         
         if (!client.queues[message.guild.id].nowplaying || Object.entries(client.queues[message.guild.id].nowplaying).length === 0) return message.channel.send(noQueueEmbed);
         

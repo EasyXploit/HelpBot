@@ -9,7 +9,7 @@ exports.run = async (discord, client, message, args, command) => {
         //Devuelve si no hay cola
         let noQueueEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} El bot no tiene ninguna canción en la cola.`);
+            .setDescription(`${client.customEmojis.redTick} El bot no tiene ninguna canción en la cola.`);
         
         if (!client.queues[message.guild.id] || !client.queues[message.guild.id].nowplaying || Object.entries(client.queues[message.guild.id].nowplaying).length === 0) return message.channel.send(noQueueEmbed);
         

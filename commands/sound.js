@@ -5,7 +5,7 @@ exports.run = async (discord, client, message, args, command, supervisorsRole, n
     try {
         let notAvailableEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} El bot no está disponible. Inténtalo más tarde.`);
+            .setDescription(`${client.customEmojis.redTick} El bot no está disponible. Inténtalo más tarde.`);
         
         let fileNames = client.fs.readdirSync(`./resources/audios/`);
         let newFileNames = [];
@@ -26,7 +26,7 @@ exports.run = async (discord, client, message, args, command, supervisorsRole, n
             
             let noChannelEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.red)
-                .setDescription(`${client.emotes.redTick} Debes estar conectado a un canal de voz.`);
+                .setDescription(`${client.customEmojis.redTick} Debes estar conectado a un canal de voz.`);
 
             let sound;
             if (args[0]) sound = args.join(` `);
@@ -34,7 +34,7 @@ exports.run = async (discord, client, message, args, command, supervisorsRole, n
 
             let soundNotFoundEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.red)
-                .setDescription(`${client.emotes.redTick} **${sound}** no existe.`);
+                .setDescription(`${client.customEmojis.redTick} **${sound}** no existe.`);
 
             if (newFileNames.includes(sound) == false) return message.channel.send(soundNotFoundEmbed);
 
@@ -52,7 +52,7 @@ exports.run = async (discord, client, message, args, command, supervisorsRole, n
                 
                 let playingEmbed = new discord.MessageEmbed()
                     .setColor(client.colors.green2)
-                    .setDescription(`${client.emotes.greenTick} Reproduciendo **${sound}**.`);
+                    .setDescription(`${client.customEmojis.greenTick} Reproduciendo **${sound}**.`);
                 
                 message.channel.send(playingEmbed);
 

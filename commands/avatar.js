@@ -5,7 +5,7 @@ exports.run = async (discord, client, message, args, command) => {
     try {
         let notFoundEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`);
+            .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`);
 
         const user = await client.functions.fetchUser(args[0] || message.author.id);
         if (!user) return message.channel.send(notFoundEmbed);

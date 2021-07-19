@@ -8,18 +8,18 @@ exports.run = (discord, client, message, args, command) => {
         
         let noLanguageEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setTitle(`${client.emotes.redTick} Debes proporcionarme un lenguaje al que traducir`)
             .setDescription('La sintaxis de este comando es `' + client.config.prefixes.mainPrefix +'translate (fromLang | auto) (toLang) (toTranslate)`');
+            .setTitle(`${client.customEmojis.redTick} Debes proporcionarme un lenguaje al que traducir`)
         
         let notToTranslateEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setTitle(`${client.emotes.redTick} Debes proporcionarme un término a traducir`)
             .setDescription('La sintaxis de este comando es `' + client.config.prefixes.mainPrefix +'translate (fromLang | auto) (toLang) (toTranslate)`');
+            .setTitle(`${client.customEmojis.redTick} Debes proporcionarme un término a traducir`)
         
         let noCorrectCodeEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setTitle(`${client.emotes.redTick} Debes proporcionarme un lenguaje al que traducir`)
             .setDescription('Debes introducir \n`' + client.config.prefixes.mainPrefix +'translate (fromLang | auto) (toLang) (toTranslate)`');
+            .setTitle(`${client.customEmojis.redTick} Debes proporcionarme un lenguaje al que traducir`)
     
         if (!args[0]) return message.channel.send(noLanguageEmbed);
         if (!args[1]) return message.channel.send(notToTranslateEmbed);

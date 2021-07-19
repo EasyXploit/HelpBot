@@ -6,8 +6,8 @@ exports.run = async (discord, client, message, args, command) => {
 
         let notToSearchEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
-            .setTitle(`${client.emotes.redTick} Debes proporcionar un término de búsqueda.`)
             .setDescription(`La sintaxis de este comando es \`${client.config.prefixes.mainPrefix}urban (término)\`.`);
+            .setTitle(`${client.customEmojis.redTick} Debes proporcionar un término de búsqueda.`)
     
         if (!args[0]) return message.channel.send(notToSearchEmbed);
 
@@ -29,7 +29,7 @@ exports.run = async (discord, client, message, args, command) => {
         }).catch((error) => {
             const noResultEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.red2)
-                .setDescription(`${client.emotes.redTick} No se ha encontrado ningún resultado que coincida con \`${searchTerm}\`.`);
+                .setDescription(`${client.customEmojis.redTick} No se ha encontrado ningún resultado que coincida con \`${searchTerm}\`.`);
             
             if (error.toString().includes('No results found')) return message.channel.send(noResultEmbed);
             require('../utils/errorHandler.js').run(discord, client, message, args, command, error);

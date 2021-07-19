@@ -5,15 +5,15 @@ exports.run = async (discord, client, message, args, command) => {
     try {
         let noChannelEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} Debes estar conectado a un canal de voz.`);
+            .setDescription(`${client.customEmojis.redTick} Debes estar conectado a un canal de voz.`);
         
         let alreadyInChannelEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} El bot ya está en otra sala.`);
+            .setDescription(`${client.customEmojis.redTick} El bot ya está en otra sala.`);
         
         let alreadyInYourChannelEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} El bot ya está en la sala.`);
+            .setDescription(`${client.customEmojis.redTick} El bot ya está en la sala.`);
         
         //Comprueba si el miembro está en un canal de voz
         let voiceChannel = message.member.voice.channel;
@@ -31,15 +31,15 @@ exports.run = async (discord, client, message, args, command) => {
 
         let noConnectPermissionEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} No tengo permiso para conectarme a esta sala.`);
+            .setDescription(`${client.customEmojis.redTick} No tengo permiso para conectarme a esta sala.`);
         
         let noAfkRoomEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} No puedo unirme al canal de AFK.`);
+            .setDescription(`${client.customEmojis.redTick} No puedo unirme al canal de AFK.`);
         
         let fullRoomEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} La sala está llena.`);
+            .setDescription(`${client.customEmojis.redTick} La sala está llena.`);
 
         //Comprueba si el bot tiene permiso para conectarse
         if (!voiceChannel.joinable || client.config.music.forbiddenChannels.includes(voiceChannel.id)) return message.channel.send(noConnectPermissionEmbed)

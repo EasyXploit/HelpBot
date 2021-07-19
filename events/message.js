@@ -67,7 +67,7 @@ exports.run = async (message, client, discord) => {
 
         const noDMEmbed = new discord.MessageEmbed()
             .setColor(client.colors.gray)
-            .setDescription(`${client.emotes.grayTick} | Por el momento, los comandos de **${client.user.username}** solo está disponible desde el servidor.`);
+            .setDescription(`${client.customEmojis.grayTick} | Por el momento, los comandos de **${client.user.username}** solo está disponible desde el servidor.`);
 
         if (message.content.startsWith(client.config.prefixes.mainPrefix) || message.content.startsWith(client.config.prefixes.staffPrefix) || message.content.startsWith(client.config.prefixes.ownerPrefix)) return await message.author.send(noDMEmbed);
 

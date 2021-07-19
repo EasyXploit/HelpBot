@@ -5,8 +5,8 @@ exports.run = (discord, client, message, args, command) => {
     try {
         let notToAnswerEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
-            .setTitle(`${client.emotes.redTick} Debes preguntarme algo`)
             .setDescription(`La sintaxis de este comando es \`${client.config.prefixes.mainPrefix}8ball (pregunta)\``);
+            .setTitle(`${client.customEmojis.redTick} Debes preguntarme algo`)
     
         if (!args[0]) return message.channel.send(notToAnswerEmbed);
 

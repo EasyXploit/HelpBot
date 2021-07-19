@@ -7,8 +7,8 @@ exports.run = (discord, client, message, args, command) => {
         
         let notToSearchEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
-            .setTitle(`${client.emotes.redTick} Debes proporcionarme un término de búsqueda`)
             .setDescription(`La sintaxis de este comando es \`${client.config.prefixes.mainPrefix}weather (ubicación)\``);
+            .setTitle(`${client.customEmojis.redTick} Debes proporcionarme un término de búsqueda`)
     
         if (!args[0]) return message.channel.send(notToSearchEmbed);
         

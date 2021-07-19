@@ -5,7 +5,7 @@ exports.run = (discord, client, message, args, command) => {
     try {
         let notToAnswerEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
-            .setDescription(`${client.emotes.redTick} Debes escribir el texto a invertir.\nLa sintaxis de este comando es \`${client.config.prefixes.mainPrefix}reves <texto>\``);
+            .setDescription(`${client.customEmojis.redTick} Debes escribir el texto a invertir.\nLa sintaxis de este comando es \`${client.config.guild.prefix}reves <texto>\``);
 
         if (!args[0]) return message.channel.send(notToAnswerEmbed);
 

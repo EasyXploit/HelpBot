@@ -24,7 +24,7 @@ exports.run = async (event, client, discord) => {
 
                     let errorEmbed = new discord.MessageEmbed()
                         .setColor(client.colors.red)
-                        .setTitle(`${client.emotes.redTick} Ocurrió un error`)
+                        .setTitle(`${client.customEmojis.redTick} Ocurrió un error`)
                         .setDescription(`Ocurrió un error durante la ejecución del evento "guildMemberAdd".\nEl usuario ${event.user.username} no fue expulsado automáticamente de la comunidad, por lo que será necesario emprender acciones de forma manual.`);
                         
                     client.loggingChannel.send(errorEmbed);

@@ -6,27 +6,27 @@ exports.run = async (discord, client, message, args, command) => {
         
         let noConnectionEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} <@${client.user.id}> no está conectado a ninguna sala.`);
+            .setDescription(`${client.customEmojis.redTick} <@${client.user.id}> no está conectado a ninguna sala.`);
         
         let noChannelEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} Debes estar conectado a un canal de voz.`);
+            .setDescription(`${client.customEmojis.redTick} Debes estar conectado a un canal de voz.`);
 
         let notAvailableEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
+            .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
 
         let noCorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} La sintaxis de este comando es: \`${client.config.prefixes.mainPrefix}move (posición 1) (posición 2)\``);
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es: \`${client.config.guild.prefix}move (posición 1) (posición 2)\``);
         
         let noDispatcherEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} No hay nada en reproducción.`);
+            .setDescription(`${client.customEmojis.redTick} No hay nada en reproducción.`);
         
         let noQueueEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} No hay nada en la cola.`);
+            .setDescription(`${client.customEmojis.redTick} No hay nada en la cola.`);
         
         //Comprueba si el bot tiene o no una conexión a un canal de voz
         if (!message.guild.voice) return message.channel.send(noConnectionEmbed);
@@ -49,11 +49,11 @@ exports.run = async (discord, client, message, args, command) => {
         
         let isNaNEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} Debes proporcionar un número entero.`);
+            .setDescription(`${client.customEmojis.redTick} Debes proporcionar un número entero.`);
         
         let tooBigEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} Valor demasiado grande.`);
+            .setDescription(`${client.customEmojis.redTick} Valor demasiado grande.`);
 
         //Comprueba si se ha proporcionado un número entero
         if (isNaN(args[0]) || isNaN(args[1])) return message.channel.send(isNaNEmbed);
@@ -76,7 +76,7 @@ exports.run = async (discord, client, message, args, command) => {
             await client.queues[message.guild.id].queue.splice(args[1] - 1, 0, toMove);
             
             //Manda un mensaje de confirmación
-            await message.channel.send(`${client.emotes.greenTick} | He reubicado la canción en la cola`);
+            await message.channel.send(`${client.customEmojis.greenTick} | He reubicado la canción en la cola`);
         };
     } catch (e) {
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);

@@ -5,11 +5,11 @@ exports.run = async (discord, client, message, args, command) => {
     try {
         let notPlayingEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} No hay ninguna canción en cola/reproducción.`);
+            .setDescription(`${client.customEmojis.redTick} No hay ninguna canción en cola/reproducción.`);
         
         let notAvailableEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
+            .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
 
         //Comprueba si el bot tiene o no una conexión a un canal de voz en el servidor
         if (!message.guild.voice || !client.voiceDispatcher) return message.channel.send(notPlayingEmbed);
@@ -23,18 +23,18 @@ exports.run = async (discord, client, message, args, command) => {
 
         let noTalkPermissionEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} No tengo permiso para hablar en esta sala.`);
+            .setDescription(`${client.customEmojis.redTick} No tengo permiso para hablar en esta sala.`);
 
         //Comprueba si el bot tiene permiso para hablar
         if (!voiceChannel.speakable) return message.channel.send(noTalkPermissionEmbed)
         
         let NaNEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} Debes proporcionar un número entero.`);
+            .setDescription(`${client.customEmojis.redTick} Debes proporcionar un número entero.`);
         
         let tooBigEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setDescription(`${client.emotes.redTick} Solo puedes hacer skip de \`${(client.queues[message.guild.id].queue.length + 1)}\` canciones.`);
+            .setDescription(`${client.customEmojis.redTick} Solo puedes hacer skip de \`${(client.queues[message.guild.id].queue.length + 1)}\` canciones.`);
 
         async function skip() {
             //Omite la reproducción y manda un mensaje de confirmación
@@ -55,11 +55,11 @@ exports.run = async (discord, client, message, args, command) => {
             } else {
                 let tooMuchSkipsRandomEmbed = new discord.MessageEmbed()
                     .setColor(client.colors.red)
-                    .setDescription(`${client.emotes.redTick} No puedes omitir más de una canción con el modo aleatorio activado.`);
+                    .setDescription(`${client.customEmojis.redTick} No puedes omitir más de una canción con el modo aleatorio activado.`);
 
                 let tooMuchSkipsLoopEmbed = new discord.MessageEmbed()
                     .setColor(client.colors.red)
-                    .setDescription(`${client.emotes.redTick} No puedes omitir más de una canción con el modo loop activado.`);
+                    .setDescription(`${client.customEmojis.redTick} No puedes omitir más de una canción con el modo loop activado.`);
                 
                 //Comprueba si está activado el modo aleatorio
                 if (client.queues[message.guild.id].mode === 'shuffle') return message.channel.send(tooMuchSkipsRandomEmbed);

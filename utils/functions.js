@@ -147,17 +147,14 @@ exports.run = (discord, client) => {
                     userStats.level++;
                     userStats.actualXP = (5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) - userStats.totalXP;
 
-                    //Almacena las recompensas por nivel
-                    const rewards = require('../configs/levelingRewards.json');
-
                     //Para cada recompensa, calcula si el miembro es elegible
-                    for (let i = rewards.length - 1; i >= 0; i--) {
-                        let reward = rewards[i];
+                    for (let i = client.config.levelingRewards.length - 1; i >= 0; i--) {
+                        let reward = client.config.levelingRewards[i];
             
                         //Si el miembro tiene el nivel necesario para la recompensa, se la asigna
                         if (userStats.level >= reward.requiredLevel) {
                             if (userStats.level > 1) {
-                                let pastReward = rewards[i - 1];
+                                let pastReward = client.config.levelingRewards[i - 1];
 
                                 //Borra cada uno de los roles de la recompensa anterior
                                 pastReward.roles.forEach(async role => {

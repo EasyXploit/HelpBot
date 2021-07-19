@@ -23,12 +23,15 @@ console.log('- ¡Cliente iniciado correctamente!\n');
 client.config = {
     keys: require('./configs/keys.json'),                       //Tokens de autenticación
     guild: require('./configs/guild.json'),                     //Configuraciones de la guild base
+    automod: require('./configs/automodFilters.json'),          //Configuraciones de moderación automática
     automodFilters: require('./configs/automodFilters.json'),   //Filtros de moderación automática
     automodRules: require('./configs/automodRules.json'),       //Reglas de moderación automática
+    bannedWords: require('./configs/bannedWords.json'),         //Listado de palabras prohibidas
     commands: require('./configs/commands.json'),               //Configuración de comandos
     presence: require('./configs/presence.json'),               //Configuración de presencia
     music: require('./configs/music.json'),                     //Configuración de música
     xp: require('./configs/xp.json'),                           //Configuración de XP
+    levelingRewards: require('./configs/levelingRewards.json'), //Configuración de niveles
     customEmojis: require('./configs/customEmojis.json'),       //Configuración de customEmojis
 };
 

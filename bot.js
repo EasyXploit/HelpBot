@@ -84,5 +84,5 @@ client.fs.readdir('./events/', async (err, files) => {
 });
 
 //Inicio de sesión del bot
-console.log('- Iniciando sesión ...\n')
+console.log('- Iniciando sesión ...\n');
 client.login(client.config.keys.token).then(() => console.log('\n - ¡Sesion iniciada correctamente!'));

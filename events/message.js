@@ -1,6 +1,4 @@
 exports.run = async (message, client, discord) => {
-    //Previene que continue la ejecución si el servidor no es el principal
-    if (message.guild && message.guild.id !== client.homeGuild.id) return;
 
     if (message.author.bot || message.type !== 'DEFAULT') return;
     if (message.channel.type === 'dm') {

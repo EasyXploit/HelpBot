@@ -71,7 +71,7 @@ exports.run = async (discord, client, message, args, command, supervisorsRole, n
                         voiceChannel.leave();
                         client.voiceStatus = true;
                     });
-                }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));
+                }).catch(err => console.log(`${new Date().toLocaleString()} 》${err.stack}`));
                 return;
             } else {
                 return message.channel.send(notAvailableEmbed);

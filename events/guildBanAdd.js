@@ -60,7 +60,7 @@ exports.run = async (guild, user, client, discord) => {
             sendLogEmbed();
         }
 
-    } catch (e) {
+    } catch (error) {
 
         let error = e.stack;
         if (error.length > 1014) error = `${error.slice(0, 1014)} ...`;

@@ -20,7 +20,7 @@ exports.run = async (event, client, discord) => {
                 await event.kick(event.user, {reason: `Moderador: ${client.user.id}, Razón: No está permitido utilizar enlaces como nombre de usuario.`})
 
                 .catch ((err) => {
-                    console.error(`${new Date().toLocaleString()} 》${err}`);
+                    console.error(`${new Date().toLocaleString()} 》${err.stack}`);
 
                     let errorEmbed = new discord.MessageEmbed()
                         .setColor(client.colors.red)

@@ -144,7 +144,7 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
 
             //Se dispara si ocurre un error durante el streaming
             client.voiceDispatcher.on(`error`, error => {
-                console.log(`${new Date().toLocaleString()} 》Dispatcher error: ${error}`);
+                console.log(`${new Date().toLocaleString()} 》Dispatcher error: ${error.stack}`);
             });
         };
 
@@ -160,6 +160,6 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
         //Se comprueba si el error es provocado por una limitación de API
         if (error.toLocaleString().includes('416') || error.toLocaleString().includes('429')) message.channel.send(apiErrorEmbed);
 
-        console.log(`${new Date().toLocaleString()} 》Error: ${e}`);
+        console.log(`${new Date().toLocaleString()} 》Error: ${e.stack}`);
     };
 };

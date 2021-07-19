@@ -79,7 +79,7 @@ exports.run = async (discord, client, message, args, command) => {
         };
 
         let resultEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.gold)
+            .setColor(client.colors.primary)
             .setTitle(`🥇 Rango`)
             .setDescription(`Mostrando el rango del miembro **${member.user.tag}**`)
             .setThumbnail(member.user.displayAvatarURL())

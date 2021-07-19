@@ -154,7 +154,7 @@ exports.run = async (discord, client, message, args, command) => {
                         //Ejecuta la función de reproducción
                         require(`../utils/reproductionManager.js`).run(discord, client, message, ytdl, moment, randomColor);
 
-                    }).catch(err => console.log(`${new Date().toLocaleString()} 》${err}`));
+                    }).catch(err => console.log(`${new Date().toLocaleString()} 》${err.stack}`));
 
                 } else if (message.member.voice.channelID === message.guild.member(client.user).voice.channelID) {
                     //Comprueba si la guild tiene una cola de reproducción

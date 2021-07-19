@@ -15,7 +15,7 @@ exports.run = (discord, client, message, args, command) => {
         const searchTerm = args.join(` `);
         
         weather.find({search: searchTerm, degreeType: 'C'}, function(err, result) {
-            if(err) console.log(`${new Date().toLocaleString()} 》${err}`);
+            if(err) console.log(`${new Date().toLocaleString()} 》${err.stack}`);
             
             const current = result[0].current;
             const location = result[0].location;

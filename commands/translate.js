@@ -42,7 +42,7 @@ exports.run = (discord, client, message, args, command) => {
 
             message.channel.send(resultEmbed);
           }).catch(error => {
-            console.log(`${new Date().toLocaleString()} 》Error durante la traducción: ${error}`)
+            console.log(`${new Date().toLocaleString()} 》Error durante la traducción: ${error.stack}`)
           });
         require('../utils/errorHandler.js').run(discord, client, message, args, command, e);
     } catch (error) {

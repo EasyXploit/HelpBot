@@ -25,7 +25,6 @@ client.config = {
     guild: require('./configs/guild.json'),                     //Configuraciones de la guild base
     automodFilters: require('./configs/automodFilters.json'),   //Filtros de moderación automática
     automodRules: require('./configs/automodRules.json'),       //Reglas de moderación automática
-    prefixes: require('./configs/prefixes.json'),               //Configuración de prefijos del bot
     commands: require('./configs/commands.json'),               //Configuración de comandos
     presence: require('./configs/presence.json'),               //Configuración de presencia
     music: require('./configs/music.json'),                     //Configuración de música

@@ -6,8 +6,8 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         let notToSearchEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
-            .setDescription(`La sintaxis de este comando es \`${client.config.prefixes.mainPrefix}urban (término)\`.`);
             .setTitle(`${client.customEmojis.redTick} Debes proporcionar un término de búsqueda.`)
+            .setDescription(`La sintaxis de este comando es \`${client.config.guild.prefix}urban (término)\`.`);
     
         if (!args[0]) return message.channel.send(notToSearchEmbed);
 

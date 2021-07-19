@@ -70,7 +70,7 @@ exports.run = async (message, client, discord) => {
             .setColor(client.colors.gray)
             .setDescription(`${client.customEmojis.grayTick} | Por el momento, los comandos de **${client.user.username}** solo está disponible desde el servidor.`);
 
-        if (message.content.startsWith(client.config.prefixes.mainPrefix) || message.content.startsWith(client.config.prefixes.staffPrefix) || message.content.startsWith(client.config.prefixes.ownerPrefix)) return await message.author.send(noDMEmbed);
+        if (message.content.startsWith(client.config.guild.prefix) || message.content.startsWith(client.config.guild.prefix) || message.content.startsWith(client.config.guild.prefix)) return await message.author.send(noDMEmbed);
 
         if (!client.dmContexts[message.author.id]) client.dmContexts[message.author.id] = ['Hablemos en Español'];
 
@@ -121,11 +121,10 @@ exports.run = async (message, client, discord) => {
     })();
 
     //Llama al manejador de leveling
-    if (!message.content.startsWith(client.config.prefixes.mainPrefix) && !message.content.startsWith(client.config.prefixes.staffPrefix) && !message.content.startsWith(client.config.prefixes.ownerPrefix) && !client.config.xp.nonXPChannels.includes(message.channel.id)) return await client.functions.addXP(message.member, message.guild, 'message', message.channel);
+    if (!message.content.startsWith(client.config.guild.prefix) && !client.config.xp.nonXPChannels.includes(message.channel.id)) return await client.functions.addXP(message.member, message.guild, 'message', message.channel);
 
-    const prefix = message.content.slice(0, 1);
     // Función para eliminar el prefijo, extraer el comando y sus argumentos (en caso de tenerlos)
-    const args = message.content.slice(client.config.prefixes.mainPrefix.length).trim().split(/ +/g);
+    const args = message.content.slice(client.config.guild.prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
     const command = cmd + `.js`;
 
@@ -138,7 +137,10 @@ exports.run = async (message, client, discord) => {
             msg.delete({timeout: 1000})
         });
 
-        if (prefix === client.config.prefixes.mainPrefix) { // EVERYONE
+        //Comprueba si es un comando con prefijo
+        if (message.content.startsWith(client.config.guild.prefix)) {
+            let waitEmbed = new discord.MessageEmbed().setColor(client.colors.red2).setDescription(`${client.customEmojis.redTick} Debes esperar 2 segundos antes de usar este comando`);
+            if (client.cooldownedUsers.has(message.author.id)) return message.channel.send(waitEmbed).then(msg => {msg.delete({timeout: 1000})});
 
             //Almacena la configuración del comando
             let commandConfig = client.config.commands[cmd];
@@ -176,31 +178,6 @@ exports.run = async (message, client, discord) => {
             setTimeout(() => {
                 client.cooldownedUsers.delete(message.author.id);
             }, 2000);
-        } else if (prefix === client.config.prefixes.staffPrefix) { // STAFF
-            let commandFile = require(`../commands/staffCommands/${command}`);
-            if (!commandFile) return;
-            const supervisorsRole = message.guild.roles.cache.get(client.config.guild.botSupervisor);
-            let staffRole = message.guild.roles.cache.get(client.config.guild.botStaff);
-
-            const noPrivilegesEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.red)
-                .setDescription(`${client.emotes.redTick} ${message.author.tag}, no dispones de privilegios suficientes para realizar esta operación`);
-
-            if (!message.member.roles.cache.has(staffRole.id) && message.author.id !== client.config.guild.botOwner) return message.channel.send(noPrivilegesEmbed)
-
-            commandFile.run(discord, client, message, args, command, supervisorsRole, noPrivilegesEmbed);
-        } else if (prefix === client.config.prefixes.ownerPrefix) { // OWNER
-            let commandFile = require(`../commands/ownerCommands/${command}`);
-            if (!commandFile) return;
-            const noPrivilegesEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.red)
-                .setDescription(`${client.emotes.redTick} ${message.author.tag}, no dispones de privilegios suficientes para ejecutar este comando`);
-
-            if (message.author.id !== client.config.guild.botOwner) return message.channel.send(noPrivilegesEmbed);
-            commandFile.run(discord, client, message, args, command);
-        } else {
-            return;
-        }
         };
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

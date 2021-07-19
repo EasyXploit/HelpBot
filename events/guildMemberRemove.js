@@ -69,7 +69,7 @@ exports.run = async (event, client, discord) => {
                 .addField('🏷 TAG completo', event.user.tag, true)
                 .addField('🆔 ID del miembro', event.user.id, true);
             
-            return await client.channels.cache.get(client.config.guild.loggingChannel).send(loggingEmbed);
+            return await client.channels.cache.get(client.config.guild.joinsAndLeavesChannel).send(loggingEmbed);
         }
     } catch (error) {
         if (event.user.id === client.user.id) return;

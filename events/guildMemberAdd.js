@@ -38,7 +38,7 @@ exports.run = async (event, client, discord) => {
                     .addField('🏷 TAG completo', event.user.tag, true)
                     .addField('🆔 ID del miembro', event.user.id, true);
 
-                await client.loggingChannel.send(loggingWelcomeEmbed);
+                await client.joinsAndLeavesChannel.send(loggingWelcomeEmbed);
             };
         } else {
             if (event.guild.member(event.user).roles.cache.has('426789294007517205')) return;
@@ -49,7 +49,7 @@ exports.run = async (event, client, discord) => {
                 .setTitle('📑 Auditoría - [BOTS]')
                 .setDescription(`El **BOT** @${event.user.tag} fue añadido al servidor.`);
 
-            return client.loggingChannel.send(loggingWelcomeBotEmbed);
+            return client.joinsAndLeavesChannel.send(loggingWelcomeBotEmbed);
         };
     } catch (error) {
         if (error.toLocaleString().includes('Cannot send messages to this user')) return;

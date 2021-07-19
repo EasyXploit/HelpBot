@@ -104,6 +104,9 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
 
     };
 
+    //Capitaliza la razón de la advertencia
+    const warnReason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;
+
     //Envía un mensaje de advertencia
     let publicWarnEmbed = new discord.MessageEmbed()
         .setColor(client.colors.orange)
@@ -114,7 +117,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
         .setAuthor(`[ADVERTIDO]`, guild.iconURL())
         .setDescription(`<@${member.id}>, has sido advertido en ${guild.name}`)
         .addField(`Moderador`, moderator.tag, true)
-        .addField(`Razón`, reason, true);
+        .addField(`Razón`, warnReason, true);
 
     await message.channel.send(publicWarnEmbed).then(msg => {msg.delete({timeout: 5000})});
     await member.send(toDMEmbed);
@@ -130,7 +133,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
         if (!client.warns[member.id]) client.warns[member.id] = {};
         
         client.warns[member.id][Date.now()] = {
-            reason: reason,
+            reason: warnReason,
             moderator: moderator.id
         };
 
@@ -142,7 +145,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
                 .setAuthor(`${member.user.tag} ha sido ADVERTIDO`, member.user.displayAvatarURL({dynamic: true}))
                 .addField(`Miembro`, member.user.tag, true)
                 .addField(`Moderador`, moderator.tag, true)
-                .addField(`Razón`, reason, true)
+                .addField(`Razón`, warnReason, true)
                 .addField(`Canal`, `<#${message.channel.id}>`, true)
                 .addField('Infracciones', Object.keys(client.warns[member.id]).length, true);
 

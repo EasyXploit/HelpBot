@@ -10,6 +10,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             //debuggingChannel
             //joinsAndLeavesChannel
             //botChatChannel
+            //OPCIONAL: homeGuildInviteCode
             //OPCIONAL: prefix - Informar sobre prefix por defecto
 
     } catch (error) {

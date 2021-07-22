@@ -14,7 +14,7 @@ exports.run = async (client) => {
                 client[databaseName] = {};
 
                 //Graba la nueva BD en el almacenamiento
-                await client.fs.writeFile(`./databases/${databaseName}.json`, JSON.stringify(client[databaseName], null, 4), (err) => console.error);
+                await client.fs.writeFile(`./databases/${databaseName}.json`, JSON.stringify(client[databaseName], null, 4), (err) => console.error(err));
 
                 console.log(` - [OK] Base de datos [${databaseName}] vaciada.`);
 
@@ -45,7 +45,7 @@ exports.run = async (client) => {
                     });
 
                     //Graba la nueva BD en el almacenamiento
-                    await client.fs.writeFile(`./configs/${cleanConfigName}.json`, JSON.stringify(client.config[cleanConfigName], null, 4), (err) => console.error);
+                    await client.fs.writeFile(`./configs/${cleanConfigName}.json`, JSON.stringify(client.config[cleanConfigName], null, 4), (err) => console.error(err));
 
                     console.log(` - [OK] Configuración [${cleanConfigName}] regenerada.`);
                 };

@@ -5,7 +5,7 @@ exports.run = async (discord, client, guild) => {
     client.homeGuild = await client.guilds.cache.get(client.config.guild.homeGuild);
 
     //Graba la nueva configuración en el almacenamiento
-    await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error);
+    await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error(err));
 
     //Cargar config. en memoria + arranque del sistema completo
     await require('../utils/systemLoad.js').run(discord, client);

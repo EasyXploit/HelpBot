@@ -38,7 +38,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         
         //Graba el nuevo prefijo
         client.config.guild.prefix = newPrefix;
-        await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error);
+        await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error(err));
         
         //Envía logs
         await client.functions.loggingManager(loggingEmbed);

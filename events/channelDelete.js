@@ -7,7 +7,7 @@ exports.run = async (channel, client, discord) => {
             client.debuggingChannel = null;
 
             //Graba la nueva configuración en el almacenamiento
-            await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error);
+            await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error(err));
 
             //Advertir por consola
             console.error(`${new Date().toLocaleString()} 》Error: El canal de depuración ya no existe o no se puede tener acceso.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
@@ -20,7 +20,7 @@ exports.run = async (channel, client, discord) => {
             client.loggingChannel = null;
 
             //Graba la nueva configuración en el almacenamiento
-            await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error);
+            await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error(err));
 
             //Advertir por consola
             console.error(`${new Date().toLocaleString()} 》Error: El canal de auditoría ya no existe o no se puede tener acceso.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);

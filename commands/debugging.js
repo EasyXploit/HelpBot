@@ -26,7 +26,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Graba el nuevo canal de depuración 
         client.config.guild.debuggingChannel = channel;
-        await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error);
+        await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error(err));
 
         let completedEmbed = new discord.MessageEmbed()
             .setColor(client.colors.green2)

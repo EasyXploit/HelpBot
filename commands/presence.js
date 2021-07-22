@@ -42,7 +42,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         };
 
         //Graba la configuración
-        await client.fs.writeFile('./configs/presence.json', JSON.stringify(client.config.presence, null, 4), (err) => console.error);
+        await client.fs.writeFile('./configs/presence.json', JSON.stringify(client.config.presence, null, 4), (err) => console.error(err));
 
         //Ajusta la nueva presencia
         await client.user.setPresence({

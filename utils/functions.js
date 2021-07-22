@@ -323,7 +323,7 @@ exports.run = (discord, client) => {
             
             //Graba los nuevos customEmojis en la configuración tras resolver la promesa
             emojiCreation.then(async () => {
-                await client.fs.writeFile('./configs/customEmojis.json', JSON.stringify(client.config.customEmojis, null, 4), (err) => console.error);
+                await client.fs.writeFile('./configs/customEmojis.json', JSON.stringify(client.config.customEmojis, null, 4), (err) => console.error(err));
             });
         } else {
             console.log(`No habían espacios para emojis suficientes.\nNecesitas al menos ${emojis.length} espacios.\nSe usarán emojis Unicode en su lugar.`);
@@ -359,7 +359,7 @@ exports.run = (discord, client) => {
                     client.loggingChannel = null;
 
                     //Graba la nueva configuración en el almacenamiento
-                    await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error);
+                    await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error(err));
 
                     //Advertir por consola
                     console.error(`${new Date().toLocaleString()} 》Error: No se puede tener acceso al canal de auditoría.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
@@ -396,7 +396,7 @@ exports.run = (discord, client) => {
                     client.debuggingChannel = null;
 
                     //Graba la nueva configuración en el almacenamiento
-                    await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error);
+                    await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error(err));
 
                     //Advertir por consola
                     console.error(`${new Date().toLocaleString()} 》Error: No se puede tener acceso al canal de depuración.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);

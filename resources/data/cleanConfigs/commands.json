@@ -96,14 +96,6 @@
 		"whitelistedRoles": ["everyone"],
 		"blacklistedRoles": []
 	},
-	"hermano": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
-	},
 	"info": {
 		"enabled": true,
 		"deleteInvocationCommand": false,

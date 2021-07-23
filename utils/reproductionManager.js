@@ -54,8 +54,9 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
             //Embed con la información de la canción en reproducción
             let playingEmbed = new discord.MessageEmbed()
                 .setColor(randomColor())
+                .attachFiles(new discord.MessageAttachment('./resources/images/dj.png', 'dj.png'))
                 .setThumbnail(info.thumbnail)
-                .setAuthor(`Reproduciendo 🎶`, `https://i.imgur.com/lvShSwa.png`)
+                .setAuthor(`Reproduciendo 🎶`, 'attachment://dj.png')
                 .setDescription(`[${info.title}](${info.link})\n\n● **Autor:** \`${info.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(info.lengthSeconds).format('H:mm:ss')}\``)
                 .addField(`Solicitado por:`, server.queue[toPlay].requestedBy, true)
                 .addField(`Siguiente:`, upNext, true)

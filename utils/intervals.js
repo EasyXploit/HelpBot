@@ -141,7 +141,8 @@ exports.run = (discord, client) => {
                 };
 
                 let resultEmbed = new discord.MessageEmbed()
-                    .setAuthor('Encuesta finalizada', 'https://i.imgur.com/KP30svJ.png')
+                    .attachFiles(new discord.MessageAttachment('./resources/images/endFlag.png', 'endFlag.png'))
+                    .setAuthor('Encuesta finalizada', 'attachment://endFlag.png')
                     .setDescription(`**${client.polls[idKey].title}**\n\n${client.polls[idKey].options}`)
                     .addField('Resultados', results.join(' '));
 
@@ -172,7 +173,8 @@ exports.run = (discord, client) => {
 
                 let updatedPoll = new discord.MessageEmbed()
                     .setColor(0x2AB7F1)
-                    .setAuthor('Encuesta disponible', 'https://i.imgur.com/zdAm4AD.png')
+                    .attachFiles(new discord.MessageAttachment('./resources/images/poll.png', 'poll.png'))
+                    .setAuthor('Encuesta disponible', 'attachment://poll.png')
                     .setDescription(`**${client.polls[idKey].title}**\n\n${client.polls[idKey].options}`)
                     .setFooter(newRemainingTime);
 

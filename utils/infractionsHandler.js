@@ -131,8 +131,10 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
 
         //Añade una nueva infracción para el miembro
         if (!client.warns[member.id]) client.warns[member.id] = {};
+
+        const warnID = Date.now();
         
-        client.warns[member.id][Date.now()] = {
+        client.warns[member.id][warnID] = {
             reason: warnReason,
             moderator: moderator.id
         };
@@ -146,6 +148,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
                 .addField(`Miembro`, member.user.tag, true)
                 .addField(`Moderador`, moderator.tag, true)
                 .addField(`Razón`, warnReason, true)
+                .addField(`ID de Advertencia`, warnID, true)
                 .addField(`Canal`, `<#${message.channel.id}>`, true)
                 .addField('Infracciones', Object.keys(client.warns[member.id]).length, true);
 

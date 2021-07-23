@@ -426,7 +426,7 @@
 	},
 	"send": {
 		"enabled": true,
-		"deleteInvocationCommand": false,
+		"deleteInvocationCommand": true,
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],

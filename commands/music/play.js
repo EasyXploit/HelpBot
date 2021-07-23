@@ -142,6 +142,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     //Se une al canal de voz donde se encuentra el miembro
                     voiceChannel.join().then(connection => {
 
+                        //Manda un mensaje de confirmación
+                        message.channel.send(`📥 | Unido a \`${voiceChannel.name}\` y vinculado a ${message.channel}.`);
+
                         //Almacena la conexión en una variable global
                         client.voiceConnection = connection;
 

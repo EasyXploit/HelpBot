@@ -74,6 +74,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
             //Crea un contador que para demorar un minuto la salida del canal y la destrucción del dispatcher
             client.voiceTimeout = setTimeout(() => {
+
+                //Manda un mensaje de confirmación
+                message.channel.send(`📥 | Unido a \`${voiceChannel.name}\` y vinculado a ${message.channel}.`);
                 
                 //Aborta la conexión
                 connection.disconnect();

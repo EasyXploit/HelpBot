@@ -126,6 +126,15 @@
 		"blacklistedRoles": [],
 		"additionalAliases": []
 	},
+	"invitation": {
+		"enabled": true,
+		"deleteInvocationCommand": false,
+		"whitelistedChannels": [],
+		"blacklistedChannels": [],
+		"whitelistedRoles": [],
+		"blacklistedRoles": [],
+		"additionalAliases": []
+	},
 	"join": {
 		"enabled": true,
 		"deleteInvocationCommand": false,

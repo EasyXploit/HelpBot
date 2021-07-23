@@ -465,10 +465,6 @@ exports.run = (discord, client) => {
     //Función para generar u obtener una invitación permanente
     client.functions.getBotServerInvite = async () => {
 
-        //Almacena la guild objetivo
-        const homeGuild = await client.guilds.fetch(client.config.homeGuild);
-        if (!homeGuild) return;
-
         //Almacena la futura invitación
         let foundInvite;
 
@@ -479,11 +475,11 @@ exports.run = (discord, client) => {
             let inviteChannel;
             
             //Comprueba si hay canal de reglas y si se tiene permiso para crear la invitación
-            if (homeGuild.rulesChannel && !(homeGuild.rulesChannel.permissionsFor(client.user) & 0x1) !== 0x1) {
-                inviteChannel = homeGuild.rulesChannel;
+            if (client.homeGuild.rulesChannel && !(client.homeGuild.rulesChannel.permissionsFor(client.user) & 0x1) !== 0x1) {
+                inviteChannel = client.homeGuild.rulesChannel;
             } else {
                 //De lo contrario, hace lo propio con el primer canal que lo permita
-                await homeGuild.channels.filter(channel => channel.type === 'text').then(async channels => {
+                await client.homeGuild.channels.filter(channel => channel.type === 'text').then(async channels => {
 
                     //Compreba en cada canal si se puede crear la invitación
                     await channels.forEach(async channel => {
@@ -502,14 +498,14 @@ exports.run = (discord, client) => {
 
             //Graba la invitación en el fichero de configuración
             client.config.guild.homeGuildInviteCode = foundInvite;
-            await client.fs.writeFile('./configs/config.json', JSON.stringify(client.config, null, 4), (err) => console.error(err));
+            await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error(err));
         };
 
         //Si no hay una invitación grabada
         if (!client.config.guild.homeGuildInviteCode) {
 
             //Comprueba si ya existe una invitación
-            await homeGuild.invites.fetch().then(invites => {
+            await client.homeGuild.fetchInvites().then(invites => {
                 invites.forEach(async invite => {
                     if (invite.inviter === client.user) foundInvite = invite.code;
                 });
@@ -519,20 +515,18 @@ exports.run = (discord, client) => {
             if (!foundInvite) await createInvite();
 
             //Devuelve la URL, si se puedo obtener un código
-            if (client.config.guild.homeGuildInviteCode) console.log(`1 - https://discord.gg/${client.config.guild.homeGuildInviteCode}`); //DEBUGGING
             if (client.config.guild.homeGuildInviteCode) return `https://discord.gg/${client.config.guild.homeGuildInviteCode}`;
 
         } else {
             //Busca la invitación
-            await homeGuild.invites.fetch(client.config.guild.homeGuildInviteCode).then(async invite => {
+            await client.homeGuild.fetchInvites(client.config.guild.homeGuildInviteCode).then(async invite => {
 
                 //Crea la invitación si no existe
                 if (!invite) await createInvite();
-
-                //Devuelve la URL, si se puedo obtener un código
-                if (client.config.guild.homeGuildInviteCode) console.log(`2 - https://discord.gg/${client.config.guild.homeGuildInviteCode}`); //DEBUGGING
-                if (client.config.guild.homeGuildInviteCode) return `https://discord.gg/${client.config.guild.homeGuildInviteCode}`;
             });
+
+            //Devuelve la URL, si se puedo obtener un código
+            if (client.config.guild.homeGuildInviteCode) return `https://discord.gg/${client.config.guild.homeGuildInviteCode}`;
         };
     };
 

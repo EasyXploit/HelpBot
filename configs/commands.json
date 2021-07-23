@@ -5,7 +5,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"avatar": {
 		"enabled": true,
@@ -13,7 +14,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"ban": {
 		"enabled": true,
@@ -21,7 +23,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"broadcast": {
 		"enabled": true,
@@ -29,7 +32,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"clear": {
 		"enabled": true,
@@ -37,7 +41,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"commands": {
 		"enabled": true,
@@ -45,7 +50,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"dice": {
 		"enabled": true,
@@ -53,7 +59,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"debugging": {
 		"enabled": true,
@@ -61,7 +68,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"dm": {
 		"enabled": true,
@@ -70,6 +78,7 @@
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
+		"additionalAliases": [],
 		"whitelistedRolesForAnonynmousMode": []
 	},
 	"edit": {
@@ -78,7 +87,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"choose": {
 		"enabled": true,
@@ -86,7 +96,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"help": {
 		"enabled": true,
@@ -94,7 +105,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"info": {
 		"enabled": true,
@@ -102,7 +114,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"infractions": {
 		"enabled": true,
@@ -110,7 +123,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"join": {
 		"enabled": true,
@@ -118,7 +132,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"kick": {
 		"enabled": true,
@@ -126,7 +141,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"leaderboard": {
 		"enabled": true,
@@ -134,7 +150,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"leave": {
 		"enabled": true,
@@ -142,7 +159,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"logging": {
 		"enabled": true,
@@ -150,7 +168,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"loop": {
 		"enabled": true,
@@ -158,7 +177,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"loopqueue": {
 		"enabled": true,
@@ -166,7 +186,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"meme": {
 		"enabled": true,
@@ -174,7 +195,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"flipcoin": {
 		"enabled": true,
@@ -182,7 +204,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"move": {
 		"enabled": true,
@@ -190,7 +213,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"music": {
 		"enabled": true,
@@ -198,7 +222,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"mute": {
 		"enabled": true,
@@ -206,15 +231,17 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
-	"np": {
+	"nowplaying": {
 		"enabled": true,
 		"deleteInvocationCommand": false,
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"pause": {
 		"enabled": true,
@@ -222,7 +249,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"ping": {
 		"enabled": true,
@@ -230,7 +258,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"play": {
 		"enabled": true,
@@ -238,7 +267,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"playskip": {
 		"enabled": true,
@@ -246,7 +276,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"poll": {
 		"enabled": true,
@@ -254,7 +285,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"rps": {
 		"enabled": true,
@@ -262,7 +294,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"rpsls": {
 		"enabled": true,
@@ -270,7 +303,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"prefix": {
 		"enabled": true,
@@ -278,7 +312,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"presence": {
 		"enabled": true,
@@ -286,7 +321,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"purge": {
 		"enabled": true,
@@ -294,7 +330,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"queue": {
 		"enabled": true,
@@ -302,7 +339,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"rank": {
 		"enabled": true,
@@ -310,7 +348,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"remove": {
 		"enabled": true,
@@ -318,7 +357,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"replay": {
 		"enabled": true,
@@ -326,7 +366,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"restart": {
 		"enabled": true,
@@ -334,15 +375,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
-	},
-	"resume": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"reverse": {
 		"enabled": true,
@@ -350,7 +384,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"rmwarn": {
 		"enabled": true,
@@ -359,6 +394,7 @@
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
+		"additionalAliases": [],
 		"rolesThatCanRemoveAnyWarn": []
 	},
 	"roleinfo": {
@@ -367,7 +403,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"run": {
 		"enabled": true,
@@ -375,7 +412,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"send": {
 		"enabled": true,
@@ -383,7 +421,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"serverinfo": {
 		"enabled": true,
@@ -391,7 +430,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"setup": {
 		"enabled": true,
@@ -399,7 +439,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"shuffle": {
 		"enabled": true,
@@ -407,7 +448,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"skip": {
 		"enabled": true,
@@ -415,7 +457,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"slowmode": {
 		"enabled": true,
@@ -424,6 +467,7 @@
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
+		"additionalAliases": [],
 		"rolesThatCanUseUnlimitedTime": []
 	},
 	"softban": {
@@ -432,7 +476,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"sound": {
 		"enabled": true,
@@ -440,15 +485,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
-	},
-	"staff": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"stop": {
 		"enabled": true,
@@ -456,7 +494,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"tempban": {
 		"enabled": true,
@@ -464,7 +503,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"tempmute": {
 		"enabled": true,
@@ -473,6 +513,7 @@
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
+		"additionalAliases": [],
 		"rolesThatCanUseUnlimitedTime": []
 	},
 	"translate": {
@@ -481,7 +522,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"unban": {
 		"enabled": true,
@@ -489,7 +531,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"unmute": {
 		"enabled": true,
@@ -497,7 +540,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"urban": {
 		"enabled": true,
@@ -505,7 +549,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"userinfo": {
 		"enabled": true,
@@ -513,7 +558,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"warn": {
 		"enabled": true,
@@ -521,7 +567,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"weather": {
 		"enabled": true,
@@ -529,15 +576,8 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": []
-	},
-	"welcome": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	},
 	"xp": {
 		"enabled": true,
@@ -545,6 +585,7 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
-		"blacklistedRoles": []
+		"blacklistedRoles": [],
+		"additionalAliases": []
 	}
 }

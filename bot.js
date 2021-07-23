@@ -85,6 +85,63 @@ client.fs.readdir('./events/', async (err, files) => {
     });
 });
 
+//CARGADOR DE COMANDOS
+['commands', 'aliases'].forEach(x => client[x] = new discord.Collection()); // Crea una collección para almacenar los comandos y los alias
+
+//Carga de comandos - Lee el directorio de las catregorías de comandos
+client.fs.readdirSync('./commands/').forEach(subDirectory => {
+
+    //Por cada subdirectorio, filtra los scripts de comandos
+    const commands = client.fs.readdirSync(`./commands/${subDirectory}/`).filter(files => files.endsWith('.js'));
+
+    //Para cada comando de la categoría
+    commands.forEach(command => {
+
+        //Requiere el comando para obtener su información
+        const pulledCommand = require(`./commands/${subDirectory}/${command}`);
+        
+        //Verifica si el nombre del comando es una cadena o no, y verifica si existe
+        if (pulledCommand.config && typeof (pulledCommand.config.name) === 'string') {
+
+            //Comprueba si hay conflictos con otros comandos que tengan el mismo nombre
+            if (client.commands.get(pulledCommand.config.name)) return console.warn(`Dos comandos o más comandos tienen el mismo nombre: ${pulledCommand.config.name}.`);
+
+            //Añade el comando a la colección
+            client.commands.set(pulledCommand.config.name, pulledCommand);
+
+            //Manda un mensaje de confirmación
+            console.log(` - [OK] Comando [${pulledCommand.config.name}]`);
+
+        } else {
+            //Si hay un error, no carga el comando
+            return console.log(`Error al cargar el comando en ./commands/${subDirectory}/. Falta config.name o config.name no es una cadena.`);
+        };
+
+        //Comprueba si el comando tiene alias, y de ser así, los añade a la colección
+        if (pulledCommand.config.aliases && typeof (pulledCommand.config.aliases) === 'object') {
+            pulledCommand.config.aliases.forEach(alias => {
+
+                //Comprueba si hay conflictos con otros alias que tengan el mismo nombre
+                if (client.aliases.get(alias)) return console.warn(`Dos comandos o más comandos tienen los mismos alias: ${alias}`);
+                client.aliases.set(alias, pulledCommand.config.name);
+            });
+        };
+
+        //Almacena la configuración del comando, si existe
+        const commandConfig = client.config.commands[pulledCommand.config.name];
+
+        //Comprueba si el comando tiene alias adicionales configurados, y de ser así, los añade a la colección
+        if (commandConfig && commandConfig.additionalAliases && typeof (commandConfig.additionalAliases) === 'object') {
+            commandConfig.additionalAliases.forEach(alias => {
+
+                //Comprueba si hay conflictos con otros alias que tengan el mismo nombre
+                if (client.aliases.get(alias)) return console.warn(`Dos comandos o más comandos tienen los mismos alias: ${alias}`);
+                client.aliases.set(alias, pulledCommand.config.name);
+            });
+        };
+    });
+});
+
 //Inicio de sesión del bot
-console.log('- Iniciando sesión ...\n');
+console.log('\n- Iniciando sesión ...\n');
 client.login(client.config.keys.token).then(() => console.log('\n - ¡Sesion iniciada correctamente!'));

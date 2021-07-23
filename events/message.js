@@ -140,8 +140,12 @@ exports.run = async (message, client, discord) => {
             let waitEmbed = new discord.MessageEmbed().setColor(client.colors.red2).setDescription(`${client.customEmojis.redTick} Debes esperar 2 segundos antes de usar este comando`);
             if (client.cooldownedUsers.has(message.author.id)) return message.channel.send(waitEmbed).then(msg => {msg.delete({timeout: 1000})});
 
+            //Busca el comando por su nombre o su alias
+            const listedCmd = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
+            if (!listedCmd) return; //Devuelve si no lo encuentra
+
             //Almacena la configuración del comando
-            let commandConfig = client.config.commands[cmd];
+            let commandConfig = client.config.commands[listedCmd.config.name];
 
             //Devuelve si el comando está deshabilitado
             if (!commandConfig || !commandConfig.enabled) return;
@@ -191,7 +195,7 @@ exports.run = async (message, client, discord) => {
             if (commandConfig.deleteInvocationCommand) await message.delete();
 
             //Ejecuta el comando
-            require(`../commands/${command}`).run(discord, client, message, args, command, commandConfig);
+            listedCmd.run(discord, client, message, args, command, commandConfig);
 
             //Añade un cooldown
             client.cooldownedUsers.add(message.author.id);

@@ -43,7 +43,7 @@ exports.run = async (message, client, discord) => {
 
                     let toDMEmbed = new discord.MessageEmbed()
                         .setColor(client.colors.red2)
-                        .setAuthor('[EXPULSADO]', client.homeGuild.iconURL())
+                        .setAuthor('[EXPULSADO]', client.homeGuild.iconURL({dynamic: true}))
                         .setDescription(`<@${member.id}>, has sido expulsado de ${client.homeGuild.name}`)
                         .addField('Moderador', client.user.tag, true)
                         .addField('Razón', 'Spam vía MD', true);
@@ -53,7 +53,7 @@ exports.run = async (message, client, discord) => {
                 } else {
                     let toDMEmbed = new discord.MessageEmbed()
                         .setColor(client.colors.red)
-                        .setAuthor(`[BANEADO]`, client.homeGuild.iconURL())
+                        .setAuthor(`[BANEADO]`, client.homeGuild.iconURL({dynamic: true}))
                         .setDescription(`<@${member.id}>, has sido baneado en ${client.homeGuild.name}`)
                         .addField('Moderador', client.user.tag, true)
                         .addField('Razón', 'Spam vía MD', true)

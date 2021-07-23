@@ -29,9 +29,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         let resultEmbed = new discord.MessageEmbed()
             .setColor(client.colors.primary)
-            .setAuthor(`Información del servidor`, guild.iconURL())
+            .setAuthor(`Información del servidor`, guild.iconURL({dynamic: true}))
             .setDescription(`Mostrando información acerca de la guild ${guild.name}`)
-            .setThumbnail(guild.iconURL())
+            .setThumbnail(guild.iconURL({dynamic: true}))
             .addField(`🏷 Nombre`, guild.name, true)
             .addField(`🆔 ID`, guild.id, true)
             .addField(`👑 Propietario`, `${guild.owner} (ID: ${guild.ownerID})`, true)

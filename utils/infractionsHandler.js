@@ -35,7 +35,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
 
         let toDMEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
-            .setAuthor('[SILENCIADO]', guild.iconURL())
+            .setAuthor('[SILENCIADO]', guild.iconURL({dynamic: true}))
             .setDescription(`${member.user.tag}, has sido silenciado en ${guild.name}`)
             .addField('Moderador', moderator.tag, true)
             .addField('Razón', 'Demasiadas advertencias', true)
@@ -56,7 +56,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
 
         let toDMEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
-            .setAuthor(`[EXPULSADO]`, guild.iconURL())
+            .setAuthor(`[EXPULSADO]`, guild.iconURL({dynamic: true}))
             .setDescription(`<@${member.id}>, has sido expulsado en ${guild.name}`)
             .addField(`Moderador`, moderator.tag, true)
             .addField(`Razón`, 'Demasiadas advertencias', true)
@@ -114,7 +114,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
 
     let toDMEmbed = new discord.MessageEmbed()
         .setColor(client.colors.orange)
-        .setAuthor(`[ADVERTIDO]`, guild.iconURL())
+        .setAuthor(`[ADVERTIDO]`, guild.iconURL({dynamic: true}))
         .setDescription(`<@${member.id}>, has sido advertido en ${guild.name}`)
         .addField(`Moderador`, moderator.tag, true)
         .addField(`Razón`, warnReason, true);

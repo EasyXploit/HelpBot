@@ -46,7 +46,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     .attachFiles(new discord.MessageAttachment('./resources/images/dj.png', 'dj.png'))
                     .setAuthor(`Cola de reproducción - Ahora mismo:`, 'attachment://dj.png')
                     .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n● Duración: \`${server.nowplaying.duration}\`.\n ● Requerida por: \`${server.nowplaying.requestedBy}\``)
-                    .setFooter(footer, client.homeGuild.iconURL());
+                    .setFooter(footer, client.homeGuild.iconURL({dynamic: true}));
             
             //Si hay cola, carga la cola en el embed
             if (serverQueue[0]) {

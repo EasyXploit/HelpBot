@@ -50,7 +50,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setColor(client.colors.primary)
                 .setTitle(`:trophy: Tabla de clasificación`)
                 .setDescription(await loadBoard(10 * position - 9, 10 * position))
-                .setFooter(`Página ${position} de ${pages}`, client.homeGuild.iconURL());
+                .setFooter(`Página ${position} de ${pages}`, client.homeGuild.iconURL({dynamic: true}));
 
             if (embed) {
                 await embed.edit(leaderboard).then(async embed => {awaitReactions(embed)});

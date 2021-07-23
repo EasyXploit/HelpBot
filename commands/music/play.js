@@ -192,7 +192,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                                 .attachFiles(new discord.MessageAttachment('./resources/images/dj.png', 'dj.png'))
                                 .setAuthor(`Añadido a la cola 🎶`, 'attachment://dj.png')
                                 .setDescription(`[${info.title}](${info.link})\n\n● **Autor:** \`${info.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(info.lengthSeconds).format('H:mm:ss')}\``)
-                                .setFooter(getFooter(), client.homeGuild.iconURL());
+                                .setFooter(getFooter(), client.homeGuild.iconURL({dynamic: true}));
 
                             message.channel.send(queuedEmbed);
                         };
@@ -292,7 +292,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                             .setAuthor(`Playlist añadida a la cola 🎶`, 'attachment://dj.png')
                             .setDescription(`[${playlist.title}](${playlist.url})\n\n● **Autor:** \`${playlist.author.name}\`\n● **Pistas:** \`${playlist.total_items}\``)
                             .addField(`Solicitado por:`, message.member.displayName, true)
-                            .setFooter(getFooter(), client.homeGuild.iconURL());
+                            .setFooter(getFooter(), client.homeGuild.iconURL({dynamic: true}));
 
                         message.channel.send(playlistEmbed);
 

@@ -39,7 +39,7 @@ exports.run = (discord, client) => {
 
                 let toDMEmbed = new discord.MessageEmbed()
                     .setColor(client.colors.green)
-                    .setAuthor('[DES-SILENCIADO]', guild.iconURL())
+                    .setAuthor('[DES-SILENCIADO]', guild.iconURL({dynamic: true}))
                     .setDescription(`${member.user.tag}, has sido des-silenciado en ${guild.name}`)
                     .addField('Moderador', `<@${client.user.id}>`, true)
                     .addField('Razón', 'Venció la amonestación', true);

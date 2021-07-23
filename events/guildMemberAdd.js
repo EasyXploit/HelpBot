@@ -11,7 +11,7 @@ exports.run = async (event, client, discord) => {
 
                 let toDMEmbed = new discord.MessageEmbed()
                     .setColor(client.colors.red2)
-                    .setAuthor('[EXPULSADO]', event.guild.iconURL())
+                    .setAuthor('[EXPULSADO]', event.guild.iconURL({dynamic: true}))
                     .setDescription(`<@${event.user.id}>, has sido expulsado de ${event.guild.name}`)
                     .addField('Moderador', client.user, true)
                     .addField('Razón', 'No está permitido utilizar enlaces como nombre de usuario.', true)

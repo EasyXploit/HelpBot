@@ -83,7 +83,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(0xF74A4A)
             .setTitle(`${message.member.displayName} ${emojiOpponentChoose} VS ${emojiChoose} ${client.user.username}`)
             .setDescription(`__Resultado:__ ¡${result}!`)
-            .setFooter(`| ${reason}`, client.homeGuild.iconURL());
+            .setFooter(`| ${reason}`, client.homeGuild.iconURL({dynamic: true}));
 
         message.channel.send(resultEmbed);
     } catch (error) {

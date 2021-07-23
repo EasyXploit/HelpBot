@@ -60,7 +60,7 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
                 .setDescription(`[${info.title}](${info.link})\n\n● **Autor:** \`${info.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(info.lengthSeconds).format('H:mm:ss')}\``)
                 .addField(`Solicitado por:`, server.queue[toPlay].requestedBy, true)
                 .addField(`Siguiente:`, upNext, true)
-                .setFooter(footer, client.homeGuild.iconURL());
+                .setFooter(footer, client.homeGuild.iconURL({dynamic: true}));
 
             //Envía un mensaje de confirmación
             message.channel.send(playingEmbed);

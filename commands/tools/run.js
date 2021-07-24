@@ -3,11 +3,11 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     //!template (plantilla)
     
     try {
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
+        let incorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}template (plantilla)\``);
 
-        if (!args[0]) return message.channel.send(noCorrectSyntaxEmbed);
+        if (!args[0]) return message.channel.send(incorrectSyntaxEmbed);
 
         if (args[0] === `bienvenida`) {
             let noUserEmbed = new discord.MessageEmbed()
@@ -18,7 +18,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setColor(client.colors.green2)
                 .setDescription(`${client.customEmojis.greenTick} ¡Listo!`);
             
-            if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
+            if (args.length < 2) return message.channel.send(incorrectSyntaxEmbed);
 
             const member = await client.functions.fetchMember(message.guild, args[1]);
             if (!member) return message.channel.send(noUserEmbed);
@@ -34,7 +34,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setColor(client.colors.green2)
                 .setDescription(`${client.customEmojis.greenTick} ¡Listo!`);
             
-            if (args.length < 2) return message.channel.send(noCorrectSyntaxEmbed);
+            if (args.length < 2) return message.channel.send(incorrectSyntaxEmbed);
             
             let member = await message.guild.members.fetch(message.mentions.users.first() || client.users.fetch(args[1]));
             if (!member) return message.channel.send(noUserEmbed);

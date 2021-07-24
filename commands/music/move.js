@@ -16,7 +16,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.colors.red)
             .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
 
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
+        let incorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es: \`${client.config.guild.prefix}move (posición 1) (posición 2)\``);
         
@@ -39,7 +39,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (message.member.voiceChannelID !== message.guild.member(client.user).voiceChannelID) return message.channel.send(notAvailableEmbed);
         
         //Comprueba si se han proporcionado argumentos
-        if (!args[0] || !args[1]) return message.channel.send(noCorrectSyntaxEmbed);
+        if (!args[0] || !args[1]) return message.channel.send(incorrectSyntaxEmbed);
         
         //Comprueba si hay reproducción
         if (!client.voiceDispatcher) return message.channel.send(noDispatcherEmbed);

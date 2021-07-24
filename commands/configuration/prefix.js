@@ -3,12 +3,12 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     //!prefix (nuevo prefijo)
 
     try {
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
+        let incorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es: \`${client.config.guild.prefix}prefix (nuevo prefijo)\``);
 
         //Comprueba si se han proporcionado todos los argumentos
-        if (args.length < 1) return message.channel.send(noCorrectSyntaxEmbed);
+        if (args.length < 1) return message.channel.send(incorrectSyntaxEmbed);
 
         //Se extrae el prefijo de los argumentos
         const newPrefix = args[0];

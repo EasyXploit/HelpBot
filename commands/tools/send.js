@@ -3,16 +3,16 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     //!send (embed | normal) (texto)
     
     try {
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
+        let incorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`-send (embed | normal) (texto)\`.`);
 
-        if (!args[0] || !args[1]) return message.channel.send(noCorrectSyntaxEmbed);
+        if (!args[0] || !args[1]) return message.channel.send(incorrectSyntaxEmbed);
         
         let type = args[0];
         let body = args.slice(1).join(' ');
 
-        if (type !== 'embed' && type !== 'normal') return message.channel.send(noCorrectSyntaxEmbed);
+        if (type !== 'embed' && type !== 'normal') return message.channel.send(incorrectSyntaxEmbed);
 
         if (type === 'embed') {
             let resultEmbed = new discord.MessageEmbed()

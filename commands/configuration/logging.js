@@ -3,16 +3,16 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     //!logging (#canal | id)
     
     try {
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
+        let incorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}logging (#canal | id)\``);
     
         //Comprueba si se ha proporcionado el argumento
-        if (args.length < 1) return message.channel.send(noCorrectSyntaxEmbed);
+        if (args.length < 1) return message.channel.send(incorrectSyntaxEmbed);
         
         //Comprueba si se ha proporcionado un canal de texto válido (mención/id)
         let channelMention = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
-        if (!channelMention) return message.channel.send(noCorrectSyntaxEmbed);
+        if (!channelMention) return message.channel.send(incorrectSyntaxEmbed);
         
         //Almacena el ID del canal
         let channel = channelMention.id;

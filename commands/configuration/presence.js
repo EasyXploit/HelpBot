@@ -4,29 +4,29 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     
     try {
 
-        const noCorrectSyntaxEmbed = new discord.MessageEmbed()
+        const incorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
             .setDescription(`${client.customEmojis.redTick} La sintaxis del comando es \`${client.config.guild.prefix}presence (status | name | type | membersCount) (online | offline | idle | dnd - PLAYING | STREAMING | LISTENING | WATCHING | COMPETING - nombre de la actividad - enable | disable)\``);
 
-        if (!args[0] || !args[1]) return message.channel.send(noCorrectSyntaxEmbed);
+        if (!args[0] || !args[1]) return message.channel.send(incorrectSyntaxEmbed);
 
         let option = args[0].toLowerCase();
         let newValue = args.slice(1).join(' ');
         let changed;
 
-        if (option !== 'status' && option !== 'name' && option !== 'type' && option !== 'memberscount') return message.channel.send(noCorrectSyntaxEmbed);
+        if (option !== 'status' && option !== 'name' && option !== 'type' && option !== 'memberscount') return message.channel.send(incorrectSyntaxEmbed);
 
         let actuallyConfiguredEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
             .setDescription(`${client.customEmojis.redTick} Esta configuración ya ha sido aplicada`);
 
         if (option === 'status') { //ESTADO DEL BOT
-            if (newValue.toLowerCase() !== 'online' && newValue.toLowerCase() !== 'invisible' && newValue.toLowerCase() !== 'idle' && newValue.toLowerCase() !== 'dnd') return message.channel.send(noCorrectSyntaxEmbed);
+            if (newValue.toLowerCase() !== 'online' && newValue.toLowerCase() !== 'invisible' && newValue.toLowerCase() !== 'idle' && newValue.toLowerCase() !== 'dnd') return message.channel.send(incorrectSyntaxEmbed);
             if (newValue.toLowerCase() === client.config.presence.status) return message.channel.send(actuallyConfiguredEmbed);
             client.config.presence.status = newValue.toLowerCase();
             changed = 'el estado';
         } else if (option === 'type') { //TIPO DE ACTIVIDAD DEL BOT
-            if (newValue.toUpperCase() !== 'PLAYING' && newValue.toUpperCase() !== 'STREAMING' && newValue.toUpperCase() !== 'LISTENING' && newValue.toUpperCase() !== 'WATCHING' && newValue.toUpperCase() !== 'COMPETING') return message.channel.send(noCorrectSyntaxEmbed);
+            if (newValue.toUpperCase() !== 'PLAYING' && newValue.toUpperCase() !== 'STREAMING' && newValue.toUpperCase() !== 'LISTENING' && newValue.toUpperCase() !== 'WATCHING' && newValue.toUpperCase() !== 'COMPETING') return message.channel.send(incorrectSyntaxEmbed);
             if (newValue.toUpperCase() === client.config.presence.type) return message.channel.send(actuallyConfiguredEmbed);
             client.config.presence.type = newValue.toUpperCase();
             changed = 'el tipo';   
@@ -35,7 +35,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             client.config.presence.name = newValue;
             changed = 'la actividad';   
         } else if (option === 'memberscount') { //CONTEO DE MIEMBROS DE LA GUILD
-            if (newValue.toLowerCase() !== 'enable' && newValue.toLowerCase() !== 'disable') return message.channel.send(noCorrectSyntaxEmbed);
+            if (newValue.toLowerCase() !== 'enable' && newValue.toLowerCase() !== 'disable') return message.channel.send(incorrectSyntaxEmbed);
             if (newValue.toLowerCase() === 'enable' && client.config.presence.membersCount || newValue.toLowerCase() === 'disable' && !client.config.presence.membersCount) return message.channel.send(actuallyConfiguredEmbed);
             newValue.toLowerCase() === 'enable' ? client.config.presence.membersCount = true : client.config.presence.membersCount = false;
             changed = 'el conteo de miembros';

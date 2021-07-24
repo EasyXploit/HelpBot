@@ -4,7 +4,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
     try {
 
-        let noCorrectSyntaxEmbed = new discord.MessageEmbed()
+        let incorrectSyntaxEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red2)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es ${client.config.guild.prefix}poll (new | end) [id]`);
 
@@ -189,7 +189,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 if (err) throw err;
             });
         } else {
-            return message.channel.send(noCorrectSyntaxEmbed);
+            return message.channel.send(incorrectSyntaxEmbed);
         }
 
     } catch (error) {

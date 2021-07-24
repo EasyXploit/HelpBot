@@ -27,7 +27,7 @@ exports.run = async (client) => {
     //Vuelve a generar ./configs
     await new Promise((resolve, reject) => {
 
-        client.fs.readdir('./resources/data/cleanConfigs/', async (err, cleanConfigs) => {
+        client.fs.readdir('./configs/cleanConfigs/', async (err, cleanConfigs) => {
 
             //Vacía cada una de las configs
             cleanConfigs.forEach(async (cleanConfig, index, array) => {
@@ -37,7 +37,7 @@ exports.run = async (client) => {
                 //Reinicia todos los ficheros de config. menos el de claves
                 if (cleanConfigName !== 'keys') {
                     //Requiere la configuración en blanco
-                    const cleanConfigContent = require(`../resources/data/cleanConfigs/${cleanConfigName}.json`);
+                    const cleanConfigContent = require(`../configs/cleanConfigs/${cleanConfigName}.json`);
 
                     //Vacía la config (clave por clave)
                     Object.keys(client.config[cleanConfigName]).forEach(key => {

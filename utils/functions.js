@@ -4,51 +4,53 @@ exports.run = (discord, client) => {
     client.functions = {};
 
     //Función para buscar miembros
-    client.functions.fetchMember = async (guild, argument) => {
+    client.functions.fetchMember = async (guild, member) => {
         try {
             let result;
-            const matches = argument.match(/^<@!?(\d+)>$/);
+            const matches = member.match(/^<@!?(\d+)>$/);
             if (matches) {
                 result = await guild.members.fetch(matches[1]);
-            } else if (!isNaN(argument)) {
-                result = await guild.members.fetch(argument);
-            }
+            } else if (!isNaN(member)) {
+                result = await guild.members.fetch(member);
+            };
             if (result && typeof result !== 'undefined') return result;
         } catch (error) {
             return false;
-        }
+        };
     };
 
     //Función para buscar usuarios
-    client.functions.fetchUser = async  (argument) => {
+    client.functions.fetchUser = async  (user) => {
         try {
             let result;
-            const matches = argument.match(/^<@!?(\d+)>$/);
+            const matches = user.match(/^<@!?(\d+)>$/);
             if (matches) {
                 result = await client.users.fetch(matches[1]);
-            } else if (!isNaN(argument)) {
-                result = await client.users.fetch(argument);
-            }
+            } else if (!isNaN(user)) {
+                result = await client.users.fetch(user);
+            };
             if (result && typeof result !== 'undefined') return result;
         } catch (error) {
             return false;
-        }
+        };
     };
 
     //Función para buscar roles
-    client.functions.fetchRole = async (guild, argument) => {
+    client.functions.fetchRole = async (guild, role) => {
         try {
             let result;
-            const matches = argument.match(/^<@&?(\d+)>$/);
+            const matches = role.match(/^<@&?(\d+)>$/);
             if (matches) {
                 result = await guild.roles.fetch(matches[1]);
-            } else if (!isNaN(argument)) {
-                result = await guild.roles.fetch(argument);
-            }
+            } else if (!isNaN(role)) {
+                result = await guild.roles.fetch(role);
+            };
             if (result && typeof result !== 'undefined') return result;
         } catch (error) {
+            console.log(error);
             return false;
-        }
+        };
+    };
     };
 
     //Función para comprobar si existe el rol silenciado, y de no existir, crearlo

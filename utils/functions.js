@@ -421,7 +421,7 @@ exports.run = (discord, client) => {
         let arguments = 'Ninguno';
         if (args.length > 0) arguments = args.join(' ');
 
-        let errorString = error;
+        let errorString = error.stack;
         if (errorString.length > 1014) errorString = `${errorString.slice(0, 1014)} ...`;
 
         //Se muestra el error en el canal de depuración
@@ -435,7 +435,7 @@ exports.run = (discord, client) => {
             .addField('Canal:', message.channel, true)
             .addField('Autor:', `<@${message.author.id}>`, true)
             .addField('Fecha:', new Date().toLocaleString(), true)
-            .addField('Error:', `\`\`\`${errorString.stack}\`\`\``, true);
+            .addField('Error:', `\`\`\`${errorString}\`\`\``, true);
         
         let reportedEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)
@@ -448,7 +448,7 @@ exports.run = (discord, client) => {
 
     //Función para gestionar los errores en los eventos
     client.functions.eventErrorHandler = async (error, eventName) => {
-        let errorString = error;
+        let errorString = error.stack;
         if (errorString.length > 1014) errorString = `${errorString.slice(0, 1014)} ...`;
 
         //Se muestra el error en el canal de depuración
@@ -458,7 +458,7 @@ exports.run = (discord, client) => {
             .setDescription('Se declaró un error durante la ejecución de un evento')
             .addField('Evento:', eventName, true)
             .addField('Fecha:', new Date().toLocaleString(), true)
-            .addField('Error:', `\`\`\`${errorString.stack}\`\`\``);
+            .addField('Error:', `\`\`\`${errorString}\`\`\``);
         
         //Se envía el mensaje al canal de depuración
         await client.functions.debuggingManager(debuggEmbed);

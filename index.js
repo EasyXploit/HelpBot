@@ -60,7 +60,11 @@ client.voiceDispatcher;     //Almacena el dispatcher
 client.voiceConnection;     //Almacena la conexión
 client.voiceTimeout;        //Almacena los timeouts de reproducción finalizada
 
-//Manejadores de eventos
+//Creación de colecciones
+['commands', 'aliases'].forEach(x => client[x] = new discord.Collection());
+
+//MANEJADOR DE EVENTOS
+//Carga de eventos - Lee el directorio de los eventos
 client.fs.readdir('./events/', async (err, files) => {
 
     if (err) return console.error(`${new Date().toLocaleString()} 》No se ha podido completar la carga de los eventos.\n${err.stack}`);
@@ -86,9 +90,7 @@ client.fs.readdir('./events/', async (err, files) => {
 });
 
 //CARGADOR DE COMANDOS
-['commands', 'aliases'].forEach(x => client[x] = new discord.Collection()); // Crea una collección para almacenar los comandos y los alias
-
-//Carga de comandos - Lee el directorio de las catregorías de comandos
+//Carga de comandos - Lee el directorio de las categorías de comandos
 client.fs.readdirSync('./commands/').forEach(subDirectory => {
 
     //Por cada subdirectorio, filtra los scripts de comandos

@@ -1,15 +1,15 @@
 {
-  "name": "pilkobot",
-  "normalizedName": "PilkoBot",
   "version": "3.8.2",
-  "description": "PilkoBot es un bot multifuncional para Discord desarrollado por el Staff de República Gamer, cuyo uso a fecha de publicación de este documento es exclusivo de los usuarios de dicha comunidad.",
+  "name": "helpbot",
+  "normalizedName": "HelpBot",
+  "description": "HelpBot es un bot multifuncional para Discord desarrollado por el Staff de República Gamer, cuyo uso a fecha de publicación de este documento es exclusivo de los usuarios de dicha comunidad.",
   "main": "index.js",
   "scripts": {
     "start": "nodemon ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EasyXploit/PilkoBot.git"
+    "url": "git+https://github.com/EasyXploit/HelpBot.git"
   },
   "keywords": [
     "discord-bot",
@@ -18,9 +18,9 @@
   "author": "Daniel Perales Mauriz",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/EasyXploit/PilkoBot/issues"
+    "url": "https://github.com/EasyXploit/HelpBot/issues"
   },
-  "homepage": "https://github.com/EasyXploit/PilkoBot#readme",
+  "homepage": "https://github.com/EasyXploit/HelpBot#readme",
   "dependencies": {
     "@discordjs/opus": "^0.4.0",
     "@iamtraction/google-translate": "^1.1.2",
@@ -31,6 +31,7 @@
     "discord.js": "^12.5.3",
     "libsodium-wrappers": "^0.7.9",
     "moment": "^2.29.1",
+    "nanoid": "^3.1.23",
     "random": "^2.2.0",
     "randomcolor": "^0.6.2",
     "urban-dictionary": "^3.0.0",

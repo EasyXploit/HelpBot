@@ -6,7 +6,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         let restartingEmbed = new discord.MessageEmbed()
             .setColor(12118406)
             .setTitle(`${client.customEmojis.greenTick} Operación completada`)
-            .setDescription('Reiniciando PilkoBot . . .');
+            .setDescription('Reiniciando al bot . . .');
         message.channel.send(restartingEmbed);
 
         let loggingEmbed = new discord.MessageEmbed()

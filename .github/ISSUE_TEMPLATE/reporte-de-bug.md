@@ -3,7 +3,7 @@ name: Reporte de bug
 about: Crea un informe de error para ayudarnos a mejorar el bot.
 title: "[BUG]"
 labels: bug
-assignees: dperales555
+assignees: EasyXploit
 
 ---
 

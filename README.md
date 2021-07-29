@@ -1,5 +1,5 @@
-# PilkoBot
-PilkoBot es un bot multifuncional para Discord desarrollado por el Staff de [República Gamer](https://discord.gg/vkSBZC7), cuyo uso a fecha de publicación de este documento es exclusivo de los usuarios de dicha comunidad.
+# 
+HelpBot es un bot de Discord diseñado para la gestión automatizada de comunidades.
 
 
 ## Programado con
@@ -17,13 +17,13 @@ La sintaxis y la configuración se describirán aquí.
 
 
 ## Versionado
-Usamos [SemVer](http://semver.org/) para el control de versiones. Para conocer las versiones disponibles, consulte las [etiquetas de este repositorio](https://github.com/dperales555/PilkoBot/tags).
+Usamos [SemVer](http://semver.org/) para el control de versiones. Para conocer las versiones disponibles, consulte las [etiquetas de este repositorio](https://github.com/EasyXploit/HelpBot/tags).
 
 
 ## Autores
-* **Daniel Perales Mauriz** - *Trabajo principal* - [dperales555](https://github.com/dperales555)
+* **Daniel Perales Mauriz** - *Trabajo principal* - [EasyXploit](https://github.com/EasyXploit)
 
-Consulte también la lista de [contribuyentes](https://github.com/dperales555/PilkoBot/contributors) que participaron en este proyecto.
+Consulte también la lista de [contribuyentes](https://github.com/EasyXploit/HelpBot/contributors) que participaron en este proyecto.
 
 
 ## Licencia

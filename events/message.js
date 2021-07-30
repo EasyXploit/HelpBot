@@ -9,7 +9,6 @@ exports.run = async (message, client, discord) => {
 
         //Envía un mensaje al botChatChannel
         const botChatEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.blue2)
             .setAuthor(`Mensaje de: ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}))
             .setDescription(message.content);
 

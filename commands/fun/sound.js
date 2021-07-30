@@ -7,7 +7,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.colors.red)
             .setDescription(`${client.customEmojis.redTick} El bot no está disponible. Inténtalo más tarde.`);
         
-        let fileNames = client.fs.readdirSync(`./resources/audios/`);
+        let fileNames = client.fs.readdirSync(`./media/audios/`);
         let newFileNames = [];
         
         for (var file = 0; file < fileNames.length - 1; file++) {
@@ -57,7 +57,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 message.channel.send(playingEmbed);
 
                 voiceChannel.join().then(connection => {
-                    const dispatcher = connection.play(`./resources/audios/${sound}.mp3`);
+                    const dispatcher = connection.play(`./media/audios/${sound}.mp3`);
 
                     dispatcher.on("error", reason => {
                         console.log(`${new Date().toLocaleString()} 》Error: ${reason}`);

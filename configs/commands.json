@@ -225,15 +225,6 @@
 		"blacklistedRoles": [],
 		"additionalAliases": []
 	},
-	"music": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": [],
-		"additionalAliases": []
-	},
 	"mute": {
 		"enabled": true,
 		"deleteInvocationCommand": false,

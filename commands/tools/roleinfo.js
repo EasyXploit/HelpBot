@@ -49,7 +49,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
             message.channel.send(resultEmbed);
         }).catch(error => {
-            console.log(error);
+            console.log(`${new Date().toLocaleString()} 》${error.stack}`);
         });
 
         

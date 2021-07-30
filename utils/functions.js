@@ -47,7 +47,7 @@ exports.run = (discord, client) => {
             };
             if (result && typeof result !== 'undefined') return result;
         } catch (error) {
-            console.log(error);
+            console.log(`${new Date().toLocaleString()} 》${error.stack}`);
             return false;
         };
     };
@@ -354,7 +354,7 @@ exports.run = (discord, client) => {
                 //Si el canal no es accesible
                 if (error.toString().includes('DiscordAPIError')) {
 
-                    console.log(error);
+                    console.log(`${new Date().toLocaleString()} 》${error.stack}`);
 
                     //Borrarlo de la config y descargarlo de la memoria
                     client.config.guild.loggingChannel = '';
@@ -448,6 +448,10 @@ exports.run = (discord, client) => {
 
     //Función para gestionar los errores en los eventos
     client.functions.eventErrorHandler = async (error, eventName) => {
+
+        //Se muestra el error en consola
+        console.error(`\n${new Date().toLocaleString()} 》${error.stack}\n`);
+        
         let errorString = error.stack;
         if (errorString.length > 1014) errorString = `${errorString.slice(0, 1014)} ...`;
 

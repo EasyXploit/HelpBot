@@ -11,6 +11,7 @@ console.log(splash, divider);
 console.log('- Iniciando cliente ...');
 const discord = require('discord.js');
 const client = new discord.Client({
+    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
     fetchAllMembers: true,
     disableEveryone: true,
     disabledEvents: ['TYPING_START', 'TYPING_STOP'],

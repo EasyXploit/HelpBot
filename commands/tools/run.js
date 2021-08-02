@@ -158,6 +158,53 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             results.then(data => // or just .then(console.log)
                 console.log(data)
             );*/
+        } else if (args[0] === `updateWarns`) {
+
+            //FUNCIÓN PARA ACTUALIZAR LOS OBJETOS DE WARNS
+
+            return;
+
+            try {
+                
+                //Envía un mensaje de información
+                message.channel.send(new discord.MessageEmbed()
+                    .setColor(client.colors.gray)
+                    .setDescription(`${client.customEmojis.grayTick} Actualizando la base de datos de advertencias ...`)).then(msg => informationEmbed = msg);
+
+                //Para cada miembrocon advertencias
+                for (const warnedMember in client.warns) {
+
+                    //Para cada advertencia del miembro
+                    for (const warn in client.warns[warnedMember]) {
+
+                        //Genera un nuevo sID para el objeto
+                        const sID = client.functions.sidGenerator();
+                        console.log(`Generado el sID ${sID}`)
+
+                        //Genera el nuevo objeto con un nuevo sID
+                        client.warns[warnedMember][sID] = client.warns[warnedMember][warn];
+
+                        //Guarda el timestamp cómo clave del nuevo objeto
+                        client.warns[warnedMember][sID].timestamp = warn;
+                        
+                        //Borra el viejo objeto
+                        delete client.warns[warnedMember][warn];
+                    };
+                };
+
+                //Graba el menú en la base de datos
+                await client.fs.writeFile('./databases/warns.json', JSON.stringify(client.warns, null, 4), async err => {
+                    if (err) throw err;
+                });
+
+                //Confirma que la operación se ha realizado
+                message.channel.send(new discord.MessageEmbed()
+                    .setColor(client.colors.green)
+                    .setDescription(`${client.customEmojis.greenTick} ¡Operación completada!`));
+
+            } catch (error) {
+                console.error(error);
+            };
         } else {
             let noArgsEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.red)

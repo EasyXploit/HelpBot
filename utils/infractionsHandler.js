@@ -132,9 +132,10 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
         //Añade una nueva infracción para el miembro
         if (!client.warns[member.id]) client.warns[member.id] = {};
 
-        const warnID = Date.now();
+        const warnID = client.functions.sidGenerator();
         
         client.warns[member.id][warnID] = {
+            timestamp: Date.now(),
             reason: warnReason,
             moderator: moderator.id
         };
@@ -163,7 +164,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
             let warnsCount = 0;
 
             Object.keys(client.warns[member.id]).forEach(entry => {
-                if (Date.now() - entry <= rule.age) warnsCount++
+                if (Date.now() - entry.timestamp <= rule.age) warnsCount++
             });
 
             if (warnsCount >= rule.quantity) {

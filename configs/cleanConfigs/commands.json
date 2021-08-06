@@ -198,15 +198,6 @@
 		"blacklistedRoles": [],
 		"additionalAliases": []
 	},
-	"meme": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": [],
-		"additionalAliases": []
-	},
 	"flipcoin": {
 		"enabled": true,
 		"deleteInvocationCommand": false,

@@ -97,6 +97,12 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
             delete client.warns[member.id];
         } else {
+
+            if (!client.warns[member.id][warnID]) return message.channel.send( new discord.MessageEmbed()
+                .setColor(client.colors.red2)
+                .setDescription(`${client.customEmojis.redTick} No existe la advertencia con ID **${warnID}**`)
+            );
+
             if (!checkIfCanRemoveAny() && client.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send(noPrivilegesEmbed).then(msg => {msg.delete({timeout: 5000})});
 
             successEmbed = new discord.MessageEmbed()

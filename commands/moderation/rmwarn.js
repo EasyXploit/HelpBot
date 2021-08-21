@@ -28,9 +28,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (!member) return message.channel.send(notToUnwarnEmbed);
         if (member.user.bot) return message.channel.send(noBotsEmbed);
         
-        //Esto comprueba si se ha aportado alguna cantidad numérica
+        //Esto comprueba si se ha aportado alguna advertencia
         let warnID = args[1];
-        if (!warnID || isNaN(warnID) && warnID.toLowerCase() !== 'all') return message.channel.send(noWarnIDEmbed);
+        if (!warnID && warnID.toLowerCase() !== 'all') return message.channel.send(noWarnIDEmbed);
         
         //Esto comprueba si se ha aportado alguna razón
         let reason = args.slice(2).join(" ") || 'Indefinida';

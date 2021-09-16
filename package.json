@@ -5,7 +5,7 @@
   "description": "HelpBot es un bot multifuncional para Discord desarrollado por el Staff de República Gamer, cuyo uso a fecha de publicación de este documento es exclusivo de los usuarios de dicha comunidad.",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
+    "start": "nvm run 8.11.1.",
     "devStart": "nodemon ."
   },
   "repository": {
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/EasyXploit/HelpBot#readme",
   "dependencies": {
-    "@discordjs/opus": "^0.6.0",
+    "@discordjs/opus": "0.5.3",
     "@iamtraction/google-translate": "^1.1.2",
     "asciiart-logo": "^0.2.6",
     "bufferutil": "^4.0.3",
@@ -37,8 +37,8 @@
     "urban-dictionary": "^3.0.0",
     "weather-js": "^2.0.0",
     "ytdl-core-discord": "1.3.1",
-    "ytpl": "^2.2.1",
-    "ytsr": "^3.4.0"
+    "ytpl": "2.2.1",
+    "ytsr": "3.4.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"

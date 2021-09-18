@@ -166,7 +166,7 @@ exports.run = async (message, client, discord) => {
                 for (let i = 0; i < commandConfig.whitelistedRoles.length; i++) {
 
                     //Si se permite a todo el mundo, el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                    if (commandConfig.whitelistedRoles[i] === 'everyone' || message.author.id === message.guild.ownerID || message.author.id === client.config.guild.botManagerRole || message.author.id === client.config.guild.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.whitelistedRoles[i])) {
+                    if (commandConfig.whitelistedRoles[i] === 'everyone' || message.author.id === message.guild.ownerID || message.author.id === client.config.guild.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.whitelistedRoles[i])) {
                         authorized = true;
                         break;
                     };

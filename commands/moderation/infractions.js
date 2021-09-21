@@ -36,7 +36,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (client.warns[member.id]) {
             infractionsCount.total = Object.keys(client.warns[member.id]).length;
 
-            Object.keys(client.warns[member.id]).forEach(entry => {
+            Object.values(client.warns[member.id]).forEach(entry => {
                 if (Date.now() - entry.timestamp <= '86400000') infractionsCount.day++
                 if (Date.now() - entry.timestamp <= '604800000') infractionsCount.week++
             });

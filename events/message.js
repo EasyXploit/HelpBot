@@ -190,8 +190,8 @@ exports.run = async (message, client, discord) => {
                 if (message.author.id !== message.guild.ownerID) return message.channel.send(noPrivilegesEmbed).then(msg => {msg.delete({timeout: 5000})});
             };
 
-            //Borra el mensaje de invocación si se ha configurado para ello
-            if (commandConfig.deleteInvocationCommand) await message.delete();
+            //Borra el mensaje de invocación (tras 3 segundos) si se ha configurado para ello
+            if (commandConfig.deleteInvocationCommand) message.delete({timeout: 2000});
 
             //Ejecuta el comando
             listedCmd.run(discord, client, message, args, command, commandConfig);

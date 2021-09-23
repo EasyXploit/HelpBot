@@ -107,7 +107,8 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
             successEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.green2)
-                .setDescription(`${client.customEmojis.greenTick} Se ha retirado la advertencia con ID **${warnID}** al miembro **${member.user.tag}**`);
+                .setTitle(`${client.customEmojis.greenTick} Operación completada`)
+                .setDescription(`Se ha retirado la advertencia con ID **${warnID}** al miembro **${member.user.tag}**`);
 
             toDMEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.green)

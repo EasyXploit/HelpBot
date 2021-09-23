@@ -37,7 +37,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         let successEmbed = new discord.MessageEmbed()
             .setColor(client.colors.green2)
             .setTitle(`${client.customEmojis.greenTick} Operación completada`)
-            .setDescription(`El miembro ${user.tag} ha sido desbaneado`);
+            .setDescription(`El miembro **${user.tag}** ha sido desbaneado`);
 
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(client.colors.green)

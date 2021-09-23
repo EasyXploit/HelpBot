@@ -106,6 +106,14 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
             return message.channel.send(maxTimeEmbed);
         };
+
+        //Genera un mensaje de confirmación
+        let successEmbed = new discord.MessageEmbed()
+            .setColor(client.colors.orange)
+            .setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado, ¿alguien más?`);
+
+        //Si se ha proporcionado razón, la adjunta al mensaje de confirmación
+        if (message.content.slice(toDeleteCount)) successEmbed.setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado debido a **${reason}**, ¿alguien más?`);
         
         let toDeleteCount = command.length - 2 + args[0].length + 1 + args[1].length + 2; 
         let reason = message.content.slice(toDeleteCount) || 'Indefinida';
@@ -141,11 +149,6 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
             if (err) throw err;
-
-            let successEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.green2)
-                .setTitle(`${client.customEmojis.greenTick} Operación completada`)
-                .setDescription(`El miembro **${member.user.tag}** ha sido silenciado, ¿alguien más?`);
 
             //Silencia al miembro
             member.roles.add(mutedRole);

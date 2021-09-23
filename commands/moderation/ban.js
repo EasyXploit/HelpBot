@@ -47,17 +47,21 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         let banned = await checkBans(bans);
         if (banned) return message.channel.send(alreadyBannedEmbed);
 
+        //Genera un mensaje de confirmación
+        let successEmbed = new discord.MessageEmbed()
+            .setColor(client.colors.orange)
+            .setDescription(`${client.customEmojis.orangeTick} **${user.tag}** ha sido baneado, ¿alguien más?`);
+
+        //Almacena la razón
         let toDeleteCount = command.length - 2 + args[0].length + 2;
+        let reason = message.content.slice(toDeleteCount)
+
+        //Si se ha proporcionado razón, la adjunta al mensaje de confirmación
+        if (reason) successEmbed.setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido baneado debido a **${reason}**, ¿alguien más?`);
 
         //Esto comprueba si se debe proporcionar razón
-        let reason = message.content.slice(toDeleteCount)
         if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send(noReasonEmbed);
         if (!reason) reason = `Indefinida`;
-
-        let successEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.green2)
-            .setTitle(`${client.customEmojis.greenTick} Operación completada`)
-            .setDescription(`El usuario ${user.tag} ha sido baneado, ¿alguien más?`);
 
         let toDMEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)

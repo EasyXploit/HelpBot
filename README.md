@@ -1,3 +1,6 @@
+# HelpBot
+HelpBot es un bot de Discord diseñado para la gestión automatizada de comunidades.
+
 ## Programado con
 * [JS](https://developer.mozilla.org/es/docs/Learn/JavaScript/First_steps/Qu%C3%A9_es_JavaScript) - Este bot fue programado usando únicamente JavaScript.
 * [Node.js](https://nodejs.org) - Tiempo de ejecución de JavaScript asincrónico controlado por eventos.

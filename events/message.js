@@ -35,9 +35,9 @@ exports.run = async (message, client, discord) => {
             //Si alguna no lo es, lo banea
             if (legitInvites < detectedInvites.length) {
                 const member = await client.functions.fetchMember(client.homeGuild, message.author.id);
-                if ((member.joinedTimestamp + client.config.automod.newMemberTimeDelimiter) < Date.now()) {
+                if ((member.joinedTimestamp + client.config.automodFilters.newMemberTimeDelimiter) < Date.now()) {
                     client.bans[member.id] = {
-                        time: Date.now() + client.config.automod.newSpammerMemberBanDuration
+                        time: Date.now() + client.config.automodFilters.newSpammerMemberBanDuration
                     };
 
                     let toDMEmbed = new discord.MessageEmbed()
@@ -166,7 +166,7 @@ exports.run = async (message, client, discord) => {
                 for (let i = 0; i < commandConfig.whitelistedRoles.length; i++) {
 
                     //Si se permite a todo el mundo, el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                    if (commandConfig.whitelistedRoles[i] === 'everyone' || message.author.id === message.guild.ownerID || message.author.id === client.config.guild.botManagerRole || message.author.id === client.config.guild.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.whitelistedRoles[i])) {
+                    if (commandConfig.whitelistedRoles[i] === 'everyone' || message.author.id === message.guild.ownerID || message.author.id === client.config.guild.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.whitelistedRoles[i])) {
                         authorized = true;
                         break;
                     };
@@ -190,8 +190,8 @@ exports.run = async (message, client, discord) => {
                 if (message.author.id !== message.guild.ownerID) return message.channel.send(noPrivilegesEmbed).then(msg => {msg.delete({timeout: 5000})});
             };
 
-            //Borra el mensaje de invocación si se ha configurado para ello
-            if (commandConfig.deleteInvocationCommand) await message.delete();
+            //Borra el mensaje de invocación (tras 3 segundos) si se ha configurado para ello
+            if (commandConfig.deleteInvocationCommand) message.delete({timeout: 2000});
 
             //Ejecuta el comando
             listedCmd.run(discord, client, message, args, command, commandConfig);

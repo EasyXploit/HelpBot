@@ -206,6 +206,19 @@ exports.run = (discord, client) => {
         return s;
     };
 
+    //Función para generar sIDs
+    client.functions.sidGenerator = length => {
+        
+        //Requiere el generador de IDs con un alfabeto personalizado
+        const { customAlphabet } = require('nanoid');
+
+        //Asigna el alfabeto y la longitud del ID
+        const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', length || 10);
+
+        //Devuelve el sID generado
+        return nanoid();
+    };
+
     //Función para evaluar si se necesitan votos o puede continuar
     client.functions.evaluateDjOrVotes = async (message, command, index) => {
 
@@ -269,8 +282,6 @@ exports.run = (discord, client) => {
 
     //Función para cargar los emojis necesarios en la guild base
     client.functions.uploadSystemEmojis = async () => {
-
-        /* - - - EXPERIMENTAL - - - */
 
         //TIER 0: 50 emojis + 50 animojis
         //TIER 1: 100 emojis + 100 animojis

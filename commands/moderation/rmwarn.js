@@ -28,9 +28,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (!member) return message.channel.send(notToUnwarnEmbed);
         if (member.user.bot) return message.channel.send(noBotsEmbed);
         
-        //Esto comprueba si se ha aportado alguna cantidad numérica
+        //Esto comprueba si se ha aportado alguna advertencia
         let warnID = args[1];
-        if (!warnID || isNaN(warnID) && warnID.toLowerCase() !== 'all') return message.channel.send(noWarnIDEmbed);
+        if (!warnID && warnID.toLowerCase() !== 'all') return message.channel.send(noWarnIDEmbed);
         
         //Esto comprueba si se ha aportado alguna razón
         let reason = args.slice(2).join(" ") || 'Indefinida';
@@ -97,11 +97,18 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
             delete client.warns[member.id];
         } else {
+
+            if (!client.warns[member.id][warnID]) return message.channel.send( new discord.MessageEmbed()
+                .setColor(client.colors.red2)
+                .setDescription(`${client.customEmojis.redTick} No existe la advertencia con ID **${warnID}**`)
+            );
+
             if (!checkIfCanRemoveAny() && client.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send(noPrivilegesEmbed).then(msg => {msg.delete({timeout: 5000})});
 
             successEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.green2)
-                .setDescription(`${client.customEmojis.greenTick} Se ha retirado la advertencia con ID **${warnID}** al miembro **${member.user.tag}**`);
+                .setTitle(`${client.customEmojis.greenTick} Operación completada`)
+                .setDescription(`Se ha retirado la advertencia con ID **${warnID}** al miembro **${member.user.tag}**`);
 
             toDMEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.green)

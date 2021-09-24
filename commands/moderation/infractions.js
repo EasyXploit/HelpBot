@@ -36,9 +36,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (client.warns[member.id]) {
             infractionsCount.total = Object.keys(client.warns[member.id]).length;
 
-            Object.keys(client.warns[member.id]).forEach(entry => {
-                if (Date.now() - entry <= '86400000') infractionsCount.day++
-                if (Date.now() - entry <= '604800000') infractionsCount.week++
+            Object.values(client.warns[member.id]).forEach(entry => {
+                if (Date.now() - entry.timestamp <= '86400000') infractionsCount.day++
+                if (Date.now() - entry.timestamp <= '604800000') infractionsCount.week++
             });
 
             let userWarns = Object.entries(client.warns[member.id]).map((e) => ( { [e[0]]: e[1] } ));
@@ -49,7 +49,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 Object.keys(userWarns[i]).forEach((key) => {
                     let moderator = message.guild.members.cache.get(userWarns[i][key].moderator);
                     if (typeof moderator === "undefined") moderator = 'Moderador desconocido';
-                    lastWarns = lastWarns + `\`${key}\` • ${moderator} • ${new Date(parseInt(key)).toLocaleString()}\n${userWarns[i][key].reason}\n\n`;
+                    lastWarns = lastWarns + `\`${key}\` • ${moderator} • ${new Date(parseInt(userWarns[i][key].timestamp)).toLocaleString()}\n${userWarns[i][key].reason}\n\n`;
                 })
             }
 

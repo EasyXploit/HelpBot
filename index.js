@@ -11,6 +11,7 @@ console.log(splash, divider);
 console.log('- Iniciando cliente ...');
 const discord = require('discord.js');
 const client = new discord.Client({
+    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
     fetchAllMembers: true,
     disableEveryone: true,
     disabledEvents: ['TYPING_START', 'TYPING_STOP'],
@@ -23,7 +24,6 @@ console.log('- ¡Cliente iniciado correctamente!\n');
 client.config = {
     keys: require('./configs/keys.json'),                       //Tokens de autenticación
     guild: require('./configs/guild.json'),                     //Configuraciones de la guild base
-    automod: require('./configs/automodFilters.json'),          //Configuraciones de moderación automática
     automodFilters: require('./configs/automodFilters.json'),   //Filtros de moderación automática
     automodRules: require('./configs/automodRules.json'),       //Reglas de moderación automática
     bannedWords: require('./configs/bannedWords.json'),         //Listado de palabras prohibidas
@@ -47,11 +47,11 @@ client.cooldownedUsers = new Set();     //Cooldowns de los usuarios
 client.dmContexts = {};                 //Contexto de los MDs
 
 //Bases de datos (mediante ficheros)
-client.bans = JSON.parse(client.fs.readFileSync('./databases/bans.json', 'utf-8'));     //Usuarios baneados temporalmente
-client.mutes = JSON.parse(client.fs.readFileSync('./databases/mutes.json', 'utf-8'));   //Usuarios silenciados temporalmente
-client.polls = JSON.parse(client.fs.readFileSync('./databases/polls.json', 'utf-8'));   //Encuestas en marcha
-client.stats = JSON.parse(client.fs.readFileSync('./databases/stats.json', 'utf-8'));   //Estadísticas de los miembros
-client.warns = JSON.parse(client.fs.readFileSync('./databases/warns.json', 'utf-8'));   //Advertencias de los usuarios
+client.bans = JSON.parse(client.fs.readFileSync('./databases/bans.json', 'utf-8'));                     //Usuarios baneados temporalmente
+client.mutes = JSON.parse(client.fs.readFileSync('./databases/mutes.json', 'utf-8'));                   //Usuarios silenciados temporalmente
+client.polls = JSON.parse(client.fs.readFileSync('./databases/polls.json', 'utf-8'));                   //Encuestas en marcha
+client.stats = JSON.parse(client.fs.readFileSync('./databases/stats.json', 'utf-8'));                   //Estadísticas de los miembros
+client.warns = JSON.parse(client.fs.readFileSync('./databases/warns.json', 'utf-8'));                   //Advertencias de los usuarios
 
 //Datos de voz
 client.queues = {};         //Almacena la cola y otros datos

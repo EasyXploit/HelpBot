@@ -44,14 +44,21 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Propaga el rol silenciado
         client.functions.spreadMutedRole(message.guild);
-        
-        let toDeleteCount = command.length - 2 + args[0].length + 2; 
-        let reason = message.content.slice(toDeleteCount) || 'Indefinida';
 
+        //Genera un mensaje de confirmación
         let successEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.green2)
-            .setTitle(`${client.customEmojis.greenTick} Operación completada`)
-            .setDescription(`El miembro **${member.user.tag}** ha sido silenciado, ¿alguien más?`);
+            .setColor(client.colors.orange)
+            .setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado, ¿alguien más?`);
+        
+        //Almacena la razón
+        let toDeleteCount = command.length - 2 + args[0].length + 2; 
+        let reason = message.content.slice(toDeleteCount);
+
+        //Si se ha proporcionado razón, la adjunta al mensaje de confirmación
+        if (reason) successEmbed.setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado debido a **${reason}**, ¿alguien más?`);
+
+        //Esto comprueba si se ha proporcionado una razón
+        if (!reason) reason = 'Indefinida';
 
         let loggingEmbed = new discord.MessageEmbed()
             .setColor(client.colors.red)

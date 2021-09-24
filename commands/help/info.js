@@ -2,7 +2,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     
     //!info
     
-    const packageInfo = require('../package.json');
+    const packageInfo = require('../../package.json');
     
     try {
         let resultEmbed = new discord.MessageEmbed()

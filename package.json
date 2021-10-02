@@ -26,7 +26,6 @@
     "@discordjs/opus": "^0.6.0",
     "asciiart-logo": "^0.2.6",
     "bufferutil": "^4.0.3",
-    "cleverbot-free": "^1.1.6",
     "discord.js": "^12.5.3",
     "libsodium-wrappers": "^0.7.9",
     "moment": "^2.29.1",

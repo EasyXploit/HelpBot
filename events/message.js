@@ -5,14 +5,9 @@ exports.run = async (message, client, discord) => {
 
     //Si el mensaje proviene de un MD
     if (message.channel.type === 'dm') {
+
+        //Devuelve si el mensaje no tiene contenido
         if (!message.content) return;
-
-        //Envía un mensaje al botChatChannel
-        const botChatEmbed = new discord.MessageEmbed()
-            .setAuthor(`Mensaje de: ${message.author.tag}`, message.author.displayAvatarURL({dynamic: true}))
-            .setDescription(message.content);
-
-        await client.botChatChannel.send(botChatEmbed);
 
         //Filtra el texto en busca de códigos de invitación
         let detectedInvites = message.content.match(/(https?:\/\/)?(www.)?(discord.(gg|io|me|li)|discordapp.com\/invite)\/[^\s\/]+?(?=\b)/gm);
@@ -68,35 +63,12 @@ exports.run = async (message, client, discord) => {
         if (message.content.startsWith(client.config.guild.prefix)) {
             const noDMEmbed = new discord.MessageEmbed()
                 .setColor(client.colors.gray)
-                .setDescription(`${client.customEmojis.grayTick} | Por el momento, los comandos de **${client.user.username}** solo está disponible desde el servidor.`);
+                .setDescription(`${client.customEmojis.grayTick} | Por el momento, los comandos de **${client.user.username}** solo están disponible desde el servidor.`);
 
             return await message.author.send(noDMEmbed);
         };
-        
-        //Respuestas conversacionales de Cleverbot
-        if (!client.dmContexts[message.author.id]) client.dmContexts[message.author.id] = ['Hablemos en Español'];
 
-        return await client.cleverbot(message.content, client.dmContexts[message.author.id]).then(async response => {
-            if (client.dmContexts[message.author.id] && !message.content.includes('http')) client.dmContexts[message.author.id].push(message.content);
-
-                let dmChannel = message.author.dmChannel;
-
-                setTimeout(async () => {
-                    dmChannel.startTyping();
-
-                    setTimeout(async () => {
-                        dmChannel.stopTyping();
-                        message.author.send(response);
-
-                        const pilkoChatEmbed = new discord.MessageEmbed()
-                            .setColor(client.colors.primary)
-                            .setAuthor(`Mensaje de: ${client.user.username}`, client.user.displayAvatarURL({dynamic: true}))
-                            .setDescription(response);
-
-                        await client.botChatChannel.send(pilkoChatEmbed);
-                    }, Math.floor(Math.random() * (8000 - 5000 + 1) + 5000));
-                }, Math.floor(Math.random() * (3000 - 2000 + 1) + 2000));
-        });
+        return;
     };
 
     //FILTROS DE AUTO-MODERACIÓN

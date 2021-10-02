@@ -37,14 +37,12 @@ client.config = {
 
 //Dependencias globales
 client.fs = require('fs');                                          //Acceso al sistema de archivos
-client.cleverbot = require('cleverbot-free');                       //API de Cleverbot
 client.colors = require('./resources/data/colors.json');            //Colores globales
 client.automodFiltering = require('./utils/automodFiltering.js');   //Filtros (auto-moderación)
 
 //Datos de usuarios
 client.usersVoiceStates = {};           //Cambios de estado de voz de los usuarios
 client.cooldownedUsers = new Set();     //Cooldowns de los usuarios
-client.dmContexts = {};                 //Contexto de los MDs
 
 //Bases de datos (mediante ficheros)
 client.bans = JSON.parse(client.fs.readFileSync('./databases/bans.json', 'utf-8'));                     //Usuarios baneados temporalmente

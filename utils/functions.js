@@ -51,7 +51,6 @@ exports.run = (discord, client) => {
             return false;
         };
     };
-    };
 
     //Función para comprobar si existe el rol silenciado, y de no existir, crearlo
     client.functions.checkMutedRole = async (guild) => {

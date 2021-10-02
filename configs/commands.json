@@ -72,15 +72,6 @@
 		"blacklistedRoles": [],
 		"additionalAliases": []
 	},
-	"info": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": [],
-		"additionalAliases": []
-	},
 	"infractions": {
 		"enabled": true,
 		"deleteInvocationCommand": false,

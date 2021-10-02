@@ -45,30 +45,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
               .setDescription(`:stopwatch: | ${websocketPing} ms`);
         }
 
-        //TIEMPO DE ACTIVIDAD
-        let uptimeEmbed;
-
-        async function convertMS( milliseconds ) {
-            var day, hour, minute, seconds;
-            seconds = Math.floor(milliseconds / 1000);
-            minute = Math.floor(seconds / 60);
-            seconds = seconds % 60;
-            hour = Math.floor(minute / 60);
-            minute = minute % 60;
-            day = Math.floor(hour / 24);
-            hour = hour % 24;
-
-            uptimeEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.primary)
-                .setTitle('Tiempo de actividad: ')
-                .setDescription(`:stopwatch: | ${day} días, ${hour} horas, ${minute} minutos y ${seconds} segundos`);
-        }
-        convertMS(client.uptime);
-
         //ENVIO DE EMBEDS
         await message.channel.send(botPingEmbed);
         await message.channel.send(websocketPingEmbed);
-        await message.channel.send(uptimeEmbed);
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

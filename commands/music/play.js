@@ -460,7 +460,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                         await message.channel.send(resultsEmbed).then(async msg => {
                             await msg.channel.awaitMessages(m => m.author.id === message.author.id, {max: 1, time: 60000}).then(async collected => {
                                 let option = collected.first().content; //Almacena la opción elegida
-                                collected.first().delete(); //Borra el mensaje de elección
+                                collected.first().delete({timeout: 2000}); //Borra el mensaje de elección
                                 option = parseInt(option); //Parsea la opción
 
                                 //Maneja si la elección es errónea
@@ -474,7 +474,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                                 option = asociatedPositions[option];
 
                                 //Borra el menú
-                                await msg.delete();
+                                msg.delete({timeout: 2000});
 
                                 //Maneja el resultado en función de si es una playlist o un vídeo
                                 if (results[option].type === 'playlist') {

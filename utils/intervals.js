@@ -146,8 +146,7 @@ exports.run = (discord, client) => {
                     .setDescription(`**${client.polls[idKey].title}**\n\n${client.polls[idKey].options}`)
                     .addField('Resultados', results.join(' '));
 
-                await poll.reactions.removeAll();
-                await poll.edit(resultEmbed).then(async poll => {
+                await poll.channel.send(resultEmbed).then(async poll => {
 
                     let loggingEmbed = new discord.MessageEmbed()
                         .setColor(client.colors.blue)
@@ -157,6 +156,8 @@ exports.run = (discord, client) => {
                     await client.loggingChannel.send(loggingEmbed)
 
                 });
+                
+                await poll.delete();
 
                 delete client.polls[idKey];
                 client.fs.writeFile('./databases/polls.json', JSON.stringify(client.polls, null, 4), async err => {

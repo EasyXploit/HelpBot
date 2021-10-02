@@ -151,7 +151,7 @@ exports.run = async (message, client, discord) => {
 
             //Devuelve si el canal no está autorizado
             if (commandConfig.whitelistedChannels.length > 0 && !commandConfig.whitelistedChannels.includes(message.channel.id)) return;
-            if (commandConfig.blacklistedChannels.length > 0 && commandConfig.whitelistedChannels.includes(message.channel.id)) return;
+            if (commandConfig.blacklistedChannels.length > 0 && commandConfig.blacklistedChannels.includes(message.channel.id)) return;
 
             //Carga el embed de error de privilegios
             const noPrivilegesEmbed = new discord.MessageEmbed()

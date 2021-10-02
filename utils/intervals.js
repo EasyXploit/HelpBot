@@ -172,7 +172,7 @@ exports.run = (discord, client) => {
                 let newRemainingTime = `Restante: ${remainingDays}d ${remainingHours}h ${remainingMinutes}m `;
 
                 let updatedPoll = new discord.MessageEmbed()
-                    .setColor(0x2AB7F1)
+                    .setColor('2AB7F1')
                     .attachFiles(new discord.MessageAttachment('./resources/images/poll.png', 'poll.png'))
                     .setAuthor('Encuesta disponible', 'attachment://poll.png')
                     .setDescription(`**${client.polls[idKey].title}**\n\n${client.polls[idKey].options}`)

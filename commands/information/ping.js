@@ -10,12 +10,12 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (botPing <= 180) {
             botPingEmbed = new discord.MessageEmbed()
               .setTitle(`Tiempo de respuesta del bot: `)
-              .setColor(0x7ED321)
+              .setColor('7ED321')
               .setDescription(`:stopwatch: | ${botPing} ms`);
         } else if (botPing > 180 && botPing <= 250) {
             botPingEmbed = new discord.MessageEmbed()
               .setTitle(`Tiempo de respuesta del bot: `)
-              .setColor(0xF5A623)
+              .setColor('F5A623')
               .setDescription(`:stopwatch: | ${botPing} ms`);
         } else {
             botPingEmbed = new discord.MessageEmbed()
@@ -31,12 +31,12 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (websocketPing <= 180) {
             websocketPingEmbed = new discord.MessageEmbed()
               .setTitle(`Tiempo de respuesta del Websocket: `)
-              .setColor(0x7ED321)
+              .setColor('7ED321')
               .setDescription(`:stopwatch: | ${websocketPing} ms`);
         } else if (websocketPing > 180 && websocketPing <= 250) {
             websocketPingEmbed = new discord.MessageEmbed()
               .setTitle(`Tiempo de respuesta del Websocket: `)
-              .setColor(0xF5A623)
+              .setColor('F5A623')
               .setDescription(`:stopwatch: | ${websocketPing} ms`);
         } else {
             websocketPingEmbed = new discord.MessageEmbed()

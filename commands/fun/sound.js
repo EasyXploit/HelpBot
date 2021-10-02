@@ -18,7 +18,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         
         if (args[0] === `list`) {
             let listEmbed = new discord.MessageEmbed()
-                .setColor(0xCCCCCC)
+                .setColor('CCCCCC')
                 .setTitle(`🎙 Lista de grabaciones`)
                 .setDescription(`\`\`\`${newFileNames.join(`    `)}\`\`\``);
             message.channel.send(listEmbed);

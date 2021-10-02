@@ -146,6 +146,28 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
             //Se dispara si ocurre un error durante el streaming
             client.voiceDispatcher.on(`error`, error => {
                 console.log(`${new Date().toLocaleString()} 》Dispatcher error: ${error.stack}`);
+
+                //Si hay conexión
+                if (connection) {
+
+                    //Vacia nowplaying
+                    server.nowplaying = null;
+
+                    //Cambia el estatus a "DISPONIBLE"
+                    client.voiceStatus = true;
+
+                    //Aborta la conexión
+                    connection.disconnect();
+
+                    //Confirma la acción
+                    message.channel.send(`${client.customEmojis.redTick} | Ocurrió un error. El bot ha sido desconectado y la cola se ha vaciado.`);
+
+                    //Bora la información de reproducción del server
+                    delete client.queues[message.guild.id];
+
+                    //Vacía la variable del timeout
+                    client.voiceTimeout = null;
+                }
             });
         };
 

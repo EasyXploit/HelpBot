@@ -38,5 +38,8 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
+  },
+  "nodemonConfig": {
+      "ignore": ["databases/*"]
   }
 }

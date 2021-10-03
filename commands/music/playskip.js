@@ -229,7 +229,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                 if (!args[0].includes('youtu')) return message.channel.send(notSupportedEmbed);
 
-                if (args[0].match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/)) {
+                if (args[0].match(/^.*(list=)([^#\&\?]*).*/)) {
                     //Si se trata de una URL de Playlist, la maneja directamente
                     addPlaylist(args[0]);
                 } else {

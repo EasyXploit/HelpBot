@@ -90,7 +90,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             if (!voiceChannel.joinable) return message.channel.send(noConnectPermissionEmbed)
 
             //Comprueba si la sala está llena
-            if (voiceChannel.full) return message.channel.send(fullRoomEmbed);
+            if (voiceChannel.full  && (!message.guild.voice  || !message.guild.voice.channel || !client.voiceConnection)) return message.channel.send(fullRoomEmbed);
 
             //Función para generar el footer
             function getFooter() {

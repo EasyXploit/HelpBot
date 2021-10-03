@@ -32,7 +32,6 @@ client.config = {
     music: require('./configs/music.json'),                     //Configuración de música
     xp: require('./configs/xp.json'),                           //Configuración de XP
     levelingRewards: require('./configs/levelingRewards.json'), //Configuración de niveles
-    customEmojis: require('./configs/customEmojis.json'),       //Configuración de customEmojis
 };
 
 //Dependencias globales

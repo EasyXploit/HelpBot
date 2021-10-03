@@ -309,7 +309,8 @@ exports.run = (discord, client) => {
         const normalGuildEmojis = client.homeGuild.emojis.cache.filter(emoji => !emoji.animated).map(emoji => emoji.id);
 
         //Listado de emojis a cargar en la guild
-        const emojis = Object.keys(client.config.customEmojis);
+        const customEmojis = require('../databases/customEmojis.json');
+        const emojis = Object.keys(customEmojis);
 
         //Creación de nuevos emojis en la guild
         if ((normalGuildEmojis.length + emojis.length) <= emojisThreshold) {
@@ -319,12 +320,12 @@ exports.run = (discord, client) => {
                 emojis.forEach(async (emojiName, index, array) => {
     
                     //Omite este emoji si ya está presente en la guild
-                    if (normalGuildEmojis.includes(client.config.customEmojis[emojiName])) return;
+                    if (normalGuildEmojis.includes(customEmojis[emojiName])) return;
     
                     //Crea el emoji
                     await client.homeGuild.emojis.create(`./resources/emojis/${emojiName}.png`, emojiName, `Necesario para el funcionamiento de ${client.user.username}.`)
                         .then(emoji => {
-                            client.config.customEmojis[emojiName] = emoji.id;
+                            customEmojis[emojiName] = emoji.id;
                             console.log(`- Emoji [${emoji.name}] creado satisfactoriamente.`)
                         });
     
@@ -335,7 +336,7 @@ exports.run = (discord, client) => {
             
             //Graba los nuevos customEmojis en la configuración tras resolver la promesa
             emojiCreation.then(async () => {
-                await client.fs.writeFile('./configs/customEmojis.json', JSON.stringify(client.config.customEmojis, null, 4), (err) => console.error(err));
+                await client.fs.writeFile('./databases/customEmojis.json', JSON.stringify(client.config.customEmojis, null, 4), (err) => console.error(err));
             });
         } else {
             console.log(`No habían espacios para emojis suficientes.\nNecesitas al menos ${emojis.length} espacios.\nSe usarán emojis Unicode en su lugar.`);

@@ -19,7 +19,7 @@ exports.run = (discord, client) => {
                         if (err) throw err;
 
                         let loggingEmbed = new discord.MessageEmbed()
-                            .setColor(client.colors.green)
+                            .setColor(client.config.colors.correct)
                             .setAuthor('Un usuario ha sido DES-SILENCIADO, pero no se encontraba en el servidor')
                             .addField('ID', idKey, true)
                             .addField('Moderador', `<@${client.user.id}>`, true)
@@ -31,14 +31,14 @@ exports.run = (discord, client) => {
                 };
 
                 let loggingEmbed = new discord.MessageEmbed()
-                    .setColor(client.colors.green)
+                    .setColor(client.config.colors.correct)
                     .setAuthor(`${member.user.tag} ha sido DES-SILENCIADO`, member.user.displayAvatarURL({dynamic: true}))
                     .addField('Miembro', member.user.tag, true)
                     .addField('Moderador', `<@${client.user.id}>`, true)
                     .addField('Razón', 'Venció la amonestación', true);
 
                 let toDMEmbed = new discord.MessageEmbed()
-                    .setColor(client.colors.green)
+                    .setColor(client.config.colors.correct)
                     .setAuthor('[DES-SILENCIADO]', guild.iconURL({dynamic: true}))
                     .setDescription(`${member.user.tag}, has sido des-silenciado en ${guild.name}`)
                     .addField('Moderador', `<@${client.user.id}>`, true)
@@ -67,7 +67,7 @@ exports.run = (discord, client) => {
             if (Date.now() > time) {
 
                 let loggingEmbed = new discord.MessageEmbed()
-                    .setColor(client.colors.green)
+                    .setColor(client.config.colors.correct)
                     .setAuthor(`${user.tag} ha sido DES-BANEADO`, user.displayAvatarURL({dynamic: true}))
                     .addField('Usuario', user.tag, true)
                     .addField('Moderador', `<@${client.user.id}>`, true)
@@ -95,7 +95,7 @@ exports.run = (discord, client) => {
             console.log(`${new Date().toLocaleString()} 》Tiempo de respuesta del Websocket elevado: ${ping} ms\n`);
 
             let debuggingEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.orange)
+                .setColor(client.config.colors.warning)
                 .setFooter(client.user.username, client.user.avatarURL())
                 .setDescription(`${client.customEmojis.orangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);
 
@@ -149,7 +149,7 @@ exports.run = (discord, client) => {
                 await poll.channel.send(resultEmbed).then(async poll => {
 
                     let loggingEmbed = new discord.MessageEmbed()
-                        .setColor(client.colors.blue)
+                        .setColor(client.config.colors.logging)
                         .setTitle('📑 Auditoría - [ENCUESTAS]')
                         .setDescription(`La encuesta "__[${client.polls[idKey].title}](${poll.url})__" ha finalizado en el canal <#${client.polls[idKey].channel}>.`);
 

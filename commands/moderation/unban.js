@@ -5,11 +5,11 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     try {
 
         let notToUnbanEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes escribir el ID del miembro a desbanear`);
 
         let noReasonEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar un motivo`);
 
         if (!args[0]) return message.channel.send(notToUnbanEmbed);
@@ -35,12 +35,12 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         };
 
         let successEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.green2)
+            .setColor(client.config.colors.correct2)
             .setTitle(`${client.customEmojis.greenTick} Operación completada`)
             .setDescription(`El miembro **${user.tag}** ha sido desbaneado`);
 
         let loggingEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.green)
+            .setColor(client.config.colors.correct)
             .setAuthor(`${user.tag} ha sido DESBANEADO`, user.displayAvatarURL({dynamic: true}))
             .addField(`Usuario`, user.tag, true)
             .addField(`Moderador`, message.author.tag, true)
@@ -51,7 +51,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     } catch (error) {
         if (error.toString().includes(`Unknown Ban`)) {
             let notBannedEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.red2)
+                .setColor(client.config.colors.error2)
                 .setDescription(`${client.customEmojis.redTick} Este miembro no ha sido baneado`);
             message.channel.send(notBannedEmbed);
         } else {

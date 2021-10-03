@@ -6,7 +6,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Genera el embed, buscando el contenido necesario con la función
         let invitationEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.primary)
+            .setColor(client.config.colors.primary)
             .setAuthor('Invitación permanente', client.homeGuild.iconURL({dynamic: true}))
             .setDescription(await client.functions.getBotServerInvite())
             .setFooter('Este enlace nunca caduca y tiene usos ilimitados');

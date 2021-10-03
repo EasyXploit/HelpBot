@@ -177,7 +177,7 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
     } catch (error) {
 
         let apiErrorEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Límite de solicitudes a la API de YouTube alcanzado.`);
 
         //Se comprueba si el error es provocado por una limitación de API

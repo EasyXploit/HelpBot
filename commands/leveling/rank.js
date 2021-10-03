@@ -5,7 +5,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     try {
 
         let notFoundEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`);
 
         const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);
@@ -19,7 +19,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         if (member.id in guildStats === false) {
             let noXPEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.red2)
+                .setColor(client.config.colors.error2)
                 .setDescription(`${client.customEmojis.redTick} ${member} no tiene puntos de XP`);
 
             return message.channel.send(noXPEmbed);
@@ -77,7 +77,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         };
 
         let resultEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.primary)
+            .setColor(client.config.colors.primary)
             .setTitle(`🥇 Rango`)
             .setDescription(`Mostrando el rango del miembro **${member.user.tag}**`)
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))

@@ -4,23 +4,23 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     
     try {
         let notToUnwarnEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} Debes mencionar a un miembro o escribir su id`);
 
         let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} Los bots no pueden ser advertidos`);
         
         let noWarnIDEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar el ID de la advertencia a quitar`);
         
         let undefinedReasonEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} Se debe adjuntar una razón`);
         
         let noWarnsEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} Este miembro no tiene advertencias`);
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
@@ -40,7 +40,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Carga el embed de error de privilegios
         const noPrivilegesEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`);
 
         
@@ -76,18 +76,18 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             if (!checkIfCanRemoveAny()) return message.channel.send(noPrivilegesEmbed).then(msg => {msg.delete({timeout: 5000})});
 
             successEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.green2)
+                .setColor(client.config.colors.correct2)
                 .setDescription(`${client.customEmojis.greenTick} Se han retirado todas las advertencias al miembro **${member.user.tag}**`);
 
             toDMEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.green)
+                .setColor(client.config.colors.correct)
                 .setAuthor('[DES-ADVERTIDO]', message.guild.iconURL({ dynamic: true}))
                 .setDescription(`<@${member.id}>, se te han retirado todas la advertencias.`)
                 .addField('Moderador', message.author.tag, true)
                 .addField('Razón', reason, true);
 
             loggingEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.blue)
+                .setColor(client.config.colors.logging)
                 .setTitle('📑 Auditoría - [INFRACCIONES]')
                 .setDescription('Se han retirado todas las advertencias.')
                 .addField('Fecha:', new Date().toLocaleString(), true)
@@ -99,19 +99,19 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         } else {
 
             if (!client.warns[member.id][warnID]) return message.channel.send( new discord.MessageEmbed()
-                .setColor(client.colors.red2)
+                .setColor(client.config.colors.error2)
                 .setDescription(`${client.customEmojis.redTick} No existe la advertencia con ID **${warnID}**`)
             );
 
             if (!checkIfCanRemoveAny() && client.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send(noPrivilegesEmbed).then(msg => {msg.delete({timeout: 5000})});
 
             successEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.green2)
+                .setColor(client.config.colors.correct2)
                 .setTitle(`${client.customEmojis.greenTick} Operación completada`)
                 .setDescription(`Se ha retirado la advertencia con ID **${warnID}** al miembro **${member.user.tag}**`);
 
             toDMEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.green)
+                .setColor(client.config.colors.correct)
                 .setAuthor('[DES-ADVERTIDO]', message.guild.iconURL({ dynamic: true}))
                 .setDescription(`<@${member.id}>, se te ha retirado la advertencia con ID \`${warnID}\``)
                 .addField('Moderador', message.author.tag, true)
@@ -120,7 +120,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .addField('Razón', reason, true);
 
             loggingEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.blue)
+                .setColor(client.config.colors.logging)
                 .setTitle('📑 Auditoría - [INFRACCIONES]')
                 .setDescription('Se ha retirado una advertencia.')
                 .addField('Fecha:', new Date().toLocaleString(), true)

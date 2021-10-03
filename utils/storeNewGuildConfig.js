@@ -12,7 +12,7 @@ exports.run = async (discord, client, guild) => {
 
     //Informar sobre el comando $setup
     const readyForSetup = new discord.MessageEmbed()
-        .setColor(client.colors.green)
+        .setColor(client.config.colors.correct)
         .setTitle(`${client.customEmojis.greenTick} Asistente de configuración.`)
         .setDescription(`¡Genial! Has añadido correctamente a **${client.user.username}**.\nUsa el comando \`${client.config.guild.prefix}setup\` desde __${guild.name}__ para configurar al bot.`);
 

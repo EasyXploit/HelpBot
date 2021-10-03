@@ -4,15 +4,15 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     
     try {
         let notToWarnEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} Debes mencionar a un miembro o escribir su id`);
 
         let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} No puedes advertir a un bot`);
         
         let undefinedReasonEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} Se debe adjuntar una razón`);
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
@@ -31,7 +31,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             if (moderator.roles.highest.position <= member.roles.highest.position) {
 
                 let cannotWarnHigherRoleEmbed = new discord.MessageEmbed()
-                    .setColor(client.colors.red)
+                    .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} No puedes advertir a un miembro con un rol igual o superior al tuyo`);
     
                 return message.channel.send(cannotWarnHigherRoleEmbed);

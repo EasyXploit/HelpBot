@@ -10,7 +10,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         message.channel.send(restartingEmbed);
 
         let loggingEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.blue)
+            .setColor(client.config.colors.logging)
             .setTitle('📑 Auditoría - [ESTADO DEL BOT]')
             .setDescription(`**${message.author.tag}** reinició a **${client.user.username}**`);
 

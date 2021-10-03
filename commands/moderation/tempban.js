@@ -5,19 +5,19 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     try {
         
         let notToBanEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID`);
 
         let noReasonEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar un motivo`);
         
         let alreadyBannedEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Este usuario ya ha sido baneado`);
         
         let noCorrectTimeEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5s\`, \`10m\`, \`12h\` o \`3d\``);
         
         if (!args[0]) return message.channel.send(notToBanEmbed);
@@ -34,7 +34,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             if (moderator.roles.highest.position <= member.roles.highest.position) {
 
                 let cannotBanHigherRoleEmbed = new discord.MessageEmbed()
-                    .setColor(client.colors.red)
+                    .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} No puedes banear a un miembro con un rol igual o superior al tuyo`);
     
                 return message.channel.send(cannotBanHigherRoleEmbed);
@@ -99,7 +99,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Genera un mensaje de confirmación
         let successEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.orange)
+            .setColor(client.config.colors.warning)
             .setDescription(`${client.customEmojis.orangeTick} **${user.tag}** ha sido baneado temporalmente, ¿alguien más?`);
         
         //Almacena la razón
@@ -114,7 +114,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (!reason) reason = 'Indefinida';
 
         let toDMEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setAuthor(`[BANEADO]`, message.guild.iconURL({ dynamic: true}))
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
             .addField(`Moderador`, message.author.tag, true)

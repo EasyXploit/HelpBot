@@ -4,7 +4,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
     try {
         let noUserEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} No has proporcionado un usuario válido`);
 
         const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);

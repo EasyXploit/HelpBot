@@ -172,7 +172,7 @@ exports.run = (discord, client) => {
                     };
 
                     let levelUpEmbed = new discord.MessageEmbed()
-                        .setColor(client.colors.primary)
+                        .setColor(client.config.colors.primary)
                         .setAuthor(`¡Subiste de nivel!`, member.user.displayAvatarURL({dynamic: true}))
                         .setDescription(`Enhorabuena <@${member.id}>, has subido al nivel **${userStats.level}**`);
 
@@ -437,7 +437,7 @@ exports.run = (discord, client) => {
 
         //Se muestra el error en el canal de depuración
         let debuggEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.brown)
+            .setColor(client.config.colors.debugging)
             .setTitle('📋 Depuración')
             .setDescription('Se declaró un error durante la ejecución de un comando')
             .addField('Comando:', command.slice(-0, -3), true)
@@ -449,7 +449,7 @@ exports.run = (discord, client) => {
             .addField('Error:', `\`\`\`${errorString}\`\`\``, true);
         
         let reportedEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setTitle(`${client.customEmojis.redTick} ¡Vaya! Algo fue mal ...`)
             .setDescription('Lo hemos reportado al equipo de desarrollo');
         
@@ -468,7 +468,7 @@ exports.run = (discord, client) => {
 
         //Se muestra el error en el canal de depuración
         let debuggEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.brown)
+            .setColor(client.config.colors.debugging)
             .setTitle('📋 Depuración')
             .setDescription('Se declaró un error durante la ejecución de un evento')
             .addField('Evento:', eventName, true)

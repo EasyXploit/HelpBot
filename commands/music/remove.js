@@ -5,27 +5,27 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     try {
         
         let noConnectionEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} <@${client.user.id}> no está conectado a ninguna sala.`);
         
         let noChannelEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Debes estar conectado a un canal de voz.`);
 
         let notAvailableEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
 
         let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:` + '`' + client.config.guild.prefix + 'remove (posición)`');
         
         let noDispatcherEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} No hay nada en reproducción.`);
         
         let noQueueEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} No hay nada en la cola.`);
         
         //Comprueba si el bot tiene o no una conexión a un canal de voz
@@ -59,11 +59,11 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             };
         } else {
             let isNaNEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.red)
+                .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} Debes proporcionar un número entero.`);
             
             let tooBigEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.red)
+                .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} La canción Nº\`${args[0]}\` no está añadida a la cola.`);
 
             //Comprueba si se ha proporcionado un número entero

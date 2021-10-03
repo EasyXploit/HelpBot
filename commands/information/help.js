@@ -6,7 +6,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     
     try {
         let resultEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.primary)
+            .setColor(client.config.colors.primary)
             .setAuthor(packageInfo.normalizedName, client.user.avatarURL())
             .setTitle(packageInfo.normalizedName)
             .setURL(packageInfo.homepage)

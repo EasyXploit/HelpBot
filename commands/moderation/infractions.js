@@ -4,11 +4,11 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
     try {
         let noUserEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`);
 
         let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} No puedes obtener información de un bot`);
 
         const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);
@@ -66,7 +66,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         }
 
         let resultEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.primary)
+            .setColor(client.config.colors.primary)
             .setTitle(`⚠ Infracciones`)
             .setDescription(`Mostrando las advertencias del miembro **${member.user.tag}**\nSanción actual: \`${sanction || 'Ninguna'}\``)
             .setThumbnail(user.displayAvatarURL({dynamic: true}))

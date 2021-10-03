@@ -7,35 +7,35 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         const randomColor = require('randomcolor');
         
         let noConnectionEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} <@${client.user.id}> no está conectado a ninguna sala.`);
         
         let noChannelEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Debes estar conectado a un canal de voz.`);
 
         let notAvailableEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
 
         let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es: \`${client.config.guild.prefix}playskip (URL de YouTube | término)\``);
         
         let noDispatcherEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} No hay nada en reproducción.`);
 
         let noTalkPermissionEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} No tengo permiso para hablar en esta sala.`);
         
         let fullQueueEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} La cola de reproducción está llena.`);
 
         let fullUserQueueEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} No puedes añadir más canciones a la cola.`);
         
         //Comprueba si el bot tiene o no una conexión a un canal de voz
@@ -204,14 +204,14 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                 //Si hubieron cancines omitidas, lo advierte
                 let unauthorizedSongsEmbed = new discord.MessageEmbed()
-                    .setColor(client.colors.orange)
+                    .setColor(client.config.colors.warning)
                     .setDescription(`${client.customEmojis.orangeTick} Se han omitido \`${playlist.items.length - authorizedSongs}\` canciones por que no puedes añadir más.`);
 
                 if (playlist.items.length > authorizedSongs) message.channel.send(unauthorizedSongsEmbed).then(msg => {msg.delete({timeout: 10000})});
 
                 //Si hubieron cancines omitidas, lo advierte
                 let dupesCountEmbed = new discord.MessageEmbed()
-                    .setColor(client.colors.orange)
+                    .setColor(client.config.colors.warning)
                     .setDescription(`${client.customEmojis.orangeTick} Se han omitido \`${dupesCount}\` canciones duplicadas.`);
 
                 if (dupesCount > 0) message.channel.send(dupesCountEmbed).then(msg => {msg.delete({timeout: 10000})});
@@ -224,7 +224,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             if (args[0].startsWith('http')) {
 
                 let notSupportedEmbed = new discord.MessageEmbed()
-                    .setColor(client.colors.red)
+                    .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} El bot solo puede reproducir música desde YouTube.`);
 
                 if (!args[0].includes('youtu')) return message.channel.send(notSupportedEmbed);
@@ -245,7 +245,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                     //Comprueba si se han obtenido resultados
                     let noResultsEmbed = new discord.MessageEmbed()
-                        .setColor(client.colors.red)
+                        .setColor(client.config.colors.error)
                         .setDescription(`${client.customEmojis.redTick} No se ha encontrado ningún resultado que encaje con ${args.join(' ')}.`);
 
                     if (!yt_info) return message.channel.send(noResultsEmbed);
@@ -255,7 +255,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                     //Comprueba si el resultado no es un directo o un vídeo privado
                     let unsupportedTypeEmbed = new discord.MessageEmbed()
-                        .setColor(client.colors.red)
+                        .setColor(client.config.colors.error)
                         .setDescription(`${client.customEmojis.redTick} No se pueden reproducir directos o vídeo privados.`);
 
                     if (details.isLiveContent || details.isPrivate) return message.channel.send(unsupportedTypeEmbed);
@@ -265,7 +265,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                     //Comprueba si es un duplicado
                     let duplicatedEmbed = new discord.MessageEmbed()
-                        .setColor(client.colors.red)
+                        .setColor(client.config.colors.error)
                         .setDescription(`${client.customEmojis.redTick} Esta canción ya está en la cola.`);
 
                     if (client.config.music.preventDuplicates && await preventDupes(info.link)) return message.channel.send(duplicatedEmbed);
@@ -282,7 +282,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     const results = result.items;
 
                     let noResultsEmbed = new discord.MessageEmbed()
-                        .setColor(client.colors.red)
+                        .setColor(client.config.colors.error)
                         .setDescription(`${client.customEmojis.redTick} No se ha encontrado ningún resultado que encaje con ${args.join(' ')}.`);
 
                     //Comprueba si se han obtenido resultados
@@ -303,7 +303,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                         //Comprueba si es un duplicado
                         let duplicatedEmbed = new discord.MessageEmbed()
-                            .setColor(client.colors.red)
+                            .setColor(client.config.colors.error)
                             .setDescription(`${client.customEmojis.redTick} Esta canción ya está en la cola.`);
 
                         if (client.config.music.preventDuplicates && await preventDupes(info.link)) return message.channel.send(duplicatedEmbed);
@@ -350,7 +350,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                                 //Maneja si la elección es errónea
                                 let incorrectOptionEmbed = new discord.MessageEmbed()
-                                    .setColor(client.colors.red)
+                                    .setColor(client.config.colors.error)
                                     .setDescription(`${client.customEmojis.redTick} Debes escoger una canción de la lista.`);
 
                                 if (isNaN(option) || option < 1 || option > pointer - 1) return message.channel.send(incorrectOptionEmbed);
@@ -378,7 +378,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                                     //Comprueba si es un duplicado
                                     let duplicatedEmbed = new discord.MessageEmbed()
-                                        .setColor(client.colors.red)
+                                        .setColor(client.config.colors.error)
                                         .setDescription(`${client.customEmojis.redTick} Esta canción ya está en la cola.`);
 
                                     if (client.config.music.preventDuplicates && await preventDupes(info.link)) return message.channel.send(duplicatedEmbed);
@@ -389,7 +389,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                                     //Si es un tipo de resultado inesperado, lo maneja y lanza un error
                                     let incorrectTypeEmbed = new discord.MessageEmbed()
-                                        .setColor(client.colors.red)
+                                        .setColor(client.config.colors.error)
                                         .setDescription(`${client.customEmojis.redTick} No se puede reproducir este resultado.`);
 
                                     return message.channel.send(incorrectTypeEmbed);

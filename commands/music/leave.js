@@ -4,11 +4,11 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
     try {
         let notInChannelEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} El bot no está en ningún canal de voz.`);
         
         let notInYourChannelEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que ${client.user.username}.`);
 
         //Comprueba si hay una conexión de voz

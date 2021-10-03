@@ -28,6 +28,7 @@ client.config = {
     automodRules: require('./configs/automodRules.json'),       //Reglas de moderación automática
     bannedWords: require('./configs/bannedWords.json'),         //Listado de palabras prohibidas
     commands: require('./configs/commands.json'),               //Configuración de comandos
+    colors: require('./configs/colors.json'),            //Configuración de colores globales
     presence: require('./configs/presence.json'),               //Configuración de presencia
     music: require('./configs/music.json'),                     //Configuración de música
     xp: require('./configs/xp.json'),                           //Configuración de XP
@@ -36,7 +37,6 @@ client.config = {
 
 //Dependencias globales
 client.fs = require('fs');                                          //Acceso al sistema de archivos
-client.colors = require('./resources/data/colors.json');            //Colores globales
 client.automodFiltering = require('./utils/automodFiltering.js');   //Filtros (auto-moderación)
 
 //Datos de usuarios

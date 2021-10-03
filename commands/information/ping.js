@@ -20,7 +20,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         } else {
             botPingEmbed = new discord.MessageEmbed()
               .setTitle(`Tiempo de respuesta del bot: `)
-              .setColor(client.colors.red2)
+              .setColor(client.config.colors.error2)
               .setDescription(`:stopwatch: | ${botPing} ms`);
         }
 
@@ -41,7 +41,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         } else {
             websocketPingEmbed = new discord.MessageEmbed()
               .setTitle(`Tiempo de respuesta del Websocket: `)
-              .setColor(client.colors.red2)
+              .setColor(client.config.colors.error2)
               .setDescription(`:stopwatch: | ${websocketPing} ms`);
         }
 

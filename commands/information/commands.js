@@ -4,7 +4,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     
     try {
         let commandsEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.gray)
+            .setColor(client.config.colors.information)
             .setTitle(`${client.customEmojis.grayTick} En desarrollo ...`)
             .setDescription(`La lista de comandos de **${client.user.username}** se encuentra actualmente en desarrollo.`);
         message.channel.send(commandsEmbed);

@@ -5,12 +5,12 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     try {
   
         let successEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.green2)
+            .setColor(client.config.colors.correct2)
             .setTitle(`${client.customEmojis.greenTick} Operación completada`)
             .setDescription(`Deteniendo ${client.user.username} . . .`); 
 
         let loggingEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.orange)
+            .setColor(client.config.colors.warning)
             .setTitle('📑 Auditoría - [ESTADO DEL BOT]')
             .setDescription(`**${message.author.tag}** detuvo a **${client.user.username}**. \nEl bot tendrá que ser arrancado manualmente.`);
 

@@ -28,7 +28,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         });
 
         let resultEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.primary)
+            .setColor(client.config.colors.primary)
             .setAuthor(`Información del servidor`, guild.iconURL({dynamic: true}))
             .setDescription(`Mostrando información acerca de la guild ${guild.name}`)
             .setThumbnail(guild.iconURL({dynamic: true}))

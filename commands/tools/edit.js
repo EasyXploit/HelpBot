@@ -4,7 +4,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     
     try {
         let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}edit <ID del canal> <ID del mensaje> <nuevo contenido>\``);
         
         if (!args[0] || !args[1] || !args[2]) return message.channel.send(incorrectSyntaxEmbed);
@@ -19,7 +19,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (!newContent) return message.channel.send(incorrectSyntaxEmbed);
 
         let newEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.primary)
+            .setColor(client.config.colors.primary)
             .setDescription(newContent);
         
         msg.edit(newEmbed);

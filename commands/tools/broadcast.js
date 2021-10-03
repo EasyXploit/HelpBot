@@ -5,7 +5,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     try {
         
         let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}broadcast (autor | anonimo) (embed | normal) (mensaje a enviar)\``);
         
         if (args.length < 3 || (args[0] !== 'autor' && args[0] !== 'anonimo') || (args[1] !== 'embed' && args[1] !== 'normal')) return message.channel.send(incorrectSyntaxEmbed);
@@ -20,7 +20,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 if (type === 'embed') {
                     resultMessage = new discord.MessageEmbed()
                         .setAuthor(`Mensaje de: ${message.author.tag}`, message.author.avatarURL())
-                        .setColor(client.colors.primary)
+                        .setColor(client.config.colors.primary)
                         .setDescription(body);
                 } else if (type === 'normal') {
                     resultMessage = `**Mensaje de ${message.author.tag}:**\n${resultMessage}`
@@ -29,18 +29,18 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             case 'anonimo':
                 if (type === 'embed') {
                     resultMessage = new discord.MessageEmbed()
-                        .setColor(client.colors.primary)
+                        .setColor(client.config.colors.primary)
                         .setDescription(body);
                 }
                 break;
         };
 
         let sendingEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.gray)
+            .setColor(client.config.colors.information)
             .setDescription(`${client.customEmojis.grayTick} El mensaje está siendo enviado`);
 
         let confirmEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.green2)
+            .setColor(client.config.colors.correct2)
             .setDescription(`${client.customEmojis.greenTick} ¡Mensaje enviado!`);
             
         await message.channel.send(sendingEmbed);

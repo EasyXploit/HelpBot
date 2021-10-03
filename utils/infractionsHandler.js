@@ -26,7 +26,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
         let duration = Math.floor(time/(24000*1000*60*60)) + "d " + Math.floor(time/(1000*60*60)) + ":" + Math.floor(time/(1000*60))%60 + ":" + Math.floor(time/1000)%60 || '∞';
 
         let loggingEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setAuthor(`${member.user.tag} ha sido SILENCIADO`, member.user.displayAvatarURL({dynamic: true}))
             .addField('Miembro', member.user.tag, true)
             .addField('Moderador', moderator.tag, true)
@@ -34,11 +34,11 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
             .addField('Duración', duration, true);
 
         let publicEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.orange)
+            .setColor(client.config.colors.warning)
             .setDescription(`${client.customEmojis.OrangeTick} ${user.tag} ha sido silenciado por que acumuló demasiadas advertencias, ¿alguien más?`);
 
         let toDMEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setAuthor('[SILENCIADO]', guild.iconURL({dynamic: true}))
             .setDescription(`${member.user.tag}, has sido silenciado en ${guild.name}`)
             .addField('Moderador', moderator.tag, true)
@@ -53,18 +53,18 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
     //Función para expulsar
     async function kick() {
         let loggingEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setAuthor(`${member.user.tag} ha sido EXPULSADO`, member.user.displayAvatarURL({dynamic: true}))
             .addField('Miembro', member.user.tag, true)
             .addField('Moderador', moderator.tag, true)
             .addField('Razón', 'Demasiadas advertencias', true);
 
         let publicEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.orange)
+            .setColor(client.config.colors.warning)
             .setDescription(`${client.customEmojis.OrangeTick} ${user.tag} ha sido expulsado por que acumuló demasiadas advertencias, ¿alguien más?`);
 
         let toDMEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setAuthor(`[EXPULSADO]`, guild.iconURL({dynamic: true}))
             .setDescription(`<@${member.id}>, has sido expulsado en ${guild.name}`)
             .addField(`Moderador`, moderator.tag, true)
@@ -91,7 +91,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
         };
 
         let loggingEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setAuthor(`${member.user.tag} ha sido BANEADO`, user.displayAvatarURL({dynamic: true}))
             .addField(`Miembro`, member.user.tag, true)
             .addField(`ID`, member.id, true)
@@ -100,11 +100,11 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
             .addField(`Duración`, new Date(parseInt(time)).toLocaleString() || '∞', true);
 
         let publicEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.orange)
+            .setColor(client.config.colors.warning)
             .setDescription(`${client.customEmojis.OrangeTick} ${user.tag} ha sido baneado por que acumuló demasiadas advertencias, ¿alguien más?`);
 
         let toDMEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setAuthor(`[BANEADO]`, message.guild.iconURL({ dynamic: true}))
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
             .addField(`Moderador`, moderator.tag, true)
@@ -124,11 +124,11 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
 
     //Envía un mensaje de advertencia
     let publicWarnEmbed = new discord.MessageEmbed()
-        .setColor(client.colors.orange)
+        .setColor(client.config.colors.warning)
         .setDescription(`${client.customEmojis.orangeTick} El miembro **${member.user.tag}** ha sido advertido debido a **${warnReason}**.`);
 
     let toDMEmbed = new discord.MessageEmbed()
-        .setColor(client.colors.orange)
+        .setColor(client.config.colors.warning)
         .setAuthor(`[ADVERTIDO]`, guild.iconURL({dynamic: true}))
         .setDescription(`<@${member.id}>, has sido advertido en ${guild.name}`)
         .addField(`Moderador`, moderator.tag, true)
@@ -159,7 +159,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
             if (err) throw err;
 
             let loggingEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.orange)
+                .setColor(client.config.colors.warning)
                 .setAuthor(`${member.user.tag} ha sido ADVERTIDO`, member.user.displayAvatarURL({dynamic: true}))
                 .addField(`Miembro`, member.user.tag, true)
                 .addField(`Moderador`, moderator.tag, true)

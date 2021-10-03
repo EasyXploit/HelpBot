@@ -9,7 +9,7 @@ exports.run = async (event, client, discord) => {
             if (event.user.bot) {
                 if (event.user.id === client.user.id) return;
                 const loggingEmbed = new discord.MessageEmbed()
-                    .setColor(client.colors.orange)
+                    .setColor(client.config.colors.warning)
                     .setTitle('📑 Auditoría - [BOTS]')
                     .setDescription(`El **BOT** @${event.user.tag} fue expulsado del servidor.`);
                 
@@ -24,7 +24,7 @@ exports.run = async (event, client, discord) => {
                 }
 
                 const loggingEmbed = new discord.MessageEmbed()
-                    .setColor(client.colors.red)
+                    .setColor(client.config.colors.error)
                     .setAuthor(`${event.user.tag} ha sido EXPULSADO`, event.user.displayAvatarURL({dynamic: true}))
                     .addField('Miembro', `<@${event.user.id}>`, true)
                     .addField('Moderador', moderador.tag || 'Desconocido', true)
@@ -62,7 +62,7 @@ exports.run = async (event, client, discord) => {
             if (fetchedBans.entries.first() && (fetchedBans.entries.first().createdTimestamp > (Date.now() - 5000))) return;
 
             let loggingEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.orange)
+                .setColor(client.config.colors.warning)
                 .setThumbnail(event.user.displayAvatarURL({dynamic: true}))
                 .attachFiles(new discord.MessageAttachment('./resources/images/out.png', 'out.png'))
                 .setAuthor('Un miembro abandonó', 'attachment://out.png')

@@ -5,23 +5,23 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     try {
         
         let unknownMemberEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} Debes mencionar a un miembro o escribir su id`);
 
         let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} Los bots no pueden ganar XP`);
         
         let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}xp (@miembro | id) (set | add | remove | clear) <cantidad>\``);
 
         let incorrectQuantityEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad válida`);
 
         let noXPEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} Este miembro no tiene XP`);
         
 
@@ -67,7 +67,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             if (moderator.roles.highest.position <= member.roles.highest.position) {
 
                 let cannotModifyHigherRoleEmbed = new discord.MessageEmbed()
-                    .setColor(client.colors.red)
+                    .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} No puedes modificar el XP de un miembro con un rol igual o superior al tuyo`);
     
                 return message.channel.send(cannotModifyHigherRoleEmbed);
@@ -163,11 +163,11 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         };
 
         let successEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.green2)
+            .setColor(client.config.colors.correct2)
             .setDescription(`${client.customEmojis.greenTick} Se ha modificado la cantidad de XP del miembro **${member.user.tag}**.`);
 
         let toDMEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.green)
+            .setColor(client.config.colors.correct)
             .setAuthor('[XP MODIFICADO]', message.guild.iconURL({ dynamic: true}))
             .setDescription(`<@${member.id}>, tu cantidad de XP ha sido modificada`)
             .addField('Moderador', message.author.tag, true)
@@ -175,7 +175,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .addField('Nuevo valor', newValue, true);
 
         let loggingEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.blue)
+            .setColor(client.config.colors.logging)
             .setTitle('📑 Auditoría - [SISTEMA DE XP]')
             .setDescription(`Se ha modificado la cantidad de XP de **${member.user.tag}**.`)
             .addField('Fecha:', new Date().toLocaleString(), true)

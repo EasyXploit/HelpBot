@@ -4,7 +4,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
     try {
         let notAvailableEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red)
+            .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} El bot no está disponible. Inténtalo más tarde.`);
         
         let fileNames = client.fs.readdirSync(`./media/audios/`);
@@ -25,7 +25,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         } else {
             
             let noChannelEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.red)
+                .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} Debes estar conectado a un canal de voz.`);
 
             let sound;
@@ -33,7 +33,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             if (!args[0]) sound = newFileNames[Math.floor(Math.random() * newFileNames.length)]
 
             let soundNotFoundEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.red)
+                .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} **${sound}** no existe.`);
 
             if (newFileNames.includes(sound) == false) return message.channel.send(soundNotFoundEmbed);
@@ -51,7 +51,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 };
                 
                 let playingEmbed = new discord.MessageEmbed()
-                    .setColor(client.colors.green2)
+                    .setColor(client.config.colors.correct2)
                     .setDescription(`${client.customEmojis.greenTick} Reproduciendo **${sound}**.`);
                 
                 message.channel.send(playingEmbed);

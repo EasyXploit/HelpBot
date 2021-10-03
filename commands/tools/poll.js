@@ -5,7 +5,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     try {
 
         let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(client.colors.red2)
+            .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es ${client.config.guild.prefix}poll (new | end) [id]`);
 
         if (args[0] === 'new' || !args[0]) {
@@ -16,17 +16,17 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             let fields = [];
 
             let titleEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.primary)
+                .setColor(client.config.colors.primary)
                 .setTitle('📊 Título')
                 .setDescription(`Proporciona un título para la encuesta.`);
 
             let durationEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.primary)
+                .setColor(client.config.colors.primary)
                 .setTitle('⏱ Duración')
                 .setDescription(`Proporciona una duración. Por ejemplo: \`1d 2h 3m 4s\`.\nIntroduce \`-\` para que no tenga fin.`);
 
             let fieldEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.primary)
+                .setColor(client.config.colors.primary)
                 .setTitle(':one: Campos')
                 .setDescription(`Proporciona un nuevo campo (máximo 10).\nEscribe \`end\` para finalizar el asistente.`);
 
@@ -55,7 +55,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                         if (result !== '-') {
                             let inorrectTimeFormatEmbed = new discord.MessageEmbed()
-                                .setColor(client.colors.red2)
+                                .setColor(client.config.colors.error2)
                                 .setDescription(`${client.customEmojis.redTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5d 10h 2m\``);
 
                             let parameters = result.split(' ');
@@ -102,7 +102,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                                 if (!result) return;
 
                                 let anotherFieldEmbed = new discord.MessageEmbed()
-                                    .setColor(client.colors.primary)
+                                    .setColor(client.config.colors.primary)
                                     .setTitle(`${emojiOptions[i + 1]} Campos`)
                                     .setDescription(`Proporciona un nuevo campo (quedan **${10 - i - 1}**).\nEscribe \`end\` para finalizar el asistente.`);
 
@@ -159,7 +159,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                             };
 
                             let loggingEmbed = new discord.MessageEmbed()
-                                .setColor(client.colors.blue)
+                                .setColor(client.config.colors.logging)
                                 .setAuthor(`${message.member.user.tag} ha iniciado una ENCUESTA`, message.member.user.displayAvatarURL({dynamic: true}))
                                 .addField(`Título`, `__[${title}](${poll.url})__`, true)
                                 .addField(`Canal`, `<#${message.channel.id}>`, true)
@@ -173,7 +173,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         } else if (args[0] === 'end' && args[1] && !isNaN(args[1])) {
 
             let notFoundEmbed = new discord.MessageEmbed()
-                .setColor(client.colors.red2)
+                .setColor(client.config.colors.error2)
                 .setDescription(`${client.customEmojis.redTick} La encuesta con ID ${args[1]} no se ha podido encontrar`);
 
             if (!client.polls[args[1]]) return message.channel.send(notFoundEmbed);

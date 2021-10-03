@@ -47,7 +47,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         //Función para mostrar la primera leaderboard o actualizarla
         async function showLeaderboard(embed) {
             let leaderboard = new discord.MessageEmbed()
-                .setColor(client.colors.primary)
+                .setColor(client.config.colors.primary)
                 .setTitle(`:trophy: Tabla de clasificación`)
                 .setDescription(await loadBoard(10 * position - 9, 10 * position))
                 .setFooter(`Página ${position} de ${pages}`, client.homeGuild.iconURL({dynamic: true}));

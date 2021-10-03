@@ -35,15 +35,6 @@
 		"blacklistedRoles": [],
 		"additionalAliases": []
 	},
-	"debugging": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": [],
-		"blacklistedRoles": [],
-		"additionalAliases": []
-	},
 	"dm": {
 		"enabled": true,
 		"deleteInvocationCommand": false,
@@ -123,15 +114,6 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": [],
-		"additionalAliases": []
-	},
-	"logging": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": [],
 		"blacklistedRoles": [],
 		"additionalAliases": []
 	},
@@ -222,24 +204,6 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": [],
-		"additionalAliases": []
-	},
-	"prefix": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": [],
-		"blacklistedRoles": [],
-		"additionalAliases": []
-	},
-	"presence": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": [],
 		"blacklistedRoles": [],
 		"additionalAliases": []
 	},

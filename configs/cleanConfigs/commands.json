@@ -252,15 +252,6 @@
 		"blacklistedRoles": [],
 		"additionalAliases": []
 	},
-	"restart": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": [],
-		"blacklistedRoles": [],
-		"additionalAliases": []
-	},
 	"rmwarn": {
 		"enabled": true,
 		"deleteInvocationCommand": false,
@@ -359,15 +350,6 @@
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
-		"blacklistedRoles": [],
-		"additionalAliases": []
-	},
-	"stop": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": [],
 		"blacklistedRoles": [],
 		"additionalAliases": []
 	},

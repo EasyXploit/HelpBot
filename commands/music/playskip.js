@@ -186,13 +186,12 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                         //Notifica la playlist y comienza a reproducirla/añadirla a la cola
                         let playlistEmbed = new discord.MessageEmbed()
                             .setColor(randomColor())
-                            .attachFiles(new discord.MessageAttachment('./resources/images/dj.png', 'dj.png'))
                             .setAuthor(`Playlist añadida a la cola 🎶`, 'attachment://dj.png')
                             .setDescription(`[${playlist.title}](${playlist.url})\n\n● **Autor:** \`${playlist.author.name}\`\n● **Pistas:** \`${playlist.total_items}\``)
                             .addField(`Solicitado por:`, message.member.displayName, true)
                             .setFooter(getFooter(), client.homeGuild.iconURL({dynamic: true}));
         
-                        message.channel.send({ embeds: [playlistEmbed] });
+                        message.channel.send({ embeds: [playlistEmbed], files: ['./resources/images/dj.png'] });
 
                         //Llama a la función de reproducción
                         reproduction(info);
@@ -337,13 +336,12 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                         //Se almacena envía el menú de elección
                         let resultsEmbed = new discord.MessageEmbed()
                             .setColor(randomColor())
-                            .attachFiles(new discord.MessageAttachment('./resources/images/dj.png', 'dj.png'))
                             .setAuthor(`Elige una canción 🎶`, 'attachment://dj.png')
                             .setDescription(formattedResults);
 
                         //Se espera a que el miembro elija una canción de la lista
-                        await message.channel.send({ embeds: [resultsEmbed] }).then(async msg => {
                             await msg.channel.awaitMessages(m => m.author.id === message.author.id, {max: 1, time: 60000}).then(async collected => {
+                        await message.channel.send({ embeds: [resultsEmbed], files: ['./resources/images/dj.png'] }).then(async msg => {
                                 let option = collected.first().content; //Almacena la opción elegida
                                 collected.first().delete({timeout: 2000}); //Borra el mensaje de elección
                                 option = parseInt(option); //Parsea la opción

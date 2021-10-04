@@ -47,12 +47,11 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         
         let progressEmbed = new discord.MessageEmbed()
             .setColor(randomColor())
-            .attachFiles(new discord.MessageAttachment('./resources/images/dj.png', 'dj.png'))
             .setAuthor(`Ahora mismo:`, 'attachment://dj.png')
             .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n${progressBar.join(``)} ${percentage}%\n\`${moment().startOf('day').milliseconds(progress).format('H:mm:ss')} / ${moment().startOf('day').milliseconds(total).format('HH:mm:ss')}\``)
             .setFooter(footer, client.homeGuild.iconURL({dynamic: true}));
         
-        message.channel.send({ embeds: [progressEmbed] });
+        message.channel.send({ embeds: [progressEmbed], files: ['./resources/images/dj.png'] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

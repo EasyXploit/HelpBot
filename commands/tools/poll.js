@@ -48,7 +48,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 await awaitMessage(embed).then(async result => {
                     if (!result) return;
                     title = result;
-                    embed.edit(durationEmbed);
+                    embed.edit({ embeds: [durationEmbed] });
 
                     await awaitMessage(embed).then(async result => {
                         if (!result) return;
@@ -95,7 +95,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                             };
                         }
 
-                        embed.edit(fieldEmbed);
+                        embed.edit({ embeds: [fieldEmbed] });
 
                         for (let i = 0; i < 10; i++) {
                             await awaitMessage(embed).then(async result => {
@@ -107,7 +107,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                                     .setDescription(`Proporciona un nuevo campo (quedan **${10 - i - 1}**).\nEscribe \`end\` para finalizar el asistente.`);
 
                                 fields[i] = result;
-                                embed.edit(anotherFieldEmbed);
+                                embed.edit({ embeds: [anotherFieldEmbed] });
                             })
 
                             if (!fields[i]) break;
@@ -134,12 +134,11 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                         let resultEmbed = new discord.MessageEmbed()
                             .setColor('2AB7F1')
-                            .attachFiles(new discord.MessageAttachment('./resources/images/poll.png', 'poll.png'))
                             .setAuthor('Encuesta disponible', 'attachment://poll.png')
                             .setDescription(`**${title}**\n\n${options}`)
                             .setFooter(`Duración: ${remainingTime}`);
                         
-                        message.channel.send({ embeds: [resultEmbed] }).then(async poll => {
+                        message.channel.send({ embeds: [resultEmbed], files: ['./resources/images/poll.png'] }).then(async poll => {
                             embed.delete();
                             for (count = 0; count < fields.length; count++) {
                                 await poll.react(UTFemojis[count]);

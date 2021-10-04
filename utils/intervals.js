@@ -141,12 +141,11 @@ exports.run = (discord, client) => {
                 };
 
                 let resultEmbed = new discord.MessageEmbed()
-                    .attachFiles(new discord.MessageAttachment('./resources/images/endFlag.png', 'endFlag.png'))
                     .setAuthor('Encuesta finalizada', 'attachment://endFlag.png')
                     .setDescription(`**${client.polls[idKey].title}**\n\n${client.polls[idKey].options}`)
                     .addField('Resultados', results.join(' '));
 
-                await poll.channel.send({ embeds: [resultEmbed] }).then(async poll => {
+                await poll.channel.send({ embeds: [resultEmbed], files: ['./resources/images/endFlag.png'] }).then(async poll => {
 
                     let loggingEmbed = new discord.MessageEmbed()
                         .setColor(client.config.colors.logging)
@@ -174,12 +173,11 @@ exports.run = (discord, client) => {
 
                 let updatedPoll = new discord.MessageEmbed()
                     .setColor('2AB7F1')
-                    .attachFiles(new discord.MessageAttachment('./resources/images/poll.png', 'poll.png'))
                     .setAuthor('Encuesta disponible', 'attachment://poll.png')
                     .setDescription(`**${client.polls[idKey].title}**\n\n${client.polls[idKey].options}`)
                     .setFooter(newRemainingTime);
 
-                if (oldRemainingTime !== newRemainingTime) await poll.edit(updatedPoll);
+                if (oldRemainingTime !== newRemainingTime) await poll.edit({ embeds: [updatedPoll], files: ['./resources/images/poll.png'] });
             };
         };
     }, 5000);

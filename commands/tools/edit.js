@@ -22,7 +22,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.config.colors.primary)
             .setDescription(newContent);
         
-        msg.edit(newEmbed);
+        msg.edit({ embeds: [newEmbed] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

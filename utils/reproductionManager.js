@@ -54,7 +54,6 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
             //Embed con la información de la canción en reproducción
             let playingEmbed = new discord.MessageEmbed()
                 .setColor(randomColor())
-                .attachFiles(new discord.MessageAttachment('./resources/images/dj.png', 'dj.png'))
                 .setThumbnail(info.thumbnail)
                 .setAuthor(`Reproduciendo 🎶`, 'attachment://dj.png')
                 .setDescription(`[${info.title}](${info.link})\n\n● **Autor:** \`${info.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(info.lengthSeconds).format('H:mm:ss')}\``)
@@ -63,7 +62,7 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
                 .setFooter(footer, client.homeGuild.iconURL({dynamic: true}));
 
             //Envía un mensaje de confirmación
-            message.channel.send({ embeds: [playingEmbed] });
+            message.channel.send({ embeds: [playingEmbed], files: ['./resources/images/dj.png'] });
             
             //Elimina de la cola la canción actual
             if (client.queues[message.guild.id].mode === 'shuffle') { //Si el modo aleatorio está activado

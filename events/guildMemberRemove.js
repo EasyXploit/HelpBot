@@ -64,13 +64,12 @@ exports.run = async (event, client, discord) => {
             let loggingEmbed = new discord.MessageEmbed()
                 .setColor(client.config.colors.warning)
                 .setThumbnail(event.user.displayAvatarURL({dynamic: true}))
-                .attachFiles(new discord.MessageAttachment('./resources/images/out.png', 'out.png'))
                 .setAuthor('Un miembro abandonó', 'attachment://out.png')
                 .setDescription(`${event.user.username} abandonó el servidor`)
                 .addField('🏷 TAG completo', event.user.tag, true)
                 .addField('🆔 ID del miembro', event.user.id, true);
             
-            return await client.channels.cache.get(client.config.guild.joinsAndLeavesChannel).send({ embeds: [loggingEmbed] });
+            return await client.channels.cache.get(client.config.guild.joinsAndLeavesChannel).send({ embeds: [loggingEmbed], files: ['./resources/images/out.png'] });
         }
     } catch (error) {
         if (event.user.id === client.user.id) return;

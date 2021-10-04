@@ -53,7 +53,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setFooter(`Página ${position} de ${pages}`, client.homeGuild.iconURL({dynamic: true}));
 
             if (embed) {
-                await embed.edit(leaderboard).then(async embed => {awaitReactions(embed)});
+                await embed.edit({ embeds: [leaderboard] }).then(async embed => {awaitReactions(embed)});
             } else {
                 await message.channel.send({ embeds: [leaderboard] }).then(async embed => {awaitReactions(embed)});
             };

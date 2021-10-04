@@ -43,7 +43,6 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             //Carga el embed de la cola
             let queueEmbed = new discord.MessageEmbed()
                     .setColor(randomColor())
-                    .attachFiles(new discord.MessageAttachment('./resources/images/dj.png', 'dj.png'))
                     .setAuthor(`Cola de reproducción - Ahora mismo:`, 'attachment://dj.png')
                     .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n● Duración: \`${server.nowplaying.duration}\`.\n ● Requerida por: \`${server.nowplaying.requestedBy}\``)
                     .setFooter(footer, client.homeGuild.iconURL({dynamic: true}));
@@ -67,11 +66,11 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
             //Elige si se ha de enviar el embed o editarlo
             if (embed) {
-                await embed.edit(queueEmbed).then(async embed => {
+                await embed.edit({ embeds: [queueEmbed], files: ['./resources/images/dj.png'] }).then(async embed => {
                     if ((Math.ceil(serverQueue.length / 5)) != 0) awaitReactions(embed);
                 });
             } else {
-                await message.channel.send({ embeds: [queueEmbed] }).then(async embed => {
+                await message.channel.send({ embeds: [queueEmbed], files: ['./resources/images/dj.png'] }).then(async embed => {
                     if ((Math.ceil(serverQueue.length / 5)) != 0) awaitReactions(embed);
                 });
             };

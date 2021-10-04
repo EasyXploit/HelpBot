@@ -45,7 +45,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         
         //Se comprueba si puede des-advertir al miembro
-        if (moderator.id !== message.guild.owner.id) {
+        if (moderator.id !== message.guild.ownerId) {
             if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {msg.delete({timeout: 5000})});
         };
 

@@ -63,7 +63,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         let moderator = await client.functions.fetchMember(message.guild, message.author.id);
         
         //Se comprueba si puede añadir XP al miembro en función de la jerarquía de roles
-        if (moderator.id !== message.guild.owner.id) {
+        if (moderator.id !== message.guild.ownerId) {
             if (moderator.roles.highest.position <= member.roles.highest.position) {
 
                 let cannotModifyHigherRoleEmbed = new discord.MessageEmbed()

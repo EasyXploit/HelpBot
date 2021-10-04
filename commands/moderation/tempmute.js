@@ -27,7 +27,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         let moderator = await client.functions.fetchMember(message.guild, message.author.id);
         
         //Se comprueba si puede banear al miembro
-        if (moderator.id !== message.guild.owner.id) {
+        if (moderator.id !== message.guild.ownerId) {
             if (moderator.roles.highest.position <= member.roles.highest.position) {
 
                 let cannotMuteHigherRoleEmbed = new discord.MessageEmbed()

@@ -21,7 +21,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Comprueba los permisos del usuario
         let status = [];
-        if (member.id === message.guild.owner.id) {
+        if (member.id === message.guild.ownerId) {
             status.push(`Propietario`)
         };
         

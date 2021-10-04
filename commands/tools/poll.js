@@ -36,7 +36,8 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             
             async function awaitMessage(msg) {
                 let resultMsg;
-                await msg.channel.awaitMessages(m => m.author.id === message.author.id, {max: 1, time: 60000}).then(async collected => {
+                const filter = msg => msg.author.id === message.author.id;
+                await msg.channel.awaitMessages({filter, max: 1, time: 60000}).then(async collected => {
                     const result = collected.first().content;
                     collected.first().delete({timeout: 2000});
                     resultMsg =  result;

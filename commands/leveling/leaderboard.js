@@ -78,7 +78,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             };
 
             //Inicializa un listener de reaccciones en función del filtro
-            embed.awaitReactions(filter, { max: 1, time: 60000, errors: [`time`] }).then(async collected => {
+            embed.awaitReactions({ filter, max: 1, time: 60000, errors: [`time`] }).then(async collected => {
                 const reaction = collected.first();
 
                 //Según el emoji reaccionado, actualiza el contador consecutivamente

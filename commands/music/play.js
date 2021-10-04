@@ -454,8 +454,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                             .setDescription(formattedResults);
 
                         //Se espera a que el miembro elija una canción de la lista
-                            await msg.channel.awaitMessages(m => m.author.id === message.author.id, {max: 1, time: 60000}).then(async collected => {
                         await message.channel.send({ embeds: [resultsEmbed], files: ['./resources/images/dj.png'] }).then(async msg => {
+                            const filter = msg => msg.author.id === message.author.id;
+                            await msg.channel.awaitMessages({filter, max: 1, time: 60000}).then(async collected => {    //<--- MAL
                                 let option = collected.first().content; //Almacena la opción elegida
                                 collected.first().delete({timeout: 2000}); //Borra el mensaje de elección
                                 option = parseInt(option); //Parsea la opción

@@ -1,7 +1,7 @@
 exports.run = (discord, client) => {
 
     //Comprobación de miembros silenciados temporalmente
-    client.setInterval(async () => {
+    setInterval(async () => {
         for (let idKey in client.mutes) {
             let time = client.mutes[idKey].time;
 
@@ -58,7 +58,7 @@ exports.run = (discord, client) => {
     }, 5000);
 
     //Comprobación de miembros baneados temporalmente
-    client.setInterval(async () => {
+    setInterval(async () => {
         for (let idKey in client.bans) {
             let time = client.bans[idKey].time;
             let guild = client.guilds.cache.get(client.homeGuild.id);
@@ -89,7 +89,7 @@ exports.run = (discord, client) => {
     }, 5000);
 
     //Comprobación del tiempo de respuesta del Websocket
-    client.setInterval(async () => {
+    setInterval(async () => {
         let ping = Math.round(client.ping);
         if (ping > 1000) {
             console.log(`${new Date().toLocaleString()} 》Tiempo de respuesta del Websocket elevado: ${ping} ms\n`);
@@ -104,7 +104,7 @@ exports.run = (discord, client) => {
     }, 60000);
 
     //Comprobación de encuestas expiradas
-    client.setInterval(async () => {
+    setInterval(async () => {
         for (let idKey in client.polls) {
             let channel, poll;
             let duration = client.polls[idKey].duration;
@@ -185,7 +185,7 @@ exports.run = (discord, client) => {
     }, 5000);
 
     //Comprobación de minutos de voz
-    client.setInterval(async () => {
+    setInterval(async () => {
         for (let idKey in client.usersVoiceStates) {
 
             //Almacena el estado de voz actual del miembro, y su guild
@@ -205,7 +205,7 @@ exports.run = (discord, client) => {
     }, client.config.xp.XPGainInterval);
 
     //Actualización de miembros totales en presencia
-    client.setInterval(async () => {
+    setInterval(async () => {
         if (!client.config.presence.membersCount) return;
         const name = `${await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size)} miembros | ${client.config.presence.name}`;
 

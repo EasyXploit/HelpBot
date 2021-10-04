@@ -42,7 +42,7 @@ exports.run = async (message, client, discord) => {
                         .addField('Moderador', client.user.tag, true)
                         .addField('Razón', 'Spam vía MD', true);
 
-                    await member.send(toDMEmbed);
+                    await member.send({ embeds: [toDMEmbed] });
                     return await member.kick(`Moderador: ${client.user.id}, Razón: Spam vía MD al bot`);
                 } else {
                     let toDMEmbed = new discord.MessageEmbed()
@@ -53,7 +53,7 @@ exports.run = async (message, client, discord) => {
                         .addField('Razón', 'Spam vía MD', true)
                         .addField('Duración', '14d', true);
 
-                    await member.send(toDMEmbed);
+                    await member.send({ embeds: [toDMEmbed] });
                     return await client.homeGuild.members.ban(member, {reason: `Moderador: ${client.user.id}, Duración: 14d, Razón: Spam vía MD al bot`});
                 };
             };
@@ -65,7 +65,7 @@ exports.run = async (message, client, discord) => {
                 .setColor(client.config.colors.information)
                 .setDescription(`${client.customEmojis.grayTick} | Por el momento, los comandos de **${client.user.username}** solo están disponible desde el servidor.`);
 
-            return await message.author.send(noDMEmbed);
+            return await message.author.send({ embeds: [noDMEmbed] });
         };
 
         return;
@@ -109,7 +109,7 @@ exports.run = async (message, client, discord) => {
         //Comprueba si es un comando con prefijo
         if (message.content.startsWith(client.config.guild.prefix)) {
             let waitEmbed = new discord.MessageEmbed().setColor(client.config.colors.error2).setDescription(`${client.customEmojis.redTick} Debes esperar 2 segundos antes de usar este comando`);
-            if (client.cooldownedUsers.has(message.author.id)) return message.channel.send(waitEmbed).then(msg => {msg.delete({timeout: 1000})});
+            if (client.cooldownedUsers.has(message.author.id)) return message.channel.send({ embeds: [waitEmbed] }).then(msg => {msg.delete({timeout: 1000})});
 
             //Busca el comando por su nombre o su alias
             const listedCmd = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
@@ -145,21 +145,21 @@ exports.run = async (message, client, discord) => {
                 };
 
                 //Si no se permitió la ejecución, manda un mensaje de error
-                if (!authorized) return message.channel.send(noPrivilegesEmbed).then(msg => {msg.delete({timeout: 5000})});
+                if (!authorized) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {msg.delete({timeout: 5000})});
             } else if (commandConfig.blacklistedRoles.length > 0) { //Si la lista negra contiene entradas
 
                 //Para cada ID de rol de la lista negra
                 for (let i = 0; i < commandConfig.blacklistedRoles.length; i++) {
 
                     //Si no se permite a todo el mundo y el que invocó el comando no es el dueño, entonces deniega la ejecución
-                    if (commandConfig.blacklistedRoles[i] === 'everyone' && message.author.id !== message.guild.ownerID) return message.channel.send(noPrivilegesEmbed).then(msg => {msg.delete({timeout: 5000})});
+                    if (commandConfig.blacklistedRoles[i] === 'everyone' && message.author.id !== message.guild.ownerID) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {msg.delete({timeout: 5000})});
 
                     //Si uno de los roles del miembno coincide con la lista negra, entonces deniega la ejecución
-                    if (message.member.roles.cache.find(r => r.id === commandConfig.blacklistedRoles[i])) return message.channel.send(noPrivilegesEmbed).then(msg => {msg.delete({timeout: 5000})});
+                    if (message.member.roles.cache.find(r => r.id === commandConfig.blacklistedRoles[i])) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {msg.delete({timeout: 5000})});
                 };
             } else {
                 //Manda un mensaje de error
-                if (message.author.id !== message.guild.ownerID) return message.channel.send(noPrivilegesEmbed).then(msg => {msg.delete({timeout: 5000})});
+                if (message.author.id !== message.guild.ownerID) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {msg.delete({timeout: 5000})});
             };
 
             //Borra el mensaje de invocación (tras 3 segundos) si se ha configurado para ello

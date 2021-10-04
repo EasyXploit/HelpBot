@@ -25,8 +25,8 @@
   "dependencies": {
     "@discordjs/opus": "^0.6.0",
     "asciiart-logo": "^0.2.6",
-    "bufferutil": "^4.0.3",
-    "discord.js": "^12.5.3",
+    "bufferutil": "^4.0.4",
+    "discord.js": "^13.1.0",
     "libsodium-wrappers": "^0.7.9",
     "moment": "^2.29.1",
     "nanoid": "^3.1.25",
@@ -40,6 +40,8 @@
     "nodemon": "^2.0.12"
   },
   "nodemonConfig": {
-      "ignore": ["databases/*"]
+    "ignore": [
+      "databases/*"
+    ]
   }
 }

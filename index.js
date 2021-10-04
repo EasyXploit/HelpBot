@@ -18,10 +18,6 @@ const client = new discord.Client({
         discord.Intents.FLAGS.GUILD_MEMBERS,
         discord.Intents.FLAGS.DIRECT_MESSAGES],
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
-    fetchAllMembers: true,
-    disableEveryone: true,
-    disabledEvents: ['TYPING_START', 'TYPING_STOP'],
-    autoReconnect: true,
     retryLimit: Infinity 
 });
 console.log('- ¡Cliente iniciado correctamente!\n');

@@ -16,7 +16,7 @@ exports.run = async (message, client, discord) => {
         if (detectedInvites) {
             let legitInvites = 0;
 
-            await client.homeGuild.fetchInvites().then(guildInvites => {
+            await client.homeGuild.invites.fetch().then(guildInvites => {
 
                 let inviteCodes = Array.from(guildInvites.keys());
 

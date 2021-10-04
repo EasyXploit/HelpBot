@@ -522,7 +522,7 @@ exports.run = (discord, client) => {
         if (!client.config.guild.homeGuildInviteCode) {
 
             //Comprueba si ya existe una invitación
-            await client.homeGuild.fetchInvites().then(invites => {
+            await client.homeGuild.invites.fetch().then(invites => {
                 invites.forEach(async invite => {
                     if (invite.inviter === client.user) foundInvite = invite.code;
                 });
@@ -536,7 +536,7 @@ exports.run = (discord, client) => {
 
         } else {
             //Busca la invitación
-            await client.homeGuild.fetchInvites(client.config.guild.homeGuildInviteCode).then(async invite => {
+            await client.homeGuild.invites.fetch(client.config.guild.homeGuildInviteCode).then(async invite => {
 
                 //Crea la invitación si no existe
                 if (!invite) await createInvite();

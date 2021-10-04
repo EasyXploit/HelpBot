@@ -22,7 +22,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Esto comprueba si se debe proporcionar razón
         let reason = message.content.slice(toDeleteCount)
-        if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send({ embeds: [noReasonEmbed] });
+        if (!reason && message.author.id !== message.guild.ownerId) return message.channel.send({ embeds: [noReasonEmbed] });
         if (!reason) reason = `Indefinida`;
 
         await message.guild.members.unban(user.id);

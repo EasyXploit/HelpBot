@@ -19,7 +19,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (!voiceChannel) return message.channel.send({ embeds: [notAvailableEmbed] });
 
         //Comprueba si el miembro está en el mismo canal que el bot
-        if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send({ embeds: [notAvailableEmbed] });
+        if (message.member.voice.channelId !== message.guild.member(client.user).voice.channelId) return message.channel.send({ embeds: [notAvailableEmbed] });
 
         let noTalkPermissionEmbed = new discord.MessageEmbed()
             .setColor(client.config.colors.error)

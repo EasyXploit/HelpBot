@@ -23,10 +23,10 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (message.guild.voice && message.guild.voice.channel) {
             
             //Si está en otra sala diferente
-            if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send({ embeds: [alreadyInChannelEmbed] });
+            if (message.member.voice.channelId !== message.guild.member(client.user).voice.channelId) return message.channel.send({ embeds: [alreadyInChannelEmbed] });
             
             //Si está en la sala del miembro
-            if (message.member.voice.channelID === message.guild.member(client.user).voice.channelID) return message.channel.send({ embeds: [alreadyInYourChannelEmbed] });
+            if (message.member.voice.channelId === message.guild.member(client.user).voice.channelId) return message.channel.send({ embeds: [alreadyInYourChannelEmbed] });
         };
 
         let noConnectPermissionEmbed = new discord.MessageEmbed()
@@ -45,7 +45,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (!voiceChannel.joinable || client.config.music.forbiddenChannels.includes(voiceChannel.id)) return message.channel.send({ embeds: [noConnectPermissionEmbed] })
         
         //Comprueba si la sala es de AFK
-        if (message.member.voice.channelID === message.guild.afkChannelID) return message.channel.send({ embeds: [noAfkRoomEmbed] })
+        if (message.member.voice.channelId === message.guild.afkChannelId) return message.channel.send({ embeds: [noAfkRoomEmbed] })
         
         //Comprueba la sala está llena
         if (voiceChannel.full) return message.channel.send({ embeds: [fullRoomEmbed] });

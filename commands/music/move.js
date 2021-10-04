@@ -36,7 +36,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (!voiceChannel) return message.channel.send({ embeds: [noChannelEmbed] });
         
         //Comprueba si el bot está en el mismo canal que el miembro
-        if (message.member.voiceChannelID !== message.guild.member(client.user).voiceChannelID) return message.channel.send({ embeds: [notAvailableEmbed] });
+        if (message.member.voice.channelId !== message.guild.member(client.user).voice.channelId) return message.channel.send({ embeds: [notAvailableEmbed] });
         
         //Comprueba si se han proporcionado argumentos
         if (!args[0] || !args[1]) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });

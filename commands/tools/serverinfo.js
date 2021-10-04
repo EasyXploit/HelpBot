@@ -34,7 +34,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setThumbnail(guild.iconURL({dynamic: true}))
             .addField(`🏷 Nombre`, guild.name, true)
             .addField(`🆔 ID`, guild.id, true)
-            .addField(`👑 Propietario`, `${guild.owner} (ID: ${guild.ownerID})`, true)
+            .addField(`👑 Propietario`, `${guild.owner} (ID: ${guild.ownerId})`, true)
             .addField(`📝 Fecha de creación`, guild.createdAt.toLocaleString(), true)
             .addField(`🌍 Región`, guild.region, true)
             .addField(`🕗 Canal de AFK`, `${guild.afkChannel.name}\nTimeout: ${minutes} minutos`, true)

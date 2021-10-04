@@ -41,7 +41,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             let voiceChannel = message.member.voice.channel;
             if (!voiceChannel) return message.channel.send({ embeds: [noChannelEmbed] });
             
-            if (client.voiceStatus || (voiceChannel.id === message.guild.member(client.user).voice.channelID && !client.voiceDispatcher)) {
+            if (client.voiceStatus || (voiceChannel.id === message.guild.member(client.user).voice.channelId && !client.voiceDispatcher)) {
                 client.voiceStatus = false;
 
                 //Si hay un timeout, lo quita

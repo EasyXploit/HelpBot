@@ -46,7 +46,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (!voiceChannel) return message.channel.send({ embeds: [noChannelEmbed] });
         
         //Comprueba si el bot está en el mismo canal que el miembro
-        if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send({ embeds: [notAvailableEmbed] });
+        if (message.member.voice.channelId !== message.guild.member(client.user).voice.channelId) return message.channel.send({ embeds: [notAvailableEmbed] });
         
         //Comprueba si se han proporcionado argumentos
         if (!args[0]) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
@@ -120,7 +120,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             };
 
             //Función para comprobar cuantas canciones puede subir un miembro a la cola
-            async function authorizedLimit(memberID) {
+            async function authorizedLimit(memberId) {
 
                 //Devuelve false si no hay límite
                 if (client.config.music.userQueueLimit === 0) return false;
@@ -134,7 +134,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                 //Calcula cuantas canciones tiene el miembro en la cola
                 for (let i = 0; i < client.queues[message.guild.id].queue.length; i++) {
-                    if (memberID === client.queues[message.guild.id].queue[i].requestedById) submitted++;
+                    if (memberId === client.queues[message.guild.id].queue[i].requestedById) submitted++;
                 };
 
                 //Devuelve las canciones autorizadas restantes

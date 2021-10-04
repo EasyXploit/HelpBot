@@ -84,7 +84,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             if (!voiceChannel) return message.channel.send({ embeds: [noChannelEmbed] });
 
             //Comprueba si el bot tiene permiso para hablar
-            if (!voiceChannel.speakable || !voiceChannel.joinable || client.config.music.forbiddenChannels.includes(voiceChannel.id) || message.member.voice.channelID === message.guild.afkChannelID) return message.channel.send(noTalkPermissionEmbed);
+            if (!voiceChannel.speakable || !voiceChannel.joinable || client.config.music.forbiddenChannels.includes(voiceChannel.id) || message.member.voice.channelId === message.guild.afkChannelId) return message.channel.send({ embeds: [noTalkPermissionEmbed] });
 
             //Comprueba si el bot tiene permiso para conectarse
             if (!voiceChannel.joinable) return message.channel.send({ embeds: [noConnectPermissionEmbed] })
@@ -159,7 +159,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                     }).catch(err => console.log(`${new Date().toLocaleString()} 》${err.stack}`));
 
-                } else if (message.member.voice.channelID === message.guild.member(client.user).voice.channelID) {
+                } else if (message.member.voice.channelId === message.guild.member(client.user).voice.channelId) {
                     //Comprueba si la guild tiene una cola de reproducción
                     if (!client.queues[message.guild.id]) {
                         client.queues[message.guild.id] = {
@@ -225,7 +225,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             };
 
             //Función para comprrobar cuantas canciones puede subir un miembro a la cola
-            async function authorizedLimit(memberID) {
+            async function authorizedLimit(memberId) {
 
                 //Devuelve false si no hay límite
                 if (client.config.music.userQueueLimit === 0) return false;
@@ -239,7 +239,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                 //Calcula cuantas canciones tiene el miembro en la cola
                 for (let i = 0; i < client.queues[message.guild.id].queue.length; i++) {
-                    if (memberID === client.queues[message.guild.id].queue[i].requestedById) submitted++;
+                    if (memberId === client.queues[message.guild.id].queue[i].requestedById) submitted++;
                 };
 
                 //Devuelve las canciones autorizadas restantes

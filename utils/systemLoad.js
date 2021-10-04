@@ -67,7 +67,7 @@ exports.run = async (discord, client) => {
                 };
             };
 
-            if (member.user.bot || client.config.xp.nonXPChannels.includes(voiceState.channelID) || voiceState.channelID === voiceState.guild.afkChannel.id || nonXPRole) {
+            if (member.user.bot || client.config.xp.nonXPChannels.includes(voiceState.channelId) || voiceState.channelId === voiceState.guild.afkChannel.id || nonXPRole) {
                 if (client.usersVoiceStates[voiceState.id]) {
                     //Borra el registro del miembro que ha dejado el canal de voz
                     delete client.usersVoiceStates[voiceState.id];
@@ -76,11 +76,11 @@ exports.run = async (discord, client) => {
             };
 
             if (client.usersVoiceStates[voiceState.id]) {
-                client.usersVoiceStates[voiceState.id].channelID = voiceState.channelID
+                client.usersVoiceStates[voiceState.id].channelId = voiceState.channelId
             } else  {
                 client.usersVoiceStates[voiceState.id] = {
                     guild: voiceState.guild.id,
-                    channelID: voiceState.channelID,
+                    channelID: voiceState.channelId,
                     last_xpReward: Date.now()
                 };
             };

@@ -34,7 +34,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         
         //Esto comprueba si se ha aportado alguna razón
         let reason = args.slice(2).join(" ") || 'Indefinida';
-        if (reason === 'Indefinida' && message.author.id !== message.guild.ownerID) return message.channel.send({ embeds: [undefinedReasonEmbed] });
+        if (reason === 'Indefinida' && message.author.id !== message.guild.ownerId) return message.channel.send({ embeds: [undefinedReasonEmbed] });
           
         let moderator = await client.functions.fetchMember(message.guild, message.author.id);
 
@@ -62,7 +62,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             for (let i = 0; i < commandConfig.rolesThatCanRemoveAnyWarn.length; i++) {
 
                 //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                if (message.author.id === message.guild.ownerID || message.author.id === client.config.guild.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.rolesThatCanRemoveAnyWarn[i])) {
+                if (message.author.id === message.guild.ownerId || message.author.id === client.config.guild.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.rolesThatCanRemoveAnyWarn[i])) {
                     authorized = true;
                     break;
                 };

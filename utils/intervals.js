@@ -207,15 +207,15 @@ exports.run = (discord, client) => {
     //Actualización de miembros totales en presencia
     client.setInterval(async () => {
         if (!client.config.presence.membersCount) return;
-        const name = `${client.homeGuild.members.cache.filter(member => !member.user.bot).size} miembros | ${client.config.presence.name}`;
+        const name = `${await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size)} miembros | ${client.config.presence.name}`;
 
         await client.user.setPresence({
             status: client.config.presence.status,
-            activity: {
+            activities: [{
                 name: name,
                 type: client.config.presence.type
-            }
-        }).catch(console.error);
+            }]
+        })
     }, 60000);
 
     console.log(' - [OK] Carga de intervalos.');

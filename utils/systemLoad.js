@@ -41,10 +41,10 @@ exports.run = async (discord, client) => {
         //Carga de presencia
         await client.user.setPresence({
             status: client.config.presence.status,
-            activity: {
-                name: client.config.presence.membersCount ? `${client.homeGuild.members.cache.filter(member => !member.user.bot).size} miembros | ${client.config.presence.name}` : client.config.presence.name,
+            activities: [{
+                name: client.config.presence.membersCount ? `${await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size)} miembros | ${client.config.presence.name}` : client.config.presence.name,
                 type: client.config.presence.type
-            }
+            }]
         });
         console.log(' - [OK] Carga de presencia.');
 

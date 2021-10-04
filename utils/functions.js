@@ -306,7 +306,7 @@ exports.run = (discord, client) => {
         };
 
         //Listado de emojis normales (sin animar) de la guild
-        const normalGuildEmojis = client.homeGuild.emojis.cache.filter(emoji => !emoji.animated).map(emoji => emoji.id);
+        const normalGuildEmojis = await client.homeGuild.emojis.fetch().then(emojis => emojis.filter(emoji => !emoji.animated).map(emoji => emoji.id));
 
         //Listado de emojis a cargar en la guild
         const customEmojis = require('../databases/customEmojis.json');
@@ -339,7 +339,7 @@ exports.run = (discord, client) => {
                 await client.fs.writeFile('./databases/customEmojis.json', JSON.stringify(client.config.customEmojis, null, 4), (err) => console.error(err));
             });
         } else {
-            console.log(`No habían espacios para emojis suficientes.\nNecesitas al menos ${emojis.length} espacios.\nSe usarán emojis Unicode en su lugar.`);
+            console.log(`\nNo habían espacios para emojis suficientes.\nNecesitas al menos ${emojis.length} espacios.\nSe usarán emojis Unicode en su lugar.\n`);
         };
     };
 

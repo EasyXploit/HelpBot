@@ -16,7 +16,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.redTick} El bot ya está pausado.`);
 
         //Comprueba si el bot tiene o no una conexión a un canal de voz en el servidor
-        if (!message.guild.voice) return message.channel.send({ embeds: [notPlayingEmbed] });
+        if (!message.guild.me.voice) return message.channel.send({ embeds: [notPlayingEmbed] });
         
         //Comprueba si el miembro está en un canal de voz
         let voiceChannel = message.member.voice.channel;

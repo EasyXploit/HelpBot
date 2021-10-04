@@ -12,7 +12,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que ${client.user.username}.`);
 
         //Comprueba si hay una conexión de voz
-        if (!message.guild.voice) return message.channel.send({ embeds: [notInChannelEmbed] });
+        if (!message.guild.me.voice) return message.channel.send({ embeds: [notInChannelEmbed] });
 
         //Comprueba si está en la sala del miembro
         let joined;

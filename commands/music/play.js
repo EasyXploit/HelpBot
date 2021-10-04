@@ -28,7 +28,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setDescription(`${client.customEmojis.redTick} El bot no está pausado.`);
 
             //Comprueba si el bot tiene o no una conexión a un canal de voz en el servidor
-            if (!client.voiceDispatcher || !message.guild.voice) return message.channel.send({ embeds: [notPlayingEmbed] });
+            if (!client.voiceDispatcher || !message.guild.me.voice) return message.channel.send({ embeds: [notPlayingEmbed] });
 
             //Comprueba si el miembro está en un canal de voz
             let voiceChannel = message.member.voice.channel;
@@ -90,7 +90,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             if (!voiceChannel.joinable) return message.channel.send({ embeds: [noConnectPermissionEmbed] })
 
             //Comprueba si la sala está llena
-            if (voiceChannel.full  && (!message.guild.voice  || !message.guild.voice.channel || !client.voiceConnection)) return message.channel.send({ embeds: [fullRoomEmbed] });
+            if (voiceChannel.full  && (!message.guild.me.voice  || !message.guild.me.voice.channel || !client.voiceConnection)) return message.channel.send({ embeds: [fullRoomEmbed] });
 
             //Función para generar el footer
             function getFooter() {
@@ -127,7 +127,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             async function reproduction(info, silent) {
 
                 //Comprueba si el bot tiene o no una conexión a un canal de voz
-                if (!message.guild.voice  || !message.guild.voice.channel || !client.voiceConnection) { //Ejecuta esto si no está conectado
+                if (!message.guild.me.voice  || !message.guild.me.voice.channel || !client.voiceConnection) { //Ejecuta esto si no está conectado
 
                     //Comprueba si la guild tiene una cola de reproducción
                     if (!client.queues[message.guild.id]) {

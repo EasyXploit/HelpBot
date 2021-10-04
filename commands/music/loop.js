@@ -25,7 +25,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.redTick} No hay nada en la cola.`);
         
         //Comprueba si el bot tiene o no una conexión a un canal de voz
-        if (!message.guild.voice) return message.channel.send({ embeds: [noConnectionEmbed] });
+        if (!message.guild.me.voice) return message.channel.send({ embeds: [noConnectionEmbed] });
 
         //Comprueba si el miembro está en un canal de voz
         let voiceChannel = message.member.voice.channel;

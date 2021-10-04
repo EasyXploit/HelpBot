@@ -14,12 +14,12 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
         const member = await client.functions.fetchMember(message.guild, args[0]);
-        if (!member) return message.channel.send(notToMuteEmbed);
+        if (!member) return message.channel.send({ embeds: [notToMuteEmbed] });
 
         let toDeleteCount = command.length - 2 + args[0].length + 2; 
         let reason = message.content.slice(toDeleteCount) || 'Indefinida';
 
-        if (member.bot) return message.channel.send(noBotsEmbed);
+        if (member.bot) return message.channel.send({ embeds: [noBotsEmbed] });
 
         let notMutedEmbed = new discord.MessageEmbed()
             .setColor(client.config.colors.error2)
@@ -27,7 +27,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Comprueba si existe el rol silenciado, sino lo crea
         let mutedRole = await client.functions.checkMutedRole(message.guild);
-        if (!member.roles.cache.has(mutedRole.id)) return message.channel.send(notMutedEmbed);
+        if (!member.roles.cache.has(mutedRole.id)) return message.channel.send({ embeds: [notMutedEmbed] });
         
         let successEmbed = new discord.MessageEmbed()
             .setColor(client.config.colors.correct2)
@@ -57,9 +57,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             });
         };
         
-        await message.channel.send(successEmbed);
+        await message.channel.send({ embeds: [successEmbed] });
         await client.functions.loggingManager(loggingEmbed);
-        await member.send(toDMEmbed);
+        await member.send({ embeds: [toDMEmbed] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

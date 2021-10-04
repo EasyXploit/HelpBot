@@ -44,7 +44,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 return resultMsg;
             }
 
-            message.channel.send(titleEmbed).then(async embed => {
+            message.channel.send({ embeds: [titleEmbed] }).then(async embed => {
                 await awaitMessage(embed).then(async result => {
                     if (!result) return;
                     title = result;
@@ -71,8 +71,8 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                                     measure: parameters[i].slice(-1).toLowerCase()
                                 };
 
-                                if (isNaN(parameters[i].time)) return message.channel.send(inorrectTimeFormatEmbed);
-                                if (parameters[i].measure !== 's' && parameters[i].measure !== 'm' && parameters[i].measure !== 'h' && parameters[i].measure !== 'd') return message.channel.send(inorrectTimeFormatEmbed);
+                                if (isNaN(parameters[i].time)) return message.channel.send({ embeds: [inorrectTimeFormatEmbed] });
+                                if (parameters[i].measure !== 's' && parameters[i].measure !== 'm' && parameters[i].measure !== 'h' && parameters[i].measure !== 'd') return message.channel.send({ embeds: [inorrectTimeFormatEmbed] });
 
                                 let milliseconds;
 
@@ -139,7 +139,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                             .setDescription(`**${title}**\n\n${options}`)
                             .setFooter(`Duración: ${remainingTime}`);
                         
-                        message.channel.send(resultEmbed).then(async poll => {
+                        message.channel.send({ embeds: [resultEmbed] }).then(async poll => {
                             embed.delete();
                             for (count = 0; count < fields.length; count++) {
                                 await poll.react(UTFemojis[count]);
@@ -176,12 +176,12 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setColor(client.config.colors.error2)
                 .setDescription(`${client.customEmojis.redTick} La encuesta con ID ${args[1]} no se ha podido encontrar`);
 
-            if (!client.polls[args[1]]) return message.channel.send(notFoundEmbed);
+            if (!client.polls[args[1]]) return message.channel.send({ embeds: [notFoundEmbed] });
 
             let channel = await client.channels.fetch(client.polls[args[1]].channel);
             let poll = await channel.messages.fetch(args[1])
 
-            if (!poll) return message.channel.send(notFoundEmbed);
+            if (!poll) return message.channel.send({ embeds: [notFoundEmbed] });
 
             client.polls[args[1]].duration = Date.now();
 
@@ -189,7 +189,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 if (err) throw err;
             });
         } else {
-            return message.channel.send(incorrectSyntaxEmbed);
+            return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
         }
 
     } catch (error) {

@@ -12,21 +12,21 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
 
         //Comprueba si el bot tiene o no una conexión a un canal de voz en el servidor
-        if (!message.guild.voice || !client.voiceDispatcher) return message.channel.send(notPlayingEmbed);
+        if (!message.guild.voice || !client.voiceDispatcher) return message.channel.send({ emebds: [notPlayingEmbed] });
         
         //Comprueba si el miembro está en un canal de voz
         let voiceChannel = message.member.voice.channel;
-        if (!voiceChannel) return message.channel.send(notAvailableEmbed);
+        if (!voiceChannel) return message.channel.send({ embeds: [notAvailableEmbed] });
 
         //Comprueba si el miembro está en el mismo canal que el bot
-        if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(notAvailableEmbed);
+        if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send({ embeds: [notAvailableEmbed] });
 
         let noTalkPermissionEmbed = new discord.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} No tengo permiso para hablar en esta sala.`);
 
         //Comprueba si el bot tiene permiso para hablar
-        if (!voiceChannel.speakable) return message.channel.send(noTalkPermissionEmbed)
+        if (!voiceChannel.speakable) return message.channel.send({ emebds: [noTalkPermissionEmbed] })
         
         let NaNEmbed = new discord.MessageEmbed()
             .setColor(client.config.colors.error)
@@ -38,7 +38,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         async function skip() {
             //Omite la reproducción y manda un mensaje de confirmación
-            await message.channel.send(`⏭ | Canción/es omitida/s`);
+            await message.channel.send({ content: `⏭ | Canción/es omitida/s` });
             await client.voiceDispatcher.end();
         };
         
@@ -62,19 +62,19 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     .setDescription(`${client.customEmojis.redTick} No puedes omitir más de una canción con el modo loop activado.`);
                 
                 //Comprueba si está activado el modo aleatorio
-                if (client.queues[message.guild.id].mode === 'shuffle') return message.channel.send(tooMuchSkipsRandomEmbed);
+                if (client.queues[message.guild.id].mode === 'shuffle') return message.channel.send({ embeds: [tooMuchSkipsRandomEmbed] });
 
                 //Comprueba si está activado el modo loop
-                if (client.queues[message.guild.id].mode === 'loop' || client.queues[message.guild.id].mode === 'loopqueue') return message.channel.send(tooMuchSkipsLoopEmbed);
+                if (client.queues[message.guild.id].mode === 'loop' || client.queues[message.guild.id].mode === 'loopqueue') return message.channel.send({ embeds: [tooMuchSkipsLoopEmbed] });
                 
                 //Comprueba si se ha proporcionado un número entero
-                if (isNaN(args[0])) return message.channel.send(NaNEmbed);
+                if (isNaN(args[0])) return message.channel.send({ embeds: [NaNEmbed] });
                 
                 //Comprueba si no es 0
-                if (args[0] === `0`) return message.channel.send(`Quieres jugar sucio eh ...`);
+                if (args[0] === `0`) return message.channel.send({ content: `Quieres jugar sucio eh ...` });
                 
                 //Comprueba si el valor introducido es válido
-                if (args[0] > (client.queues[message.guild.id].queue.length + 1)) return message.channel.send(tooBigEmbed);
+                if (args[0] > (client.queues[message.guild.id].queue.length + 1)) return message.channel.send({ embeds: [tooBigEmbed] });
                 
                 //Comprueba si es necesaria una votación
                 if (await client.functions.evaluateDjOrVotes(message, `skip-${args[0]}`)) {

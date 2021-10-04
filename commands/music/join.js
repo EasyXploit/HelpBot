@@ -17,16 +17,16 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         
         //Comprueba si el miembro está en un canal de voz
         let voiceChannel = message.member.voice.channel;
-        if (!voiceChannel) return message.channel.send(noChannelEmbed);
+        if (!voiceChannel) return message.channel.send({ embeds: {noChannelEmbed} });
 
         //Comprueba si el bot ya tiene una conexión a un canal de voz en el servidor
         if (message.guild.voice && message.guild.voice.channel) {
             
             //Si está en otra sala diferente
-            if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(alreadyInChannelEmbed);
+            if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send({ embeds: [alreadyInChannelEmbed] });
             
             //Si está en la sala del miembro
-            if (message.member.voice.channelID === message.guild.member(client.user).voice.channelID) return message.channel.send(alreadyInYourChannelEmbed);
+            if (message.member.voice.channelID === message.guild.member(client.user).voice.channelID) return message.channel.send({ embeds: [alreadyInYourChannelEmbed] });
         };
 
         let noConnectPermissionEmbed = new discord.MessageEmbed()
@@ -42,13 +42,13 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.redTick} La sala está llena.`);
 
         //Comprueba si el bot tiene permiso para conectarse
-        if (!voiceChannel.joinable || client.config.music.forbiddenChannels.includes(voiceChannel.id)) return message.channel.send(noConnectPermissionEmbed)
+        if (!voiceChannel.joinable || client.config.music.forbiddenChannels.includes(voiceChannel.id)) return message.channel.send({ embeds: [noConnectPermissionEmbed] })
         
         //Comprueba si la sala es de AFK
-        if (message.member.voice.channelID === message.guild.afkChannelID) return message.channel.send(noAfkRoomEmbed)
+        if (message.member.voice.channelID === message.guild.afkChannelID) return message.channel.send({ embeds: [noAfkRoomEmbed] })
         
         //Comprueba la sala está llena
-        if (voiceChannel.full) return message.channel.send(fullRoomEmbed);
+        if (voiceChannel.full) return message.channel.send({ embeds: [fullRoomEmbed] });
 
         //Comprueba si la guild tiene una cola de reproducción
         if (!client.queues[message.guild.id]) {
@@ -70,19 +70,19 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             client.voiceStatus = false;
             
             //Manda un mensaje de confirmación
-            message.channel.send(`⏺ | Me he unido al canal`);
+            message.channel.send({ content: `⏺ | Me he unido al canal` });
 
             //Crea un contador que para demorar un minuto la salida del canal y la destrucción del dispatcher
             client.voiceTimeout = setTimeout(() => {
 
                 //Manda un mensaje de confirmación
-                message.channel.send(`📥 | Unido a \`${voiceChannel.name}\` y vinculado a ${message.channel}.`);
+                message.channel.send({ content: `📥 | Unido a \`${voiceChannel.name}\` y vinculado a ${message.channel}.` });
                 
                 //Aborta la conexión
                 connection.disconnect();
 
                 //Confirma la acción
-                message.channel.send(`⏏ | He abandonado el canal`);
+                message.channel.send({ content: `⏏ | He abandonado el canal` });
 
                 //Bora la información de reproducción del server
                 delete client.queues[message.guild.id];

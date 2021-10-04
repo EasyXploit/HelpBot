@@ -8,7 +8,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}slowmode (off | segundos [5-30]) (razón)\``);
 
         if (args[0] === 'off') {
-            if (!message.channel.rateLimitPerUser) return message.channel.send(incorrectSyntaxEmbed).then(msg => {msg.delete({timeout: 5000})});
+            if (!message.channel.rateLimitPerUser) return message.channel.send({ embeds: [incorrectSyntaxEmbed] }).then(msg => {msg.delete({timeout: 5000})});
 
             let successEmbed = new discord.MessageEmbed()
                 .setColor(client.config.colors.correct2)
@@ -24,10 +24,10 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
             await message.channel.setRateLimitPerUser(0);
             await client.functions.loggingManager(loggingEmbed);
-            await message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 5000})});
+            await message.channel.send({ embeds: [successEmbed] }).then(msg => {msg.delete({timeout: 5000})});
         } else {
             let seconds = args[0];
-            if (isNaN(seconds) || seconds < 5) return message.channel.send(incorrectSyntaxEmbed);
+            if (isNaN(seconds) || seconds < 5) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
 
             function checkIfCanUseUnlimitedTime() {
 
@@ -50,8 +50,8 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setColor(client.config.colors.error2)
                 .setDescription(`${client.customEmojis.redTick} Los moderadores solo pueden activar el modo lento para un máximo de 30 segundos`);
 
-            if (!checkIfCanUseUnlimitedTime() &&  args[0] > 30) return message.channel.send(tooManySeconds).then(msg => {msg.delete({timeout: 5000})});
-            if (!checkIfCanUseUnlimitedTime() &&  !args[1]) return message.channel.send(incorrectSyntaxEmbed).then(msg => {msg.delete({timeout: 5000})});
+            if (!checkIfCanUseUnlimitedTime() &&  args[0] > 30) return message.channel.send({ embeds: [tooManySeconds] }).then(msg => {msg.delete({timeout: 5000})});
+            if (!checkIfCanUseUnlimitedTime() &&  !args[1]) return message.channel.send({ embeds: [incorrectSyntaxEmbed] }).then(msg => {msg.delete({timeout: 5000})});
 
             let reason;
             if (args[1]) {
@@ -75,7 +75,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
             await message.channel.setRateLimitPerUser(seconds, reason || 'Sin razón');
             await client.functions.loggingManager(loggingEmbed);
-            await message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 5000})});
+            await message.channel.send({ embeds: [successEmbed] }).then(msg => {msg.delete({timeout: 5000})});
         };
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

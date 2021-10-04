@@ -25,23 +25,23 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.redTick} No hay nada en la cola.`);
         
         //Comprueba si el bot tiene o no una conexión a un canal de voz
-        if (!message.guild.voice) return message.channel.send(noConnectionEmbed);
+        if (!message.guild.voice) return message.channel.send({ embeds: [noConnectionEmbed] });
 
         //Comprueba si el miembro está en un canal de voz
         let voiceChannel = message.member.voice.channel;
-        if (!voiceChannel) return message.channel.send(noChannelEmbed);
+        if (!voiceChannel) return message.channel.send({ embeds: [noChannelEmbed] });
         
         //Comprueba si el bot está en el mismo canal que el miembro
-        if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(notAvailableEmbed);
+        if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send({ embeds: [notAvailableEmbed] });
         
         //Comprueba si hay reproducción
-        if (!client.voiceDispatcher) return message.channel.send(noDispatcherEmbed);
+        if (!client.voiceDispatcher) return message.channel.send({ embeds: [noDispatcherEmbed] });
 
         //Almacena la información del servidor
         let server = client.queues[message.guild.id];
         
         //Comprueba si hay cola
-        if (!server || server.queue <= 0) return message.channel.send(noQueueEmbed);
+        if (!server || server.queue <= 0) return message.channel.send({ embeds: [noQueueEmbed] });
 
         //Comprueba si es necesaria una votación
         if (await client.functions.evaluateDjOrVotes(message, 'shuffle')) {
@@ -50,13 +50,13 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 server.mode = 'shuffle';
     
                 //Manda un mensaje de confirmación
-                message.channel.send(`🔀 | He activado el modo aleatorio`);
+                message.channel.send({ content: `🔀 | He activado el modo aleatorio` });
             } else if (server.mode === 'shuffle') {
                 //Desactiva el modo shuffle
                 server.mode = false;
     
                 //Manda un mensaje de confirmación
-                message.channel.send(`▶ | He desactivado el modo aleatorio`);
+                message.channel.send({ content: `▶ | He desactivado el modo aleatorio` });
             };
         };
     } catch (error) {

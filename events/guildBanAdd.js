@@ -13,7 +13,7 @@ exports.run = async (guild, user, client, discord) => {
                     .setTitle('📑 Auditoría - [BOTS]')
                     .setDescription(`El **BOT** <@${event.user.tag}> fue baneado del servidor.`);
 
-                await client.channels.cache.get(client.config.guild.loggingChannel).send(loggingEmbed)
+                await client.channels.cache.get(client.config.guild.loggingChannel).send({ embeds: [loggingEmbed] })
             } else {
                 let moderador = executor;
                 let razon = reason || 'Indefinida';
@@ -28,7 +28,7 @@ exports.run = async (guild, user, client, discord) => {
                     .addField('Duración', time || 'Indefinida', true)
                     .addField('Días de mensajes borrados', days || 'Ninguno', true);
 
-                await client.channels.cache.get(client.config.guild.loggingChannel).send(loggingEmbed)
+                await client.channels.cache.get(client.config.guild.loggingChannel).send({ embeds: [loggingEmbed] })
             }
         }
 

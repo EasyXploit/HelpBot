@@ -12,17 +12,17 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar un motivo`);
 
-        if (!args[0]) return message.channel.send(notToUnbanEmbed);
-
+        if (!args[0]) return message.channel.send({ embeds: [notToUnbanEmbed] });
+[]
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
         const user = await client.functions.fetchUser(args[0]);
-        if (!user) return message.channel.send(notToUnbanEmbed);
+        if (!user) return message.channel.send({ embeds: [notToUnbanEmbed] });
 
         let toDeleteCount = command.length - 2 + args[0].length + 2;
 
         //Esto comprueba si se debe proporcionar razón
         let reason = message.content.slice(toDeleteCount)
-        if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send(noReasonEmbed);
+        if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send({ embeds: [noReasonEmbed] });
         if (!reason) reason = `Indefinida`;
 
         await message.guild.members.unban(user.id);
@@ -47,13 +47,13 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .addField(`Razón`, reason, true)
 
         await client.functions.loggingManager(loggingEmbed);
-        await message.channel.send(successEmbed);
+        await message.channel.send({ embeds: [successEmbed] });
     } catch (error) {
         if (error.toString().includes(`Unknown Ban`)) {
             let notBannedEmbed = new discord.MessageEmbed()
                 .setColor(client.config.colors.error2)
                 .setDescription(`${client.customEmojis.redTick} Este miembro no ha sido baneado`);
-            message.channel.send(notBannedEmbed);
+            message.channel.send({ embeds: [notBannedEmbed] });
         } else {
             await client.functions.commandErrorHandler(error, message, command, args);
         };

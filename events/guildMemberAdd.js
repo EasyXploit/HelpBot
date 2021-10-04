@@ -16,7 +16,7 @@ exports.run = async (event, client, discord) => {
                     .addField('Moderador', client.user, true)
                     .addField('Razón', 'No está permitido utilizar enlaces como nombre de usuario.', true)
 
-                await event.user.send(toDMEmbed);
+                await event.user.send({ embeds: [toDMEmbed] });
                 await event.kick(event.user, {reason: `Moderador: ${client.user.id}, Razón: No está permitido utilizar enlaces como nombre de usuario.`})
 
                 .catch ((err) => {
@@ -27,7 +27,7 @@ exports.run = async (event, client, discord) => {
                         .setTitle(`${client.customEmojis.redTick} Ocurrió un error`)
                         .setDescription(`Ocurrió un error durante la ejecución del evento "guildMemberAdd".\nEl usuario ${event.user.username} no fue expulsado automáticamente de la comunidad, por lo que será necesario emprender acciones de forma manual.`);
                         
-                    client.loggingChannel.send(errorEmbed);
+                    client.loggingChannel.send({ embeds: [errorEmbed] });
                 });
             } else  {
                 let loggingWelcomeEmbed = new discord.MessageEmbed()
@@ -39,7 +39,7 @@ exports.run = async (event, client, discord) => {
                     .addField('🏷 TAG completo', event.user.tag, true)
                     .addField('🆔 ID del miembro', event.user.id, true);
 
-                await client.joinsAndLeavesChannel.send(loggingWelcomeEmbed);
+                await client.joinsAndLeavesChannel.send({ embeds: [loggingWelcomeEmbed] });
             };
         } else {
             if (event.guild.member(event.user).roles.cache.has('426789294007517205')) return;
@@ -50,7 +50,7 @@ exports.run = async (event, client, discord) => {
                 .setTitle('📑 Auditoría - [BOTS]')
                 .setDescription(`El **BOT** @${event.user.tag} fue añadido al servidor.`);
 
-            return client.joinsAndLeavesChannel.send(loggingWelcomeBotEmbed);
+            return client.joinsAndLeavesChannel.send({ embeds: [loggingWelcomeBotEmbed] });
         };
     } catch (error) {
         if (error.toLocaleString().includes('Cannot send messages to this user')) return;

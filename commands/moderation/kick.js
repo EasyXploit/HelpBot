@@ -11,11 +11,11 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar un motivo`);
 
-        if (!args[0]) return message.channel.send(notToKickEmbed);
+        if (!args[0]) return message.channel.send({ embeds: [notToKickEmbed] });
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
         const member = await client.functions.fetchMember(message.guild, args[0]);
-        if (!member) return message.channel.send(notToKickEmbed);
+        if (!member) return message.channel.send({ embeds: [notToKickEmbed] });
         let moderator = await client.functions.fetchMember(message.guild, message.author.id);
         
         //Se comprueba si puede expulsar al miembro
@@ -25,7 +25,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} No puedes expulsar a un miembro con un rol igual o superior al tuyo`);
 
-            return message.channel.send(cannotKickHigherRoleEmbed);
+            return message.channel.send({ embeds: [cannotKickHigherRoleEmbed] });
         };
 
         //Genera un mensaje de confirmación
@@ -41,7 +41,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (reason) successEmbed.setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido expulsado debido a **${reason}**, ¿alguien más?`);
 
         //Esto comprueba si se debe proporcionar razón
-        if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send(noReasonEmbed);
+        if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send({ embeds: [noReasonEmbed] });
         if (!reason) reason = 'Indefinida';
 
         let toDMEmbed = new discord.MessageEmbed()
@@ -51,9 +51,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .addField(`Moderador`, message.author.tag, true)
             .addField(`Razón`, reason, true)
             
-        await member.send(toDMEmbed);
+        await member.send({ embeds: [toDMEmbed] });
         await member.kick(`Moderador: ${message.author.id}, Razón: ${reason}`);
-        await message.channel.send(successEmbed);
+        await message.channel.send({embeds: [successEmbed] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

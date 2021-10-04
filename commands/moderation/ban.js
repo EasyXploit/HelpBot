@@ -16,11 +16,11 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Este usuario ya ha sido baneado`);
         
-        if (!args[0]) return message.channel.send(notToBanEmbed);
+        if (!args[0]) return message.channel.send({ embeds: [notToBanEmbed] });
         
         //Esto comprueba si se ha mencionado a un usuario o se ha proporcionado su ID
         const user = await client.functions.fetchUser(args[0]);
-        if (!user) return message.channel.send(notToBanEmbed);
+        if (!user) return message.channel.send({ embeds: [notToBanEmbed] });
         
         const moderator = await client.functions.fetchMember(message.guild, message.author.id);
         const member = await client.functions.fetchMember(message.guild, user.id);
@@ -33,7 +33,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} No puedes banear a un miembro con un rol igual o superior al tuyo`);
 
-                return message.channel.send(cannotBanHigherRoleEmbed);
+                return message.channel.send({ embeds: [cannotBanHigherRoleEmbed] });
             };
         };
         
@@ -45,7 +45,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         };
 
         let banned = await checkBans(bans);
-        if (banned) return message.channel.send(alreadyBannedEmbed);
+        if (banned) return message.channel.send({embeds: [alreadyBannedEmbed] });
 
         //Genera un mensaje de confirmación
         let successEmbed = new discord.MessageEmbed()
@@ -60,7 +60,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (reason) successEmbed.setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido baneado debido a **${reason}**, ¿alguien más?`);
 
         //Esto comprueba si se debe proporcionar razón
-        if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send(noReasonEmbed);
+        if (!reason && message.author.id !== message.guild.ownerID) return message.channel.send({ embeds: [noReasonEmbed] });
         if (!reason) reason = `Indefinida`;
 
         let toDMEmbed = new discord.MessageEmbed()
@@ -71,9 +71,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .addField(`Razón`, reason, true)
             .addField(`Duración`, `∞`, true);
 
-        if (member) await user.send(toDMEmbed);
+        if (member) await user.send({ embeds: [toDMEmbed] });
         await message.guild.members.ban(user, {reason: `Moderador: ${message.author.id}, Razón: ${reason}`});
-        await message.channel.send(successEmbed);
+        await message.channel.send({ embeds: [successEmbed] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

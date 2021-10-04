@@ -25,16 +25,16 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.redTick} Este miembro no tiene XP`);
         
 
-        if (!args[0]) return message.channel.send(unknownMemberEmbed);
+        if (!args[0]) return message.channel.send({ embeds: [unknownMemberEmbed] });
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID y no es un bot
         const member = await client.functions.fetchMember(message.guild, args[0]);
-        if (!member) return message.channel.send(unknownMemberEmbed);
-        if (member.user.bot) return message.channel.send(noBotsEmbed);
+        if (!member) return message.channel.send({ embeds: [unknownMemberEmbed] });
+        if (member.user.bot) return message.channel.send({ embeds: [noBotsEmbed] });
 
         //Comprueba si los argumentos se han introducido adecuadamente
-        if (!args[1] || args[1] !== 'set' && args[1] !== 'add' && args[1] !== 'remove' && args[1] !== 'clear') return message.channel.send(incorrectSyntaxEmbed);
-        if (args[1] !== 'clear' && !args[2] && isNaN(args[2])) return message.channel.send(incorrectQuantityEmbed);
+        if (!args[1] || args[1] !== 'set' && args[1] !== 'add' && args[1] !== 'remove' && args[1] !== 'clear') return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
+        if (args[1] !== 'clear' && !args[2] && isNaN(args[2])) return message.channel.send({ embeds: [incorrectQuantityEmbed] });
 
         //Almacena la tabla de clasificación del servidor, y si no existe la crea
         if (message.guild.id in client.stats === false) {
@@ -54,10 +54,10 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         const userStats = guildStats[member.id];
 
         //Comprueba si se le puede restar esa cantidad al miembro
-        if (args[1] === 'remove' && userStats.totalXP < args[2]) return message.channel.send(incorrectQuantityEmbed);
+        if (args[1] === 'remove' && userStats.totalXP < args[2]) return message.channel.send({ embeds: [incorrectQuantityEmbed] });
 
         //Comprueba si se le puede quitar el XP al miembro
-        if (args[1] === 'clear' && userStats.totalXP == 0) return message.channel.send(noXPEmbed);  
+        if (args[1] === 'clear' && userStats.totalXP == 0) return message.channel.send({ embeds: [noXPEmbed] });  
 
         //Almacena el moderador
         let moderator = await client.functions.fetchMember(message.guild, message.author.id);
@@ -70,7 +70,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} No puedes modificar el XP de un miembro con un rol igual o superior al tuyo`);
     
-                return message.channel.send(cannotModifyHigherRoleEmbed);
+                return message.channel.send({ embeds: [cannotModifyHigherRoleEmbed] });
             };
         };
         
@@ -189,8 +189,8 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             if (err) throw err;
 
             await client.functions.loggingManager(loggingEmbed);
-            await member.send(toDMEmbed);
-            await message.channel.send(successEmbed);
+            await member.send({ embeds: [toDMEmbed] });
+            await message.channel.send({ embeds: [successEmbed] });
         });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

@@ -8,7 +8,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}broadcast (autor | anonimo) (embed | normal) (mensaje a enviar)\``);
         
-        if (args.length < 3 || (args[0] !== 'autor' && args[0] !== 'anonimo') || (args[1] !== 'embed' && args[1] !== 'normal')) return message.channel.send(incorrectSyntaxEmbed);
+        if (args.length < 3 || (args[0] !== 'autor' && args[0] !== 'anonimo') || (args[1] !== 'embed' && args[1] !== 'normal')) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
             
         let mode = args[0];
         let type = args[1];
@@ -43,17 +43,17 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.config.colors.correct2)
             .setDescription(`${client.customEmojis.greenTick} ¡Mensaje enviado!`);
             
-        await message.channel.send(sendingEmbed);
+        await message.channel.send({ embeds: [sendingEmbed] });
 
         let i = 0;
         let interval = setInterval(function(){
             let member = message.guild.members.cache.array()[i]
-            if (!member.user.bot) member.user.send(resultMessage)
+            if (!member.user.bot) member.user.send({ embeds: [resultMessage] })
                 .then(console.log(`${new Date().toLocaleString()} 》Mensaje de broadcast enviado a ${member.user.tag}`));
             i++;
             if(i === message.guild.members.cache.array().length) {
                 clearInterval(interval);
-                message.channel.send(confirmEmbed);
+                message.channel.send({ embeds: [confirmEmbed] });
             }
         }, 10000);
     } catch (error) {

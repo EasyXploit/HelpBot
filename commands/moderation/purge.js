@@ -12,8 +12,8 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad numérica superior a 2 e inferior a 100`);
 
-        if(!args[0]) return message.channel.send(noQuantityEmbed);
-        if (isNaN(args[0])) return message.channel.send(NaNEmbed);
+        if(!args[0]) return message.channel.send({ embeds: [noQuantityEmbed] });
+        if (isNaN(args[0])) return message.channel.send({ embeds: [NaNEmbed] });
         
         let tooMuchOldMessagesEmbed = new discord.MessageEmbed()
             .setColor(client.config.colors.error2)
@@ -23,7 +23,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} No tienes permiso para administrar mensajes`);
         
-        if (isNaN(args[0]) || args[0] < 2 || args[0] > 100) return message.channel.send(incorrectQuantityEmbed);
+        if (isNaN(args[0]) || args[0] < 2 || args[0] > 100) return message.channel.send({ embeds: [incorrectQuantityEmbed] });
         let count = 0;
         let channel;
 
@@ -33,11 +33,11 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setDescription(`${client.customEmojis.redTick} El canal de texto proporcionado no es válido`);
             
             channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
-            if (!channel) return message.channel.send(noChannelEmbed);
+            if (!channel) return message.channel.send({ embeds: [noChannelEmbed] });
 
 
             const memberPermissions = channel.permissionsFor(message.author).bitfield;
-            if ((memberPermissions & 0x2000) !== 0x2000) return message.channel.send(noPrivilegesEmbed);
+            if ((memberPermissions & 0x2000) !== 0x2000) return message.channel.send({ embeds: [noPrivilegesEmbed] });
             
             const messages = await channel.messages.fetch({limit: args[0]});
             count = messages.size;
@@ -55,16 +55,16 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             try {
                 await channel.bulkDelete(messages);
                 
-                await message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 5000})});
+                await message.channel.send({ embeds: [successEmbed] }).then(msg => {msg.delete({timeout: 5000})});
                 await client.functions.loggingManager(loggingEmbed);
             } catch (error) {
-                message.channel.send(tooMuchOldMessagesEmbed);
+                message.channel.send({ embeds: [tooMuchOldMessagesEmbed] });
             }
         } else {
             channel = message.channel;
 
             const memberPermissions = channel.permissionsFor(message.author).bitfield;
-            if ((memberPermissions & 0x2000) !== 0x2000) return message.channel.send(noPrivilegesEmbed);
+            if ((memberPermissions & 0x2000) !== 0x2000) return message.channel.send({ embeds: [noPrivilegesEmbed] });
             
             const messages = await message.channel.messages.fetch({limit: args[0]});
             count = messages.size;
@@ -78,7 +78,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 await channel.bulkDelete(messages);
                 await client.functions.loggingManager(loggingEmbed);
             } catch (error) {
-                message.channel.send(tooMuchOldMessagesEmbed);
+                message.channel.send({ embeds: [tooMuchOldMessagesEmbed] });
             }
         }
     } catch (error) {

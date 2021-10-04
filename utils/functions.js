@@ -177,8 +177,8 @@ exports.run = (discord, client) => {
                         .setDescription(`Enhorabuena <@${member.id}>, has subido al nivel **${userStats.level}**`);
 
                     //Manda el mensaje de subida de nivel
-                    if (mode === 'message') channel.send(levelUpEmbed);
-                    if (mode === 'voice') member.send(levelUpEmbed);
+                    if (mode === 'message') channel.send({ embeds: [levelUpEmbed] });
+                    if (mode === 'voice') member.send({ embeds: [levelUpEmbed] });
                 };
 
                 //Guarda las nuevas estadísticas del miembro
@@ -271,7 +271,7 @@ exports.run = (discord, client) => {
 
         //Maneja la cantidad de votos necesarios para realizar la acción
         if (actualPercentage < client.config.music.votesPercentage) {
-            message.channel.send(`🗳 | Votos necesarios: \`${actualVotes}\` de \`${requiredVotes}\``);
+            message.channel.send({ content: `🗳 | Votos necesarios: \`${actualVotes}\` de \`${requiredVotes}\`` });
             return false;
         } else {
             server.votes[command] = 0;
@@ -356,7 +356,7 @@ exports.run = (discord, client) => {
 
                 //Comprueba si el bot tiene permisos para mandar el embed
                 if (!missingPermission) {
-                    await client.loggingChannel.send(embed); //Enviar el mensaje al canal
+                    await client.loggingChannel.send({ embeds: [embed] }); //Enviar el mensaje al canal
                 } else {
                     //Advertir por consola de que no se tienen permisos
                     console.error(`${new Date().toLocaleString()} 》Error: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces.`);
@@ -396,7 +396,7 @@ exports.run = (discord, client) => {
 
                 //Comprueba si el bot tiene permisos para mandar el embed
                 if (!missingPermission) {
-                    await client.debuggingChannel.send(embed); //Enviar el mensaje al canal
+                    await client.debuggingChannel.send({ embeds: [embed] }); //Enviar el mensaje al canal
                 } else {
                     //Advertir por consola de que no se tienen permisos
                     console.error(`${new Date().toLocaleString()} 》Error: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces.`);
@@ -453,7 +453,7 @@ exports.run = (discord, client) => {
             .setTitle(`${client.customEmojis.redTick} ¡Vaya! Algo fue mal ...`)
             .setDescription('Lo hemos reportado al equipo de desarrollo');
         
-        await message.channel.send(reportedEmbed);
+        await message.channel.send({ embeds: [reportedEmbed] });
         await client.functions.debuggingManager(debuggEmbed);
     };
 

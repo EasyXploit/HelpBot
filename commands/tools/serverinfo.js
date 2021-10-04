@@ -45,7 +45,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .addField(`💬 Canales`, `${guild.channels.cache.size} canales en total:\n${(categories.size - 1)} categorías\n${guild.channels.cache.filter(c => c.type === 'text').size} de texto, ${guild.channels.cache.filter(c => c.type === 'voice').size} de voz`, true)
             .addField(`${client.customEmojis.greenTick} Verificado`, verified, true)
 
-        message.channel.send(resultEmbed);
+        message.channel.send({ embeds: [resultEmbed] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

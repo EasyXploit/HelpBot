@@ -16,5 +16,5 @@ exports.run = async (discord, client, guild) => {
         .setTitle(`${client.customEmojis.greenTick} Asistente de configuración.`)
         .setDescription(`¡Genial! Has añadido correctamente a **${client.user.username}**.\nUsa el comando \`${client.config.guild.prefix}setup\` desde __${guild.name}__ para configurar al bot.`);
 
-    return await guild.owner.send(readyForSetup);
+    return await guild.owner.send({ embeds: [readyForSetup] });
 };

@@ -13,7 +13,7 @@ exports.run = async (event, client, discord) => {
                     .setTitle('📑 Auditoría - [BOTS]')
                     .setDescription(`El **BOT** @${event.user.tag} fue expulsado del servidor.`);
                 
-                await client.channels.cache.get(client.config.guild.loggingChannel).send(loggingEmbed)
+                await client.channels.cache.get(client.config.guild.loggingChannel).send({ embeds: [loggingEmbed] })
             } else {
                 let moderador = executor;
                 let razon = reason || 'Indefinida';
@@ -30,7 +30,7 @@ exports.run = async (event, client, discord) => {
                     .addField('Moderador', moderador.tag || 'Desconocido', true)
                     .addField('Razón', razon || 'Indefinida', true);
 
-                await client.channels.cache.get(client.config.guild.loggingChannel).send(loggingEmbed)
+                await client.channels.cache.get(client.config.guild.loggingChannel).send({ embeds: [loggingEmbed] })
             }
         }
         
@@ -70,7 +70,7 @@ exports.run = async (event, client, discord) => {
                 .addField('🏷 TAG completo', event.user.tag, true)
                 .addField('🆔 ID del miembro', event.user.id, true);
             
-            return await client.channels.cache.get(client.config.guild.joinsAndLeavesChannel).send(loggingEmbed);
+            return await client.channels.cache.get(client.config.guild.joinsAndLeavesChannel).send({ embeds: [loggingEmbed] });
         }
     } catch (error) {
         if (event.user.id === client.user.id) return;

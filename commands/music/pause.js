@@ -16,26 +16,26 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.redTick} El bot ya está pausado.`);
 
         //Comprueba si el bot tiene o no una conexión a un canal de voz en el servidor
-        if (!message.guild.voice) return message.channel.send(notPlayingEmbed);
+        if (!message.guild.voice) return message.channel.send({ embeds: [notPlayingEmbed] });
         
         //Comprueba si el miembro está en un canal de voz
         let voiceChannel = message.member.voice.channel;
-        if (!voiceChannel) return message.channel.send(notAvailableEmbed);
+        if (!voiceChannel) return message.channel.send({ embeds: [notAvailableEmbed] });
 
         //Comprueba si el miembro está en el mismo canal que el bot
-        if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(notAvailableEmbed);
+        if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send({ embeds: [notAvailableEmbed] });
 
         //Comprueba si no hay reproducción
-        if (!client.queues[message.guild.id].nowplaying || Object.entries(client.queues[message.guild.id].nowplaying).length === 0) return message.channel.send(notPlayingEmbed);
+        if (!client.queues[message.guild.id].nowplaying || Object.entries(client.queues[message.guild.id].nowplaying).length === 0) return message.channel.send({ embeds: [notPlayingEmbed] });
         
         //Comprueba si la reproducción ya está pausada
-        if (!client.voiceDispatcher || client.voiceDispatcher.paused) return message.channel.send(alreadyPausedEmbed);
+        if (!client.voiceDispatcher || client.voiceDispatcher.paused) return message.channel.send({ embeds: [alreadyPausedEmbed] });
 
         //Comprueba si es necesaria una votación
         if (await client.functions.evaluateDjOrVotes(message, 'pause')) {
             //Reanuda la reproducción y manda un mensaje de confirmación
             await client.voiceDispatcher.pause();
-            await message.channel.send(`⏸ | Cola pausada`);
+            await message.channel.send({ content: `⏸ | Cola pausada` });
         };
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

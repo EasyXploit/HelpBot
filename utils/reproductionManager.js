@@ -63,7 +63,7 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
                 .setFooter(footer, client.homeGuild.iconURL({dynamic: true}));
 
             //Envía un mensaje de confirmación
-            message.channel.send(playingEmbed);
+            message.channel.send({ embeds: [playingEmbed] });
             
             //Elimina de la cola la canción actual
             if (client.queues[message.guild.id].mode === 'shuffle') { //Si el modo aleatorio está activado
@@ -112,7 +112,7 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
                     server.nowplaying = null;
 
                     //Manda un mensaje de abandono
-                    message.channel.send(`⏹ | Reproducción finalizada`);
+                    message.channel.send({ content: `⏹ | Reproducción finalizada` });
 
                     //Vacia nowplaying
                     server.nowplaying = null;
@@ -127,7 +127,7 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
                         connection.disconnect();
 
                         //Confirma la acción
-                        message.channel.send(`⏏ | He abandonado el canal`);
+                        message.channel.send({ content: `⏏ | He abandonado el canal` });
 
                         //Bora la información de reproducción del server
                         delete client.queues[message.guild.id];
@@ -160,7 +160,7 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
                     connection.disconnect();
 
                     //Confirma la acción
-                    message.channel.send(`${client.customEmojis.redTick} | Ocurrió un error. El bot ha sido desconectado y la cola se ha vaciado.`);
+                    message.channel.send({ content: `${client.customEmojis.redTick} | Ocurrió un error. El bot ha sido desconectado y la cola se ha vaciado.` });
 
                     //Bora la información de reproducción del server
                     delete client.queues[message.guild.id];
@@ -181,7 +181,7 @@ exports.run = async (discord, client, message, ytdl, moment, randomColor) => {
             .setDescription(`${client.customEmojis.redTick} Límite de solicitudes a la API de YouTube alcanzado.`);
 
         //Se comprueba si el error es provocado por una limitación de API
-        if (error.toLocaleString().includes('416') || error.toLocaleString().includes('429')) message.channel.send(apiErrorEmbed);
+        if (error.toLocaleString().includes('416') || error.toLocaleString().includes('429')) message.channel.send({ embeds: [apiErrorEmbed] });
 
         console.log(`${new Date().toLocaleString()} 》Error: ${e.stack}`);
     };

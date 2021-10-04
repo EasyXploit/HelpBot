@@ -29,23 +29,23 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.redTick} No hay nada en la cola.`);
         
         //Comprueba si el bot tiene o no una conexión a un canal de voz
-        if (!message.guild.voice) return message.channel.send(noConnectionEmbed);
+        if (!message.guild.voice) return message.channel.send({ embeds: [noConnectionEmbed] });
 
         //Comprueba si el miembro está en un canal de voz
         let voiceChannel = message.member.voice.channel;
-        if (!voiceChannel) return message.channel.send(noChannelEmbed);
+        if (!voiceChannel) return message.channel.send({ embeds: [noChannelEmbed] });
         
         //Comprueba si el bot está en el mismo canal que el miembro
-        if (message.member.voiceChannelID !== message.guild.member(client.user).voiceChannelID) return message.channel.send(notAvailableEmbed);
+        if (message.member.voiceChannelID !== message.guild.member(client.user).voiceChannelID) return message.channel.send({ embeds: [notAvailableEmbed] });
         
         //Comprueba si se han proporcionado argumentos
-        if (!args[0] || !args[1]) return message.channel.send(incorrectSyntaxEmbed);
+        if (!args[0] || !args[1]) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
         
         //Comprueba si hay reproducción
-        if (!client.voiceDispatcher) return message.channel.send(noDispatcherEmbed);
+        if (!client.voiceDispatcher) return message.channel.send({ embeds: [noDispatcherEmbed] });
         
         //Comprueba si hay cola
-        if (!client.queues[message.guild.id] || client.queues[message.guild.id].queue <= 0) return message.channel.send(noQueueEmbed);
+        if (!client.queues[message.guild.id] || client.queues[message.guild.id].queue <= 0) return message.channel.send({ embeds: [noQueueEmbed] });
         
         let isNaNEmbed = new discord.MessageEmbed()
             .setColor(client.config.colors.error)
@@ -56,13 +56,13 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.redTick} Valor demasiado grande.`);
 
         //Comprueba si se ha proporcionado un número entero
-        if (isNaN(args[0]) || isNaN(args[1])) return message.channel.send(isNaNEmbed);
+        if (isNaN(args[0]) || isNaN(args[1])) return message.channel.send({ embeds: [isNaNEmbed] });
         
         //Comprueba si no es 0
-        if (args[0] === `0` || args[1] === `0`) return message.channel.send(`Quieres jugar sucio eh ...`);
+        if (args[0] === `0` || args[1] === `0`) return message.channel.send({ content: `Quieres jugar sucio eh ...` });
         
         //Comprueba si el valor introducido es válido
-        if (args[0] > (client.queues[message.guild.id].queue.length) || args[1] > (client.queues[message.guild.id].queue.length)) return message.channel.send(tooBigEmbed);
+        if (args[0] > (client.queues[message.guild.id].queue.length) || args[1] > (client.queues[message.guild.id].queue.length)) return message.channel.send({ embeds: [tooBigEmbed] });
 
         //Comprueba si es necesaria una votación
         if (await client.functions.evaluateDjOrVotes(message, 'move')) {
@@ -76,7 +76,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             await client.queues[message.guild.id].queue.splice(args[1] - 1, 0, toMove);
             
             //Manda un mensaje de confirmación
-            await message.channel.send(`${client.customEmojis.greenTick} | He reubicado la canción en la cola`);
+            await message.channel.send({ content: `${client.customEmojis.greenTick} | He reubicado la canción en la cola` });
         };
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

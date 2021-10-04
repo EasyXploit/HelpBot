@@ -21,7 +21,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setColor('CCCCCC')
                 .setTitle(`🎙 Lista de grabaciones`)
                 .setDescription(`\`\`\`${newFileNames.join(`    `)}\`\`\``);
-            message.channel.send(listEmbed);
+            message.channel.send({embeds : [listEmbed]});
         } else {
             
             let noChannelEmbed = new discord.MessageEmbed()
@@ -36,10 +36,10 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} **${sound}** no existe.`);
 
-            if (newFileNames.includes(sound) == false) return message.channel.send(soundNotFoundEmbed);
+            if (newFileNames.includes(sound) == false) return message.channel.send({ embeds: [soundNotFoundEmbed] });
 
             let voiceChannel = message.member.voice.channel;
-            if (!voiceChannel) return message.channel.send(noChannelEmbed);
+            if (!voiceChannel) return message.channel.send({ embeds: [noChannelEmbed] });
             
             if (client.voiceStatus || (voiceChannel.id === message.guild.member(client.user).voice.channelID && !client.voiceDispatcher)) {
                 client.voiceStatus = false;
@@ -54,7 +54,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     .setColor(client.config.colors.correct2)
                     .setDescription(`${client.customEmojis.greenTick} Reproduciendo **${sound}**.`);
                 
-                message.channel.send(playingEmbed);
+                message.channel.send({ embeds: [playingEmbed] });
 
                 voiceChannel.join().then(connection => {
                     const dispatcher = connection.play(`./media/audios/${sound}.mp3`);
@@ -74,7 +74,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 }).catch(err => console.log(`${new Date().toLocaleString()} 》${err.stack}`));
                 return;
             } else {
-                return message.channel.send(notAvailableEmbed);
+                return message.channel.send({ embeds: [notAvailableEmbed] });
             }
         }
     } catch (error) {

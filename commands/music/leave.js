@@ -12,7 +12,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que ${client.user.username}.`);
 
         //Comprueba si hay una conexión de voz
-        if (!message.guild.voice) return message.channel.send(notInChannelEmbed);
+        if (!message.guild.voice) return message.channel.send({ embeds: [notInChannelEmbed] });
 
         //Comprueba si está en la sala del miembro
         let joined;
@@ -20,7 +20,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             if (member.user.id === client.user.id) joined = member;
         });
 
-        if (!joined) return message.channel.send(notInYourChannelEmbed);
+        if (!joined) return message.channel.send({ embeds: [notInYourChannelEmbed] });
 
         //Comprueba si es necesaria una votación
         if (await client.functions.evaluateDjOrVotes(message, 'leave')) {
@@ -41,7 +41,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             clearTimeout(client.voiceTimeout);
             
             //Manda un mensaje de confirmación
-            await message.channel.send(`⏏ | He abandonado el canal`);
+            await message.channel.send({ content: `⏏ | He abandonado el canal` });
         };
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

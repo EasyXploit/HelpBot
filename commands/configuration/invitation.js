@@ -12,7 +12,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setFooter('Este enlace nunca caduca y tiene usos ilimitados');
 
         //Envía el mensaje
-        await message.channel.send(invitationEmbed);
+        await message.channel.send({ embeds: [invitationEmbed] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

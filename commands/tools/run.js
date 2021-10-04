@@ -7,7 +7,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}template (plantilla)\``);
 
-        if (!args[0]) return message.channel.send(incorrectSyntaxEmbed);
+        if (!args[0]) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
 
         if (args[0] === `bienvenida`) {
             let noUserEmbed = new discord.MessageEmbed()
@@ -18,13 +18,13 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setColor(client.config.colors.correct2)
                 .setDescription(`${client.customEmojis.greenTick} ¡Listo!`);
             
-            if (args.length < 2) return message.channel.send(incorrectSyntaxEmbed);
+            if (args.length < 2) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
 
             const member = await client.functions.fetchMember(message.guild, args[1]);
-            if (!member) return message.channel.send(noUserEmbed);
+            if (!member) return message.channel.send({ embeds: [noUserEmbed] });
             
             client.emit(`guildMemberAdd`, member);
-            await message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 1000})});
+            await message.channel.send({ embeds: [successEmbed] }).then(msg => {msg.delete({timeout: 1000})});
         } else if (args[0] === `despedida`) {
             let noUserEmbed = new discord.MessageEmbed()
                 .setColor(client.config.colors.error)
@@ -34,13 +34,13 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setColor(client.config.colors.correct2)
                 .setDescription(`${client.customEmojis.greenTick} ¡Listo!`);
             
-            if (args.length < 2) return message.channel.send(incorrectSyntaxEmbed);
+            if (args.length < 2) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
             
             let member = await message.guild.members.fetch(message.mentions.users.first() || client.users.fetch(args[1]));
-            if (!member) return message.channel.send(noUserEmbed);
+            if (!member) return message.channel.send({ embeds: [noUserEmbed] });
             
             client.emit(`guildMemberRemove`, member);
-            await message.channel.send(successEmbed).then(msg => {msg.delete({timeout: 1000})});
+            await message.channel.send({ embeds: [successEmbed] }).then(msg => {msg.delete({timeout: 1000})});
         } else if (args[0] === `cuadrarStats`) {
 
             let startingEmbed = new discord.MessageEmbed()
@@ -49,7 +49,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setDescription('Comenzando operación de encudre de la tabla de clasificación.\nRevisa el terminal para evaluar el progreso del programa.');
 
             console.log(`${new Date().toLocaleString()} 》Comenzando operación de encudre de stats ...\n\n`);
-            message.channel.send(startingEmbed);
+            message.channel.send({ embeds: [startingEmbed] });
 
             const guildStats = client.stats[message.guild.id];
             const IDs = Object.keys(guildStats);
@@ -86,7 +86,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                         .setDescription('La operación de encuadre de estadísticas ha finalizado.\nPor favor, realice una revisión manual para confirmar su efectividad.');
 
                     console.log(`\n\n${new Date().toLocaleString()} 》Operación finalizada`);
-                    message.channel.send(finishedEmbed);
+                    message.channel.send({ embeds: [finishedEmbed] });
                 };
             }, 1000);
 
@@ -100,7 +100,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setDescription('Comenzando operación de ajuste de la tabla de clasificación.\nRevisa el terminal para evaluar el progreso del programa.');
 
             console.log(`${new Date().toLocaleString()} 》Comenzando operación de encudre de stats ...\n\n`);
-            message.channel.send(startingEmbed);
+            message.channel.send({ embeds: [startingEmbed] });
 
             const guildStats = client.stats[message.guild.id];
             const IDs = Object.keys(guildStats);
@@ -139,7 +139,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                         .setDescription('La operación de ajuste de estadísticas ha finalizado.\nPor favor, realice una revisión manual para confirmar su efectividad.');
 
                     console.log(`\n\n${new Date().toLocaleString()} 》Operación finalizada`);
-                    message.channel.send(finishedEmbed);
+                    message.channel.send({ embeds: finishedEmbed });
                 };
             }, 1000);*/
 
@@ -167,9 +167,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             try {
                 
                 //Envía un mensaje de información
-                message.channel.send(new discord.MessageEmbed()
+                message.channel.send({ embeds:  [new discord.MessageEmbed()
                     .setColor(client.config.colors.information)
-                    .setDescription(`${client.customEmojis.grayTick} Actualizando la base de datos de advertencias ...`)).then(msg => informationEmbed = msg);
+                    .setDescription(`${client.customEmojis.grayTick} Actualizando la base de datos de advertencias ...`) ]}).then(msg => informationEmbed = msg);
 
                 //Para cada miembrocon advertencias
                 for (const warnedMember in client.warns) {
@@ -198,9 +198,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 });
 
                 //Confirma que la operación se ha realizado
-                message.channel.send(new discord.MessageEmbed()
+                message.channel.send({ embeds: [new discord.MessageEmbed()
                     .setColor(client.config.colors.correct)
-                    .setDescription(`${client.customEmojis.greenTick} ¡Operación completada!`));
+                    .setDescription(`${client.customEmojis.greenTick} ¡Operación completada!`) ]});
 
             } catch (error) {
                 console.error(error);
@@ -209,7 +209,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             let noArgsEmbed = new discord.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} No has especificado una plantilla válida`);
-            message.channel.send(noArgsEmbed);
+            message.channel.send({ embeds: [noArgsEmbed] });
         };
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

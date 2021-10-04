@@ -28,30 +28,30 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setDescription(`${client.customEmojis.redTick} El bot no está pausado.`);
 
             //Comprueba si el bot tiene o no una conexión a un canal de voz en el servidor
-            if (!client.voiceDispatcher || !message.guild.voice) return message.channel.send(notPlayingEmbed);
+            if (!client.voiceDispatcher || !message.guild.voice) return message.channel.send({ embeds: [notPlayingEmbed] });
 
             //Comprueba si el miembro está en un canal de voz
             let voiceChannel = message.member.voice.channel;
-            if (!voiceChannel) return message.channel.send(noConnectionEmbed);
+            if (!voiceChannel) return message.channel.send({ embeds: [noConnectionEmbed] });
 
             //Comprueba si el miembro está en el mismo canal que el bot
-            if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(notAvailableEmbed);
+            if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send({ embeds: [notAvailableEmbed] });
 
             //Comprueba si la reproducción no está pausada
-            if (!client.voiceDispatcher.paused) return message.channel.send(notPausedEmbed);
+            if (!client.voiceDispatcher.paused) return message.channel.send({ embeds: {notPausedEmbed} });
 
             let noTalkPermissionEmbed = new discord.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} No tengo permiso para hablar en esta sala.`);
 
             //Comprueba si el bot tiene permiso para hablar
-            if (!voiceChannel.speakable) return message.channel.send(noTalkPermissionEmbed);
+            if (!voiceChannel.speakable) return message.channel.send({ embeds: [noTalkPermissionEmbed] });
 
             //Comprueba si es necesaria una votación
             if (await client.functions.evaluateDjOrVotes(message, 'play')) {
                 //Reanuda la reproducción y manda un mensaje de confirmación
                 client.voiceDispatcher.resume();
-                message.channel.send(`▶ | Cola reanudada`);
+                message.channel.send({ content: `▶ | Cola reanudada` });
             };
         } else if (args[0]) { //En este caso, "play" funcionará como "join" y reproducirá/añadirá a la cola
 
@@ -81,16 +81,16 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
             //Comprueba si el miembro está en un canal de voz
             let voiceChannel = message.member.voice.channel;
-            if (!voiceChannel) return message.channel.send(noChannelEmbed);
+            if (!voiceChannel) return message.channel.send({ embeds: [noChannelEmbed] });
 
             //Comprueba si el bot tiene permiso para hablar
             if (!voiceChannel.speakable || !voiceChannel.joinable || client.config.music.forbiddenChannels.includes(voiceChannel.id) || message.member.voice.channelID === message.guild.afkChannelID) return message.channel.send(noTalkPermissionEmbed);
 
             //Comprueba si el bot tiene permiso para conectarse
-            if (!voiceChannel.joinable) return message.channel.send(noConnectPermissionEmbed)
+            if (!voiceChannel.joinable) return message.channel.send({ embeds: [noConnectPermissionEmbed] })
 
             //Comprueba si la sala está llena
-            if (voiceChannel.full  && (!message.guild.voice  || !message.guild.voice.channel || !client.voiceConnection)) return message.channel.send(fullRoomEmbed);
+            if (voiceChannel.full  && (!message.guild.voice  || !message.guild.voice.channel || !client.voiceConnection)) return message.channel.send({ embeds: [fullRoomEmbed] });
 
             //Función para generar el footer
             function getFooter() {
@@ -143,7 +143,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     voiceChannel.join().then(connection => {
 
                         //Manda un mensaje de confirmación
-                        message.channel.send(`📥 | Unido a \`${voiceChannel.name}\` y vinculado a ${message.channel}.`);
+                        message.channel.send({ content: `📥 | Unido a \`${voiceChannel.name}\` y vinculado a ${message.channel}.` });
 
                         //Almacena la conexión en una variable global
                         client.voiceConnection = connection;
@@ -197,12 +197,12 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                                 .setDescription(`[${info.title}](${info.link})\n\n● **Autor:** \`${info.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(info.lengthSeconds).format('H:mm:ss')}\``)
                                 .setFooter(getFooter(), client.homeGuild.iconURL({dynamic: true}));
 
-                            message.channel.send(queuedEmbed);
+                            message.channel.send({ embeds: [queuedEmbed] });
                         };
                     };
                 } else {
-                    //Hace saber que no estás en el mismo canal que el bot
-                    return message.channel.send(notAvailableEmbed);
+                    //Hace saber que no estás en el mism-o canal que el bot
+                    return message.channel.send({ embeds: [notAvailableEmbed] });
                 };
             };
 
@@ -260,7 +260,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                 //Comprueba si el miembro puede añadir más canciones a la cola
                 const authorizedSongs = await authorizedLimit(message.member.id);
-                if (authorizedSongs === 0) return message.channel.send(fullUserQueueEmbed);
+                if (authorizedSongs === 0) return message.channel.send({ embeds: [fullUserQueueEmbed] });
 
                 //Almacena las canciones restantes
                 let remainingSongs = authorizedSongs;
@@ -278,7 +278,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                     //Comprueba si la cola de reproducción está llena
                     if (client.config.music.queueLimit !== 0 && client.queues[message.guild.id] && client.queues[message.guild.id].queue.length >= client.config.music.queueLimit) {
-                        message.channel.send(fullQueueEmbed);
+                        message.channel.send({ embeds: [fullQueueEmbed] });
                         break;
                     };
 
@@ -297,7 +297,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                             .addField(`Solicitado por:`, message.member.displayName, true)
                             .setFooter(getFooter(), client.homeGuild.iconURL({dynamic: true}));
 
-                        message.channel.send(playlistEmbed);
+                        message.channel.send({ embeds: [playlistEmbed] });
 
                         //Llama a la función de reproducción
                         reproduction(info, true);
@@ -322,18 +322,18 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     .setColor(client.config.colors.warning)
                     .setDescription(`${client.customEmojis.orangeTick} Se han omitido \`${playlist.items.length - authorizedSongs}\` canciones por que no puedes añadir más.`);
 
-                if (playlist.items.length > authorizedSongs) message.channel.send(unauthorizedSongsEmbed).then(msg => {msg.delete({timeout: 10000})});
+                if (playlist.items.length > authorizedSongs) message.channel.send({ embeds: [unauthorizedSongsEmbed] }).then(msg => {msg.delete({timeout: 10000})});
 
                 //Si hubieron cancines omitidas, lo advierte
                 let dupesCountEmbed = new discord.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setDescription(`${client.customEmojis.orangeTick} Se han omitido \`${dupesCount}\` canciones duplicadas.`);
 
-                if (dupesCount > 0) message.channel.send(dupesCountEmbed).then(msg => {msg.delete({timeout: 10000})});
+                if (dupesCount > 0) message.channel.send({ embeds: [dupesCountEmbed] }).then(msg => {msg.delete({timeout: 10000})});
             };
 
             //Manda el mensaje "buscando ..."
-            message.channel.send(`🔎 | Buscando \`${args.join(` `)}\` ...`);
+            message.channel.send({ content: `🔎 | Buscando \`${args.join(` `)}\` ...` });
 
             //Si se proporciona un parámetro de búsqueda, se muestra el menú. Si es una URL, busca los metadatos directamente
             if (args[0].startsWith('http')) {
@@ -342,7 +342,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} El bot solo puede reproducir música desde YouTube.`);
 
-                if (!args[0].includes('youtu')) return message.channel.send(notSupportedEmbed);
+                if (!args[0].includes('youtu')) return message.channel.send({ embeds: [notSupportedEmbed] });
                 
                 if (args[0].match(/^.*(list=)([^#\&\?]*).*/)) {
                     //Si se trata de una URL de Playlist, la maneja directamente
@@ -353,7 +353,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                     //Comprueba si el miembro puede añadir más canciones a la cola
                     let authorizedSongs = await authorizedLimit(message.member.id);
-                    if (authorizedSongs === 0) return message.channel.send(fullUserQueueEmbed);
+                    if (authorizedSongs === 0) return message.channel.send({ embes: [fullUserQueueEmbed] });
 
                     //Busca los metadatos
                     let yt_info = await ytdl.getInfo(args[0]);
@@ -363,7 +363,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                         .setColor(client.config.colors.error)
                         .setDescription(`${client.customEmojis.redTick} No se ha encontrado ningún resultado que encaje con ${args.join(' ')}.`);
 
-                    if (!yt_info) return message.channel.send(noResultsEmbed);
+                    if (!yt_info) return message.channel.send({ embeds: [noResultsEmbed] });
 
                     //Almacena los detalles de la respuesta
                     let details = yt_info.videoDetails;
@@ -373,7 +373,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                         .setColor(client.config.colors.error)
                         .setDescription(`${client.customEmojis.redTick} No se pueden reproducir directos o vídeo privados.`);
 
-                    if (details.isLiveContent || details.isPrivate) return message.channel.send(unsupportedTypeEmbed);
+                    if (details.isLiveContent || details.isPrivate) return message.channel.send({ embeds: [unsupportedTypeEmbed] });
 
                     //Crea el objeto de la cola
                     let info = await infoGenerator(details, details.video_url, details.lengthSeconds, details.thumbnails[0].url);
@@ -383,7 +383,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                         .setColor(client.config.colors.error)
                         .setDescription(`${client.customEmojis.redTick} Esta canción ya está en la cola.`);
 
-                    if (client.config.music.preventDuplicates && await preventDupes(info.link)) return message.channel.send(duplicatedEmbed);
+                    if (client.config.music.preventDuplicates && await preventDupes(info.link)) return message.channel.send({ embeds: [duplicatedEmbed] });
 
                     //Llama a la función de reproducción
                     reproduction(info);
@@ -401,7 +401,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                         .setDescription(`${client.customEmojis.redTick} No se ha encontrado ningún resultado que encaje con ${args.join(' ')}.`);
 
                     //Comprueba si se han obtenido resultados
-                    if (!results) return message.channel.send(noResultsEmbed);
+                    if (!results) return message.channel.send({ embeds: [noResultsEmbed] });
 
                     //Si solo hay un resultado, no muestra menú
                     if (results.length == 1) {
@@ -411,7 +411,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                         //Comprueba si el miembro puede añadir más canciones a la cola
                         let authorizedSongs = await authorizedLimit(message.member.id);
-                        if (authorizedSongs === 0) return message.channel.send(fullUserQueueEmbed);
+                        if (authorizedSongs === 0) return message.channel.send({ embeds: [fullUserQueueEmbed] });
 
                         //Crea el objeto de la cola
                         let info = await infoGenerator(results[0], results[0].url);
@@ -421,7 +421,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                             .setColor(client.config.colors.error)
                             .setDescription(`${client.customEmojis.redTick} Esta canción ya está en la cola.`);
 
-                        if (client.config.music.preventDuplicates && await preventDupes(info.link)) return message.channel.send(duplicatedEmbed);
+                        if (client.config.music.preventDuplicates && await preventDupes(info.link)) return message.channel.send({ embeds: [duplicatedEmbed] });
 
                         //Llama a la función de reproducción
                         reproduction(info);
@@ -457,7 +457,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                             .setDescription(formattedResults);
 
                         //Se espera a que el miembro elija una canción de la lista
-                        await message.channel.send(resultsEmbed).then(async msg => {
+                        await message.channel.send({ embeds: [resultsEmbed] }).then(async msg => {
                             await msg.channel.awaitMessages(m => m.author.id === message.author.id, {max: 1, time: 60000}).then(async collected => {
                                 let option = collected.first().content; //Almacena la opción elegida
                                 collected.first().delete({timeout: 2000}); //Borra el mensaje de elección
@@ -468,7 +468,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                                     .setColor(client.config.colors.error)
                                     .setDescription(`${client.customEmojis.redTick} Debes escoger una canción de la lista.`);
 
-                                if (isNaN(option) || option < 1 || option > pointer - 1) return message.channel.send(incorrectOptionEmbed);
+                                if (isNaN(option) || option < 1 || option > pointer - 1) return message.channel.send({ embeds: [incorrectOptionEmbed] });
 
                                 //Busca el resultado en la lista de asociaciones en función de la opción elegida
                                 option = asociatedPositions[option];
@@ -486,7 +486,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                                     //Comprueba si el miembro puede añadir más canciones a la cola
                                     let authorizedSongs = await authorizedLimit(message.member.id);
-                                    if (authorizedSongs === 0) return message.channel.send(fullUserQueueEmbed);
+                                    if (authorizedSongs === 0) return message.channel.send({ embeds: [fullUserQueueEmbed] });
                                     
                                     //Crea el objeto de la cola
                                     let info = await infoGenerator(results[option], results[option].url);
@@ -496,7 +496,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                                         .setColor(client.config.colors.error)
                                         .setDescription(`${client.customEmojis.redTick} Esta canción ya está en la cola.`);
 
-                                    if (client.config.music.preventDuplicates && await preventDupes(info.link)) return message.channel.send(duplicatedEmbed);
+                                    if (client.config.music.preventDuplicates && await preventDupes(info.link)) return message.channel.send({ embeds: [duplicatedEmbed] });
                 
                                     //Llama a la función de reproducción
                                     reproduction(info);
@@ -507,7 +507,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                                         .setColor(client.config.colors.error)
                                         .setDescription(`${client.customEmojis.redTick} No se puede reproducir este resultado.`);
 
-                                    return message.channel.send(incorrectTypeEmbed);
+                                    return message.channel.send({ embeds: [incorrectTypeEmbed] });
                                 };
                             }).catch(() => msg.delete()); //Si el miembro no responde, borra el menú
                         });

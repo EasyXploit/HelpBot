@@ -8,7 +8,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}dm (autor | anonimo) (@usuario | id) (embed | normal) (mensaje a enviar)\``);
         
-        if (args.length < 4 || (args[0] !== 'autor' && args[0] !== 'anonimo') || (args[2] !== 'embed' && args[2] !== 'normal')) return message.channel.send(incorrectSyntaxEmbed);
+        if (args.length < 4 || (args[0] !== 'autor' && args[0] !== 'anonimo') || (args[2] !== 'embed' && args[2] !== 'normal')) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
             
         let noUserEmbed = new discord.MessageEmbed()
             .setColor(client.config.colors.error2)
@@ -21,10 +21,10 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} No puedes entablar una conversación con un bot`);
 
-        if (!member) return message.channel.send(noUserEmbed);
+        if (!member) return message.channel.send({ embeds: [noUserEmbed] });
         
         //Devuelve un error si el objetivo es un bot
-        if (member.user.bot) return message.channel.send(noBotsEmbed);
+        if (member.user.bot) return message.channel.send({ embeds: [noBotsEmbed] });
 
         let mode = args[0];
         let type = args[2];
@@ -63,7 +63,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                         .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`);
 
                     //Envía el mensaje de error
-                    return message.channel.send(noPrivilegesEmbed).then(msg => {msg.delete({timeout: 5000})});
+                    return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {msg.delete({timeout: 5000})});
                 };
 
                 if (type === 'embed') {
@@ -74,13 +74,13 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 break;
         };
 
-        await member.user.send(resultMessage);
+        await member.user.send({ embeds: [resultMessage] });
 
         let confirmEmbed = new discord.MessageEmbed()
             .setColor(client.config.colors.correct2)
             .setDescription(`${client.customEmojis.greenTick} ¡Mensaje enviado!`);
 
-        await message.channel.send(confirmEmbed);
+        await message.channel.send({ embeds: [confirmEmbed] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

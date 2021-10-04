@@ -11,7 +11,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} El bot no tiene ninguna canción en la cola.`);
         
-        if (!client.queues[message.guild.id] || !client.queues[message.guild.id].nowplaying || Object.entries(client.queues[message.guild.id].nowplaying).length === 0) return message.channel.send(noQueueEmbed);
+        if (!client.queues[message.guild.id] || !client.queues[message.guild.id].nowplaying || Object.entries(client.queues[message.guild.id].nowplaying).length === 0) return message.channel.send({ embeds: [noQueueEmbed] });
         
         //Almacena el servidor
         let server = client.queues[message.guild.id];
@@ -71,7 +71,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     if ((Math.ceil(serverQueue.length / 5)) != 0) awaitReactions(embed);
                 });
             } else {
-                await message.channel.send(queueEmbed).then(async embed => {
+                await message.channel.send({ embeds: [queueEmbed] }).then(async embed => {
                     if ((Math.ceil(serverQueue.length / 5)) != 0) awaitReactions(embed);
                 });
             };

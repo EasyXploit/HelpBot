@@ -51,7 +51,7 @@ exports.run = (discord, client) => {
                     if (err) throw err;
 
                     await client.functions.loggingManager(loggingEmbed);
-                    await member.send(toDMEmbed);
+                    await member.send({ embeds: [toDMEmbed] });
                 });
             };
         };
@@ -99,7 +99,7 @@ exports.run = (discord, client) => {
                 .setFooter(client.user.username, client.user.avatarURL())
                 .setDescription(`${client.customEmojis.orangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);
 
-            if (client.debuggingChannel) client.debuggingChannel.send(debuggingEmbed);
+            if (client.debuggingChannel) client.debuggingChannel.send({ embeds: [debuggingEmbed] });
         };
     }, 60000);
 
@@ -146,14 +146,14 @@ exports.run = (discord, client) => {
                     .setDescription(`**${client.polls[idKey].title}**\n\n${client.polls[idKey].options}`)
                     .addField('Resultados', results.join(' '));
 
-                await poll.channel.send(resultEmbed).then(async poll => {
+                await poll.channel.send({ embeds: [resultEmbed] }).then(async poll => {
 
                     let loggingEmbed = new discord.MessageEmbed()
                         .setColor(client.config.colors.logging)
                         .setTitle('📑 Auditoría - [ENCUESTAS]')
                         .setDescription(`La encuesta "__[${client.polls[idKey].title}](${poll.url})__" ha finalizado en el canal <#${client.polls[idKey].channel}>.`);
 
-                    await client.loggingChannel.send(loggingEmbed)
+                    await client.loggingChannel.send({ embeds: [loggingEmbed] });
 
                 });
                 

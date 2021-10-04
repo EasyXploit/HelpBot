@@ -16,7 +16,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .addField('✉ Agradecimientos', '● Maria José Lozano\n● Amish Shah\n● El Pilko (Carlos)', true)
             .addField('📊 Estadísticas', `${await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size)} miembros\nV ${packageInfo.version}`, true)
             .addField('🗂 Librerias', '● discord.js\n● flaticon', true);
-        message.channel.send(resultEmbed);
+        message.channel.send({ embeds: [resultEmbed] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

@@ -46,8 +46,8 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
             .addField('Duración', duration, true);
 
         await client.functions.loggingManager(loggingEmbed);
-        await message.channel.send(publicEmbed);
-        await member.send(toDMEmbed);
+        await message.channel.send({ embeds: [publicEmbed] });
+        await member.send({ embeds: [toDMEmbed] });
     };
 
     //Función para expulsar
@@ -71,8 +71,8 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
             .addField(`Razón`, 'Demasiadas advertencias', true)
 
         await client.functions.loggingManager(loggingEmbed);
-        await message.channel.send(publicEmbed);
-        await member.send(toDMEmbed);
+        await message.channel.send({ embeds: [publicEmbed] });
+        await member.send({ embeds: [toDMEmbed] });
 
         await member.kick(reason);
     };
@@ -112,8 +112,8 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
             .addField(`Duración`, new Date(parseInt(time)).toLocaleString() || '∞', true);
 
         await client.functions.loggingManager(loggingEmbed);
-        await message.channel.send(publicEmbed);
-        await member.send(toDMEmbed);
+        await message.channel.send({ embeds: [publicEmbed] });
+        await member.send({ embeds: [toDMEmbed] });
 
         await guild.members.ban(user, {reason: `Moderador: ${moderator.id}, Razón: Demasiadas advertencias`});
 
@@ -134,8 +134,8 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
         .addField(`Moderador`, moderator.tag, true)
         .addField(`Razón`, warnReason, true);
 
-    await message.channel.send(publicWarnEmbed);
-    await member.send(toDMEmbed);
+    await message.channel.send({ embeds: [publicWarnEmbed] });
+    await member.send({ embeds: [toDMEmbed] });
 
     //LEYENDA DE ACCIONES: 1 = borrar; 2 = advertir; 3 = borrar y advertir
     if (action === 1 || action === 3) { //Borra el mensaje si se ha de hacer
@@ -171,7 +171,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
             await client.functions.loggingManager(loggingEmbed);
 
             //Si procede, adjunta el mensaje filtrado
-            if (msg) client.loggingChannel.send(new discord.MessageAttachment(Buffer.from(`CONTENIDO DEL MENSAJE: \n${msg}`, 'utf-8'), `mensaje-filtrado-${Date.now()}.txt`))
+            if (msg) client.loggingChannel.send({ embeds: [new discord.MessageAttachment(Buffer.from(`CONTENIDO DEL MENSAJE: \n${msg}`, 'utf-8'), `mensaje-filtrado-${Date.now()}.txt`)] })
         });
 
         for (let i = 0; i < client.config.automodRules.length; i++) {

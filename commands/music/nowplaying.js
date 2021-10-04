@@ -7,7 +7,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} El bot no tiene ninguna canción en la cola.`);
         
-        if (!client.queues[message.guild.id].nowplaying || Object.entries(client.queues[message.guild.id].nowplaying).length === 0) return message.channel.send(noQueueEmbed);
+        if (!client.queues[message.guild.id].nowplaying || Object.entries(client.queues[message.guild.id].nowplaying).length === 0) return message.channel.send({ embeds: [noQueueEmbed] });
         
         const ytdl = require(`ytdl-core-discord`);
         const moment = require(`moment`);
@@ -52,7 +52,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n${progressBar.join(``)} ${percentage}%\n\`${moment().startOf('day').milliseconds(progress).format('H:mm:ss')} / ${moment().startOf('day').milliseconds(total).format('HH:mm:ss')}\``)
             .setFooter(footer, client.homeGuild.iconURL({dynamic: true}));
         
-        message.channel.send(progressEmbed);
+        message.channel.send({ embeds: [progressEmbed] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

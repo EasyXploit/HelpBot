@@ -9,7 +9,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`);
 
         const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);
-        if (!member) return message.channel.send(notFoundEmbed);
+        if (!member) return message.channel.send({ embeds: [notFoundEmbed] });
 
         if (message.guild.id in client.stats === false) {
             client.stats[message.guild.id] = {};
@@ -22,7 +22,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setColor(client.config.colors.error2)
                 .setDescription(`${client.customEmojis.redTick} ${member} no tiene puntos de XP`);
 
-            return message.channel.send(noXPEmbed);
+            return message.channel.send({ embeds: [noXPEmbed] });
         };
         
         const userStats = guildStats[member.id];
@@ -92,7 +92,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             resultEmbed.addField(`Siguiente recompensa`, `\`${await nextReward()}\``, true);
         };
         
-        message.channel.send(resultEmbed);
+        message.channel.send({ embeds: [resultEmbed] });
 
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

@@ -46,8 +46,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         }
 
         //ENVIO DE EMBEDS
-        await message.channel.send(botPingEmbed);
-        await message.channel.send(websocketPingEmbed);
+        await message.channel.send({ embeds: [ botPingEmbed, websocketPingEmbed] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

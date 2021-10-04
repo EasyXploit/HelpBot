@@ -17,12 +17,12 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
         const member = await client.functions.fetchMember(message.guild, args[0]);
-        if (!member) return message.channel.send(notToWarnEmbed);
-        if (member.user.bot) return message.channel.send(noBotsEmbed);
+        if (!member) return message.channel.send({ embeds: [notToWarnEmbed] });
+        if (member.user.bot) return message.channel.send({ embeds: [noBotsEmbed] });
 
         //Esto comprueba si se ha aportado alguna razón
         let reason = args.slice(1).join(' ');
-        if (!reason) return message.channel.send(undefinedReasonEmbed);
+        if (!reason) return message.channel.send({ embeds: [undefinedReasonEmbed] });
           
         let moderator = await client.functions.fetchMember(message.guild, message.author.id);
         
@@ -34,7 +34,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} No puedes advertir a un miembro con un rol igual o superior al tuyo`);
     
-                return message.channel.send(cannotWarnHigherRoleEmbed);
+                return message.channel.send({ embeds: [cannotWarnHigherRoleEmbed] });
             };
         };
 

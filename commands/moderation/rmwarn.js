@@ -25,16 +25,16 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
         const member = await client.functions.fetchMember(message.guild, args[0]);
-        if (!member) return message.channel.send(notToUnwarnEmbed);
-        if (member.user.bot) return message.channel.send(noBotsEmbed);
+        if (!member) return message.channel.send({ embeds: {notToUnwarnEmbed} });
+        if (member.user.bot) return message.channel.send({ embeds: [noBotsEmbed] });
         
         //Esto comprueba si se ha aportado alguna advertencia
         let warnID = args[1];
-        if (!warnID && warnID.toLowerCase() !== 'all') return message.channel.send(noWarnIDEmbed);
+        if (!warnID && warnID.toLowerCase() !== 'all') return message.channel.send({ embeds: [noWarnIDEmbed] });
         
         //Esto comprueba si se ha aportado alguna razón
         let reason = args.slice(2).join(" ") || 'Indefinida';
-        if (reason === 'Indefinida' && message.author.id !== message.guild.ownerID) return message.channel.send(undefinedReasonEmbed);
+        if (reason === 'Indefinida' && message.author.id !== message.guild.ownerID) return message.channel.send({ embeds: [undefinedReasonEmbed] });
           
         let moderator = await client.functions.fetchMember(message.guild, message.author.id);
 
@@ -46,11 +46,11 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         
         //Se comprueba si puede des-advertir al miembro
         if (moderator.id !== message.guild.owner.id) {
-            if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send(noPrivilegesEmbed).then(msg => {msg.delete({timeout: 5000})});
+            if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {msg.delete({timeout: 5000})});
         };
 
         //Comprueba si el miembro tiene warns
-        if (!client.warns[member.id]) return message.channel.send(noWarnsEmbed);
+        if (!client.warns[member.id]) return message.channel.send({ embeds: [noWarnsEmbed] });
 
         let successEmbed, loggingEmbed, toDMEmbed;
 
@@ -73,7 +73,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         if (warnID === 'all') {
 
-            if (!checkIfCanRemoveAny()) return message.channel.send(noPrivilegesEmbed).then(msg => {msg.delete({timeout: 5000})});
+            if (!checkIfCanRemoveAny()) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {msg.delete({timeout: 5000})});
 
             successEmbed = new discord.MessageEmbed()
                 .setColor(client.config.colors.correct2)
@@ -98,12 +98,12 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             delete client.warns[member.id];
         } else {
 
-            if (!client.warns[member.id][warnID]) return message.channel.send( new discord.MessageEmbed()
+            if (!client.warns[member.id][warnID]) return message.channel.send({ embeds: [new discord.MessageEmbed()
                 .setColor(client.config.colors.error2)
                 .setDescription(`${client.customEmojis.redTick} No existe la advertencia con ID **${warnID}**`)
-            );
+            ] });
 
-            if (!checkIfCanRemoveAny() && client.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send(noPrivilegesEmbed).then(msg => {msg.delete({timeout: 5000})});
+            if (!checkIfCanRemoveAny() && client.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {msg.delete({timeout: 5000})});
 
             successEmbed = new discord.MessageEmbed()
                 .setColor(client.config.colors.correct2)
@@ -142,8 +142,8 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             if (err) throw err;
 
             await client.functions.loggingManager(loggingEmbed);
-            await member.send(toDMEmbed);
-            await message.channel.send(successEmbed);
+            await member.send({ embeds: [toDMEmbed] });
+            await message.channel.send({ embeds: [successEmbed] });
         });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

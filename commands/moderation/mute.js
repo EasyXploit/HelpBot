@@ -13,9 +13,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
         const member = await client.functions.fetchMember(message.guild, args[0]);
-        if (!member) return message.channel.send(notToMuteEmbed);
+        if (!member) return message.channel.send({ embeds: [notToMuteEmbed] });
 
-        if (member.user.bot) return message.channel.send(noBotsEmbed);
+        if (member.user.bot) return message.channel.send({ embeds: [noBotsEmbed] });
         
         let moderator = await client.functions.fetchMember(message.guild, message.author.id);
         
@@ -27,7 +27,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} No puedes silenciar a un miembro con un rol igual o superior al tuyo`);
     
-                return message.channel.send(cannotMuteHigherRoleEmbed);
+                return message.channel.send({ embeds: [cannotMuteHigherRoleEmbed] });
             };
         };
 
@@ -39,7 +39,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.redTick} Este miembro ya esta silenciado`);
 
         //Comprueba si el miembro tiene el rol silenciado, sino se lo añade
-        if (member.roles.cache.has(mutedRole.id)) return message.channel.send(alreadyMutedEmbed);
+        if (member.roles.cache.has(mutedRole.id)) return message.channel.send({ embeds: [alreadyMutedEmbed] });
         member.roles.add(mutedRole);
 
         //Propaga el rol silenciado
@@ -76,9 +76,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .addField('Razón', reason, true)
             .addField('Duración', '∞', true);
 
-        await message.channel.send(successEmbed);
+        await message.channel.send({ embeds: [successEmbed] });
         await client.functions.loggingManager(loggingEmbed);
-        await member.send(toDMEmbed);
+        await member.send({ embeds: [toDMEmbed] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

@@ -55,7 +55,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             if (embed) {
                 await embed.edit(leaderboard).then(async embed => {awaitReactions(embed)});
             } else {
-                await message.channel.send(leaderboard).then(async embed => {awaitReactions(embed)});
+                await message.channel.send({ embeds: [leaderboard] }).then(async embed => {awaitReactions(embed)});
             };
         };
 

@@ -8,7 +8,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.redTick} No has proporcionado un usuario válido`);
 
         const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);
-        if (!member) return message.channel.send(noUserEmbed);
+        if (!member) return message.channel.send({ embeds: [noUserEmbed] });
 
         let user = member.user;
 
@@ -99,7 +99,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .addField(`⚖ Infracciones`, infractionsCount, true)
             .addField(`👮 Permisos`, `\`\`\`${matches.join(', ')}\`\`\``);
         
-        message.channel.send(resultEmbed);
+        message.channel.send({ embeds: [resultEmbed] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

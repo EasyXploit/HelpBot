@@ -7,7 +7,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.config.colors.error2)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}roleinfo (@rol | rol | id)\``);
 
-        if (!args[0]) return message.channel.send(incorrectSyntaxEmbed);
+        if (!args[0]) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
 
         await client.functions.fetchRole(message.guild, args[0]).then(role => {
 
@@ -15,7 +15,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setColor(client.config.colors.error2)
                 .setDescription(`${client.customEmojis.redTick} El rol no se ha podido encontrar`);
 
-            if (!role) return message.channel.send(roleNotFoundEmbed);
+            if (!role) return message.channel.send({ embeds: [roleNotFoundEmbed] });
 
             let membersWithRole = message.guild.roles.cache.get(role.id).members.size;
             let mentionable = 'No';
@@ -47,7 +47,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .addField('📝 Fecha de creación', role.createdAt.toLocaleString(), true)
                 .addField('⚙ Administración', managed, true)
 
-            message.channel.send(resultEmbed);
+            message.channel.send({ embeds: [resultEmbed] });
         }).catch(error => {
             console.log(`${new Date().toLocaleString()} 》${error.stack}`);
         });

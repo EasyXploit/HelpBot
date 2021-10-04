@@ -17,12 +17,12 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
         const member = await client.functions.fetchMember(message.guild, args[0]);
-        if (!member) return message.channel.send(notToMuteEmbed);
+        if (!member) return message.channel.send({ embeds: [notToMuteEmbed] });
 
-        if (member.user.bot) return message.channel.send(noBotsEmbed);
+        if (member.user.bot) return message.channel.send({ embeds: [noBotsEmbed] });
         
         //Esto comprueba si se ha proporcionado una unidad de medida de tiempo
-        if (!args[1]) return message.channel.send(noCorrectTimeEmbed);
+        if (!args[1]) return message.channel.send({ embeds: [noCorrectTimeEmbed] });
         
         let moderator = await client.functions.fetchMember(message.guild, message.author.id);
         
@@ -34,7 +34,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} No puedes silenciar a un miembro con un rol igual o superior al tuyo`);
     
-                return message.channel.send(cannotMuteHigherRoleEmbed);
+                return message.channel.send({ embeds: [cannotMuteHigherRoleEmbed] });
             };
         };
 
@@ -46,23 +46,23 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.redTick} Este miembro ya esta silenciado`);
 
         //Comprueba si el miembro tiene el rol silenciado
-        if (member.roles.cache.has(mutedRole.id)) return message.channel.send(alreadyMutedEmbed);
+        if (member.roles.cache.has(mutedRole.id)) return message.channel.send({ embeds: [alreadyMutedEmbed] });
 
         //Propaga el rol silenciado
         client.functions.spreadMutedRole(message.guild);
         
         //Comprueba la longitud del tiempo proporcionado
-        if (args[1].length < 2) return message.channel.send(noCorrectTimeEmbed);
+        if (args[1].length < 2) return message.channel.send({ embeds: [noCorrectTimeEmbed] });
 
         //Divide el tiempo y la unidad de medida proporcionados
         let time = args[1].slice(0, -1);
         let measure = args[1].slice(-1).toLowerCase();
 
         //Comprueba si se ha proporcionado un número.
-        if (isNaN(time)) return message.channel.send(noCorrectTimeEmbed);
+        if (isNaN(time)) return message.channel.send({ embeds: [noCorrectTimeEmbed] });
 
         //Comprueba si se ha proporcionado una nunida de medida válida
-        if (measure !== 's' && measure !== 'm' && measure !== 'h' && measure !== 'd') return message.channel.send(noCorrectTimeEmbed);
+        if (measure !== 's' && measure !== 'm' && measure !== 'h' && measure !== 'd') return message.channel.send({ embeds: [noCorrectTimeEmbed] });
 
         let milliseconds;
 
@@ -104,7 +104,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setColor(client.config.colors.error2)
                 .setDescription(`${client.customEmojis.redTick} Los moderadores solo pueden silenciar un máximo de 1 día`);
 
-            return message.channel.send(maxTimeEmbed);
+            return message.channel.send({ embeds: [maxTimeEmbed] });
         };
 
         //Genera un mensaje de confirmación
@@ -123,7 +123,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setColor(client.config.colors.error2)
                 .setDescription(`${client.customEmojis.redTick} Los moderadores deben adjuntar una razón`);
 
-            if (reason === 'Indefinida' && !authorized) return message.channel.send(undefinedReasoneEmbed);
+            if (reason === 'Indefinida' && !authorized) return message.channel.send({ embeds: [undefinedReasoneEmbed] });
         };
 
         let loggingEmbed = new discord.MessageEmbed()
@@ -153,9 +153,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             //Silencia al miembro
             member.roles.add(mutedRole);
             
-            await message.channel.send(successEmbed);
+            await message.channel.send({ embeds: [successEmbed] });
             await client.functions.loggingManager(loggingEmbed);
-            await member.send(toDMEmbed);
+            await member.send({ embeds: [toDMEmbed] });
         });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

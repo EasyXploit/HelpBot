@@ -24,6 +24,7 @@
   "homepage": "https://github.com/EasyXploit/HelpBot#readme",
   "dependencies": {
     "@discordjs/opus": "^0.6.0",
+    "@discordjs/voice": "^0.6.0",
     "asciiart-logo": "^0.2.6",
     "bufferutil": "^4.0.4",
     "discord.js": "^13.1.0",

@@ -11,6 +11,12 @@ console.log(splash, divider);
 console.log('- Iniciando cliente ...');
 const discord = require('discord.js');
 const client = new discord.Client({
+    intents: [
+        discord.Intents.FLAGS.GUILDS,
+        discord.Intents.FLAGS.GUILD_MESSAGES,
+        discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        discord.Intents.FLAGS.GUILD_MEMBERS,
+        discord.Intents.FLAGS.DIRECT_MESSAGES],
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
     fetchAllMembers: true,
     disableEveryone: true,

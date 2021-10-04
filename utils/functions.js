@@ -291,16 +291,16 @@ exports.run = (discord, client) => {
         let emojisThreshold;
 
         switch (client.homeGuild.premiumTier) {
-            case 0:
+            case 'NONE':
                 emojisThreshold = 50;
                 break;
-            case 1:
+            case 'TIER_1':
                 emojisThreshold = 100;
                 break;
-            case 2:
+            case 'TIER_2':
                 emojisThreshold = 150;
                 break;
-            case 3:
+            case 'TIER_3':
                 emojisThreshold = 250;
                 break;
         };

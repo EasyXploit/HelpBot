@@ -4,8 +4,8 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
     try {
 
-        const ytdl = require(`ytdl-core-discord`);
-        const moment = require(`moment`);
+        const ytdl = require('ytdl-core-discord');
+        const moment = require('moment');
         const randomColor = require('randomcolor');
 
         let notAvailableEmbed = new discord.MessageEmbed()

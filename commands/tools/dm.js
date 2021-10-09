@@ -29,17 +29,18 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         let mode = args[0];
         let type = args[2];
         let body = args.slice(3).join(' ');
-        let resultMessage = body;
         
         switch (mode) {
             case 'autor':
                 if (type === 'embed') {
-                    resultMessage = new discord.MessageEmbed()
+                    let resultMessage = new discord.MessageEmbed()
                         .setAuthor(`Mensaje de ${message.author.tag}`, message.author.avatarURL())
                         .setColor(client.config.colors.primary)
                         .setDescription(body);
+
+                    await member.user.send({ embeds: [resultMessage] });
                 } else if (type === 'normal') {
-                    resultMessage = `**Mensaje de ${message.author.tag}:**\n${resultMessage}`
+                    await member.user.send({ content: `**Mensaje de ${message.author.tag}:**\n${body}` });
                 }
                 break;
             case 'anonimo':
@@ -67,14 +68,17 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 };
 
                 if (type === 'embed') {
-                    resultMessage = new discord.MessageEmbed()
+                    let resultMessage = new discord.MessageEmbed()
                         .setColor(client.config.colors.primary)
                         .setDescription(body);
-                }
+
+                    await member.user.send({ embeds: [resultMessage] });
+                } else if (type === 'normal') {
+                    await member.user.send({ content: body });
+                };
+
                 break;
         };
-
-        await member.user.send({ embeds: [resultMessage] });
 
         let confirmEmbed = new discord.MessageEmbed()
             .setColor(client.config.colors.correct2)

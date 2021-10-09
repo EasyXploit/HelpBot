@@ -87,7 +87,7 @@ exports.run = (discord, client) => {
             let mutedRolePermissions = channel.permissionOverwrites.get(mutedRole.id);
 
             //Si el canal no tiene el permiso y el bitfield no coincide con las negaciones pertinentes, añade el permiso
-            if (!mutedRolePermissions || ((mutedRolePermissions.deny & 0x800) !== 0x800) || ((mutedRolePermissions.deny & 0x40) !== 0x40) || ((mutedRolePermissions.deny & 0x200000) !== 0x200000)) {
+            if (!mutedRolePermissions || ((mutedRolePermissions.deny & BigInt(0x800)) !== BigInt(0x800) || (mutedRolePermissions.deny & BigInt(0x40)) !== BigInt(0x40)) || ((mutedRolePermissions.deny & BigInt(0x200000)) !== BigInt(0x200000))) {
                 await channel.updateOverwrite(mutedRole, {
                     SEND_MESSAGES: false,
                     ADD_REACTIONS: false,
@@ -352,7 +352,7 @@ exports.run = (discord, client) => {
             try {
                 //Carga los permisos del bot en el canal de logging
                 const channelPermissions = client.loggingChannel.permissionsFor(client.user);
-                const missingPermission = ((channelPermissions & 0x800) !== 0x800 || (channelPermissions & 0x4000) !== 0x4000);
+                const missingPermission = ((channelPermissions & BigInt(0x800)) !== BigInt(0x800) || (channelPermissions & BigInt(0x4000)) !== BigInt(0x4000));
 
                 //Comprueba si el bot tiene permisos para mandar el embed
                 if (!missingPermission) {
@@ -392,7 +392,7 @@ exports.run = (discord, client) => {
             try {
                 //Carga los permisos del bot en el canal de debugging
                 const channelPermissions = client.debuggingChannel.permissionsFor(client.user);
-                const missingPermission = ((channelPermissions & 0x800) !== 0x800 || (channelPermissions & 0x4000) !== 0x4000);
+                const missingPermission = ((channelPermissions & BigInt(0x800)) !== BigInt(0x800) || (channelPermissions & BigInt(0x4000)) !== BigInt(0x4000));
 
                 //Comprueba si el bot tiene permisos para mandar el embed
                 if (!missingPermission) {
@@ -492,7 +492,7 @@ exports.run = (discord, client) => {
             let inviteChannel;
             
             //Comprueba si hay canal de reglas y si se tiene permiso para crear la invitación
-            if (client.homeGuild.rulesChannel && !(client.homeGuild.rulesChannel.permissionsFor(client.user) & 0x1) !== 0x1) {
+            if (client.homeGuild.rulesChannel && !(client.homeGuild.rulesChannel.permissionsFor(client.user) & BigInt(0x1)) !== BigInt(0x1)) {
                 inviteChannel = client.homeGuild.rulesChannel;
             } else {
                 //De lo contrario, hace lo propio con el primer canal que lo permita
@@ -502,7 +502,7 @@ exports.run = (discord, client) => {
                     await channels.forEach(async channel => {
 
                         //Si pudo, graba la invitación
-                        if(!(channel.permissionsFor(client.user) & 0x1) !== 0x1) return inviteChannel = channel;
+                        if(!(channel.permissionsFor(client.user) & BigInt(0x1)) !== BigInt(0x1)) return inviteChannel = channel;
                     });
 
                     //Si no, asigna "client.config.guild.homeGuildInviteCode" cómo falso

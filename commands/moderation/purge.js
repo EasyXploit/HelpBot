@@ -37,7 +37,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
 
             const memberPermissions = channel.permissionsFor(message.author).bitfield;
-            if ((memberPermissions & 0x2000) !== 0x2000) return message.channel.send({ embeds: [noPrivilegesEmbed] });
+            if ((memberPermissions & BigInt(0x2000)) !== BigInt(0x2000)) return message.channel.send({ embeds: [noPrivilegesEmbed] });
             
             const messages = await channel.messages.fetch({limit: args[0]});
             count = messages.size;
@@ -64,7 +64,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             channel = message.channel;
 
             const memberPermissions = channel.permissionsFor(message.author).bitfield;
-            if ((memberPermissions & 0x2000) !== 0x2000) return message.channel.send({ embeds: [noPrivilegesEmbed] });
+            if ((memberPermissions & BigInt(0x2000)) !== BigInt(0x2000)) return message.channel.send({ embeds: [noPrivilegesEmbed] });
             
             const messages = await message.channel.messages.fetch({limit: args[0]});
             count = messages.size;

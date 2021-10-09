@@ -443,7 +443,7 @@ exports.run = (discord, client) => {
             .addField('Comando:', command.slice(-0, -3), true)
             .addField('Argumentos:', arguments, true)
             .addField('Origen:', message.guild.name, true)
-            .addField('Canal:', message.channel, true)
+            .addField('Canal:', `<#${message.channel.id}>`, true)
             .addField('Autor:', `<@${message.author.id}>`, true)
             .addField('Fecha:', new Date().toLocaleString(), true)
             .addField('Error:', `\`\`\`${errorString}\`\`\``, true);

@@ -29,7 +29,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         });
 
         //Almacena las traducciones de los permisos
-        let translations = require(`../../resources/data/permsTranslations.json`);
+        let translations = require(`../../resources/translations/permissions.json`);
 
         //Traduce los permisos del miembro
         let translatedPermissions = [];

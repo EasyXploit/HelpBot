@@ -46,7 +46,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         
         //Se comprueba si puede des-advertir al miembro
         if (moderator.id !== message.guild.ownerId) {
-            if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {msg.delete({timeout: 5000})});
+            if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
         };
 
         //Comprueba si el miembro tiene warns
@@ -73,7 +73,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         if (warnID === 'all') {
 
-            if (!checkIfCanRemoveAny()) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {msg.delete({timeout: 5000})});
+            if (!checkIfCanRemoveAny()) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
 
             successEmbed = new discord.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
@@ -103,7 +103,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setDescription(`${client.customEmojis.redTick} No existe la advertencia con ID **${warnID}**`)
             ] });
 
-            if (!checkIfCanRemoveAny() && client.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {msg.delete({timeout: 5000})});
+            if (!checkIfCanRemoveAny() && client.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
 
             successEmbed = new discord.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)

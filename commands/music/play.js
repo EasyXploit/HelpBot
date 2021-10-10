@@ -320,14 +320,14 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     .setColor(client.config.colors.warning)
                     .setDescription(`${client.customEmojis.orangeTick} Se han omitido \`${playlist.items.length - authorizedSongs}\` canciones por que no puedes añadir más.`);
 
-                if (playlist.items.length > authorizedSongs) message.channel.send({ embeds: [unauthorizedSongsEmbed] }).then(msg => {msg.delete({timeout: 10000})});
+                if (playlist.items.length > authorizedSongs) message.channel.send({ embeds: [unauthorizedSongsEmbed] }).then(msg => {setTimeout(() => msg.delete(), 10000)});
 
                 //Si hubieron cancines omitidas, lo advierte
                 let dupesCountEmbed = new discord.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setDescription(`${client.customEmojis.orangeTick} Se han omitido \`${dupesCount}\` canciones duplicadas.`);
 
-                if (dupesCount > 0) message.channel.send({ embeds: [dupesCountEmbed] }).then(msg => {msg.delete({timeout: 10000})});
+                if (dupesCount > 0) message.channel.send({ embeds: [dupesCountEmbed] }).then(msg => {setTimeout(() => msg.delete(), 10000)});
             };
 
             //Manda el mensaje "buscando ..."

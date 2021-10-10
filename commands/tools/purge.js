@@ -55,7 +55,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             try {
                 await channel.bulkDelete(messages);
                 
-                await message.channel.send({ embeds: [successEmbed] }).then(msg => {msg.delete({timeout: 5000})});
+                await message.channel.send({ embeds: [successEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
                 await client.functions.loggingManager(loggingEmbed);
             } catch (error) {
                 message.channel.send({ embeds: [tooMuchOldMessagesEmbed] });

@@ -70,9 +70,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setTitle(`⚠ Infracciones`)
             .setDescription(`Mostrando las advertencias del miembro **${member.user.tag}**\nSanción actual: \`${sanction || 'Ninguna'}\``)
             .setThumbnail(user.displayAvatarURL({dynamic: true}))
-            .addField(`Últimas 24h`, infractionsCount.day, true)
-            .addField(`Últimos 7 días`, infractionsCount.week, true)
-            .addField(`Total`, infractionsCount.total, true)
+            .addField(`Últimas 24h`, infractionsCount.day.toString(), true)
+            .addField(`Últimos 7 días`, infractionsCount.week.toString(), true)
+            .addField(`Total`, infractionsCount.total.toString(), true)
             .addField(`Últimas 10 advertencias`, lastWarns || 'Ninguna');
         
         message.channel.send({ embeds: [resultEmbed] });

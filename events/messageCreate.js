@@ -163,7 +163,7 @@ exports.run = async (message, client, discord) => {
             };
 
             //Borra el mensaje de invocación (tras 3 segundos) si se ha configurado para ello
-            if (commandConfig.deleteInvocationCommand) message.delete({timeout: 2000});
+            if (commandConfig.deleteInvocationCommand) setTimeout(() => message.delete(), 2000);
 
             //Ejecuta el comando
             listedCmd.run(discord, client, message, args, command, commandConfig);

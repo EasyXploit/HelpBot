@@ -42,7 +42,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         };
         
         //Se comprueba si el usuario ya estaba baneado
-        let bans = await message.guild.fetchBans();
+        let bans = await message.guild.bans.fetch();
 
         async function checkBans (bans) {
             for (const item of bans) if (item[0] === user.id) return true;

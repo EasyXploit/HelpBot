@@ -41,7 +41,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             };
         };
         
-        let bans = await message.guild.fetchBans();
+        let bans = await message.guild.bans.fetch();
         let isBanned;
         
         await bans.forEach( async ban => {
@@ -73,7 +73,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
             .addField(`Moderador`, message.author.tag, true)
             .addField(`Razón`, reason, true)
-            .addField(`Días de mensajes borrados`, days, true)
+            .addField(`Días de mensajes borrados`, days.toString(), true)
             .addField(`Duración`, `∞`, true);
 
         if (member) await user.send({ embeds: [toDMEmbed] });

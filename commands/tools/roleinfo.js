@@ -40,7 +40,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setDescription(`Mostrando información acerca del rol <@&${role.id}>`)
                 .addField('🏷 Nombre del rol', role.name, true)
                 .addField('🆔 ID del rol', role.id, true)
-                .addField('👥 Miembros con el rol', membersWithRole, true)
+                .addField('👥 Miembros con el rol', membersWithRole.toString(), true)
                 .addField('🗣 Mencionable', mentionable, true)
                 .addField('👁️‍ Se muestra', hoisted, true)
                 .addField('🔰 Color', role.hexColor, true)

@@ -33,7 +33,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         
         //Comprueba si el bot está en el mismo canal que el miembro
         if (message.member.voice.channelId !== message.guild.member(client.user).voice.channelId) return message.channel.send({ embeds: [notAvailableEmbed] });
-        {}
+
         //Comprueba si hay reproducción
         if (!client.voiceDispatcher) return message.channel.send({ embeds: [noDispatcherEmbed] });
         

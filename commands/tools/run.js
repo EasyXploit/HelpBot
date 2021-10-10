@@ -4,7 +4,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     
     try {
         let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}template (plantilla)\``);
 
         if (!args[0]) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
@@ -15,7 +15,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`);
             
             let successEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.correct2)
+                .setColor(client.config.colors.secondaryCorrect)
                 .setDescription(`${client.customEmojis.greenTick} ¡Listo!`);
             
             if (args.length < 2) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
@@ -31,7 +31,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`);
             
             let successEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.correct2)
+                .setColor(client.config.colors.secondaryCorrect)
                 .setDescription(`${client.customEmojis.greenTick} ¡Listo!`);
             
             if (args.length < 2) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
@@ -81,7 +81,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     clearInterval(interval);
 
                     let finishedEmbed = new discord.MessageEmbed()
-                        .setColor(client.config.colors.correct2)
+                        .setColor(client.config.colors.secondaryCorrect)
                         .setTitle(`${client.customEmojis.greenTick} Stats encuadradas`)
                         .setDescription('La operación de encuadre de estadísticas ha finalizado.\nPor favor, realice una revisión manual para confirmar su efectividad.');
 
@@ -134,7 +134,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                     clearInterval(interval);
 
                     let finishedEmbed = new discord.MessageEmbed()
-                        .setColor(client.config.colors.correct2)
+                        .setColor(client.config.colors.secondaryCorrect)
                         .setTitle(`${client.customEmojis.greenTick} Stats ajustadas`)
                         .setDescription('La operación de ajuste de estadísticas ha finalizado.\nPor favor, realice una revisión manual para confirmar su efectividad.');
 

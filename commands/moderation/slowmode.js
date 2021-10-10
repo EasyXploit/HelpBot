@@ -4,14 +4,14 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     
     try {
         let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}slowmode (off | segundos [5-30]) (razón)\``);
 
         if (args[0] === 'off') {
             if (!message.channel.rateLimitPerUser) return message.channel.send({ embeds: [incorrectSyntaxEmbed] }).then(msg => {msg.delete({timeout: 5000})});
 
             let successEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.correct2)
+                .setColor(client.config.colors.secondaryCorrect)
                 .setTitle(`${client.customEmojis.greenTick} Operación completada`)
                 .setDescription(`El modo lento ha sido desactivado`);
 
@@ -47,7 +47,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             };
 
             let tooManySeconds = new discord.MessageEmbed()
-                .setColor(client.config.colors.error2)
+                .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} Los moderadores solo pueden activar el modo lento para un máximo de 30 segundos`);
 
             if (!checkIfCanUseUnlimitedTime() &&  args[0] > 30) return message.channel.send({ embeds: [tooManySeconds] }).then(msg => {msg.delete({timeout: 5000})});
@@ -60,7 +60,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             };
 
             let successEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.correct2)
+                .setColor(client.config.colors.secondaryCorrect)
                 .setTitle(`${client.customEmojis.greenTick} Operación completada`)
                 .setDescription(`El modo lento ha sido activado con un retraso de \`${seconds}s\``);
 

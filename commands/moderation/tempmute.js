@@ -4,15 +4,15 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     
     try {
         let notToMuteEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No se ha encontrado al miembro. Debes mencionarlo o escribir su id`);
 
         let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No puedes silenciar a un bot`);
         
         let noCorrectTimeEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5s\`, \`10m\`, \`12h\` o \`3d\``);
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
@@ -42,7 +42,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         const mutedRole = await client.functions.checkMutedRole(message.guild);
 
         let alreadyMutedEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Este miembro ya esta silenciado`);
 
         //Comprueba si el miembro tiene el rol silenciado
@@ -101,7 +101,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         //Si no se permitió la ejecución, manda un mensaje de error
         if (!authorized && milliseconds > 86400000) {
             let maxTimeEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.error2)
+                .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} Los moderadores solo pueden silenciar un máximo de 1 día`);
 
             return message.channel.send({ embeds: [maxTimeEmbed] });
@@ -120,7 +120,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         if (message.author.id !== client.homeGuild.ownerId) {
             let undefinedReasoneEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.error2)
+                .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} Los moderadores deben adjuntar una razón`);
 
             if (reason === 'Indefinida' && !authorized) return message.channel.send({ embeds: [undefinedReasoneEmbed] });

@@ -51,7 +51,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 };
                 
                 let playingEmbed = new discord.MessageEmbed()
-                    .setColor(client.config.colors.correct2)
+                    .setColor(client.config.colors.secondaryCorrect)
                     .setDescription(`${client.customEmojis.greenTick} Reproduciendo **${sound}**.`);
                 
                 message.channel.send({ embeds: [playingEmbed] });

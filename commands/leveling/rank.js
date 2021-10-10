@@ -19,7 +19,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         if (member.id in guildStats === false) {
             let noXPEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.error2)
+                .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} ${member} no tiene puntos de XP`);
 
             return message.channel.send({ embeds: [noXPEmbed] });

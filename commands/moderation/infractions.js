@@ -4,11 +4,11 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
     try {
         let noUserEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`);
 
         let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No puedes obtener información de un bot`);
 
         const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);

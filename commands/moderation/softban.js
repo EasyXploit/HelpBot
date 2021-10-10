@@ -68,7 +68,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (!reason) reason = `Indefinida`;
 
         let toDMEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setAuthor(`[BANEADO]`, message.guild.iconURL({ dynamic: true}))
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
             .addField(`Moderador`, message.author.tag, true)

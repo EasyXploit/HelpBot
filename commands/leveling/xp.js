@@ -5,23 +5,23 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     try {
         
         let unknownMemberEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Debes mencionar a un miembro o escribir su id`);
 
         let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Los bots no pueden ganar XP`);
         
         let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}xp (@miembro | id) (set | add | remove | clear) <cantidad>\``);
 
         let incorrectQuantityEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad válida`);
 
         let noXPEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Este miembro no tiene XP`);
         
 
@@ -163,7 +163,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         };
 
         let successEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.correct2)
+            .setColor(client.config.colors.secondaryCorrect)
             .setDescription(`${client.customEmojis.greenTick} Se ha modificado la cantidad de XP del miembro **${member.user.tag}**.`);
 
         let toDMEmbed = new discord.MessageEmbed()

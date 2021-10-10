@@ -5,7 +5,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     try {
 
         let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es ${client.config.guild.prefix}poll (new | end) [id]`);
 
         if (args[0] === 'new' || !args[0]) {
@@ -56,7 +56,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                         if (result !== '-') {
                             let inorrectTimeFormatEmbed = new discord.MessageEmbed()
-                                .setColor(client.config.colors.error2)
+                                .setColor(client.config.colors.secondaryError)
                                 .setDescription(`${client.customEmojis.redTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5d 10h 2m\``);
 
                             let parameters = result.split(' ');
@@ -173,7 +173,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         } else if (args[0] === 'end' && args[1] && !isNaN(args[1])) {
 
             let notFoundEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.error2)
+                .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} La encuesta con ID ${args[1]} no se ha podido encontrar`);
 
             if (!client.polls[args[1]]) return message.channel.send({ embeds: [notFoundEmbed] });

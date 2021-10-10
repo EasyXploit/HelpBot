@@ -5,7 +5,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     try {
         
         let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}broadcast (autor | anonimo) (embed | normal) (mensaje a enviar)\``);
         
         if (args.length < 3 || (args[0] !== 'autor' && args[0] !== 'anonimo') || (args[1] !== 'embed' && args[1] !== 'normal')) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
@@ -40,7 +40,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setDescription(`${client.customEmojis.grayTick} El mensaje está siendo enviado`);
 
         let confirmEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.correct2)
+            .setColor(client.config.colors.secondaryCorrect)
             .setDescription(`${client.customEmojis.greenTick} ¡Mensaje enviado!`);
             
         await message.channel.send({ embeds: [sendingEmbed] });

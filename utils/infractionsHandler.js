@@ -53,7 +53,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
     //Función para expulsar
     async function kick() {
         let loggingEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setAuthor(`${member.user.tag} ha sido EXPULSADO`, member.user.displayAvatarURL({dynamic: true}))
             .addField('Miembro', member.user.tag, true)
             .addField('Moderador', moderator.tag, true)
@@ -64,7 +64,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
             .setDescription(`${client.customEmojis.OrangeTick} ${user.tag} ha sido expulsado por que acumuló demasiadas advertencias, ¿alguien más?`);
 
         let toDMEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setAuthor(`[EXPULSADO]`, guild.iconURL({dynamic: true}))
             .setDescription(`<@${member.id}>, has sido expulsado en ${guild.name}`)
             .addField(`Moderador`, moderator.tag, true)
@@ -91,7 +91,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
         };
 
         let loggingEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setAuthor(`${member.user.tag} ha sido BANEADO`, user.displayAvatarURL({dynamic: true}))
             .addField(`Miembro`, member.user.tag, true)
             .addField(`ID`, member.id, true)
@@ -104,7 +104,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
             .setDescription(`${client.customEmojis.OrangeTick} ${user.tag} ha sido baneado por que acumuló demasiadas advertencias, ¿alguien más?`);
 
         let toDMEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setAuthor(`[BANEADO]`, message.guild.iconURL({ dynamic: true}))
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
             .addField(`Moderador`, moderator.tag, true)

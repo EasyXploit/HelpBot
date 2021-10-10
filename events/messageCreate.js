@@ -36,7 +36,7 @@ exports.run = async (message, client, discord) => {
                     };
 
                     let toDMEmbed = new discord.MessageEmbed()
-                        .setColor(client.config.colors.error2)
+                        .setColor(client.config.colors.secondaryError)
                         .setAuthor('[EXPULSADO]', client.homeGuild.iconURL({dynamic: true}))
                         .setDescription(`<@${member.id}>, has sido expulsado de ${client.homeGuild.name}`)
                         .addField('Moderador', client.user.tag, true)
@@ -108,7 +108,7 @@ exports.run = async (message, client, discord) => {
     try {
         //Comprueba si es un comando con prefijo
         if (message.content.startsWith(client.config.guild.prefix)) {
-            let waitEmbed = new discord.MessageEmbed().setColor(client.config.colors.error2).setDescription(`${client.customEmojis.redTick} Debes esperar 2 segundos antes de usar este comando`);
+            let waitEmbed = new discord.MessageEmbed().setColor(client.config.colors.secondaryError).setDescription(`${client.customEmojis.redTick} Debes esperar 2 segundos antes de usar este comando`);
             if (client.cooldownedUsers.has(message.author.id)) return message.channel.send({ embeds: [waitEmbed] }).then(msg => {msg.delete({timeout: 1000})});
 
             //Busca el comando por su nombre o su alias

@@ -5,22 +5,22 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     try {
         
         let noQuantityEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar la cantidad de mensajes a eliminar`);
         
         let incorrectQuantityEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad numérica superior a 2 e inferior a 100`);
 
         if(!args[0]) return message.channel.send({ embeds: [noQuantityEmbed] });
         if (isNaN(args[0])) return message.channel.send({ embeds: [NaNEmbed] });
         
         let tooMuchOldMessagesEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Solo puedes borrar mensajes con un máximo de 14 días de antiguedad`);
 
         let noPrivilegesEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No tienes permiso para administrar mensajes`);
         
         if (isNaN(args[0]) || args[0] < 2 || args[0] > 100) return message.channel.send({ embeds: [incorrectQuantityEmbed] });
@@ -29,7 +29,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         if (args[1]) {
             let noChannelEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.error2)
+                .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} El canal de texto proporcionado no es válido`);
             
             channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
@@ -43,7 +43,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             count = messages.size;
             
             let successEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.correct2)
+                .setColor(client.config.colors.secondaryCorrect)
                 .setTitle(`${client.customEmojis.greenTick} Operación completada`)
                 .setDescription(`Mensajes eliminados: ${count}`);
 

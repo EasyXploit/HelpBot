@@ -35,7 +35,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         };
 
         let successEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.correct2)
+            .setColor(client.config.colors.secondaryCorrect)
             .setTitle(`${client.customEmojis.greenTick} Operación completada`)
             .setDescription(`El miembro **${user.tag}** ha sido desbaneado`);
 
@@ -51,7 +51,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     } catch (error) {
         if (error.toString().includes(`Unknown Ban`)) {
             let notBannedEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.error2)
+                .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} Este miembro no ha sido baneado`);
             message.channel.send({ embeds: [notBannedEmbed] });
         } else {

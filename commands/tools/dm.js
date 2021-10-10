@@ -5,20 +5,20 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     try {
         
         let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}dm (autor | anonimo) (@usuario | id) (embed | normal) (mensaje a enviar)\``);
         
         if (args.length < 4 || (args[0] !== 'autor' && args[0] !== 'anonimo') || (args[2] !== 'embed' && args[2] !== 'normal')) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
             
         let noUserEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`);
         
         //Busca y almacena el miembro
         const member = await client.functions.fetchMember(message.guild, args[1]);
 
         let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No puedes entablar una conversación con un bot`);
 
         if (!member) return message.channel.send({ embeds: [noUserEmbed] });
@@ -81,7 +81,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         };
 
         let confirmEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.correct2)
+            .setColor(client.config.colors.secondaryCorrect)
             .setDescription(`${client.customEmojis.greenTick} ¡Mensaje enviado!`);
 
         await message.channel.send({ embeds: [confirmEmbed] });

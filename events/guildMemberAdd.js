@@ -10,7 +10,7 @@ exports.run = async (event, client, discord) => {
             if (forbiddenNames.some(word => event.user.username.toLowerCase().includes(word))) {
 
                 let toDMEmbed = new discord.MessageEmbed()
-                    .setColor(client.config.colors.error2)
+                    .setColor(client.config.colors.secondaryError)
                     .setAuthor('[EXPULSADO]', event.guild.iconURL({dynamic: true}))
                     .setDescription(`<@${event.user.id}>, has sido expulsado de ${event.guild.name}`)
                     .addField('Moderador', client.user, true)

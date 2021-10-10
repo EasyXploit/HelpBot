@@ -10,7 +10,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         //Comprueba si se ha proporcionado un miembro válido
         if (!member) return message.channel.send({ embeds: [
             new discord.MessageEmbed()
-                .setColor(client.config.colors.error2)
+                .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`)
             ]
         });

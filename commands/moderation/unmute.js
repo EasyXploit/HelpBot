@@ -5,11 +5,11 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     try {
 
         let notToMuteEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Debes mencionar a un miembro o escribir su id`);
 
         let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No puedes silenciar a un bot`);
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
@@ -22,7 +22,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (member.bot) return message.channel.send({ embeds: [noBotsEmbed] });
 
         let notMutedEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Este miembro no esta silenciado`);
 
         //Comprueba si existe el rol silenciado, sino lo crea
@@ -30,7 +30,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (!member.roles.cache.has(mutedRole.id)) return message.channel.send({ embeds: [notMutedEmbed] });
         
         let successEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.correct2)
+            .setColor(client.config.colors.secondaryCorrect)
             .setTitle(`${client.customEmojis.greenTick} Operación completada`)
             .setDescription(`El miembro **${member.user.tag}** ha sido des-silenciado`);
 

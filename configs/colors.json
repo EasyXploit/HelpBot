@@ -1,9 +1,9 @@
 {
     "primary": "FEB526",
     "error": "F12F49",
-    "error2": "F04647",
+    "secondaryError": "F04647",
     "correct": "3EB57B",
-    "correct2": "B8E986",
+    "secondaryCorrect": "B8E986",
     "warning": "F8A41E",
     "debugging": "CBAC88",
     "information": "C6C9C6",

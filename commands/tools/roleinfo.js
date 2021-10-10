@@ -4,7 +4,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
     try {
         let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}roleinfo (@rol | rol | id)\``);
 
         if (!args[0]) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
@@ -12,7 +12,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         await client.functions.fetchRole(message.guild, args[0]).then(role => {
 
             let roleNotFoundEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.error2)
+                .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} El rol no se ha podido encontrar`);
 
             if (!role) return message.channel.send({ embeds: [roleNotFoundEmbed] });

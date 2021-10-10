@@ -4,15 +4,15 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
     
     try {
         let notToWarnEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Debes mencionar a un miembro o escribir su id`);
 
         let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No puedes advertir a un bot`);
         
         let undefinedReasonEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Se debe adjuntar una razón`);
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID

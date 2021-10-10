@@ -45,7 +45,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (!reason) reason = 'Indefinida';
 
         let toDMEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+            .setColor(client.config.colors.secondaryError)
             .setAuthor(`[EXPULSADO]`, message.guild.iconURL({ dynamic: true}))
             .setDescription(`<@${member.id}>, has sido expulsado de ${message.guild.name}`)
             .addField(`Moderador`, message.author.tag, true)

@@ -1,215 +1,184 @@
 exports.run = async (discord, client, message, args, command, commandConfig) => {
     
-    //!template (plantilla)
+    //!run (comando) [parámetro/s]
     
     try {
-        let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}template (plantilla)\``);
 
-        if (!args[0]) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
+        //Envía un mensaje de error si no se ha proporcionado un comando
+        if (!args[0]) return message.channel.send({ embeds: [
+            new discord.MessageEmbed()
+                .setColor(client.config.colors.secondaryError)
+                .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}template (plantilla)\``)
+            ]
+        });
 
-        if (args[0] === `bienvenida`) {
-            let noUserEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`);
-            
-            let successEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.secondaryCorrect)
-                .setDescription(`${client.customEmojis.greenTick} ¡Listo!`);
-            
-            if (args.length < 2) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
-
-            const member = await client.functions.fetchMember(message.guild, args[1]);
-            if (!member) return message.channel.send({ embeds: [noUserEmbed] });
-            
-            client.emit(`guildMemberAdd`, member);
-            await message.channel.send({ embeds: [successEmbed] }).then(msg => {msg.delete({timeout: 1000})});
-        } else if (args[0] === `despedida`) {
-            let noUserEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`);
-            
-            let successEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.secondaryCorrect)
-                .setDescription(`${client.customEmojis.greenTick} ¡Listo!`);
-            
-            if (args.length < 2) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
-            
-            let member = await message.guild.members.fetch(message.mentions.users.first() || client.users.fetch(args[1]));
-            if (!member) return message.channel.send({ embeds: [noUserEmbed] });
-            
-            client.emit(`guildMemberRemove`, member);
-            await message.channel.send({ embeds: [successEmbed] }).then(msg => {msg.delete({timeout: 1000})});
-        } else if (args[0] === `cuadrarStats`) {
-
-            let startingEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.information)
-                .setTitle(`${client.customEmojis.grayTick} Encuadrando stats`)
-                .setDescription('Comenzando operación de encudre de la tabla de clasificación.\nRevisa el terminal para evaluar el progreso del programa.');
-
-            console.log(`${new Date().toLocaleString()} 》Comenzando operación de encudre de stats ...\n\n`);
-            message.channel.send({ embeds: [startingEmbed] });
-
-            const guildStats = client.stats[message.guild.id];
-            const IDs = Object.keys(guildStats);
-
-            let index = 0;
-            let interval = setInterval(async function() {
-
-                let member = await client.functions.fetchMember(message.guild, IDs[index]);
-                let userStats = guildStats[member.id];
-
-                //USAR SOLO EN CASO DE QUERER CUADRAR NIVELES CON NUEVOS RANGOS SUPERIORES
-                //const barrierValue = 15;
-                //if (userStats && userStats.level > barrierValue) userStats.level = barrierValue;
-
-                if (member && userStats.level > 0) {
-                    if (userStats.totalXP <= 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) console.log(`Miembro ${member.displayName} omitido\n- - - - - -`);
-                    while (userStats.totalXP >= 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) {
-                        await client.functions.addXP(member, message.guild, 'voice').then(
-                            console.log(`Miembro ${member.displayName} actualizado\n- - - - - -`)
-                        );
-                    };
-                } else {
-                    console.log(`Usuario ${IDs[index]} omitido\n- - - - - -`);
-                };
+        switch (args[0]) {
+            case 'bienvenida':  //Emite el evento "guildMemberAdd"
                 
-                index++;
-
-                if (index === IDs.length) {
-                    clearInterval(interval);
-
-                    let finishedEmbed = new discord.MessageEmbed()
-                        .setColor(client.config.colors.secondaryCorrect)
-                        .setTitle(`${client.customEmojis.greenTick} Stats encuadradas`)
-                        .setDescription('La operación de encuadre de estadísticas ha finalizado.\nPor favor, realice una revisión manual para confirmar su efectividad.');
-
-                    console.log(`\n\n${new Date().toLocaleString()} 》Operación finalizada`);
-                    message.channel.send({ embeds: [finishedEmbed] });
-                };
-            }, 1000);
-
-        } else if (args[0] === `test`) {
-
-            console.log(await client.functions.getBotServerInvite());
-
-            /*let startingEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.information)
-                .setTitle(`${client.customEmojis.grayTick} Ajustando stats`)
-                .setDescription('Comenzando operación de ajuste de la tabla de clasificación.\nRevisa el terminal para evaluar el progreso del programa.');
-
-            console.log(`${new Date().toLocaleString()} 》Comenzando operación de encudre de stats ...\n\n`);
-            message.channel.send({ embeds: [startingEmbed] });
-
-            const guildStats = client.stats[message.guild.id];
-            const IDs = Object.keys(guildStats);
-
-            let index = 0;
-            let interval = setInterval(async function() {
-
-                let member = await client.functions.fetchMember(message.guild, IDs[index]);
-                let userStats = guildStats[member.id];
-
-                if (member && Math.sign(userStats.actualXP) === -1) {
-
-                    //Almacena el XP para avanzar al siguiente nivel
-                    const xpToNextLevel = 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100
-
-                    //Ajusta las stats del miembro
-                    userStats.actualXP = xpToNextLevel - userStats.totalXP;
-
-                    //Guarda las nuevas estadísticas del miembro
-                    client.fs.writeFile(`./databases/stats.json`, JSON.stringify(client.stats, null, 4), async err => {
-                        if (err) throw err;
-                        console.log(`La XP actual de ${member.displayName} ha sido sustituida por ${userStats.actualXP}`);
-                    });
-                } else {
-                    console.log(`Miembro ${member.displayName || IDs[index]} omitido\n`);
-                };
-                
-                index++;
-
-                if (index === IDs.length) {
-                    clearInterval(interval);
-
-                    let finishedEmbed = new discord.MessageEmbed()
-                        .setColor(client.config.colors.secondaryCorrect)
-                        .setTitle(`${client.customEmojis.greenTick} Stats ajustadas`)
-                        .setDescription('La operación de ajuste de estadísticas ha finalizado.\nPor favor, realice una revisión manual para confirmar su efectividad.');
-
-                    console.log(`\n\n${new Date().toLocaleString()} 》Operación finalizada`);
-                    message.channel.send({ embeds: finishedEmbed });
-                };
-            }, 1000);*/
-
-            /*var ids = [357526716601860107, 382910451165691905, 369613284003020804, 532371239587676190, 376070268818423840];
-            function getMember(id){ // sample async action
-                return message.guild.members.fetch(id).displayName;
-            };
-            // map over forEach since it returns
-
-            var actions = ids.map(id => getMember(id)); // run the function over all items
-
-            // we now have a promises array and we want to wait for it
-
-            var results = Promise.all(actions); // pass array of promises
-
-            results.then(data => // or just .then(console.log)
-                console.log(data)
-            );*/
-        } else if (args[0] === `updateWarns`) {
-
-            //FUNCIÓN PARA ACTUALIZAR LOS OBJETOS DE WARNS
-
-            return;
-
-            try {
-                
-                //Envía un mensaje de información
-                message.channel.send({ embeds:  [new discord.MessageEmbed()
-                    .setColor(client.config.colors.information)
-                    .setDescription(`${client.customEmojis.grayTick} Actualizando la base de datos de advertencias ...`) ]}).then(msg => informationEmbed = msg);
-
-                //Para cada miembrocon advertencias
-                for (const warnedMember in client.warns) {
-
-                    //Para cada advertencia del miembro
-                    for (const warn in client.warns[warnedMember]) {
-
-                        //Genera un nuevo sID para el objeto
-                        const sID = client.functions.sidGenerator();
-                        console.log(`Generado el sID ${sID}`)
-
-                        //Genera el nuevo objeto con un nuevo sID
-                        client.warns[warnedMember][sID] = client.warns[warnedMember][warn];
-
-                        //Guarda el timestamp cómo clave del nuevo objeto
-                        client.warns[warnedMember][sID].timestamp = warn;
-                        
-                        //Borra el viejo objeto
-                        delete client.warns[warnedMember][warn];
-                    };
-                };
-
-                //Graba el menú en la base de datos
-                await client.fs.writeFile('./databases/warns.json', JSON.stringify(client.warns, null, 4), async err => {
-                    if (err) throw err;
+                //Devuelve un error si no se ha proporcionado un miembro
+                if (!args[1]) return message.channel.send({ embeds: [
+                    new discord.MessageEmbed()
+                        .setColor(client.config.colors.error)
+                        .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro`)
+                    ]
                 });
 
-                //Confirma que la operación se ha realizado
-                message.channel.send({ embeds: [new discord.MessageEmbed()
-                    .setColor(client.config.colors.correct)
-                    .setDescription(`${client.customEmojis.greenTick} ¡Operación completada!`) ]});
+                //Busca el miembro en la guild
+                const targetWelcomeMember = await client.functions.fetchMember(message.guild, args[1]);
 
-            } catch (error) {
-                console.error(error);
-            };
-        } else {
-            let noArgsEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} No has especificado una plantilla válida`);
-            message.channel.send({ embeds: [noArgsEmbed] });
+                //Devuelve un error si no se ha proporcionado un miembro válido
+                if (!targetWelcomeMember) return message.channel.send({ embeds: [
+                    new discord.MessageEmbed()
+                        .setColor(client.config.colors.error)
+                        .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`)
+                    ]
+                });
+                
+                //Emite el evento
+                await client.emit(`guildMemberAdd`, targetWelcomeMember);
+
+                //Envía un mensaje de confirmación
+                await message.channel.send({ embeds: [
+                    new discord.MessageEmbed()
+                        .setColor(client.config.colors.secondaryCorrect)
+                        .setDescription(`${client.customEmojis.greenTick} ¡Listo!`)
+                    ]
+                }).then(msg => {setTimeout(() => msg.delete(), 2000)});
+                break;
+        
+            case 'despedida':   //Emite el evento "guildMemberRemove"
+                
+                //Devuelve un error si no se ha proporcionado un miembro
+                if (!args[1]) return message.channel.send({ embeds: [
+                    new discord.MessageEmbed()
+                        .setColor(client.config.colors.error)
+                        .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro`)
+                    ]
+                });
+
+                //Busca el miembro en la guild
+                const targetGoodybeMember = await client.functions.fetchMember(message.guild, args[1]);
+
+                //Devuelve un error si no se ha proporcionado un miembro válido
+                if (!targetGoodybeMember) return message.channel.send({ embeds: [
+                    new discord.MessageEmbed()
+                        .setColor(client.config.colors.error)
+                        .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`)
+                    ]
+                });
+                
+                //Emite el evento
+                await client.emit(`guildMemberRemove`, targetGoodybeMember);
+
+                //Envía un mensaje de confirmación
+                await message.channel.send({ embeds: [
+                    new discord.MessageEmbed()
+                        .setColor(client.config.colors.secondaryCorrect)
+                        .setDescription(`${client.customEmojis.greenTick} ¡Listo!`)
+                    ]
+                }).then(msg => {setTimeout(() => msg.delete(), 2000)});
+                break;
+        
+            case 'cuadrarStats':
+
+                /*
+                    //OBJETIVO:
+                    Mediante la adición de la XP que se genera al cumplir un intervalo de XP por voz,
+                    esta función fuerza al sistema a disparar la actualización de los roles de los
+                    miembros a los que les corresponda subir de nivel.
+
+                    Esto es util en el caso de que se hayan añadido nuevos roles de recompensa
+                    intercalados entre los roles de recompensa actuales.
+
+                    //ACTUALIZACIÓN DE NIVEL:
+                    Si además se proporciona un parámetro numérico adicional, el programa entenderá
+                    que debe actualizar el nivel de los miembros al número proporcionado, en caso de
+                    que su nivel sea superior.
+                */
+
+                //Envía una confirmación de inicio a la consola
+                console.log(`${new Date().toLocaleString()} 》Comenzando operación de cuadre de stats ...\n\n`);
+
+                //Envía una confirmación de inicio al canal
+                await message.channel.send({ embeds: [
+                    new discord.MessageEmbed()
+                        .setColor(client.config.colors.information)
+                        .setTitle(`${client.customEmojis.grayTick} Cuadrando stats`)
+                        .setDescription('Comenzando operación de cuadre de la tabla de clasificación.\nRevisa la consola para evaluar el progreso del comando.')
+                    ]
+                });
+
+                //Almacena la tabla de clasificación de la guild
+                const guildStats = client.stats[message.guild.id];
+                const IDs = Object.keys(guildStats);    //Almacena los IDs de cada miembro
+
+                //Inicializa un contador
+                let index = 0;
+
+                //Crea un intervalo de ejecución de 1s
+                let interval = setInterval(async function() {
+
+                    //Busca el miembro por su ID
+                    let member = await client.functions.fetchMember(message.guild, IDs[index]);
+
+                    //Busca las estadísticas del miembro en la tabla de clasificación
+                    let userStats = guildStats[member.id];
+
+                    //Si se escpecifica, se cambiará el nivel del miembro por el número indicado
+                    if (args[1] && !isNaN(args[1]) && (userStats && userStats.level > args[1])) userStats.level = args[1];
+
+                    //Comprueba si existe el miembro y si tiene nivel
+                    if (member && userStats.level > 0) {
+
+                        //Advierte por consola de que se omitirá al miembro en el caso de que su XP total sea menor o igual al umbral de su nivel
+                        if (userStats.totalXP <= 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) console.log(`Miembro ${member.displayName} omitido\n- - - - - -`);
+
+                        //Mientras que el XP del miembro sea superior o igual al umbral de su nivel
+                        while (userStats.totalXP >= 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) {
+
+                            //Añade al miembro la cantidad de XP generada al cumplirse un intervalo de voz, einforma por consola
+                            await client.functions.addXP(member, message.guild, 'voice').then(console.log(`Miembro ${member.displayName} actualizado\n- - - - - -`));
+                        };
+                    } else {
+
+                        //Advierte por consola, de que el miembro se ha omitido
+                        console.log(`Usuario ${IDs[index]} omitido\n- - - - - -`);
+                    };
+                    
+                    //Incrementa el contador
+                    index++;
+
+                    //Si el contador equivale al total de IDs
+                    if (index === IDs.length) {
+
+                        //Finaliza el intervalo
+                        clearInterval(interval);
+
+                        //Envía una confirmación de finalización a la consola
+                        console.log(`\n\n${new Date().toLocaleString()} 》Operación finalizada`);
+
+                        //Envía una confirmación de finalización al canal
+                        await message.channel.send({ embeds: [
+                            new discord.MessageEmbed()
+                                .setColor(client.config.colors.secondaryCorrect)
+                                .setTitle(`${client.customEmojis.greenTick} Stats encuadradas`)
+                                .setDescription('La operación de encuadre de estadísticas ha finalizado.\nPor favor, realice una revisión manual para confirmar su efectividad.')
+                            ]
+                        });
+                    };
+                }, 1000);
+                break;
+            
+            default:
+
+                //Envía un mensaje de error si no se ha proporcionado un comando válido
+                await message.channel.send({ embeds: [
+                    new discord.MessageEmbed()
+                        .setColor(client.config.colors.error)
+                        .setDescription(`${client.customEmojis.redTick} No has especificado una plantilla válida`)
+                    ]
+                });
+                break;
         };
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
@@ -218,5 +187,5 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
 module.exports.config = {
     name: 'run',
-    aliases: ['execte', 'exec']
+    aliases: ['execute', 'exec']
 };

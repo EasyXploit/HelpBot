@@ -71,7 +71,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 .addField('Moderador:', message.author.tag, true)
                 .addField('Duración:', `${seconds}s`, true)
                 .addField('Canal:', `<#${message.channel.id}>`, true)
-                .addField('Razón:', reason, true);
+                .addField('Razón:', reason || 'Indefinida', true);
 
             await message.channel.setRateLimitPerUser(seconds, reason || 'Sin razón');
             await client.functions.loggingManager(loggingEmbed);

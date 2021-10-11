@@ -166,7 +166,7 @@ exports.run = async (discord, client, message, guild, member, reason, action, mo
                 .addField(`Razón`, warnReason, true)
                 .addField(`ID de Advertencia`, warnID, true)
                 .addField(`Canal`, `<#${message.channel.id}>`, true)
-                .addField('Infracciones', Object.keys(client.warns[member.id]).length, true);
+                .addField('Infracciones', (Object.keys(client.warns[member.id]).length).toString(), true);
 
             await client.functions.loggingManager(loggingEmbed);
 

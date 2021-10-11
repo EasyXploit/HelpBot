@@ -84,11 +84,11 @@ exports.run = (discord, client) => {
         await guild.channels.cache.forEach(async (channel) => {
 
             //Si el canal tiene un permiso para el rol silenciado, lo almacena
-            let mutedRolePermissions = channel.permissionOverwrites.get(mutedRole.id);
+            let mutedRolePermissions = channel.permissionOverwrites.resolve(mutedRole.id);
 
             //Si el canal no tiene el permiso y el bitfield no coincide con las negaciones pertinentes, añade el permiso
             if (!mutedRolePermissions || ((mutedRolePermissions.deny & BigInt(0x800)) !== BigInt(0x800) || (mutedRolePermissions.deny & BigInt(0x40)) !== BigInt(0x40)) || ((mutedRolePermissions.deny & BigInt(0x200000)) !== BigInt(0x200000))) {
-                await channel.updateOverwrite(mutedRole, {
+                await channel.permissionOverwrites.edit(mutedRole, {
                     SEND_MESSAGES: false,
                     ADD_REACTIONS: false,
                     CONNECT: false

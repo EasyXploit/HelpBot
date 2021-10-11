@@ -112,11 +112,15 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             .setColor(client.config.colors.warning)
             .setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado, ¿alguien más?`);
 
-        //Si se ha proporcionado razón, la adjunta al mensaje de confirmación
-        if (message.content.slice(toDeleteCount)) successEmbed.setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado debido a **${reason}**, ¿alguien más?`);
-        
+        //Almacena la razón
         let toDeleteCount = command.length - 2 + args[0].length + 1 + args[1].length + 2; 
-        let reason = message.content.slice(toDeleteCount) || 'Indefinida';
+        let reason = message.content.slice(toDeleteCount);
+
+        //Si se ha proporcionado razón, la adjunta al mensaje de confirmación
+        if (reason) successEmbed.setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado debido a **${reason}**, ¿alguien más?`);
+
+        //Esto comprueba si se ha proporcionado una razón
+        if (!reason) reason = 'Indefinida';
 
         if (message.author.id !== client.homeGuild.ownerId) {
             let undefinedReasoneEmbed = new discord.MessageEmbed()

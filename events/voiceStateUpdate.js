@@ -1,9 +1,6 @@
 exports.run = async (oldState, newState, client, discord) => {
     
     try {
-        //Previene que continue la ejecución si el servidor no es el principal
-        if (newState.guild.id !== client.homeGuild.id) return;
-
         async function endVoiceTime() {
             //Si el timestamp actual es superior a los MS de intervalo de ganancia de XP configurado, le asigna XP
             if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].last_xpReward + client.config.xp.XPGainInterval)) {

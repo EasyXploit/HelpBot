@@ -38,7 +38,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             if (message.member.voice.channelId !== message.guild.member(client.user).voice.channelId) return message.channel.send({ embeds: [notAvailableEmbed] });
 
             //Comprueba si la reproducción no está pausada
-            if (!client.voiceDispatcher.paused) return message.channel.send({ embeds: {notPausedEmbed} });
+            if (!client.voiceDispatcher.paused) return message.channel.send({ embeds: [notPausedEmbed] });
 
             let noTalkPermissionEmbed = new discord.MessageEmbed()
                 .setColor(client.config.colors.error)

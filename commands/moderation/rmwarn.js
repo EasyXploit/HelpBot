@@ -25,7 +25,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
         const member = await client.functions.fetchMember(message.guild, args[0]);
-        if (!member) return message.channel.send({ embeds: {notToUnwarnEmbed} });
+        if (!member) return message.channel.send({ embeds: [notToUnwarnEmbed] });
         if (member.user.bot) return message.channel.send({ embeds: [noBotsEmbed] });
         
         //Esto comprueba si se ha aportado alguna advertencia

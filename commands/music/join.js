@@ -17,7 +17,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         
         //Comprueba si el miembro está en un canal de voz
         let voiceChannel = message.member.voice.channel;
-        if (!voiceChannel) return message.channel.send({ embeds: {noChannelEmbed} });
+        if (!voiceChannel) return message.channel.send({ embeds: [noChannelEmbed] });
 
         //Comprueba si el bot ya tiene una conexión a un canal de voz en el servidor
         if (message.guild.me.voice && message.guild.me.voice.channel) {

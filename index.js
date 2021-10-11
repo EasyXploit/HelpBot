@@ -30,7 +30,7 @@ client.config = {
     automodRules: require('./configs/automodRules.json'),       //Reglas de moderación automática
     bannedWords: require('./configs/bannedWords.json'),         //Listado de palabras prohibidas
     commands: require('./configs/commands.json'),               //Configuración de comandos
-    colors: require('./configs/colors.json'),            //Configuración de colores globales
+    colors: require('./configs/colors.json'),                   //Configuración de colores globales
     presence: require('./configs/presence.json'),               //Configuración de presencia
     music: require('./configs/music.json'),                     //Configuración de música
     xp: require('./configs/xp.json'),                           //Configuración de XP

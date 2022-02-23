@@ -1,49 +1,50 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
 
     //!clear
 
     try {
-        
-        let noConnectionEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} <@${client.user.id}> no está conectado a ninguna sala.`);
-        
-        let noChannelEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Debes estar conectado a un canal de voz.`);
 
-        let notAvailableEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
-        
-        let noDispatcherEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} No hay nada en reproducción.`);
-        
-        let noQueueEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} No hay nada en la cola.`);
+        //Método para obtener conexiones de voz
+        const { getVoiceConnection } = require('@discordjs/voice');
+
+        //Almacena la conexión de voz del bot
+        let connection = await getVoiceConnection(message.guild.id);
         
         //Comprueba si el bot tiene o no una conexión a un canal de voz
-        if (!message.guild.me.voice) return message.channel.send({ embeds: [noConnectionEmbed] });
+        if (!connection) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} <@${client.user.id}> no está conectado a ningún canal.`)]
+        });
 
-        //Comprueba si el miembro está en un canal de voz
-        let voiceChannel = message.member.voice.channel;
-        if (!voiceChannel) return message.channel.send({ embeds: [noChannelEmbed] });
-        
-        //Comprueba si el bot está en el mismo canal que el miembro
-        if (message.member.voice.channelId !== message.guild.member(client.user).voice.channelId) return message.channel.send({ embeds: [notAvailableEmbed] });
+        //Comprueba si el miembro está en el mismo canal que el bot
+        if (message.guild.me.voice.channel.id !== message.member.voice.channel.id) return message.channel.send({ embeds: [new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`)]
+        });
 
-        //Comprueba si hay reproducción
-        if (!client.voiceDispatcher) return message.channel.send({ embeds: [noDispatcherEmbed] });
+        //Almacena el reproductor suscrito
+        const subscription = connection._state.subscription;
+
+        //Comprueba si el bot no tiene reproductor suscrito o este se encuentra inactivo
+        if (!subscription || subscription.player.state.status === 'idle') return message.channel.send({ embeds: [new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} La cola de reproducción está vacía.`)]
+        });
+
+        //Almacena la información del servidor
+        let reproductionQueue = client.reproductionQueues[message.guild.id];
         
         //Comprueba si hay cola
-        if (!client.queues[message.guild.id] || client.queues[message.guild.id].queue <= 0) return message.channel.send({ embeds: [noQueueEmbed] });
+        if (!reproductionQueue || reproductionQueue.tracks.length <= 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} No hay nada en la cola.`)]
+        });
 
         //Comprueba si es necesaria una votación
-        if (await client.functions.evaluateDjOrVotes(message, 'clear')) {
+        if (await client.functions.testQueuePerms(message, 'clear')) {
+
             //Borra la cola
-            client.queues[message.guild.id].queue = [];
+            await reproductionQueue.tracks.splice(1);
             
             //Manda un mensaje de confirmación
             await message.channel.send({ content: `${client.customEmojis.greenTick} | Cola eliminada` });

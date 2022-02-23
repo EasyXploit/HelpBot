@@ -1,87 +1,88 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
 
     //!remove (posición | all)
 
     try {
-        
-        let noConnectionEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} <@${client.user.id}> no está conectado a ninguna sala.`);
-        
-        let noChannelEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Debes estar conectado a un canal de voz.`);
 
-        let notAvailableEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
+        //Método para obtener conexiones de voz
+        const { getVoiceConnection } = require('@discordjs/voice');
 
-        let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:` + '`' + client.config.guild.prefix + 'remove (posición)`');
-        
-        let noDispatcherEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} No hay nada en reproducción.`);
-        
-        let noQueueEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} No hay nada en la cola.`);
+        //Almacena la conexión de voz del bot
+        let connection = await getVoiceConnection(message.guild.id);
         
         //Comprueba si el bot tiene o no una conexión a un canal de voz
-        if (!message.guild.me.voice) return message.channel.send({ embeds: [noConnectionEmbed] });
+        if (!connection) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} <@${client.user.id}> no está conectado a ningún canal.`)]
+        });
 
-        //Comprueba si el miembro está en un canal de voz
-        let voiceChannel = message.member.voice.channel;
-        if (!voiceChannel) return message.channel.send({ embeds: [noChannelEmbed] });
-        
-        //Comprueba si el bot está en el mismo canal que el miembro
-        if (message.member.voice.channelId !== message.guild.member(client.user).voice.channelId) return message.channel.send({ embeds: [notAvailableEmbed] });
-        
-        //Comprueba si se han proporcionado argumentos
-        if (!args[0]) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
-        
-        //Comprueba si hay reproducción
-        if (!client.voiceDispatcher) return message.channel.send({ embeds: [noDispatcherEmbed] });
+        //Comprueba si el miembro está en el mismo canal que el bot
+        if (message.guild.me.voice.channel.id !== message.member.voice.channel.id) return message.channel.send({ embeds: [new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`)]
+        });
+
+        //Almacena el reproductor suscrito
+        const subscription = connection._state.subscription;
+
+        //Comprueba si el bot no tiene reproductor suscrito o este se encuentra inactivo
+        if (!subscription || subscription.player.state.status === 'idle') return message.channel.send({ embeds: [new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} La cola de reproducción está vacía.`)]
+        });
+
+        //Almacena la información del servidor
+        let reproductionQueue = client.reproductionQueues[message.guild.id];
         
         //Comprueba si hay cola
-        if (!client.queues[message.guild.id] || client.queues[message.guild.id].queue <= 0) return message.channel.send({ embeds: [noQueueEmbed] });
+        if (!reproductionQueue || reproductionQueue.tracks.length <= 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} No hay nada en la cola.`)]
+        });
+
+        //Comprueba si se han proporcionado argumentos
+        if (!args[0]) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es: \`${client.config.guild.prefix}remove (posición)\``)]
+        });
         
         if (args[0] === 'all') {
 
             //Comprueba si es necesaria una votación
-            if (await client.functions.evaluateDjOrVotes(message, 'remove-all')) {
+            if (await client.functions.testQueuePerms(message, 'remove-all')) {
+
                 //Elimina el elemento de la cola
-                await client.queues[message.guild.id].queue.splice(0, client.queues[message.guild.id].queue.length);
+                await reproductionQueue.tracks.splice(1);
                 
                 //Manda un mensaje de confirmación
                 await message.channel.send({ content: `${client.customEmojis.greenTick} | He eliminado todas las canciones de la cola` });
             };
+
         } else {
-            let isNaNEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} Debes proporcionar un número entero.`);
-            
-            let tooBigEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} La canción Nº\`${args[0]}\` no está añadida a la cola.`);
 
             //Comprueba si se ha proporcionado un número entero
-            if (isNaN(args[0])) return message.channel.send({ embeds: [isNaNEmbed] });
+            if (isNaN(args[0])) return message.channel.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} Debes proporcionar un número entero.`)]
+            });
             
             //Comprueba si no es 0
-            if (args[0] === `0`) return message.channel.send({ content: `Quieres jugar sucio eh ...` });
+            if (args[0] === '0') return message.channel.send({ content: 'Quieres jugar sucio eh ...' });
             
             //Comprueba si el valor introducido es válido
-            if (args[0] > (client.queues[message.guild.id].queue.length)) return message.channel.send({ embeds: [tooBigEmbed] });
+            if (args[0] >= (reproductionQueue.tracks.length)) return message.channel.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} La pista Nº\`${args[0]}\` no está añadida a la cola.`)]
+            });
 
             //Comprueba si es necesaria una votación
-            if (await client.functions.evaluateDjOrVotes(message, 'remove', args[0])) {
+            if (await client.functions.testQueuePerms(message, 'remove', args[0])) {
+
                 //Elimina el elemento de la cola
-                await client.queues[message.guild.id].queue.splice(args[0] - 1, 1);
+                await reproductionQueue.tracks.splice(args[0], 1);
                 
                 //Manda un mensaje de confirmación
-                await message.channel.send({ content: `${client.customEmojis.greenTick} | He eliminado la canción de la cola` });
+                await message.channel.send({ content: `${client.customEmojis.greenTick} | He eliminado la pista de la cola` });
             };
         };
     } catch (error) {

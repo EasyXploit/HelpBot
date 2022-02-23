@@ -16,7 +16,8 @@ const client = new discord.Client({
         discord.Intents.FLAGS.GUILD_MESSAGES,
         discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
         discord.Intents.FLAGS.GUILD_MEMBERS,
-        discord.Intents.FLAGS.DIRECT_MESSAGES],
+        discord.Intents.FLAGS.DIRECT_MESSAGES,
+        discord.Intents.FLAGS.GUILD_VOICE_STATES],
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
     retryLimit: Infinity 
 });
@@ -48,6 +49,7 @@ client.automodFiltering = require('./utils/automodFiltering.js');   //Filtros (a
 //Datos de usuarios
 client.usersVoiceStates = {};           //Cambios de estado de voz de los usuarios
 client.cooldownedUsers = new Set();     //Cooldowns de los usuarios
+client.reproductionQueues = {};         //Almacena la cola de reproducción y otros datos
 
 //Bases de datos (mediante ficheros)
 client.bans = JSON.parse(client.fs.readFileSync('./databases/bans.json', 'utf-8'));                     //Usuarios baneados temporalmente
@@ -55,13 +57,6 @@ client.mutes = JSON.parse(client.fs.readFileSync('./databases/mutes.json', 'utf-
 client.polls = JSON.parse(client.fs.readFileSync('./databases/polls.json', 'utf-8'));                   //Encuestas en marcha
 client.stats = JSON.parse(client.fs.readFileSync('./databases/stats.json', 'utf-8'));                   //Estadísticas de los miembros
 client.warns = JSON.parse(client.fs.readFileSync('./databases/warns.json', 'utf-8'));                   //Advertencias de los usuarios
-
-//Datos de voz
-client.queues = {};         //Almacena la cola y otros datos
-client.voiceStatus = true;  //Almacena la disponiblidad del bot
-client.voiceDispatcher;     //Almacena el dispatcher
-client.voiceConnection;     //Almacena la conexión
-client.voiceTimeout;        //Almacena los timeouts de reproducción finalizada
 
 //Creación de colecciones
 ['commands', 'aliases'].forEach(x => client[x] = new discord.Collection());

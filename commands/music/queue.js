@@ -1,27 +1,24 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!queue (página | nada)
 
     try {
+
         const randomColor = require('randomcolor');
-        const moment = require(`moment`);
+        const moment = require('moment');
         
         //Devuelve si no hay cola
-        let noQueueEmbed = new discord.MessageEmbed()
+        if (!client.reproductionQueues[message.guild.id] || !client.reproductionQueues[message.guild.id].tracks || Object.entries(client.reproductionQueues[message.guild.id].tracks).length === 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} El bot no tiene ninguna canción en la cola.`);
-        
-        if (!client.queues[message.guild.id] || !client.queues[message.guild.id].nowplaying || Object.entries(client.queues[message.guild.id].nowplaying).length === 0) return message.channel.send({ embeds: [noQueueEmbed] });
-        
-        //Almacena el servidor
-        let server = client.queues[message.guild.id];
+            .setDescription(`${client.customEmojis.redTick} El bot no tiene ninguna pista en la cola.`)]
+        });
 
         //Almacena la cola
-        let serverQueue = client.queues[message.guild.id].queue;
+        let reproductionQueue = client.reproductionQueues[message.guild.id];
 
         //Almacena la página actual y las totales
         let position = 1;
-        let pages = Math.ceil(serverQueue.length / 5);
+        let pages = Math.ceil(reproductionQueue.tracks.length / 5);
         if (pages == 0) pages = 1;
 
         //Almacena la página que introduce el miembro (si lo hace)
@@ -32,8 +29,8 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
              //Carga el footer
             let footer = `Página ${position} de ${pages}`;
-            if (server.mode) {
-                switch (server.mode) {
+            if (reproductionQueue.mode) {
+                switch (reproductionQueue.mode) {
                     case 'shuffle': footer = footer + ` | 🔀`; break;
                     case 'loop': footer = footer + ` | 🔂`; break;
                     case 'loopqueue': footer = footer + ` | 🔁`; break;
@@ -41,37 +38,37 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             };
             
             //Carga el embed de la cola
-            let queueEmbed = new discord.MessageEmbed()
+            let queueEmbed = new client.MessageEmbed()
                     .setColor(randomColor())
-                    .setAuthor(`Cola de reproducción - Ahora mismo:`, 'attachment://dj.png')
-                    .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n● Duración: \`${server.nowplaying.duration}\`.\n ● Requerida por: \`${server.nowplaying.requestedBy}\``)
-                    .setFooter(footer, client.homeGuild.iconURL({dynamic: true}));
+                    .setAuthor({ name: 'Cola de reproducción - Ahora mismo:', iconURL: 'attachment://dj.png' })
+                    .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n● Duración: \`${client.functions.msToHMS(reproductionQueue.tracks[0].meta.length)}\`.\n ● Requerida por: <@${reproductionQueue.tracks[0].requesterId}>`)
+                    .setFooter({ text: footer, iconURL: client.homeGuild.iconURL({dynamic: true}) });
             
             //Si hay cola, carga la cola en el embed
-            if (serverQueue[0]) {
-                serverQueue = client.queues[message.guild.id].queue; //Por si acaso, recarga la cola
+            if (reproductionQueue.tracks[1]) {
                 let queueList = '';
                 
                 //Genera la página de la cola
-                for (let id = fromRange - 1; id < toRange; id++) {
-                    if (!serverQueue[id]) break; //Si no hay resultado, para la ejecución
-                    let title = serverQueue[id].title; //Almacena el título
+                for (let id = fromRange; id < toRange; id++) {
+                    if (!reproductionQueue.tracks[id]) break; //Si no hay resultado, para la ejecución
+                    let title = reproductionQueue.tracks[id].meta.title; //Almacena el título
+                    title = title.replace('[', '').replace('[', '').replace(']', '').replace('|', '').replace('(', '').replace(')', '').replace('_', '').replace('*', ''); //Elimina signos que alteren la forma en la que se muestra la entrada
                     if (title.length > 40) title = `${title.slice(0, 40)} ...`; //Acorta el título si es demasiado largo
-                    queueList = `${queueList}\`${id + 1}.\` [${title}](${serverQueue[id].link}) | \`${moment().startOf('day').seconds(serverQueue[id].lengthSeconds).format('H:mm:ss')}\` | ${serverQueue[id].requestedBy}\n`;
+                    queueList = `${queueList}\`${id}.\` [${title}](${reproductionQueue.tracks[id].meta.location}) | \`${moment().startOf('day').seconds(reproductionQueue.tracks[id].meta.length / 1000).format('H:mm:ss')}\` | <@${reproductionQueue.tracks[id].requesterId}>\n`;
                 };
                 
                 //Añade el campo al embed
-                queueEmbed.addField(`A continuación`, queueList, true);
+                queueEmbed.addField('A continuación', queueList, true);
             };
 
             //Elige si se ha de enviar el embed o editarlo
             if (embed) {
                 await embed.edit({ embeds: [queueEmbed], files: ['./resources/images/dj.png'] }).then(async embed => {
-                    if ((Math.ceil(serverQueue.length / 5)) != 0) awaitReactions(embed);
+                    if ((Math.ceil(reproductionQueue.tracks.length / 5)) != 0) awaitReactions(embed);
                 });
             } else {
                 await message.channel.send({ embeds: [queueEmbed], files: ['./resources/images/dj.png'] }).then(async embed => {
-                    if ((Math.ceil(serverQueue.length / 5)) != 0) awaitReactions(embed);
+                    if ((Math.ceil(reproductionQueue.tracks.length / 5)) != 0) awaitReactions(embed);
                 });
             };
         };
@@ -94,8 +91,8 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 return validReactions.includes(reaction.emoji.name) && user.id === message.author.id;
             };
 
-            //Inicializa un listener de reaccciones en función del filtro
-            embed.awaitReactions({ filter, max: 1, time: 60000, errors: [`time`] }).then(async collected => {
+            //Inicializa un listener de reacciones en función del filtro
+            embed.awaitReactions({ filter, max: 1, time: 60000, errors: ['time'] }).then(async collected => {
                 const reaction = collected.first();
 
                 //Según el emoji reaccionado, actualiza el contador consecutivamente

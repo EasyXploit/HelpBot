@@ -1,57 +1,61 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!nowplaying
 
     try {
-        let noQueueEmbed = new discord.MessageEmbed()
+
+        //Almacena librerías necesarios para manejar conexiones de voz
+        const { getVoiceConnection } = require('@discordjs/voice');
+
+        //Obtiene la conexión de voz actual
+        let connection = await getVoiceConnection(message.guild.id);
+
+        //Comprueba si el bot está conectado
+        if (!connection) return message.channel.send({ embeds: [new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} El bot no tiene ninguna canción en la cola.`);
+            .setDescription(`${client.customEmojis.redTick} El bot no está conectado a ningún canal.`)
+        ]});
+
+        //Almacena el reproductor suscrito
+        const subscription = connection._state.subscription;
+
+        //Comprueba si el bot ya estaba pausado
+        if (!subscription || subscription.player.state.status === 'idle') return message.channel.send({ embeds: [new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} La cola de reproducción está vacía.`)
+        ]});
+
+        //Almacena el objeto de cola de la guild
+        const reproductionQueue = client.reproductionQueues[message.guild.id];
         
-        if (!client.queues[message.guild.id].nowplaying || Object.entries(client.queues[message.guild.id].nowplaying).length === 0) return message.channel.send({ embeds: [noQueueEmbed] });
+        //Almacena el progreso actual de la pista
+        const progress = subscription.player._state.resource.playbackDuration;
+
+        //Almacena la duración de la pista
+        const total = reproductionQueue.tracks[0].meta.length;
+
+        //Calcula el porcentaje de progreso actual
+        const percentage = Math.floor((progress * 100) / total);
         
-        const ytdl = require(`ytdl-core-discord`);
-        const moment = require(`moment`);
+        //Genera una barra de progreso
+        let progressBar = ['▬', '▬', '▬', '▬', '▬', '▬', '▬', '▬', '▬', '▬', '▬'];
+        
+        //Asigna la posición del indicador en función del porcentaje
+        if (percentage <= 10) progressBar[0] = '🔘';
+        else if (percentage > 10) progressBar[percentage.toString().slice(0, 1)] = '🔘';
+
+        //Requiere librerías para formato
+        const moment = require('moment');
         const randomColor = require('randomcolor');
         
-        let info = await ytdl.getInfo(client.queues[message.guild.id].nowplaying.link);
-        let server = client.queues[message.guild.id];
-        let progress = await client.voiceDispatcher.streamTime;
-        
-        let total = info.player_response.videoDetails.lengthSeconds * 1000;
-        let percentage = Math.floor((progress * 100) / total);
-        
-        let progressBar = [`▬`, `▬`, `▬`, `▬`, `▬`, `▬`, `▬`, `▬`, `▬`, `▬`, `▬`];
-        
-        if (percentage <= 10) {
-            progressBar[0] = `🔘`;
-        } else if (percentage > 10) {
-            progressBar[percentage.toString().slice(0, 1)] = `🔘`;
-        };
-
-        let footer = client.homeGuild.name;
-        if (server.mode) {
-            switch (server.mode) {
-                case 'shuffle':
-                    footer = footer + ` | 🔀`;
-                    break;
-            
-                case 'loop':
-                    footer = footer + ` | 🔂`;
-                    break;
-
-                case 'loopqueue':
-                    footer = footer + ` | 🔁`;
-                    break;
-            };
-        };
-        
-        let progressEmbed = new discord.MessageEmbed()
+        //Envía el mensaje con el resultado
+        message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(randomColor())
-            .setAuthor(`Ahora mismo:`, 'attachment://dj.png')
-            .setDescription(`[${server.nowplaying.title}](${server.nowplaying.link})\n${progressBar.join(``)} ${percentage}%\n\`${moment().startOf('day').milliseconds(progress).format('H:mm:ss')} / ${moment().startOf('day').milliseconds(total).format('HH:mm:ss')}\``)
-            .setFooter(footer, client.homeGuild.iconURL({dynamic: true}));
-        
-        message.channel.send({ embeds: [progressEmbed], files: ['./resources/images/dj.png'] });
+            .setAuthor({ name: 'Ahora mismo:', iconURL: 'attachment://dj.png' })
+            .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n${progressBar.join('')} ${percentage}%\n\`${moment().startOf('day').milliseconds(progress).format('H:mm:ss')} / ${moment().startOf('day').milliseconds(total).format('HH:mm:ss')}\``)
+            .setFooter({ text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild), iconURL: client.homeGuild.iconURL({dynamic: true})
+        })], files: ['./resources/images/dj.png'] });
+
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

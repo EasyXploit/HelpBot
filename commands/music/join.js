@@ -1,97 +1,96 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!join
 
     try {
-        let noChannelEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Debes estar conectado a un canal de voz.`);
-        
-        let alreadyInChannelEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} El bot ya está en otra sala.`);
-        
-        let alreadyInYourChannelEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} El bot ya está en la sala.`);
-        
+
+        //Almacena el canal de voz del miembro
+        const voiceChannel = message.member.voice.channel;
+
         //Comprueba si el miembro está en un canal de voz
-        let voiceChannel = message.member.voice.channel;
-        if (!voiceChannel) return message.channel.send({ embeds: [noChannelEmbed] });
+        if (!voiceChannel) return message.channel.send({ embeds: [new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} Debes estar conectado a un canal de voz.`)
+        ]});
 
-        //Comprueba si el bot ya tiene una conexión a un canal de voz en el servidor
-        if (message.guild.me.voice && message.guild.me.voice.channel) {
-            
-            //Si está en otra sala diferente
-            if (message.member.voice.channelId !== message.guild.member(client.user).voice.channelId) return message.channel.send({ embeds: [alreadyInChannelEmbed] });
-            
-            //Si está en la sala del miembro
-            if (message.member.voice.channelId === message.guild.member(client.user).voice.channelId) return message.channel.send({ embeds: [alreadyInYourChannelEmbed] });
-        };
+        //Comprueba si el bot tiene permiso para hablar
+        if (!voiceChannel.speakable || voiceChannel.id === message.guild.afkChannel.id) return message.channel.send({ embeds: [new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} No tengo permiso para hablar en \`${voiceChannel.name}\`.`)
+        ]});
 
-        let noConnectPermissionEmbed = new discord.MessageEmbed()
+        //Comprueba si el bot tiene prohibido conectarse
+        if (client.config.music.forbiddenChannels.includes(voiceChannel.id)) return message.channel.send({ embeds: [new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} No tengo permiso para conectarme a esta sala.`);
-        
-        let noAfkRoomEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} No puedo unirme al canal de AFK.`);
-        
-        let fullRoomEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} La sala está llena.`);
+            .setDescription(`${client.customEmojis.redTick} Tengo prohibido conetarme a \`${voiceChannel.name}\`.`)
+        ]});
 
         //Comprueba si el bot tiene permiso para conectarse
-        if (!voiceChannel.joinable || client.config.music.forbiddenChannels.includes(voiceChannel.id)) return message.channel.send({ embeds: [noConnectPermissionEmbed] })
-        
-        //Comprueba si la sala es de AFK
-        if (message.member.voice.channelId === message.guild.afkChannelId) return message.channel.send({ embeds: [noAfkRoomEmbed] })
-        
-        //Comprueba la sala está llena
-        if (voiceChannel.full) return message.channel.send({ embeds: [fullRoomEmbed] });
+        if (!voiceChannel.joinable) return message.channel.send({ embeds: [new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} No tengo permiso para unirme a \`${voiceChannel.name}\`.`)
+        ]})
 
-        //Comprueba si la guild tiene una cola de reproducción
-        if (!client.queues[message.guild.id]) {
-            client.queues[message.guild.id] = {
-                queue: [],
-                votes: {},
-                nowplaying: {},
-                mode: false
-            };
-        };
+        //Comprueba si la sala está llena
+        if (voiceChannel.full  && (!message.guild.me.voice  || !message.guild.me.voice.channel)) return message.channel.send({ embeds: [new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} El canal de voz \`${voiceChannel.name}\` está lleno.`)
+        ]});
 
-        //Se une a la sala
-        voiceChannel.join().then(connection => {
-            
-            //Almacena la conexión en una variable global
-            client.voiceConnection = connection;
-                    
-            //Cambia el estatus a "NO DISPONIBLE"
-            client.voiceStatus = false;
-            
-            //Manda un mensaje de confirmación
-            message.channel.send({ content: `⏺ | Me he unido al canal` });
+        //Almacena librerías necesarios para manejar conexiones de voz
+        const { joinVoiceChannel, VoiceConnectionStatus, entersState } = require('@discordjs/voice');
 
-            //Crea un contador que para demorar un minuto la salida del canal y la destrucción del dispatcher
-            client.voiceTimeout = setTimeout(() => {
+        //Crea una nueva conexión al canal de miembro
+        let connection = await joinVoiceChannel({
+            channelId: voiceChannel.id,
+            guildId: message.guild.id,
+            adapterCreator: message.guild.voiceAdapterCreator,
+        });
 
-                //Manda un mensaje de confirmación
-                message.channel.send({ content: `📥 | Unido a \`${voiceChannel.name}\` y vinculado a ${message.channel}.` });
-                
+		//Comprueba si debe crear el objeto global de colas
+		if (!client.reproductionQueues[message.guild.id]) client.reproductionQueues[message.guild.id] = { boundedTextChannel: null, timeout: null, votes: {}, mode: false, tracks: [] };
+
+        //Almacena el objeto de colas de la guild
+		const reproductionQueue = client.reproductionQueues[message.guild.id];
+	
+		//Almacena el canal del mensaje para vincular los mensajes de reproducción
+		reproductionQueue.boundedTextChannel = message.channel;
+
+        //Manda un mensaje de confirmación
+        message.channel.send({ content: `📥 | Unido a \`${voiceChannel.name}\` y vinculado a ${message.channel}.` });
+
+        //Si la conexión desaparece
+        connection.on(VoiceConnectionStatus.Disconnected, async () => {
+            try {
+                //Comprueba si solo se trataba de una reconexión a otro canal, para ignorarlo
+                await Promise.race([
+                    entersState(connection, VoiceConnectionStatus.Signalling, 5_000),
+                    entersState(connection, VoiceConnectionStatus.Connecting, 5_000)
+                ]);
+            } catch (error) {//Parece ser una desconexión real de la que no debe recuperarse
+
                 //Aborta la conexión
-                connection.disconnect();
+                connection.destroy();
 
-                //Confirma la acción
-                message.channel.send({ content: `⏏ | He abandonado el canal` });
+                //Borra la información de reproducción de la guild
+                delete client.reproductionQueues[message.guild.id];
+            }
+        });
 
-                //Bora la información de reproducción del server
-                delete client.queues[message.guild.id];
+        //Crea un contador para demorar la salida del canal y la destrucción de la cola
+        reproductionQueue.timeout = setTimeout(() => {
 
-                //Vacía la variable del timeout
-                client.voiceTimeout = null;
-            }, 60000);
+            //Aborta la conexión
+            connection.destroy();
 
-        }).catch(err => console.log(`${new Date().toLocaleString()} 》${err.stack}`));
+            //Confirma la acción
+            message.channel.send({ content: '⏏ | He abandonado el canal' });
+
+            //Borra la información de reproducción del server
+            delete client.reproductionQueues[message.guild.id];
+
+        }, client.config.music.maxIdleTime);
+
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

@@ -1,48 +1,49 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!leave
 
     try {
-        let notInChannelEmbed = new discord.MessageEmbed()
+
+        //Método para obtener conexiones de voz
+        const { getVoiceConnection } = require('@discordjs/voice');
+
+        //Almacena la conexión de voz del bot
+        let connection = await getVoiceConnection(message.guild.id);
+
+        //Comprueba si el bot está conectado
+        if (!connection || connection._state.status === 'disconnected') return message.channel.send({ embeds: [new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} El bot no está en ningún canal de voz.`);
-        
-        let notInYourChannelEmbed = new discord.MessageEmbed()
+            .setDescription(`${client.customEmojis.redTick} El bot no está conectado.`)
+        ]});
+
+        //Comprueba si el miembro está en el mismo canal que el bot
+        if (message.guild.me.voice.channel.id !== message.member.voice.channel.id) return message.channel.send({ embeds: [new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que ${client.user.username}.`);
-
-        //Comprueba si hay una conexión de voz
-        if (!message.guild.me.voice) return message.channel.send({ embeds: [notInChannelEmbed] });
-
-        //Comprueba si está en la sala del miembro
-        let joined;
-        message.member.voice.channel.members.forEach(member => {
-            if (member.user.id === client.user.id) joined = member;
-        });
-
-        if (!joined) return message.channel.send({ embeds: [notInYourChannelEmbed] });
+            .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`)
+        ]});
 
         //Comprueba si es necesaria una votación
-        if (await client.functions.evaluateDjOrVotes(message, 'leave')) {
+        if (await client.functions.testQueuePerms(message, 'leave')) {
+
             //Aborta la conexión
-            joined.voice.disconnect();
-            if (client.queues[message.guild.id]) delete client.queues[message.guild.id];
+            connection.destroy();
 
-            //Cambia el estatus a "DISPONIBLE"
-            client.voiceStatus = true;
+            //Almacena la información del servidor
+            let reproductionQueue = client.reproductionQueues[message.guild.id];
 
-            //Vacia el dispatcher
-            client.voiceDispatcher = false;
+            //Vacía el timeout de desconexión por inactividad
+            if (reproductionQueue.timeout) {
+                clearTimeout(reproductionQueue.timeout);
+                reproductionQueue.timeout = null;
+            };
 
-            //Vacia la conexión
-            client.voiceConnection = false;
-
-            //Anula el timeout de desconexión
-            clearTimeout(client.voiceTimeout);
+            //Borra la información de reproducción del server
+            delete client.reproductionQueues[message.guild.id];
             
-            //Manda un mensaje de confirmación
-            await message.channel.send({ content: `⏏ | He abandonado el canal` });
+            //Confirma la acción
+            message.channel.send({ content: '⏏ | He abandonado el canal' });
         };
+
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };
@@ -52,5 +53,3 @@ module.exports.config = {
     name: 'leave',
     aliases: ['le']
 };
-
-

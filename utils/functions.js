@@ -244,12 +244,12 @@ exports.run = (client) => {
     };
 
     //Función para evaluar si se necesitan votos o puede continuar
-    client.functions.evaluateDjOrVotes = async (message, command, index) => {
+    client.functions.testQueuePerms = async (message, command, index) => {
 
         //Omite si no hay roles de DJ
         if (client.config.music.djRoles.length == 0) return true;
 
-        let server = client.queues[message.guild.id];
+        let server = client.reproductionQueues[message.guild.id];
 
         //Omite si no hay reproducción
         if (!server || !server.nowplaying || !server.nowplaying.requestedById) return true;
@@ -570,6 +570,19 @@ exports.run = (client) => {
             //Devuelve la URL, si se puedo obtener un código
             if (client.config.guild.homeGuildInviteCode) return `https://discord.gg/${client.config.guild.homeGuildInviteCode}`;
         };
+    };
+
+    //Función para generar un footer para los embeds musicales
+    client.functions.getMusicFooter = async (targetGuild) => {
+        let footer = targetGuild.name;
+		if (client.reproductionQueues[targetGuild.id] && client.reproductionQueues[targetGuild.id].mode) {
+			switch (client.reproductionQueues[targetGuild.id].mode) {
+				case 'shuffle': footer = footer + ` | 🔀`; break;
+				case 'loop': footer = footer + ` | 🔂`; break;
+				case 'loopqueue': footer = footer + ` | 🔁`; break;
+			};
+		};
+		return footer;
     };
 
     console.log(' - [OK] Carga de funciones globales.');

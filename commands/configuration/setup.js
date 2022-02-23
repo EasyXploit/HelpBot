@@ -4,6 +4,12 @@ exports.run = async (client, message, args, command, commandConfig) => {
     
     try {
 
+        message.channel.send({ embeds: [new client.MessageEmbed()
+            .setColor(client.config.colors.information)
+            .setTitle(`${client.customEmojis.grayTick} En desarrollo ...`)
+            .setDescription('Este comando se encuentra actualmente en desarrollo.')
+        ]});
+
         //ASISTENTE INTERACTIVO (advertencia si no se configuran los necesarios)
             //botManagerRole - Bypass igual que si fueses owner
             //loggingChannel,

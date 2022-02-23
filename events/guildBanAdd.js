@@ -1,8 +1,5 @@
 exports.run = async (ban, client) => {
 
-    console.log(ban.guild);
-    console.log(ban.user);
-
     try {
 
         //Previene que continue la ejecución si el servidor no es el principal

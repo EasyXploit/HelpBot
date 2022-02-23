@@ -205,6 +205,31 @@ exports.run = (client) => {
         return s;
     };
 
+    //Función para convertir de MS a HH:MM:SS
+    client.functions.msToHMS = (ms) => {
+
+        //Convierte a segundos
+        let seconds = ms / 1000;
+
+        //Extrae las horas
+        const hours = parseInt( seconds / 3600 ); // 3,600 seconds in 1 hour
+        seconds = seconds % 3600; // seconds remaining after extracting hours
+
+        //Extrae los minutos
+        const minutes = parseInt( seconds / 60 ); // 60 seconds in 1 minute
+
+        //Se queda solo con los segundos NO extraidos a los minutis
+        seconds = seconds % 60;
+
+        //Muestra ceros de relleno si fuera necesario
+        let hoursStr = ('00' + hours).slice(-2);
+        let minutesStr = ('00' + minutes).slice(-2);
+        let secondsStr = ('00' + seconds).slice(-2);
+
+        //Devuelve el resultado
+        return `${hoursStr}:${minutesStr}:${secondsStr}`;
+    };
+
     //Función para generar sIDs
     client.functions.sidGenerator = length => {
         

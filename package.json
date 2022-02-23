@@ -1,7 +1,7 @@
 {
   "name": "helpbot",
   "normalizedName": "HelpBot",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "HelpBot es un bot multifuncional para Discord desarrollado por el Staff de República Gamer, cuyo uso a fecha de publicación de este documento es exclusivo de los usuarios de dicha comunidad.",
   "main": "index.js",
   "scripts": {
@@ -32,6 +32,7 @@
     "libsodium-wrappers": "^0.7.9",
     "moment": "^2.29.1",
     "nanoid": "^3.3.1",
+    "play-dl": "^1.8.8",
     "random": "^3.0.6",
     "randomcolor": "^0.6.2",
     "ytdl-core": "^4.10.1",

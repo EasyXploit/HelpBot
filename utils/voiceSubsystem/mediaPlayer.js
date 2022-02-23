@@ -110,11 +110,11 @@ exports.run = async (client, message, connection) => {
             if (reproductionQueue.tracks[toPlay].type === 'stream') { //Si es un streaming de internet
 
                 //Obtiene el streaming desde YouTube
-                const ytdl = require('ytdl-core');
-                var stream = ytdl(reproductionQueue.tracks[toPlay].meta.location, { filter: 'audioonly' });
+                const play = require('play-dl');
+                const stream = await play.stream(reproductionQueue.tracks[toPlay].meta.location);
 
                 //Crea el recurso y lo reproduce en el player
-                await player.play(createAudioResource(stream));
+                await player.play(createAudioResource(stream.stream, { inputType: stream.type }));
 
             } else if (reproductionQueue.tracks[toPlay].type === 'file') { //Si es un archivo local
 

@@ -1,4 +1,4 @@
-exports.run = (discord, client) => {
+exports.run = (client) => {
 
     //Comprobación de miembros silenciados temporalmente
     setInterval(async () => {
@@ -18,9 +18,9 @@ exports.run = (discord, client) => {
                     client.fs.writeFile('databases/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
                         if (err) throw err;
 
-                        let loggingEmbed = new discord.MessageEmbed()
+                        let loggingEmbed = new client.MessageEmbed()
                             .setColor(client.config.colors.correct)
-                            .setAuthor('Un usuario ha sido DES-SILENCIADO, pero no se encontraba en el servidor')
+                            .setAuthor({ name: 'Un usuario ha sido DES-SILENCIADO, pero no se encontraba en el servidor' })
                             .addField('ID', idKey, true)
                             .addField('Moderador', `<@${client.user.id}>`, true)
                             .addField('Razón', 'Venció la amonestación', true);
@@ -30,16 +30,16 @@ exports.run = (discord, client) => {
                     return;
                 };
 
-                let loggingEmbed = new discord.MessageEmbed()
+                let loggingEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
-                    .setAuthor(`${member.user.tag} ha sido DES-SILENCIADO`, member.user.displayAvatarURL({dynamic: true}))
+                    .setAuthor({ name: `${member.user.tag} ha sido DES-SILENCIADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
                     .addField('Miembro', member.user.tag, true)
                     .addField('Moderador', `<@${client.user.id}>`, true)
                     .addField('Razón', 'Venció la amonestación', true);
 
-                let toDMEmbed = new discord.MessageEmbed()
+                let toDMEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
-                    .setAuthor('[DES-SILENCIADO]', guild.iconURL({dynamic: true}))
+                    .setAuthor({ name: '[DES-SILENCIADO]', iconURL: guild.iconURL({dynamic: true}) })
                     .setDescription(`${member.user.tag}, has sido des-silenciado en ${guild.name}`)
                     .addField('Moderador', `<@${client.user.id}>`, true)
                     .addField('Razón', 'Venció la amonestación', true);
@@ -66,9 +66,9 @@ exports.run = (discord, client) => {
 
             if (Date.now() > time) {
 
-                let loggingEmbed = new discord.MessageEmbed()
+                let loggingEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
-                    .setAuthor(`${user.tag} ha sido DES-BANEADO`, user.displayAvatarURL({dynamic: true}))
+                    .setAuthor({ name: `${user.tag} ha sido DES-BANEADO`, iconURL: user.displayAvatarURL({dynamic: true}) })
                     .addField('Usuario', user.tag, true)
                     .addField('Moderador', `<@${client.user.id}>`, true)
                     .addField('Razón', 'Venció la amonestación', true);
@@ -94,9 +94,9 @@ exports.run = (discord, client) => {
         if (ping > 1000) {
             console.log(`${new Date().toLocaleString()} 》Tiempo de respuesta del Websocket elevado: ${ping} ms\n`);
 
-            let debuggingEmbed = new discord.MessageEmbed()
+            let debuggingEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
-                .setFooter(client.user.username, client.user.avatarURL())
+                .setFooter({ text: client.user.username, iconURL: client.user.avatarURL() })
                 .setDescription(`${client.customEmojis.orangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);
 
             if (client.debuggingChannel) client.debuggingChannel.send({ embeds: [debuggingEmbed] });
@@ -140,14 +140,14 @@ exports.run = (discord, client) => {
                     results.push(`🞄 ${votes[i].emoji} ${count} votos, el ${roundedPercentage}%`);
                 };
 
-                let resultEmbed = new discord.MessageEmbed()
-                    .setAuthor('Encuesta finalizada', 'attachment://endFlag.png')
+                let resultEmbed = new client.MessageEmbed()
+                    .setAuthor({ name: 'Encuesta finalizada', iconURL: 'attachment://endFlag.png' })
                     .setDescription(`**${client.polls[idKey].title}**\n\n${client.polls[idKey].options}`)
                     .addField('Resultados', results.join(' '));
 
                 await poll.channel.send({ embeds: [resultEmbed], files: ['./resources/images/endFlag.png'] }).then(async poll => {
 
-                    let loggingEmbed = new discord.MessageEmbed()
+                    let loggingEmbed = new client.MessageEmbed()
                         .setColor(client.config.colors.logging)
                         .setTitle('📑 Auditoría - [ENCUESTAS]')
                         .setDescription(`La encuesta "__[${client.polls[idKey].title}](${poll.url})__" ha finalizado en el canal <#${client.polls[idKey].channel}>.`);
@@ -171,11 +171,11 @@ exports.run = (discord, client) => {
                 let oldRemainingTime = poll.footer;
                 let newRemainingTime = `Restante: ${remainingDays}d ${remainingHours}h ${remainingMinutes}m `;
 
-                let updatedPoll = new discord.MessageEmbed()
+                let updatedPoll = new client.MessageEmbed()
                     .setColor('2AB7F1')
-                    .setAuthor('Encuesta disponible', 'attachment://poll.png')
+                    .setAuthor({ name: 'Encuesta disponible', iconURL: 'attachment://poll.png' })
                     .setDescription(`**${client.polls[idKey].title}**\n\n${client.polls[idKey].options}`)
-                    .setFooter(newRemainingTime);
+                    .setFooter({ text: newRemainingTime });
 
                 if (oldRemainingTime !== newRemainingTime) await poll.edit({ embeds: [updatedPoll], files: ['./resources/images/poll.png'] });
             };

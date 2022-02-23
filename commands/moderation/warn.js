@@ -1,17 +1,17 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!warn (@miembro | id) (razón)
     
     try {
-        let notToWarnEmbed = new discord.MessageEmbed()
+        let notToWarnEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Debes mencionar a un miembro o escribir su id`);
 
-        let noBotsEmbed = new discord.MessageEmbed()
+        let noBotsEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No puedes advertir a un bot`);
         
-        let undefinedReasonEmbed = new discord.MessageEmbed()
+        let undefinedReasonEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Se debe adjuntar una razón`);
 
@@ -30,7 +30,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (moderator.id !== message.guild.ownerId) {
             if (moderator.roles.highest.position <= member.roles.highest.position) {
 
-                let cannotWarnHigherRoleEmbed = new discord.MessageEmbed()
+                let cannotWarnHigherRoleEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} No puedes advertir a un miembro con un rol igual o superior al tuyo`);
     
@@ -39,7 +39,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         };
 
         //Llama al manejador de infracciones
-        require('../../utils/infractionsHandler.js').run(discord, client, message, message.guild, member, reason, 2, message.author);
+        require('../../utils/infractionsHandler.js').run(client, message, message.guild, member, reason, 2, message.author);
 
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

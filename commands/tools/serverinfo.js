@@ -1,4 +1,4 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
 
     //!serverinfo
 
@@ -80,9 +80,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
 
         //Genera un embed con el resultado
-        let resultEmbed = new discord.MessageEmbed()
+        let resultEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.primary)
-            .setAuthor(`Información sobre ${message.guild.name}`, message.guild.iconURL({dynamic: true}))
+            .setAuthor({ name: `Información sobre ${message.guild.name}`, iconURL: message.guild.iconURL({dynamic: true}) })
             .setDescription(message.guild.description)
             .setThumbnail(message.guild.iconURL({dynamic: true}))
             .addField(`🏷 Nombre`, message.guild.name, true)

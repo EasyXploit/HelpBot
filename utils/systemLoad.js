@@ -1,4 +1,4 @@
-exports.run = async (discord, client) => {
+exports.run = async (client) => {
 
     console.log('\n - Cargando el sistema.\n');
 
@@ -30,7 +30,7 @@ exports.run = async (discord, client) => {
         console.log('\n - [OK] Carga de configuración de la guild.');
 
         //Carga de funciones globales
-        require('../utils/functions.js').run(discord, client);
+        require('../utils/functions.js').run(client);
 
         //Carga de customEmojis de sistema en la guild (si no los tiene ya)
         if (client.homeGuild) await client.functions.uploadSystemEmojis();
@@ -49,7 +49,7 @@ exports.run = async (discord, client) => {
         console.log(' - [OK] Carga de presencia.');
 
         //Carga de intervalos
-        require('./intervals.js').run(discord, client);
+        require('./intervals.js').run(client);
 
         //Carga de estados de voz
         let voiceStates = client.homeGuild.voiceStates.cache;

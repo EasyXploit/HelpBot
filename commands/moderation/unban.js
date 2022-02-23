@@ -1,14 +1,14 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!unban (id) (motivo)
     
     try {
 
-        let notToUnbanEmbed = new discord.MessageEmbed()
+        let notToUnbanEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes escribir el ID del miembro a desbanear`);
 
-        let noReasonEmbed = new discord.MessageEmbed()
+        let noReasonEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar un motivo`);
 
@@ -34,14 +34,14 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             });
         };
 
-        let successEmbed = new discord.MessageEmbed()
+        let successEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryCorrect)
             .setTitle(`${client.customEmojis.greenTick} Operación completada`)
             .setDescription(`El miembro **${user.tag}** ha sido desbaneado`);
 
-        let loggingEmbed = new discord.MessageEmbed()
+        let loggingEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.correct)
-            .setAuthor(`${user.tag} ha sido DESBANEADO`, user.displayAvatarURL({dynamic: true}))
+            .setAuthor({ name: `${user.tag} ha sido DESBANEADO`, iconURL: user.displayAvatarURL({dynamic: true}) })
             .addField(`Usuario`, user.tag, true)
             .addField(`Moderador`, message.author.tag, true)
             .addField(`Razón`, reason, true)
@@ -50,7 +50,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         await message.channel.send({ embeds: [successEmbed] });
     } catch (error) {
         if (error.toString().includes(`Unknown Ban`)) {
-            let notBannedEmbed = new discord.MessageEmbed()
+            let notBannedEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} Este miembro no ha sido baneado`);
             message.channel.send({ embeds: [notBannedEmbed] });

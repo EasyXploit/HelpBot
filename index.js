@@ -22,6 +22,10 @@ const client = new discord.Client({
 });
 console.log('- ¡Cliente iniciado correctamente!\n');
 
+//Carga de librerías de métodos de Discord en el cliente
+client.MessageEmbed = discord.MessageEmbed;
+client.MessageAttachment = discord.MessageAttachment;
+
 //Configuraciones globales
 client.config = {
     keys: require('./configs/keys.json'),                       //Tokens de autenticación

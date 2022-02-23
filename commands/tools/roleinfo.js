@@ -1,9 +1,9 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
 
     //!roleinfo (@rol | rol | id)
 
     try {
-        let incorrectSyntaxEmbed = new discord.MessageEmbed()
+        let incorrectSyntaxEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}roleinfo (@rol | rol | id)\``);
 
@@ -11,7 +11,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         await client.functions.fetchRole(message.guild, args[0]).then(role => {
 
-            let roleNotFoundEmbed = new discord.MessageEmbed()
+            let roleNotFoundEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} El rol no se ha podido encontrar`);
 
@@ -34,7 +34,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 managed = 'Externa'
             };
 
-            let resultEmbed = new discord.MessageEmbed()
+            let resultEmbed = new client.MessageEmbed()
                 .setColor(role.hexColor)
                 .setTitle('🔖 Información de rol')
                 .setDescription(`Mostrando información acerca del rol <@&${role.id}>`)

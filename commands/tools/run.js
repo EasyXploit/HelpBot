@@ -1,4 +1,4 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!run (comando) [parámetro/s]
     
@@ -6,7 +6,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Envía un mensaje de error si no se ha proporcionado un comando
         if (!args[0]) return message.channel.send({ embeds: [
-            new discord.MessageEmbed()
+            new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}template (plantilla)\``)
             ]
@@ -17,7 +17,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 
                 //Devuelve un error si no se ha proporcionado un miembro
                 if (!args[1]) return message.channel.send({ embeds: [
-                    new discord.MessageEmbed()
+                    new client.MessageEmbed()
                         .setColor(client.config.colors.error)
                         .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro`)
                     ]
@@ -28,7 +28,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                 //Devuelve un error si no se ha proporcionado un miembro válido
                 if (!targetWelcomeMember) return message.channel.send({ embeds: [
-                    new discord.MessageEmbed()
+                    new client.MessageEmbed()
                         .setColor(client.config.colors.error)
                         .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`)
                     ]
@@ -39,7 +39,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                 //Envía un mensaje de confirmación
                 await message.channel.send({ embeds: [
-                    new discord.MessageEmbed()
+                    new client.MessageEmbed()
                         .setColor(client.config.colors.secondaryCorrect)
                         .setDescription(`${client.customEmojis.greenTick} ¡Listo!`)
                     ]
@@ -50,7 +50,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 
                 //Devuelve un error si no se ha proporcionado un miembro
                 if (!args[1]) return message.channel.send({ embeds: [
-                    new discord.MessageEmbed()
+                    new client.MessageEmbed()
                         .setColor(client.config.colors.error)
                         .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro`)
                     ]
@@ -61,7 +61,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                 //Devuelve un error si no se ha proporcionado un miembro válido
                 if (!targetGoodybeMember) return message.channel.send({ embeds: [
-                    new discord.MessageEmbed()
+                    new client.MessageEmbed()
                         .setColor(client.config.colors.error)
                         .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`)
                     ]
@@ -72,7 +72,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                 //Envía un mensaje de confirmación
                 await message.channel.send({ embeds: [
-                    new discord.MessageEmbed()
+                    new client.MessageEmbed()
                         .setColor(client.config.colors.secondaryCorrect)
                         .setDescription(`${client.customEmojis.greenTick} ¡Listo!`)
                     ]
@@ -101,7 +101,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                 //Envía una confirmación de inicio al canal
                 await message.channel.send({ embeds: [
-                    new discord.MessageEmbed()
+                    new client.MessageEmbed()
                         .setColor(client.config.colors.information)
                         .setTitle(`${client.customEmojis.grayTick} Cuadrando stats`)
                         .setDescription('Comenzando operación de cuadre de la tabla de clasificación.\nRevisa la consola para evaluar el progreso del comando.')
@@ -159,7 +159,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                         //Envía una confirmación de finalización al canal
                         await message.channel.send({ embeds: [
-                            new discord.MessageEmbed()
+                            new client.MessageEmbed()
                                 .setColor(client.config.colors.secondaryCorrect)
                                 .setTitle(`${client.customEmojis.greenTick} Stats encuadradas`)
                                 .setDescription('La operación de encuadre de estadísticas ha finalizado.\nPor favor, realice una revisión manual para confirmar su efectividad.')
@@ -173,7 +173,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
                 //Envía un mensaje de error si no se ha proporcionado un comando válido
                 await message.channel.send({ embeds: [
-                    new discord.MessageEmbed()
+                    new client.MessageEmbed()
                         .setColor(client.config.colors.error)
                         .setDescription(`${client.customEmojis.redTick} No has especificado una plantilla válida`)
                     ]

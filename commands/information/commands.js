@@ -1,13 +1,13 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
 
     //!commands
     
     try {
-        let commandsEmbed = new discord.MessageEmbed()
+        message.channel.send({ embeds: [new client.MessageEmbed()
             .setColor(client.config.colors.information)
             .setTitle(`${client.customEmojis.grayTick} En desarrollo ...`)
-            .setDescription(`La lista de comandos de **${client.user.username}** se encuentra actualmente en desarrollo.`);
-        message.channel.send({ embeds: [commandsEmbed] });
+            .setDescription(`La lista de comandos de **${client.user.username}** se encuentra actualmente en desarrollo.`)
+        ]});
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

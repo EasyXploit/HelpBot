@@ -1,10 +1,10 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
 
     //!rank (@usuario)
     
     try {
 
-        let notFoundEmbed = new discord.MessageEmbed()
+        let notFoundEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`);
 
@@ -18,7 +18,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         const guildStats = client.stats[message.guild.id];
 
         if (member.id in guildStats === false) {
-            let noXPEmbed = new discord.MessageEmbed()
+            let noXPEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} ${member} no tiene puntos de XP`);
 
@@ -76,7 +76,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             return yourRewards;
         };
 
-        let resultEmbed = new discord.MessageEmbed()
+        let resultEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.primary)
             .setTitle(`🥇 Rango`)
             .setDescription(`Mostrando el rango del miembro **${member.user.tag}**`)

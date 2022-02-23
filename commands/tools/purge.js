@@ -1,25 +1,25 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!purge (límite) <#canal | id>
     
     try {
         
-        let noQuantityEmbed = new discord.MessageEmbed()
+        let noQuantityEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar la cantidad de mensajes a eliminar`);
         
-        let incorrectQuantityEmbed = new discord.MessageEmbed()
+        let incorrectQuantityEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad numérica superior a 2 e inferior a 100`);
 
         if(!args[0]) return message.channel.send({ embeds: [noQuantityEmbed] });
         if (isNaN(args[0])) return message.channel.send({ embeds: [NaNEmbed] });
         
-        let tooMuchOldMessagesEmbed = new discord.MessageEmbed()
+        let tooMuchOldMessagesEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Solo puedes borrar mensajes con un máximo de 14 días de antiguedad`);
 
-        let noPrivilegesEmbed = new discord.MessageEmbed()
+        let noPrivilegesEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No tienes permiso para administrar mensajes`);
         
@@ -28,7 +28,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         let channel;
 
         if (args[1]) {
-            let noChannelEmbed = new discord.MessageEmbed()
+            let noChannelEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} El canal de texto proporcionado no es válido`);
             
@@ -42,12 +42,12 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             const messages = await channel.messages.fetch({limit: args[0]});
             count = messages.size;
             
-            let successEmbed = new discord.MessageEmbed()
+            let successEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
                 .setTitle(`${client.customEmojis.greenTick} Operación completada`)
                 .setDescription(`Mensajes eliminados: ${count}`);
 
-            let loggingEmbed = new discord.MessageEmbed()
+            let loggingEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle('📑 Auditoría - [PURGA DE MENSAJES]')
                 .setDescription(`${message.author.tag} eliminó ${count} mensajes del canal <#${channel.id}>`);
@@ -69,7 +69,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             const messages = await message.channel.messages.fetch({limit: args[0]});
             count = messages.size;
 
-            let loggingEmbed = new discord.MessageEmbed()
+            let loggingEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle('📑 Auditoría - [PURGA DE MENSAJES]')
                 .setDescription(`${message.author.tag} eliminó ${count} mensajes del canal <#${channel.id}>`);

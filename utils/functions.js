@@ -1,4 +1,4 @@
-exports.run = (discord, client) => {
+exports.run = (client) => {
     
     //Crea un objeto para almacenar todas las funciones
     client.functions = {};
@@ -171,9 +171,9 @@ exports.run = (discord, client) => {
                         };
                     };
 
-                    let levelUpEmbed = new discord.MessageEmbed()
+                    let levelUpEmbed = new client.MessageEmbed()
                         .setColor(client.config.colors.primary)
-                        .setAuthor(`¡Subiste de nivel!`, member.user.displayAvatarURL({dynamic: true}))
+                        .setAuthor({ name: '¡Subiste de nivel!', iconURL: member.user.displayAvatarURL({dynamic: true}) })
                         .setDescription(`Enhorabuena <@${member.id}>, has subido al nivel **${userStats.level}**`);
 
                     //Manda el mensaje de subida de nivel
@@ -436,7 +436,7 @@ exports.run = (discord, client) => {
         if (errorString.length > 1014) errorString = `${errorString.slice(0, 1014)} ...`;
 
         //Se muestra el error en el canal de depuración
-        let debuggEmbed = new discord.MessageEmbed()
+        let debuggEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.debugging)
             .setTitle('📋 Depuración')
             .setDescription('Se declaró un error durante la ejecución de un comando')
@@ -448,7 +448,7 @@ exports.run = (discord, client) => {
             .addField('Fecha:', new Date().toLocaleString(), true)
             .addField('Error:', `\`\`\`${errorString}\`\`\``, true);
         
-        let reportedEmbed = new discord.MessageEmbed()
+        let reportedEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setTitle(`${client.customEmojis.redTick} ¡Vaya! Algo fue mal ...`)
             .setDescription('Lo hemos reportado al equipo de desarrollo');
@@ -467,7 +467,7 @@ exports.run = (discord, client) => {
         if (errorString.length > 1014) errorString = `${errorString.slice(0, 1014)} ...`;
 
         //Se muestra el error en el canal de depuración
-        let debuggEmbed = new discord.MessageEmbed()
+        let debuggEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.debugging)
             .setTitle('📋 Depuración')
             .setDescription('Se declaró un error durante la ejecución de un evento')

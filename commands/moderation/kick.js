@@ -1,13 +1,13 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
 
     //!kick (@usuario | id) (motivo)
     
     try {
-        let notToKickEmbed = new discord.MessageEmbed()
+        let notToKickEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID`);
 
-        let noReasonEmbed = new discord.MessageEmbed()
+        let noReasonEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar un motivo`);
 
@@ -21,7 +21,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         //Se comprueba si puede expulsar al miembro
         if (moderator.roles.highest.position <= member.roles.highest.position) {
 
-            let cannotKickHigherRoleEmbed = new discord.MessageEmbed()
+            let cannotKickHigherRoleEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} No puedes expulsar a un miembro con un rol igual o superior al tuyo`);
 
@@ -29,7 +29,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         };
 
         //Genera un mensaje de confirmación
-        let successEmbed = new discord.MessageEmbed()
+        let successEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.warning)
             .setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido expulsado, ¿alguien más?`);
 
@@ -44,9 +44,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (!reason && message.author.id !== message.guild.ownerId) return message.channel.send({ embeds: [noReasonEmbed] });
         if (!reason) reason = 'Indefinida';
 
-        let toDMEmbed = new discord.MessageEmbed()
+        let toDMEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setAuthor(`[EXPULSADO]`, message.guild.iconURL({ dynamic: true}))
+            .setAuthor({ name: '[EXPULSADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
             .setDescription(`<@${member.id}>, has sido expulsado de ${message.guild.name}`)
             .addField(`Moderador`, message.author.tag, true)
             .addField(`Razón`, reason, true)

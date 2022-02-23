@@ -35,9 +35,9 @@ exports.run = async (message, client, discord) => {
                         time: Date.now() + client.config.automodFilters.newSpammerMemberBanDuration
                     };
 
-                    let toDMEmbed = new discord.MessageEmbed()
+                    let toDMEmbed = new client.MessageEmbed()
                         .setColor(client.config.colors.secondaryError)
-                        .setAuthor('[EXPULSADO]', client.homeGuild.iconURL({dynamic: true}))
+                        .setAuthor({ name: '[EXPULSADO]', iconURL: client.homeGuild.iconURL({dynamic: true}) })
                         .setDescription(`<@${member.id}>, has sido expulsado de ${client.homeGuild.name}`)
                         .addField('Moderador', client.user.tag, true)
                         .addField('Razón', 'Spam vía MD', true);
@@ -45,9 +45,9 @@ exports.run = async (message, client, discord) => {
                     await member.send({ embeds: [toDMEmbed] });
                     return await member.kick(`Moderador: ${client.user.id}, Razón: Spam vía MD al bot`);
                 } else {
-                    let toDMEmbed = new discord.MessageEmbed()
+                    let toDMEmbed = new client.MessageEmbed()
                         .setColor(client.config.colors.error)
-                        .setAuthor(`[BANEADO]`, client.homeGuild.iconURL({dynamic: true}))
+                        .setAuthor({ name: '[BANEADO]', iconURL: client.homeGuild.iconURL({dynamic: true}) })
                         .setDescription(`<@${member.id}>, has sido baneado en ${client.homeGuild.name}`)
                         .addField('Moderador', client.user.tag, true)
                         .addField('Razón', 'Spam vía MD', true)
@@ -61,7 +61,7 @@ exports.run = async (message, client, discord) => {
 
         //Advierte de que los comandos no funcionan por MD
         if (message.content.startsWith(client.config.guild.prefix)) {
-            const noDMEmbed = new discord.MessageEmbed()
+            const noDMEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.information)
                 .setDescription(`${client.customEmojis.grayTick} | Por el momento, los comandos de **${client.user.username}** solo están disponible desde el servidor.`);
 
@@ -87,7 +87,7 @@ exports.run = async (message, client, discord) => {
                     }
 
                     await client.automodFiltering[key](message).then(match => {
-                        if (match) require('../utils/infractionsHandler.js').run(discord, client, message, message.guild, message.member, client.config.automodFilters[key].reason, client.config.automodFilters[key].action, client.user, message.content);
+                        if (match) require('../utils/infractionsHandler.js').run(client, message, message.guild, message.member, client.config.automodFilters[key].reason, client.config.automodFilters[key].action, client.user, message.content);
                     });
                 }
             })();
@@ -108,7 +108,7 @@ exports.run = async (message, client, discord) => {
     try {
         //Comprueba si es un comando con prefijo
         if (message.content.startsWith(client.config.guild.prefix)) {
-            let waitEmbed = new discord.MessageEmbed().setColor(client.config.colors.secondaryError).setDescription(`${client.customEmojis.redTick} Debes esperar 2 segundos antes de usar este comando`);
+            let waitEmbed = new client.MessageEmbed().setColor(client.config.colors.secondaryError).setDescription(`${client.customEmojis.redTick} Debes esperar 2 segundos antes de usar este comando`);
             if (client.cooldownedUsers.has(message.author.id)) return message.channel.send({ embeds: [waitEmbed] }).then(msg => {setTimeout(() => msg.delete(), 1000)});
 
             //Busca el comando por su nombre o su alias
@@ -126,7 +126,7 @@ exports.run = async (message, client, discord) => {
             if (commandConfig.blacklistedChannels.length > 0 && commandConfig.blacklistedChannels.includes(message.channel.id)) return;
 
             //Carga el embed de error de privilegios
-            const noPrivilegesEmbed = new discord.MessageEmbed()
+            const noPrivilegesEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`);
 
@@ -166,7 +166,7 @@ exports.run = async (message, client, discord) => {
             if (commandConfig.deleteInvocationCommand) setTimeout(() => message.delete(), 2000);
 
             //Ejecuta el comando
-            listedCmd.run(discord, client, message, args, command, commandConfig);
+            listedCmd.run(client, message, args, command, commandConfig);
 
             //Añade un cooldown
             client.cooldownedUsers.add(message.author.id);

@@ -1,4 +1,4 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
 
     //!userinfo (@miembro | id | nada)
 
@@ -9,7 +9,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Comprueba si se ha proporcionado un miembro válido
         if (!member) return message.channel.send({ embeds: [
-            new discord.MessageEmbed()
+            new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`)
             ]
@@ -49,7 +49,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         };
 
         //Genera el embed con el resultado del comando
-        let resultEmbed = new discord.MessageEmbed()
+        let resultEmbed = new client.MessageEmbed()
             .setColor(member.displayHexColor)
             .setTitle(`🙍 Información sobre ${member.displayName}`)
             .setDescription(`Mostrando información acerca de **${member.user.tag}**`)

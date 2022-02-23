@@ -1,21 +1,21 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!slowmode (off | segundos [5-30]) (razón)
     
     try {
-        let incorrectSyntaxEmbed = new discord.MessageEmbed()
+        let incorrectSyntaxEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}slowmode (off | segundos [5-30]) (razón)\``);
 
         if (args[0] === 'off') {
             if (!message.channel.rateLimitPerUser) return message.channel.send({ embeds: [incorrectSyntaxEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
 
-            let successEmbed = new discord.MessageEmbed()
+            let successEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
                 .setTitle(`${client.customEmojis.greenTick} Operación completada`)
                 .setDescription(`El modo lento ha sido desactivado`);
 
-            loggingEmbed = new discord.MessageEmbed()
+            loggingEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle('📑 Auditoría - [MODO LENTO]')
                 .setDescription('Se ha des-habilitado el modo lento.')
@@ -46,7 +46,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 if (authorized) return true;
             };
 
-            let tooManySeconds = new discord.MessageEmbed()
+            let tooManySeconds = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} Los moderadores solo pueden activar el modo lento para un máximo de 30 segundos`);
 
@@ -59,12 +59,12 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 reason = args.join(' ');
             };
 
-            let successEmbed = new discord.MessageEmbed()
+            let successEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
                 .setTitle(`${client.customEmojis.greenTick} Operación completada`)
                 .setDescription(`El modo lento ha sido activado con un retraso de \`${seconds}s\``);
 
-            loggingEmbed = new discord.MessageEmbed()
+            loggingEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle('📑 Auditoría - [MODO LENTO]')
                 .setDescription('Se ha habilitado el modo lento.')

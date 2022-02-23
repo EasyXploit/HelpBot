@@ -1,23 +1,23 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!dm (autor | anonimo) (@usuario | id) (embed | normal) (mensaje a enviar)
     
     try {
         
-        let incorrectSyntaxEmbed = new discord.MessageEmbed()
+        let incorrectSyntaxEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}dm (autor | anonimo) (@usuario | id) (embed | normal) (mensaje a enviar)\``);
         
         if (args.length < 4 || (args[0] !== 'autor' && args[0] !== 'anonimo') || (args[2] !== 'embed' && args[2] !== 'normal')) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
             
-        let noUserEmbed = new discord.MessageEmbed()
+        let noUserEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`);
         
         //Busca y almacena el miembro
         const member = await client.functions.fetchMember(message.guild, args[1]);
 
-        let noBotsEmbed = new discord.MessageEmbed()
+        let noBotsEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No puedes entablar una conversación con un bot`);
 
@@ -33,8 +33,8 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         switch (mode) {
             case 'autor':
                 if (type === 'embed') {
-                    let resultMessage = new discord.MessageEmbed()
-                        .setAuthor(`Mensaje de ${message.author.tag}`, message.author.avatarURL())
+                    let resultMessage = new client.MessageEmbed()
+                        .setAuthor({ name: `Mensaje de ${message.author.tag}`, iconURL: message.author.avatarURL() })
                         .setColor(client.config.colors.primary)
                         .setDescription(body);
 
@@ -59,7 +59,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 //Si no se permitió la ejecución, manda un mensaje de error
                 if (!authorized) {
                     //Carga el embed de error de privilegios
-                    const noPrivilegesEmbed = new discord.MessageEmbed()
+                    const noPrivilegesEmbed = new client.MessageEmbed()
                         .setColor(client.config.colors.error)
                         .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`);
 
@@ -68,7 +68,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 };
 
                 if (type === 'embed') {
-                    let resultMessage = new discord.MessageEmbed()
+                    let resultMessage = new client.MessageEmbed()
                         .setColor(client.config.colors.primary)
                         .setDescription(body);
 
@@ -80,7 +80,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 break;
         };
 
-        let confirmEmbed = new discord.MessageEmbed()
+        let confirmEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryCorrect)
             .setDescription(`${client.customEmojis.greenTick} ¡Mensaje enviado!`);
 

@@ -1,4 +1,4 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!send (embed | normal) (texto)
     
@@ -6,7 +6,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Comprueba si se han proporcionado los cargumentos correctamente
         if (!args[0] || !args[1] || (args[0] !== 'embed' && args[0] !== 'normal')) return message.channel.send({ embeds: [
-            new discord.MessageEmbed()
+            new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}send (embed | normal) (texto)\`.`)
             ]
@@ -19,7 +19,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         if (args[0] === 'embed') {
 
             //Genera el embed con el mensaje
-            let resultEmbed = new discord.MessageEmbed()
+            let resultEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
                 .setDescription(body);
 

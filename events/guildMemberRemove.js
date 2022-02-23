@@ -8,7 +8,7 @@ exports.run = async (event, client, discord) => {
         async function sendLogEmbed(executor, reason) {
             if (event.user.bot) {
                 if (event.user.id === client.user.id) return;
-                const loggingEmbed = new discord.MessageEmbed()
+                const loggingEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setTitle('📑 Auditoría - [BOTS]')
                     .setDescription(`El **BOT** @${event.user.tag} fue expulsado del servidor.`);
@@ -23,9 +23,9 @@ exports.run = async (event, client, discord) => {
                     razon = reason.split(', Razón: ')[1];
                 }
 
-                const loggingEmbed = new discord.MessageEmbed()
+                const loggingEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setAuthor(`${event.user.tag} ha sido EXPULSADO`, event.user.displayAvatarURL({dynamic: true}))
+                    .setAuthor({ name: `${event.user.tag} ha sido EXPULSADO`, iconURL: event.user.displayAvatarURL({dynamic: true}) })
                     .addField('Miembro', `<@${event.user.id}>`, true)
                     .addField('Moderador', moderador.tag || 'Desconocido', true)
                     .addField('Razón', razon || 'Indefinida', true);
@@ -61,10 +61,10 @@ exports.run = async (event, client, discord) => {
 
             if (fetchedBans.entries.first() && (fetchedBans.entries.first().createdTimestamp > (Date.now() - 5000))) return;
 
-            let loggingEmbed = new discord.MessageEmbed()
+            let loggingEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
                 .setThumbnail(event.user.displayAvatarURL({dynamic: true}))
-                .setAuthor('Un miembro abandonó', 'attachment://out.png')
+                .setAuthor({ name: 'Un miembro abandonó', iconURL: 'attachment://out.png' })
                 .setDescription(`${event.user.username} abandonó el servidor`)
                 .addField('🏷 TAG completo', event.user.tag, true)
                 .addField('🆔 ID del miembro', event.user.id, true);

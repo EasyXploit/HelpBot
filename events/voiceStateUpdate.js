@@ -17,7 +17,7 @@ exports.run = async (oldState, newState, client, discord) => {
             delete client.usersVoiceStates[newState.id];
         };
 
-        if (newState.channel !== null && newState.channelId !== null) { //Si hay una nueva conexión o una antigua cambia
+        if (newState.channel && newState.channel !== null && newState.channelId !== null) { //Si hay una nueva conexión o una antigua cambia
 
             //Almacena el miembro
             const member = await client.functions.fetchMember(newState.guild, newState.id);
@@ -56,7 +56,7 @@ exports.run = async (oldState, newState, client, discord) => {
                     last_xpReward: Date.now()
                 };
             };
-        } else if (newState.channelId == null || newState.channel == null) { //Si la conexión desaparece
+        } else if (!newState.channel || newState.channelId == null || newState.channel == null) { //Si la conexión desaparece
             endVoiceTime();
         };
     } catch (error) {

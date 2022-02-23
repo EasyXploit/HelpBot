@@ -1,48 +1,42 @@
 exports.run = async (client, message, args, command, commandConfig) => {
-
-    //!play (URL de YouTube | término | nada)
+    
+    //!sound (nada | término | list)
 
     try {
 
-        //Comprueba si se han introducido argumentos
-        if (!args[0]) { //En este caso, "play" funcionará como "resume"
+        //Método para obtener la lista de sonidos
+        async function getFilenames() {
 
-            //Método para obtener conexiones de voz
-            const { getVoiceConnection } = require('@discordjs/voice');
+            //Almacena los nombres originales de los archivos
+            let fileNames = client.fs.readdirSync('./media/audios/');
 
-            //Almacena la conexión de voz del bot
-            let connection = await getVoiceConnection(message.guild.id);
+            //Almacena los nombres sin extensión
+            let newFileNames = [];
+            
+            //Para cada archivo, almacena su nombre sin extensión en el array "newFileNames"
+            for (var file = 0; file < fileNames.length - 1; file++) newFileNames.push(fileNames[file].slice(0, -4));
 
-            //Comprueba si el bot está conectado
-            if (!connection || connection._state.status === 'disconnected') return message.channel.send({ embeds: [new client.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} El bot no está conectado.`)
-            ]});
+            //Añade la palabra "zorra" a la lista
+            if (fileNames.includes('zorra.mp3')) newFileNames.push('zorra'); //PROVISIONAL (no sé por qué no lo coge de normal)
 
-            //Comprueba si el miembro está en el mismo canal que el bot
-            if (message.guild.me.voice.channel.id !== message.member.voice.channel.id) return message.channel.send({ embeds: [new client.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`)
-            ]});
+            //Devuelve la lista
+            return newFileNames;
+        };
 
-            //Almacena el reproductor suscrito
-            const player = connection._state.subscription.player;
+        //Si se desea obtener la lista
+        if (args[0] === 'list') {
 
-            //Comprueba si el bot no estaba pausado
-            if (player.state.status !== 'paused') return message.channel.send({ embeds: [new client.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} El bot no está pausado.`)
-            ]});
+            //Obtiene la lista de nombres de los archivos de sonido
+            const soundNames = await getFilenames();
 
-            //Comprueba si es necesaria una votación
-            if (await client.functions.testQueuePerms(message, 'pause')) {
+            //Envía una lista con las grabaciones
+            message.channel.send({embeds : [ new client.MessageEmbed()
+                .setColor('CCCCCC')
+                .setTitle('🎙 Lista de grabaciones')
+                .setDescription(`\`\`\`${soundNames.join('    ')}\`\`\``)]
+            });
 
-                //Reanuda la reproducción y manda un mensaje de confirmación
-                await player.unpause();
-                await message.channel.send({ content: `▶ | Cola reanudada` });
-            };
-
-        } else { //En este caso, "play" funcionará como "join" y reproducirá/añadirá a la cola
+        } else { //Si se desea reproducir una grabación
 
             //Almacena el canal de voz del miembro
             const voiceChannel = message.member.voice.channel;
@@ -77,14 +71,23 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .setDescription(`${client.customEmojis.redTick} El canal de voz \`${voiceChannel.name}\` está lleno.`)
             ]});
 
-            //Envía un mensaje de confirmación de la búsqueda
-            message.channel.send({ content: `🔎 | Buscando \`${args.join(` `)}\` ...` });
+            //Almacena la selección del usuario
+            let selection = args[0];
+
+            //Obtiene la lista de nombres de los archivos de sonido
+            const soundNames = await getFilenames();
+
+            //Si no hay selección, se elige una grabación aleatoria
+            if (!selection) selection = soundNames[Math.floor(Math.random() * soundNames.length)]
+
+            //Si la grabación no existe, devuelve un error
+            if (!soundNames.includes(selection)) return message.channel.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} **${selection}** no existe.`)]
+            });
 
             //Crea el objeto de la cola y almacena si se ha logrado crear o no
-            const resultFound = await require('../../utils/voiceSubsystem/fetchResource.js').run(client, args, message, 'stream', args.join(' '));
-
-            //No continua si no se ha conseguido crear
-            if (resultFound !== true) return;
+            await require('../../utils/voiceSubsystem/fetchResource.js').run(client, args, message, 'file', selection);
 
             //Almacena librerías necesarios para manejar conexiones de voz
             const { getVoiceConnection, joinVoiceChannel } = require('@discordjs/voice');
@@ -111,21 +114,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
             //Manda un mensaje de confirmación
             message.channel.send({ content: `📥 | Unido a \`${voiceChannel.name}\` y vinculado a ${message.channel}.` });
 
-            /* //ESTATUS DE LA CONEXIÓN - Depuración
-
-            connection.on(VoiceConnectionStatus.Signalling, () => {
-                console.log('La conexión ha entrado en el estado "Obteniendo señal".');
-            });
-
-            connection.on(VoiceConnectionStatus.Connecting, () => {
-                console.log('La conexión ha entrado en el estado "Conectando".');
-            });
-
-            connection.on(VoiceConnectionStatus.Ready, async () => {
-                console.log('La conexión ha entrado en el estado "Preparado".');
-            });
-            */
-
             //Si la conexión desaparece
             connection.on(VoiceConnectionStatus.Disconnected, async () => {
                 try {
@@ -149,6 +137,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             //Ejecuta el reproductor de medios
             require('../../utils/voiceSubsystem/mediaPlayer.js').run(client, message, connection);
+
         };
 
     } catch (error) {
@@ -157,6 +146,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 };
 
 module.exports.config = {
-    name: 'play',
-    aliases: ['p', 'resume']
+    name: 'sound',
+    aliases: ['snd']
 };

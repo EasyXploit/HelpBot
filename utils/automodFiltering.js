@@ -17,7 +17,7 @@ async function invites(message) {
     if (detectedInvites) {
         let legitInvites = 0;
 
-        await message.guild.fetchInvites().then(guildInvites => {
+        await message.guild.invites.fetch().then(guildInvites => {
 
             let inviteCodes = Array.from(guildInvites.keys());
 

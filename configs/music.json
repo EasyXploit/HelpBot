@@ -4,5 +4,7 @@
     "votesPercentage": 75,
     "preventDuplicates": true,
     "queueLimit": 100,
-    "userQueueLimit": 50
+    "userQueueLimit": 50,
+    "maxTrackDuration": 3600000,
+    "maxIdleTime": 60000
 }

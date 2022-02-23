@@ -24,10 +24,21 @@
     "MUTE_MEMBERS": "Silenciar miembros",
     "DEAFEN_MEMBERS": "Ensordecer miembros",
     "MOVE_MEMBERS": "Mover miembros",
-    "USE_VAD": "Usar Actividad de voz",
+    "USE_VAD": "Usar actividad de voz",
     "CHANGE_NICKNAME": "Cambiar apodo",
     "MANAGE_NICKNAMES": "Gestionar apodos",
     "MANAGE_ROLES": "Gestionar roles",
     "MANAGE_WEBHOOKS": "Gestionar webhooks",
-    "MANAGE_EMOJIS": "Gestionar emojis"
+    "MANAGE_EMOJIS_AND_STICKERS": "Gestionar emojis y stickers",
+    "USE_APPLICATION_COMMANDS": "Usar comandos de aplicación",
+    "REQUEST_TO_SPEAK": "Solicitar hablar",
+    "MANAGE_THREADS": "Administrar hilos",
+    "USE_PUBLIC_THREADS": "Usar hilos públicos",
+    "CREATE_PUBLIC_THREADS": "Crear hilos públicos",
+    "USE_PRIVATE_THREADS": "Usar hilos privados",
+    "CREATE_PRIVATE_THREADS": "Crear hilos privados",
+    "USE_EXTERNAL_STICKERS": "Usar stickers externos",
+    "SEND_MESSAGES_IN_THREADS": "Enviar mensajes en los hilos",
+    "START_EMBEDDED_ACTIVITIES": "Iniciar actividades incorporadas"
+
 }

@@ -1,41 +1,42 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!pause
 
     try {
-        let notPlayingEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} No hay ninguna canción en cola/reproducción.`);
-        
-        let notAvailableEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`);
 
-        let alreadyPausedEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} El bot ya está pausado.`);
+        //Método para obtener conexiones de voz
+        const { getVoiceConnection } = require('@discordjs/voice');
 
-        //Comprueba si el bot tiene o no una conexión a un canal de voz en el servidor
-        if (!message.guild.voice) return message.channel.send(notPlayingEmbed);
-        
-        //Comprueba si el miembro está en un canal de voz
-        let voiceChannel = message.member.voice.channel;
-        if (!voiceChannel) return message.channel.send(notAvailableEmbed);
+        //Almacena la conexión de voz del bot
+        let connection = await getVoiceConnection(message.guild.id);
+
+        //Comprueba si el bot está conectado
+        if (!connection || connection._state.status === 'disconnected') return message.channel.send({ embeds: [new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} El bot no está conectado.`)
+        ]});
 
         //Comprueba si el miembro está en el mismo canal que el bot
-        if (message.member.voice.channelID !== message.guild.member(client.user).voice.channelID) return message.channel.send(notAvailableEmbed);
+        if (message.guild.me.voice.channel.id !== message.member.voice.channel.id) return message.channel.send({ embeds: [new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`)
+        ]});
 
-        //Comprueba si no hay reproducción
-        if (!client.queues[message.guild.id].nowplaying || Object.entries(client.queues[message.guild.id].nowplaying).length === 0) return message.channel.send(notPlayingEmbed);
-        
-        //Comprueba si la reproducción ya está pausada
-        if (!client.voiceDispatcher || client.voiceDispatcher.paused) return message.channel.send(alreadyPausedEmbed);
+        //Almacena el reproductor suscrito
+        const player = connection._state.subscription.player;
+
+        //Comprueba si el bot ya estaba pausado
+        if (player.state.status === 'paused') return message.channel.send({ embeds: [new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} El bot ya está pausado.`)
+        ]});
 
         //Comprueba si es necesaria una votación
-        if (await client.functions.evaluateDjOrVotes(message, 'pause')) {
+        if (await client.functions.testQueuePerms(message, 'pause')) {
+            
             //Reanuda la reproducción y manda un mensaje de confirmación
-            await client.voiceDispatcher.pause();
-            await message.channel.send(`⏸ | Cola pausada`);
+            await player.pause();
+            await message.channel.send({ content: `⏸ | Cola pausada` });
         };
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

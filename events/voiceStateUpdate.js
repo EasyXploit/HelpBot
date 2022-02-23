@@ -1,9 +1,6 @@
 exports.run = async (oldState, newState, client, discord) => {
     
     try {
-        //Previene que continue la ejecución si el servidor no es el principal
-        if (newState.guild.id !== client.homeGuild.id) return;
-
         async function endVoiceTime() {
             //Si el timestamp actual es superior a los MS de intervalo de ganancia de XP configurado, le asigna XP
             if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].last_xpReward + client.config.xp.XPGainInterval)) {
@@ -20,7 +17,7 @@ exports.run = async (oldState, newState, client, discord) => {
             delete client.usersVoiceStates[newState.id];
         };
 
-        if (newState.channel !== null && newState.channelID !== null) { //Si hay una nueva conexión o una antigua cambia
+        if (newState.channel !== null && newState.channelId !== null) { //Si hay una nueva conexión o una antigua cambia
 
             //Almacena el miembro
             const member = await client.functions.fetchMember(newState.guild, newState.id);
@@ -41,7 +38,7 @@ exports.run = async (oldState, newState, client, discord) => {
             };
 
             //No sigue si es un bot, el canal de AFK, un canal prohibido o un rol prohibido
-            if (member.user.bot || client.config.xp.nonXPChannels.includes(newState.channelID) || newState.channelID === newState.guild.afkChannel.id || nonXPRole) {
+            if (member.user.bot || client.config.xp.nonXPChannels.includes(newState.channelId) || newState.channelId === newState.guild.afkChannel.id || nonXPRole) {
                 if (client.usersVoiceStates[newState.id]) {
                     //Borra el registro del miembro que ha dejado el canal de voz
                     delete client.usersVoiceStates[newState.id];
@@ -51,15 +48,15 @@ exports.run = async (oldState, newState, client, discord) => {
 
             //Si solo se ha cambiado de sala, solo cambia el ID del canal actual
             if (client.usersVoiceStates[newState.id]) {
-                client.usersVoiceStates[newState.id].channelID = newState.channelID
+                client.usersVoiceStates[newState.id].channelID = newState.channelId
             } else  { //Si se ha conectado desde 0, le crea una nueva entrada en la lista de estados de voz
                 client.usersVoiceStates[newState.id] = {
                     guild: newState.guild.id,
-                    channelID: newState.channelID,
+                    channelID: newState.channelId,
                     last_xpReward: Date.now()
                 };
             };
-        } else if (newState.channelID == null || newState.channel == null) { //Si la conexión desaparece
+        } else if (newState.channelId == null || newState.channel == null) { //Si la conexión desaparece
             endVoiceTime();
         };
     } catch (error) {

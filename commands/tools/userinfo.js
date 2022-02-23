@@ -1,105 +1,73 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
 
-    //!userinfo (@usuario | id)
+    //!userinfo (@miembro | id | nada)
 
     try {
-        let noUserEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
-            .setDescription(`${client.customEmojis.redTick} No has proporcionado un usuario válido`);
 
+        //Almacena el miembro objetivo
         const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);
-        if (!member) return message.channel.send(noUserEmbed);
 
-        let user = member.user;
-
-        //Comprueba si el usuario es baneable
-        let bannable = `No`;
-
-        if (member.bannable === true) {
-            bannable = `Si`
-        };
-
-        //Comprueba los permisos del usuario
-        let status = [];
-        if (member.id === message.guild.owner.id) {
-            status.push(`Propietario`)
-        };
-        
-        if (member.hasPermission(`ADMINISTRATOR`)) {
-            status.push(`Administrador`)
-        };
-        
-        if (member.hasPermission(`MANAGE_MESSAGES`)) {
-            status.push(`Moderador`)
-        };
-
-        if (status.length < 1) {
-            status.push(`Usuario regular`)
-        };
-
-        let perms = member.permissions.serialize();
-        let permsArray = Object.keys(perms).filter(function (x) {
-            return perms[x] !== false;
+        //Comprueba si se ha proporcionado un miembro válido
+        if (!member) return message.channel.send({ embeds: [
+            new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryError)
+                .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`)
+            ]
         });
 
-        //Comprueba el número de warns del usuario
-        let warns;
-        if (!client.warns[member.id]) {
-            warns = 0
-        } else {
-            warns = client.warns[member.id].length;
-        }
-        
-        let lastMessage;
-            
-        if (member.lastMessage) {
-            if (member.lastMessage.content.length >= 995) {
-                lastMessage = `${member.lastMessage.content.substr(0, 995)} ... (ID: ${member.lastMessage.id})`;
-            } else {
-                lastMessage = `${member.lastMessage} (ID: ${member.lastMessage.id})`;
-            }
-        } else {
-            lastMessage = `Ninguno en caché`;
-        }
+        //Comprueba los status de los que dispone el miembro
+        let status = [];
+        if (member.id === message.guild.ownerId) status.push('Propietario');
+        if (member.permissions.has(`ADMINISTRATOR`)) status.push('Administrador');
+        if (member.permissions.has(`MANAGE_MESSAGES`)) status.push('Moderador');
+        if (status.length < 1) status.push('Usuario regular');
 
-        let translations = require(`../../resources/data/permsTranslations.json`);
+        //Comprueba los permisos del miembro
+        let memberPermissions = member.permissions.serialize();
+        let permissionsArray = Object.keys(memberPermissions).filter(function (x) {
+            return memberPermissions[x] !== false;
+        });
 
-        let matches = [];
+        //Almacena las traducciones de los permisos
+        let translations = require(`../../resources/translations/permissions.json`);
 
-        permsArray.forEach(async (perm) => {
-            matches.push(translations[perm]);
+        //Traduce los permisos del miembro
+        let translatedPermissions = [];
+        permissionsArray.forEach(async (permission) => {
+            translatedPermissions.push(translations[permission]);
         });
 
         //Comprueba si existe el rol silenciado, sino lo crea
-        let role = await client.functions.checkMutedRole(message.guild);
+        let mutedRole = await client.functions.checkMutedRole(message.guild);
 
+        //Comprueba si el miembro está silenciado
         let sanction;
         if (client.mutes[member.id]) {
             sanction = `Silenciado hasta ${new Date(client.mutes[member.id].time).toLocaleString()}`;
-        } else if (member.roles.cache.has(role.id)) {
+        } else if (member.roles.cache.has(mutedRole.id)) {
             sanction = 'Silenciado indefinidamente';
-        }
+        };
 
-        let infractionsCount = 0;
-        if (client.warns[member.id]) infractionsCount = Object.keys(client.warns[member.id]).length;
-
-        let resultEmbed = new discord.MessageEmbed()
+        //Genera el embed con el resultado del comando
+        let resultEmbed = new client.MessageEmbed()
             .setColor(member.displayHexColor)
-            .setTitle(`🙍 Información de usuario`)
-            .setDescription(`Mostrando información acerca del usuario **${member.user.tag}**\nSanción actual: \`${sanction || 'Ninguna'}\``)
-            .setThumbnail(user.displayAvatarURL({dynamic: true}))
-            .addField(`🏷 TAG completo`, user.tag, true)
-            .addField(`🆔 ID del usuario`, member.id, true)
-            .addField(`⚒ Baneable`, bannable, true)
-            .addField(`📝 Fecha de registro`, user.createdAt.toLocaleString(), true)
-            .addField(`↙ Unido al servidor`, member.joinedAt.toLocaleString(), true)
-            .addField(`👑 Estatus`, status.join(', '), true)
-            .addField(`🎖 Rol más alto`, member.roles.highest.name, true)
-            .addField(`💬 Último mensaje`, lastMessage, true)
-            .addField(`⚖ Infracciones`, infractionsCount, true)
-            .addField(`👮 Permisos`, `\`\`\`${matches.join(', ')}\`\`\``);
+            .setTitle(`🙍 Información sobre ${member.displayName}`)
+            .setDescription(`Mostrando información acerca de **${member.user.tag}**`)
+            .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
+            .addField('🆔 ID del miembro', member.id, true)
+            .addField('📝 Fecha de registro', member.user.createdAt.toLocaleString(), true)
+            .addField('↙ Unido al servidor', member.joinedAt.toLocaleString(), true)
+            .addField('👑 Estatus', status.join(', '), true)
+            .addField('💎 Nitro Booster', member.premiumSince ? `Desde ${member.premiumSince.toLocaleString()}` : 'No', true)
+            .addField('🎖 Rol más alto', member.roles.highest.name, true)
+            .addField('⚖ Infracciones', client.warns[member.id] ? (Object.keys(client.warns[member.id]).length).toString() : '0', true)
+            .addField('📓 Reglas', member.pending ? 'Aceptación pendiente' : 'Aceptadas', true)
+            .addField('⚠️ Sanción actual', sanction || 'Ninguna', true)
+            .addField('👮 Permisos', `\`\`\`${translatedPermissions.join(', ')}\`\`\``);
         
-        message.channel.send(resultEmbed);
+        //Envía el embed
+        await message.channel.send({ embeds: [resultEmbed] });
+
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

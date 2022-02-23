@@ -1,51 +1,110 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
 
     //!serverinfo
 
     try {
-        const guild = message.guild;
-        let minutes = (guild.afkTimeout / 60);
-        let large = `No`;
-        let verified;
 
-        if (guild.large === true) {
-            large = `Si`
-        };
+        //Almacena a los miembros y los canales de la guild
+        const guildMembers = await message.guild.members.fetch();
+        const guildChannels = await message.guild.channels.fetch();
 
-        if (guild.verified === true) {
-            verified = `Si`;
-        } else if (guild.verified === false) {
-            verified = `No`;
-        } else if (guild.verified === undefined) {
-            verified = `No`;
-        }
+        //Almacena las traducciones de las características
+        let translations = require(`../../resources/translations/guildFeatures.json`);
 
+        //Traduce las características de la guild
+        let translatedFeatures = [];
+        message.guild.features.forEach(async (feature) => {
+            translatedFeatures.push(translations[feature]);
+        });
+        
+        //Almacena las categorías que hay en la guild
         let categories = new Set();
-
-        let categoriesCount = guild.channels.cache.filter(c => {
+        message.guild.channels.cache.filter(c => {
             if (categories.has(c.parent)) return;
             categories.add(c.parent);
         });
 
-        let resultEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.primary)
-            .setAuthor(`Información del servidor`, guild.iconURL({dynamic: true}))
-            .setDescription(`Mostrando información acerca de la guild ${guild.name}`)
-            .setThumbnail(guild.iconURL({dynamic: true}))
-            .addField(`🏷 Nombre`, guild.name, true)
-            .addField(`🆔 ID`, guild.id, true)
-            .addField(`👑 Propietario`, `${guild.owner} (ID: ${guild.ownerID})`, true)
-            .addField(`📝 Fecha de creación`, guild.createdAt.toLocaleString(), true)
-            .addField(`🌍 Región`, guild.region, true)
-            .addField(`🕗 Canal de AFK`, `${guild.afkChannel.name}\nTimeout: ${minutes} minutos`, true)
-            .addField(`🆙 Large guild (+250)`, large, true)
-            .addField(`👮 Nivel de verificación`, guild.verificationLevel, true)
-            .addField(`🔖 Roles`, guild.roles.size, true)
-            .addField(`👥 Miembros`, `${guild.memberCount} miembros\n${guild.members.cache.filter(m => m.user.presence.status == 'online' && !m.user.bot).size} online\n${guild.members.cache.filter(m => m.user.bot).size} bots, ${guild.members.cache.filter(m => !m.user.bot).size} humanos`, true)
-            .addField(`💬 Canales`, `${guild.channels.cache.size} canales en total:\n${(categories.size - 1)} categorías\n${guild.channels.cache.filter(c => c.type === 'text').size} de texto, ${guild.channels.cache.filter(c => c.type === 'voice').size} de voz`, true)
-            .addField(`${client.customEmojis.greenTick} Verificado`, verified, true)
+        //Cálculo del tier de la guild
+        let guildTier;
 
-        message.channel.send(resultEmbed);
+        switch (client.homeGuild.premiumTier) {
+            case 'NONE':
+                guildTier = 'Tier 0';
+                break;
+            case 'TIER_1':
+                guildTier = 'Tier 1';
+                break;
+            case 'TIER_2':
+                guildTier = 'Tier 2';
+                break;
+            case 'TIER_3':
+                guildTier = 'Tier 3';
+                break;
+        };
+
+        //Cálculo del nivel de filtro NSFW
+        let guildNSFWLevel;
+
+        switch (message.guild.explicitContentFilter) {
+            case 'DISABLED':
+                guildNSFWLevel = 'Deshabilitado';
+                break;
+            case 'MEMBERS_WITHOUT_ROLES':
+                guildNSFWLevel = 'Supervisando a miembros sin rol';
+                break;
+            case 'ALL_MEMBERS':
+                guildNSFWLevel = 'Supervisando a todo el mundo';
+                break;
+        };
+
+        //Cálculo del nivel de verificación
+        let guildverificationLevel;
+
+        switch (message.guild.verificationLevel) {
+            case 'NONE':
+                guildverificationLevel = 'Deshabilitado';
+                break;
+            case 'LOW':
+                guildverificationLevel = 'Bajo';
+                break;
+            case 'MEDIUM':
+                guildverificationLevel = 'Medio';
+                break;
+            case 'HIGH':
+                guildverificationLevel = 'Alto';
+                break;
+            case 'VERY_HIGH':
+                guildverificationLevel = 'Muy alto';
+                break;
+        };
+
+
+        //Genera un embed con el resultado
+        let resultEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.primary)
+            .setAuthor({ name: `Información sobre ${message.guild.name}`, iconURL: message.guild.iconURL({dynamic: true}) })
+            .setDescription(message.guild.description)
+            .setThumbnail(message.guild.iconURL({dynamic: true}))
+            .addField(`🏷 Nombre`, message.guild.name, true)
+            .addField(`🆔 ID`, message.guild.id, true)
+            .addField(`🌍 Región`, message.guild.preferredLocale, true)
+            .addField(`📝 Fecha de creación`, message.guild.createdAt.toLocaleString(), true)
+            .addField(`👑 Propietario`, `<@${message.guild.ownerId}> (ID: ${message.guild.ownerId})`, true)
+            .addField(`🚫 Filtro NSFW`, guildNSFWLevel, true)
+            .addField(`💎 Nivel de mejora`, `${guildTier} (${message.guild.premiumSubscriptionCount} mejoras)`, true)
+            .addField(`👮 Nivel de verificación`, guildverificationLevel, true)
+            .addField(`🎟️ Invitaciones`, `${(await message.guild.invites.fetch()).size.toString()} invitaciones en total`, true)
+            .addField(`🔖 Roles`, `${(await message.guild.roles.fetch()).size.toString()} roles en total`, true)
+            .addField(`🌝 Stickers y Emojis`, `${(await message.guild.emojis.fetch()).size.toString()} emojis\n${(await message.guild.stickers.fetch()).size.toString()} stickers`, true)
+            .addField(`👥 Miembros`, `${guildMembers.size} miembros\n${guildMembers.filter(m => !m.user.bot).size} humanos\n${guildMembers.filter(m => m.user.bot).size} bots`, true)
+            .addField(`🔨 Baneos`, `${(await message.guild.bans.fetch()).size.toString()} usuarios baneados`, true)
+            .addField(`🕗 Tiempo para AFK`, `${message.guild.afkTimeout / 60} minutos`, true)
+            .addField(`💬 Canales`, `${(categories.size - 1)} categorías\n${guildChannels.filter(c => c.type === 'GUILD_TEXT').size} canales de texto\n${guildChannels.filter(c => c.type === 'GUILD_VOICE').size} canales de voz`, true)
+            .addField('⭐ Características', `\`\`\`${translatedFeatures.join(', ')}\`\`\``);
+
+        //Envía el embed resultante
+        await message.channel.send({ embeds: [resultEmbed] });
+
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

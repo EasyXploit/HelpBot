@@ -1,21 +1,21 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!infractions (@miembro | id)
 
     try {
-        let noUserEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+        let noUserEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`);
 
-        let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+        let noBotsEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No puedes obtener información de un bot`);
 
         const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);
-        if (!member) return message.channel.send(noUserEmbed);
+        if (!member) return message.channel.send({ embeds: [noUserEmbed] });
 
         let user = member.user;
-        if (user.bot) return message.channel.send(noBotsEmbed);
+        if (user.bot) return message.channel.send({ embeds: [noBotsEmbed] });
 
         //Comprueba el número de warns del miembro
         let warns;
@@ -65,17 +65,17 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             sanction = 'Silenciado indefinidamente';
         }
 
-        let resultEmbed = new discord.MessageEmbed()
+        let resultEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.primary)
             .setTitle(`⚠ Infracciones`)
             .setDescription(`Mostrando las advertencias del miembro **${member.user.tag}**\nSanción actual: \`${sanction || 'Ninguna'}\``)
             .setThumbnail(user.displayAvatarURL({dynamic: true}))
-            .addField(`Últimas 24h`, infractionsCount.day, true)
-            .addField(`Últimos 7 días`, infractionsCount.week, true)
-            .addField(`Total`, infractionsCount.total, true)
+            .addField(`Últimas 24h`, infractionsCount.day.toString(), true)
+            .addField(`Últimos 7 días`, infractionsCount.week.toString(), true)
+            .addField(`Total`, infractionsCount.total.toString(), true)
             .addField(`Últimas 10 advertencias`, lastWarns || 'Ninguna');
         
-        message.channel.send(resultEmbed);
+        message.channel.send({ embeds: [resultEmbed] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

@@ -7,10 +7,10 @@ exports.run = async (client) => {
     client.customEmojis = {
 
         //EMOJIS PERSONALIZADOS - GLOBALES
-        greenTick:  await client.emojis.cache.get(customEmojis.greenTick) || '✅',
-        redTick:    await client.emojis.cache.get(customEmojis.redTick) || '❌',
-        orangeTick: await client.emojis.cache.get(customEmojis.orangeTick) || '⚠',
-        grayTick:   await client.emojis.cache.get(customEmojis.grayTick) || '❕',
+        greenTick:  await client.homeGuild.emojis.fetch(customEmojis.greenTick) || '✅',
+        redTick:    await client.homeGuild.emojis.fetch(customEmojis.redTick) || '❌',
+        orangeTick: await client.homeGuild.emojis.fetch(customEmojis.orangeTick) || '⚠',
+        grayTick:   await client.homeGuild.emojis.fetch(customEmojis.grayTick) || '❕',
     };
 
     console.log(' - [OK] Carga de customEmojis globales.');

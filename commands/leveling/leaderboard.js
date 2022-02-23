@@ -1,4 +1,4 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
 
     //!leaderboard [pág.]
 
@@ -46,16 +46,16 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Función para mostrar la primera leaderboard o actualizarla
         async function showLeaderboard(embed) {
-            let leaderboard = new discord.MessageEmbed()
+            let leaderboard = new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
                 .setTitle(`:trophy: Tabla de clasificación`)
                 .setDescription(await loadBoard(10 * position - 9, 10 * position))
-                .setFooter(`Página ${position} de ${pages}`, client.homeGuild.iconURL({dynamic: true}));
+                .setFooter({ text: `Página ${position} de ${pages}`, iconURL: client.homeGuild.iconURL({dynamic: true}) });
 
             if (embed) {
-                await embed.edit(leaderboard).then(async embed => {awaitReactions(embed)});
+                await embed.edit({ embeds: [leaderboard] }).then(async embed => {awaitReactions(embed)});
             } else {
-                await message.channel.send(leaderboard).then(async embed => {awaitReactions(embed)});
+                await message.channel.send({ embeds: [leaderboard] }).then(async embed => {awaitReactions(embed)});
             };
         };
 
@@ -78,7 +78,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             };
 
             //Inicializa un listener de reaccciones en función del filtro
-            embed.awaitReactions(filter, { max: 1, time: 60000, errors: [`time`] }).then(async collected => {
+            embed.awaitReactions({ filter, max: 1, time: 60000, errors: [`time`] }).then(async collected => {
                 const reaction = collected.first();
 
                 //Según el emoji reaccionado, actualiza el contador consecutivamente

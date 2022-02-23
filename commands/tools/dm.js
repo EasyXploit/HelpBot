@@ -1,45 +1,46 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!dm (autor | anonimo) (@usuario | id) (embed | normal) (mensaje a enviar)
     
     try {
         
-        let incorrectSyntaxEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+        let incorrectSyntaxEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}dm (autor | anonimo) (@usuario | id) (embed | normal) (mensaje a enviar)\``);
         
-        if (args.length < 4 || (args[0] !== 'autor' && args[0] !== 'anonimo') || (args[2] !== 'embed' && args[2] !== 'normal')) return message.channel.send(incorrectSyntaxEmbed);
+        if (args.length < 4 || (args[0] !== 'autor' && args[0] !== 'anonimo') || (args[2] !== 'embed' && args[2] !== 'normal')) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
             
-        let noUserEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+        let noUserEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`);
         
         //Busca y almacena el miembro
         const member = await client.functions.fetchMember(message.guild, args[1]);
 
-        let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+        let noBotsEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No puedes entablar una conversación con un bot`);
 
-        if (!member) return message.channel.send(noUserEmbed);
+        if (!member) return message.channel.send({ embeds: [noUserEmbed] });
         
         //Devuelve un error si el objetivo es un bot
-        if (member.user.bot) return message.channel.send(noBotsEmbed);
+        if (member.user.bot) return message.channel.send({ embeds: [noBotsEmbed] });
 
         let mode = args[0];
         let type = args[2];
         let body = args.slice(3).join(' ');
-        let resultMessage = body;
         
         switch (mode) {
             case 'autor':
                 if (type === 'embed') {
-                    resultMessage = new discord.MessageEmbed()
-                        .setAuthor(`Mensaje de ${message.author.tag}`, message.author.avatarURL())
+                    let resultMessage = new client.MessageEmbed()
+                        .setAuthor({ name: `Mensaje de ${message.author.tag}`, iconURL: message.author.avatarURL() })
                         .setColor(client.config.colors.primary)
                         .setDescription(body);
+
+                    await member.user.send({ embeds: [resultMessage] });
                 } else if (type === 'normal') {
-                    resultMessage = `**Mensaje de ${message.author.tag}:**\n${resultMessage}`
+                    await member.user.send({ content: `**Mensaje de ${message.author.tag}:**\n${body}` });
                 }
                 break;
             case 'anonimo':
@@ -49,7 +50,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 for (let i = 0; i < commandConfig.whitelistedRolesForAnonynmousMode.length; i++) {
 
                     //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                    if (message.author.id === message.guild.ownerID || message.author.id === client.config.guild.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.whitelistedRolesForAnonynmousMode[i])) {
+                    if (message.author.id === message.guild.ownerId || message.author.id === client.config.guild.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.whitelistedRolesForAnonynmousMode[i])) {
                         authorized = true;
                         break;
                     };
@@ -58,29 +59,32 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
                 //Si no se permitió la ejecución, manda un mensaje de error
                 if (!authorized) {
                     //Carga el embed de error de privilegios
-                    const noPrivilegesEmbed = new discord.MessageEmbed()
+                    const noPrivilegesEmbed = new client.MessageEmbed()
                         .setColor(client.config.colors.error)
                         .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`);
 
                     //Envía el mensaje de error
-                    return message.channel.send(noPrivilegesEmbed).then(msg => {msg.delete({timeout: 5000})});
+                    return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
                 };
 
                 if (type === 'embed') {
-                    resultMessage = new discord.MessageEmbed()
+                    let resultMessage = new client.MessageEmbed()
                         .setColor(client.config.colors.primary)
                         .setDescription(body);
-                }
+
+                    await member.user.send({ embeds: [resultMessage] });
+                } else if (type === 'normal') {
+                    await member.user.send({ content: body });
+                };
+
                 break;
         };
 
-        await member.user.send(resultMessage);
-
-        let confirmEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.correct2)
+        let confirmEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryCorrect)
             .setDescription(`${client.customEmojis.greenTick} ¡Mensaje enviado!`);
 
-        await message.channel.send(confirmEmbed);
+        await message.channel.send({ embeds: [confirmEmbed] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

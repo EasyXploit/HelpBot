@@ -8,19 +8,19 @@ exports.run = async (guild, user, client, discord) => {
             if (user.bot) {
                 if (user.id === client.user.id) return;
 
-                const loggingEmbed = new discord.MessageEmbed()
+                const loggingEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setTitle('📑 Auditoría - [BOTS]')
                     .setDescription(`El **BOT** <@${event.user.tag}> fue baneado del servidor.`);
 
-                await client.channels.cache.get(client.config.guild.loggingChannel).send(loggingEmbed)
+                await client.channels.cache.get(client.config.guild.loggingChannel).send({ embeds: [loggingEmbed] })
             } else {
                 let moderador = executor;
                 let razon = reason || 'Indefinida';
 
-                const loggingEmbed = new discord.MessageEmbed()
+                const loggingEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setAuthor(`${user.tag} ha sido BANEADO`, user.displayAvatarURL({dynamic: true}))
+                    .setAuthor({ name: `${user.tag} ha sido BANEADO`, iconURL: user.displayAvatarURL({dynamic: true}) })
                     .addField('Miembro', user.tag, true)
                     .addField('ID', user.id, true)
                     .addField('Moderador', moderador.tag || 'Desconocido', true)
@@ -28,7 +28,7 @@ exports.run = async (guild, user, client, discord) => {
                     .addField('Duración', time || 'Indefinida', true)
                     .addField('Días de mensajes borrados', days || 'Ninguno', true);
 
-                await client.channels.cache.get(client.config.guild.loggingChannel).send(loggingEmbed)
+                await client.channels.cache.get(client.config.guild.loggingChannel).send({ embeds: [loggingEmbed] })
             }
         }
 

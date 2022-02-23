@@ -13,10 +13,10 @@ exports.run = async (event, client, discord) => {
             if (client.config.guild.homeGuild && !guildsIDs.includes(client.config.guild.homeGuild)) await require('../utils/eraseConfig.js').run(client)
             
             //Almacena la nueva configuración de la guild si no hay
-            if (!client.config.guild.homeGuild) await require('../utils/storeNewGuildConfig.js').run(discord, client, cachedGuilds.first());
+            if (!client.config.guild.homeGuild) await require('../utils/storeNewGuildConfig.js').run(client, cachedGuilds.first());
 
             //Cargar config. en memoria + arranque del sistema completo
-            await require('../utils/systemLoad.js').run(discord, client);
+            await require('../utils/systemLoad.js').run(client);
 
         } else if (cachedGuilds.size > 1) { //Si está unido a más de una guild
 
@@ -32,7 +32,7 @@ exports.run = async (event, client, discord) => {
                 });
 
                 //Cargar config. en memoria + arranque del sistema completo
-                await require('../utils/systemLoad.js').run(discord, client);
+                await require('../utils/systemLoad.js').run(client);
 
             } else {
 

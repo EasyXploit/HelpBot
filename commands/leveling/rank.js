@@ -1,15 +1,15 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
 
     //!rank (@usuario)
     
     try {
 
-        let notFoundEmbed = new discord.MessageEmbed()
+        let notFoundEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`);
 
         const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);
-        if (!member) return message.channel.send(notFoundEmbed);
+        if (!member) return message.channel.send({ embeds: [notFoundEmbed] });
 
         if (message.guild.id in client.stats === false) {
             client.stats[message.guild.id] = {};
@@ -18,11 +18,11 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         const guildStats = client.stats[message.guild.id];
 
         if (member.id in guildStats === false) {
-            let noXPEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.error2)
+            let noXPEmbed = new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} ${member} no tiene puntos de XP`);
 
-            return message.channel.send(noXPEmbed);
+            return message.channel.send({ embeds: [noXPEmbed] });
         };
         
         const userStats = guildStats[member.id];
@@ -76,7 +76,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             return yourRewards;
         };
 
-        let resultEmbed = new discord.MessageEmbed()
+        let resultEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.primary)
             .setTitle(`🥇 Rango`)
             .setDescription(`Mostrando el rango del miembro **${member.user.tag}**`)
@@ -92,7 +92,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             resultEmbed.addField(`Siguiente recompensa`, `\`${await nextReward()}\``, true);
         };
         
-        message.channel.send(resultEmbed);
+        message.channel.send({ embeds: [resultEmbed] });
 
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

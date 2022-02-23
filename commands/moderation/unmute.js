@@ -1,49 +1,49 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!unmute (@usuario | id) (motivo)
     
     try {
 
-        let notToMuteEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+        let notToMuteEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Debes mencionar a un miembro o escribir su id`);
 
-        let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+        let noBotsEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No puedes silenciar a un bot`);
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
         const member = await client.functions.fetchMember(message.guild, args[0]);
-        if (!member) return message.channel.send(notToMuteEmbed);
+        if (!member) return message.channel.send({ embeds: [notToMuteEmbed] });
 
         let toDeleteCount = command.length - 2 + args[0].length + 2; 
         let reason = message.content.slice(toDeleteCount) || 'Indefinida';
 
-        if (member.bot) return message.channel.send(noBotsEmbed);
+        if (member.bot) return message.channel.send({ embeds: [noBotsEmbed] });
 
-        let notMutedEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+        let notMutedEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Este miembro no esta silenciado`);
 
         //Comprueba si existe el rol silenciado, sino lo crea
         let mutedRole = await client.functions.checkMutedRole(message.guild);
-        if (!member.roles.cache.has(mutedRole.id)) return message.channel.send(notMutedEmbed);
+        if (!member.roles.cache.has(mutedRole.id)) return message.channel.send({ embeds: [notMutedEmbed] });
         
-        let successEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.correct2)
+        let successEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryCorrect)
             .setTitle(`${client.customEmojis.greenTick} Operación completada`)
             .setDescription(`El miembro **${member.user.tag}** ha sido des-silenciado`);
 
-        let loggingEmbed = new discord.MessageEmbed()
+        let loggingEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.correct)
-            .setAuthor(`${member.user.tag} ha sido DES-SILENCIADO`, member.user.displayAvatarURL({dynamic: true}))
+            .setAuthor({ name: `${member.user.tag} ha sido DES-SILENCIADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
             .addField('Miembro', member.user.tag, true)
             .addField('Moderador', message.author.tag, true)
             .addField('Razón', reason, true);
 
-        let toDMEmbed = new discord.MessageEmbed()
+        let toDMEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.correct)
-            .setAuthor('[DES-SILENCIADO]', message.guild.iconURL({ dynamic: true}))
+            .setAuthor({ name: '[DES-SILENCIADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
             .setDescription(`<@${member.id}>, has sido des-silenciado en ${message.guild.name}`)
             .addField('Moderador', message.author.tag, true)
             .addField('Razón', reason, true);
@@ -57,9 +57,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             });
         };
         
-        await message.channel.send(successEmbed);
+        await message.channel.send({ embeds: [successEmbed] });
         await client.functions.loggingManager(loggingEmbed);
-        await member.send(toDMEmbed);
+        await member.send({ embeds: [toDMEmbed] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

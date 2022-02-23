@@ -1,4 +1,4 @@
-exports.run = (discord, client) => {
+exports.run = (client) => {
     
     //Crea un objeto para almacenar todas las funciones
     client.functions = {};
@@ -84,11 +84,11 @@ exports.run = (discord, client) => {
         await guild.channels.cache.forEach(async (channel) => {
 
             //Si el canal tiene un permiso para el rol silenciado, lo almacena
-            let mutedRolePermissions = channel.permissionOverwrites.get(mutedRole.id);
+            let mutedRolePermissions = channel.permissionOverwrites.resolve(mutedRole.id);
 
             //Si el canal no tiene el permiso y el bitfield no coincide con las negaciones pertinentes, añade el permiso
-            if (!mutedRolePermissions || ((mutedRolePermissions.deny & 0x800) !== 0x800) || ((mutedRolePermissions.deny & 0x40) !== 0x40) || ((mutedRolePermissions.deny & 0x200000) !== 0x200000)) {
-                await channel.updateOverwrite(mutedRole, {
+            if (!mutedRolePermissions || ((mutedRolePermissions.deny & BigInt(0x800)) !== BigInt(0x800) || (mutedRolePermissions.deny & BigInt(0x40)) !== BigInt(0x40)) || ((mutedRolePermissions.deny & BigInt(0x200000)) !== BigInt(0x200000))) {
+                await channel.permissionOverwrites.edit(mutedRole, {
                     SEND_MESSAGES: false,
                     ADD_REACTIONS: false,
                     CONNECT: false
@@ -171,14 +171,14 @@ exports.run = (discord, client) => {
                         };
                     };
 
-                    let levelUpEmbed = new discord.MessageEmbed()
+                    let levelUpEmbed = new client.MessageEmbed()
                         .setColor(client.config.colors.primary)
-                        .setAuthor(`¡Subiste de nivel!`, member.user.displayAvatarURL({dynamic: true}))
+                        .setAuthor({ name: '¡Subiste de nivel!', iconURL: member.user.displayAvatarURL({dynamic: true}) })
                         .setDescription(`Enhorabuena <@${member.id}>, has subido al nivel **${userStats.level}**`);
 
                     //Manda el mensaje de subida de nivel
-                    if (mode === 'message') channel.send(levelUpEmbed);
-                    if (mode === 'voice') member.send(levelUpEmbed);
+                    if (mode === 'message') channel.send({ embeds: [levelUpEmbed] });
+                    if (mode === 'voice') member.send({ embeds: [levelUpEmbed] });
                 };
 
                 //Guarda las nuevas estadísticas del miembro
@@ -205,6 +205,31 @@ exports.run = (discord, client) => {
         return s;
     };
 
+    //Función para convertir de MS a HH:MM:SS
+    client.functions.msToHMS = (ms) => {
+
+        //Convierte a segundos
+        let seconds = ms / 1000;
+
+        //Extrae las horas
+        const hours = parseInt( seconds / 3600 ); // 3,600 seconds in 1 hour
+        seconds = seconds % 3600; // seconds remaining after extracting hours
+
+        //Extrae los minutos
+        const minutes = parseInt( seconds / 60 ); // 60 seconds in 1 minute
+
+        //Se queda solo con los segundos NO extraidos a los minutis
+        seconds = seconds % 60;
+
+        //Muestra ceros de relleno si fuera necesario
+        let hoursStr = ('00' + hours).slice(-2);
+        let minutesStr = ('00' + minutes).slice(-2);
+        let secondsStr = ('00' + seconds).slice(-2);
+
+        //Devuelve el resultado
+        return `${hoursStr}:${minutesStr}:${secondsStr}`;
+    };
+
     //Función para generar sIDs
     client.functions.sidGenerator = length => {
         
@@ -219,12 +244,12 @@ exports.run = (discord, client) => {
     };
 
     //Función para evaluar si se necesitan votos o puede continuar
-    client.functions.evaluateDjOrVotes = async (message, command, index) => {
+    client.functions.testQueuePerms = async (message, command, index) => {
 
         //Omite si no hay roles de DJ
         if (client.config.music.djRoles.length == 0) return true;
 
-        let server = client.queues[message.guild.id];
+        let server = client.reproductionQueues[message.guild.id];
 
         //Omite si no hay reproducción
         if (!server || !server.nowplaying || !server.nowplaying.requestedById) return true;
@@ -271,7 +296,7 @@ exports.run = (discord, client) => {
 
         //Maneja la cantidad de votos necesarios para realizar la acción
         if (actualPercentage < client.config.music.votesPercentage) {
-            message.channel.send(`🗳 | Votos necesarios: \`${actualVotes}\` de \`${requiredVotes}\``);
+            message.channel.send({ content: `🗳 | Votos necesarios: \`${actualVotes}\` de \`${requiredVotes}\`` });
             return false;
         } else {
             server.votes[command] = 0;
@@ -291,22 +316,22 @@ exports.run = (discord, client) => {
         let emojisThreshold;
 
         switch (client.homeGuild.premiumTier) {
-            case 0:
+            case 'NONE':
                 emojisThreshold = 50;
                 break;
-            case 1:
+            case 'TIER_1':
                 emojisThreshold = 100;
                 break;
-            case 2:
+            case 'TIER_2':
                 emojisThreshold = 150;
                 break;
-            case 3:
+            case 'TIER_3':
                 emojisThreshold = 250;
                 break;
         };
 
         //Listado de emojis normales (sin animar) de la guild
-        const normalGuildEmojis = client.homeGuild.emojis.cache.filter(emoji => !emoji.animated).map(emoji => emoji.id);
+        const normalGuildEmojis = await client.homeGuild.emojis.fetch().then(emojis => emojis.filter(emoji => !emoji.animated).map(emoji => emoji.id));
 
         //Listado de emojis a cargar en la guild
         const customEmojis = require('../databases/customEmojis.json');
@@ -339,7 +364,7 @@ exports.run = (discord, client) => {
                 await client.fs.writeFile('./databases/customEmojis.json', JSON.stringify(client.config.customEmojis, null, 4), (err) => console.error(err));
             });
         } else {
-            console.log(`No habían espacios para emojis suficientes.\nNecesitas al menos ${emojis.length} espacios.\nSe usarán emojis Unicode en su lugar.`);
+            console.log(`\nNo habían espacios para emojis suficientes.\nNecesitas al menos ${emojis.length} espacios.\nSe usarán emojis Unicode en su lugar.\n`);
         };
     };
 
@@ -352,11 +377,11 @@ exports.run = (discord, client) => {
             try {
                 //Carga los permisos del bot en el canal de logging
                 const channelPermissions = client.loggingChannel.permissionsFor(client.user);
-                const missingPermission = ((channelPermissions & 0x800) !== 0x800 || (channelPermissions & 0x4000) !== 0x4000);
+                const missingPermission = ((channelPermissions & BigInt(0x800)) !== BigInt(0x800) || (channelPermissions & BigInt(0x4000)) !== BigInt(0x4000));
 
                 //Comprueba si el bot tiene permisos para mandar el embed
                 if (!missingPermission) {
-                    await client.loggingChannel.send(embed); //Enviar el mensaje al canal
+                    await client.loggingChannel.send({ embeds: [embed] }); //Enviar el mensaje al canal
                 } else {
                     //Advertir por consola de que no se tienen permisos
                     console.error(`${new Date().toLocaleString()} 》Error: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces.`);
@@ -392,11 +417,11 @@ exports.run = (discord, client) => {
             try {
                 //Carga los permisos del bot en el canal de debugging
                 const channelPermissions = client.debuggingChannel.permissionsFor(client.user);
-                const missingPermission = ((channelPermissions & 0x800) !== 0x800 || (channelPermissions & 0x4000) !== 0x4000);
+                const missingPermission = ((channelPermissions & BigInt(0x800)) !== BigInt(0x800) || (channelPermissions & BigInt(0x4000)) !== BigInt(0x4000));
 
                 //Comprueba si el bot tiene permisos para mandar el embed
                 if (!missingPermission) {
-                    await client.debuggingChannel.send(embed); //Enviar el mensaje al canal
+                    await client.debuggingChannel.send({ embeds: [embed] }); //Enviar el mensaje al canal
                 } else {
                     //Advertir por consola de que no se tienen permisos
                     console.error(`${new Date().toLocaleString()} 》Error: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces.`);
@@ -436,24 +461,24 @@ exports.run = (discord, client) => {
         if (errorString.length > 1014) errorString = `${errorString.slice(0, 1014)} ...`;
 
         //Se muestra el error en el canal de depuración
-        let debuggEmbed = new discord.MessageEmbed()
+        let debuggEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.debugging)
             .setTitle('📋 Depuración')
             .setDescription('Se declaró un error durante la ejecución de un comando')
             .addField('Comando:', command.slice(-0, -3), true)
             .addField('Argumentos:', arguments, true)
             .addField('Origen:', message.guild.name, true)
-            .addField('Canal:', message.channel, true)
+            .addField('Canal:', `<#${message.channel.id}>`, true)
             .addField('Autor:', `<@${message.author.id}>`, true)
             .addField('Fecha:', new Date().toLocaleString(), true)
             .addField('Error:', `\`\`\`${errorString}\`\`\``, true);
         
-        let reportedEmbed = new discord.MessageEmbed()
+        let reportedEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setTitle(`${client.customEmojis.redTick} ¡Vaya! Algo fue mal ...`)
             .setDescription('Lo hemos reportado al equipo de desarrollo');
         
-        await message.channel.send(reportedEmbed);
+        await message.channel.send({ embeds: [reportedEmbed] });
         await client.functions.debuggingManager(debuggEmbed);
     };
 
@@ -467,7 +492,7 @@ exports.run = (discord, client) => {
         if (errorString.length > 1014) errorString = `${errorString.slice(0, 1014)} ...`;
 
         //Se muestra el error en el canal de depuración
-        let debuggEmbed = new discord.MessageEmbed()
+        let debuggEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.debugging)
             .setTitle('📋 Depuración')
             .setDescription('Se declaró un error durante la ejecución de un evento')
@@ -492,7 +517,7 @@ exports.run = (discord, client) => {
             let inviteChannel;
             
             //Comprueba si hay canal de reglas y si se tiene permiso para crear la invitación
-            if (client.homeGuild.rulesChannel && !(client.homeGuild.rulesChannel.permissionsFor(client.user) & 0x1) !== 0x1) {
+            if (client.homeGuild.rulesChannel && !(client.homeGuild.rulesChannel.permissionsFor(client.user) & BigInt(0x1)) !== BigInt(0x1)) {
                 inviteChannel = client.homeGuild.rulesChannel;
             } else {
                 //De lo contrario, hace lo propio con el primer canal que lo permita
@@ -502,7 +527,7 @@ exports.run = (discord, client) => {
                     await channels.forEach(async channel => {
 
                         //Si pudo, graba la invitación
-                        if(!(channel.permissionsFor(client.user) & 0x1) !== 0x1) return inviteChannel = channel;
+                        if(!(channel.permissionsFor(client.user) & BigInt(0x1)) !== BigInt(0x1)) return inviteChannel = channel;
                     });
 
                     //Si no, asigna "client.config.guild.homeGuildInviteCode" cómo falso
@@ -522,7 +547,7 @@ exports.run = (discord, client) => {
         if (!client.config.guild.homeGuildInviteCode) {
 
             //Comprueba si ya existe una invitación
-            await client.homeGuild.fetchInvites().then(invites => {
+            await client.homeGuild.invites.fetch().then(invites => {
                 invites.forEach(async invite => {
                     if (invite.inviter === client.user) foundInvite = invite.code;
                 });
@@ -536,7 +561,7 @@ exports.run = (discord, client) => {
 
         } else {
             //Busca la invitación
-            await client.homeGuild.fetchInvites(client.config.guild.homeGuildInviteCode).then(async invite => {
+            await client.homeGuild.invites.fetch(client.config.guild.homeGuildInviteCode).then(async invite => {
 
                 //Crea la invitación si no existe
                 if (!invite) await createInvite();
@@ -545,6 +570,19 @@ exports.run = (discord, client) => {
             //Devuelve la URL, si se puedo obtener un código
             if (client.config.guild.homeGuildInviteCode) return `https://discord.gg/${client.config.guild.homeGuildInviteCode}`;
         };
+    };
+
+    //Función para generar un footer para los embeds musicales
+    client.functions.getMusicFooter = async (targetGuild) => {
+        let footer = targetGuild.name;
+		if (client.reproductionQueues[targetGuild.id] && client.reproductionQueues[targetGuild.id].mode) {
+			switch (client.reproductionQueues[targetGuild.id].mode) {
+				case 'shuffle': footer = footer + ` | 🔀`; break;
+				case 'loop': footer = footer + ` | 🔂`; break;
+				case 'loopqueue': footer = footer + ` | 🔁`; break;
+			};
+		};
+		return footer;
     };
 
     console.log(' - [OK] Carga de funciones globales.');

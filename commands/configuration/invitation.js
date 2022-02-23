@@ -1,18 +1,16 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!invitation
     
     try {
 
-        //Genera el embed, buscando el contenido necesario con la función
-        let invitationEmbed = new discord.MessageEmbed()
+        //Genera el embed y lo envía, buscando el contenido necesario con la función
+        await message.channel.send({ embeds: [new client.MessageEmbed()
             .setColor(client.config.colors.primary)
-            .setAuthor('Invitación permanente', client.homeGuild.iconURL({dynamic: true}))
+            .setAuthor({ name: 'Invitación permanente', iconURL: client.homeGuild.iconURL({dynamic: true}) })
             .setDescription(await client.functions.getBotServerInvite())
-            .setFooter('Este enlace nunca caduca y tiene usos ilimitados');
-
-        //Envía el mensaje
-        await message.channel.send(invitationEmbed);
+            .setFooter({ text: 'Este enlace nunca caduca y tiene usos ilimitados' })
+        ]});
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };

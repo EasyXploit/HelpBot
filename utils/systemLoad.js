@@ -1,4 +1,4 @@
-exports.run = async (discord, client) => {
+exports.run = async (client) => {
 
     console.log('\n - Cargando el sistema.\n');
 
@@ -30,7 +30,7 @@ exports.run = async (discord, client) => {
         console.log('\n - [OK] Carga de configuración de la guild.');
 
         //Carga de funciones globales
-        require('../utils/functions.js').run(discord, client);
+        require('../utils/functions.js').run(client);
 
         //Carga de customEmojis de sistema en la guild (si no los tiene ya)
         if (client.homeGuild) await client.functions.uploadSystemEmojis();
@@ -41,15 +41,15 @@ exports.run = async (discord, client) => {
         //Carga de presencia
         await client.user.setPresence({
             status: client.config.presence.status,
-            activity: {
-                name: client.config.presence.membersCount ? `${client.homeGuild.members.cache.filter(member => !member.user.bot).size} miembros | ${client.config.presence.name}` : client.config.presence.name,
+            activities: [{
+                name: client.config.presence.membersCount ? `${await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size)} miembros | ${client.config.presence.name}` : client.config.presence.name,
                 type: client.config.presence.type
-            }
+            }]
         });
         console.log(' - [OK] Carga de presencia.');
 
         //Carga de intervalos
-        require('./intervals.js').run(discord, client);
+        require('./intervals.js').run(client);
 
         //Carga de estados de voz
         let voiceStates = client.homeGuild.voiceStates.cache;
@@ -67,7 +67,7 @@ exports.run = async (discord, client) => {
                 };
             };
 
-            if (member.user.bot || client.config.xp.nonXPChannels.includes(voiceState.channelID) || voiceState.channelID === voiceState.guild.afkChannel.id || nonXPRole) {
+            if (member.user.bot || client.config.xp.nonXPChannels.includes(voiceState.channelId) || voiceState.channelId === voiceState.guild.afkChannel.id || nonXPRole) {
                 if (client.usersVoiceStates[voiceState.id]) {
                     //Borra el registro del miembro que ha dejado el canal de voz
                     delete client.usersVoiceStates[voiceState.id];
@@ -76,11 +76,11 @@ exports.run = async (discord, client) => {
             };
 
             if (client.usersVoiceStates[voiceState.id]) {
-                client.usersVoiceStates[voiceState.id].channelID = voiceState.channelID
+                client.usersVoiceStates[voiceState.id].channelId = voiceState.channelId
             } else  {
                 client.usersVoiceStates[voiceState.id] = {
                     guild: voiceState.guild.id,
-                    channelID: voiceState.channelID,
+                    channelID: voiceState.channelId,
                     last_xpReward: Date.now()
                 };
             };
@@ -89,6 +89,6 @@ exports.run = async (discord, client) => {
 
         //Auditoría
         console.log(`\n 》${client.user.username} iniciado correctamente`);
-        if (client.debuggingChannel) client.debuggingChannel.send(`${client.user.username} iniciado correctamente [${client.homeGuild.owner}]`).then(msg => {msg.delete({timeout: 5000})});
+        if (client.debuggingChannel) client.debuggingChannel.send({ content: `${client.user.username} iniciado correctamente [<@${client.homeGuild.ownerId}>]` }).then(msg => {setTimeout(() => msg.delete(), 5000)});
     });
 };

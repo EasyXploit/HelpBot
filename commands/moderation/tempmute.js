@@ -1,68 +1,68 @@
-exports.run = async (discord, client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig) => {
     
     //!tempmute (@usuario | id) (xS | xM | xH | xD) (motivo)
     
     try {
-        let notToMuteEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+        let notToMuteEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No se ha encontrado al miembro. Debes mencionarlo o escribir su id`);
 
-        let noBotsEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+        let noBotsEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No puedes silenciar a un bot`);
         
-        let noCorrectTimeEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+        let noCorrectTimeEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5s\`, \`10m\`, \`12h\` o \`3d\``);
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
         const member = await client.functions.fetchMember(message.guild, args[0]);
-        if (!member) return message.channel.send(notToMuteEmbed);
+        if (!member) return message.channel.send({ embeds: [notToMuteEmbed] });
 
-        if (member.user.bot) return message.channel.send(noBotsEmbed);
+        if (member.user.bot) return message.channel.send({ embeds: [noBotsEmbed] });
         
         //Esto comprueba si se ha proporcionado una unidad de medida de tiempo
-        if (!args[1]) return message.channel.send(noCorrectTimeEmbed);
+        if (!args[1]) return message.channel.send({ embeds: [noCorrectTimeEmbed] });
         
         let moderator = await client.functions.fetchMember(message.guild, message.author.id);
         
         //Se comprueba si puede banear al miembro
-        if (moderator.id !== message.guild.owner.id) {
+        if (moderator.id !== message.guild.ownerId) {
             if (moderator.roles.highest.position <= member.roles.highest.position) {
 
-                let cannotMuteHigherRoleEmbed = new discord.MessageEmbed()
+                let cannotMuteHigherRoleEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} No puedes silenciar a un miembro con un rol igual o superior al tuyo`);
     
-                return message.channel.send(cannotMuteHigherRoleEmbed);
+                return message.channel.send({ embeds: [cannotMuteHigherRoleEmbed] });
             };
         };
 
         //Comprueba si existe el rol silenciado, sino lo crea
         const mutedRole = await client.functions.checkMutedRole(message.guild);
 
-        let alreadyMutedEmbed = new discord.MessageEmbed()
-            .setColor(client.config.colors.error2)
+        let alreadyMutedEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Este miembro ya esta silenciado`);
 
         //Comprueba si el miembro tiene el rol silenciado
-        if (member.roles.cache.has(mutedRole.id)) return message.channel.send(alreadyMutedEmbed);
+        if (member.roles.cache.has(mutedRole.id)) return message.channel.send({ embeds: [alreadyMutedEmbed] });
 
         //Propaga el rol silenciado
         client.functions.spreadMutedRole(message.guild);
         
         //Comprueba la longitud del tiempo proporcionado
-        if (args[1].length < 2) return message.channel.send(noCorrectTimeEmbed);
+        if (args[1].length < 2) return message.channel.send({ embeds: [noCorrectTimeEmbed] });
 
         //Divide el tiempo y la unidad de medida proporcionados
         let time = args[1].slice(0, -1);
         let measure = args[1].slice(-1).toLowerCase();
 
         //Comprueba si se ha proporcionado un número.
-        if (isNaN(time)) return message.channel.send(noCorrectTimeEmbed);
+        if (isNaN(time)) return message.channel.send({ embeds: [noCorrectTimeEmbed] });
 
         //Comprueba si se ha proporcionado una nunida de medida válida
-        if (measure !== 's' && measure !== 'm' && measure !== 'h' && measure !== 'd') return message.channel.send(noCorrectTimeEmbed);
+        if (measure !== 's' && measure !== 'm' && measure !== 'h' && measure !== 'd') return message.channel.send({ embeds: [noCorrectTimeEmbed] });
 
         let milliseconds;
 
@@ -92,7 +92,7 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
         for (let i = 0; i < commandConfig.rolesThatCanUseUnlimitedTime.length; i++) {
 
             //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-            if (message.author.id === message.guild.ownerID || message.author.id === client.config.guild.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.rolesThatCanUseUnlimitedTime[i])) {
+            if (message.author.id === message.guild.ownerId || message.author.id === client.config.guild.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.rolesThatCanUseUnlimitedTime[i])) {
                 authorized = true;
                 break;
             };
@@ -100,43 +100,47 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
 
         //Si no se permitió la ejecución, manda un mensaje de error
         if (!authorized && milliseconds > 86400000) {
-            let maxTimeEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.error2)
+            let maxTimeEmbed = new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} Los moderadores solo pueden silenciar un máximo de 1 día`);
 
-            return message.channel.send(maxTimeEmbed);
+            return message.channel.send({ embeds: [maxTimeEmbed] });
         };
 
         //Genera un mensaje de confirmación
-        let successEmbed = new discord.MessageEmbed()
+        let successEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.warning)
             .setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado, ¿alguien más?`);
 
-        //Si se ha proporcionado razón, la adjunta al mensaje de confirmación
-        if (message.content.slice(toDeleteCount)) successEmbed.setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado debido a **${reason}**, ¿alguien más?`);
-        
+        //Almacena la razón
         let toDeleteCount = command.length - 2 + args[0].length + 1 + args[1].length + 2; 
-        let reason = message.content.slice(toDeleteCount) || 'Indefinida';
+        let reason = message.content.slice(toDeleteCount);
 
-        if (message.author.id !== client.homeGuild.ownerID) {
-            let undefinedReasoneEmbed = new discord.MessageEmbed()
-                .setColor(client.config.colors.error2)
+        //Si se ha proporcionado razón, la adjunta al mensaje de confirmación
+        if (reason) successEmbed.setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado debido a **${reason}**, ¿alguien más?`);
+
+        //Esto comprueba si se ha proporcionado una razón
+        if (!reason) reason = 'Indefinida';
+
+        if (message.author.id !== client.homeGuild.ownerId) {
+            let undefinedReasoneEmbed = new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} Los moderadores deben adjuntar una razón`);
 
-            if (reason === 'Indefinida' && !authorized) return message.channel.send(undefinedReasoneEmbed);
+            if (reason === 'Indefinida' && !authorized) return message.channel.send({ embeds: [undefinedReasoneEmbed] });
         };
 
-        let loggingEmbed = new discord.MessageEmbed()
+        let loggingEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setAuthor(`${member.user.tag} ha sido SILENCIADO`, member.user.displayAvatarURL({dynamic: true}))
+            .setAuthor({ name: `${member.user.tag} ha sido SILENCIADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
             .addField('Miembro', member.user.tag, true)
             .addField('Moderador', message.author.tag, true)
             .addField('Razón', reason, true)
             .addField('Duración', args[1], true);
 
-        let toDMEmbed = new discord.MessageEmbed()
+        let toDMEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setAuthor('[SILENCIADO]', message.guild.iconURL({ dynamic: true}))
+            .setAuthor({ name: '[SILENCIADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
             .setDescription(`<@${member.id}>, has sido silenciado en ${message.guild.name}`)
             .addField('Moderador', message.author.tag, true)
             .addField('Razón', reason, true)
@@ -153,9 +157,9 @@ exports.run = async (discord, client, message, args, command, commandConfig) => 
             //Silencia al miembro
             member.roles.add(mutedRole);
             
-            await message.channel.send(successEmbed);
+            await message.channel.send({ embeds: [successEmbed] });
             await client.functions.loggingManager(loggingEmbed);
-            await member.send(toDMEmbed);
+            await member.send({ embeds: [toDMEmbed] });
         });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

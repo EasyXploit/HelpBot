@@ -18,11 +18,11 @@ exports.run = async (guild, client, discord) => {
                 if (client.config.guild.homeGuild) await require('../utils/eraseConfig.js').run(client);
 
                 //Almacena la nueva configuración de la guild
-                await require('../utils/storeNewGuildConfig.js').run(discord, client, cachedGuilds.first());
+                await require('../utils/storeNewGuildConfig.js').run(client, cachedGuilds.first());
             };
 
             //Cargar config. en memoria + arranque del sistema completo
-            await require('../utils/systemLoad.js').run(discord, client);
+            await require('../utils/systemLoad.js').run(client);
 
         } else {
 

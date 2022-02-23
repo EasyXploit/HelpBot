@@ -171,7 +171,7 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
             await client.functions.loggingManager(loggingEmbed);
 
             //Si procede, adjunta el mensaje filtrado
-            if (msg) client.loggingChannel.send({ embeds: [new discord.MessageAttachment(Buffer.from(`CONTENIDO DEL MENSAJE: \n${msg}`, 'utf-8'), `mensaje-filtrado-${Date.now()}.txt`)] })
+            if (msg) client.loggingChannel.send({ files: [new client.MessageAttachment(Buffer.from(`CONTENIDO DEL MENSAJE: \n${msg}`, 'utf-8'), `mensaje-filtrado-${Date.now()}.txt`)] })
         });
 
         for (let i = 0; i < client.config.automodRules.length; i++) {

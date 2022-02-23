@@ -1,4 +1,4 @@
-exports.run = async (channel, client, discord) => {
+exports.run = async (channel, client) => {
     if (channel.type === 'text') {
         if (channel.id === client.config.guild.debuggingChannel) {
 

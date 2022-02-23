@@ -1,4 +1,4 @@
-exports.run = async (oldState, newState, client, discord) => {
+exports.run = async (oldState, newState, client) => {
     
     try {
         async function endVoiceTime() {

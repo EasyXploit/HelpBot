@@ -1,4 +1,4 @@
-exports.run = async (event, client, discord) => {
+exports.run = async (event, client) => {
     
     try {
         //Previene que continue la ejecución si el servidor no es el principal

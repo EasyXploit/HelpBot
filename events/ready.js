@@ -1,4 +1,4 @@
-exports.run = async (event, client, discord) => {
+exports.run = async (event, client) => {
     try {
         //Listado de guilds a las que el bot está unido
         const cachedGuilds = client.guilds.cache;

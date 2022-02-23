@@ -73,13 +73,13 @@ client.fs.readdir('./events/', async (err, files) => {
         const eventName = file.split('.')[0];
 
         //Pasa 2 parámetros si se trata de un enevento con dos de ellos
-        if (eventName === 'guildBanAdd' || eventName === 'voiceStateUpdate') {
+        if (eventName === 'voiceStateUpdate') {
             client.on(eventName, (argument1, argument2) => {
-                eventFunction.run(argument1, argument2, client, discord);
+                eventFunction.run(argument1, argument2, client);
             });
         } else {
             client.on(eventName, event => {
-                eventFunction.run(event, client, discord);
+                eventFunction.run(event, client);
             });
         };
 

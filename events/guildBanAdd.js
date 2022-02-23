@@ -1,17 +1,21 @@
-exports.run = async (guild, user, client, discord) => {
+exports.run = async (ban, client) => {
+
+    console.log(ban.guild);
+    console.log(ban.user);
 
     try {
+
         //Previene que continue la ejecución si el servidor no es el principal
-        if (guild.id !== client.homeGuild.id) return;
+        if (ban.guild.id !== client.homeGuild.id) return;
 
         async function sendLogEmbed(executor, reason, time, days) {
-            if (user.bot) {
-                if (user.id === client.user.id) return;
+            if (ban.user.bot) {
+                if (ban.user.id === client.user.id) return;
 
                 const loggingEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setTitle('📑 Auditoría - [BOTS]')
-                    .setDescription(`El **BOT** <@${event.user.tag}> fue baneado del servidor.`);
+                    .setDescription(`El **BOT** <@${ban.user.tag}> fue baneado del servidor.`);
 
                 await client.channels.cache.get(client.config.guild.loggingChannel).send({ embeds: [loggingEmbed] })
             } else {
@@ -20,9 +24,9 @@ exports.run = async (guild, user, client, discord) => {
 
                 const loggingEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setAuthor({ name: `${user.tag} ha sido BANEADO`, iconURL: user.displayAvatarURL({dynamic: true}) })
-                    .addField('Miembro', user.tag, true)
-                    .addField('ID', user.id, true)
+                    .setAuthor({ name: `${ban.user.tag} ha sido BANEADO`, iconURL: ban.user.displayAvatarURL({dynamic: true}) })
+                    .addField('Miembro', ban.user.tag, true)
+                    .addField('ID', ban.user.id, true)
                     .addField('Moderador', moderador.tag || 'Desconocido', true)
                     .addField('Razón', razon || 'Indefinida', true)
                     .addField('Duración', time || 'Indefinida', true)
@@ -32,7 +36,7 @@ exports.run = async (guild, user, client, discord) => {
             }
         }
 
-        const fetchedLogs = await guild.fetchAuditLogs({
+        const fetchedLogs = await ban.guild.fetchAuditLogs({
             limit: 1,
             type: 'MEMBER_BAN_ADD',
         });
@@ -47,7 +51,7 @@ exports.run = async (guild, user, client, discord) => {
         let time = '∞'
         let days;
     
-        if (target.id === user.id) {
+        if (target.id === ban.user.id) {
             if (!reason) reason = 'Indefinida';
 
             if (reason.includes('Duración: ')) time = reason.split('Duración: ').pop().split(',')[0];

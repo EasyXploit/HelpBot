@@ -1,4 +1,4 @@
-exports.run = async (message, client, discord) => {
+exports.run = async (message, client) => {
 
     //Previene la ejecución si el mensaje fue enviado por un bot o por el sistema
     if (message.author.bot || message.type !== 'DEFAULT') return;

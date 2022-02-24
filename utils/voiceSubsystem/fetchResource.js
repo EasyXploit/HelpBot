@@ -54,7 +54,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 		async function showNewQueueItem(trackItem) {
 
 			//Envía un mensaje con el resultado
-			message.channel.send({ embeds: [ new client.MessageEmbed()
+			await message.channel.send({ embeds: [ new client.MessageEmbed()
 				.setColor(randomColor())
 				.setThumbnail(trackItem.meta.thumbnail)
 				.setAuthor({ name: 'Añadido a la cola 🎶', iconURL: 'attachment://dj.png' })
@@ -84,7 +84,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 			});
 	
 			//Avisa sobre la adición a la cola
-			showNewQueueItem(newTrack);
+			await showNewQueueItem(newTrack);
 	
 		} else if (streamType === 'stream') {
 	
@@ -131,7 +131,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 						const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'stream', message.member.id, details);
 	
 						//Avisa sobre la adición a la cola
-						showNewQueueItem(newTrack);
+						await showNewQueueItem(newTrack);
 	
 					};
 	
@@ -179,7 +179,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 						const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'stream', message.member.id, results[0]);
 	
 						//Avisa sobre la adición a la cola
-						showNewQueueItem(newTrack);
+						await showNewQueueItem(newTrack);
 	
 					} else {
 	

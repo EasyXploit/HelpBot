@@ -26,10 +26,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
             ]});
 
             //Almacena el reproductor suscrito
-            const player = connection._state.subscription.player;
+            const subscription = connection._state.subscription;
 
             //Comprueba si el bot no estaba pausado
-            if (player.state.status !== 'paused') return message.channel.send({ embeds: [new client.MessageEmbed()
+            if (!subscription || subscription.player.state.status !== 'paused') return message.channel.send({ embeds: [new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} El bot no está pausado.`)
             ]});
@@ -38,7 +38,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             if (await client.functions.testQueuePerms(message, 'pause')) {
 
                 //Reanuda la reproducción y manda un mensaje de confirmación
-                await player.unpause();
+                await subscription.player.unpause();
                 await message.channel.send({ content: `▶ | Cola reanudada` });
             };
 

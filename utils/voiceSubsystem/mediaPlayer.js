@@ -142,7 +142,7 @@ exports.run = async (client, message, connection) => {
                 else upNext = `[${reproductionQueue.tracks[1].meta.title}](${reproductionQueue.tracks[1].meta.location})`; //Caso normal / loopqueue
             };
 
-            //Requiere librería para formato de mensajes en color
+            //Herramienta para generar colores aleatorios
             const randomColor = require('randomcolor');
 
             //Envía un mensaje de confirmación con la info. de la pista en reproducción

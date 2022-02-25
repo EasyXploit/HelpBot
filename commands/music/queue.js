@@ -4,8 +4,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
     try {
 
-        const randomColor = require('randomcolor');
-        
         //Devuelve si no hay cola
         if (!client.reproductionQueues[message.guild.id] || !client.reproductionQueues[message.guild.id].tracks || Object.entries(client.reproductionQueues[message.guild.id].tracks).length === 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
@@ -35,6 +33,9 @@ exports.run = async (client, message, args, command, commandConfig) => {
                     case 'loopqueue': footer = footer + ` | 🔁`; break;
                 };
             };
+
+            //Herramienta para generar colores aleatorios
+            const randomColor = require('randomcolor');
             
             //Carga el embed de la cola
             let queueEmbed = new client.MessageEmbed()

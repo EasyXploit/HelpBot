@@ -192,19 +192,6 @@ exports.run = (client) => {
         };
     };
 
-    //Función para convertir de HH:MM:SS a Segundos
-    client.functions.hmsToSeconds = (str) => {
-        var p = str.split(':'),
-            s = 0, m = 1;
-
-        while (p.length > 0) {
-            s += m * parseInt(p.pop(), 10);
-            m *= 60;
-        }
-
-        return s;
-    };
-
     //Función para convertir de MS a HH:MM:SS
     client.functions.msToHHMMSS = (ms) => {
 

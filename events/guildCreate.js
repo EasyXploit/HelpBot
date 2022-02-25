@@ -33,6 +33,6 @@ exports.run = async (guild, client) => {
             await guild.leave();
         };
     } catch (error) {
-        console.log(`${new Date().toLocaleString()} 》${e.stack}`);
+        console.log(`${new Date().toLocaleString()} 》${error.stack}`);
     };
 };

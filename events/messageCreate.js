@@ -63,7 +63,7 @@ exports.run = async (message, client) => {
         if (message.content.startsWith(client.config.guild.prefix)) {
             const noDMEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.information)
-                .setDescription(`${client.customEmojis.grayTick} | Por el momento, los comandos de **${client.user.username}** solo están disponible desde el servidor.`);
+                .setDescription(`${client.customEmojis.grayTick} | Por el momento, los comandos de **${client.user.username}** solo están disponibles desde el servidor.`);
 
             return await message.author.send({ embeds: [noDMEmbed] });
         };

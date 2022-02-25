@@ -70,6 +70,6 @@ exports.run = async (client, reproductionQueue, silentMode, contentType, request
 
     } catch (error) {
 
-        console.log(`${new Date().toLocaleString()} 》Error: ${e.stack}`);
+        console.log(`${new Date().toLocaleString()} 》Error: ${error.stack}`);
     };
 };

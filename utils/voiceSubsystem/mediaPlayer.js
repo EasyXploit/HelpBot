@@ -170,6 +170,6 @@ exports.run = async (client, message, connection) => {
         ]});
 
         //Devuelve un error por consola
-        console.log(`${new Date().toLocaleString()} 》Error: ${e.stack}`);
+        console.log(`${new Date().toLocaleString()} 》Error: ${error.stack}`);
     };
 };

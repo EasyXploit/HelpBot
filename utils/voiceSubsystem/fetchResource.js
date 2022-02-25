@@ -61,8 +61,6 @@ exports.run = async (client, args, message, streamType, toStream) => {
 				.setDescription(`[${trackItem.meta.title}](${trackItem.meta.location})\n\n● **Autor:** \`${trackItem.meta.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(trackItem.meta.length / 1000).format('H:mm:ss')}\``)
 				.setFooter({ text: await client.functions.getMusicFooter(message.guild), iconURL: client.homeGuild.iconURL({dynamic: true}) })
 			], files: ['./resources/images/dj.png'] });
-
-			resultFound = true;	//Almacena el estado de la búsqueda
 		};
 	
 		//Comprueba si se quiere reproducir un .mp3 o un streaming de internet
@@ -84,7 +82,10 @@ exports.run = async (client, args, message, streamType, toStream) => {
 			});
 	
 			//Avisa sobre la adición a la cola
-			await showNewQueueItem(newTrack);
+			showNewQueueItem(newTrack);
+
+			//Almacena el estado de la búsqueda
+			resultFound = true;
 	
 		} else if (streamType === 'stream') {
 	
@@ -129,9 +130,12 @@ exports.run = async (client, args, message, streamType, toStream) => {
 		
 						//Crea el objeto de la cola
 						const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'stream', message.member.id, details);
+
+						//Almacena el estado de la búsqueda
+						resultFound = true;
 	
 						//Avisa sobre la adición a la cola
-						await showNewQueueItem(newTrack);
+						showNewQueueItem(newTrack);
 	
 					};
 	
@@ -177,9 +181,12 @@ exports.run = async (client, args, message, streamType, toStream) => {
 	
 						//Crea el objeto de la cola
 						const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'stream', message.member.id, results[0]);
+
+						//Almacena el estado de la búsqueda
+						resultFound = true;
 	
 						//Avisa sobre la adición a la cola
-						await showNewQueueItem(newTrack);
+						showNewQueueItem(newTrack);
 	
 					} else {
 	
@@ -247,6 +254,9 @@ exports.run = async (client, args, message, streamType, toStream) => {
 									
 									//Crea el objeto de la cola
 									const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'stream', message.member.id, results[option]);
+
+									//Almacena el estado de la búsqueda
+									resultFound = true;
 	
 									//Avisa sobre la adición a la cola
 									showNewQueueItem(newTrack);

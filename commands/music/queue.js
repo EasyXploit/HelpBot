@@ -17,7 +17,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         //Almacena la página actual y las totales
         let position = 1;
-        let pages = Math.ceil(reproductionQueue.tracks.length / 5);
+        let pages = Math.ceil((reproductionQueue.tracks.length - 1) / 5);
         if (pages == 0) pages = 1;
 
         //Almacena la página que introduce el miembro (si lo hace)

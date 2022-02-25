@@ -5,6 +5,12 @@ exports.run = async (client, reproductionQueue, silentMode, contentType, request
         //Variable que almacena el nuevo objeto de cola
         let newTrack;
 
+        //Renombra el objeto "channel" si existe
+        if (metadata.channel) {
+            metadata.author = metadata.channel;
+            delete metadata.channel;
+        };
+
         //Crea el nuevo objeto de cola en función del tipo de medio
         switch(contentType) {
             case 'stream':
@@ -12,11 +18,11 @@ exports.run = async (client, reproductionQueue, silentMode, contentType, request
                     type: contentType,
                     requesterId: requesterId,
                     meta: {
-                        location: metadata.video_url || metadata.url,
+                        location: metadata.url,
                         title: metadata.title,
                         author: metadata.author.name,
-                        length: metadata.lengthSeconds * 1000 || (client.functions.hmsToSeconds(metadata.duration)) * 1000,
-                        thumbnail: metadata.thumbnails[0].url || metadata.bestThumbnail.url
+                        length: metadata.durationInSec * 1000,
+                        thumbnail: metadata.thumbnails[0].url
                     }
                 };
                 break;

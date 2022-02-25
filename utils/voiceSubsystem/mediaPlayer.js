@@ -110,8 +110,8 @@ exports.run = async (client, message, connection) => {
             if (reproductionQueue.tracks[toPlay].type === 'stream') { //Si es un streaming de internet
 
                 //Obtiene el streaming desde YouTube
-                const play = require('play-dl');
-                const stream = await play.stream(reproductionQueue.tracks[toPlay].meta.location);
+                const playdl = require('play-dl');
+                const stream = await playdl.stream(reproductionQueue.tracks[toPlay].meta.location);
 
                 //Crea el recurso y lo reproduce en el player
                 await player.play(createAudioResource(stream.stream, { inputType: stream.type }));

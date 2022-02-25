@@ -3,8 +3,9 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
     try {
 
         //Obtiene los metadatos
-        const ytpl = require('ytpl');
-        const playlist = await ytpl(playlistUrl);
+        const playdl = require('play-dl');
+        const playlist = await playdl.playlist_info(playlistUrl);
+        const playlistItems = await playlist.all_videos();
 
         //Almacena las canciones autorizadas restantes
         let remainingTracks = authorizedTracks;
@@ -13,9 +14,9 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
         let deletedCount = 0;
 
         //Elimina de la lista todos aquellos resultados que sean privados, directos o tengan una duración mayor a la establecida por la configuración
-        for (let i = 0; i < playlist.items.length; i++) {
-            if (playlist.items[i].title === '[Private video]' || !playlist.items[i].duration || (client.functions.hmsToSeconds(playlist.items[i].duration) * 1000) > client.config.music.maxTrackDuration) {
-                delete playlist.items[i];
+        for (let i = 0; i < playlistItems.length; i++) {
+            if (playlistItems[i].title === '[Private video]' || !playlistItems[i].durationRaw || playlistItems[i].durationInSec * 1000 > client.config.music.maxTrackDuration) {
+                delete playlistItems[i];
                 deletedCount++;
             };
         };
@@ -30,9 +31,9 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
         let duplicateCount = 0;
 
         //Para cada resultado de la lista
-        for (let i = 0; i < playlist.items.length; i++) {
+        for (let i = 0; i < playlistItems.length; i++) {
 
-            let result = playlist.items[i];
+            let result = playlistItems[i];
             if (!result) continue; //Omite si el resultado fue borrado por la anterior ejecución del bucle
 
             //Crea el objeto de la cola
@@ -62,10 +63,10 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
         const randomColor = require('randomcolor');
 
         //Notifica la adición de la playlist
-        if (duplicateCount !== playlist.items.length) reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
+        if (duplicateCount !== playlistItems.length) reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
             .setColor(randomColor())
             .setAuthor({name: 'Playlist añadida a la cola 🎶', iconURL: 'attachment://dj.png'})
-            .setDescription(`[${playlist.title}](${playlist.url})\n\n● **Autor:** \`${playlist.author ? playlist.author.name : 'YouTube'}\`\n● **Pistas:** \`${playlist.items.length}\``)
+            .setDescription(`[${playlist.title}](${playlist.url})\n\n● **Autor:** \`${playlist.channel.name !== null ? playlist.channel.name : 'YouTube'}\`\n● **Pistas:** \`${playlistItems.length}\``)
             .addField('Solicitado por:', `<@${requestingMember.id}>`, true)
             .setFooter({text: `${await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild)}`, iconURL: reproductionQueue.boundedTextChannel.guild.iconURL({dynamic: true})})
         ], files: ['./resources/images/dj.png']});
@@ -77,13 +78,13 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
         }).then(msg => {setTimeout(() => msg.delete(), 10000)});
 
         //Si hubieron canciones omitidas por que excedían la cantidad máxima de canciones autorizadas, lo advierte
-        if ((playlist.items.length - duplicateCount) > authorizedTracks) await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
+        if ((playlistItems.length - duplicateCount) > authorizedTracks) await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} Se han omitido \`${playlist.items.length - authorizedTracks}\` canciones por que no puedes añadir más.`)]
+            .setDescription(`${client.customEmojis.orangeTick} Se han omitido \`${playlistItems.length - authorizedTracks}\` canciones por que no puedes añadir más.`)]
         }).then(msg => {setTimeout(() => msg.delete(), 10000)});
 
         //Devuelve true si el total de canciones no eran duplicadas
-        if (duplicateCount !== playlist.items.length) return true;
+        if (duplicateCount !== playlistItems.length) return true;
 
     } catch (error) {
 

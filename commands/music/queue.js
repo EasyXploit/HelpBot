@@ -5,7 +5,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
     try {
 
         const randomColor = require('randomcolor');
-        const moment = require('moment');
         
         //Devuelve si no hay cola
         if (!client.reproductionQueues[message.guild.id] || !client.reproductionQueues[message.guild.id].tracks || Object.entries(client.reproductionQueues[message.guild.id].tracks).length === 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
@@ -54,7 +53,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                     let title = reproductionQueue.tracks[id].meta.title; //Almacena el título
                     title = title.replace('[', '').replace('[', '').replace(']', '').replace('|', '').replace('(', '').replace(')', '').replace('_', '').replace('*', ''); //Elimina signos que alteren la forma en la que se muestra la entrada
                     if (title.length > 40) title = `${title.slice(0, 40)} ...`; //Acorta el título si es demasiado largo
-                    queueList = `${queueList}\`${id}.\` [${title}](${reproductionQueue.tracks[id].meta.location}) | \`${moment().startOf('day').seconds(reproductionQueue.tracks[id].meta.length / 1000).format('H:mm:ss')}\` | <@${reproductionQueue.tracks[id].requesterId}>\n`;
+                    queueList = `${queueList}\`${id}.\` [${title}](${reproductionQueue.tracks[id].meta.location}) | \`${client.functions.msToHHMMSS(reproductionQueue.tracks[id].meta.length / 1000)}\` | <@${reproductionQueue.tracks[id].requesterId}>\n`;
                 };
                 
                 //Añade el campo al embed

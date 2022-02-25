@@ -4,7 +4,6 @@ exports.run = async (client, args, message, streamType, toStream) => {
 
 		//Herramienta para generar colores aleatorios y timestamps
 		const randomColor = require('randomcolor');
-		const moment = require('moment');
 		
 		//Comprueba si debe crear el objeto global de colas
 		if (!client.reproductionQueues[message.guild.id]) client.reproductionQueues[message.guild.id] = { boundedTextChannel: null, timeout: null, votes: {}, mode: false, tracks: [] };
@@ -58,7 +57,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 				.setColor(randomColor())
 				.setThumbnail(trackItem.meta.thumbnail)
 				.setAuthor({ name: 'Añadido a la cola 🎶', iconURL: 'attachment://dj.png' })
-				.setDescription(`[${trackItem.meta.title}](${trackItem.meta.location})\n\n● **Autor:** \`${trackItem.meta.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(trackItem.meta.length / 1000).format('H:mm:ss')}\``)
+				.setDescription(`[${trackItem.meta.title}](${trackItem.meta.location})\n\n● **Autor:** \`${trackItem.meta.author}\`\n● **Duración:** \`${client.functions.msToHHMMSS(trackItem.meta.length / 1000)}\``)
 				.setFooter({ text: await client.functions.getMusicFooter(message.guild), iconURL: client.homeGuild.iconURL({dynamic: true}) })
 			], files: ['./resources/images/dj.png'] });
 		};

@@ -142,8 +142,7 @@ exports.run = async (client, message, connection) => {
                 else upNext = `[${reproductionQueue.tracks[1].meta.title}](${reproductionQueue.tracks[1].meta.location})`; //Caso normal / loopqueue
             };
 
-            //Requiere librerías para formato de mensajes
-            const moment = require('moment');
+            //Requiere librería para formato de mensajes en color
             const randomColor = require('randomcolor');
 
             //Envía un mensaje de confirmación con la info. de la pista en reproducción
@@ -151,7 +150,7 @@ exports.run = async (client, message, connection) => {
                 .setColor(randomColor())
                 .setThumbnail(info.meta.thumbnail)
                 .setAuthor({name: 'Reproduciendo 🎶', iconURL: 'attachment://dj.png'})
-                .setDescription(`[${info.meta.title}](${info.meta.location})\n\n● **Autor:** \`${info.meta.author}\`\n● **Duración:** \`${moment().startOf('day').seconds(info.meta.length / 1000).format('H:mm:ss')}\``)
+                .setDescription(`[${info.meta.title}](${info.meta.location})\n\n● **Autor:** \`${info.meta.author}\`\n● **Duración:** \`${client.functions.msToHHMMSS(info.meta.length / 1000)}\``)
                 .addField('Solicitado por:', `<@${reproductionQueue.tracks[toPlay].requesterId}>`, true)
                 .addField('Siguiente:', upNext, true)
                 .setFooter({text: `${await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild)}`, iconURL: client.homeGuild.iconURL({dynamic: true})})

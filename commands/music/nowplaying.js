@@ -44,15 +44,14 @@ exports.run = async (client, message, args, command, commandConfig) => {
         if (percentage <= 10) progressBar[0] = '🔘';
         else if (percentage > 10) progressBar[percentage.toString().slice(0, 1)] = '🔘';
 
-        //Requiere librerías para formato
-        const moment = require('moment');
+        //Requiere librería para el color
         const randomColor = require('randomcolor');
         
         //Envía el mensaje con el resultado
         message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(randomColor())
             .setAuthor({ name: 'Ahora mismo:', iconURL: 'attachment://dj.png' })
-            .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n${progressBar.join('')} ${percentage}%\n\`${moment().startOf('day').milliseconds(progress).format('H:mm:ss')} / ${moment().startOf('day').milliseconds(total).format('HH:mm:ss')}\``)
+            .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n${progressBar.join('')} ${percentage}%\n\`${client.functions.msToHHMMSS(progress)} / ${client.functions.msToHHMMSS(total)}\``)
             .setFooter({ text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild), iconURL: client.homeGuild.iconURL({dynamic: true})
         })], files: ['./resources/images/dj.png'] });
 

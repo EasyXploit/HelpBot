@@ -23,7 +23,7 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
         //Si hubieron omitidas por que no se podían reproducir o superaron la duración máxima, lo advierte
         if (deletedCount > 0) await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} Se han omitido \`${deletedCount}\` canciones por que no se podían reproducir o superaron la duración de ${client.functions.msToHMS(client.config.music.maxTrackDuration)}.`)]
+            .setDescription(`${client.customEmojis.orangeTick} Se han omitido \`${deletedCount}\` canciones por que no se podían reproducir o superaron la duración de ${client.functions.msToHHMMSS(client.config.music.maxTrackDuration)}.`)]
         }).then(msg => {setTimeout(() => msg.delete(), 10000)});
 
         //Almacena la cantidad de canciones duplicadas

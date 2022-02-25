@@ -2,7 +2,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 
 	try {
 
-		//Herramienta para generar colores aleatorios y timestamps
+		//Herramienta para generar colores aleatorios
 		const randomColor = require('randomcolor');
 		
 		//Comprueba si debe crear el objeto global de colas
@@ -124,7 +124,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 						//Comprueba si el resultado supera la duración máxima establecida
 						if (details.lengthSeconds * 1000 > client.config.music.maxTrackDuration) return message.channel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir canciones de más de ${client.functions.msToHMS(client.config.music.maxTrackDuration)}.`)]
+							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir canciones de más de ${client.functions.msToHHMMSS(client.config.music.maxTrackDuration)}.`)]
 						});
 		
 						//Crea el objeto de la cola
@@ -175,7 +175,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 						//Comprueba si el resultado supera la duración máxima establecida
 						if (details.lengthSeconds * 1000 > client.config.music.maxTrackDuration) return message.channel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir canciones de más de ${client.functions.msToHMS(client.config.music.maxTrackDuration)}.`)]
+							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir canciones de más de ${client.functions.msToHHMMSS(client.config.music.maxTrackDuration)}.`)]
 						});
 	
 						//Crea el objeto de la cola

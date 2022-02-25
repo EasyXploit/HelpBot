@@ -40,7 +40,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             let queueEmbed = new client.MessageEmbed()
                     .setColor(randomColor())
                     .setAuthor({ name: 'Cola de reproducción - Ahora mismo:', iconURL: 'attachment://dj.png' })
-                    .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n● Duración: \`${client.functions.msToHMS(reproductionQueue.tracks[0].meta.length)}\`.\n ● Requerida por: <@${reproductionQueue.tracks[0].requesterId}>`)
+                    .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n● Duración: \`${client.functions.msToHHMMSS(reproductionQueue.tracks[0].meta.length)}\`.\n ● Requerida por: <@${reproductionQueue.tracks[0].requesterId}>`)
                     .setFooter({ text: footer, iconURL: client.homeGuild.iconURL({dynamic: true}) });
             
             //Si hay cola, carga la cola en el embed

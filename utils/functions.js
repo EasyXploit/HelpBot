@@ -206,7 +206,7 @@ exports.run = (client) => {
     };
 
     //Función para convertir de MS a HH:MM:SS
-    client.functions.msToHMS = (ms) => {
+    client.functions.msToHHMMSS = (ms) => {
 
         //Convierte a segundos
         let seconds = ms / 1000;

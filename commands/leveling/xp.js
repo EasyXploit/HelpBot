@@ -34,7 +34,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         //Comprueba si los argumentos se han introducido adecuadamente
         if (!args[1] || args[1] !== 'set' && args[1] !== 'add' && args[1] !== 'remove' && args[1] !== 'clear') return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
-        if (args[1] !== 'clear' && !args[2] && isNaN(args[2])) return message.channel.send({ embeds: [incorrectQuantityEmbed] });
+        if (args[1] !== 'clear' && (!args[2] || isNaN(args[2]))) return message.channel.send({ embeds: [incorrectQuantityEmbed] });
 
         //Almacena la tabla de clasificación del servidor, y si no existe la crea
         if (message.guild.id in client.stats === false) {

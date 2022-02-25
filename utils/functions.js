@@ -97,12 +97,22 @@ exports.run = (client) => {
         });
     };
 
+    //Función para generar números enteros aleatorios dentro de un rango
+    client.functions.randomIntBetween = async (min, max) => {
+
+            //Redondea a la baja el mínimo
+            min = Math.ceil(min);
+
+            //Redondea al alza el máximo
+            max = Math.floor(max);
+
+            //Devuelve un entero aleatorio entre min y max
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+
     //Función para añadir XP (mode = message || voice)
     client.functions.addXP = async (member, guild, mode, channel) => {
         try {
-            
-            //Utilidad para generar números aletorios
-            const random = require('random');
 
             //Almacena la tabla de clasificación del servidor, y si no existe la crea
             if (guild.id in client.stats === false) {
@@ -134,8 +144,10 @@ exports.run = (client) => {
             //Genera XP si es un canal de voz o si se ha sobrepasado el umbral de cola de mensajes
             if (mode === 'voice' || (mode === 'message' && Date.now() - userStats.last_message > 5000)) {
 
+                
+
                 //Genera XP y lo guarda
-                const newXp = random.int(5, 15);
+                const newXp = client.functions.randomIntBetween(5, 15);
                 userStats.actualXP += newXp;
                 userStats.totalXP += newXp;
                 if (mode === 'message') userStats.last_message = Date.now();

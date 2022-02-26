@@ -16,7 +16,7 @@ exports.run = async (ban, client) => {
 
                 await client.channels.cache.get(client.config.guild.loggingChannel).send({ embeds: [loggingEmbed] })
             } else {
-                let moderador = executor;
+                let moderador = executor ? executor.tag : 'Desconocido';
                 let razon = reason || 'Indefinida';
 
                 const loggingEmbed = new client.MessageEmbed()
@@ -24,8 +24,8 @@ exports.run = async (ban, client) => {
                     .setAuthor({ name: `${ban.user.tag} ha sido BANEADO`, iconURL: ban.user.displayAvatarURL({dynamic: true}) })
                     .addField('Miembro', ban.user.tag, true)
                     .addField('ID', ban.user.id, true)
-                    .addField('Moderador', moderador.tag || 'Desconocido', true)
-                    .addField('Razón', razon || 'Indefinida', true)
+                    .addField('Moderador', moderador, true)
+                    .addField('Razón', razon, true)
                     .addField('Duración', time || 'Indefinida', true)
                     .addField('Días de mensajes borrados', days || 'Ninguno', true);
 

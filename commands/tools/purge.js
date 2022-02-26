@@ -23,7 +23,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No tienes permiso para administrar mensajes`);
         
-        if (isNaN(args[0]) || args[0] < 2 || args[0] > 100) return message.channel.send({ embeds: [incorrectQuantityEmbed] });
+        if (isNaN(args[0]) || args[0] < 1 || args[0] >= 100) return message.channel.send({ embeds: [incorrectQuantityEmbed] });
         let count = 0;
         let channel;
 
@@ -39,7 +39,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             const memberPermissions = channel.permissionsFor(message.author).bitfield;
             if ((memberPermissions & BigInt(0x2000)) !== BigInt(0x2000)) return message.channel.send({ embeds: [noPrivilegesEmbed] });
             
-            const messages = await channel.messages.fetch({limit: args[0]});
+            const messages = await channel.messages.fetch({limit: parseInt(args[0]) + 1});
             count = messages.size;
             
             let successEmbed = new client.MessageEmbed()
@@ -66,7 +66,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             const memberPermissions = channel.permissionsFor(message.author).bitfield;
             if ((memberPermissions & BigInt(0x2000)) !== BigInt(0x2000)) return message.channel.send({ embeds: [noPrivilegesEmbed] });
             
-            const messages = await message.channel.messages.fetch({limit: args[0]});
+            const messages = await message.channel.messages.fetch({limit: parseInt(args[0]) + 1});
             count = messages.size;
 
             let loggingEmbed = new client.MessageEmbed()

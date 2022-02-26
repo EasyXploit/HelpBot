@@ -209,7 +209,6 @@
 	},
 	"purge": {
 		"enabled": true,
-		"deleteInvocationCommand": false,
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],

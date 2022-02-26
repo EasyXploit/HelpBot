@@ -10,7 +10,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         
         let incorrectQuantityEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad numérica superior a 2 e inferior a 100`);
+            .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad numérica  igual o superior a 1, e inferior a 100`);
 
         if(!args[0]) return message.channel.send({ embeds: [noQuantityEmbed] });
         if (isNaN(args[0])) return message.channel.send({ embeds: [NaNEmbed] });

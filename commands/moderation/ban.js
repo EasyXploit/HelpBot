@@ -54,22 +54,22 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         //Almacena la razón
         let toDeleteCount = command.length - 2 + args[0].length + 2;
-        let reason = message.content.slice(toDeleteCount)
+        let reason = message.content.slice(toDeleteCount);
 
         //Si se ha proporcionado razón, la adjunta al mensaje de confirmación
-        if (reason) successEmbed.setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido baneado debido a **${reason}**, ¿alguien más?`);
+        if (reason) successEmbed.setDescription(`${client.customEmojis.orangeTick} **${user.tag}** ha sido baneado debido a **${reason}**, ¿alguien más?`);
 
         //Esto comprueba si se debe proporcionar razón
         if (!reason && message.author.id !== message.guild.ownerId) return message.channel.send({ embeds: [noReasonEmbed] });
-        if (!reason) reason = `Indefinida`;
+        if (!reason) reason = 'Indefinida';
 
         let toDMEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setAuthor({ name: '[BANEADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
-            .addField(`Moderador`, message.author.tag, true)
-            .addField(`Razón`, reason, true)
-            .addField(`Duración`, `∞`, true);
+            .addField('Moderador', message.author.tag, true)
+            .addField('Razón', reason, true)
+            .addField('Duración', '∞', true);
 
         if (member) await user.send({ embeds: [toDMEmbed] });
         await message.guild.members.ban(user, {reason: `Moderador: ${message.author.id}, Razón: ${reason}`});

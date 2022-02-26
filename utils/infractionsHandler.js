@@ -35,7 +35,7 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
 
         let publicEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.OrangeTick} ${user.tag} ha sido silenciado por que acumuló demasiadas advertencias, ¿alguien más?`);
+            .setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado por que acumuló __demasiadas advertencias__, ¿alguien más?`);
 
         let toDMEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
@@ -52,6 +52,7 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
 
     //Función para expulsar
     async function kick() {
+
         let loggingEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setAuthor({ name: `${member.user.tag} ha sido EXPULSADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
@@ -61,7 +62,7 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
 
         let publicEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.OrangeTick} ${user.tag} ha sido expulsado por que acumuló demasiadas advertencias, ¿alguien más?`);
+            .setDescription(`${client.customEmojis.orangeTick} ${user.tag} ha sido expulsado por que acumuló demasiadas advertencias, ¿alguien más?`);
 
         let toDMEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
@@ -101,7 +102,7 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
 
         let publicEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.OrangeTick} ${user.tag} ha sido baneado por que acumuló demasiadas advertencias, ¿alguien más?`);
+            .setDescription(`${client.customEmojis.orangeTick} ${user.tag} ha sido baneado por que acumuló demasiadas advertencias, ¿alguien más?`);
 
         let toDMEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
@@ -140,7 +141,7 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
     //LEYENDA DE ACCIONES: 1 = borrar; 2 = advertir; 3 = borrar y advertir
     if (action === 1 || action === 3) { //Borra el mensaje si se ha de hacer
         if (message.deletable) message.delete();
-    }
+    };
 
     if (action === 2 || action === 3) { //Advierte si se ha de hacer
 
@@ -179,10 +180,12 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
             let warnsCount = 0;
 
             Object.keys(client.warns[member.id]).forEach(entry => {
-                if (Date.now() - entry.timestamp <= rule.age) warnsCount++
+
+                if (Date.now() - client.warns[member.id][entry].timestamp <= rule.age) warnsCount++;
             });
 
             if (warnsCount >= rule.quantity) {
+
                 switch (rule.action) {
                     case 'tempmute': mute(rule.duration); break;
                     case 'mute': mute(); break;

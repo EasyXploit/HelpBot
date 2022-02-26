@@ -560,14 +560,13 @@ exports.run = (client) => {
 
         } else {
             //Busca la invitación
-            await client.homeGuild.invites.fetch(client.config.guild.homeGuildInviteCode).then(async invite => {
+            const invite = await client.homeGuild.invites.resolve(client.config.guild.homeGuildInviteCode);
 
-                //Crea la invitación si no existe
-                if (!invite) await createInvite();
-            });
+            //Crea la invitación si no existe
+            if (!invite) await createInvite();
 
             //Devuelve la URL, si se puedo obtener un código
-            if (client.config.guild.homeGuildInviteCode) return `https://discord.gg/${client.config.guild.homeGuildInviteCode}`;
+            return `https://discord.gg/${client.config.guild.homeGuildInviteCode}`;
         };
     };
 

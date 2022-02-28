@@ -48,7 +48,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
                 Object.keys(userWarns[i]).forEach((key) => {
                     let moderator = message.guild.members.cache.get(userWarns[i][key].moderator);
-                    if (typeof moderator === "undefined") moderator = 'Moderador desconocido';
+                    if (typeof moderator === 'undefined') moderator = 'Moderador desconocido';
                     lastWarns = lastWarns + `\`${key}\` • ${moderator} • ${new Date(parseInt(userWarns[i][key].timestamp)).toLocaleString()}\n${userWarns[i][key].reason}\n\n`;
                 })
             }

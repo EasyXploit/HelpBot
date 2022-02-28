@@ -36,7 +36,7 @@ async function invites(message) {
 async function uppercase(message) {
 
     if (message.content.length < filters.uppercase.minimumLength) return false;
-    if (message.content.replace(/[^A-Z]/g, "").length > (message.content.length / 100) * 75) return true;
+    if (message.content.replace(/[^A-Z]/g, '').length > (message.content.length / 100) * 75) return true;
 };
 
 //Enlaces
@@ -50,10 +50,10 @@ async function links(message) {
 async function massEmoji(message) {
 
     function fancyCount(str){
-        return Array.from(str.split(/[\ufe00-\ufe0f]/).join("")).length;
+        return Array.from(str.split(/[\ufe00-\ufe0f]/).join('')).length;
     }
 
-    let stringWithoutUTFEmojis = message.content.replace(/([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g, "");
+    let stringWithoutUTFEmojis = message.content.replace(/([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g, '');
     let serverEmojis = message.content.match(/<:.+?:\d+>/g);
     if (serverEmojis) serverEmojis = serverEmojis.length;
 

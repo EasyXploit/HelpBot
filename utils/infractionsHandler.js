@@ -23,7 +23,7 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
             });
         };
 
-        let duration = Math.floor(time/(24000*1000*60*60)) + "d " + Math.floor(time/(1000*60*60)) + ":" + Math.floor(time/(1000*60))%60 + ":" + Math.floor(time/1000)%60 || '∞';
+        let duration = `${Math.floor(time/(24000*1000*60*60))}d ${Math.floor(time/(1000*60*60))}:${Math.floor(time/(1000*60))%60}:${Math.floor(time/1000)%60}` || '∞';
 
         let loggingEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)

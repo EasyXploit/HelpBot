@@ -33,7 +33,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         if (!warnID && warnID.toLowerCase() !== 'all') return message.channel.send({ embeds: [noWarnIDEmbed] });
         
         //Esto comprueba si se ha aportado alguna razón
-        let reason = args.slice(2).join(" ") || 'Indefinida';
+        let reason = args.slice(2).join(' ') || 'Indefinida';
         if (reason === 'Indefinida' && message.author.id !== message.guild.ownerId) return message.channel.send({ embeds: [undefinedReasonEmbed] });
           
         let moderator = await client.functions.fetchMember(message.guild, message.author.id);

@@ -4,14 +4,11 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
     try {
 
-        //Devuelve si no hay cola
-        if (!client.reproductionQueues[message.guild.id] || !client.reproductionQueues[message.guild.id].tracks || Object.entries(client.reproductionQueues[message.guild.id].tracks).length === 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} El bot no tiene ninguna pista en la cola.`)]
-        });
+        //Comprueba los requisitos previos para el comando
+        if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['has-queue'])) return;
 
         //Almacena la cola
-        let reproductionQueue = client.reproductionQueues[message.guild.id];
+        const reproductionQueue = client.reproductionQueues[message.guild.id];
 
         //Almacena la página actual y las totales
         let position = 1;
@@ -39,10 +36,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
             
             //Carga el embed de la cola
             let queueEmbed = new client.MessageEmbed()
-                    .setColor(randomColor())
-                    .setAuthor({ name: 'Cola de reproducción - Ahora mismo:', iconURL: 'attachment://dj.png' })
-                    .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n● Duración: \`${client.functions.msToHHMMSS(reproductionQueue.tracks[0].meta.length)}\`.\n ● Requerida por: <@${reproductionQueue.tracks[0].requesterId}>`)
-                    .setFooter({ text: footer, iconURL: client.homeGuild.iconURL({dynamic: true}) });
+                .setColor(randomColor())
+                .setAuthor({ name: 'Cola de reproducción - Ahora mismo:', iconURL: 'attachment://dj.png' })
+                .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n● Duración: \`${client.functions.msToHHMMSS(reproductionQueue.tracks[0].meta.length)}\`.\n ● Requerida por: <@${reproductionQueue.tracks[0].requesterId}>`)
+                .setFooter({ text: footer, iconURL: client.homeGuild.iconURL({dynamic: true}) });
             
             //Si hay cola, carga la cola en el embed
             if (reproductionQueue.tracks[1]) {

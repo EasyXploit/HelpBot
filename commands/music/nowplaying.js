@@ -4,32 +4,17 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
     try {
 
-        //Almacena librerías necesarios para manejar conexiones de voz
-        const { getVoiceConnection } = require('@discordjs/voice');
-
-        //Obtiene la conexión de voz actual
-        let connection = await getVoiceConnection(message.guild.id);
-
-        //Comprueba si el bot está conectado
-        if (!connection) return message.channel.send({ embeds: [new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} El bot no está conectado a ningún canal.`)
-        ]});
+        //Comprueba los requisitos previos para el comando
+        if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['bot-connected', 'has-queue'])) return;
 
         //Almacena el reproductor suscrito
         const subscription = connection._state.subscription;
-
-        //Comprueba si el bot ya estaba pausado
-        if (!subscription || subscription.player.state.status === 'idle') return message.channel.send({ embeds: [new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} La cola de reproducción está vacía.`)
-        ]});
-
-        //Almacena el objeto de cola de la guild
-        const reproductionQueue = client.reproductionQueues[message.guild.id];
         
         //Almacena el progreso actual de la pista
         const progress = subscription.player._state.resource.playbackDuration;
+
+        //Almacena la información del servidor
+        const reproductionQueue = client.reproductionQueues[message.guild.id];
 
         //Almacena la duración de la pista
         const total = reproductionQueue.tracks[0].meta.length;

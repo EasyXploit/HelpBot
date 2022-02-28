@@ -38,38 +38,17 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         } else { //Si se desea reproducir una grabación
 
-            //Almacena el canal de voz del miembro
-            const voiceChannel = message.member.voice.channel;
+            //Comprueba los requisitos previos para el comando
+            if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['user-connection',  'forbidden-channel',  'can-speak',  'can-join',  'full-channel'])) return;
 
-            //Comprueba si el miembro está en un canal de voz
-            if (!voiceChannel) return message.channel.send({ embeds: [new client.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} Debes estar conectado a un canal de voz.`)
-            ]});
+            //Almacena la información del servidor
+            const reproductionQueue = client.reproductionQueues[message.guild.id];
 
-            //Comprueba si el bot tiene permiso para hablar
-            if (!voiceChannel.speakable || voiceChannel.id === message.guild.afkChannel.id) return message.channel.send({ embeds: [new client.MessageEmbed()
+            //Comprueba si no hay cola y si el miembro está el mismo canal que el bot
+            if (reproductionQueue && message.guild.me.voice.channel.id !== message.member.voice.channel.id) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} No tengo permiso para hablar en \`${voiceChannel.name}\`.`)
-            ]});
-
-            //Comprueba si el bot tiene prohibido conectarse
-            if (client.config.music.forbiddenChannels.includes(voiceChannel.id)) return message.channel.send({ embeds: [new client.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} Tengo prohibido conetarme a \`${voiceChannel.name}\`.`)
-            ]});
-
-            //Comprueba si el bot tiene permiso para conectarse
-            if (!voiceChannel.joinable) return message.channel.send({ embeds: [new client.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} No tengo permiso para unirme a \`${voiceChannel.name}\`.`)
-            ]})
-
-            //Comprueba si la sala está llena
-            if (voiceChannel.full  && (!message.guild.me.voice  || !message.guild.me.voice.channel)) return message.channel.send({ embeds: [new client.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} El canal de voz \`${voiceChannel.name}\` está lleno.`)
-            ]});
+                .setDescription(`${client.customEmojis.redTick} El reproductor se encuentra en ejecución en otro canal.`)]
+            });
 
             //Almacena la selección del usuario
             let selection = args[0];
@@ -103,6 +82,9 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             //Omite si ya hay reproducción en curso
             if (connection && connection._state.subscription && connection._state.subscription.player.state.status === 'playing') return;
+
+            //Almacena el canal de voz del miembro
+            const voiceChannel = message.member.voice.channel;
 
             //Crea una nueva conexión al canal de miembro
             connection = await joinVoiceChannel({

@@ -4,38 +4,11 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
     try {
 
+        //Comprueba los requisitos previos para el comando
+        if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['bot-disconnected', 'user-connection', 'forbidden-channel', 'can-speak', 'can-join', 'full-channel'])) return;
+
         //Almacena el canal de voz del miembro
         const voiceChannel = message.member.voice.channel;
-
-        //Comprueba si el miembro está en un canal de voz
-        if (!voiceChannel) return message.channel.send({ embeds: [new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Debes estar conectado a un canal de voz.`)
-        ]});
-
-        //Comprueba si el bot tiene permiso para hablar
-        if (!voiceChannel.speakable || voiceChannel.id === message.guild.afkChannel.id) return message.channel.send({ embeds: [new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} No tengo permiso para hablar en \`${voiceChannel.name}\`.`)
-        ]});
-
-        //Comprueba si el bot tiene prohibido conectarse
-        if (client.config.music.forbiddenChannels.includes(voiceChannel.id)) return message.channel.send({ embeds: [new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Tengo prohibido conetarme a \`${voiceChannel.name}\`.`)
-        ]});
-
-        //Comprueba si el bot tiene permiso para conectarse
-        if (!voiceChannel.joinable) return message.channel.send({ embeds: [new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} No tengo permiso para unirme a \`${voiceChannel.name}\`.`)
-        ]})
-
-        //Comprueba si la sala está llena
-        if (voiceChannel.full  && (!message.guild.me.voice  || !message.guild.me.voice.channel)) return message.channel.send({ embeds: [new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} El canal de voz \`${voiceChannel.name}\` está lleno.`)
-        ]});
 
         //Almacena librerías necesarios para manejar conexiones de voz
         const { joinVoiceChannel, VoiceConnectionStatus, entersState } = require('@discordjs/voice');

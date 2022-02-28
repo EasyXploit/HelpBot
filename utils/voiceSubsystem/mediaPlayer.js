@@ -6,7 +6,7 @@ exports.run = async (client, message, connection) => {
         async function mediaPlayer(connection) {
 
             //Almacena la información de reproducción de la guild
-            let reproductionQueue = client.reproductionQueues[connection.joinConfig.guildId];
+            const reproductionQueue = client.reproductionQueues[connection.joinConfig.guildId];
 
             //Almacena la posición a reproducir de la cola, y la aleatoriza si así se ha especificado
             let toPlay = reproductionQueue.mode === 'shuffle' ? Math.floor(Math.random() * (reproductionQueue.tracks.length - 1)) : 0;

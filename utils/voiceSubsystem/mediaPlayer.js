@@ -55,7 +55,7 @@ exports.run = async (client, message, connection) => {
                     reproductionQueue.timeout = setTimeout(() => {
 
                         //Aborta la conexión
-                        connection.destroy();
+                        if (connection.state.status !== 'Destroyed') connection.destroy();
 
                         //Confirma la acción
                         message.channel.send({ content: '⏏ | He abandonado el canal' });

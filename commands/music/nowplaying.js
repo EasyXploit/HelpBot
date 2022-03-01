@@ -7,6 +7,12 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Comprueba los requisitos previos para el comando
         if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['bot-connected', 'has-queue'])) return;
 
+        //Método para obtener conexiones de voz
+        const { getVoiceConnection } = require('@discordjs/voice');
+
+        //Almacena la conexión de voz del bot
+        let connection = await getVoiceConnection(message.guild.id);
+
         //Almacena el reproductor suscrito
         const subscription = connection._state.subscription;
         

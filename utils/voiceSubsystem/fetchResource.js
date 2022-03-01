@@ -53,7 +53,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 		async function showNewQueueItem(trackItem) {
 
 			//Envía un mensaje con el resultado
-			await message.channel.send({ embeds: [ new client.MessageEmbed()
+			if (reproductionQueue.tracks.length > 1) await message.channel.send({ embeds: [ new client.MessageEmbed()
 				.setColor(randomColor())
 				.setThumbnail(trackItem.meta.thumbnail)
 				.setAuthor({ name: 'Añadido a la cola 🎶', iconURL: 'attachment://dj.png' })

@@ -127,6 +127,29 @@ exports.run = async (client, message, checks) => {
             return true;
         };
 
+        //Comprueba que el canal no sea el de AFK
+        async function notAfk() {
+
+            //Almacena el canal de voz del miembro
+            const voiceChannel = message.member.voice.channel;
+
+            //Comprueba si el canal no está configurado para AFK
+            if (voiceChannel.id === message.guild.afkChannel.id) {
+                
+                //Devuelve un mensaje de error
+                await message.channel.send({ embeds: [new client.MessageEmbed()
+                    .setColor(client.config.colors.error)
+                    .setDescription(`${client.customEmojis.redTick} <@${client.user.id}> no puede conectarse al canal de AFK.`)
+                ]});
+
+                //Devuelve el estado "falso"
+                return false;
+            };
+
+            //Devuelve el estado "verdadero"
+            return true;
+        }
+
         //Comprueba que el bot tenga permiso para hablar.
         async function canSpeak() {
 
@@ -231,6 +254,7 @@ exports.run = async (client, message, checks) => {
                 case 'same-channel':        passingStatus = await sameChannel();        break;
                 case 'has-queue':           passingStatus = await hasQueue();           break;
                 case 'bot-disconnected':    passingStatus = await botDisconnected();    break;
+                case 'not-afk':             passingStatus = await notAfk();             break;
                 case 'can-speak':           passingStatus = await canSpeak();           break;
                 case 'can-join':            passingStatus = await canJoin();            break;
                 case 'forbidden-channel':   passingStatus = await forbiddenChannel();   break;

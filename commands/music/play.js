@@ -36,7 +36,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         } else { //En este caso, "play" funcionará como "join" y reproducirá/añadirá a la cola
 
             //Comprueba los requisitos previos para el comando
-            if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['user-connection', 'forbidden-channel', 'can-speak', 'can-join', 'full-channel'])) return;
+            if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['user-connection', 'forbidden-channel', 'can-speak', 'not-afk', 'can-join', 'full-channel'])) return;
 
             //Almacena la información del servidor
             const reproductionQueue = client.reproductionQueues[message.guild.id];

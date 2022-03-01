@@ -67,26 +67,6 @@ exports.run = async (client, message, connection) => {
                 };
             });
 
-            /* //ESTATUS DEL REPRODUCTOR - Depuración
-
-            player.on(AudioPlayerStatus.Buffering, () => {
-                console.log('The player has entered the Buffering state');
-            });
-
-            player.on(AudioPlayerStatus.Playing, () => {
-                console.log('The player has entered the Playing state');
-            });
-
-            player.on(AudioPlayerStatus.AutoPaused, () => {
-                console.log('The player has entered the AutoPaused state');
-            });
-
-            player.on(AudioPlayerStatus.Paused, () => {
-                console.log('The player has entered the Paused state');
-            });
-
-            */
-
             //En el caso de que el reproductor genere un error
             player.on('error', error => {
 

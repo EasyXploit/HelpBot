@@ -54,6 +54,15 @@
 		"blacklistedRoles": [],
 		"additionalAliases": []
 	},
+	"forward": {
+		"enabled": true,
+		"deleteInvocationCommand": false,
+		"whitelistedChannels": [],
+		"blacklistedChannels": [],
+		"whitelistedRoles": ["everyone"],
+		"blacklistedRoles": [],
+		"additionalAliases": []
+	},
 	"help": {
 		"enabled": true,
 		"deleteInvocationCommand": false,
@@ -243,6 +252,15 @@
 		"additionalAliases": []
 	},
 	"replay": {
+		"enabled": true,
+		"deleteInvocationCommand": false,
+		"whitelistedChannels": [],
+		"blacklistedChannels": [],
+		"whitelistedRoles": ["everyone"],
+		"blacklistedRoles": [],
+		"additionalAliases": []
+	},
+	"rewind": {
 		"enabled": true,
 		"deleteInvocationCommand": false,
 		"whitelistedChannels": [],

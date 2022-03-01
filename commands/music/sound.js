@@ -33,7 +33,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             message.channel.send({embeds : [ new client.MessageEmbed()
                 .setColor('CCCCCC')
                 .setTitle('🎙 Lista de grabaciones')
-                .setDescription(`\`\`\`${soundNames.join('    ')}\`\`\``)]
+                .setDescription(`\`\`\`${soundNames.join('    ')}\`\`\`.`)]
             });
 
         } else { //Si se desea reproducir una grabación

@@ -68,7 +68,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         let resultEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.primary)
             .setTitle(`⚠ Infracciones`)
-            .setDescription(`Mostrando las advertencias del miembro **${member.user.tag}**\nSanción actual: \`${sanction || 'Ninguna'}\``)
+            .setDescription(`Mostrando las advertencias del miembro **${member.user.tag}**\nSanción actual: \`${sanction || 'Ninguna'}\`.`)
             .setThumbnail(user.displayAvatarURL({dynamic: true}))
             .addField(`Últimas 24h`, infractionsCount.day.toString(), true)
             .addField(`Últimos 7 días`, infractionsCount.week.toString(), true)

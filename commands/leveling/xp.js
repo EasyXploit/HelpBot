@@ -14,7 +14,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         
         let incorrectSyntaxEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}xp (@miembro | id) (set | add | remove | clear) <cantidad>\``);
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}xp (@miembro | id) (set | add | remove | clear) <cantidad>\`.`);
 
         let incorrectQuantityEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)

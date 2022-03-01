@@ -5,7 +5,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
     try {
         let incorrectSyntaxEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}roleinfo (@rol | rol | id)\``);
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}roleinfo (@rol | rol | id)\`.`);
 
         if (!args[0]) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
 

@@ -57,7 +57,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 				.setColor(randomColor())
 				.setThumbnail(trackItem.meta.thumbnail)
 				.setAuthor({ name: 'Añadido a la cola 🎶', iconURL: 'attachment://dj.png' })
-				.setDescription(`[${trackItem.meta.title}](${trackItem.meta.location})\n\n● **Autor:** \`${trackItem.meta.author}\`\n● **Duración:** \`${client.functions.msToHHMMSS(trackItem.meta.length / 1000)}\``)
+				.setDescription(`[${trackItem.meta.title}](${trackItem.meta.location})\n\n● **Autor:** \`${trackItem.meta.author}\`\n● **Duración:** \`${client.functions.msToHHMMSS(trackItem.meta.length)}\`.`)
 				.setFooter({ text: await client.functions.getMusicFooter(message.guild), iconURL: client.homeGuild.iconURL({dynamic: true}) })
 			], files: ['./resources/images/dj.png'] });
 		};

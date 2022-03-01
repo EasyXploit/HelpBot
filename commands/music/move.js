@@ -10,7 +10,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Comprueba si se han proporcionado argumentos
         if (!args[0] || !args[1]) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es: \`${client.config.guild.prefix}move (posición 1) (posición 2)\``)]
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es: \`${client.config.guild.prefix}move (posición 1) (posición 2)\`.`)]
         });
 
         //Comprueba si se ha proporcionado un número entero

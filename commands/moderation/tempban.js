@@ -18,7 +18,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         
         let noCorrectTimeEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5s\`, \`10m\`, \`12h\` o \`3d\``);
+            .setDescription(`${client.customEmojis.redTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5s\`, \`10m\`, \`12h\` o \`3d\`.`);
         
         if (!args[0]) return message.channel.send({ embeds: [notToBanEmbed] });
     

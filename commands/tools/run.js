@@ -8,7 +8,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         if (!args[0]) return message.channel.send({ embeds: [
             new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}template (plantilla)\``)
+                .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}template (plantilla)\`.`)
             ]
         });
 

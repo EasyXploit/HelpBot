@@ -36,7 +36,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(randomColor())
             .setAuthor({ name: 'Ahora mismo:', iconURL: 'attachment://dj.png' })
-            .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n${progressBar.join('')} ${percentage}%\n\`${client.functions.msToHHMMSS(progress)} / ${client.functions.msToHHMMSS(total)}\``)
+            .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n${progressBar.join('')} ${percentage}%\n\`${client.functions.msToHHMMSS(progress)} / ${client.functions.msToHHMMSS(total)}\`.`)
             .setFooter({ text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild), iconURL: client.homeGuild.iconURL({dynamic: true})
         })], files: ['./resources/images/dj.png'] });
 

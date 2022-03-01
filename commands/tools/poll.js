@@ -53,7 +53,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                         if (result !== '-') {
                             let inorrectTimeFormatEmbed = new client.MessageEmbed()
                                 .setColor(client.config.colors.secondaryError)
-                                .setDescription(`${client.customEmojis.redTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5d 10h 2m\``);
+                                .setDescription(`${client.customEmojis.redTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5d 10h 2m\`.`);
 
                             let parameters = result.split(' ');
 

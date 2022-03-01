@@ -32,7 +32,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         });
 
         //Comprueba si es necesaria una votación
-        if (await client.functions.testQueuePerms(message, 'move')) {
+        if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'move')) {
 
             //Obtiene el objeto a desplazar
             let toMove = reproductionQueue.tracks[args[0]];

@@ -36,7 +36,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             if (args[0] === 'all') {
 
                 //Comprueba si es necesaria una votación y cambia la cola
-                if (await client.functions.testQueuePerms(message, 'skip-all')) {
+                if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'skip-all')) {
                     await reproductionQueue.tracks.splice(0, reproductionQueue.tracks.length);
                     await skip();
                 };
@@ -71,7 +71,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 });
                 
                 //Comprueba si es necesaria una votación y cambia la cola
-                if (await client.functions.testQueuePerms(message, `skip-${args[0]}`)) {
+                if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, `skip-${args[0]}`)) {
                     await reproductionQueue.tracks.splice(0, args[0] - 1);
                     await skip();
                 };
@@ -80,7 +80,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         } else {
 
             //Comprueba si es necesaria una votación y omite
-            if (await client.functions.testQueuePerms(message, 'skip', 0)) await skip();
+            if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'skip', 0)) await skip();
         };
 
     } catch (error) {

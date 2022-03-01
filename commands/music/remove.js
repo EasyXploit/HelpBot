@@ -19,7 +19,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         if (args[0] === 'all') {
 
             //Comprueba si es necesaria una votación
-            if (await client.functions.testQueuePerms(message, 'remove-all')) {
+            if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'remove-all')) {
 
                 //Elimina el elemento de la cola
                 await reproductionQueue.tracks.splice(1);
@@ -46,7 +46,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             });
 
             //Comprueba si es necesaria una votación
-            if (await client.functions.testQueuePerms(message, 'remove', args[0])) {
+            if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'remove', args[0])) {
 
                 //Elimina el elemento de la cola
                 await reproductionQueue.tracks.splice(args[0], 1);

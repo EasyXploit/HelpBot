@@ -8,7 +8,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['bot-connected', 'same-channel', 'has-queue', 'can-speak'])) return;
 
         //Comprueba si es necesaria una votación
-        if (await client.functions.testQueuePerms(message, 'playskip', 0)) {
+        if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'playskip', 0)) {
 
             //Envía un mensaje de confirmación de la búsqueda
             message.channel.send({ content: `🔎 | Buscando \`${args.join(' ')}\` ...` });

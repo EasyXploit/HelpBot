@@ -8,7 +8,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['bot-connected', 'same-channel', 'has-queue'])) return;
         
         //Comprueba si es necesaria una votación
-        if (await client.functions.testQueuePerms(message, 'loop')) {
+        if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'loop')) {
 
             //Almacena la información del servidor
             const reproductionQueue = client.reproductionQueues[message.guild.id];

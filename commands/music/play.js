@@ -26,7 +26,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             ]});
 
             //Comprueba si es necesaria una votación
-            if (await client.functions.testQueuePerms(message, 'pause')) {
+            if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'pause')) {
 
                 //Reanuda la reproducción y manda un mensaje de confirmación
                 await subscription.player.unpause();

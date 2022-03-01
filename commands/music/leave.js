@@ -8,7 +8,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['bot-connected', 'same-channel'])) return;
 
         //Comprueba si es necesaria una votación
-        if (await client.functions.testQueuePerms(message, 'leave')) {
+        if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'leave')) {
 
             //Método para obtener conexiones de voz
             const { getVoiceConnection } = require('@discordjs/voice');

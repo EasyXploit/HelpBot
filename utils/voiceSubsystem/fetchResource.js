@@ -156,7 +156,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 					//Comprueba si se han obtenido resultados
 					if (!results) return message.channel.send({ embeds: [ new client.MessageEmbed()
 						.setColor(client.config.colors.error)
-						.setDescription(`${client.customEmojis.redTick} No se ha encontrado ningún resultado que encaje con ${args.join(' ')}.`)]
+						.setDescription(`${client.customEmojis.redTick} No se ha encontrado ningún resultado que encaje con \`${args.join(' ')}\`.`)]
 					});
 	
 					//Si solo hay un resultado, no muestra menú

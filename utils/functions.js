@@ -208,17 +208,17 @@ exports.run = (client) => {
     client.functions.msToHHMMSS = (ms) => {
 
         //Convierte a segundos
-        let seconds = ms / 1000;
+        let seconds = parseInt(ms / 1000);
 
         //Extrae las horas
-        const hours = parseInt( seconds / 3600 ); // 3,600 seconds in 1 hour
-        seconds = seconds % 3600; // seconds remaining after extracting hours
+        const hours = parseInt(seconds / 3600);
+        seconds = seconds % 3600;
 
         //Extrae los minutos
-        const minutes = parseInt( seconds / 60 ); // 60 seconds in 1 minute
+        const minutes =  parseInt(seconds / 60);
 
-        //Se queda solo con los segundos NO extraidos a los minutis
-        seconds = seconds % 60;
+        //Se queda solo con los segundos NO extraidos a los minutos
+        seconds = parseInt(seconds % 60);
 
         //Muestra ceros de relleno si fuera necesario
         let hoursStr = ('00' + hours).slice(-2);

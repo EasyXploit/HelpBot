@@ -9,7 +9,7 @@ exports.run = async (client, message, command, index) => {
     if (!reproductionQueue || !reproductionQueue.tracks[0]) return true;
 
     //Calcula a qué posición de la cola ha de acceder para realizar comprobaciones
-    if (message.member.id === reproductionQueue.tracks[index].requesterId) return true;
+    if (message.member.id === reproductionQueue.tracks[index || 0].requesterId) return true;
     
     //Comprueba si el miembro es DJ, y de serlo omite la comprobación de votos
     for (let i = 0; i < client.config.music.djRoles.length; i++) {

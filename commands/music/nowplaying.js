@@ -17,7 +17,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         const subscription = connection._state.subscription;
         
         //Almacena el progreso actual de la pista
-        const progress = subscription.player._state.resource.playbackDuration;
+        let progress = subscription.player._state.resource.playbackDuration;
 
         //Almacena la información del servidor
         const reproductionQueue = client.reproductionQueues[message.guild.id];
@@ -32,7 +32,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         const percentage = Math.floor((progress * 100) / total);
         
         //Genera una barra de progreso
-        let progressBar = ['▬', '▬', '▬', '▬', '▬', '▬', '▬', '▬', '▬', '▬', '▬'];
+        let progressBar = Array.from({length: 11}, () => '▬')
         
         //Asigna la posición del indicador en función del porcentaje
         if (percentage <= 10) progressBar[0] = '🔘';

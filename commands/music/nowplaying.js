@@ -16,6 +16,9 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Almacena la información del servidor
         const reproductionQueue = client.reproductionQueues[message.guild.id];
 
+        //Calcula si ha de modificar el punto de inicio debido a un seek
+        if (reproductionQueue.tracks[0].meta.seekTo) progress = progress + (reproductionQueue.tracks[0].meta.seekTo * 1000);
+
         //Almacena la duración de la pista
         const total = reproductionQueue.tracks[0].meta.length;
 

@@ -111,7 +111,7 @@ exports.run = async (client, message, connection) => {
 
                 //Obtiene el streaming desde YouTube
                 const playdl = require('play-dl');
-                const stream = await playdl.stream(reproductionQueue.tracks[toPlay].meta.location);
+                const stream = await playdl.stream(reproductionQueue.tracks[toPlay].meta.location, { seek : reproductionQueue.tracks[toPlay].meta.seekTo || 0 });
 
                 //Crea el recurso y lo reproduce en el player
                 await player.play(createAudioResource(stream.stream, { inputType: stream.type }));
@@ -145,8 +145,8 @@ exports.run = async (client, message, connection) => {
             //Herramienta para generar colores aleatorios
             const randomColor = require('randomcolor');
 
-            //Envía un mensaje de confirmación con la info. de la pista en reproducción
-            reproductionQueue.boundedTextChannel.send({ embeds: [new client.MessageEmbed()
+            //Envía un mensaje de confirmación con la info. de la pista en reproducción (sólo si no hay seek)
+            if (!info.meta.seekTo) reproductionQueue.boundedTextChannel.send({ embeds: [new client.MessageEmbed()
                 .setColor(randomColor())
                 .setThumbnail(info.meta.thumbnail)
                 .setAuthor({name: 'Reproduciendo 🎶', iconURL: 'attachment://dj.png'})

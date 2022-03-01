@@ -279,6 +279,15 @@
 		"blacklistedRoles": [],
 		"additionalAliases": []
 	},
+	"seek": {
+		"enabled": true,
+		"deleteInvocationCommand": false,
+		"whitelistedChannels": [],
+		"blacklistedChannels": [],
+		"whitelistedRoles": ["everyone"],
+		"blacklistedRoles": [],
+		"additionalAliases": []
+	},
 	"send": {
 		"enabled": true,
 		"deleteInvocationCommand": true,

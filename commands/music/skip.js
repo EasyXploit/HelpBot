@@ -29,7 +29,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Si se especifica una cantidad, se omitirá dicha cantidad
         if (args[0]) {
 
-            //Almacena la información del servidor
+            //Almacena la información de la cola de la guild
             const reproductionQueue = client.reproductionQueues[message.guild.id];
 
             //Si hay que omitir todas

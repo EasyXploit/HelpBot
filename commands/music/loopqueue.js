@@ -10,7 +10,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Comprueba si es necesaria una votación
         if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'loopqueue')) {
 
-            //Almacena la información del servidor
+            //Almacena la información de la cola de la guild
             const reproductionQueue = client.reproductionQueues[message.guild.id];
 
             if (reproductionQueue.mode !== 'loopqueue') {

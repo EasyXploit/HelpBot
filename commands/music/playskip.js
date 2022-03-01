@@ -19,7 +19,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             //No continua si no se ha conseguido crear
             if (resultFound !== true) return;
 
-            //Almacena la información del servidor
+            //Almacena la información de la cola de la guild
             const reproductionQueue = client.reproductionQueues[message.guild.id];
 
             //Obtiene el último ítem de la cola

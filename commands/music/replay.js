@@ -10,7 +10,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Comprueba si es necesaria una votación
         if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'replay')) {
 
-            //Almacena la información del servidor
+            //Almacena la información de la cola de la guild
             const reproductionQueue = client.reproductionQueues[message.guild.id];
 
             //Sube la pista a la cola en el primer puesto y hace skip

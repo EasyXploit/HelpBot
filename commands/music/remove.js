@@ -13,7 +13,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es: \`${client.config.guild.prefix}remove (posición)\`.`)]
         });
 
-        //Almacena la información del servidor
+        //Almacena la información de la cola de la guild
         const reproductionQueue = client.reproductionQueues[message.guild.id];
         
         if (args[0] === 'all') {

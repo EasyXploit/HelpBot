@@ -19,7 +19,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Almacena el progreso actual de la pista
         let progress = subscription.player._state.resource.playbackDuration;
 
-        //Almacena la información del servidor
+        //Almacena la información de la cola de la guild
         const reproductionQueue = client.reproductionQueues[message.guild.id];
 
         //Calcula si ha de modificar el punto de inicio debido a un seek

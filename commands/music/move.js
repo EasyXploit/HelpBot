@@ -22,7 +22,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Comprueba si no es 0
         if (args[0] === '0' || args[1] === '0') return message.channel.send({ content: 'Quieres jugar sucio eh ...' });
 
-        //Almacena la información del servidor
+        //Almacena la información de la cola de la guild
         const reproductionQueue = client.reproductionQueues[message.guild.id];
         
         //Comprueba si el valor introducido es válido

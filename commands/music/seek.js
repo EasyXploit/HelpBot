@@ -21,7 +21,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Calcula los segundos para la propiedad seekTo
         const seekTo = await client.functions.HHMMSSToMs(args[0]) / 1000;
 
-        //Almacena la información del servidor
+        //Almacena la información de la cola de la guild
         const reproductionQueue = client.reproductionQueues[message.guild.id];
 
         //Almacena el objeto de cola

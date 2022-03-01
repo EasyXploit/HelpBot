@@ -19,7 +19,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             //Aborta la conexión
             connection.destroy();
 
-            //Almacena la información del servidor
+            //Almacena la información de la cola de la guild
             const reproductionQueue = client.reproductionQueues[message.guild.id];
 
             //Vacía el timeout de desconexión por inactividad

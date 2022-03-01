@@ -77,7 +77,7 @@ exports.run = async (client, message, checks) => {
         //Comprueba que haya una cola de reproducción.
         async function hasQueue() {
 
-            //Almacena la información del servidor
+            //Almacena la información de la cola de la guild
             const reproductionQueue = client.reproductionQueues[message.guild.id];
             
             //Comprueba si hay cola

@@ -154,7 +154,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 				await playdl.search(args.join(' '), {limit: 10}).then(async results => {
 	
 					//Comprueba si se han obtenido resultados
-					if (!results) return message.channel.send({ embeds: [ new client.MessageEmbed()
+					if (!results || results.length === 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
 						.setColor(client.config.colors.error)
 						.setDescription(`${client.customEmojis.redTick} No se ha encontrado ningún resultado que encaje con \`${args.join(' ')}\`.`)]
 					});

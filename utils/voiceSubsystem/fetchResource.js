@@ -214,6 +214,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 						await message.channel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(randomColor())
 							.setAuthor({ name: 'Elige una pista 🎶', iconURL: 'attachment://dj.png' })
+							.setFooter({ text: 'Escribe el número de la pista/playlist que deseas añadir a la cola.' })
 							.setDescription(formattedResults)
 						], files: ['./resources/images/dj.png'] }).then(async msg => {
 	

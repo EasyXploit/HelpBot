@@ -199,7 +199,7 @@ exports.run = (client) => {
                 });
             };
         } catch (error) {
-            console.log(e);
+            console.log(error);
             return false;
         };
     };

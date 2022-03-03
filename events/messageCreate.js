@@ -4,7 +4,7 @@ exports.run = async (message, client) => {
     if (message.author.bot || message.type !== 'DEFAULT') return;
 
     //Si el mensaje proviene de un MD
-    if (message.channel.type === 'dm') {
+    if (message.channel.type === 'DM') {
 
         //Devuelve si el mensaje no tiene contenido
         if (!message.content) return;

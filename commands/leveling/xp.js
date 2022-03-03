@@ -4,37 +4,31 @@ exports.run = async (client, message, args, command, commandConfig) => {
     
     try {
         
-        let unknownMemberEmbed = new client.MessageEmbed()
+        if (!args[0]) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Debes mencionar a un miembro o escribir su id`);
-
-        let noBotsEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Los bots no pueden ganar XP`);
-        
-        let incorrectSyntaxEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}xp (@miembro | id) (set | add | remove | clear) <cantidad>\`.`);
-
-        let incorrectQuantityEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad válida`);
-
-        let noXPEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Este miembro no tiene XP`);
-        
-
-        if (!args[0]) return message.channel.send({ embeds: [unknownMemberEmbed] });
+            .setDescription(`${client.customEmojis.redTick} Debes mencionar a un miembro o escribir su id`)]
+        });
 
         //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID y no es un bot
         const member = await client.functions.fetchMember(message.guild, args[0]);
-        if (!member) return message.channel.send({ embeds: [unknownMemberEmbed] });
-        if (member.user.bot) return message.channel.send({ embeds: [noBotsEmbed] });
+        if (!member) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} Debes mencionar a un miembro o escribir su id`)]
+        });
+        if (member.user.bot) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} Los bots no pueden ganar XP`)]
+        });
 
         //Comprueba si los argumentos se han introducido adecuadamente
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}xp (@miembro | id) (set | add | addrandom | remove | clear) <cantidad>\`.`)]
+        });
+        if (args[1] !== 'clear' && (!args[2] || isNaN(args[2]))) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
         if (!args[1] || args[1] !== 'set' && args[1] !== 'add' && args[1] !== 'remove' && args[1] !== 'clear') return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
-        if (args[1] !== 'clear' && (!args[2] || isNaN(args[2]))) return message.channel.send({ embeds: [incorrectQuantityEmbed] });
+            .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad válida`)]
+        });
 
         //Almacena la tabla de clasificación del servidor, y si no existe la crea
         if (message.guild.id in client.stats === false) {
@@ -54,10 +48,16 @@ exports.run = async (client, message, args, command, commandConfig) => {
         const userStats = guildStats[member.id];
 
         //Comprueba si se le puede restar esa cantidad al miembro
-        if (args[1] === 'remove' && userStats.totalXP < args[2]) return message.channel.send({ embeds: [incorrectQuantityEmbed] });
+        if (args[1] === 'remove' && userStats.totalXP < args[2]) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad válida`)]
+        });
 
         //Comprueba si se le puede quitar el XP al miembro
-        if (args[1] === 'clear' && userStats.totalXP == 0) return message.channel.send({ embeds: [noXPEmbed] });  
+        if (args[1] === 'clear' && userStats.totalXP == 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} Este miembro no tiene XP`)]
+        });  
 
         //Almacena el moderador
         let moderator = await client.functions.fetchMember(message.guild, message.author.id);
@@ -65,12 +65,11 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Se comprueba si puede añadir XP al miembro en función de la jerarquía de roles
         if (moderator.id !== message.guild.ownerId) {
             if (moderator.roles.highest.position <= member.roles.highest.position) {
-
-                let cannotModifyHigherRoleEmbed = new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} No puedes modificar el XP de un miembro con un rol igual o superior al tuyo`);
     
-                return message.channel.send({ embeds: [cannotModifyHigherRoleEmbed] });
+                return message.channel.send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.error)
+                    .setDescription(`${client.customEmojis.redTick} No puedes modificar el XP de un miembro con un rol igual o superior al tuyo`)]
+                });
             };
         };
         
@@ -162,35 +161,33 @@ exports.run = async (client, message, args, command, commandConfig) => {
             client.stats[message.guild.id][member.id].actualXP = xpCount;
         };
 
-        let successEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryCorrect)
-            .setDescription(`${client.customEmojis.greenTick} Se ha modificado la cantidad de XP del miembro **${member.user.tag}**.`);
-
-        let toDMEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.correct)
-            .setAuthor({ name: '[XP MODIFICADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
-            .setDescription(`<@${member.id}>, tu cantidad de XP ha sido modificada`)
-            .addField('Moderador', message.author.tag, true)
-            .addField('Anterior valor', oldValue.toString(), true)
-            .addField('Nuevo valor', newValue.toString(), true);
-
-        let loggingEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.logging)
-            .setTitle('📑 Auditoría - [SISTEMA DE XP]')
-            .setDescription(`Se ha modificado la cantidad de XP de **${member.user.tag}**.`)
-            .addField('Fecha:', new Date().toLocaleString(), true)
-            .addField('Moderador:', message.author.tag, true)
-            .addField('Miembro:', member.user.tag, true)
-            .addField('Anterior valor', oldValue.toString(), true)
-            .addField('Nuevo valor', newValue.toString(), true);
-
         //Escribe el resultado en el JSON
         client.fs.writeFile('./databases/stats.json', JSON.stringify(client.stats, null, 4), async err => {
             if (err) throw err;
 
-            await client.functions.loggingManager(loggingEmbed);
-            await member.send({ embeds: [toDMEmbed] });
-            await message.channel.send({ embeds: [successEmbed] });
+            await client.functions.loggingManager( new client.MessageEmbed()
+                .setColor(client.config.colors.logging)
+                .setTitle('📑 Auditoría - [SISTEMA DE XP]')
+                .setDescription(`Se ha modificado la cantidad de XP de **${member.user.tag}**.`)
+                .addField('Fecha:', new Date().toLocaleString(), true)
+                .addField('Moderador:', message.author.tag, true)
+                .addField('Miembro:', member.user.tag, true)
+                .addField('Anterior valor', oldValue.toString(), true)
+                .addField('Nuevo valor', newValue.toString(), true));
+
+            await member.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.correct)
+                .setAuthor({ name: '[XP MODIFICADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
+                .setDescription(`<@${member.id}>, tu cantidad de XP ha sido modificada`)
+                .addField('Moderador', message.author.tag, true)
+                .addField('Anterior valor', oldValue.toString(), true)
+                .addField('Nuevo valor', newValue.toString(), true)]
+            });
+
+            await message.channel.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryCorrect)
+                .setDescription(`${client.customEmojis.greenTick} Se ha modificado la cantidad de XP del miembro **${member.user.tag}**.`)]
+            });
         });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

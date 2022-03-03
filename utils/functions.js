@@ -147,7 +147,7 @@ exports.run = (client) => {
                 
 
                 //Genera XP y lo guarda
-                const newXp = client.functions.randomIntBetween(5, 15);
+                const newXp = await client.functions.randomIntBetween(5, 15);
                 userStats.actualXP += newXp;
                 userStats.totalXP += newXp;
                 if (mode === 'message') userStats.last_message = Date.now();

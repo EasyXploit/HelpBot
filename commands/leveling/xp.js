@@ -1,6 +1,6 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!xp (@miembro | id) (set | add | remove | clear) <cantidad>
+    //!xp (@miembro | id) (set | add | addrandom | remove | clear) <cantidad>
     
     try {
         
@@ -21,12 +21,12 @@ exports.run = async (client, message, args, command, commandConfig) => {
         });
 
         //Comprueba si los argumentos se han introducido adecuadamente
+        if (!args[1] || args[1] !== 'set' && args[1] !== 'add' && args[1] !== 'addrandom' && args[1] !== 'remove' && args[1] !== 'clear') return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}xp (@miembro | id) (set | add | addrandom | remove | clear) <cantidad>\`.`)]
         });
         if (args[1] !== 'clear' && (!args[2] || isNaN(args[2]))) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-        if (!args[1] || args[1] !== 'set' && args[1] !== 'add' && args[1] !== 'remove' && args[1] !== 'clear') return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad válida`)]
         });
 
@@ -89,6 +89,22 @@ exports.run = async (client, message, args, command, commandConfig) => {
             case 'add':
                 client.stats[message.guild.id][member.id].totalXP = oldValue + parseInt(args[2]);
                 newValue = oldValue + parseInt(args[2]);
+                break;
+
+            case 'addrandom':
+
+                //Almacena el XP a añadir
+                let generatedXp = 0;
+
+                //Genera XP aleatorio según el parámetro proporcinado
+                for (max = args[2]; max != 0; max--) {
+                    const randomXp = await client.functions.randomIntBetween(5, 15);
+                    generatedXp = generatedXp + randomXp;
+                };
+
+                //Almacena el nuevo XP
+                client.stats[message.guild.id][member.id].totalXP = oldValue + generatedXp;
+                newValue = oldValue + generatedXp;
                 break;
 
             case 'remove':

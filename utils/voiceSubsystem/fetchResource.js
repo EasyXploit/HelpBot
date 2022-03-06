@@ -217,10 +217,27 @@ exports.run = async (client, args, message, streamType, toStream) => {
 							.setFooter({ text: 'Escribe el número de la pista/playlist que deseas añadir a la cola.' })
 							.setDescription(formattedResults)
 						], files: ['./resources/images/dj.png'] }).then(async msg => {
+
+							//Reacciona con un emoji para cancelar
+							await msg.react('❌');
+
+							//Crea un filtro de reacciones
+							const reactionsFilter = (reaction, user) => reaction.emoji.name === '❌' && user.id === message.author.id;
+
+							//Crea un colector de reacciones que encajen con el filtro
+							const reactionsCollector = await msg.createReactionCollector({ filter: reactionsFilter, max: 1, time: 60000 });
+
+							//Borra el mensaje si el colector colecciona
+							reactionsCollector.on('collect', () => msg.delete());
+							
+							//Crea un filtro de mensajes
+							const messagesFilter = msg => msg.author.id === message.member.id;
 	
-							const filter = msg => msg.author.id === message.member.id;
-	
-							await msg.channel.awaitMessages({filter, max: 1, time: 60000}).then(async collected => {    //<--- MAL
+							//Crea un colector de mensajes que encajen con el filtro
+							await msg.channel.awaitMessages({messagesFilter, max: 1, time: 60000}).then(async collected => {
+
+								//No ejecuta el resto del programa si el mensaje fue borrado mediante reacción
+								if (!message.channel.messages.cache.get(msg.id)) return;
 	
 								let option = collected.first().content; //Almacena la opción elegida
 								setTimeout(() => collected.first().delete(), 2000); //Borra el mensaje de elección
@@ -265,7 +282,13 @@ exports.run = async (client, args, message, streamType, toStream) => {
 										.setDescription(`${client.customEmojis.redTick} No se puede reproducir este resultado.`)]
 									});
 								};
-							}).catch(() => msg.delete()); //Si el miembro no responde, borra el menú
+							}).catch(() => {
+
+								//Borra el mensaje si este no fue borrado previamente por una reacción de aborción
+								msg.delete().catch((error) => {
+									if (error.httpStatus !== 404) client.functions.commandErrorHandler(error, message, args.shift().toLowerCase(), args);
+								});
+							}); //Si el miembro no responde, borra el menú
 						});
 					};
 				});

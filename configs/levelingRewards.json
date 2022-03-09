@@ -1,44 +1,44 @@
 [
     {
-        "requiredLevel": "1",
+        "requiredLevel": 1,
         "roles": []
     },
     {
-        "requiredLevel": "2",
+        "requiredLevel": 2,
         "roles": []
     },
     {
-        "requiredLevel": "3",
+        "requiredLevel": 3,
         "roles": []
     },
     {
-        "requiredLevel": "4",
+        "requiredLevel": 4,
         "roles": []
     },
     {
-        "requiredLevel": "5",
         "roles": [],
         "credits": 100
+        "requiredLevel": 5,
     },
     {
-        "requiredLevel": "6",
+        "requiredLevel": 6,
         "roles": []
     },
     {
-        "requiredLevel": "7",
+        "requiredLevel": 7,
         "roles": []
     },
     {
-        "requiredLevel": "8",
+        "requiredLevel": 8,
         "roles": []
     },
     {
-        "requiredLevel": "9",
+        "requiredLevel": 9,
         "roles": []
     },
     {
-        "requiredLevel": "10",
         "roles": [],
         "credits": 200
+        "requiredLevel": 10,
     }
 ]

@@ -2,7 +2,7 @@
   "name": "helpbot",
   "normalizedName": "HelpBot",
   "version": "4.1.0",
-  "description": "HelpBot is a Discord bot designed for automated community management.",
+  "description": "HelpBot is a Discord bot designed for automated community management, music reproduction, leveling and much more!",
   "main": "index.js",
   "scripts": {
     "start": "node .",

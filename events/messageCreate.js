@@ -12,8 +12,8 @@ exports.run = async (message, client) => {
         //Filtra el texto en busca de códigos de invitación
         let detectedInvites = message.content.match(/(https?:\/\/)?(www.)?(discord.(gg|io|me|li)|discordapp.com\/invite)\/[^\s\/]+?(?=\b)/gm);
 
-        //Si se encontraron invitaciones, se comprueba que no sean de la guild
-        if (detectedInvites) {
+        //Si se encontraron invitaciones (y no es el owner), se comprueba que no sean de la guild
+        if (detectedInvites && message.author.id !== client.homeGuild.ownerId) {
             let legitInvites = 0;
 
             await client.homeGuild.invites.fetch().then(guildInvites => {
@@ -77,6 +77,10 @@ exports.run = async (message, client) => {
         for (var key in client.config.automodFilters) {
             await (async () => {
                 if (client.config.automodFilters[key].status) {
+
+                    //Comprueba si el miembro es el propietario de la guild
+                    if (message.member.id === message.guild.ownerId) return;
+
                     //Comprueba si el miembro tiene algún rol permitido
                     const bypassRoles = client.config.automodFilters[key].bypassRoles;
                     const bypassChannels = client.config.automodFilters[key].bypassChannels;

@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!invitation
-    
     try {
 
         //Genera el embed y lo envía, buscando el contenido necesario con la función

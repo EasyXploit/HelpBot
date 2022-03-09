@@ -1,14 +1,12 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!send (embed | normal) (texto)
-    
     try {
 
         //Comprueba si se han proporcionado los cargumentos correctamente
         if (!args[0] || !args[1] || (args[0] !== 'embed' && args[0] !== 'normal')) return message.channel.send({ embeds: [
             new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}send (embed | normal) (texto)\`.`)
+                .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.main.prefix}send (embed | normal) (texto)\`.`)
             ]
         });
 

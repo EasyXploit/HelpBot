@@ -4,20 +4,20 @@ exports.run = async (client) => {
 
     //Carga en memoria de los recursos de la guild necesarios para el bot
     const loadGuildSettings = new Promise((resolve, reject) => {
-        Object.keys(client.config.guild).forEach(async (config, index, array) => {
+        Object.keys(client.config.main).forEach(async (config, index, array) => {
 
             //Comprueba de qué forma tiene que cargar cada configuración
             if (config === 'homeGuild') {
-                client[config] = await client.guilds.cache.get(client.config.guild[config]);
+                client[config] = await client.guilds.cache.get(client.config.main[config]);
             }  else if (config.toLowerCase().includes('channel')) {
                 try {
-                    client[config] = await client.channels.fetch(client.config.guild[config]);
+                    client[config] = await client.channels.fetch(client.config.main[config]);
                     console.log(` - [OK] [${config}] cargado correctamente`);
                 } catch (error) {
                     console.log(` - [ERROR] [${config}] no se pudo cargar`);
                 };
             } else {
-                client[config] = await client.config.guild[config];
+                client[config] = await client.config.main[config];
             };
 
             //Resuelve la promesa una vez acabado

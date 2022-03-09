@@ -10,7 +10,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Comprueba si se han proporcionado argumentos
         if (!args[0]) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es: \`${client.config.guild.prefix}remove (posición)\`.`)]
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es: \`${client.config.main.prefix}remove (posición)\`.`)]
         });
 
         //Almacena la información de la cola de la guild

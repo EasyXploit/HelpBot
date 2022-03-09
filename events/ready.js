@@ -10,10 +10,10 @@ exports.run = async (event, client) => {
         if (cachedGuilds.size === 1) { //Si solo está unido a una guild (comportamiento adecuado)
 
             //Borra todas las configuraciones y bases de datos en el caso de que no cuadren
-            if (client.config.guild.homeGuild && !guildsIDs.includes(client.config.guild.homeGuild)) await require('../utils/eraseConfig.js').run(client)
+            if (client.config.main.homeGuild && !guildsIDs.includes(client.config.main.homeGuild)) await require('../utils/eraseConfig.js').run(client)
             
             //Almacena la nueva configuración de la guild si no hay
-            if (!client.config.guild.homeGuild) await require('../utils/storeNewGuildConfig.js').run(client, cachedGuilds.first());
+            if (!client.config.main.homeGuild) await require('../utils/storeNewGuildConfig.js').run(client, cachedGuilds.first());
 
             //Cargar config. en memoria + arranque del sistema completo
             await require('../utils/systemLoad.js').run(client);
@@ -24,11 +24,11 @@ exports.run = async (event, client) => {
             console.log(`\n 》${client.user.username} no está diseñado para funcionar en más de un servidor.`);
 
             //Comprueba si una de las guilds está configurada
-            if (client.config.guild.homeGuild && guildsIDs.includes(client.config.guild.homeGuild)) {
+            if (client.config.main.homeGuild && guildsIDs.includes(client.config.main.homeGuild)) {
 
                 //Sale de las guilds que no están configuradas
                 cachedGuilds.forEach(async guild => {
-                    if (guild.id !== client.config.guild.homeGuild) await guild.leave();
+                    if (guild.id !== client.config.main.homeGuild) await guild.leave();
                 });
 
                 //Cargar config. en memoria + arranque del sistema completo

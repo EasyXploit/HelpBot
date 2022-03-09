@@ -23,7 +23,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Comprueba si los argumentos se han introducido adecuadamente
         if (!args[1] || args[1] !== 'set' && args[1] !== 'add' && args[1] !== 'addrandom' && args[1] !== 'remove' && args[1] !== 'clear') return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}xp (@miembro | id) (set | add | addrandom | remove | clear) <cantidad>\`.`)]
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.main.prefix}xp (@miembro | id) (set | add | addrandom | remove | clear) <cantidad>\`.`)]
         });
         if (args[1] !== 'clear' && (!args[2] || isNaN(args[2]))) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)

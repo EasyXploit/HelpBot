@@ -13,7 +13,7 @@ exports.run = async (event, client) => {
                     .setTitle('📑 Auditoría - [BOTS]')
                     .setDescription(`El **BOT** @${event.user.tag} fue expulsado del servidor.`);
                 
-                await client.channels.cache.get(client.config.guild.loggingChannel).send({ embeds: [loggingEmbed] })
+                await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [loggingEmbed] })
             } else {
                 let moderador = executor;
                 let razon = reason || 'Indefinida';
@@ -30,7 +30,7 @@ exports.run = async (event, client) => {
                     .addField('Moderador', moderador.tag || 'Desconocido', true)
                     .addField('Razón', razon || 'Indefinida', true);
 
-                await client.channels.cache.get(client.config.guild.loggingChannel).send({ embeds: [loggingEmbed] })
+                await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [loggingEmbed] })
             }
         }
         
@@ -69,7 +69,7 @@ exports.run = async (event, client) => {
                 .addField('🏷 TAG completo', event.user.tag, true)
                 .addField('🆔 ID del miembro', event.user.id, true);
             
-            return await client.channels.cache.get(client.config.guild.joinsAndLeavesChannel).send({ embeds: [loggingEmbed], files: ['./resources/images/out.png'] });
+            return await client.channels.cache.get(client.config.main.joinsAndLeavesChannel).send({ embeds: [loggingEmbed], files: ['./resources/images/out.png'] });
         }
     } catch (error) {
         if (event.user.id === client.user.id) return;

@@ -12,7 +12,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Comprueba si se ha proporcionado un tiempo válido
         if (!args[0] || (!args[0].match(ssFilter) && !args[0].match(mmssFilter) && !args[0].match(hhmmssFilter))) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es: \`${client.config.guild.prefix}forward (HH:MM:SS)\`.`)]
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es: \`${client.config.main.prefix}forward (HH:MM:SS)\`.`)]
         });
 
         //Método para obtener conexiones de voz

@@ -5,7 +5,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
     try {
         let incorrectSyntaxEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.guild.prefix}slowmode (off | segundos [5-30]) (razón)\`.`);
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.main.prefix}slowmode (off | segundos [5-30]) (razón)\`.`);
 
         if (args[0] === 'off') {
             if (!message.channel.rateLimitPerUser) return message.channel.send({ embeds: [incorrectSyntaxEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});

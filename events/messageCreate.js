@@ -60,7 +60,7 @@ exports.run = async (message, client) => {
         };
 
         //Advierte de que los comandos no funcionan por MD
-        if (message.content.startsWith(client.config.guild.prefix)) {
+        if (message.content.startsWith(client.config.main.prefix)) {
             const noDMEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.information)
                 .setDescription(`${client.customEmojis.grayTick} | Por el momento, los comandos de **${client.user.username}** solo están disponibles desde el servidor.`);
@@ -95,10 +95,10 @@ exports.run = async (message, client) => {
     })();
 
     //Llama al manejador de leveling
-    if (!message.content.startsWith(client.config.guild.prefix) && !client.config.xp.nonXPChannels.includes(message.channel.id)) return await client.functions.addXP(message.member, message.guild, 'message', message.channel);
+    if (!message.content.startsWith(client.config.main.prefix) && !client.config.xp.nonXPChannels.includes(message.channel.id)) return await client.functions.addXP(message.member, message.guild, 'message', message.channel);
 
     // Función para eliminar el prefijo, extraer el comando y sus argumentos (en caso de tenerlos)
-    const args = message.content.slice(client.config.guild.prefix.length).trim().split(/ +/g);
+    const args = message.content.slice(client.config.main.prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
     const command = `${cmd}.js`;
 
@@ -138,7 +138,7 @@ exports.run = async (message, client) => {
                 for (let i = 0; i < commandConfig.whitelistedRoles.length; i++) {
 
                     //Si se permite a todo el mundo, el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                    if (commandConfig.whitelistedRoles[i] === 'everyone' || message.author.id === message.guild.ownerId || message.author.id === client.config.guild.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.whitelistedRoles[i])) {
+                    if (commandConfig.whitelistedRoles[i] === 'everyone' || message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.whitelistedRoles[i])) {
                         authorized = true;
                         break;
                     };

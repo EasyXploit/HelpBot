@@ -326,7 +326,7 @@ exports.run = (client) => {
     client.functions.loggingManager = async (embed) => {
 
         //Comprobar si el canal está configurado y almacenado en memoria
-        if (client.config.guild.loggingChannel && client.loggingChannel) {
+        if (client.config.main.loggingChannel && client.loggingChannel) {
 
             try {
                 //Carga los permisos del bot en el canal de logging
@@ -347,11 +347,11 @@ exports.run = (client) => {
                     console.log(`${new Date().toLocaleString()} 》${error.stack}`);
 
                     //Borrarlo de la config y descargarlo de la memoria
-                    client.config.guild.loggingChannel = '';
+                    client.config.main.loggingChannel = '';
                     client.loggingChannel = null;
 
                     //Graba la nueva configuración en el almacenamiento
-                    await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error(err));
+                    await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), (err) => console.error(err));
 
                     //Advertir por consola
                     console.error(`${new Date().toLocaleString()} 》Error: No se puede tener acceso al canal de auditoría.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
@@ -366,7 +366,7 @@ exports.run = (client) => {
     client.functions.debuggingManager = async (embed) => {
         
         //Comprobar si el canal está configurado y almacenado en memoria
-        if (client.config.guild.debuggingChannel && client.debuggingChannel) {
+        if (client.config.main.debuggingChannel && client.debuggingChannel) {
 
             try {
                 //Carga los permisos del bot en el canal de debugging
@@ -384,11 +384,11 @@ exports.run = (client) => {
                 //Si el canal no es accesible
                 if (error.toString().includes('DiscordAPIError')) {
                     //Borrarlo de la config y descargarlo de la memoria
-                    client.config.guild.debuggingChannel = '';
+                    client.config.main.debuggingChannel = '';
                     client.debuggingChannel = null;
 
                     //Graba la nueva configuración en el almacenamiento
-                    await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error(err));
+                    await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), (err) => console.error(err));
 
                     //Advertir por consola
                     console.error(`${new Date().toLocaleString()} 》Error: No se puede tener acceso al canal de depuración.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
@@ -484,8 +484,8 @@ exports.run = (client) => {
                         if(!(channel.permissionsFor(client.user) & BigInt(0x1)) !== BigInt(0x1)) return inviteChannel = channel;
                     });
 
-                    //Si no, asigna "client.config.guild.homeGuildInviteCode" cómo falso
-                    if (!inviteChannel) client.config.guild.homeGuildInviteCode = false;
+                    //Si no, asigna "client.config.main.homeGuildInviteCode" cómo falso
+                    if (!inviteChannel) client.config.main.homeGuildInviteCode = false;
                 });
             };
 
@@ -493,12 +493,12 @@ exports.run = (client) => {
             await inviteChannel.createInvite({maxAge: 0, reason: `Rutina de ${client.user.tag}`}).then(async invite => {foundInvite = invite.code;});
 
             //Graba la invitación en el fichero de configuración
-            client.config.guild.homeGuildInviteCode = foundInvite;
-            await client.fs.writeFile('./configs/guild.json', JSON.stringify(client.config.guild, null, 4), (err) => console.error(err));
+            client.config.main.homeGuildInviteCode = foundInvite;
+            await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), (err) => console.error(err));
         };
 
         //Si no hay una invitación grabada
-        if (!client.config.guild.homeGuildInviteCode) {
+        if (!client.config.main.homeGuildInviteCode) {
 
             //Comprueba si ya existe una invitación
             await client.homeGuild.invites.fetch().then(invites => {
@@ -511,17 +511,17 @@ exports.run = (client) => {
             if (!foundInvite) await createInvite();
 
             //Devuelve la URL, si se puedo obtener un código
-            if (client.config.guild.homeGuildInviteCode) return `https://discord.gg/${client.config.guild.homeGuildInviteCode}`;
+            if (client.config.main.homeGuildInviteCode) return `https://discord.gg/${client.config.main.homeGuildInviteCode}`;
 
         } else {
             //Busca la invitación
-            const invite = await client.homeGuild.invites.resolve(client.config.guild.homeGuildInviteCode);
+            const invite = await client.homeGuild.invites.resolve(client.config.main.homeGuildInviteCode);
 
             //Crea la invitación si no existe
             if (!invite) await createInvite();
 
             //Devuelve la URL, si se puedo obtener un código
-            return `https://discord.gg/${client.config.guild.homeGuildInviteCode}`;
+            return `https://discord.gg/${client.config.main.homeGuildInviteCode}`;
         };
     };
 

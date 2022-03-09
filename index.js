@@ -33,7 +33,7 @@ client.MessageAttachment = discord.MessageAttachment;
 //Configuraciones globales
 client.config = {
     keys: require('./configs/keys.json'),                       //Tokens de autenticación
-    guild: require('./configs/guild.json'),                     //Configuraciones de la guild base
+    main: require('./configs/main.json'),                       //Configuraciones generales
     automodFilters: require('./configs/automodFilters.json'),   //Filtros de moderación automática
     automodRules: require('./configs/automodRules.json'),       //Reglas de moderación automática
     bannedWords: require('./configs/bannedWords.json'),         //Listado de palabras prohibidas

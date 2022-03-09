@@ -14,7 +14,7 @@ exports.run = async (ban, client) => {
                     .setTitle('📑 Auditoría - [BOTS]')
                     .setDescription(`El **BOT** <@${ban.user.tag}> fue baneado del servidor.`);
 
-                await client.channels.cache.get(client.config.guild.loggingChannel).send({ embeds: [loggingEmbed] })
+                await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [loggingEmbed] })
             } else {
                 let moderador = executor ? executor.tag : 'Desconocido';
                 let razon = reason || 'Indefinida';
@@ -29,7 +29,7 @@ exports.run = async (ban, client) => {
                     .addField('Duración', time || 'Indefinida', true)
                     .addField('Días de mensajes borrados', days || 'Ninguno', true);
 
-                await client.channels.cache.get(client.config.guild.loggingChannel).send({ embeds: [loggingEmbed] })
+                await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [loggingEmbed] })
             }
         }
 

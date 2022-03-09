@@ -16,9 +16,8 @@
         "roles": []
     },
     {
-        "roles": [],
-        "credits": 100
         "requiredLevel": 5,
+        "roles": []
     },
     {
         "requiredLevel": 6,
@@ -37,8 +36,7 @@
         "roles": []
     },
     {
-        "roles": [],
-        "credits": 200
         "requiredLevel": 10,
+        "roles": []
     }
 ]

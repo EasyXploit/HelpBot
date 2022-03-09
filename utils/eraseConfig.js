@@ -35,7 +35,7 @@ exports.run = async (client) => {
                 const cleanConfigName = cleanConfig.split('.')[0];
 
                 //Reinicia todos los ficheros de config. menos el de claves
-                if (cleanConfigName !== 'keys') {
+                if (cleanConfigName !== 'token') {
                     //Requiere la configuración en blanco
                     const cleanConfigContent = require(`../configs/cleanConfigs/${cleanConfigName}.json`);
 

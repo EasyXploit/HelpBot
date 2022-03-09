@@ -32,7 +32,7 @@ client.MessageAttachment = discord.MessageAttachment;
 
 //Configuraciones globales
 client.config = {
-    keys: require('./configs/keys.json'),                       //Tokens de autenticación
+    token: require('./configs/token.json'),                       //Tokens de autenticación
     main: require('./configs/main.json'),                       //Configuraciones generales
     automodFilters: require('./configs/automodFilters.json'),   //Filtros de moderación automática
     automodRules: require('./configs/automodRules.json'),       //Reglas de moderación automática
@@ -147,4 +147,4 @@ client.fs.readdirSync('./commands/').forEach(subDirectory => {
 
 //Inicio de sesión del bot
 console.log('\n- Iniciando sesión ...\n');
-client.login(client.config.keys.token).then(() => console.log('\n - ¡Sesion iniciada correctamente!'));
+client.login(client.config.token.key).then(() => console.log('\n - ¡Sesion iniciada correctamente!'));

@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!xp (@miembro | id) (set | add | addrandom | remove | clear) <cantidad>
-    
     try {
         
         if (!args[0]) return message.channel.send({ embeds: [ new client.MessageEmbed()

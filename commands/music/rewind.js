@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
 
-    //!forward (HH:MM:SS)
-
     try {
 
         //Almacena los filtros de expresiones regulares para comprobar el formato del parámetro

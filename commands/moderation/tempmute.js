@@ -1,8 +1,7 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!tempmute (@usuario | id) (xS | xM | xH | xD) (motivo)
-    
     try {
+        
         let notToMuteEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No se ha encontrado al miembro. Debes mencionarlo o escribir su id`);

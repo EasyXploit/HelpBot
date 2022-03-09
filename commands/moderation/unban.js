@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!unban (id) (motivo)
-    
     try {
 
         let notToUnbanEmbed = new client.MessageEmbed()

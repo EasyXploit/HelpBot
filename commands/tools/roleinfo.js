@@ -1,8 +1,7 @@
 exports.run = async (client, message, args, command, commandConfig) => {
 
-    //!roleinfo (@rol | rol | id)
-
     try {
+        
         let incorrectSyntaxEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.main.prefix}roleinfo (@rol | rol | id)\`.`);

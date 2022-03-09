@@ -1,6 +1,4 @@
 exports.run = async (client, message, args, command, commandConfig) => {
-    
-    //!sound (nada | término | list)
 
     try {
 

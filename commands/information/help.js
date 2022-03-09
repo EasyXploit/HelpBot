@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!help
-    
     const packageInfo = require('../../package.json');
     
     try {

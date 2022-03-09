@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!softban (@usuario | id) (1 - 7) (motivo)
-    
     try {
         
         let notToBanEmbed = new client.MessageEmbed()

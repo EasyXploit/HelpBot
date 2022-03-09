@@ -1,8 +1,7 @@
 exports.run = async (client, message, args, command, commandConfig) => {
-
-    //!kick (@usuario | id) (motivo)
     
     try {
+        
         let notToKickEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID`);

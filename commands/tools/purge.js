@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!purge (límite) <#canal | id>
-    
     try {
         
         let noQuantityEmbed = new client.MessageEmbed()

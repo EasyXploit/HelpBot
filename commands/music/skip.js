@@ -1,6 +1,4 @@
 exports.run = async (client, message, args, command, commandConfig) => {
-    
-    //!skip (cantidad opcional | all)
 
     try {
 

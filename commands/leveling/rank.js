@@ -1,6 +1,4 @@
 exports.run = async (client, message, args, command, commandConfig) => {
-
-    //!rank (@usuario)
     
     try {
 

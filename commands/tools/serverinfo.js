@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
 
-    //!serverinfo
-
     try {
 
         //Almacena a los miembros y los canales de la guild

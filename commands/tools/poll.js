@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
 
-    // -poll (new | end) [id]
-
     try {
 
         if (args[0] === 'new' || !args[0]) {

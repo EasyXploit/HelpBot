@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
 
-    //!play (URL de YouTube | término | nada)
-
     try {
 
         //Comprueba si se han introducido argumentos

@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
 
-    //!seek (HH:MM:SS)
-
     try {
 
         //Comprueba los requisitos previos para el comando

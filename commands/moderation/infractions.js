@@ -1,8 +1,7 @@
 exports.run = async (client, message, args, command, commandConfig) => {
-    
-    //!infractions (@miembro | id)
 
     try {
+        
         let noUserEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`);

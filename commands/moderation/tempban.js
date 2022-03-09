@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!tempban (@usuario | id) (xS | xM | xH | xD) (motivo)
-    
     try {
         
         let notToBanEmbed = new client.MessageEmbed()

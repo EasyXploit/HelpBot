@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!ping
-    
     try {
         //TIEMPO DE RESPUESTA DEL BOT
         let botPing = new Date().getTime() - message.createdTimestamp;

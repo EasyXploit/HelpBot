@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
 
-    //!move (posición 1) (posición 2)
-
     try {
 
         //Comprueba los requisitos previos para el comando

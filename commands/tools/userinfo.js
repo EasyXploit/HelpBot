@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
 
-    //!userinfo (@miembro | id | nada)
-
     try {
 
         //Almacena el miembro objetivo

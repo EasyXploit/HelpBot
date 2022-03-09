@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!unmute (@usuario | id) (motivo)
-    
     try {
 
         let notToMuteEmbed = new client.MessageEmbed()

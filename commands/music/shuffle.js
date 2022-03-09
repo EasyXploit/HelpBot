@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
 
-    //!shuffle
-
     try {
 
         //Comprueba los requisitos previos para el comando

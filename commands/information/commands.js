@@ -1,6 +1,4 @@
 exports.run = async (client, message, args, command, commandConfig) => {
-
-    //!commands
     
     try {
         message.channel.send({ embeds: [new client.MessageEmbed()

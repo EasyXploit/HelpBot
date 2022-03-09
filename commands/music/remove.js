@@ -1,5 +1,4 @@
 exports.run = async (client, message, args, command, commandConfig) => {
-
     //!remove (posición | all)
 
     try {

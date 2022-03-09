@@ -1,8 +1,7 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!edit <ID del canal> <ID del mensaje> <nuevo contenido>
-    
     try {
+        
         let incorrectSyntaxEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.main.prefix}edit <ID del canal> <ID del mensaje> <nuevo contenido>\`.`);

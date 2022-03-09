@@ -1,8 +1,7 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!slowmode (off | segundos [5-30]) (razón)
-    
     try {
+        
         let incorrectSyntaxEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.main.prefix}slowmode (off | segundos [5-30]) (razón)\`.`);

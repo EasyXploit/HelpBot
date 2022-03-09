@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!run (comando) [parámetro/s]
-    
     try {
 
         //Envía un mensaje de error si no se ha proporcionado un comando

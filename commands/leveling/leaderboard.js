@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
 
-    //!leaderboard [pág.]
-
     try {
         //Almacena las entradas de la leaderboard
         let entries = [];

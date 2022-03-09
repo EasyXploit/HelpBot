@@ -1,7 +1,5 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!dm (autor | anonimo) (@usuario | id) (embed | normal) (mensaje a enviar)
-    
     try {
         
         let incorrectSyntaxEmbed = new client.MessageEmbed()

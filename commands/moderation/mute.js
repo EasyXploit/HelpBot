@@ -1,8 +1,7 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
-    //!mute (@usuario | id) (motivo)
-    
     try {
+        
         let notToMuteEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Debes mencionar a un miembro o escribir su id`);

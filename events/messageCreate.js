@@ -30,6 +30,7 @@ exports.run = async (message, client) => {
             //Si alguna no lo es, lo banea
             if (legitInvites < detectedInvites.length) {
                 const member = await client.functions.fetchMember(client.homeGuild, message.author.id);
+
                 if ((member.joinedTimestamp + client.config.automodFilters.newMemberTimeDelimiter) < Date.now()) {
                     client.bans[member.id] = {
                         time: Date.now() + client.config.automodFilters.newSpammerMemberBanDuration

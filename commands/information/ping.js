@@ -4,7 +4,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //TIEMPO DE RESPUESTA DEL BOT
         let botPing = new Date().getTime() - message.createdTimestamp;
         let botPingEmbed = new client.MessageEmbed()
-            .setTitle(`Tiempo de respuesta del bot: `)
+            .setTitle('Tiempo de respuesta del bot: ')
             .setDescription(`:stopwatch: | ${botPing} ms`);
 
         if (botPing <= 180) {
@@ -18,7 +18,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //TIEMPO DE RESPUESTA DEL WEBSOCKET
         let websocketPing = Math.floor(client.ws.ping);
         let websocketPingEmbed = new client.MessageEmbed()
-            .setTitle(`Tiempo de respuesta del Websocket: `)
+            .setTitle('Tiempo de respuesta del Websocket: ')
             .setDescription(`:stopwatch: | ${websocketPing} ms`);
 
         if (websocketPing <= 180) {

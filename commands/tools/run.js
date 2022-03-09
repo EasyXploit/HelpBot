@@ -11,7 +11,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         });
 
         switch (args[0]) {
-            case 'bienvenida':  //Emite el evento "guildMemberAdd"
+            case 'welcome':  //Emite el evento "guildMemberAdd"
                 
                 //Devuelve un error si no se ha proporcionado un miembro
                 if (!args[1]) return message.channel.send({ embeds: [
@@ -44,7 +44,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 }).then(msg => {setTimeout(() => msg.delete(), 2000)});
                 break;
         
-            case 'despedida':   //Emite el evento "guildMemberRemove"
+            case 'goodbye':   //Emite el evento "guildMemberRemove"
                 
                 //Devuelve un error si no se ha proporcionado un miembro
                 if (!args[1]) return message.channel.send({ embeds: [
@@ -77,7 +77,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 }).then(msg => {setTimeout(() => msg.delete(), 2000)});
                 break;
         
-            case 'cuadrarStats':
+            case 'assortStats':
 
                 /*
                     //OBJETIVO:

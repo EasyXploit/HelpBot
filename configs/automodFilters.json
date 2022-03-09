@@ -2,21 +2,21 @@
     "swearWords": {
         "status": true,
         "action": 3,
-        "reason": "Palabras malsonantes",
+        "reason": "Swear words",
         "bypassRoles": [],
         "bypassChannels": []
     },
     "invites": {
         "status": true,
         "action": 3,
-        "reason": "Invitaciones no permitidas",
+        "reason": "Invitations not allowed",
         "bypassRoles": [],
         "bypassChannels": []
     },
     "uppercase": {
         "status": true,
         "action": 3,
-        "reason": "Demasiadas mayúsulas",
+        "reason": "Too many capital letters",
         "bypassRoles": [],
         "bypassChannels": [],
         "minimumLength": 50
@@ -24,14 +24,14 @@
     "links": {
         "status": false,
         "action": 1,
-        "reason": "No se permiten enlaces",
+        "reason": "Links not allowed",
         "bypassRoles": [],
         "bypassChannels": []
     },
     "massEmoji": {
         "status": true,
         "action": 3,
-        "reason": "Demasiados emojis",
+        "reason": "Too many emojis",
         "bypassRoles": [],
         "bypassChannels": [],
         "quantity": 20
@@ -39,7 +39,7 @@
     "massMentions": {
         "status": true,
         "action": 3,
-        "reason": "Demasiadas menciones",
+        "reason": "Too many mentions",
         "bypassRoles": [],
         "bypassChannels": [],
         "quantity": 5
@@ -47,7 +47,7 @@
     "massiveSpoilers": {
         "status": true,
         "action": 3,
-        "reason": "Demasiados spoilers",
+        "reason": "Too many spoilers",
         "bypassRoles": [],
         "bypassChannels": [],
         "quantity": 10
@@ -55,7 +55,7 @@
     "repeatedText": {
         "status": true,
         "action": 3,
-        "reason": "Texto repetitivo",
+        "reason": "Repetitive text",
         "bypassRoles": [],
         "bypassChannels": []
     }

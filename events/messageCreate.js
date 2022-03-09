@@ -108,7 +108,7 @@ exports.run = async (message, client) => {
     // Función para ejecutar el comando
     try {
         //Comprueba si es un comando con prefijo
-        if (message.content.startsWith(client.config.guild.prefix)) {
+        if (message.content.startsWith(client.config.main.prefix)) {
             let waitEmbed = new client.MessageEmbed().setColor(client.config.colors.secondaryError).setDescription(`${client.customEmojis.redTick} Debes esperar 2 segundos antes de usar este comando`);
             if (client.cooldownedUsers.has(message.author.id)) return message.channel.send({ embeds: [waitEmbed] }).then(msg => {setTimeout(() => msg.delete(), 1000)});
 

@@ -43,7 +43,7 @@
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
 		"additionalAliases": [],
-		"whitelistedRolesForAnonynmousMode": []
+		"whitelistedRolesToAnonynmousMode": []
 	},
 	"edit": {
 		"enabled": true,
@@ -277,7 +277,7 @@
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
 		"additionalAliases": [],
-		"rolesThatCanRemoveAnyWarn": []
+		"whitelistedRolesToRemoveAnyWarn": []
 	},
 	"roleinfo": {
 		"enabled": true,
@@ -350,7 +350,7 @@
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
 		"additionalAliases": [],
-		"rolesThatCanUseUnlimitedTime": []
+		"whitelistedRolesToUseUnlimitedTime": []
 	},
 	"softban": {
 		"enabled": true,
@@ -387,7 +387,7 @@
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
 		"additionalAliases": [],
-		"rolesThatCanUseUnlimitedTime": []
+		"whitelistedRolesToUseUnlimitedTime": []
 	},
 	"unban": {
 		"enabled": true,

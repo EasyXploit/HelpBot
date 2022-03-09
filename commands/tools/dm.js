@@ -6,14 +6,14 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.main.prefix}dm (@usuario | id) (author | anonymous) (embed | normal) (mensaje a enviar)\`.`);
         
-        if (args.length < 4 || (args[0] !== 'autor' && args[0] !== 'anonimo') || (args[2] !== 'embed' && args[2] !== 'normal')) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
+        if (args.length < 4 || (args[1] !== 'author' && args[1] !== 'anonymous') || (args[2] !== 'embed' && args[2] !== 'normal')) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
             
         let noUserEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`);
         
         //Busca y almacena el miembro
-        const member = await client.functions.fetchMember(message.guild, args[1]);
+        const member = await client.functions.fetchMember(message.guild, args[0]);
 
         let noBotsEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
@@ -24,12 +24,12 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Devuelve un error si el objetivo es un bot
         if (member.user.bot) return message.channel.send({ embeds: [noBotsEmbed] });
 
-        let mode = args[0];
+        let mode = args[1];
         let type = args[2];
         let body = args.slice(3).join(' ');
         
         switch (mode) {
-            case 'autor':
+            case 'author':
                 if (type === 'embed') {
                     let resultMessage = new client.MessageEmbed()
                         .setAuthor({ name: `Mensaje de ${message.author.tag}`, iconURL: message.author.avatarURL() })
@@ -41,7 +41,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                     await member.user.send({ content: `**Mensaje de ${message.author.tag}:**\n${body}` });
                 }
                 break;
-            case 'anonimo':
+            case 'anonymous':
                 let authorized;
 
                 //Para cada ID de rol de la lista blanca

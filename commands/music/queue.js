@@ -49,7 +49,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                     let title = reproductionQueue.tracks[id].meta.title; //Almacena el título
                     title = title.replace('[', '').replace('[', '').replace(']', '').replace('|', '').replace('(', '').replace(')', '').replace('_', '').replace('*', ''); //Elimina signos que alteren la forma en la que se muestra la entrada
                     if (title.length > 40) title = `${title.slice(0, 40)} ...`; //Acorta el título si es demasiado largo
-                    queueList = `${queueList}\`${id}.\` [${title}](${reproductionQueue.tracks[id].meta.location}) | \`${client.functions.msToHHMMSS(reproductionQueue.tracks[id].meta.length / 1000)}\` | <@${reproductionQueue.tracks[id].requesterId}>\n`;
+                    queueList = `${queueList}\`${id}.\` [${title}](${reproductionQueue.tracks[id].meta.location}) | \`${client.functions.msToHHMMSS(reproductionQueue.tracks[id].meta.length)}\` | <@${reproductionQueue.tracks[id].requesterId}>\n`;
                 };
                 
                 //Añade el campo al embed

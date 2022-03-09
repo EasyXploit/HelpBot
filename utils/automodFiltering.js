@@ -47,7 +47,7 @@ async function links(message) {
 };
 
 //Emojis masivos
-async function massEmoji(message) {
+async function massEmojis(message) {
 
     function fancyCount(str){
         return Array.from(str.split(/[\ufe00-\ufe0f]/).join('')).length;
@@ -57,7 +57,7 @@ async function massEmoji(message) {
     let serverEmojis = message.content.match(/<:.+?:\d+>/g);
     if (serverEmojis) serverEmojis = serverEmojis.length;
 
-    if ((((fancyCount(message.content) - fancyCount(stringWithoutUTFEmojis))) + serverEmojis) > filters.massEmoji.quantity) return true;
+    if ((((fancyCount(message.content) - fancyCount(stringWithoutUTFEmojis))) + serverEmojis) > filters.massEmojis.quantity) return true;
 };
 
 //Menciones masivas
@@ -68,10 +68,10 @@ async function massMentions(message) {
 };
 
 //Spoilers masivos
-async function massiveSpoilers(message) {
+async function massSpoilers(message) {
 
     let count = (message.content.match(/\|\|.*?\|\|/g) || []).length;
-    if (count > filters.massiveSpoilers.quantity) return true;
+    if (count > filters.massSpoilers.quantity) return true;
 };
 
 //Texto repetitivo
@@ -89,8 +89,8 @@ module.exports = {
     invites : invites,
     uppercase : uppercase,
     links : links,
-    massEmoji: massEmoji,
+    massEmojis: massEmojis,
     massMentions: massMentions,
-    massiveSpoilers: massiveSpoilers,
+    massSpoilers: massSpoilers,
     repeatedText: repeatedText
 }

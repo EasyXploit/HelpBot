@@ -28,7 +28,7 @@
         "bypassRoles": [],
         "bypassChannels": []
     },
-    "massEmoji": {
+    "massEmojis": {
         "status": false,
         "action": 3,
         "reason": "Too many emojis",
@@ -44,7 +44,7 @@
         "bypassChannels": [],
         "quantity": 5
     },
-    "massiveSpoilers": {
+    "massSpoilers": {
         "status": false,
         "action": 3,
         "reason": "Too many spoilers",

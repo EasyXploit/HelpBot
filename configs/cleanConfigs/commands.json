@@ -325,15 +325,6 @@
 		"blacklistedRoles": [],
 		"additionalAliases": []
 	},
-	"setup": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": [],
-		"blacklistedRoles": [],
-		"additionalAliases": []
-	},
 	"shuffle": {
 		"enabled": true,
 		"deleteInvocationCommand": false,

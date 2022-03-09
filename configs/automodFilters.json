@@ -19,6 +19,7 @@
         "reason": "Too many capital letters",
         "bypassRoles": [],
         "bypassChannels": [],
+        "percentage": 75,
         "minimumLength": 50
     },
     "links": {

@@ -36,7 +36,7 @@ async function invites(message) {
 async function uppercase(message) {
 
     if (message.content.length < filters.uppercase.minimumLength) return false;
-    if (message.content.replace(/[^A-Z]/g, '').length > (message.content.length / 100) * 75) return true;
+    if (message.content.replace(/[^A-Z]/g, '').length > (message.content.length / 100) * filters.uppercase.percentage) return true;
 };
 
 //Enlaces

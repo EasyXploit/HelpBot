@@ -1,35 +1,35 @@
 {
     "swearWords": {
-        "status": true,
+        "status": false,
         "action": 3,
         "reason": "Swear words",
         "bypassRoles": [],
         "bypassChannels": []
     },
     "invites": {
-        "status": true,
+        "status": false,
         "action": 3,
         "reason": "Invitations not allowed",
         "bypassRoles": [],
         "bypassChannels": []
     },
     "uppercase": {
-        "status": true,
+        "status": false,
         "action": 3,
         "reason": "Too many capital letters",
         "bypassRoles": [],
         "bypassChannels": [],
-        "minimumLength": 30
+        "minimumLength": 50
     },
     "links": {
         "status": false,
-        "action": 1,
+        "action": 3,
         "reason": "Links not allowed",
         "bypassRoles": [],
         "bypassChannels": []
     },
     "massEmoji": {
-        "status": true,
+        "status": false,
         "action": 3,
         "reason": "Too many emojis",
         "bypassRoles": [],
@@ -37,7 +37,7 @@
         "quantity": 20
     },
     "massMentions": {
-        "status": true,
+        "status": false,
         "action": 3,
         "reason": "Too many mentions",
         "bypassRoles": [],
@@ -45,7 +45,7 @@
         "quantity": 5
     },
     "massiveSpoilers": {
-        "status": true,
+        "status": false,
         "action": 3,
         "reason": "Too many spoilers",
         "bypassRoles": [],
@@ -53,7 +53,7 @@
         "quantity": 10
     },
     "repeatedText": {
-        "status": true,
+        "status": false,
         "action": 3,
         "reason": "Repetitive text",
         "bypassRoles": [],

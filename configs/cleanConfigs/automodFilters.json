@@ -2,7 +2,7 @@
     "swearWords": {
         "status": true,
         "action": 3,
-        "reason": "Palabras malsonantes",
+        "reason": "Swear words",
         "bypassRoles": [],
         "bypassChannels": []
     },
@@ -31,7 +31,7 @@
     "massEmoji": {
         "status": true,
         "action": 3,
-        "reason": "Demasiados emojis",
+        "reason": "Too many emojis",
         "bypassRoles": [],
         "bypassChannels": [],
         "quantity": 20

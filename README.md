@@ -5,8 +5,10 @@
   </p>
   <br />
   <p>
-    <a href="https://discord.gg/BHkVhjJaCr"><img src="https://img.shields.io/discord/374945492133740544?color=5865F2&label=Discord" alt="Discord server" /></a>
-    <a href="https://www.npmjs.com/package/discord.js"><img src="https://img.shields.io/github/downloads/EasyXploit/HelpBot/total" alt="Downloads" /></a>
+    <a href="https://discord.gg/BHkVhjJaCr"><img src="https://img.shields.io/discord/374945492133740544?color=FFC857&label=My%20Discord%20server" alt="Discord server" /></a>
+    <a href="https://github.com/EasyXploit/HelpBot/releases"><img src="https://img.shields.io/github/downloads/EasyXploit/HelpBot/total?color=%23FFC857&label=Downloads" alt="Downloads" /></a>
+    <a href="https://github.com/EasyXploit/HelpBot/#license"><img src="https://img.shields.io/badge/License-MIT-FFC857" alt="License" /></a>
+    <a href="https://github.com/EasyXploit/HelpBot/blob/master/package.json"><img src="https://img.shields.io/github/package-json/v/EasyXploit/HelpBot?color=FFC857&label=Version" alt="Version" /></a>
 </a>
   </p>
 </div>

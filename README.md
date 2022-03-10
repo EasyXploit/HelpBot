@@ -1,7 +1,7 @@
 <div align="center">
   <br />
   <p>
-    <a href="https://github.com/EasyXploit/HelpBot"><img src="https://github.com/EasyXploit/HelpBot/blob/master/resources/images/banner.png?raw=true" width="546" alt="discord.js" /></a>
+    <a href="https://github.com/EasyXploit/HelpBot"><img src="https://github.com/EasyXploit/HelpBot/blob/master/resources/images/banner.png?raw=true" width="546" alt="banner" /></a>
   </p>
   <br />
   <p>

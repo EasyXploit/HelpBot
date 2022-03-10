@@ -3,7 +3,7 @@ const packageConfig = require('../package.json');
 
 module.exports = {
     splash: logo({
-        name: packageConfig.name,
+        name: packageConfig.normalizedName,
         font: 'Speed',
         lineChars: 15,
         padding: 5,

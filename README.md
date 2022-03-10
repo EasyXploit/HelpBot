@@ -38,10 +38,6 @@ In the [wiki](https://github.com/EasyXploit/HelpBot/wiki) of this repository, yo
 [GO TO THE START GUIDE](https://github.com/EasyXploit/HelpBot/wiki/Starting)<br />
 <br />
 
-## Help
-In case you have any questions about how to use the bot, or anything else related to this repository, you can make use of the "[Discussions](https://github.com/EasyXploit/HelpBot/discussions)" section, and we will try to resolve your concerns as soon as possible. Also, because this repository will not receive any more updates (unless it is really necessary), the "Issues" tab is not enabled.<br />
-<br />
-
 ## Acknowledgments
 * Thanks to my programming teacher María José Lozano, for teaching me the basics of JavaScript and how to think like a programmer. Without her lessons, I probably would not have started this project.
 * Thanks to the community of [Discord.js](https://github.com/discordjs/discord.js), who have always been there to answer all my questions about the library, and that they constantly work to cover the 100% of the API.

@@ -1,4 +1,6 @@
 {
+    "rewardMessages": true,
+    "rewardVoice": true,
     "nonXPRoles": [],
     "nonXPChannels": [],
     "XPGainInterval": 60000

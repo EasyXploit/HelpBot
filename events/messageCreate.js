@@ -100,7 +100,7 @@ exports.run = async (message, client) => {
     })();
 
     //Llama al manejador de leveling
-    if (!message.content.startsWith(client.config.main.prefix) && !client.config.xp.nonXPChannels.includes(message.channel.id)) return await client.functions.addXP(message.member, message.guild, 'message', message.channel);
+    if (client.config.xp.rewardMessages && !message.content.startsWith(client.config.main.prefix) && !client.config.xp.nonXPChannels.includes(message.channel.id)) return await client.functions.addXP(message.member, message.guild, 'message', message.channel);
 
     // Función para eliminar el prefijo, extraer el comando y sus argumentos (en caso de tenerlos)
     const args = message.content.slice(client.config.main.prefix.length).trim().split(/ +/g);

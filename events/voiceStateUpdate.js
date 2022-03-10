@@ -1,6 +1,10 @@
 exports.run = async (oldState, newState, client) => {
     
     try {
+
+        //Devuelve si no están habilitadas las recompensas de XP
+        if (!client.config.xp.rewardVoice) return;
+
         async function endVoiceTime() {
             //Si el timestamp actual es superior a los MS de intervalo de ganancia de XP configurado, le asigna XP
             if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].last_xpReward + client.config.xp.XPGainInterval)) {

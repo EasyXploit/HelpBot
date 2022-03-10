@@ -51,41 +51,43 @@ exports.run = async (client) => {
         //Carga de intervalos
         require('./intervals.js').run(client);
 
-        //Carga de estados de voz
-        let voiceStates = client.homeGuild.voiceStates.cache;
-        voiceStates.forEach(async voiceState => {
+        //Carga de estados de voz (si se permite)
+        if (client.config.xp.rewardVoice) {
+            let voiceStates = client.homeGuild.voiceStates.cache;
+            voiceStates.forEach(async voiceState => {
 
-            //No sigue si es un bot, el canal de AFK, un canal prohibido o un rol prohibido
-            const member = await client.functions.fetchMember(voiceState.guild, voiceState.id);
-            if (!member) return;
+                //No sigue si es un bot, el canal de AFK, un canal prohibido o un rol prohibido
+                const member = await client.functions.fetchMember(voiceState.guild, voiceState.id);
+                if (!member) return;
 
-            let nonXPRole;
-            for (let i = 0; i < client.config.xp.nonXPRoles.length; i++) {
-                if (await member.roles.cache.find(r => r.id === client.config.xp.nonXPRoles[i])) {
-                    nonXPRole = true;
-                    break;
+                let nonXPRole;
+                for (let i = 0; i < client.config.xp.nonXPRoles.length; i++) {
+                    if (await member.roles.cache.find(r => r.id === client.config.xp.nonXPRoles[i])) {
+                        nonXPRole = true;
+                        break;
+                    };
                 };
-            };
 
-            if (member.user.bot || client.config.xp.nonXPChannels.includes(voiceState.channelId) || voiceState.channelId === voiceState.guild.afkChannel.id || nonXPRole) {
+                if (member.user.bot || client.config.xp.nonXPChannels.includes(voiceState.channelId) || voiceState.channelId === voiceState.guild.afkChannel.id || nonXPRole) {
+                    if (client.usersVoiceStates[voiceState.id]) {
+                        //Borra el registro del miembro que ha dejado el canal de voz
+                        delete client.usersVoiceStates[voiceState.id];
+                    };
+                    return;
+                };
+
                 if (client.usersVoiceStates[voiceState.id]) {
-                    //Borra el registro del miembro que ha dejado el canal de voz
-                    delete client.usersVoiceStates[voiceState.id];
+                    client.usersVoiceStates[voiceState.id].channelId = voiceState.channelId
+                } else  {
+                    client.usersVoiceStates[voiceState.id] = {
+                        guild: voiceState.guild.id,
+                        channelID: voiceState.channelId,
+                        last_xpReward: Date.now()
+                    };
                 };
-                return;
-            };
-
-            if (client.usersVoiceStates[voiceState.id]) {
-                client.usersVoiceStates[voiceState.id].channelId = voiceState.channelId
-            } else  {
-                client.usersVoiceStates[voiceState.id] = {
-                    guild: voiceState.guild.id,
-                    channelID: voiceState.channelId,
-                    last_xpReward: Date.now()
-                };
-            };
-        });
-        console.log(' - [OK] Carga de estados de voz.');
+            });
+            console.log(' - [OK] Carga de estados de voz.');
+        };
 
         //Auditoría
         console.log(`\n 》${client.user.username} iniciado correctamente`);

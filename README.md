@@ -43,8 +43,8 @@ In case you have any questions about how to use the bot, or anything else relate
 <br />
 
 ## Acknowledgments
-* Thanks to my programming teacher María José Lozano, for teaching me the basics of JavaScript and how to think like a programmer.
-* Thanks to the community of [Discord.js](https://github.com/discordjs/discord.js), a wrapper that allows you to interact with the Discord API very easily.
+* Thanks to my programming teacher María José Lozano, for teaching me the basics of JavaScript and how to think like a programmer. Without her lessons, I probably would not have started this project.
+* Thanks to the community of [Discord.js](https://github.com/discordjs/discord.js), who have always been there to answer all my questions about the library, and that they constantly work to cover the 100% of the API.
 <br />
 
 ## License

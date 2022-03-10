@@ -1,35 +1,71 @@
-# HelpBot
-HelpBot es un bot de Discord diseñado para la gestión automatizada de comunidades.
+<div align="center">
+  <br />
+  <p>
+    <a href="https://github.com/EasyXploit/HelpBot"><img src="https://github.com/EasyXploit/HelpBot/blob/master/resources/images/banner.png?raw=true" width="546" alt="discord.js" /></a>
+  </p>
+  <br />
+  <p>
+    <a href="https://discord.gg/BHkVhjJaCr"><img src="https://img.shields.io/discord/374945492133740544?color=5865F2&label=Discord" alt="Discord server" /></a>
+    <a href="https://www.npmjs.com/package/discord.js"><img src="https://img.shields.io/github/downloads/EasyXploit/HelpBot/total" alt="Downloads" /></a>
+</a>
+  </p>
+</div>
 
-## Programado con
-* [JS](https://developer.mozilla.org/es/docs/Learn/JavaScript/First_steps/Qu%C3%A9_es_JavaScript) - Este bot fue programado usando únicamente JavaScript.
-* [Node.js](https://nodejs.org) - Tiempo de ejecución de JavaScript asincrónico controlado por eventos.
-* [Discord.js](https://discord.js.org) - Permite interactuar con la API de Discord.
-
-
-## Uso
-El método de uso del bot está pendiente de ser descrito. La sintaxis de los comandos y la configuración será definida más adelante:
-
-```
-La sintaxis y la configuración se describirán aquí.
-```
-
-
-## Versionado
-Usamos [SemVer](http://semver.org/) para el control de versiones. Para conocer las versiones disponibles, consulte las [etiquetas de este repositorio](https://github.com/EasyXploit/HelpBot/tags).
-
-
-## Autores
-* **Daniel Perales Mauriz** - *Trabajo principal* - [EasyXploit](https://github.com/EasyXploit)
-
-Consulte también la lista de [contribuyentes](https://github.com/EasyXploit/HelpBot/contributors) que participaron en este proyecto.
+## About
+[**HelpBot**](https://github.com/EasyXploit/HelpBot) is a [Discord](https://discord.com/) bot designed to run on a [Node.js](https://nodejs.org) server, whose main functions are automated community moderation, music reproduction, leveling and much more!<br /><br />
+This project was born out of curiosity, as a way to give form to the knowledge about [JavaScipt](https://developer.mozilla.org/en-US/docs/Web/JavaScript) that I acquired during a Professional Formation course that I was doing, but that over time has made me discover that I am passionate about programming.<br /><br />
+Given that initially it was a project with quite unstable knowledge bases, the code has undergone several refactorings until reaching this point, from which I have decided that I'm going to stop supporting this repository, make it [open source](https://opensource.com/) under an [MIT license](https://en.wikipedia.org/wiki/MIT_License), and continue with other related projects.<br /><br />
+Due to this, the bot has **NOT** been designed from the beginning to work in more than one Discord community ([guild](https://discord.com/developers/docs/resources/guild)) at the same time, so the bot does not have a database system, and instead works with [JSON](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON) files.<br /><br />
+Likewise, although the [wrapper](https://developer.mozilla.org/en-US/docs/Glossary/Wrapper) used in this repository to interact with the Discord API, [Discord.js](https://discord.js.org/#/), is the latest version available at the time of writing this article (and therefore compatible with the [API at version 9](https://discord.com/developers/docs/reference#api-versioning-api-versions)), the bot is not able to use the new [interactions](https://discord.com/developers/docs/interactions/receiving-and-responding) system.<br /><br />
 
 
-## Licencia
-A fecha de publicación de este documento, este proyecto no tiene licencia, por lo que se aplican las leyes de copyright predeterminadas, lo que significa que conservamos todos los derechos de nuestro código fuente y que nadie puede reproducir, distribuir o crear trabajos derivados de este.
+> **NOTICE:**<br />
+The bot code is <ins>excessively full of comments</ins> (in Spanish), because it is a learning project and my goal in doing this was to understand at all times what I was programming, and to easily recover the thread.
+<br />
 
+### Features
+|                              |                             |                                              |                               |
+|:---:|:---:|:---:|:---:|
+| Swear words filtering        | Excesive mentions filtering | XP & role rewards by activity (text & voice) | Preprogrammed scripts support |
+| Server inviets filtering     | Excesive spoilers filtering | Embed formatting tools                       | Message purging tool          |
+| Excesive uppercase filtering | Repetitive text filtering   | Infractions history                          | YouTube music player          |
+| Links filtering              | Automatic penalty dispenser | Invite generation tool                       | Local .mp3 tracks player      |
+| Excesive emojis filtering    | Manual moderation commands  | Role, user and server info. showing          | Polls maker                   |
+<br />
 
-## Agradecimientos
-* Gracias a mi profesora de programación, María José Lozano por enseñarme los conceptos básicos de JavaScript y a pensar como un programador.
-* Gracias a Amish Shah, por crear mi biblioteca favorita: Discord.js, un módulo que te permite interactuar con la API de Discord muy fácilmente.
-* Gracias a toda la comunidad de programadores de Discord.js que hace que proyectos de este tipo puedan salir adelante.
+## Usage
+In the [wiki](https://github.com/EasyXploit/HelpBot/wiki) of this repository, you have a guide available where everything about this bot is explained, as well as an initial guide that gives instructions on how to prepare the prerequisites for running the bot, how to download the source code, how to create an account for the bot, how to do the basic configuration and how to run it.<br /><br />
+[GO TO THE START GUIDE](https://github.com/EasyXploit/HelpBot/wiki/Starting)<br />
+<br />
+
+## Help
+In case you have any questions about how to use the bot, or anything else related to this repository, you can make use of the "[Discussions](https://github.com/EasyXploit/HelpBot/discussions)" section, and we will try to resolve your concerns as soon as possible. Also, because this repository will not receive any more updates (unless it is really necessary), the "Issues" tab is not enabled.<br />
+<br />
+
+## Acknowledgments
+* Thanks to my programming teacher María José Lozano, for teaching me the basics of JavaScript and how to think like a programmer.
+* Thanks to the community of [Discord.js](https://github.com/discordjs/discord.js), a wrapper that allows you to interact with the Discord API very easily.
+<br />
+
+## License
+MIT License
+
+Copyright (c) 2022 Daniel Perales Mauriz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

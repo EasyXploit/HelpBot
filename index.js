@@ -32,7 +32,6 @@ client.MessageAttachment = discord.MessageAttachment;
 
 //Dependencias útiles globales
 client.fs = require('fs');                                          //Acceso al sistema de archivos
-client.path = require('path');                                      //Para generar rutas
 
 //Configuraciones globales
 client.config = {

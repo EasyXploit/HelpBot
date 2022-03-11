@@ -8,15 +8,6 @@
 		"blacklistedRoles": [],
 		"additionalAliases": []
 	},
-	"broadcast": {
-		"enabled": true,
-		"deleteInvocationCommand": false,
-		"whitelistedChannels": [],
-		"blacklistedChannels": [],
-		"whitelistedRoles": [],
-		"blacklistedRoles": [],
-		"additionalAliases": []
-	},
 	"clear": {
 		"enabled": true,
 		"deleteInvocationCommand": false,

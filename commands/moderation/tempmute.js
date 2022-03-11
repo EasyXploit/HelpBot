@@ -88,10 +88,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
         let authorized;
 
         //Para cada ID de rol de la lista blanca
-        for (let i = 0; i < commandConfig.whitelistedRolesToUseUnlimitedTime.length; i++) {
+        for (let i = 0; i < commandConfig.unlimitedTime.length; i++) {
 
             //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-            if (message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.whitelistedRolesToUseUnlimitedTime[i])) {
+            if (message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.unlimitedTime[i])) {
                 authorized = true;
                 break;
             };

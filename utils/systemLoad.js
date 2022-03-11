@@ -91,6 +91,6 @@ exports.run = async (client) => {
 
         //Auditoría
         console.log(`\n 》${client.user.username} iniciado correctamente`);
-        if (client.debuggingChannel) client.debuggingChannel.send({ content: `${client.user.username} iniciado correctamente [<@${client.homeGuild.ownerId}>]` }).then(msg => {setTimeout(() => msg.delete(), 5000)});
+        if (client.debuggingChannel && client.config.main.loadMention) client.debuggingChannel.send({ content: `${client.user.username} iniciado correctamente [<@${client.homeGuild.ownerId}>]` }).then(msg => {setTimeout(() => msg.delete(), 5000)});
     });
 };

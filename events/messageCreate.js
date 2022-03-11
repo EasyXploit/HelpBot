@@ -72,6 +72,9 @@ exports.run = async (message, client) => {
         return;
     };
 
+    //Filtros (auto-moderación)
+    const automodFiltering = require('../utils/automodFiltering.js');
+
     //FILTROS DE AUTO-MODERACIÓN
     (async () => {
         for (var key in client.config.automodFilters) {
@@ -91,7 +94,7 @@ exports.run = async (message, client) => {
                         if (message.member.roles.cache.has(bypassRoles[i])) return;
                     }
 
-                    await client.automodFiltering[key](message).then(match => {
+                    await automodFiltering[key](message).then(match => {
                         if (match) require('../utils/infractionsHandler.js').run(client, message, message.guild, message.member, client.config.automodFilters[key].reason, client.config.automodFilters[key].action, client.user, message.content);
                     });
                 }

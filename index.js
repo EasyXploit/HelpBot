@@ -30,9 +30,13 @@ console.log('- ¡Cliente iniciado correctamente!\n');
 client.MessageEmbed = discord.MessageEmbed;
 client.MessageAttachment = discord.MessageAttachment;
 
+//Dependencias útiles globales
+client.fs = require('fs');                                          //Acceso al sistema de archivos
+client.path = require('path');                                      //Para generar rutas
+
 //Configuraciones globales
 client.config = {
-    token: require('./configs/token.json'),                       //Tokens de autenticación
+    token: require('./configs/token.json'),                     //Tokens de autenticación
     main: require('./configs/main.json'),                       //Configuraciones generales
     automodFilters: require('./configs/automodFilters.json'),   //Filtros de moderación automática
     automodRules: require('./configs/automodRules.json'),       //Reglas de moderación automática
@@ -44,10 +48,6 @@ client.config = {
     xp: require('./configs/xp.json'),                           //Configuración de XP
     levelingRewards: require('./configs/levelingRewards.json'), //Configuración de niveles
 };
-
-//Dependencias globales
-client.fs = require('fs');                                          //Acceso al sistema de archivos
-client.automodFiltering = require('./utils/automodFiltering.js');   //Filtros (auto-moderación)
 
 //Datos de usuarios
 client.usersVoiceStates = {};           //Cambios de estado de voz de los usuarios

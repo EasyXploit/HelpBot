@@ -77,9 +77,10 @@
 		"deleteInvocationCommand": false,
 		"whitelistedChannels": [],
 		"blacklistedChannels": [],
-		"whitelistedRoles": [],
+		"whitelistedRoles": ["everyone"],
 		"blacklistedRoles": [],
-		"additionalAliases": []
+		"additionalAliases": [],
+		"canSeeAny": []
 	},
 	"invitation": {
 		"enabled": true,

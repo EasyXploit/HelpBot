@@ -369,7 +369,9 @@
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
-		"additionalAliases": []
+		"additionalAliases": [],
+		"unlimitedTime": [],
+		"maxRegularTime": 86400000
 	},
 	"tempmute": {
 		"enabled": true,

@@ -95,6 +95,27 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 break;
         }
 
+        let authorized;
+
+        //Para cada ID de rol de la lista blanca
+        for (let i = 0; i < commandConfig.unlimitedTime.length; i++) {
+
+            //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
+            if (message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.unlimitedTime[i])) {
+                authorized = true;
+                break;
+            };
+        };
+
+        //Si no se permitió la ejecución, manda un mensaje de error
+        if (!authorized && milliseconds > commandConfig.maxRegularTime) {
+            let maxTimeEmbed = new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryError)
+                .setDescription(`${client.customEmojis.redTick} Solo puedes silenciar un máximo de \`${client.functions.msToHHMMSS(commandConfig.maxRegularTime)}\``);
+
+            return message.channel.send({ embeds: [maxTimeEmbed] });
+        };
+
         //Genera un mensaje de confirmación
         let successEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.warning)

@@ -124,7 +124,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         if (message.author.id !== client.homeGuild.ownerId) {
             let undefinedReasoneEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} Los moderadores deben adjuntar una razón`);
+                .setDescription(`${client.customEmojis.redTick} Debes adjuntar una razón`);
 
             if (reason === 'Indefinida' && !authorized) return message.channel.send({ embeds: [undefinedReasoneEmbed] });
         };

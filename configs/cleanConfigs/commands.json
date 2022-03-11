@@ -409,7 +409,8 @@
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
-		"additionalAliases": []
+		"additionalAliases": [],
+		"canSeeAny": []
 	},
 	"warn": {
 		"enabled": true,

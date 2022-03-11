@@ -13,6 +13,29 @@ exports.run = async (client, message, args, command, commandConfig) => {
             ]
         });
 
+        //Comprueba, si corresponde, que el miembro tenga permiso para ver los datos de otros
+        if (message.member.id !== member.id) {
+
+            //Variable para saber si está autorizado
+            let authorized;
+
+            //Para cada ID de rol de la lista blanca
+            for (let i = 0; i < commandConfig.canSeeAny.length; i++) {
+
+                //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
+                if (message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.canSeeAny[i])) {
+                    authorized = true;
+                    break;
+                };
+            };
+
+            //Si no se permitió la ejecución, manda un mensaje de error
+            if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`)]
+            }).then(msg => {setTimeout(() => msg.delete(), 5000)});
+        };
+
         //Comprueba los status de los que dispone el miembro
         let status = [];
         if (member.id === message.guild.ownerId) status.push('Propietario');

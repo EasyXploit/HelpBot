@@ -98,10 +98,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
         };
 
         //Si no se permitió la ejecución, manda un mensaje de error
-        if (!authorized && milliseconds > 86400000) {
+        if (!authorized && milliseconds > commandConfig.maxRegularTime) {
             let maxTimeEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} Los moderadores solo pueden silenciar un máximo de 1 día`);
+                .setDescription(`${client.customEmojis.redTick} Solo puedes silenciar un máximo de \`${client.functions.msToHHMMSS(commandConfig.maxRegularTime)}\`.`);
 
             return message.channel.send({ embeds: [maxTimeEmbed] });
         };

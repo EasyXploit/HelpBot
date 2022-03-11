@@ -380,6 +380,7 @@
 		"blacklistedRoles": [],
 		"additionalAliases": [],
 		"unlimitedTime": [],
+		"maxRegularTime": 86400000
 	},
 	"unban": {
 		"enabled": true,

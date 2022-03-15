@@ -188,13 +188,14 @@ exports.run = (client) => {
                         .setAuthor({ name: '¡Subiste de nivel!', iconURL: member.user.displayAvatarURL({dynamic: true}) })
                         .setDescription(`Enhorabuena <@${member.id}>, has subido al nivel **${userStats.level}**`);
 
-                    //Manda el mensaje de subida de nivel
-                    if (mode === 'message') channel.send({ embeds: [levelUpEmbed] });
-                    if (mode === 'voice') member.send({ embeds: [levelUpEmbed] });
+                    //Manda el mensaje de subida de nivel, si se ha configurado
+                    if (mode === 'message' && client.config.xp.notifylevelUpOnChat) channel.send({ embeds: [levelUpEmbed] });
+                    if (mode === 'voice' && client.config.xp.notifylevelUpOnVoice) member.send({ embeds: [levelUpEmbed] });
+                    
                 };
 
                 //Guarda las nuevas estadísticas del miembro
-                client.fs.writeFile(`./databases/stats.json`, JSON.stringify(client.stats, null, 4), async err => {
+                client.fs.writeFile('./databases/stats.json', JSON.stringify(client.stats, null, 4), async err => {
                     if (err) throw err;
                 });
             };

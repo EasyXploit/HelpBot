@@ -140,11 +140,11 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .addField(`Razón`, reason, true)
             .addField(`Duración`, args[1], true);
         
-        client.bans[user.id] = {
+        client.db.bans[user.id] = {
             time: Date.now() + milliseconds
         }
 
-        client.fs.writeFile(`./databases/bans.json`, JSON.stringify(client.bans, null, 4), async err => {
+        client.fs.writeFile(`./databases/bans.json`, JSON.stringify(client.db.bans, null, 4), async err => {
             if (err) throw err;
 
             if (member) await user.send({ embeds: [toDMEmbed] });

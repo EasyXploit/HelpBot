@@ -48,9 +48,9 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         await member.roles.remove(mutedRole);
         
-        if (client.mutes.hasOwnProperty(member.id)) {
-            delete client.mutes[member.id];
-            await client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.mutes), async err => {
+        if (client.db.mutes.hasOwnProperty(member.id)) {
+            delete client.db.mutes[member.id];
+            await client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.db.mutes), async err => {
                 if (err) throw err;
             });
         };

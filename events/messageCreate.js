@@ -32,7 +32,7 @@ exports.run = async (message, client) => {
                 const member = await client.functions.fetchMember(client.homeGuild, message.author.id);
 
                 if ((member.joinedTimestamp + client.config.automodFilters.newMemberTimeDelimiter) < Date.now()) {
-                    client.bans[member.id] = {
+                    client.db.bans[member.id] = {
                         time: Date.now() + client.config.automodFilters.newSpammerMemberBanDuration
                     };
 

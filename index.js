@@ -30,35 +30,35 @@ console.log('- ¡Cliente iniciado correctamente!\n');
 client.MessageEmbed = discord.MessageEmbed;
 client.MessageAttachment = discord.MessageAttachment;
 
-//Dependencias útiles globales
-client.fs = require('fs');                                          //Acceso al sistema de archivos
+//Dependencia de acceso al sistema de archivos
+client.fs = require('fs');
 
-//Configuraciones globales
-client.config = {
-    token: require('./configs/token.json'),                     //Tokens de autenticación
-    main: require('./configs/main.json'),                       //Configuraciones generales
-    automodFilters: require('./configs/automodFilters.json'),   //Filtros de moderación automática
-    automodRules: require('./configs/automodRules.json'),       //Reglas de moderación automática
-    bannedWords: require('./configs/bannedWords.json'),         //Listado de palabras prohibidas
-    commands: require('./configs/commands.json'),               //Configuración de comandos
-    colors: require('./configs/colors.json'),                   //Configuración de colores globales
-    presence: require('./configs/presence.json'),               //Configuración de presencia
-    music: require('./configs/music.json'),                     //Configuración de música
-    xp: require('./configs/xp.json'),                           //Configuración de XP
-    levelingRewards: require('./configs/levelingRewards.json'), //Configuración de niveles
-};
+//Carga los archivos de configuración y bases de datos
+const configFiles = client.fs.readdirSync('./configs/', { withFileTypes: true });
+const databaseFiles = client.fs.readdirSync('./databases/', { withFileTypes: true });
+
+//Crea objetos para almacenar las configuraciones y bases de datos
+client.config = {};
+client.db = {};
+
+//Por cada uno de los archivos de config.
+configFiles.forEach(async file => {
+
+    //Almacena la configuración en memoria
+    client.config[file.name.replace('.json', '')] = require(`./configs/${file.name}`);
+});
+
+//Por cada uno de los archivos de BD
+databaseFiles.forEach(async file => {
+
+    //Almacena la base de datos en memoria
+    client.db[file.name.replace('.json', '')] = JSON.parse(client.fs.readFileSync(`./databases/${file.name}`));
+});
 
 //Datos de usuarios
 client.usersVoiceStates = {};           //Cambios de estado de voz de los usuarios
 client.cooldownedUsers = new Set();     //Cooldowns de los usuarios
 client.reproductionQueues = {};         //Almacena la cola de reproducción y otros datos
-
-//Bases de datos (mediante ficheros)
-client.bans = JSON.parse(client.fs.readFileSync('./databases/bans.json', 'utf-8'));                     //Usuarios baneados temporalmente
-client.mutes = JSON.parse(client.fs.readFileSync('./databases/mutes.json', 'utf-8'));                   //Usuarios silenciados temporalmente
-client.polls = JSON.parse(client.fs.readFileSync('./databases/polls.json', 'utf-8'));                   //Encuestas en marcha
-client.stats = JSON.parse(client.fs.readFileSync('./databases/stats.json', 'utf-8'));                   //Estadísticas de los miembros
-client.warns = JSON.parse(client.fs.readFileSync('./databases/warns.json', 'utf-8'));                   //Advertencias de los usuarios
 
 //Creación de colecciones
 ['commands', 'aliases'].forEach(x => client[x] = new discord.Collection());

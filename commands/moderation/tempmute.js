@@ -146,11 +146,11 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .addField('Duración', args[1], true);
 
         //Guarda en la base de datos
-        client.mutes[member.id] = {
+        client.db.mutes[member.id] = {
             time: Date.now() + milliseconds
         };
 
-        client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
+        client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
             if (err) throw err;
 
             //Silencia al miembro

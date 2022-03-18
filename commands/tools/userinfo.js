@@ -63,8 +63,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         //Comprueba si el miembro está silenciado
         let sanction;
-        if (client.mutes[member.id]) {
-            sanction = `Silenciado hasta ${new Date(client.mutes[member.id].time).toLocaleString()}`;
+        if (client.db.mutes[member.id]) {
+            sanction = `Silenciado hasta ${new Date(client.db.mutes[member.id].time).toLocaleString()}`;
         } else if (member.roles.cache.has(mutedRole.id)) {
             sanction = 'Silenciado indefinidamente';
         };
@@ -81,7 +81,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .addField('👑 Estatus', status.join(', '), true)
             .addField('💎 Nitro Booster', member.premiumSince ? `Desde ${member.premiumSince.toLocaleString()}` : 'No', true)
             .addField('🎖 Rol más alto', member.roles.highest.name, true)
-            .addField('⚖ Infracciones', client.warns[member.id] ? (Object.keys(client.warns[member.id]).length).toString() : '0', true)
+            .addField('⚖ Infracciones', client.db.warns[member.id] ? (Object.keys(client.db.warns[member.id]).length).toString() : '0', true)
             .addField('📓 Reglas', member.pending ? 'Aceptación pendiente' : 'Aceptadas', true)
             .addField('⚠️ Sanción actual', sanction || 'Ninguna', true)
             .addField('👮 Permisos', `\`\`\`${translatedPermissions.join(', ')}\`\`\``);

@@ -49,7 +49,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         };
 
         //Comprueba si el miembro tiene warns
-        if (!client.warns[member.id]) return message.channel.send({ embeds: [noWarnsEmbed] });
+        if (!client.db.warns[member.id]) return message.channel.send({ embeds: [noWarnsEmbed] });
 
         let successEmbed, loggingEmbed, toDMEmbed;
 
@@ -94,15 +94,15 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .addField('Miembro:', member.user.tag, true)
                 .addField('Razón:', reason, true);
 
-            delete client.warns[member.id];
+            delete client.db.warns[member.id];
         } else {
 
-            if (!client.warns[member.id][warnID]) return message.channel.send({ embeds: [new client.MessageEmbed()
+            if (!client.db.warns[member.id][warnID]) return message.channel.send({ embeds: [new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} No existe la advertencia con ID **${warnID}**`)
             ] });
 
-            if (!checkIfCanRemoveAny() && client.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
+            if (!checkIfCanRemoveAny() && client.db.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
 
             successEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
@@ -115,7 +115,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .setDescription(`<@${member.id}>, se te ha retirado la advertencia con ID \`${warnID}\`.`)
                 .addField('Moderador', message.author.tag, true)
                 .addField('ID de advertencia:', warnID, true)
-                .addField('Advertencia:', client.warns[member.id][warnID].reason, true)
+                .addField('Advertencia:', client.db.warns[member.id][warnID].reason, true)
                 .addField('Razón', reason, true);
 
             loggingEmbed = new client.MessageEmbed()
@@ -125,19 +125,19 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .addField('Fecha:', new Date().toLocaleString(), true)
                 .addField('Moderador:', message.author.tag, true)
                 .addField('ID de advertencia:', warnID, true)
-                .addField('Advertencia:', client.warns[member.id][warnID].reason, true)
+                .addField('Advertencia:', client.db.warns[member.id][warnID].reason, true)
                 .addField('Miembro:', member.user.tag, true)
                 .addField('Razón:', reason, true);
 
             //Resta el warn indicado
-            delete client.warns[member.id][warnID];
+            delete client.db.warns[member.id][warnID];
             
             //Si se queda en 0 warns, se borra la entrada del JSON
-            if (Object.keys(client.warns[member.id]).length === 0) delete client.warns[member.id];
+            if (Object.keys(client.db.warns[member.id]).length === 0) delete client.db.warns[member.id];
         }
 
         //Escribe el resultado en el JSON
-        client.fs.writeFile('./databases/warns.json', JSON.stringify(client.warns, null, 4), async err => {
+        client.fs.writeFile('./databases/warns.json', JSON.stringify(client.db.warns, null, 4), async err => {
             if (err) throw err;
 
             await client.functions.loggingManager(loggingEmbed);

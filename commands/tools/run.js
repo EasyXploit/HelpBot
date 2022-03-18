@@ -107,7 +107,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 });
 
                 //Almacena la tabla de clasificación de la guild
-                const guildStats = client.stats[message.guild.id];
+                const guildStats = client.db.stats[message.guild.id];
                 const IDs = Object.keys(guildStats);    //Almacena los IDs de cada miembro
 
                 //Inicializa un contador

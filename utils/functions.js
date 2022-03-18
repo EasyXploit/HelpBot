@@ -115,10 +115,10 @@ exports.run = (client) => {
         try {
 
             //Almacena la tabla de clasificación del servidor, y si no existe la crea
-            if (guild.id in client.stats === false) {
-                client.stats[guild.id] = {};
+            if (guild.id in client.db.stats === false) {
+                client.db.stats[guild.id] = {};
             };
-            const guildStats = client.stats[guild.id];
+            const guildStats = client.db.stats[guild.id];
 
             //Para comprobar si el rol puede ganar XP o no.
             let nonXP;
@@ -195,7 +195,7 @@ exports.run = (client) => {
                 };
 
                 //Guarda las nuevas estadísticas del miembro
-                client.fs.writeFile('./databases/stats.json', JSON.stringify(client.stats, null, 4), async err => {
+                client.fs.writeFile('./databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
                     if (err) throw err;
                 });
             };

@@ -9,8 +9,6 @@ exports.run = async (event, client) => {
         //Comprueba cuantas guilds hay disponibles
         if (cachedGuilds.size === 1) { //Si solo está unido a una guild (comportamiento adecuado)
 
-            //Borra todas las configuraciones y bases de datos en el caso de que no cuadren
-            if (client.config.main.homeGuild && !guildsIDs.includes(client.config.main.homeGuild)) await require('../utils/eraseConfig.js').run(client)
             
             //Almacena la nueva configuración de la guild si no hay
             if (!client.config.main.homeGuild) await require('../utils/storeNewGuildConfig.js').run(client, cachedGuilds.first());

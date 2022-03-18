@@ -14,8 +14,6 @@ exports.run = async (guild, client) => {
             //Comprueba si la guild está configurada
             if (!client.config.main.homeGuild || !guildsIDs.includes(client.config.main.homeGuild)) {
                 
-                //Borra todas las configuraciones y bases de datos de la anterior guild (si la hubiera)
-                if (client.config.main.homeGuild) await require('../utils/eraseConfig.js').run(client);
 
                 //Almacena la nueva configuración de la guild
                 await require('../utils/storeNewGuildConfig.js').run(client, cachedGuilds.first());

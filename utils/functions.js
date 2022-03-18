@@ -494,28 +494,40 @@ exports.run = (client) => {
             
             //Comprueba si hay canal de reglas y si se tiene permiso para crear la invitación
             if (client.homeGuild.rulesChannel && !(client.homeGuild.rulesChannel.permissionsFor(client.user) & BigInt(0x1)) !== BigInt(0x1)) {
+
+                //Almacena el canal de reglas
                 inviteChannel = client.homeGuild.rulesChannel;
+
             } else {
+
                 //De lo contrario, hace lo propio con el primer canal que lo permita
-                await client.homeGuild.channels.filter(channel => channel.type === 'text').then(async channels => {
+                await client.homeGuild.channels.fetch().then( async channels => {
 
-                    //Compreba en cada canal si se puede crear la invitación
-                    await channels.forEach(async channel => {
+                    //Filtra los canales para que solo se incluyan los de texto
+                    channels = await channels.filter(channel => channel.type === 'GUILD_TEXT')
 
-                        //Si pudo, graba la invitación
+                    //Hace un mapa de las IDs de los canales
+                    const channelIds = channels.map(channel => channel.id);
+
+                    //Comprueba en cada canal si se puede crear la invitación
+                    for (index = 0; index < channels.size; index++) {
+
+                        //Obtiene el canal en base a la ID de la lista
+                        const channel = channels.get(channelIds[index]);
+
+                        //Si tiene permisos, graba la invitación
                         if(!(channel.permissionsFor(client.user) & BigInt(0x1)) !== BigInt(0x1)) return inviteChannel = channel;
-                    });
-
-                    //Si no, asigna "client.config.main.homeGuildInviteCode" cómo falso
-                    if (!inviteChannel) client.config.main.homeGuildInviteCode = false;
+                    };
                 });
             };
 
-            //Crea una invitación permanente en el canal de reglas
+            //Crea una invitación permanente en el canal
             await inviteChannel.createInvite({maxAge: 0, reason: `Rutina de ${client.user.tag}`}).then(async invite => {foundInvite = invite.code;});
 
+            //Graba la invitación en memoria (en el cliente)
+            client.config.dynamic.inviteCode = foundInvite;
+
             //Graba la invitación en el fichero de configuración
-            client.config.main.homeGuildInviteCode = foundInvite;
             await client.fs.writeFile('./configs/dynamic.json', JSON.stringify(client.config.dynamic, null, 4), async err => { if (err) throw err });
         };
 

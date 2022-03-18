@@ -2,7 +2,7 @@
   "name": "helpbot",
   "normalizedName": "HelpBot",
   "version": "4.1.0",
-  "description": "HelpBot is a Discord bot designed for automated community moderation, music reproduction, leveling and much more!",
+  "description": "HelpBot is a Discord bot designed for automated community moderation, music reproduction, leveling, and much more!",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -17,10 +17,7 @@
     "discord.js"
   ],
   "author": "Daniel Perales Mauriz",
-  "license": "UNLICENSED",
-  "bugs": {
-    "url": "https://github.com/EasyXploit/HelpBot/issues"
-  },
+  "license": "MIT",
   "homepage": "https://github.com/EasyXploit/HelpBot#readme",
   "dependencies": {
     "@discordjs/opus": "^0.6.0",

@@ -140,14 +140,14 @@ exports.run = async (client, message, args, command, commandConfig) => {
                             };
 
                             if (duration !== 0) {
-                                client.polls[poll.id] = {
+                                client.db.polls[poll.id] = {
                                     duration: Date.now() + duration,
                                     channel: message.channel.id,
                                     title: title,
                                     options: options
                                 }
                         
-                                client.fs.writeFile('./databases/polls.json', JSON.stringify(client.polls, null, 4), async err => {
+                                client.fs.writeFile('./databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
                                     if (err) throw err;
                                 });
                             };
@@ -170,16 +170,16 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} La encuesta con ID ${args[1]} no se ha podido encontrar`);
 
-            if (!client.polls[args[1]]) return message.channel.send({ embeds: [notFoundEmbed] });
+            if (!client.db.polls[args[1]]) return message.channel.send({ embeds: [notFoundEmbed] });
 
-            let channel = await client.channels.fetch(client.polls[args[1]].channel);
+            let channel = await client.channels.fetch(client.db.polls[args[1]].channel);
             let poll = await channel.messages.fetch(args[1])
 
             if (!poll) return message.channel.send({ embeds: [notFoundEmbed] });
 
-            client.polls[args[1]].duration = Date.now();
+            client.db.polls[args[1]].duration = Date.now();
 
-            client.fs.writeFile(`./databases/polls.json`, JSON.stringify(client.polls), async err => {
+            client.fs.writeFile(`./databases/polls.json`, JSON.stringify(client.db.polls), async err => {
                 if (err) throw err;
             });
         } else {

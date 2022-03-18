@@ -9,11 +9,11 @@ exports.run = async (client, message, args, command, commandConfig) => {
         const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);
         if (!member) return message.channel.send({ embeds: [notFoundEmbed] });
 
-        if (message.guild.id in client.stats === false) {
-            client.stats[message.guild.id] = {};
+        if (message.guild.id in client.db.stats === false) {
+            client.db.stats[message.guild.id] = {};
         };
 
-        const guildStats = client.stats[message.guild.id];
+        const guildStats = client.db.stats[message.guild.id];
 
         if (member.id in guildStats === false) {
             let noXPEmbed = new client.MessageEmbed()

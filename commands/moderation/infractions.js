@@ -41,10 +41,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         //Comprueba el número de warns del miembro
         let warns;
-        if (!client.warns[member.id]) {
+        if (!client.db.warns[member.id]) {
             warns = 0
         } else {
-            warns = client.warns[member.id].length;
+            warns = client.db.warns[member.id].length;
         }
 
         let infractionsCount = {
@@ -55,15 +55,15 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         let lastWarns = '';
 
-        if (client.warns[member.id]) {
-            infractionsCount.total = Object.keys(client.warns[member.id]).length;
+        if (client.db.warns[member.id]) {
+            infractionsCount.total = Object.keys(client.db.warns[member.id]).length;
 
-            Object.values(client.warns[member.id]).forEach(entry => {
+            Object.values(client.db.warns[member.id]).forEach(entry => {
                 if (Date.now() - entry.timestamp <= '86400000') infractionsCount.day++
                 if (Date.now() - entry.timestamp <= '604800000') infractionsCount.week++
             });
 
-            let userWarns = Object.entries(client.warns[member.id]).map((e) => ( { [e[0]]: e[1] } ));
+            let userWarns = Object.entries(client.db.warns[member.id]).map((e) => ( { [e[0]]: e[1] } ));
 
             for (let i = 0; i < 10; i++) {
                 if (!userWarns[i]) continue;
@@ -81,8 +81,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
         let role = await client.functions.checkMutedRole(message.guild);
 
         let sanction;
-        if (client.mutes[member.id]) {
-            sanction = `Silenciado hasta ${new Date(client.mutes[member.id].time).toLocaleString()}`;
+        if (client.db.mutes[member.id]) {
+            sanction = `Silenciado hasta ${new Date(client.db.mutes[member.id].time).toLocaleString()}`;
         } else if (member.roles.cache.has(role.id)) {
             sanction = 'Silenciado indefinidamente';
         }

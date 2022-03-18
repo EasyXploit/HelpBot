@@ -1,9 +1,0 @@
-{
-    "rewardMessages": true,
-    "rewardVoice": true,
-    "notifylevelUpOnChat": true,
-    "notifylevelUpOnVoice": true,
-    "nonXPRoles": [],
-    "nonXPChannels": [],
-    "XPGainInterval": 60000
-}

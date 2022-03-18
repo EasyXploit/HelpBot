@@ -3,12 +3,12 @@ exports.run = async (client, message, args, command, commandConfig) => {
     try {
         //Almacena las entradas de la leaderboard
         let entries = [];
-        for (var key in client.stats[message.guild.id]) {
-            if (client.stats[message.guild.id].hasOwnProperty(key)) {           
+        for (var key in client.db.stats[message.guild.id]) {
+            if (client.db.stats[message.guild.id].hasOwnProperty(key)) {           
                 entries.push({
                     userID: key,
-                    totalXP: client.stats[message.guild.id][key].totalXP,
-                    lvl: client.stats[message.guild.id][key].level
+                    totalXP: client.db.stats[message.guild.id][key].totalXP,
+                    lvl: client.db.stats[message.guild.id][key].level
                 });
             };
         };

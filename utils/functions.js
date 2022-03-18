@@ -115,10 +115,10 @@ exports.run = (client) => {
         try {
 
             //Almacena la tabla de clasificación del servidor, y si no existe la crea
-            if (guild.id in client.stats === false) {
-                client.stats[guild.id] = {};
+            if (guild.id in client.db.stats === false) {
+                client.db.stats[guild.id] = {};
             };
-            const guildStats = client.stats[guild.id];
+            const guildStats = client.db.stats[guild.id];
 
             //Para comprobar si el rol puede ganar XP o no.
             let nonXP;
@@ -195,7 +195,7 @@ exports.run = (client) => {
                 };
 
                 //Guarda las nuevas estadísticas del miembro
-                client.fs.writeFile('./databases/stats.json', JSON.stringify(client.stats, null, 4), async err => {
+                client.fs.writeFile('./databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
                     if (err) throw err;
                 });
             };
@@ -288,38 +288,59 @@ exports.run = (client) => {
         //Listado de emojis normales (sin animar) de la guild
         const normalGuildEmojis = await client.homeGuild.emojis.fetch().then(emojis => emojis.filter(emoji => !emoji.animated).map(emoji => emoji.id));
 
-        //Listado de emojis a cargar en la guild
-        const customEmojis = require('../databases/customEmojis.json');
+        //Carga la configuración dinámica
+        const dynamicConfig = require('../configs/dynamic.json');
+
+        //Carga el listado de emojis a cargar en la guild
+        const customEmojis = dynamicConfig.customEmojis;
+
+        //Carga cada una de las claves del objeto de emojis
         const emojis = Object.keys(customEmojis);
 
         //Creación de nuevos emojis en la guild
         if ((normalGuildEmojis.length + emojis.length) <= emojisThreshold) {
 
+            //Almacena la cantidad de emojis añadidos
+            newEmojisCount = 0;
+
             //Promesa para comprobar la existencia de los customEmojis, y crearlos en caso negativo
-            const emojiCreation = new Promise((resolve, reject) => {
-                emojis.forEach(async (emojiName, index, array) => {
+            const emojiCreation = new Promise(async (resolve, reject) => {
+
+                //Para cada uno de los emojis de sistema
+                for (index = 0; index < emojis.length; index++) {
+
+                    //Almacena el nombre del emoji
+                    const emojiName = emojis[index];
     
                     //Omite este emoji si ya está presente en la guild
-                    if (normalGuildEmojis.includes(customEmojis[emojiName])) return;
-    
-                    //Crea el emoji
-                    await client.homeGuild.emojis.create(`./resources/emojis/${emojiName}.png`, emojiName, `Necesario para el funcionamiento de ${client.user.username}.`)
+                    if (!normalGuildEmojis.includes(customEmojis[emojiName])) {
+
+                        //Crea el emoji
+                        await client.homeGuild.emojis.create(`./resources/emojis/${emojiName}.png`, emojiName, `Necesario para el funcionamiento de ${client.user.username}.`)
                         .then(emoji => {
                             customEmojis[emojiName] = emoji.id;
-                            console.log(`- Emoji [${emoji.name}] creado satisfactoriamente.`)
+                            console.log(`- Emoji [${emoji.name}] creado satisfactoriamente.`);
+                            newEmojisCount++;
                         });
+                    };
     
                     //Resuelve la promesa
-                    if (index === array.length -1) resolve();
-                });
+                    if (index === emojis.length - 1) resolve();
+                };
             });
-            
-            //Graba los nuevos customEmojis en la configuración tras resolver la promesa
-            emojiCreation.then(async () => {
-                await client.fs.writeFile('./databases/customEmojis.json', JSON.stringify(client.config.customEmojis, null, 4), (err) => console.error(err));
+
+            //Después de crear los emojis
+            await emojiCreation.then(async () => {
+
+                //Almacena los IDs en memoria
+                dynamicConfig.customEmojis = customEmojis;
+
+                //Almacena la configuración dinámica de emojis
+                if (newEmojisCount > 0) await client.fs.writeFile('./configs/dynamic.json', JSON.stringify(dynamicConfig, null, 4), async err => { if (err) throw err });
             });
+        
         } else {
-            console.log(`\nNo habían espacios para emojis suficientes.\nNecesitas al menos ${emojis.length} espacios.\nSe usarán emojis Unicode en su lugar.\n`);
+            console.error(`\nNo habían espacios para emojis suficientes.\nNecesitas al menos ${emojis.length} espacios.\nSe usarán emojis Unicode en su lugar.\n`);
         };
     };
 
@@ -351,11 +372,11 @@ exports.run = (client) => {
                     client.config.main.loggingChannel = '';
                     client.loggingChannel = null;
 
-                    //Graba la nueva configuración en el almacenamiento
-                    await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), (err) => console.error(err));
-
                     //Advertir por consola
                     console.error(`${new Date().toLocaleString()} 》Error: No se puede tener acceso al canal de auditoría.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
+
+                    //Graba la nueva configuración en el almacenamiento
+                    await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), async err => { if (err) throw err });
                 } else {
                     console.error(`${new Date().toLocaleString()} 》Error durante la ejecución del loggingManager:`, error);
                 };
@@ -388,11 +409,11 @@ exports.run = (client) => {
                     client.config.main.debuggingChannel = '';
                     client.debuggingChannel = null;
 
-                    //Graba la nueva configuración en el almacenamiento
-                    await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), (err) => console.error(err));
-
                     //Advertir por consola
                     console.error(`${new Date().toLocaleString()} 》Error: No se puede tener acceso al canal de depuración.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
+
+                    //Graba la nueva configuración en el almacenamiento
+                    await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), async err => { if (err) throw err });
                 } else {
                     console.error(`${new Date().toLocaleString()} 》Error durante la ejecución del debuggingManager:`, error);
                 };
@@ -473,33 +494,45 @@ exports.run = (client) => {
             
             //Comprueba si hay canal de reglas y si se tiene permiso para crear la invitación
             if (client.homeGuild.rulesChannel && !(client.homeGuild.rulesChannel.permissionsFor(client.user) & BigInt(0x1)) !== BigInt(0x1)) {
+
+                //Almacena el canal de reglas
                 inviteChannel = client.homeGuild.rulesChannel;
+
             } else {
+
                 //De lo contrario, hace lo propio con el primer canal que lo permita
-                await client.homeGuild.channels.filter(channel => channel.type === 'text').then(async channels => {
+                await client.homeGuild.channels.fetch().then( async channels => {
 
-                    //Compreba en cada canal si se puede crear la invitación
-                    await channels.forEach(async channel => {
+                    //Filtra los canales para que solo se incluyan los de texto
+                    channels = await channels.filter(channel => channel.type === 'GUILD_TEXT')
 
-                        //Si pudo, graba la invitación
+                    //Hace un mapa de las IDs de los canales
+                    const channelIds = channels.map(channel => channel.id);
+
+                    //Comprueba en cada canal si se puede crear la invitación
+                    for (index = 0; index < channels.size; index++) {
+
+                        //Obtiene el canal en base a la ID de la lista
+                        const channel = channels.get(channelIds[index]);
+
+                        //Si tiene permisos, graba la invitación
                         if(!(channel.permissionsFor(client.user) & BigInt(0x1)) !== BigInt(0x1)) return inviteChannel = channel;
-                    });
-
-                    //Si no, asigna "client.config.main.homeGuildInviteCode" cómo falso
-                    if (!inviteChannel) client.config.main.homeGuildInviteCode = false;
+                    };
                 });
             };
 
-            //Crea una invitación permanente en el canal de reglas
+            //Crea una invitación permanente en el canal
             await inviteChannel.createInvite({maxAge: 0, reason: `Rutina de ${client.user.tag}`}).then(async invite => {foundInvite = invite.code;});
 
+            //Graba la invitación en memoria (en el cliente)
+            client.config.dynamic.inviteCode = foundInvite;
+
             //Graba la invitación en el fichero de configuración
-            client.config.main.homeGuildInviteCode = foundInvite;
-            await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), (err) => console.error(err));
+            await client.fs.writeFile('./configs/dynamic.json', JSON.stringify(client.config.dynamic, null, 4), async err => { if (err) throw err });
         };
 
         //Si no hay una invitación grabada
-        if (!client.config.main.homeGuildInviteCode) {
+        if (!client.config.dynamic.inviteCode) {
 
             //Comprueba si ya existe una invitación
             await client.homeGuild.invites.fetch().then(invites => {
@@ -512,17 +545,17 @@ exports.run = (client) => {
             if (!foundInvite) await createInvite();
 
             //Devuelve la URL, si se puedo obtener un código
-            if (client.config.main.homeGuildInviteCode) return `https://discord.gg/${client.config.main.homeGuildInviteCode}`;
+            if (client.config.dynamic.inviteCode) return `https://discord.gg/${client.config.dynamic.inviteCode}`;
 
         } else {
             //Busca la invitación
-            const invite = await client.homeGuild.invites.resolve(client.config.main.homeGuildInviteCode);
+            const invite = await client.homeGuild.invites.resolve(client.config.dynamic.inviteCode);
 
             //Crea la invitación si no existe
             if (!invite) await createInvite();
 
             //Devuelve la URL, si se puedo obtener un código
-            return `https://discord.gg/${client.config.main.homeGuildInviteCode}`;
+            return `https://discord.gg/${client.config.dynamic.inviteCode}`;
         };
     };
 

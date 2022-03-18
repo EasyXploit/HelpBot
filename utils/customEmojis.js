@@ -1,17 +1,21 @@
 exports.run = async (client) => {
 
-    //Carga los IDs de los emojis personalizados
-    const customEmojis = require('../databases/customEmojis.json');
+    try {
 
-    //Crea un objeto para almacenar todos los customEmojis
-    client.customEmojis = {
+        //Crea un objeto para almacenar todos los customEmojis
+        client.customEmojis = {
 
-        //EMOJIS PERSONALIZADOS - GLOBALES
-        greenTick:  await client.homeGuild.emojis.fetch(customEmojis.greenTick) || '✅',
-        redTick:    await client.homeGuild.emojis.fetch(customEmojis.redTick) || '❌',
-        orangeTick: await client.homeGuild.emojis.fetch(customEmojis.orangeTick) || '⚠',
-        grayTick:   await client.homeGuild.emojis.fetch(customEmojis.grayTick) || '❕',
+            //Carga en el cliente cada uno de los emojis personalizados
+            greenTick:  await client.homeGuild.emojis.fetch(client.config.dynamic.customEmojis.greenTick) || '✅',
+            redTick:    await client.homeGuild.emojis.fetch(client.config.dynamic.customEmojis.redTick) || '❌',
+            orangeTick: await client.homeGuild.emojis.fetch(client.config.dynamic.customEmojis.orangeTick) || '⚠',
+            grayTick:   await client.homeGuild.emojis.fetch(client.config.dynamic.customEmojis.grayTick) || '❕',
+        };
+
+        //Notifica la correcta carga de los emojis personalizados en el cliente
+        console.log(' - [OK] Carga de customEmojis globales.');
+
+    } catch (error) {
+        console.log(`${new Date().toLocaleString()} 》${error.stack}`);
     };
-
-    console.log(' - [OK] Carga de customEmojis globales.');
 };

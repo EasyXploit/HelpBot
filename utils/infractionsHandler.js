@@ -14,11 +14,11 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
         client.functions.spreadMutedRole(message.guild);
 
         if (time) {
-            client.mutes[member.id] = {
+            client.db.mutes[member.id] = {
                 time: Date.now() + time
             };
 
-            client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
+            client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
                 if (err) throw err;
             });
         };
@@ -82,11 +82,11 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
     async function ban(time) {
 
         if (time) {
-            client.bans[user.id] = {
+            client.db.bans[user.id] = {
                 time: Date.now() + time
             }
     
-            client.fs.writeFile(`./databases/bans.json`, JSON.stringify(client.bans, null, 4), async err => {
+            client.fs.writeFile(`./databases/bans.json`, JSON.stringify(client.db.bans, null, 4), async err => {
                 if (err) throw err;
             });
         };
@@ -146,17 +146,17 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
     if (action === 2 || action === 3) { //Advierte si se ha de hacer
 
         //Añade una nueva infracción para el miembro
-        if (!client.warns[member.id]) client.warns[member.id] = {};
+        if (!client.db.warns[member.id]) client.db.warns[member.id] = {};
 
         const warnID = client.functions.sidGenerator();
         
-        client.warns[member.id][warnID] = {
+        client.db.warns[member.id][warnID] = {
             timestamp: Date.now(),
             reason: warnReason,
             moderator: moderator.id
         };
 
-        client.fs.writeFile(`./databases/warns.json`, JSON.stringify(client.warns, null, 4), async err => {
+        client.fs.writeFile(`./databases/warns.json`, JSON.stringify(client.db.warns, null, 4), async err => {
             if (err) throw err;
 
             let loggingEmbed = new client.MessageEmbed()
@@ -167,7 +167,7 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
                 .addField(`Razón`, warnReason, true)
                 .addField(`ID de Advertencia`, warnID, true)
                 .addField(`Canal`, `<#${message.channel.id}>`, true)
-                .addField('Infracciones', (Object.keys(client.warns[member.id]).length).toString(), true);
+                .addField('Infracciones', (Object.keys(client.db.warns[member.id]).length).toString(), true);
 
             await client.functions.loggingManager(loggingEmbed);
 
@@ -179,9 +179,9 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
             let rule = client.config.automodRules[i];
             let warnsCount = 0;
 
-            Object.keys(client.warns[member.id]).forEach(entry => {
+            Object.keys(client.db.warns[member.id]).forEach(entry => {
 
-                if (Date.now() - client.warns[member.id][entry].timestamp <= rule.age) warnsCount++;
+                if (Date.now() - client.db.warns[member.id][entry].timestamp <= rule.age) warnsCount++;
             });
 
             if (warnsCount >= rule.quantity) {

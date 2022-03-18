@@ -2,8 +2,8 @@ exports.run = (client) => {
 
     //Comprobación de miembros silenciados temporalmente
     setInterval(async () => {
-        for (let idKey in client.mutes) {
-            let time = client.mutes[idKey].time;
+        for (let idKey in client.db.mutes) {
+            let time = client.db.mutes[idKey].time;
 
             if (Date.now() > time) {
 
@@ -14,8 +14,8 @@ exports.run = (client) => {
 
                 const member = await client.functions.fetchMember(guild, idKey);
                 if (!member) {
-                    delete client.mutes[idKey];
-                    client.fs.writeFile('databases/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
+                    delete client.db.mutes[idKey];
+                    client.fs.writeFile('databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
                         if (err) throw err;
 
                         let loggingEmbed = new client.MessageEmbed()
@@ -46,8 +46,8 @@ exports.run = (client) => {
 
                 await member.roles.remove(role);
 
-                delete client.mutes[idKey];
-                client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.mutes, null, 4), async err => {
+                delete client.db.mutes[idKey];
+                client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
                     if (err) throw err;
 
                     await client.functions.loggingManager(loggingEmbed);
@@ -59,8 +59,8 @@ exports.run = (client) => {
 
     //Comprobación de miembros baneados temporalmente
     setInterval(async () => {
-        for (let idKey in client.bans) {
-            let time = client.bans[idKey].time;
+        for (let idKey in client.db.bans) {
+            let time = client.db.bans[idKey].time;
             let guild = client.guilds.cache.get(client.homeGuild.id);
             let user = await client.users.fetch(idKey);
 
@@ -73,8 +73,8 @@ exports.run = (client) => {
                     .addField('Moderador', `<@${client.user.id}>`, true)
                     .addField('Razón', 'Venció la amonestación', true);
 
-                delete client.bans[idKey];
-                client.fs.writeFile('./databases/bans.json', JSON.stringify(client.bans, null, 4), async err => {
+                delete client.db.bans[idKey];
+                client.fs.writeFile('./databases/bans.json', JSON.stringify(client.db.bans, null, 4), async err => {
                     if (err) throw err;
 
                     try {
@@ -105,16 +105,16 @@ exports.run = (client) => {
 
     //Comprobación de encuestas expiradas
     setInterval(async () => {
-        for (let idKey in client.polls) {
+        for (let idKey in client.db.polls) {
             let channel, poll;
-            let duration = client.polls[idKey].duration;
+            let duration = client.db.polls[idKey].duration;
 
             try {
-                channel = await client.channels.fetch(client.polls[idKey].channel);
+                channel = await client.channels.fetch(client.db.polls[idKey].channel);
                 poll = await channel.messages.fetch(idKey);
             } catch (error) {
-                delete client.polls[idKey];
-                return client.fs.writeFile('./databases/polls.json', JSON.stringify(client.polls, null, 4), async err => {
+                delete client.db.polls[idKey];
+                return client.fs.writeFile('./databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
                     if (err) throw err;
                 });
             };
@@ -142,7 +142,7 @@ exports.run = (client) => {
 
                 let resultEmbed = new client.MessageEmbed()
                     .setAuthor({ name: 'Encuesta finalizada', iconURL: 'attachment://endFlag.png' })
-                    .setDescription(`**${client.polls[idKey].title}**\n\n${client.polls[idKey].options}`)
+                    .setDescription(`**${client.db.polls[idKey].title}**\n\n${client.db.polls[idKey].options}`)
                     .addField('Resultados', results.join(' '));
 
                 await poll.channel.send({ embeds: [resultEmbed], files: ['./resources/images/endFlag.png'] }).then(async poll => {
@@ -150,7 +150,7 @@ exports.run = (client) => {
                     let loggingEmbed = new client.MessageEmbed()
                         .setColor(client.config.colors.logging)
                         .setTitle('📑 Auditoría - [ENCUESTAS]')
-                        .setDescription(`La encuesta "__[${client.polls[idKey].title}](${poll.url})__" ha finalizado en el canal <#${client.polls[idKey].channel}>.`);
+                        .setDescription(`La encuesta "__[${client.db.polls[idKey].title}](${poll.url})__" ha finalizado en el canal <#${client.db.polls[idKey].channel}>.`);
 
                     await client.loggingChannel.send({ embeds: [loggingEmbed] });
 
@@ -158,12 +158,12 @@ exports.run = (client) => {
                 
                 await poll.delete();
 
-                delete client.polls[idKey];
-                client.fs.writeFile('./databases/polls.json', JSON.stringify(client.polls, null, 4), async err => {
+                delete client.db.polls[idKey];
+                client.fs.writeFile('./databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
                     if (err) throw err;
                 });
             } else {
-                let remainingTime = client.polls[idKey].duration - Date.now();
+                let remainingTime = client.db.polls[idKey].duration - Date.now();
                 let remainingDays = Math.floor(remainingTime / (60*60*24*1000));
                 let remainingHours = Math.floor((remainingTime - (remainingDays * 86400000)) / (60*60*1000));
                 let remainingMinutes = Math.floor((remainingTime - (remainingHours * 3600000) - (remainingDays * 86400000)) / (60*1000));
@@ -174,7 +174,7 @@ exports.run = (client) => {
                 let updatedPoll = new client.MessageEmbed()
                     .setColor('2AB7F1')
                     .setAuthor({ name: 'Encuesta disponible', iconURL: 'attachment://poll.png' })
-                    .setDescription(`**${client.polls[idKey].title}**\n\n${client.polls[idKey].options}`)
+                    .setDescription(`**${client.db.polls[idKey].title}**\n\n${client.db.polls[idKey].options}`)
                     .setFooter({ text: newRemainingTime });
 
                 if (oldRemainingTime !== newRemainingTime) await poll.edit({ embeds: [updatedPoll], files: ['./resources/images/poll.png'] });

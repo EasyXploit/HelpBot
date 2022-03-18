@@ -1,10 +1,9 @@
 {
-    "homeGuild": "",
     "prefix": "!",
     "botManagerRole": "",
     "loggingChannel": "",
     "debuggingChannel": "",
     "joinsAndLeavesChannel": "",
-    "homeGuildInviteCode": "",
+    "botChatChannel": "",
     "loadMention": true
 }

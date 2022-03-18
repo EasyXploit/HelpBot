@@ -5,8 +5,8 @@
   "description": "HelpBot is a Discord bot designed for automated community moderation, music reproduction, leveling and much more!",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
-    "devStart": "nodemon ."
+    "start": "node index.js",
+    "devStart": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -39,7 +39,8 @@
   },
   "nodemonConfig": {
     "ignore": [
-      "databases/*"
+      "databases/*",
+      "configs/dynamic.json"
     ]
   }
 }

@@ -29,10 +29,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
         });
 
         //Almacena la tabla de clasificación del servidor, y si no existe la crea
-        if (message.guild.id in client.stats === false) {
-            client.stats[message.guild.id] = {};
+        if (message.guild.id in client.db.stats === false) {
+            client.db.stats[message.guild.id] = {};
         };
-        const guildStats = client.stats[message.guild.id];
+        const guildStats = client.db.stats[message.guild.id];
 
         //Almacena la tabla de clasificación del miembro, y si no existe la crea
         if (member.id in guildStats === false) {
@@ -80,12 +80,12 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Ejecuta la operación indicada en función del argumento
         switch (args[1]) {
             case 'set':
-                client.stats[message.guild.id][member.id].totalXP = parseInt(args[2]);
+                client.db.stats[message.guild.id][member.id].totalXP = parseInt(args[2]);
                 newValue = parseInt(args[2]);
                 break;
 
             case 'add':
-                client.stats[message.guild.id][member.id].totalXP = oldValue + parseInt(args[2]);
+                client.db.stats[message.guild.id][member.id].totalXP = oldValue + parseInt(args[2]);
                 newValue = oldValue + parseInt(args[2]);
                 break;
 
@@ -101,18 +101,18 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 };
 
                 //Almacena el nuevo XP
-                client.stats[message.guild.id][member.id].totalXP = oldValue + generatedXp;
+                client.db.stats[message.guild.id][member.id].totalXP = oldValue + generatedXp;
                 newValue = oldValue + generatedXp;
                 break;
 
             case 'remove':
-                client.stats[message.guild.id][member.id].totalXP = oldValue - parseInt(args[2]);
+                client.db.stats[message.guild.id][member.id].totalXP = oldValue - parseInt(args[2]);
                 newValue = oldValue - parseInt(args[2]);
                 break;
 
             case 'clear':
-                client.stats[message.guild.id][member.id].totalXP = 0;
-                client.stats[message.guild.id][member.id].actualXP = 0;
+                client.db.stats[message.guild.id][member.id].totalXP = 0;
+                client.db.stats[message.guild.id][member.id].actualXP = 0;
                 newValue = 0;
                 break;
         };
@@ -148,10 +148,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 const xpToNextLevel = 5 * Math.pow(level, 3) + 50 * level + 100;
                 if (xpCount >= xpToNextLevel) xpCount = xpCount - xpToNextLevel;
             }
-            client.stats[message.guild.id][member.id].actualXP = xpCount;
+            client.db.stats[message.guild.id][member.id].actualXP = xpCount;
             
-            if (level !== client.stats[message.guild.id][member.id].level) {
-                client.stats[message.guild.id][member.id].level = level;
+            if (level !== client.db.stats[message.guild.id][member.id].level) {
+                client.db.stats[message.guild.id][member.id].level = level;
                 await assignRewards();
             };
         } else if (newValue < oldValue) {
@@ -160,8 +160,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
             for (let i = 0;; i++) {
                 if ((5 * Math.pow(i, 3) + 50 * i + 100) > newValue) {
                     level = i;
-                    if (level !== client.stats[message.guild.id][member.id].level) {
-                        client.stats[message.guild.id][member.id].level = level;
+                    if (level !== client.db.stats[message.guild.id][member.id].level) {
+                        client.db.stats[message.guild.id][member.id].level = level;
                         await assignRewards();
                     };
                     break;
@@ -172,11 +172,11 @@ exports.run = async (client, message, args, command, commandConfig) => {
             let levelXp = 0;
             if (level > 0) levelXp = 5 * Math.pow((level - 1), 3) + 50 * (level - 1) + 100;
             let xpCount = newValue - levelXp;
-            client.stats[message.guild.id][member.id].actualXP = xpCount;
+            client.db.stats[message.guild.id][member.id].actualXP = xpCount;
         };
 
         //Escribe el resultado en el JSON
-        client.fs.writeFile('./databases/stats.json', JSON.stringify(client.stats, null, 4), async err => {
+        client.fs.writeFile('./databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
             if (err) throw err;
 
             await client.functions.loggingManager( new client.MessageEmbed()

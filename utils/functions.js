@@ -372,11 +372,11 @@ exports.run = (client) => {
                     client.config.main.loggingChannel = '';
                     client.loggingChannel = null;
 
-                    //Graba la nueva configuración en el almacenamiento
-                    await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), (err) => console.error(err));
-
                     //Advertir por consola
                     console.error(`${new Date().toLocaleString()} 》Error: No se puede tener acceso al canal de auditoría.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
+
+                    //Graba la nueva configuración en el almacenamiento
+                    await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), async err => { if (err) throw err });
                 } else {
                     console.error(`${new Date().toLocaleString()} 》Error durante la ejecución del loggingManager:`, error);
                 };
@@ -409,11 +409,11 @@ exports.run = (client) => {
                     client.config.main.debuggingChannel = '';
                     client.debuggingChannel = null;
 
-                    //Graba la nueva configuración en el almacenamiento
-                    await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), (err) => console.error(err));
-
                     //Advertir por consola
                     console.error(`${new Date().toLocaleString()} 》Error: No se puede tener acceso al canal de depuración.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
+
+                    //Graba la nueva configuración en el almacenamiento
+                    await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), async err => { if (err) throw err });
                 } else {
                     console.error(`${new Date().toLocaleString()} 》Error durante la ejecución del debuggingManager:`, error);
                 };
@@ -516,11 +516,11 @@ exports.run = (client) => {
 
             //Graba la invitación en el fichero de configuración
             client.config.main.homeGuildInviteCode = foundInvite;
-            await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), (err) => console.error(err));
+            await client.fs.writeFile('./configs/dynamic.json', JSON.stringify(client.config.dynamic, null, 4), async err => { if (err) throw err });
         };
 
         //Si no hay una invitación grabada
-        if (!client.config.main.homeGuildInviteCode) {
+        if (!client.config.dynamic.inviteCode) {
 
             //Comprueba si ya existe una invitación
             await client.homeGuild.invites.fetch().then(invites => {
@@ -533,17 +533,17 @@ exports.run = (client) => {
             if (!foundInvite) await createInvite();
 
             //Devuelve la URL, si se puedo obtener un código
-            if (client.config.main.homeGuildInviteCode) return `https://discord.gg/${client.config.main.homeGuildInviteCode}`;
+            if (client.config.dynamic.inviteCode) return `https://discord.gg/${client.config.dynamic.inviteCode}`;
 
         } else {
             //Busca la invitación
-            const invite = await client.homeGuild.invites.resolve(client.config.main.homeGuildInviteCode);
+            const invite = await client.homeGuild.invites.resolve(client.config.dynamic.inviteCode);
 
             //Crea la invitación si no existe
             if (!invite) await createInvite();
 
             //Devuelve la URL, si se puedo obtener un código
-            return `https://discord.gg/${client.config.main.homeGuildInviteCode}`;
+            return `https://discord.gg/${client.config.dynamic.inviteCode}`;
         };
     };
 

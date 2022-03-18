@@ -4,23 +4,15 @@ exports.run = async (guild, client) => {
 
         //Listado de guilds a las que el bot está unido
         const cachedGuilds = client.guilds.cache;
-
-        //Almacena los IDs de las guilds alcanzables
-        const guildsIDs = cachedGuilds.map(guild => guild.id);
         
         //Comprueba cuantas guilds hay disponibles
         if (cachedGuilds.size === 1) {
 
-            //Comprueba si la guild está configurada
-            if (!client.config.main.homeGuild || !guildsIDs.includes(client.config.main.homeGuild)) {
-                
+            //Almacena la nueva configuración de la guild
+            await require('../utils/storeNewGuildConfig.js').run(client, cachedGuilds.first());
 
-                //Almacena la nueva configuración de la guild
-                await require('../utils/storeNewGuildConfig.js').run(client, cachedGuilds.first());
-            };
-
-            //Cargar config. en memoria + arranque del sistema completo
-            await require('../utils/systemLoad.js').run(client);
+            //Notifica por consola que el bot se ha unido a la guild
+            console.log(`\n 》${client.user.username} se ha unido a la guild "${guild.name}".`);
 
         } else {
 
@@ -30,6 +22,7 @@ exports.run = async (guild, client) => {
             //Abandona la guild
             await guild.leave();
         };
+
     } catch (error) {
         console.log(`${new Date().toLocaleString()} 》${error.stack}`);
     };

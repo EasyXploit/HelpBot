@@ -1,20 +1,28 @@
 exports.run = async (client, guild) => {
 
-    //Carga de guild base en memoria
-    client.config.main.homeGuild = guild.id;
-    client.homeGuild = await client.guilds.cache.get(client.config.main.homeGuild);
+    try {
 
-    //Graba la nueva configuración en el almacenamiento
-    await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), (err) => console.error(err));
+        //Reestablece algunas variables de config. globales
+        client.config.dynamic.homeGuild = guild.id;
+        client.config.dynamic.inviteCode = "";
 
-    //Cargar config. en memoria + arranque del sistema completo
-    await require('../utils/systemLoad.js').run(client);
+        //Carga de guild base en memoria
+        client.homeGuild = await client.guilds.cache.get(client.config.dynamic.homeGuild);
 
-    //Informar sobre el comando $setup
-    const readyForSetup = new client.MessageEmbed()
-        .setColor(client.config.colors.correct)
-        .setTitle(`${client.customEmojis.greenTick} Asistente de configuración.`)
-        .setDescription(`¡Genial! Has añadido correctamente a **${client.user.username}**.\nUsa el comando \`${client.config.main.prefix}setup\` desde __${guild.name}__ para configurar al bot.`);
+        //Graba la nueva configuración en el almacenamiento
+        await client.fs.writeFile('./configs/dynamic.json', JSON.stringify(client.config.dynamic, null, 4), async err => { if (err) throw err });
+        
+        //Carga la config. en memoria y arranca el sistema
+        await require('../utils/systemLoad.js').run(client);
 
-    return await guild.owner.send({ embeds: [readyForSetup] });
+        //Informa sobre la necesidad de realizar la configuración inicial
+        return await guild.members.fetch(guild.ownerId).then(async member => await member.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.correct)
+            .setTitle(`${client.customEmojis.greenTick} Asistente de configuración.`)
+            .setDescription(`¡Genial! Has añadido correctamente a **${client.user.username}**.\nUsa los ficheros de configuración del bot para configurarlo a tu gusto.\nSi necesitas ayuda, puedes [consultar la wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration).`)]
+        }));
+
+    } catch (error) {
+        console.log(`${new Date().toLocaleString()} 》${error.stack}`);
+    };
 };

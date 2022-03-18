@@ -14,7 +14,7 @@
 </div>
 
 ## About
-[**HelpBot**](https://github.com/EasyXploit/HelpBot) is a [Discord](https://discord.com/) bot designed to run on a [Node.js](https://nodejs.org) server, whose main functions are automated community moderation, music reproduction, leveling and much more!<br /><br />
+[**HelpBot**](https://github.com/EasyXploit/HelpBot) is a [Discord](https://discord.com/) bot designed to run on a [Node.js](https://nodejs.org) server, whose main functions are automated community moderation, leveling, and much more!<br /><br />
 This project was born out of curiosity, as a way to give form to the knowledge about [JavaScipt](https://developer.mozilla.org/en-US/docs/Web/JavaScript) that I acquired during a Professional Formation course that I was doing, but that over time has made me discover that I am passionate about programming.<br /><br />
 Given that initially it was a project with quite unstable knowledge bases, the code has undergone several refactorings until reaching this point, from which I have decided that I'm going to stop supporting this repository, make it [open source](https://opensource.com/) under an [MIT license](https://en.wikipedia.org/wiki/MIT_License), and continue with other related projects.<br /><br />
 Due to this, the bot has **NOT** been designed from the beginning to work in more than one Discord community ([guild](https://discord.com/developers/docs/resources/guild)) at the same time, so the bot does not have a database system, and instead works with [JSON](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON) files.<br /><br />

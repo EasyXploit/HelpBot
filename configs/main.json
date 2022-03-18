@@ -4,5 +4,6 @@
     "loggingChannel": "",
     "debuggingChannel": "",
     "joinsAndLeavesChannel": "",
+    "botChatChannel": "",
     "loadMention": true
 }

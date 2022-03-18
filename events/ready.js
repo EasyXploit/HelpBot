@@ -39,8 +39,6 @@ exports.run = async (event, client) => {
                     await guild.leave();
                 });
 
-                //Borra todas las configuraciones y bases de datos
-                await require('../utils/eraseConfig.js').run(client);
 
                 //Espera a la ejecución del evento "guildCreate" para el arranque completo del sistema
                 console.log(`\n 》${client.user.username} está a la espera de ser añadido a un servidor ...`);

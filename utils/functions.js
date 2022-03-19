@@ -52,6 +52,23 @@ exports.run = (client) => {
         };
     };
 
+    //Función para buscar canales
+    client.functions.fetchChannel = async (guild, channel) => {
+        try {
+            let result;
+            const matches = channel.match(/^<#?(\d+)>$/);
+            if (matches) {
+                result = await guild.channels.fetch(matches[1]);
+            } else if (!isNaN(channel)) {
+                result = await guild.channels.fetch(channel);
+            };
+            if (result && typeof result !== 'undefined') return result;
+        } catch (error) {
+            console.log(`${new Date().toLocaleString()} 》${error.stack}`);
+            return false;
+        };
+    };
+
     //Función para comprobar si un miembro tiene permiso para ejecutar un comando
     client.functions.checkCommandPermission = async (message, commandConfig) => {
 

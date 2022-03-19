@@ -6,12 +6,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
         const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);
 
         //Comprueba si se ha proporcionado un miembro válido
-        if (!member) return message.channel.send({ embeds: [
-            new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`)
-            ]
-        });
+        if (!member) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`)
+        ]});
 
         //Comprueba, si corresponde, que el miembro tenga permiso para ver los datos de otros
         if (message.member.id !== member.id) {
@@ -39,8 +37,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Comprueba los status de los que dispone el miembro
         let status = [];
         if (member.id === message.guild.ownerId) status.push('Propietario');
-        if (member.permissions.has(`ADMINISTRATOR`)) status.push('Administrador');
-        if (member.permissions.has(`MANAGE_MESSAGES`)) status.push('Moderador');
+        if (member.permissions.has('ADMINISTRATOR')) status.push('Administrador');
+        if (member.permissions.has('MANAGE_MESSAGES')) status.push('Moderador');
         if (status.length < 1) status.push('Usuario regular');
 
         //Comprueba los permisos del miembro
@@ -50,7 +48,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         });
 
         //Almacena las traducciones de los permisos
-        let translations = require(`../../resources/translations/permissions.json`);
+        let translations = require('../../resources/translations/permissions.json');
 
         //Traduce los permisos del miembro
         let translatedPermissions = [];
@@ -69,8 +67,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
             sanction = 'Silenciado indefinidamente';
         };
 
-        //Genera el embed con el resultado del comando
-        let resultEmbed = new client.MessageEmbed()
+        //Envía un embed con el resultado del comando
+        await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(member.displayHexColor)
             .setTitle(`🙍 Información sobre ${member.displayName}`)
             .setDescription(`Mostrando información acerca de **${member.user.tag}**`)
@@ -84,10 +82,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .addField('⚖ Infracciones', client.db.warns[member.id] ? (Object.keys(client.db.warns[member.id]).length).toString() : '0', true)
             .addField('📓 Reglas', member.pending ? 'Aceptación pendiente' : 'Aceptadas', true)
             .addField('⚠️ Sanción actual', sanction || 'Ninguna', true)
-            .addField('👮 Permisos', `\`\`\`${translatedPermissions.join(', ')}\`\`\``);
-        
-        //Envía el embed
-        await message.channel.send({ embeds: [resultEmbed] });
+            .addField('👮 Permisos', `\`\`\`${translatedPermissions.join(', ')}\`\`\``)
+        ]});
 
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

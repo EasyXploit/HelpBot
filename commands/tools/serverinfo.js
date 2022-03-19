@@ -110,6 +110,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'serverinfo',
+    description: 'Muestra información sobre el servidor.',
     aliases: ['server'],
-    syntax: `serverinfo`
+    parameters: ''
 };

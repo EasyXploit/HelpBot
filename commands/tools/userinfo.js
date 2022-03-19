@@ -96,6 +96,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'userinfo',
+    description: 'Muestra información sobre ti o cualquier otro miembro.',
     aliases: ['user'],
-    syntax: `userinfo [@member | id]`
+    parameters: '[@miembro | id]'
 };

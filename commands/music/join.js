@@ -69,6 +69,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'join',
+    description: 'Conecta al bot a tu canal de voz.',
     aliases: ['j'],
-    syntax: `join`
+    parameters: ''
 };

@@ -151,6 +151,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'rmwarn',
+    description: 'Para eliminar una advertencia (o todas) a un miembro.',
     aliases: ['pardon'],
-    syntax: `rmwarn <@member| id> <warn ID | "all"> [reason]`
+    parameters: '<@miembro| id> <ID de advertencia | "all"> [razón]'
 };

@@ -16,6 +16,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'invitation',
+    description: 'Genera o recupera un enlace de invitación permanente en el canal de reglas, o en el primer canal de texto que lo permita.',
     aliases: ['perminvite', 'invite'],
-    syntax: `invitation`
+    parameters: ''
 };

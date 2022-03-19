@@ -54,6 +54,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'nowplaying',
+    description: 'Muestra información sobre la pista actual.',
     aliases: ['np'],
-    syntax: `nowplaying`
+    parameters: ''
 };

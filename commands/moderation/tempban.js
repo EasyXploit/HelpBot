@@ -158,6 +158,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'tempban',
+    description: 'Banea temporalmente a un miembro.',
     aliases: [],
-    syntax: `tempban <@member| id> <"seconds"S | "minutes"M | "hours"H | "days"D> [reason]`
+    parameters: '<@miembro| id> <días"S" | minutos"M" | horas"H" | días"D"> [razón]'
 };

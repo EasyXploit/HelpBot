@@ -51,6 +51,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'move',
+    description: 'Modifica la posición de una pista en la cola.',
     aliases: ['mv'],
-    syntax: `move <position 1> <position 2>`
+    parameters: '<posición 1> <posición 2>'
 };

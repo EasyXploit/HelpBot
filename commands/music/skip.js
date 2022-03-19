@@ -88,6 +88,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'skip',
+    description: 'Salta la pista actual o una cantidad especificada.',
     aliases: ['s'],
-    syntax: `skip [amount | "all"]`
+    parameters: '[cantidad | "all"]'
 };

@@ -61,6 +61,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'remove',
+    description: 'Elimina una pista de la cola de reproducción.',
     aliases: ['rm'],
-    syntax: `remove <position | "all">`
+    parameters: '<posición | "all">'
 };

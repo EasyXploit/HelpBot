@@ -17,6 +17,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Los bots no pueden ganar XP`)]
         });
+        
 
         //Comprueba si los argumentos se han introducido adecuadamente
         if (!args[1] || args[1] !== 'set' && args[1] !== 'add' && args[1] !== 'addrandom' && args[1] !== 'remove' && args[1] !== 'clear') return message.channel.send({ embeds: [ new client.MessageEmbed()
@@ -210,7 +211,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'xp',
+    description: 'Modifica la cantidad de XP de un miembro.',
     aliases: ['modifyxp'],
-    syntax: `xp  <@member| id> <"set" | "add" | "addrandom" | "remove" | "clear"> <quantity>`
+    parameters: '<@miembro | id> <"set" | "add" | "addrandom" | "remove" | "clear"> <cantidad>'
 };
 

@@ -40,6 +40,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'leave',
+    description: 'Hace que el bot abandone el canal de voz.',
     aliases: ['le'],
-    syntax: `leave`
+    parameters: ''
 };

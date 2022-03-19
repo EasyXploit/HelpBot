@@ -53,6 +53,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'rewind',
+    description: 'Retrocede el momento de una canción una cierta cantidad de tiempo.',
     aliases: ['rw'],
-    syntax: `rewind <HH:MM:SS>`
+    parameters: '<HH:MM:SS>'
 };

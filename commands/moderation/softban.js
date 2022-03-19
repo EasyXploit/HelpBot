@@ -85,6 +85,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'softban',
+    description: 'Banea a un miembro, eliminando X días de mensajes suyos.',
     aliases: [],
-    syntax: `softban <@member| id> <days (1-7)> [reason]`
+    parameters: '<@miembro| id> <días (1-7)> [razón]'
 };

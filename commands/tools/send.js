@@ -36,6 +36,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'send',
+    description: 'El bot enviará un mensaje al canal de texto actual, con o sin formato incrustado.',
     aliases: [],
-    syntax: `send <"embed" | "normal"> <message>`
+    parameters: '<"embed" | "normal"> <mensaje>'
 };

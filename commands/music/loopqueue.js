@@ -34,6 +34,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'loopqueue',
+    description: 'Activa el modo bucle para la cola de reproducción.',
     aliases: ['lq'],
-    syntax: `loopqueue`
+    parameters: ''
 };

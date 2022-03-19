@@ -38,6 +38,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'ping',
+    description: 'Proporciona información sobre el estado del bot.',
     aliases: ['status'],
-    syntax: `ping`
+    parameters: ''
 };

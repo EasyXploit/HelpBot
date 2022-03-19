@@ -86,6 +86,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'purge',
+    description: 'Elimina una cierta cantidad de mensajes en un canal (siempre que no tengan más de 14 días de antiguedad).',
     aliases: ['clean'],
-    syntax: `purge <quantity> [#channel | id]`
+    parameters: '<cantidad> [#canal | id]'
 };

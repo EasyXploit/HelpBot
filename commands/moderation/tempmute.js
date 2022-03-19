@@ -167,6 +167,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'tempmute',
+    description: 'Silencia temporalmente a un miembro de los canales de texto y voz.',
     aliases: [],
-    syntax: `tempmute <@member| id> <"seconds"S | "minutes"M | "hours"H | "days"D> [reason]`
+    parameters: '<@miembro| id> <días"S" | minutos"M" | horas"H" | días"D"> [razón]'
 };

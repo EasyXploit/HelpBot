@@ -34,6 +34,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'shuffle',
+    description: 'Activa el modo aleatorio en la cola de reproducción.',
     aliases: ['sh'],
-    syntax: `shuffle`
+    parameters: ''
 };

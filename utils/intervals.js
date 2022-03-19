@@ -110,7 +110,7 @@ exports.run = (client) => {
             let duration = client.db.polls[idKey].duration;
 
             try {
-                channel = await channel.messages.fetch(client.db.polls[idKey].channel);
+                channel = await client.functions.fetchChannel(client.db.polls[idKey].channel);
                 poll = await channel.messages.fetch(idKey);
             } catch (error) {
                 delete client.db.polls[idKey];

@@ -26,7 +26,7 @@ exports.run = async (client) => {
                     try {
 
                         //Busca el canal y lo carga en memoria
-                        client[config] = await channel.messages.fetch(client.config.main[config]);
+                        client[config] = await client.channels.fetch(client.config.main[config]);
 
                         //Notifica la resolución positiva de la carga
                         console.log(` - [OK] [${config}] cargado correctamente`);
@@ -39,7 +39,7 @@ exports.run = async (client) => {
                 } else { //Sino
 
                     //Carga el objeto de config en memoria
-                    client[config] = await client.config.main[config];
+                    client[config] = client.config.main[config];
                 };
 
                 //Resuelve la promesa una vez acabado

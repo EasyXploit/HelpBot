@@ -111,7 +111,7 @@ exports.run = async (client, message, checks) => {
             if (connection) {
 
                 //Obtiene el nombre canal de voz
-                const voiceChannel = await channel.messages.fetch(connection.joinConfig.channelId);
+                const voiceChannel = await client.functions.fetchChannel(connection.joinConfig.channelId);
 
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()

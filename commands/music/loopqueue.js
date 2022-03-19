@@ -34,5 +34,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'loopqueue',
-    aliases: ['lq']
+    aliases: ['lq'],
+    syntax: `loopqueue`
 };

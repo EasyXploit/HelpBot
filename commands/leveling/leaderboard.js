@@ -100,5 +100,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'leaderboard',
-    aliases: ['levels']
+    aliases: ['levels'],
+    syntax: `leaderboard [page number]`
 };

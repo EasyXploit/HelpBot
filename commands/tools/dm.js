@@ -90,5 +90,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'dm',
-    aliases: ['direct']
+    aliases: ['direct'],
+    syntax: `dm <@member | id> <"author" | "anonymous"> <"embed" | "normal"> <message>`
 };

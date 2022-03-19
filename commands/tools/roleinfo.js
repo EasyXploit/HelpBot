@@ -59,5 +59,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'roleinfo',
-    aliases: ['role']
+    aliases: ['role'],
+    syntax: `roleinfo <@role | role name | id>`
 };

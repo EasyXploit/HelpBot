@@ -25,5 +25,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'replay',
-    aliases: ['rp']
+    aliases: ['rp'],
+    syntax: `replay`
 };

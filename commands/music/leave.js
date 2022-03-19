@@ -40,5 +40,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'leave',
-    aliases: ['le']
+    aliases: ['le'],
+    syntax: `leave`
 };

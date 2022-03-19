@@ -129,5 +129,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'play',
-    aliases: ['p', 'resume']
+    aliases: ['p', 'resume'],
+    syntax: `play [YouTube URL | search term]`
 };

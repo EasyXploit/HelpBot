@@ -127,5 +127,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'sound',
-    aliases: ['snd']
+    aliases: ['snd'],
+    syntax: `skip [sound name | "list"]`
 };

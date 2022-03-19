@@ -196,5 +196,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'poll',
-    aliases: []
+    aliases: [],
+    syntax: `poll [new | end] [id]`
 };

@@ -44,5 +44,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'forward',
-    aliases: ['fw']
+    aliases: ['fw'],
+    syntax: `forward <HH:MM:SS>`
 };

@@ -16,5 +16,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'invitation',
-    aliases: ['perminvite', 'invite']
+    aliases: ['perminvite', 'invite'],
+    syntax: `invitation`
 };

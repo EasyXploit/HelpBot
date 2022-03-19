@@ -96,5 +96,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'userinfo',
-    aliases: ['user']
+    aliases: ['user'],
+    syntax: `userinfo [@member | id]`
 };

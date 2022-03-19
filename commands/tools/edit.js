@@ -29,5 +29,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'edit',
-    aliases: []
+    aliases: [],
+    syntax: `edit <channel ID> <message ID> <new content>`
 };

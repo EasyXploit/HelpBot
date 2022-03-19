@@ -24,5 +24,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'clear',
-    aliases: ['cls']
+    aliases: ['cls'],
+    syntax: `clear`
 };

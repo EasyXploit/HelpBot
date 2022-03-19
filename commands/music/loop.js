@@ -35,5 +35,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'loop',
-    aliases: ['l']
+    aliases: ['l'],
+    syntax: `loop`
 };

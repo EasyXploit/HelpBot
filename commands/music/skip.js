@@ -88,5 +88,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'skip',
-    aliases: ['s']
+    aliases: ['s'],
+    syntax: `skip [amount | "all"]`
 };

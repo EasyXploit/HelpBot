@@ -158,5 +158,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'tempban',
-    aliases: []
+    aliases: [],
+    syntax: `tempban <@member| id> <"seconds"S | "minutes"M | "hours"H | "days"D> [reason]`
 };

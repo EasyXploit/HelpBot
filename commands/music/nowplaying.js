@@ -54,5 +54,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'nowplaying',
-    aliases: ['np']
+    aliases: ['np'],
+    syntax: `nowplaying`
 };

@@ -51,5 +51,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'playskip',
-    aliases: ['ps']
+    aliases: ['ps'],
+    syntax: `playskip <YouTube URL | search term>`
 };

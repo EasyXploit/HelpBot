@@ -167,5 +167,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'tempmute',
-    aliases: []
+    aliases: [],
+    syntax: `tempmute <@member| id> <"seconds"S | "minutes"M | "hours"H | "days"D> [reason]`
 };

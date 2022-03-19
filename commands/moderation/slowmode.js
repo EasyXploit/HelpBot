@@ -83,5 +83,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'slowmode',
-    aliases: ['slow']
+    aliases: ['slow'],
+    syntax: `slowmode <off | seconds (5-30)> [reason]`
 };

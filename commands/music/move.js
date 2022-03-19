@@ -51,5 +51,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'move',
-    aliases: ['mv']
+    aliases: ['mv'],
+    syntax: `move <position 1> <position 2>`
 };

@@ -61,5 +61,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'remove',
-    aliases: ['rm']
+    aliases: ['rm'],
+    syntax: `remove <position | "all">`
 };

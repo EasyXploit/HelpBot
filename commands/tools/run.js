@@ -185,5 +185,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'run',
-    aliases: ['execute', 'exec']
+    aliases: ['execute', 'exec'],
+    syntax: `run <script> [parameter/s]`
 };

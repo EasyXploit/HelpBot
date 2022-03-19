@@ -38,5 +38,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'ping',
-    aliases: ['status']
+    aliases: ['status'],
+    syntax: `ping`
 };

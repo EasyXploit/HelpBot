@@ -36,5 +36,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'send',
-    aliases: []
+    aliases: [],
+    syntax: `send <"embed" | "normal"> <message>`
 };

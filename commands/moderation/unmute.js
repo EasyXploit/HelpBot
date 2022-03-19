@@ -65,5 +65,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'unmute',
-    aliases: []
+    aliases: [],
+    syntax: `unmute <@member| id> [reason]`
 };

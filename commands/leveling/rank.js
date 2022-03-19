@@ -99,5 +99,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'rank',
-    aliases: ['stats']
+    aliases: ['stats'],
+    syntax: `rank [@member | id]`
 };

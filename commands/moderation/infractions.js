@@ -105,5 +105,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'infractions',
-    aliases: ['warns']
+    aliases: ['warns'],
+    syntax: `infractions [@member | id]`
 };

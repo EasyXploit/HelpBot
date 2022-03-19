@@ -66,5 +66,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'seek',
-    aliases: ['sk']
+    aliases: ['sk'],
+    syntax: `seek <HH:MM:SS>`
 };

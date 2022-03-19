@@ -86,5 +86,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'purge',
-    aliases: ['clean']
+    aliases: ['clean'],
+    syntax: `purge <quantity> [#channel | id]`
 };

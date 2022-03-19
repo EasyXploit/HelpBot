@@ -210,6 +210,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'xp',
-    aliases: ['modifyxp']
+    aliases: ['modifyxp'],
+    syntax: `xp  <@member| id> <"set" | "add" | "addrandom" | "remove" | "clear"> <quantity>`
 };
 

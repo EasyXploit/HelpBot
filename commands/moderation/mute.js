@@ -85,5 +85,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'mute',
-    aliases: []
+    aliases: [],
+    syntax: `mute <@member| id> [reason]`
 };

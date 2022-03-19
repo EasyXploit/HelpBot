@@ -60,5 +60,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'unban',
-    aliases: []
+    aliases: [],
+    syntax: `unban <@member| id> [reason]`
 };

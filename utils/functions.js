@@ -160,6 +160,9 @@ exports.run = (client) => {
         //Para cada canal, añade el permiso para el rol
         await guild.channels.cache.forEach(async (channel) => {
 
+            //Ignora este canal si debe estar excluido del silenciamiento
+            if (client.config.moderation.mutedRoleExcludedChannels.includes(channel.id)) return;
+
             //Si el canal tiene un permiso para el rol silenciado, lo almacena
             let mutedRolePermissions = channel.permissionOverwrites.resolve(mutedRole.id);
 

@@ -29,10 +29,11 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             //Envía una lista con las grabaciones
             message.channel.send({embeds : [ new client.MessageEmbed()
-                .setColor('CCCCCC')
+                .setColor(client.config.colors.primary)
                 .setTitle('🎙 Lista de grabaciones')
-                .setDescription(`\`\`\`${soundNames.join('    ')}\`\`\`.`)]
-            });
+                .setDescription(`\`\`\`${soundNames.join('    ')}\`\`\``)
+                .setFooter(`Para escuchar un audio, escribe: ${client.config.main.prefix}sound <nombre del audio>`)
+            ]});
 
         } else { //Si se desea reproducir una grabación
 

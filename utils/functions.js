@@ -121,13 +121,18 @@ exports.run = (client) => {
     client.functions.checkMutedRole = async (guild) => {
 
         //Busca el rol silenciado
-        let mutedRole = await guild.roles.cache.find(r => r.name === '🔇 SILENCIADO');
+        let mutedRole = await guild.roles.cache.find(r => r.id === client.config.dynamic.mutedRoleId);
 
-        //Si no existe el rol silenciado, lo crea
-        if (!mutedRole) {
+        //Si no existe el rol silenciado (o su nombre es diferente al configurado), lo crea
+        if (!mutedRole || mutedRole.name !== client.config.moderation.mutedRoleName) {
+
+            //Borra el anterior rol si es necesario
+            if (mutedRole.name !== client.config.moderation.mutedRoleName) await mutedRole.delete('Será reemplazado por uno nuevo.');
+
+            //Crea un nuevo rol silenciado
             mutedRole = await guild.roles.create({
                 data: {
-                    name: '🔇 SILENCIADO',
+                    name: client.config.moderation.mutedRoleName,
                     color: '#818386',
                     permissions: []
                 },
@@ -137,14 +142,21 @@ exports.run = (client) => {
             //Asigna el rol a la posición más alta posible
             let botMember = await guild.members.cache.get(client.user.id);
             await mutedRole.setPosition(botMember.roles.highest.position - 1);
+
+            //Graba el nuevo rol en la configuración
+            client.config.dynamic.mutedRoleId = mutedRole.id;
+
+            //Graba el ID en el fichero de configuración
+            await client.fs.writeFile('./configs/dynamic.json', JSON.stringify(client.config.dynamic, null, 4), async err => { if (err) throw err });
         };
+        
         return mutedRole;
     };
 
     //Función para propagar el rol silenciado
     client.functions.spreadMutedRole = async (guild) => {
         //Busca el rol silenciado
-        let mutedRole = await guild.roles.cache.find(r => r.name === '🔇 SILENCIADO');
+        let mutedRole = await guild.roles.cache.find(r => r.id === client.config.dynamic.mutedRoleId);
         //Para cada canal, añade el permiso para el rol
         await guild.channels.cache.forEach(async (channel) => {
 

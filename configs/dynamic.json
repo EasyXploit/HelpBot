@@ -1,6 +1,7 @@
 {
     "homeGuild": "",
     "inviteCode": "",
+    "mutedRoleId": "",
     "customEmojis": {
         "greenTick": "",
         "redTick": "",

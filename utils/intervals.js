@@ -9,7 +9,7 @@ exports.run = (client) => {
 
                 let guild = client.guilds.cache.get(client.homeGuild.id);
             
-                let role = guild.roles.cache.find(r => r.name === '🔇 SILENCIADO')
+                let role = guild.roles.cache.find(r => r.id === client.config.dynamic.mutedRoleId)
                 if (!role) continue;
 
                 const member = await client.functions.fetchMember(guild, idKey);

@@ -31,9 +31,9 @@ exports.run = async (message, client) => {
             if (legitInvites < detectedInvites.length) {
                 const member = await client.functions.fetchMember(client.homeGuild, message.author.id);
 
-                if ((member.joinedTimestamp + client.config.automodFilters.newMemberTimeDelimiter) < Date.now()) {
+                if ((member.joinedTimestamp + client.config.moderation.newMemberTimeDelimiter) < Date.now()) {
                     client.db.bans[member.id] = {
-                        time: Date.now() + client.config.automodFilters.newSpammerMemberBanDuration
+                        time: Date.now() + client.config.moderation.newSpammerMemberBanDuration
                     };
 
                     let toDMEmbed = new client.MessageEmbed()

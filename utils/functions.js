@@ -106,6 +106,11 @@ exports.run = (client) => {
                 //Autoriza la ejecución si se ha acabado el bucle
                 if (index === commandConfig.blacklistedRoles.length - 1) authorized = true;
             };
+
+        } else if (message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole) {
+
+            //Autoriza la ejecución
+            authorized = true;
         };
 
         //Devuelve la autorización

@@ -14,8 +14,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         const member = await client.functions.fetchMember(message.guild, args[0]);
         if (!member) return message.channel.send({ embeds: [notToMuteEmbed] });
 
-        let toDeleteCount = command.length - 2 + args[0].length + 2; 
-        let reason = message.content.slice(toDeleteCount) || 'Indefinida';
+        let reason = args.splice(1).join(' ') || 'Indefinida';
 
         if (member.bot) return message.channel.send({ embeds: [noBotsEmbed] });
 

@@ -16,10 +16,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
         const user = await client.functions.fetchUser(args[0]);
         if (!user) return message.channel.send({ embeds: [notToUnbanEmbed] });
 
-        let toDeleteCount = command.length - 2 + args[0].length + 2;
-
         //Esto comprueba si se debe proporcionar razón
-        let reason = message.content.slice(toDeleteCount)
+        let reason = args.splice(1).join(' ');
         if (!reason && message.author.id !== message.guild.ownerId) return message.channel.send({ embeds: [noReasonEmbed] });
         if (!reason) reason = `Indefinida`;
 

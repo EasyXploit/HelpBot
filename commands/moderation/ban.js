@@ -51,8 +51,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setDescription(`${client.customEmojis.orangeTick} **${user.tag}** ha sido baneado, ¿alguien más?`);
 
         //Almacena la razón
-        let toDeleteCount = command.length - 2 + args[0].length + 2;
-        let reason = message.content.slice(toDeleteCount);
+        let reason = args.splice(1).join(' ');
 
         //Si se ha proporcionado razón, la adjunta al mensaje de confirmación
         if (reason) successEmbed.setDescription(`${client.customEmojis.orangeTick} **${user.tag}** ha sido baneado debido a **${reason}**, ¿alguien más?`);

@@ -1,58 +1,67 @@
-exports.run = async (event, client) => {
+exports.run = async (member, client) => {
     
     try {
+
         //Previene que continue la ejecución si el servidor no es el principal
-        if (event.guild.id !== client.homeGuild.id) return;
+        if (member.guild.id !== client.homeGuild.id) return;
 
-        if (!event.user.bot) {
-            const forbiddenNames = ['http://', 'https://', 'discord.gg', 'www.', '.tv', 'twitch.tv', '.net', '.com', 'twitter.com', 'paypal.me', '.me', 'donate.', '.gg', 'binzy'];
+        //Si el nuevo miembro es un bot
+        if (member.user.bot) {
 
-            if (forbiddenNames.some(word => event.user.username.toLowerCase().includes(word))) {
+            //Añade el rol de bienvenida para nuevos bots (si no lo tiene ya)
+            if (!member.roles.cache.has(client.config.main.newBotRole)) await member.roles.add(client.config.main.newBotRole);
 
-                let toDMEmbed = new client.MessageEmbed()
-                    .setColor(client.config.colors.secondaryError)
-                    .setAuthor({ name: '[EXPULSADO]', iconURL: event.guild.iconURL({dynamic: true}) })
-                    .setDescription(`<@${event.user.id}>, has sido expulsado de ${event.guild.name}`)
-                    .addField('Moderador', client.user, true)
-                    .addField('Razón', 'No está permitido utilizar enlaces como nombre de usuario.', true)
-
-                await event.user.send({ embeds: [toDMEmbed] });
-                await event.kick(event.user, {reason: `Moderador: ${client.user.id}, Razón: No está permitido utilizar enlaces como nombre de usuario.`})
-
-                .catch ((err) => {
-                    console.error(`${new Date().toLocaleString()} 》${err.stack}`);
-
-                    let errorEmbed = new client.MessageEmbed()
-                        .setColor(client.config.colors.error)
-                        .setTitle(`${client.customEmojis.redTick} Ocurrió un error`)
-                        .setDescription(`Ocurrió un error durante la ejecución del evento "guildMemberAdd".\nEl usuario ${event.user.username} no fue expulsado automáticamente de la comunidad, por lo que será necesario emprender acciones de forma manual.`);
-                        
-                    client.loggingChannel.send({ embeds: [errorEmbed] });
-                });
-            } else  {
-                let loggingWelcomeEmbed = new client.MessageEmbed()
-                    .setColor(client.config.colors.correct)
-                    .setThumbnail(event.user.displayAvatarURL({dynamic: true}))
-                    .setAuthor({ name: 'Nuevo miembro', iconURL: 'attachment://in.png' })
-                    .setDescription(`${event.user.username} se unió al servidor`)
-                    .addField('🏷 TAG completo', event.user.tag, true)
-                    .addField('🆔 ID del miembro', event.user.id, true);
-
-                await client.joinsAndLeavesChannel.send({ embeds: [loggingWelcomeEmbed], files: ['./resources/images/in.png'] });
-            };
-        } else {
-            if (event.guild.member(event.user).roles.cache.has('426789294007517205')) return;
-            event.guild.member(event.user).roles.add('426789294007517205');
-
-            let loggingWelcomeBotEmbed = new client.MessageEmbed()
+            //Envía un mensaje al canal de auditoría
+            return client.joinsAndLeavesChannel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle('📑 Auditoría - [BOTS]')
-                .setDescription(`El **BOT** @${event.user.tag} fue añadido al servidor.`);
-
-            return client.joinsAndLeavesChannel.send({ embeds: [loggingWelcomeBotEmbed] });
+                .setDescription(`El **BOT** @${member.user.tag} fue añadido al servidor.`)
+            ]});
         };
+
+        //Almacena las listas de palabras prohibidas
+        const forbiddenNames = client.config.moderation.newMemberForbiddenNames;
+        const bannedWords = client.config.bannedWords;
+
+        //Si procede, comprueba si han de comprobarse los nombres de usuario
+        const containsForbiddenNames = forbiddenNames.some(word => member.user.username.toLowerCase().includes(word));
+        const containsBannedWords = client.config.moderation.includeBannedWords ? bannedWords.some(word => member.user.username.toLowerCase().includes(word)) : false;
+
+        //Si contiene alguna palabra prohibida
+        if (containsForbiddenNames || containsBannedWords) {
+
+            //Alerta al miembro de que ha sido expulsado
+            await member.user.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryError)
+                .setAuthor({ name: '[EXPULSADO]', iconURL: member.guild.iconURL({dynamic: true}) })
+                .setDescription(`<@${member.user.id}>, has sido expulsado de ${member.guild.name}`)
+                .addField('Moderador', client.user, true)
+                .addField('Razón', 'Tu nombre de usuario contiene una palabra prohibida en la comunidad.', true)
+            ]});
+
+            //Se expulsa al miembro
+            await member.kick(member.user, {reason: `Moderador: ${client.user.id}, Razón: El nombre de usuario contenía una palabra prohibida.`})
+        };
+
+        //Se notifica en el canal de auditoría
+        await client.joinsAndLeavesChannel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.correct)
+            .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
+            .setAuthor({ name: 'Nuevo miembro', iconURL: 'attachment://in.png' })
+            .setDescription(`${member.user.tag} se unió al servidor`)
+            .addField('🆔 ID del miembro', member.user.id, true)
+            .addField('📝 Fecha de registro', member.user.createdAt.toLocaleString(), true)
+        ], files: ['./resources/images/in.png'] });
+
+        //Añade el rol de bienvenida para nuevos miembros (si no lo tiene ya)
+        if (member.roles.cache.has(client.config.main.newMemberRole)) await member.roles.add(client.config.main.newMemberRole);
+
     } catch (error) {
+
+        //Ignora si el miembro no permite que se le envíen MDs
         if (error.toLocaleString().includes('Cannot send messages to this user')) return;
+
+        //Invoca el manejador de errores
         await client.functions.eventErrorHandler(error, 'guildMemberAdd');
     };
 };

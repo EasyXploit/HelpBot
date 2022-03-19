@@ -4,5 +4,7 @@
     "loggingChannel": "",
     "debuggingChannel": "",
     "joinsAndLeavesChannel": "",
+    "newBotRole": "",
+    "newMemberRole": "",
     "loadMention": true
 }

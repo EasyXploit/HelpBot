@@ -47,7 +47,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .setColor(client.config.colors.primary)
                 .setThumbnail('attachment://help.png')
                 .setAuthor({ name: `Lista de comandos de ${client.user.username}`, iconURL: client.user.displayAvatarURL({dynamic: true})})
-                .setFooter({ text: `Para aprender a utilizar un comando, escribe "${client.config.main.prefix}help <nombre del comando>".` });
+                .setFooter({ text: `Para aprender a utilizar un comando, escribe: ${client.config.main.prefix}help <nombre del comando>` });
 
             //Examina cada directorio "categoría" de comandos
             for (let category of await client.fs.readdirSync('./commands/')) {
@@ -72,7 +72,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 if (commands.length === 0) continue;
 
                 //Capitaliza el nombre de la categoría
-                category = `🞄 ${category.charAt(0).toUpperCase()}${category.slice(1)}`;
+                category = `● ${category.charAt(0).toUpperCase()}${category.slice(1)}`;
 
                 //Añade un campo al embed con la categoría y sus comandos
                 await helpEmbed.addField(`${category}:`, `\`${commands.join('`, `')}\``);

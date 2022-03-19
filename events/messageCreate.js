@@ -173,8 +173,11 @@ exports.run = async (message, client) => {
             //Borra el mensaje de invocación (tras 3 segundos) si se ha configurado para ello
             if (commandConfig.deleteInvocationCommand) setTimeout(() => message.delete(), 2000);
 
+            //Añade el export de la config al objeto "commandConfig";
+            commandConfig.export = listedCmd.config;
+
             //Ejecuta el comando
-            listedCmd.run(client, message, args, command, commandConfig);
+            listedCmd.run(client, message, args, listedCmd.config.name, commandConfig);
 
             //Añade un cooldown
             client.cooldownedUsers.add(message.author.id);

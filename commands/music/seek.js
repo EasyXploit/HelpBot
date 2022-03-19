@@ -13,8 +13,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Comprueba si se ha proporcionado un tiempo válido
         if (!args[0] || (!args[0].match(ssFilter) && !args[0].match(mmssFilter) && !args[0].match(hhmmssFilter))) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es: \`${client.config.main.prefix}seek (HH:MM:SS)\`.`)]
-        });
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`)
+        ]});
 
         //Calcula los segundos para la propiedad seekTo
         const seekTo = await client.functions.HHMMSSToMs(args[0]) / 1000;

@@ -185,8 +185,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
         } else {
             return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es ${client.config.main.prefix}poll (new | end) [id]`)
-            ] });
+                .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`)
+            ]});
         }
 
     } catch (error) {

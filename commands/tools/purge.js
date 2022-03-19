@@ -2,83 +2,92 @@ exports.run = async (client, message, args, command, commandConfig) => {
     
     try {
         
-        let noQuantityEmbed = new client.MessageEmbed()
+        //Comprueba si se ha proporcionado una cantidad
+        if (!args[0]) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Debes proporcionar la cantidad de mensajes a eliminar`);
+            .setDescription(`${client.customEmojis.redTick} Debes proporcionar la cantidad de mensajes a eliminar`)
+        ]});
         
-        let incorrectQuantityEmbed = new client.MessageEmbed()
+        //Comprueba si se ha especificado una cantidad válida
+        if (isNaN(args[0]) || args[0] < 1 || args[0] >= 100) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad numérica  igual o superior a 1, e inferior a 100`);
+            .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad numérica igual o superior a 1, e inferior a 100.`)
+        ]});
 
-        if(!args[0]) return message.channel.send({ embeds: [noQuantityEmbed] });
-        if (isNaN(args[0])) return message.channel.send({ embeds: [NaNEmbed] });
-        
-        let tooMuchOldMessagesEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Solo puedes borrar mensajes con un máximo de 14 días de antiguedad`);
-
-        let noPrivilegesEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} No tienes permiso para administrar mensajes`);
-        
-        if (isNaN(args[0]) || args[0] < 1 || args[0] >= 100) return message.channel.send({ embeds: [incorrectQuantityEmbed] });
-        let count = 0;
+        //Almacena el canal a purgar
         let channel;
 
-        if (args[1]) {
-            let noChannelEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} El canal de texto proporcionado no es válido`);
-            
-            channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
-            if (!channel) return message.channel.send({ embeds: [noChannelEmbed] });
+        //Busca y almacena el canal a purgar
+        if (args[1]) channel = await client.functions.fetchChannel(message.guild, args[1]);
+        else channel = message.channel;
 
+        //Almacena un 1 adicional si se ha de purgar el de invocación
+        const extraMessages = args[1] && channel.id !== message.channel.id ? 0 : 1;
 
-            const memberPermissions = channel.permissionsFor(message.author).bitfield;
-            if ((memberPermissions & BigInt(0x2000)) !== BigInt(0x2000)) return message.channel.send({ embeds: [noPrivilegesEmbed] });
-            
-            const messages = await channel.messages.fetch({limit: parseInt(args[0]) + 1});
-            count = messages.size;
-            
-            let successEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryCorrect)
-                .setTitle(`${client.customEmojis.greenTick} Operación completada`)
-                .setDescription(`Mensajes eliminados: ${count}`);
+        //Comprueba si el canal existe
+        if (!channel) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} El canal de texto proporcionado no es válido.`)
+        ]});
 
-            let loggingEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.logging)
-                .setTitle('📑 Auditoría - [PURGA DE MENSAJES]')
-                .setDescription(`${message.author.tag} eliminó ${count} mensajes del canal <#${channel.id}>`);
-            
-            try {
-                await channel.bulkDelete(messages);
-                
-                await message.channel.send({ embeds: [successEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
-                await client.functions.loggingManager(loggingEmbed);
-            } catch (error) {
-                message.channel.send({ embeds: [tooMuchOldMessagesEmbed] });
-            }
-        } else {
-            channel = message.channel;
+        //Comprueba si el miembro tiene permisos para ejecutar esta acción
+        const memberPermissions = channel.permissionsFor(message.author).bitfield;
+        if ((memberPermissions & BigInt(0x2000)) !== BigInt(0x2000)) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} No tienes permiso para administrar mensajes en <#${channel.id}>.`)
+        ]});
 
-            const memberPermissions = channel.permissionsFor(message.author).bitfield;
-            if ((memberPermissions & BigInt(0x2000)) !== BigInt(0x2000)) return message.channel.send({ embeds: [noPrivilegesEmbed] });
-            
-            const messages = await message.channel.messages.fetch({limit: parseInt(args[0]) + 1});
-            count = messages.size;
+        //Se obtiene la cantidad de mensajes especificada (incluyendo el de invocación)
+        const messages = await channel.messages.fetch({limit: parseInt(args[0]) + extraMessages});
 
-            let loggingEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.logging)
-                .setTitle('📑 Auditoría - [PURGA DE MENSAJES]')
-                .setDescription(`${message.author.tag} eliminó ${count} mensajes del canal <#${channel.id}>`);
-            
-            try {
-                await channel.bulkDelete(messages);
-                await client.functions.loggingManager(loggingEmbed);
-            } catch (error) {
-                message.channel.send({ embeds: [tooMuchOldMessagesEmbed] });
-            }
-        }
+        //Si no se encontraron mensajes en el canal, devuelve un error
+        if (messages.size <= extraMessages) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} No se pudo encontrar ningún mensaje en <#${channel.id}>.`)
+        ]});
+
+        //Almacena los mensajes que serán borrados
+        const msgsToDelete = new client.Collection();
+
+        //Por cada uno de los mensajes obtenidos
+        await messages.forEach(msg => {
+
+            //Lo añade al array "msgsToDelete" si tienen una edad menor a 2 semanas 
+            if (Date.now() - msg.createdTimestamp  < 1209600000) msgsToDelete.set(msg.id, msg);
+        });
+
+        //Si ningún mensaje era lo suficientemente reciente, devuelve un error
+        if (msgsToDelete.size <= extraMessages) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} Solo se pueden borar mensajes con una antigüedad inferior a \`14 días\`.`)
+        ]});
+
+        //Purga los mensajes del canal seleccionado
+        await channel.bulkDelete(msgsToDelete);
+
+        //Almacena el mensaje de confirmación
+        let successEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryCorrect)
+            .setTitle(`${client.customEmojis.greenTick} Operación completada.`)
+            .setDescription(`Mensajes eliminados: \`${msgsToDelete.size - extraMessages}\``);
+
+        //Si se omitieron mensajes, se indica en el footer del embed
+        if (msgsToDelete.size < messages.size) successEmbed.setFooter(`Se omitieron ${messages.size - msgsToDelete.size} mensajes.`);
+
+        //Envía un mensaje de confirmación
+        await message.channel.send({ embeds: [successEmbed] }).then(msg => {
+
+            //Si el canal de la purga es el mismo que el de invocación, elimina la confirmación a los 3 segundos
+            if (channel.id === message.channel.id) setTimeout(() => msg.delete(), 3000)
+        }); 
+
+        //Envía un registro al canal de auditoría
+        await client.functions.loggingManager(new client.MessageEmbed()
+            .setColor(client.config.colors.logging)
+            .setTitle('📑 Auditoría - [PURGA DE MENSAJES]')
+            .setDescription(`${message.author.tag} eliminó ${msgsToDelete.size - extraMessages} mensajes del canal <#${channel.id}>`)
+        );
+
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);
     };
@@ -86,7 +95,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'purge',
-    description: 'Elimina una cierta cantidad de mensajes en un canal (siempre que no tengan más de 14 días de antiguedad).',
+    description: 'Elimina una cierta cantidad de mensajes en un canal (siempre que tenga menos de 14 días de antiguedad).',
     aliases: ['clean'],
     parameters: '<cantidad> [#canal | id]'
 };

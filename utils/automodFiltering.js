@@ -2,7 +2,9 @@ const filters = require('../configs/automodFilters.json');
 
 //Palabras malsonantes
 async function swearWords(message) {
-    if (client.config.bannedWords.some(word => message.content.toLowerCase().includes(word))) return true;
+    
+    const words = require('../configs/bannedWords.json');
+    if (words.some(word => message.content.toLowerCase().includes(word))) return true;
 };
 
 //Invitaciones

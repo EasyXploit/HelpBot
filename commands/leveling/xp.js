@@ -97,7 +97,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
                 //Genera XP aleatorio según el parámetro proporcinado
                 for (max = args[2]; max != 0; max--) {
-                    const randomXp = await client.functions.randomIntBetween(5, 15);
+                    const randomXp = await client.functions.randomIntBetween(client.config.xp.minimumXpReward, client.config.xp.maximumXpReward);
                     generatedXp = generatedXp + randomXp;
                 };
 

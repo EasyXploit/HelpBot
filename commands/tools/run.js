@@ -127,10 +127,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
                     if (member && userStats.level > 0) {
 
                         //Advierte por consola de que se omitirá al miembro en el caso de que su XP total sea menor o igual al umbral de su nivel
-                        if (userStats.totalXP <= 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) console.log(`Miembro ${member.displayName} omitido\n- - - - - -`);
+                        if (userStats.totalXP <= (5 * client.config.xp.dificultyModifier) * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) console.log(`Miembro ${member.displayName} omitido\n- - - - - -`);
 
                         //Mientras que el XP del miembro sea superior o igual al umbral de su nivel
-                        while (userStats.totalXP >= 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) {
+                        while (userStats.totalXP >= (5 * client.config.xp.dificultyModifier) * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) {
 
                             //Añade al miembro la cantidad de XP generada al cumplirse un intervalo de voz, einforma por consola
                             await client.functions.addXP(member, message.guild, 'voice').then(console.log(`Miembro ${member.displayName} actualizado\n- - - - - -`));

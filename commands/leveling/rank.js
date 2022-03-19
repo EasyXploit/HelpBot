@@ -24,7 +24,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         };
         
         const userStats = guildStats[member.id];
-        const xpToNextLevel = 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100;
+        const xpToNextLevel = (5 * client.config.xp.dificultyModifier) * Math.pow(userStats.level, 3) + 50 * userStats.level + 100;
 
         let nonXP;
         for (let i = 0; i < client.config.xp.nonXPRoles.length; i++) {

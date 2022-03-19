@@ -212,18 +212,18 @@ exports.run = (client) => {
                 
 
                 //Genera XP y lo guarda
-                const newXp = await client.functions.randomIntBetween(5, 15);
+                const newXp = await client.functions.randomIntBetween(client.config.xp.minimumXpReward, client.config.xp.maximumXpReward);
                 userStats.actualXP += newXp;
                 userStats.totalXP += newXp;
                 if (mode === 'message') userStats.last_message = Date.now();
 
-                //Fórmula parra calcular el XP necesario para subir de nivel
-                const xpToNextLevel = 5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100;
+                //Fórmula para calcular el XP necesario para subir de nivel
+                const xpToNextLevel = ((5 * client.config.xp.dificultyModifier) * client.config.xp.dificultyModifier) * Math.pow(userStats.level, 3) + 50 * userStats.level + 100;
 
                 //Comprueba si el miembro ha de subir de nivel
                 if (userStats.totalXP >= xpToNextLevel) {
                     userStats.level++;
-                    userStats.actualXP = (5 * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) - userStats.totalXP;
+                    userStats.actualXP = ((5 * client.config.xp.dificultyModifier) * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) - userStats.totalXP;
 
                     //Para cada recompensa, calcula si el miembro es elegible
                     for (let i = client.config.levelingRewards.length - 1; i >= 0; i--) {

@@ -144,9 +144,9 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         if (newValue > oldValue) { //Cambia el nivel y el XP actual
             let xpCount = newValue;
-            while ((5 * Math.pow(level, 3) + 50 * level + 100) <= newValue) {
+            while (((5 * client.config.xp.dificultyModifier) * Math.pow(level, 3) + 50 * level + 100) <= newValue) {
                 level++;
-                const xpToNextLevel = 5 * Math.pow(level, 3) + 50 * level + 100;
+                const xpToNextLevel = (5 * client.config.xp.dificultyModifier) * Math.pow(level, 3) + 50 * level + 100;
                 if (xpCount >= xpToNextLevel) xpCount = xpCount - xpToNextLevel;
             }
             client.db.stats[message.guild.id][member.id].actualXP = xpCount;
@@ -159,7 +159,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             //Cambia el nivel
             for (let i = 0;; i++) {
-                if ((5 * Math.pow(i, 3) + 50 * i + 100) > newValue) {
+                if (((5 * client.config.xp.dificultyModifier) * Math.pow(i, 3) + 50 * i + 100) > newValue) {
                     level = i;
                     if (level !== client.db.stats[message.guild.id][member.id].level) {
                         client.db.stats[message.guild.id][member.id].level = level;
@@ -171,7 +171,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             //Cambia el XP actual
             let levelXp = 0;
-            if (level > 0) levelXp = 5 * Math.pow((level - 1), 3) + 50 * (level - 1) + 100;
+            if (level > 0) levelXp = (5 * client.config.xp.dificultyModifier) * Math.pow((level - 1), 3) + 50 * (level - 1) + 100;
             let xpCount = newValue - levelXp;
             client.db.stats[message.guild.id][member.id].actualXP = xpCount;
         };

@@ -5,5 +5,8 @@
     "notifylevelUpOnVoice": true,
     "nonXPRoles": [],
     "nonXPChannels": [],
-    "XPGainInterval": 60000
+    "XPGainInterval": 60000,
+    "dificultyModifier": 1,
+    "minimumXpReward": 5,
+    "maximumXpReward": 15
 }

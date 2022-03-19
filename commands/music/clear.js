@@ -24,5 +24,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'clear',
-    aliases: ['cls']
+    description: 'Vacía la cola de reproducción.',
+    aliases: ['cls'],
+    parameters: ''
 };

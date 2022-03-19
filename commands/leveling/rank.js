@@ -99,5 +99,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'rank',
-    aliases: ['stats']
+    description: 'Muestra tus estadísticas de XP o las de otro miembro.',
+    aliases: ['stats'],
+    parameters: '[@miembro | id]'
 };

@@ -9,8 +9,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Comprueba si se han proporcionado argumentos
         if (!args[0]) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es: \`${client.config.main.prefix}remove (posición)\`.`)]
-        });
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`)
+        ]});
 
         //Almacena la información de la cola de la guild
         const reproductionQueue = client.reproductionQueues[message.guild.id];
@@ -61,5 +61,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'remove',
-    aliases: ['rm']
+    description: 'Elimina una pista de la cola de reproducción.',
+    aliases: ['rm'],
+    parameters: '<posición | "all">'
 };

@@ -127,5 +127,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'sound',
-    aliases: ['snd']
+    description: 'Reproduce un archivo .mp3 de la carpeta `media/audios` o muestra una lista de ellos.',
+    aliases: ['snd'],
+    parameters: '[nombre del sonido | "list"]'
 };

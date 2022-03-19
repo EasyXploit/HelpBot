@@ -3,12 +3,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
     try {
 
         //Comprueba si se han proporcionado los cargumentos correctamente
-        if (!args[0] || !args[1] || (args[0] !== 'embed' && args[0] !== 'normal')) return message.channel.send({ embeds: [
-            new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.main.prefix}send (embed | normal) (texto)\`.`)
-            ]
-        });
+        if (!args[0] || !args[1] || (args[0] !== 'embed' && args[0] !== 'normal')) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`)
+        ]});
 
         //Almacena el cuerpo del mensaje
         let body = args.slice(1).join(' ');
@@ -36,5 +34,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'send',
-    aliases: []
+    description: 'El bot enviará un mensaje al canal de texto actual, con o sin formato incrustado.',
+    aliases: [],
+    parameters: '<"embed" | "normal"> <mensaje>'
 };

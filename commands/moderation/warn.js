@@ -47,5 +47,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'warn',
-    aliases: []
+    description: 'Agrega una advertencia a un miembro.',
+    aliases: [],
+    parameters: '<@miembro| id> <razón>'
 };

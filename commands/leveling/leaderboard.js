@@ -100,5 +100,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'leaderboard',
-    aliases: ['levels']
+    description: 'Muestra la tabla de clasificación de XP de la comunidad.',
+    aliases: ['levels'],
+    parameters: '[número de página]'
 };

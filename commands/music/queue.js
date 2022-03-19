@@ -111,5 +111,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'queue',
-    aliases: ['q']
+    description: 'Muestra las pistas que están en la cola.',
+    aliases: ['q'],
+    parameters: '[número de página]'
 };

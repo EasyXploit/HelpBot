@@ -4,7 +4,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         
         let incorrectSyntaxEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.main.prefix}roleinfo (@rol | rol | id)\`.`);
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`);
 
         if (!args[0]) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
 
@@ -59,5 +59,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'roleinfo',
-    aliases: ['role']
+    description: 'Muestra información sobre un rol.',
+    aliases: ['role'],
+    parameters: '<@rol | nombre de rol | id>'
 };

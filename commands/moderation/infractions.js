@@ -105,5 +105,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'infractions',
-    aliases: ['warns']
+    description: 'Muestra una lista con las infracciones de un miembro y sus respectivos ID.',
+    aliases: ['warns'],
+    parameters: '[@miembro | id]'
 };

@@ -60,5 +60,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'kick',
-    aliases: []
+    description: 'Expulsa a un miembro.',
+    aliases: [],
+    parameters: '<@miembro| id> [razón]'
 };

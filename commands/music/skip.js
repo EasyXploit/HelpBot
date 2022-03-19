@@ -88,5 +88,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'skip',
-    aliases: ['s']
+    description: 'Salta la pista actual o una cantidad especificada.',
+    aliases: ['s'],
+    parameters: '[cantidad | "all"]'
 };

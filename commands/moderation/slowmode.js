@@ -4,7 +4,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         
         let incorrectSyntaxEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.main.prefix}slowmode (off | segundos [5-30]) (razón)\`.`);
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`);
 
         if (args[0] === 'off') {
             if (!message.channel.rateLimitPerUser) return message.channel.send({ embeds: [incorrectSyntaxEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
@@ -83,5 +83,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'slowmode',
-    aliases: ['slow']
+    description: 'Activa el modo lento en un canal de texto.',
+    aliases: ['slow'],
+    parameters: '<"off" | segundos (5-30)> [razón]'
 };

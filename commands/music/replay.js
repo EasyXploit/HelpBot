@@ -25,5 +25,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'replay',
-    aliases: ['rp']
+    description: 'Reproduce la pista actual desde el principio.',
+    aliases: ['rp'],
+    parameters: ''
 };

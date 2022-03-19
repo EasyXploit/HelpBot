@@ -4,7 +4,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         
         let incorrectSyntaxEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es \`${client.config.main.prefix}dm (@usuario | id) (author | anonymous) (embed | normal) (mensaje a enviar)\`.`);
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`);
         
         if (args.length < 4 || (args[1] !== 'author' && args[1] !== 'anonymous') || (args[2] !== 'embed' && args[2] !== 'normal')) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
             
@@ -90,5 +90,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'dm',
-    aliases: ['direct']
+    description: 'El bot enviará un mensaje al miembro, de forma anónima o con el autor referenciado, con formato incrustado o no.',
+    aliases: ['direct'],
+    parameters: '<@miembro | id> <"author" | "anonymous"> <"embed" | "normal"> <mensaje>'
 };

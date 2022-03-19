@@ -10,8 +10,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Comprueba si se ha proporcionado un tiempo válido
         if (!args[0] || (!args[0].match(ssFilter) && !args[0].match(mmssFilter) && !args[0].match(hhmmssFilter))) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es: \`${client.config.main.prefix}forward (HH:MM:SS)\`.`)]
-        });
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`)
+        ]});
 
         //Método para obtener conexiones de voz
         const { getVoiceConnection } = require('@discordjs/voice');
@@ -44,5 +44,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'forward',
-    aliases: ['fw']
+    description: 'Avanza el momento de una canción en una cantidad de tiempo especificada.',
+    aliases: ['fw'],
+    parameters: '<HH:MM:SS>'
 };

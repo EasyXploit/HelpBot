@@ -85,5 +85,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'mute',
-    aliases: []
+    description: 'Silencia a un miembro de los canales de texto y voz.',
+    aliases: [],
+    parameters: '<@miembro| id> [razón]'
 };

@@ -8,8 +8,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Comprueba si se han proporcionado argumentos
         if (!args[0] || !args[1]) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es: \`${client.config.main.prefix}move (posición 1) (posición 2)\`.`)]
-        });
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`)
+        ]});
 
         //Comprueba si se ha proporcionado un número entero
         if (isNaN(args[0]) || isNaN(args[1])) return message.channel.send({ embeds: [ new client.MessageEmbed()
@@ -51,5 +51,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'move',
-    aliases: ['mv']
+    description: 'Modifica la posición de una pista en la cola.',
+    aliases: ['mv'],
+    parameters: '<posición 1> <posición 2>'
 };

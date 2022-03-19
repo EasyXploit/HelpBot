@@ -29,6 +29,7 @@ console.log('- ¡Cliente iniciado correctamente!\n');
 //Carga de librerías de métodos de Discord en el cliente
 client.MessageEmbed = discord.MessageEmbed;
 client.MessageAttachment = discord.MessageAttachment;
+client.Collection = discord.Collection;
 
 //Dependencia de acceso al sistema de archivos
 client.fs = require('fs');
@@ -61,7 +62,7 @@ client.cooldownedUsers = new Set();     //Cooldowns de los usuarios
 client.reproductionQueues = {};         //Almacena la cola de reproducción y otros datos
 
 //Creación de colecciones
-['commands', 'aliases'].forEach(x => client[x] = new discord.Collection());
+['commands', 'aliases'].forEach(x => client[x] = new client.Collection());
 
 //MANEJADOR DE EVENTOS
 //Carga de eventos - Lee el directorio de los eventos

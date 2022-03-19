@@ -52,6 +52,49 @@ exports.run = (client) => {
         };
     };
 
+    //Función para comprobar si un miembro tiene permiso para ejecutar un comando
+    client.functions.checkCommandPermission = async (message, commandConfig) => {
+
+        //Almacena el estado de autorización
+        let authorized = false;
+
+        //Si la lista blanca contiene entradas
+        if (commandConfig.whitelistedRoles.length > 0) {
+
+            //Para cada ID de rol de la lista blanca
+            for (let index = 0; index < commandConfig.whitelistedRoles.length; index++) {
+
+                //Si se permite a todo el mundo, el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
+                if (commandConfig.whitelistedRoles[index] === 'everyone' || message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(role => role.id === commandConfig.whitelistedRoles[index])) {
+
+                    //Autoriza la ejecución
+                    authorized = true;
+
+                    //Aborta el bucle
+                    break;
+                };
+            };
+
+        } else if (commandConfig.blacklistedRoles.length > 0) { //Si la lista negra contiene entradas
+
+            //Para cada ID de rol de la lista negra
+            for (let index = 0; index < commandConfig.blacklistedRoles.length; index++) {
+
+                //Si no se permite a todo el mundo y el que invocó el comando no es el dueño, entonces deniega la ejecución
+                if (commandConfig.blacklistedRoles[index] === 'everyone' && message.author.id !== message.guild.ownerId) break;
+
+                //Si uno de los roles del miembno coincide con la lista negra, entonces deniega la ejecución
+                if (message.member.roles.cache.find(role => role.id === commandConfig.blacklistedRoles[index])) break;
+
+                //Autoriza la ejecución si se ha acabado el bucle
+                if (index === commandConfig.blacklistedRoles.length - 1) authorized = true;
+            };
+        };
+
+        //Devuelve la autorización
+        return authorized;
+    };
+
     //Función para comprobar si existe el rol silenciado, y de no existir, crearlo
     client.functions.checkMutedRole = async (guild) => {
 

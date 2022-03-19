@@ -133,42 +133,11 @@ exports.run = async (message, client) => {
             if (commandConfig.whitelistedChannels.length > 0 && !commandConfig.whitelistedChannels.includes(message.channel.id)) return;
             if (commandConfig.blacklistedChannels.length > 0 && commandConfig.blacklistedChannels.includes(message.channel.id)) return;
 
-            //Carga el embed de error de privilegios
-            const noPrivilegesEmbed = new client.MessageEmbed()
+            //Comprueba si el miembro tiene permiso para ejecutar el comando
+            if (!await client.functions.checkCommandPermission(message, commandConfig)) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`);
-
-            //No continúa si el rol no está autorizado
-            if (commandConfig.whitelistedRoles.length > 0) { //Si la lista blanca contiene entradas
-                let authorized;
-
-                //Para cada ID de rol de la lista blanca
-                for (let i = 0; i < commandConfig.whitelistedRoles.length; i++) {
-
-                    //Si se permite a todo el mundo, el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                    if (commandConfig.whitelistedRoles[i] === 'everyone' || message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.whitelistedRoles[i])) {
-                        authorized = true;
-                        break;
-                    };
-                };
-
-                //Si no se permitió la ejecución, manda un mensaje de error
-                if (!authorized) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
-            } else if (commandConfig.blacklistedRoles.length > 0) { //Si la lista negra contiene entradas
-
-                //Para cada ID de rol de la lista negra
-                for (let i = 0; i < commandConfig.blacklistedRoles.length; i++) {
-
-                    //Si no se permite a todo el mundo y el que invocó el comando no es el dueño, entonces deniega la ejecución
-                    if (commandConfig.blacklistedRoles[i] === 'everyone' && message.author.id !== message.guild.ownerId) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
-
-                    //Si uno de los roles del miembno coincide con la lista negra, entonces deniega la ejecución
-                    if (message.member.roles.cache.find(r => r.id === commandConfig.blacklistedRoles[i])) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
-                };
-            } else {
-                //Manda un mensaje de error
-                if (message.author.id !== message.guild.ownerId) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
-            };
+                .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación.`)]
+            }).then(msg => {setTimeout(() => msg.delete(), 5000)});
 
             //Borra el mensaje de invocación (tras 3 segundos) si se ha configurado para ello
             if (commandConfig.deleteInvocationCommand) setTimeout(() => message.delete(), 2000);

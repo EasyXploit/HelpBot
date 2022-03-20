@@ -140,7 +140,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         client.fs.writeFile('./databases/warns.json', JSON.stringify(client.db.warns, null, 4), async err => {
             if (err) throw err;
 
-            await client.functions.loggingManager(loggingEmbed);
+            await client.functions.loggingManager('embed', loggingEmbed);
             await member.send({ embeds: [toDMEmbed] });
             await message.channel.send({ embeds: [successEmbed] });
         });

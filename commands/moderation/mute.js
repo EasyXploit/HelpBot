@@ -75,7 +75,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .addField('Duración', '∞', true);
 
         await message.channel.send({ embeds: [successEmbed] });
-        await client.functions.loggingManager(loggingEmbed);
+        await client.functions.loggingManager('embed', loggingEmbed);
         await member.send({ embeds: [toDMEmbed] });
     } catch (error) {
         await client.functions.commandErrorHandler(error, message, command, args);

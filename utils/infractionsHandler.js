@@ -45,7 +45,7 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
             .addField('Razón', 'Demasiadas advertencias', true)
             .addField('Duración', duration, true);
 
-        await client.functions.loggingManager(loggingEmbed);
+        await client.functions.loggingManager('embed', loggingEmbed);
         await message.channel.send({ embeds: [publicEmbed] });
         await member.send({ embeds: [toDMEmbed] });
     };
@@ -71,7 +71,7 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
             .addField(`Moderador`, moderator.tag, true)
             .addField(`Razón`, 'Demasiadas advertencias', true)
 
-        await client.functions.loggingManager(loggingEmbed);
+        await client.functions.loggingManager('embed', loggingEmbed);
         await message.channel.send({ embeds: [publicEmbed] });
         await member.send({ embeds: [toDMEmbed] });
 
@@ -112,7 +112,7 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
             .addField(`Razón`, 'Demasiadas advertencias', true)
             .addField(`Vencimiento`, `<t:${Math.round(new Date(parseInt(time)) / 1000)}:R>` || 'No vence', true);
 
-        await client.functions.loggingManager(loggingEmbed);
+        await client.functions.loggingManager('embed', loggingEmbed);
         await message.channel.send({ embeds: [publicEmbed] });
         await member.send({ embeds: [toDMEmbed] });
 
@@ -169,10 +169,10 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
                 .addField(`Canal`, `<#${message.channel.id}>`, true)
                 .addField('Infracciones', (Object.keys(client.db.warns[member.id]).length).toString(), true);
 
-            await client.functions.loggingManager(loggingEmbed);
+            await client.functions.loggingManager('embed', loggingEmbed);
 
             //Si procede, adjunta el mensaje filtrado
-            if (msg) client.loggingChannel.send({ files: [new client.MessageAttachment(Buffer.from(`CONTENIDO DEL MENSAJE: \n${msg}`, 'utf-8'), `mensaje-filtrado-${Date.now()}.txt`)] })
+            if (msg) client.functions.loggingManager('file', new client.MessageAttachment(Buffer.from(`CONTENIDO DEL MENSAJE: \n${msg}`, 'utf-8'), `mensaje-filtrado-${Date.now()}.txt`));
         });
 
         for (let i = 0; i < client.config.automodRules.length; i++) {

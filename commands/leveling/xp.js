@@ -180,7 +180,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         client.fs.writeFile('./databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
             if (err) throw err;
 
-            await client.functions.loggingManager( new client.MessageEmbed()
+            await client.functions.loggingManager('embed',  new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle('📑 Auditoría - [SISTEMA DE XP]')
                 .setDescription(`Se ha modificado la cantidad de XP de **${member.user.tag}**.`)

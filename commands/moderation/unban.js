@@ -42,7 +42,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .addField(`Moderador`, message.author.tag, true)
             .addField(`Razón`, reason, true)
 
-        await client.functions.loggingManager(loggingEmbed);
+        await client.functions.loggingManager('embed', loggingEmbed);
         await message.channel.send({ embeds: [successEmbed] });
     } catch (error) {
         if (error.toString().includes(`Unknown Ban`)) {

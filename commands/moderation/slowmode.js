@@ -22,7 +22,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .addField('Canal:', `<#${message.channel.id}>`, true);
 
             await message.channel.setRateLimitPerUser(0);
-            await client.functions.loggingManager(loggingEmbed);
+            await client.functions.loggingManager('embed', loggingEmbed);
             await message.channel.send({ embeds: [successEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
         } else {
             let seconds = args[0];
@@ -73,7 +73,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .addField('Razón:', reason || 'Indefinida', true);
 
             await message.channel.setRateLimitPerUser(seconds, reason || 'Sin razón');
-            await client.functions.loggingManager(loggingEmbed);
+            await client.functions.loggingManager('embed', loggingEmbed);
             await message.channel.send({ embeds: [successEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
         };
     } catch (error) {

@@ -425,7 +425,7 @@ exports.run = (client) => {
     };
 
     //Función para gestionar el envío de registros al canal de auditoría
-    client.functions.loggingManager = async (embed) => {
+    client.functions.loggingManager = async (type, content) => {
 
         //Comprobar si el canal está configurado y almacenado en memoria
         if (client.config.main.loggingChannel && client.loggingChannel) {
@@ -433,14 +433,21 @@ exports.run = (client) => {
             try {
                 //Carga los permisos del bot en el canal de logging
                 const channelPermissions = client.loggingChannel.permissionsFor(client.user);
-                const missingPermission = ((channelPermissions & BigInt(0x800)) !== BigInt(0x800) || (channelPermissions & BigInt(0x4000)) !== BigInt(0x4000));
+                const missingPermission = ((channelPermissions & BigInt(0x800)) !== BigInt(0x800) || (channelPermissions & BigInt(0x4000)) !== BigInt(0x4000) || (channelPermissions & BigInt(0x8000)) !== BigInt(0x8000));
 
-                //Comprueba si el bot tiene permisos para mandar el embed
+                //Comprueba si el bot tiene permisos para mandar el contenido
                 if (!missingPermission) {
-                    await client.loggingChannel.send({ embeds: [embed] }); //Enviar el mensaje al canal
+
+                    //Envía el contenido al canal, en función del tipo
+                    switch (type) {
+                        case 'embed': await client.loggingChannel.send({ embeds: [content] }); break;
+                        case 'file': await client.loggingChannel.send({ files: [content] }); break;
+                        case 'text': await client.loggingChannel.send({ text: [content] }); break;
+                        default: break;
+                    };
                 } else {
                     //Advertir por consola de que no se tienen permisos
-                    console.error(`${new Date().toLocaleString()} 》ERROR: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces.`);
+                    console.error(`${new Date().toLocaleString()} 》ERROR: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos.`);
                 };
             } catch (error) {
                 //Si el canal no es accesible
@@ -465,7 +472,7 @@ exports.run = (client) => {
     };
 
     //Función para gestionar el envío de registros al canal de depuración
-    client.functions.debuggingManager = async (embed) => {
+    client.functions.debuggingManager = async (type, content) => {
         
         //Comprobar si el canal está configurado y almacenado en memoria
         if (client.config.main.debuggingChannel && client.debuggingChannel) {
@@ -473,14 +480,21 @@ exports.run = (client) => {
             try {
                 //Carga los permisos del bot en el canal de debugging
                 const channelPermissions = client.debuggingChannel.permissionsFor(client.user);
-                const missingPermission = ((channelPermissions & BigInt(0x800)) !== BigInt(0x800) || (channelPermissions & BigInt(0x4000)) !== BigInt(0x4000));
+                const missingPermission = ((channelPermissions & BigInt(0x800)) !== BigInt(0x800) || (channelPermissions & BigInt(0x4000)) !== BigInt(0x4000) || (channelPermissions & BigInt(0x8000)) !== BigInt(0x8000));
 
-                //Comprueba si el bot tiene permisos para mandar el embed
+                //Comprueba si el bot tiene permisos para mandar el contenido
                 if (!missingPermission) {
-                    await client.debuggingChannel.send({ embeds: [embed] }); //Enviar el mensaje al canal
+
+                    //Envía el contenido al canal, en función del tipo
+                    switch (type) {
+                        case 'embed': await client.debuggingChannel.send({ embeds: [content] }); break;
+                        case 'file': await client.debuggingChannel.send({ files: [content] }); break;
+                        case 'text': await client.debuggingChannel.send({ text: [content] }); break;
+                        default: break;
+                    };
                 } else {
                     //Advertir por consola de que no se tienen permisos
-                    console.error(`${new Date().toLocaleString()} 》ERROR: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces.`);
+                    console.error(`${new Date().toLocaleString()} 》ERROR: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos.`);
                 };
             } catch (error) {
                 //Si el canal no es accesible

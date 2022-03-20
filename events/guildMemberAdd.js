@@ -12,11 +12,11 @@ exports.run = async (member, client) => {
             if (!member.roles.cache.has(client.config.main.newBotRole)) await member.roles.add(client.config.main.newBotRole);
 
             //Envía un mensaje al canal de auditoría
-            return client.joinsAndLeavesChannel.send({ embeds: [ new client.MessageEmbed()
+            return client.functions.loggingManager('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle('📑 Auditoría - [BOTS]')
                 .setDescription(`El **BOT** @${member.user.tag} fue añadido al servidor.`)
-            ]});
+            );
         };
 
         //Almacena las listas de palabras prohibidas

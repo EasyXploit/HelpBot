@@ -159,7 +159,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                                 .addField(`Canal`, `<#${message.channel.id}>`, true)
                                 .addField(`Duración`, providedDuration, true);
                             
-                            await client.functions.loggingManager(loggingEmbed);
+                            await client.functions.loggingManager('embed', loggingEmbed);
                         });
                     });
                 });

@@ -156,7 +156,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             member.roles.add(mutedRole);
             
             await message.channel.send({ embeds: [successEmbed] });
-            await client.functions.loggingManager(loggingEmbed);
+            await client.functions.loggingManager('embed', loggingEmbed);
             await member.send({ embeds: [toDMEmbed] });
         });
     } catch (error) {

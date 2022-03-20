@@ -82,7 +82,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         }); 
 
         //Envía un registro al canal de auditoría
-        await client.functions.loggingManager(new client.MessageEmbed()
+        await client.functions.loggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.logging)
             .setTitle('📑 Auditoría - [PURGA DE MENSAJES]')
             .setDescription(`${message.author.tag} eliminó ${msgsToDelete.size - extraMessages} mensajes del canal <#${channel.id}>`)

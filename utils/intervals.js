@@ -25,7 +25,7 @@ exports.run = (client) => {
                             .addField('Moderador', `<@${client.user.id}>`, true)
                             .addField('Razón', 'Venció la amonestación', true);
 
-                        await client.functions.loggingManager(loggingEmbed);
+                        await client.functions.loggingManager('embed', loggingEmbed);
                     });
                     return;
                 };
@@ -50,7 +50,7 @@ exports.run = (client) => {
                 client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
                     if (err) throw err;
 
-                    await client.functions.loggingManager(loggingEmbed);
+                    await client.functions.loggingManager('embed', loggingEmbed);
                     await member.send({ embeds: [toDMEmbed] });
                 });
             };
@@ -79,7 +79,7 @@ exports.run = (client) => {
 
                     try {
                         await guild.members.unban(idKey);
-                        await client.functions.loggingManager(loggingEmbed);
+                        await client.functions.loggingManager('embed', loggingEmbed);
                     } catch (error) {
                         if (error.toString().includes('Unknown Ban')) return;
                     };
@@ -99,7 +99,7 @@ exports.run = (client) => {
                 .setFooter({ text: client.user.username, iconURL: client.user.avatarURL() })
                 .setDescription(`${client.customEmojis.orangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);
 
-            if (client.debuggingChannel) client.debuggingChannel.send({ embeds: [debuggingEmbed] });
+                client.functions.debuggingManager('embed', debuggingEmbed);
         };
     }, 60000);
 
@@ -152,7 +152,7 @@ exports.run = (client) => {
                         .setTitle('📑 Auditoría - [ENCUESTAS]')
                         .setDescription(`La encuesta "__[${client.db.polls[idKey].title}](${poll.url})__" ha finalizado en el canal <#${client.db.polls[idKey].channel}>.`);
 
-                    await client.loggingChannel.send({ embeds: [loggingEmbed] });
+                    await client.functions.loggingManager('embed', { embeds: [loggingEmbed] });
 
                 });
                 

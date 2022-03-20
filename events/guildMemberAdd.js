@@ -50,7 +50,7 @@ exports.run = async (member, client) => {
             .setAuthor({ name: 'Nuevo miembro', iconURL: 'attachment://in.png' })
             .setDescription(`${member.user.tag} se unió al servidor`)
             .addField('🆔 ID del miembro', member.user.id, true)
-            .addField('📝 Fecha de registro', member.user.createdAt.toLocaleString(), true)
+            .addField('📝 Fecha de registro', `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
         ], files: ['./resources/images/in.png'] });
 
         //Añade el rol de bienvenida para nuevos miembros (si no lo tiene ya)

@@ -76,6 +76,6 @@ exports.run = async (client, reproductionQueue, silentMode, contentType, request
 
     } catch (error) {
 
-        console.log(`${new Date().toLocaleString()} 》Error: ${error.stack}`);
+        console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
     };
 };

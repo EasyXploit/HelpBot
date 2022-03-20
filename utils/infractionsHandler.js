@@ -98,7 +98,7 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
             .addField(`ID`, member.id, true)
             .addField(`Moderador`, moderator.tag, true)
             .addField(`Razón`, 'Demasiadas advertencias', true)
-            .addField(`Duración`, new Date(parseInt(time)).toLocaleString() || '∞', true);
+            .addField(`Vencimiento`, `<t:${Math.round(new Date(parseInt(time)) / 1000)}:R>` || 'No vence', true);
 
         let publicEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.warning)
@@ -110,7 +110,7 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
             .addField(`Moderador`, moderator.tag, true)
             .addField(`Razón`, 'Demasiadas advertencias', true)
-            .addField(`Duración`, new Date(parseInt(time)).toLocaleString() || '∞', true);
+            .addField(`Vencimiento`, `<t:${Math.round(new Date(parseInt(time)) / 1000)}:R>` || 'No vence', true);
 
         await client.functions.loggingManager(loggingEmbed);
         await message.channel.send({ embeds: [publicEmbed] });

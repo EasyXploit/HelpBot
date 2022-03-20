@@ -47,7 +47,7 @@ exports.run = (client) => {
             };
             if (result && typeof result !== 'undefined') return result;
         } catch (error) {
-            console.log(`${new Date().toLocaleString()} 》${error.stack}`);
+            console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
             return false;
         };
     };
@@ -64,7 +64,7 @@ exports.run = (client) => {
             };
             if (result && typeof result !== 'undefined') return result;
         } catch (error) {
-            console.log(`${new Date().toLocaleString()} 》${error.stack}`);
+            console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
             return false;
         };
     };
@@ -440,25 +440,25 @@ exports.run = (client) => {
                     await client.loggingChannel.send({ embeds: [embed] }); //Enviar el mensaje al canal
                 } else {
                     //Advertir por consola de que no se tienen permisos
-                    console.error(`${new Date().toLocaleString()} 》Error: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces.`);
+                    console.error(`${new Date().toLocaleString()} 》ERROR: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces.`);
                 };
             } catch (error) {
                 //Si el canal no es accesible
                 if (error.toString().includes('DiscordAPIError')) {
 
-                    console.log(`${new Date().toLocaleString()} 》${error.stack}`);
+                    console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
 
                     //Borrarlo de la config y descargarlo de la memoria
                     client.config.main.loggingChannel = '';
                     client.loggingChannel = null;
 
                     //Advertir por consola
-                    console.error(`${new Date().toLocaleString()} 》Error: No se puede tener acceso al canal de auditoría.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
+                    console.error(`${new Date().toLocaleString()} 》ERROR: No se puede tener acceso al canal de auditoría.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
 
                     //Graba la nueva configuración en el almacenamiento
                     await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), async err => { if (err) throw err });
                 } else {
-                    console.error(`${new Date().toLocaleString()} 》Error durante la ejecución del loggingManager:`, error);
+                    console.error(`${new Date().toLocaleString()} 》ERROR: Error durante la ejecución del loggingManager:`, error);
                 };
             };
         };
@@ -480,7 +480,7 @@ exports.run = (client) => {
                     await client.debuggingChannel.send({ embeds: [embed] }); //Enviar el mensaje al canal
                 } else {
                     //Advertir por consola de que no se tienen permisos
-                    console.error(`${new Date().toLocaleString()} 》Error: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces.`);
+                    console.error(`${new Date().toLocaleString()} 》ERROR: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces.`);
                 };
             } catch (error) {
                 //Si el canal no es accesible
@@ -490,12 +490,12 @@ exports.run = (client) => {
                     client.debuggingChannel = null;
 
                     //Advertir por consola
-                    console.error(`${new Date().toLocaleString()} 》Error: No se puede tener acceso al canal de depuración.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
+                    console.error(`${new Date().toLocaleString()} 》ERROR: No se puede tener acceso al canal de depuración.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
 
                     //Graba la nueva configuración en el almacenamiento
                     await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), async err => { if (err) throw err });
                 } else {
-                    console.error(`${new Date().toLocaleString()} 》Error durante la ejecución del debuggingManager:`, error);
+                    console.error(`${new Date().toLocaleString()} 》ERROR: Error durante la ejecución del debuggingManager:`, error);
                 };
             };
         };
@@ -507,7 +507,7 @@ exports.run = (client) => {
         if (error.toLocaleString().includes('Cannot find module') || error.toLocaleString().includes('Cannot send messages to this user')) return;
 
         //Se muestra el error en consola
-        console.error(`\n${new Date().toLocaleString()} 》${error.stack}\n`);
+        console.error(`\n${new Date().toLocaleString()} 》ERROR: ${error.stack}\n`);
         
         //Se comprueba si se han proporcionado argumentos
         let arguments = 'Ninguno';
@@ -526,7 +526,7 @@ exports.run = (client) => {
             .addField('Origen:', message.guild.name, true)
             .addField('Canal:', `<#${message.channel.id}>`, true)
             .addField('Autor:', `<@${message.author.id}>`, true)
-            .addField('Fecha:', new Date().toLocaleString(), true)
+            .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
             .addField('Error:', `\`\`\`${errorString}\`\`\``, true);
         
         let reportedEmbed = new client.MessageEmbed()
@@ -542,7 +542,7 @@ exports.run = (client) => {
     client.functions.eventErrorHandler = async (error, eventName) => {
 
         //Se muestra el error en consola
-        console.error(`\n${new Date().toLocaleString()} 》${error.stack}\n`);
+        console.error(`\n${new Date().toLocaleString()} 》ERROR: ${error.stack}\n`);
         
         let errorString = error.stack;
         if (errorString.length > 1014) errorString = `${errorString.slice(0, 1014)} ...`;
@@ -553,7 +553,7 @@ exports.run = (client) => {
             .setTitle('📋 Depuración')
             .setDescription('Se declaró un error durante la ejecución de un evento')
             .addField('Evento:', eventName, true)
-            .addField('Fecha:', new Date().toLocaleString(), true)
+            .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
             .addField('Error:', `\`\`\`${errorString}\`\`\``);
         
         //Se envía el mensaje al canal de depuración

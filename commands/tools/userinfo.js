@@ -62,7 +62,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Comprueba si el miembro está silenciado
         let sanction;
         if (client.db.mutes[member.id]) {
-            sanction = `Silenciado hasta ${new Date(client.db.mutes[member.id].time).toLocaleString()}`;
+            sanction = `Silenciado hasta <t:${Math.round(new Date(client.db.mutes[member.id].time) / 1000)}>`;
         } else if (member.roles.cache.has(mutedRole.id)) {
             sanction = 'Silenciado indefinidamente';
         };
@@ -74,13 +74,13 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setDescription(`Mostrando información acerca de **${member.user.tag}**`)
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
             .addField('🆔 ID del miembro', member.id, true)
-            .addField('📝 Fecha de registro', member.user.createdAt.toLocaleString(), true)
-            .addField('↙ Unido al servidor', member.joinedAt.toLocaleString(), true)
+            .addField('📝 Fecha de registro', `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
+            .addField('↙ Unido al servidor', `<t:${Math.round(member.joinedTimestamp / 1000)}>`, true)
             .addField('👑 Estatus', status.join(', '), true)
-            .addField('💎 Nitro Booster', member.premiumSince ? `Desde ${member.premiumSince.toLocaleString()}` : 'No', true)
+            .addField('💎 Nitro Booster', member.premiumSince ? `Desde <t:${Math.round(member.premiumSinceTimestamp / 1000)}>` : 'No', true)
             .addField('🎖 Rol más alto', member.roles.highest.name, true)
             .addField('⚖ Infracciones', client.db.warns[member.id] ? (Object.keys(client.db.warns[member.id]).length).toString() : '0', true)
-            .addField('📓 Reglas', member.pending ? 'Aceptación pendiente' : 'Aceptadas', true)
+            .addField('📓 Verificación', member.pending ? 'Verificación pendiente' : 'Verificado', true)
             .addField('⚠️ Sanción actual', sanction || 'Ninguna', true)
             .addField('👮 Permisos', `\`\`\`${translatedPermissions.join(', ')}\`\`\``)
         ]});

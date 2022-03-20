@@ -89,7 +89,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .setColor(client.config.colors.logging)
                 .setTitle('📑 Auditoría - [INFRACCIONES]')
                 .setDescription('Se han retirado todas las advertencias.')
-                .addField('Fecha:', new Date().toLocaleString(), true)
+                .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
                 .addField('Moderador:', message.author.tag, true)
                 .addField('Miembro:', member.user.tag, true)
                 .addField('Razón:', reason, true);
@@ -122,7 +122,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .setColor(client.config.colors.logging)
                 .setTitle('📑 Auditoría - [INFRACCIONES]')
                 .setDescription('Se ha retirado una advertencia.')
-                .addField('Fecha:', new Date().toLocaleString(), true)
+                .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
                 .addField('Moderador:', message.author.tag, true)
                 .addField('ID de advertencia:', warnID, true)
                 .addField('Advertencia:', client.db.warns[member.id][warnID].reason, true)

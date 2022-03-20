@@ -43,12 +43,12 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .addField('🗣 Mencionable', mentionable, true)
                 .addField('👁️‍ Se muestra', hoisted, true)
                 .addField('🔰 Color', role.hexColor, true)
-                .addField('📝 Fecha de creación', role.createdAt.toLocaleString(), true)
+                .addField('📝 Fecha de creación', `<t:${Math.round(role.createdTimestamp / 1000)}>`, true)
                 .addField('⚙ Administración', managed, true)
 
             message.channel.send({ embeds: [resultEmbed] });
         }).catch(error => {
-            console.log(`${new Date().toLocaleString()} 》${error.stack}`);
+            console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
         });
 
         

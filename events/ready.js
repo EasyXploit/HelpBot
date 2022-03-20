@@ -9,7 +9,7 @@ exports.run = async (event, client) => {
         if (cachedGuilds.size > 1) {    //Si la cantidad es superior a 1
 
             //Notifica que el bot no puede funcionar en más de una guild
-            console.log(`\n 》${client.user.username} no está diseñado para funcionar en más de una guild (servidor).\nExpulse al bot del resto de guilds y reinicie al bot.`);
+            console.error(`${new Date().toLocaleString()} 》ERROR: ${client.user.username} no está diseñado para funcionar en más de una guild (servidor).\nExpulse al bot del resto de guilds y reinicie al bot.`);
 
             //Aborta el proceso de manera limpia
             process.exit();
@@ -17,7 +17,7 @@ exports.run = async (event, client) => {
         } else if (cachedGuilds.size === 0) {   //Si la cantidad es 0
 
             //Notifica que el bot está esperando a que sea unido a una guild
-            return console.log(`\n 》Esperando a que ${client.user.username} se una a una guild.`);
+            return console.warn(`${new Date().toLocaleString()} 》AVISO: Esperando a que ${client.user.username} se una a una guild.`);
         };
             
         //Comprueba si la config de la guild ya está almacenada o no
@@ -33,6 +33,6 @@ exports.run = async (event, client) => {
         };
 
     } catch (error) {
-        console.error(`${new Date().toLocaleString()} 》${error.stack}`);
+        console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
     };
 };

@@ -12,18 +12,18 @@ exports.run = async (guild, client) => {
             await require('../utils/storeNewGuildConfig.js').run(client, cachedGuilds.first());
 
             //Notifica por consola que el bot se ha unido a la guild
-            console.log(`\n 》${client.user.username} se ha unido a la guild "${guild.name}".`);
+            console.log(`${new Date().toLocaleString()} 》${client.user.username} se ha unido a la guild "${guild.name}".`);
 
         } else {
 
             //Lanza una advertencia por consola
-            console.log(`\n 》${client.user.username} no está diseñado para funcionar en más de un servidor.`);
+            console.warn(`${new Date().toLocaleString()} 》AVISO: ${client.user.username} no está diseñado para funcionar en más de un servidor.`);
 
             //Abandona la guild
             await guild.leave();
         };
 
     } catch (error) {
-        console.log(`${new Date().toLocaleString()} 》${error.stack}`);
+        console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
     };
 };

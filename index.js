@@ -1,7 +1,7 @@
 //Gestión de promesas rechazadas y no manejadas
 process.on('unhandledRejection', error => {
     if (!error.toString().includes('Cannot send messages to this user') && !error.toString().includes('Unknown Message')) {
-        console.error(`${new Date().toLocaleString()} 》Promesa rechazada no manejada:`, error)
+        console.error(`${new Date().toLocaleString()} 》ERROR: Promesa rechazada no manejada:`, error)
     };
 });
 
@@ -68,7 +68,7 @@ client.reproductionQueues = {};         //Almacena la cola de reproducción y ot
 //Carga de eventos - Lee el directorio de los eventos
 client.fs.readdir('./events/', async (err, files) => {
 
-    if (err) return console.error(`${new Date().toLocaleString()} 》No se ha podido completar la carga de los eventos.\n${err.stack}`);
+    if (err) return console.error(`${new Date().toLocaleString()} 》ERROR: No se ha podido completar la carga de los eventos.\n${err.stack}`);
     
     //Precarga cada uno de los eventos
     files.forEach(file => {

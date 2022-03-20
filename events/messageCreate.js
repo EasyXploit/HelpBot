@@ -110,7 +110,7 @@ exports.run = async (message, client) => {
     const cmd = args.shift().toLowerCase();
     const command = `${cmd}.js`;
 
-    if (command.length <= 0) return console.error(`${new Date().toLocaleString()} 》No hubo ningún comando a cargar`);
+    if (command.length <= 0) return console.warn(`${new Date().toLocaleString()} 》AVISO: No hubo ningún comando a cargar.`);
 
     // Función para ejecutar el comando
     try {

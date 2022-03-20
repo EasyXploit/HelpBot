@@ -23,6 +23,6 @@ exports.run = async (client, guild) => {
         }));
 
     } catch (error) {
-        console.log(`${new Date().toLocaleString()} 》${error.stack}`);
+        console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
     };
 };

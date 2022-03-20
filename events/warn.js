@@ -1,3 +1,3 @@
 exports.run = (warn) => {
-    console.warn(`${new Date().toLocaleString()} 》ADVERTENCIA: ${warn.stack}`);
+    console.warn(`${new Date().toLocaleString()} 》AVISO: ${warn.stack}`);
 };

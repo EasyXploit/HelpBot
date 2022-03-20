@@ -71,7 +71,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 Object.keys(userWarns[i]).forEach((key) => {
                     let moderator = message.guild.members.cache.get(userWarns[i][key].moderator);
                     if (typeof moderator === 'undefined') moderator = 'Moderador desconocido';
-                    lastWarns = lastWarns + `\`${key}\` • ${moderator} • ${new Date(parseInt(userWarns[i][key].timestamp)).toLocaleString()}\n${userWarns[i][key].reason}\n\n`;
+                    lastWarns = lastWarns + `\`${key}\` • ${moderator} • <t:${Math.round(new Date(parseInt(userWarns[i][key].timestamp)) / 1000)}>\n${userWarns[i][key].reason}\n\n`;
                 })
             }
 
@@ -82,7 +82,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         let sanction;
         if (client.db.mutes[member.id]) {
-            sanction = `Silenciado hasta ${new Date(client.db.mutes[member.id].time).toLocaleString()}`;
+            sanction = `Silenciado hasta <t:${Math.round(new Date(client.db.mutes[member.id].time) / 1000)}>`;
         } else if (member.roles.cache.has(role.id)) {
             sanction = 'Silenciado indefinidamente';
         }

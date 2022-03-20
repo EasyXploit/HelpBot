@@ -86,7 +86,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .addField(`🏷 Nombre`, message.guild.name, true)
             .addField(`🆔 ID`, message.guild.id, true)
             .addField(`🌍 Región`, message.guild.preferredLocale, true)
-            .addField(`📝 Fecha de creación`, message.guild.createdAt.toLocaleString(), true)
+            .addField(`📝 Fecha de creación`, `<t:${Math.round(message.guild.createdTimestamp / 1000)}>`, true)
             .addField(`👑 Propietario`, `<@${message.guild.ownerId}> (ID: ${message.guild.ownerId})`, true)
             .addField(`🚫 Filtro NSFW`, guildNSFWLevel, true)
             .addField(`💎 Nivel de mejora`, `${guildTier} (${message.guild.premiumSubscriptionCount} mejoras)`, true)

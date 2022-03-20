@@ -272,6 +272,6 @@ exports.run = async (client, message, checks) => {
         return passingStatus;
 
     } catch (error) {
-        console.log(`${new Date().toLocaleString()} 》Error: ${error.stack}`);
+        console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
     };
 };

@@ -295,7 +295,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 			};
 	
 		} else {
-			return console.error(`${new Date().toLocaleString()} 》No se ha proporcionado un valor válido para el parámetro "streamType".`);
+			return console.error(`${new Date().toLocaleString()} 》ERROR: No se ha proporcionado un valor válido para el parámetro "streamType".`);
 		};
 
 		//Devuelve el estado de la búsqueda

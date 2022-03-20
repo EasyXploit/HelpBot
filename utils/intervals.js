@@ -92,7 +92,7 @@ exports.run = (client) => {
     setInterval(async () => {
         let ping = Math.round(client.ping);
         if (ping > 1000) {
-            console.log(`${new Date().toLocaleString()} 》Tiempo de respuesta del Websocket elevado: ${ping} ms\n`);
+            console.warn(`${new Date().toLocaleString()} 》AVISO: Tiempo de respuesta del Websocket elevado: ${ping} ms\n`);
 
             let debuggingEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.warning)

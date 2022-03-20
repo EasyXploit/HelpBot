@@ -16,6 +16,6 @@ exports.run = async (client) => {
         console.log(' - [OK] Carga de customEmojis globales.');
 
     } catch (error) {
-        console.log(`${new Date().toLocaleString()} 》${error.stack}`);
+        console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
     };
 };

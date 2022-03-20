@@ -1,17 +1,17 @@
-exports.run = async (event, client) => {
+exports.run = async (member, client) => {
     
     try {
 
         //Previene que continue la ejecución si el servidor no es el principal
-        if (event.guild.id !== client.homeGuild.id) return;
+        if (member.guild.id !== client.homeGuild.id) return;
 
         async function sendLogEmbed(executor, reason) {
-            if (event.user.bot) {
-                if (event.user.id === client.user.id) return;
+            if (member.user.bot) {
+                if (member.user.id === client.user.id) return;
                 const loggingEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setTitle('📑 Auditoría - [BOTS]')
-                    .setDescription(`El **BOT** @${event.user.tag} fue expulsado del servidor.`);
+                    .setDescription(`El **BOT** @${member.user.tag} fue expulsado del servidor.`);
                 
                 await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [loggingEmbed] })
             } else {
@@ -25,8 +25,8 @@ exports.run = async (event, client) => {
 
                 const loggingEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setAuthor({ name: `${event.user.tag} ha sido EXPULSADO`, iconURL: event.user.displayAvatarURL({dynamic: true}) })
-                    .addField('Miembro', `<@${event.user.id}>`, true)
+                    .setAuthor({ name: `${member.user.tag} ha sido EXPULSADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                    .addField('Miembro', `<@${member.user.id}>`, true)
                     .addField('Moderador', moderador.tag || 'Desconocido', true)
                     .addField('Razón', razon || 'Indefinida', true);
 
@@ -34,7 +34,7 @@ exports.run = async (event, client) => {
             }
         }
         
-        const fetchedLogs = await event.guild.fetchAuditLogs({
+        const fetchedLogs = await member.guild.fetchAuditLogs({
             limit: 1,
             type: 'MEMBER_KICK',
         });
@@ -47,14 +47,14 @@ exports.run = async (event, client) => {
 
             if (!reason) reason = 'Indefinida'
         
-            if (target.id === event.user.id) {
+            if (target.id === member.user.id) {
                 sendLogEmbed(executor, reason);
             } else {
                 sendLogEmbed();
             }
         } else {
 
-            const fetchedBans = await event.guild.fetchAuditLogs({
+            const fetchedBans = await member.guild.fetchAuditLogs({
                 limit: 1,
                 type: 'MEMBER_BAN_ADD',
             });
@@ -63,16 +63,16 @@ exports.run = async (event, client) => {
 
             let loggingEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
-                .setThumbnail(event.user.displayAvatarURL({dynamic: true}))
+                .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
                 .setAuthor({ name: 'Un miembro abandonó', iconURL: 'attachment://out.png' })
-                .setDescription(`${event.user.username} abandonó el servidor`)
-                .addField('🏷 TAG completo', event.user.tag, true)
-                .addField('🆔 ID del miembro', event.user.id, true);
+                .setDescription(`${member.user.tag} abandonó el servidor`)
+                .addField('🆔 ID del miembro', member.user.id, true)     
+                .addField('📝 Fecha de registro', `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
             
             return await client.channels.cache.get(client.config.main.joinsAndLeavesChannel).send({ embeds: [loggingEmbed], files: ['./resources/images/out.png'] });
         }
     } catch (error) {
-        if (event.user.id === client.user.id) return;
+        if (member.user.id === client.user.id) return;
         await client.functions.eventErrorHandler(error, 'guildMemberRemove');
     };
 };

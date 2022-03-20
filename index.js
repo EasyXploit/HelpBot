@@ -75,17 +75,10 @@ client.fs.readdir('./events/', async (err, files) => {
         const eventFunction = require(`./events/${file}`);
         const eventName = file.split('.')[0];
 
-        //Pasa 2 parámetros si se trata de un enevento con dos de ellos
-        if (eventName === 'voiceStateUpdate') {
-            client.on(eventName, (argument1, argument2) => {
-                eventFunction.run(argument1, argument2, client);
-            });
-        } else {
-            client.on(eventName, event => {
-                eventFunction.run(event, client);
-            });
-        };
+        //Añade un listener para el evento en cuestión (usando spread syntax)
+        client.on(eventName, (...arguments) => eventFunction.run(...arguments, client));
 
+        //Notifica por consola
         console.log(` - [OK] Evento [${eventName}]`);
     });
 });

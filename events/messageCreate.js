@@ -3,104 +3,69 @@ exports.run = async (message, client) => {
     //Previene la ejecución si el mensaje fue enviado por un bot o por el sistema
     if (message.author.bot || message.type !== 'DEFAULT') return;
 
+    //Carga los scripts para filtrar mensajes
+    const automodFiltering = require('../utils/automodFiltering.js');
+
+    //Por cada uno de los filtros de automoderación
+    for (var filter in client.config.automodFilters) {
+
+        //Almacena la configuración del filtro
+        const filterCfg = client.config.automodFilters[filter];
+
+        //Lo omite si está desactivado
+        if (!filterCfg.status) continue;
+
+        //Si el filtro funciona en MD, es un mensaje directo y su uso está desactivado, omite
+        if (message.channel.type === 'DM' && (!filterCfg.hasOwnProperty('onDM') || filterCfg.onDM === false)) continue;
+
+        //Lo omite si el autor del mensaje es el propietario de la guild
+        if (message.author.id === client.homeGuild.ownerId) continue;
+
+        //Lo omite si el canal tiene el filtro desactivado
+        const bypassChannels = filterCfg.bypassChannels;
+        if (message.channel && bypassChannels.includes(message.channel.id)) continue;
+
+        //Busca y almacena al miembro en la guild
+        const guildMember = await client.functions.fetchMember(client.homeGuild, message.author.id)
+
+        //Lo omite si algún rol del miembro tiene el filtro desactivado
+        const bypassRoles = filterCfg.bypassRoles;
+        for (let index = 0; index < bypassRoles.length; index++) if (guildMember.roles.cache.has(bypassRoles[index])) continue;
+
+        //Ejecuta el filtro
+        await automodFiltering[filter](client, message).then(match => {
+
+            //Si se encontró una infracción
+            if (match) {
+
+                //Almacena la razón de la infracción
+                const reason = message.channel.type === 'DM' ? `${filterCfg.reason} (vía MD)` : filterCfg.reason; 
+            
+                //Ejecuta el manejador de infracciones
+                require('../utils/infractionsHandler.js').run(client, message, guildMember, reason, filterCfg.action, client.user, message.content);
+            };
+        });
+    };
+
     //Si el mensaje proviene de un MD
     if (message.channel.type === 'DM') {
 
         //Devuelve si el mensaje no tiene contenido
         if (!message.content) return;
 
-        //Filtra el texto en busca de códigos de invitación
-        let detectedInvites = message.content.match(/(https?:\/\/)?(www.)?(discord.(gg|io|me|li)|discordapp.com\/invite)\/[^\s\/]+?(?=\b)/gm);
-
-        //Si se encontraron invitaciones (y no es el owner), se comprueba que no sean de la guild
-        if (detectedInvites && message.author.id !== client.homeGuild.ownerId) {
-            let legitInvites = 0;
-
-            await client.homeGuild.invites.fetch().then(guildInvites => {
-
-                let inviteCodes = Array.from(guildInvites.keys());
-
-                detectedInvites.forEach(filteredInvite => {
-                    inviteCodes.forEach(inviteCode => {
-                        if (filteredInvite.includes(inviteCode)) legitInvites++;
-                    });
-                });
-            });
-
-            //Si alguna no lo es, lo banea
-            if (legitInvites < detectedInvites.length) {
-                const member = await client.functions.fetchMember(client.homeGuild, message.author.id);
-
-                if ((member.joinedTimestamp + client.config.moderation.newMemberTimeDelimiter) < Date.now()) {
-                    client.db.bans[member.id] = {
-                        time: Date.now() + client.config.moderation.newSpammerMemberBanDuration
-                    };
-
-                    let toDMEmbed = new client.MessageEmbed()
-                        .setColor(client.config.colors.secondaryError)
-                        .setAuthor({ name: '[EXPULSADO]', iconURL: client.homeGuild.iconURL({dynamic: true}) })
-                        .setDescription(`<@${member.id}>, has sido expulsado de ${client.homeGuild.name}`)
-                        .addField('Moderador', client.user.tag, true)
-                        .addField('Razón', 'Spam vía MD', true);
-
-                    await member.send({ embeds: [toDMEmbed] });
-                    return await member.kick(`Moderador: ${client.user.id}, Razón: Spam vía MD al bot`);
-                } else {
-                    let toDMEmbed = new client.MessageEmbed()
-                        .setColor(client.config.colors.error)
-                        .setAuthor({ name: '[BANEADO]', iconURL: client.homeGuild.iconURL({dynamic: true}) })
-                        .setDescription(`<@${member.id}>, has sido baneado en ${client.homeGuild.name}`)
-                        .addField('Moderador', client.user.tag, true)
-                        .addField('Razón', 'Spam vía MD', true)
-                        .addField('Duración', '14d', true);
-
-                    await member.send({ embeds: [toDMEmbed] });
-                    return await client.homeGuild.members.ban(member, {reason: `Moderador: ${client.user.id}, Duración: 14d, Razón: Spam vía MD al bot`});
-                };
-            };
-        };
-
-        //Advierte de que los comandos no funcionan por MD
+        //Si se trata de un comando
         if (message.content.startsWith(client.config.main.prefix)) {
-            const noDMEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.information)
-                .setDescription(`${client.customEmojis.grayTick} | Por el momento, los comandos de **${client.user.username}** solo están disponibles desde el servidor.`);
 
-            return await message.author.send({ embeds: [noDMEmbed] });
+            //Advierte de que los comandos no funcionan por MD
+            return await message.author.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.information)
+                .setDescription(`${client.customEmojis.grayTick} | Por el momento, los comandos de **${client.user.username}** solo están disponibles desde el servidor.`)
+            ]});
         };
 
+        //Aborta el resto del script
         return;
     };
-
-    //Filtros (auto-moderación)
-    const automodFiltering = require('../utils/automodFiltering.js');
-
-    //FILTROS DE AUTO-MODERACIÓN
-    (async () => {
-        for (var key in client.config.automodFilters) {
-            await (async () => {
-                if (client.config.automodFilters[key].status) {
-
-                    //Comprueba si el miembro es el propietario de la guild
-                    if (message.member.id === message.guild.ownerId) return;
-
-                    //Comprueba si el miembro tiene algún rol permitido
-                    const bypassRoles = client.config.automodFilters[key].bypassRoles;
-                    const bypassChannels = client.config.automodFilters[key].bypassChannels;
-
-                    if (bypassChannels.includes(message.channel.id)) return;
-    
-                    for (let i = 0; i < bypassRoles.length; i++) {
-                        if (message.member.roles.cache.has(bypassRoles[i])) return;
-                    }
-
-                    await automodFiltering[key](message).then(match => {
-                        if (match) require('../utils/infractionsHandler.js').run(client, message, message.guild, message.member, client.config.automodFilters[key].reason, client.config.automodFilters[key].action, client.user, message.content);
-                    });
-                }
-            })();
-        };
-    })();
 
     //Llama al manejador de leveling
     if (client.config.xp.rewardMessages && !message.content.startsWith(client.config.main.prefix) && !client.config.xp.nonXPChannels.includes(message.channel.id)) return await client.functions.addXP(message.member, message.guild, 'message', message.channel);

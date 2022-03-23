@@ -11,7 +11,8 @@
         "action": 3,
         "reason": "Invitations not allowed",
         "bypassRoles": [],
-        "bypassChannels": []
+        "bypassChannels": [],
+        "onDM": true
     },
     "uppercase": {
         "status": false,

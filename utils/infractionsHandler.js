@@ -1,17 +1,17 @@
-exports.run = async (client, message, guild, member, reason, action, moderator, msg) => {
+exports.run = async (client, message, member, reason, action, moderator, msg) => {
 
     //Función para silenciar
     async function mute(time) {
 
         //Comprueba si existe el rol silenciado, sino lo crea
-        const mutedRole = await client.functions.checkMutedRole(message.guild);
+        const mutedRole = await client.functions.checkMutedRole(client.homeGuild);
 
         //Comprueba si el miembro tiene el rol silenciado, sino se lo añade
         if (member.roles.cache.has(mutedRole.id)) return;
         member.roles.add(mutedRole);
 
         //Propaga el rol silenciado
-        client.functions.spreadMutedRole(message.guild);
+        client.functions.spreadMutedRole(client.homeGuild);
 
         if (time) {
             client.db.mutes[member.id] = {
@@ -39,8 +39,8 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
 
         let toDMEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setAuthor({ name: '[SILENCIADO]', iconURL: guild.iconURL({dynamic: true}) })
-            .setDescription(`${member.user.tag}, has sido silenciado en ${guild.name}`)
+            .setAuthor({ name: '[SILENCIADO]', iconURL: client.homeGuild.iconURL({dynamic: true}) })
+            .setDescription(`${member.user.tag}, has sido silenciado en ${client.homeGuild.name}`)
             .addField('Moderador', moderator.tag, true)
             .addField('Razón', 'Demasiadas advertencias', true)
             .addField('Duración', duration, true);
@@ -62,12 +62,12 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
 
         let publicEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} ${user.tag} ha sido expulsado por que acumuló demasiadas advertencias, ¿alguien más?`);
+            .setDescription(`${client.customEmojis.orangeTick} ${member.user.tag} ha sido expulsado por que acumuló demasiadas advertencias, ¿alguien más?`);
 
         let toDMEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setAuthor({ name: '[EXPULSADO]', iconURL: guild.iconURL({dynamic: true}) })
-            .setDescription(`<@${member.id}>, has sido expulsado en ${guild.name}`)
+            .setAuthor({ name: '[EXPULSADO]', iconURL: client.homeGuild.iconURL({dynamic: true}) })
+            .setDescription(`<@${member.id}>, has sido expulsado en ${client.homeGuild.name}`)
             .addField(`Moderador`, moderator.tag, true)
             .addField(`Razón`, 'Demasiadas advertencias', true)
 
@@ -82,7 +82,7 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
     async function ban(time) {
 
         if (time) {
-            client.db.bans[user.id] = {
+            client.db.bans[member.user.id] = {
                 time: Date.now() + time
             }
     
@@ -93,7 +93,7 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
 
         let loggingEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setAuthor({ name: `${member.user.tag} ha sido BANEADO`, iconURL: user.displayAvatarURL({dynamic: true}) })
+            .setAuthor({ name: `${member.user.tag} ha sido BANEADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
             .addField(`Miembro`, member.user.tag, true)
             .addField(`ID`, member.id, true)
             .addField(`Moderador`, moderator.tag, true)
@@ -102,12 +102,12 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
 
         let publicEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} ${user.tag} ha sido baneado por que acumuló demasiadas advertencias, ¿alguien más?`);
+            .setDescription(`${client.customEmojis.orangeTick} ${member.user.tag} ha sido baneado por que acumuló demasiadas advertencias, ¿alguien más?`);
 
         let toDMEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setAuthor({ name: '[BANEADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
-            .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
+            .setAuthor({ name: '[BANEADO]', iconURL: client.homeGuild.iconURL({ dynamic: true}) })
+            .setDescription(`<@${member.user.id}>, has sido baneado en ${client.homeGuild.name}`)
             .addField(`Moderador`, moderator.tag, true)
             .addField(`Razón`, 'Demasiadas advertencias', true)
             .addField(`Vencimiento`, `<t:${Math.round(new Date(parseInt(time)) / 1000)}:R>` || 'No vence', true);
@@ -116,7 +116,7 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
         await message.channel.send({ embeds: [publicEmbed] });
         await member.send({ embeds: [toDMEmbed] });
 
-        await guild.members.ban(user, {reason: `Moderador: ${moderator.id}, Razón: Demasiadas advertencias`});
+        await client.homeGuild.members.ban(member.user, {reason: `Moderador: ${moderator.id}, Razón: Demasiadas advertencias`});
 
     };
 
@@ -130,12 +130,12 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
 
     let toDMEmbed = new client.MessageEmbed()
         .setColor(client.config.colors.warning)
-        .setAuthor({ name: '[ADVERTIDO]', iconURL: guild.iconURL({dynamic: true}) })
-        .setDescription(`<@${member.id}>, has sido advertido en ${guild.name}`)
+        .setAuthor({ name: '[ADVERTIDO]', iconURL: client.homeGuild.iconURL({dynamic: true}) })
+        .setDescription(`<@${member.id}>, has sido advertido en ${client.homeGuild.name}`)
         .addField(`Moderador`, moderator.tag, true)
         .addField(`Razón`, warnReason, true);
 
-    await message.channel.send({ embeds: [publicWarnEmbed] });
+    if (message.channel.type !== 'DM') await message.channel.send({ embeds: [publicWarnEmbed] });
     await member.send({ embeds: [toDMEmbed] });
 
     //LEYENDA DE ACCIONES: 1 = borrar; 2 = advertir; 3 = borrar y advertir
@@ -175,8 +175,17 @@ exports.run = async (client, message, guild, member, reason, action, moderator, 
             if (msg) client.functions.loggingManager('file', new client.MessageAttachment(Buffer.from(`CONTENIDO DEL MENSAJE: \n${msg}`, 'utf-8'), `mensaje-filtrado-${Date.now()}.txt`));
         });
 
-        for (let i = 0; i < client.config.automodRules.length; i++) {
-            let rule = client.config.automodRules[i];
+        //Banea temporalmente a los miembros que se acaban de unir al servidor y han mandado invitaciones
+        if (message.channel.type === 'DM' && (member.joinedTimestamp + client.config.moderation.newMemberTimeDelimiter) < Date.now()) {
+            client.db.bans[member.id] = {
+                time: Date.now() + client.config.moderation.newSpammerMemberBanDuration
+            };
+
+            return ban(client.config.moderation.newSpammerMemberBanDuration);
+        };
+
+        for (let index = 0; index < client.config.automodRules.length; index++) {
+            let rule = client.config.automodRules[index];
             let warnsCount = 0;
 
             Object.keys(client.db.warns[member.id]).forEach(entry => {

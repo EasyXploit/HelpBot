@@ -133,7 +133,7 @@ exports.run = (client) => {
             mutedRole = await guild.roles.create({
                 data: {
                     name: client.config.moderation.mutedRoleName,
-                    color: '#818386',
+                    color: client.config.colors.mutedRole,
                     permissions: []
                 },
                 reason: 'Rol para gestionar miembros silenciados'

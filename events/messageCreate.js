@@ -114,7 +114,7 @@ exports.run = async (message, client) => {
             listedCmd.run(client, message, args, listedCmd.config.name, commandConfig);
 
             //Añade un cooldown
-            client.cooldownedUsers.add(message.author.id);
+            client.cooldownedUsers.set(message.author.id);
             setTimeout(() => {
                 client.cooldownedUsers.delete(message.author.id);
             }, 2000);

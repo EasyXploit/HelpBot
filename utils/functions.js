@@ -121,7 +121,7 @@ exports.run = (client) => {
     client.functions.checkMutedRole = async (guild) => {
 
         //Busca el rol silenciado
-        let mutedRole = await guild.roles.cache.find(r => r.id === client.config.dynamic.mutedRoleId);
+        let mutedRole = await guild.roles.cache.find(role => role.id === client.config.dynamic.mutedRoleId);
 
         //Si no existe el rol silenciado (o su nombre es diferente al configurado), lo crea
         if (!mutedRole || mutedRole.name !== client.config.moderation.mutedRoleName) {

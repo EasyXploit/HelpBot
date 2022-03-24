@@ -6,5 +6,6 @@
     "joinsAndLeavesChannel": "",
     "newBotRole": "",
     "newMemberRole": "",
-    "loadMention": true
+    "loadMention": true,
+    "pingTreshold": 1000
 }

@@ -91,10 +91,10 @@ exports.run = (client) => {
     //Comprobación del tiempo de respuesta del Websocket
     setInterval(async () => {
         let ping = Math.round(client.ping);
-        if (ping > 1000) {
             console.warn(`${new Date().toLocaleString()} 》AVISO: Tiempo de respuesta del Websocket elevado: ${ping} ms\n`);
 
             let debuggingEmbed = new client.MessageEmbed()
+        if (actualPing > client.config.main.pingTreshold) {
                 .setColor(client.config.colors.warning)
                 .setFooter({ text: client.user.username, iconURL: client.user.avatarURL() })
                 .setDescription(`${client.customEmojis.orangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${ping}** ms`);

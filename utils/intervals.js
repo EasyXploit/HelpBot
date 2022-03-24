@@ -172,7 +172,7 @@ exports.run = (client) => {
                 let newRemainingTime = `Restante: ${remainingDays}d ${remainingHours}h ${remainingMinutes}m `;
 
                 let updatedPoll = new client.MessageEmbed()
-                    .setColor('2AB7F1')
+                    .setColor(client.config.colors.polls)
                     .setAuthor({ name: 'Encuesta disponible', iconURL: 'attachment://poll.png' })
                     .setDescription(`**${client.db.polls[idKey].title}**\n\n${client.db.polls[idKey].options}`)
                     .setFooter({ text: newRemainingTime });

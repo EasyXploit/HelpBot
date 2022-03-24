@@ -128,7 +128,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                         };
 
                         let resultEmbed = new client.MessageEmbed()
-                            .setColor('2AB7F1')
+                            .setColor(client.config.colors.polls)
                             .setAuthor({ name: 'Encuesta disponible', iconURL: 'attachment://poll.png' })
                             .setDescription(`**${title}**\n\n${options}`)
                             .setFooter({ text: `Duración: ${remainingTime}` });

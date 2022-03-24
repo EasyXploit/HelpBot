@@ -71,7 +71,7 @@ exports.run = async (client, message, connection) => {
             player.on('error', error => {
 
                 //Envía el error por la consola
-                console.error(`${new Date().toLocaleString()} 》ERROR: ${error.message}`);
+                console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
 
                 //Envía un mensaje de error al canal vinculado
                 reproductionQueue.boundedTextChannel.send({ content: `${client.customEmojis.redTick} | Ocurrió un error. Se ha omitido esta pista.` });
@@ -149,6 +149,6 @@ exports.run = async (client, message, connection) => {
         ]});
 
         //Devuelve un error por consola
-        console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
+        console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
     };
 };

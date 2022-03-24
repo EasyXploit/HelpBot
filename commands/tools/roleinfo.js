@@ -48,7 +48,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             message.channel.send({ embeds: [resultEmbed] });
         }).catch(error => {
-            console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
+            console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
         });
 
         

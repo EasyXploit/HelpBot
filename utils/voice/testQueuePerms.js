@@ -58,6 +58,6 @@ exports.run = async (client, message, command, index) => {
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
+        console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
     };
 };

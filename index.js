@@ -5,7 +5,7 @@ process.on('unhandledRejection', error => {
     if (!error.toString().includes('Cannot send messages to this user') && !error.toString().includes('Unknown Message')) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》ERROR: Promesa rechazada no manejada:`, error)
+        console.error(`${new Date().toLocaleString()} 》ERROR: Promesa rechazada no manejada:`, error.stack);
     };
 });
 
@@ -63,7 +63,7 @@ databaseFiles.forEach(async file => {
 client.fs.readdir('./events/', async (err, files) => {
 
     //Si se genera un error, aborta la carga del resto de eventos
-    if (err) return console.error(`${new Date().toLocaleString()} 》ERROR: No se ha podido completar la carga de los eventos.\n${err.stack}`);
+    if (err) return console.error(`${new Date().toLocaleString()} 》ERROR: No se ha podido completar la carga de los eventos.`, error.stack);
     
     //Precarga cada uno de los eventos
     files.forEach(file => {

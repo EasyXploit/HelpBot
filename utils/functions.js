@@ -47,7 +47,7 @@ exports.run = (client) => {
             };
             if (result && typeof result !== 'undefined') return result;
         } catch (error) {
-            console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
+            console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
             return false;
         };
     };
@@ -64,7 +64,7 @@ exports.run = (client) => {
             };
             if (result && typeof result !== 'undefined') return result;
         } catch (error) {
-            console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
+            console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
             return false;
         };
     };
@@ -150,6 +150,7 @@ exports.run = (client) => {
             await client.fs.writeFile('./configs/dynamic.json', JSON.stringify(client.config.dynamic, null, 4), async err => { if (err) throw err });
         };
         
+        //Devuelve el rol silenciado
         return mutedRole;
     };
 
@@ -414,7 +415,7 @@ exports.run = (client) => {
                 } else {
 
                     //Muestra un error por consola
-                    console.error(`${new Date().toLocaleString()} 》ERROR: Error durante la ejecución del loggingManager:`, error);
+                    console.error(`${new Date().toLocaleString()} 》ERROR: Error durante la ejecución del loggingManager:`, error.stack);
                 };
             };
         };
@@ -467,7 +468,7 @@ exports.run = (client) => {
                 } else {
 
                     //Muestra un error por consola
-                    console.error(`${new Date().toLocaleString()} 》ERROR: Error durante la ejecución del debuggingManager:`, error);
+                    console.error(`${new Date().toLocaleString()} 》ERROR: Error durante la ejecución del debuggingManager:`, error.stack);
                 };
             };
         };
@@ -480,7 +481,7 @@ exports.run = (client) => {
         if (error.toLocaleString().includes('Cannot find module') || error.toLocaleString().includes('Cannot send messages to this user')) return;
 
         //Se muestra el error en consola
-        console.error(`\n${new Date().toLocaleString()} 》ERROR: ${error.stack}\n`);
+        console.error(`\n${new Date().toLocaleString()} 》ERROR:`, error.stack);
         
         //Se comprueba si se han proporcionado argumentos
         const arguments = args.length > 0 ? args.join(' ') : 'Ninguno';
@@ -514,7 +515,7 @@ exports.run = (client) => {
     client.functions.eventErrorHandler = async (error, eventName) => {
 
         //Se muestra el error en consola
-        console.error(`\n${new Date().toLocaleString()} 》ERROR: ${error.stack}\n`);
+        console.error(`\n${new Date().toLocaleString()} 》ERROR:`, error.stack);
         
         //Almacena el string del error, y lo recorta si es necesario
         const errorString = error.stack.length > 1014 ? error.stack : `${error.stack.slice(0, 1014)} ...`;

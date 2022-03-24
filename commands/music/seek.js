@@ -68,7 +68,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'seek',
-    description: 'Cambia el tiempo de la canción a una marca de tiempo específica.',
+    description: 'Cambia el tiempo de la pista a una marca de tiempo específica.',
     aliases: ['sk'],
     parameters: '<HH:MM:SS>'
 };

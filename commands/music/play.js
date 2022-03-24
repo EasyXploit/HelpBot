@@ -131,7 +131,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'play',
-    description: 'Busca una canción o lista de reproducción por nombre o URL de YouTube. Si no proporcionas parámetros, reanuda la cola.',
+    description: 'Busca una pista o lista de reproducción por nombre o URL de YouTube. Si no proporcionas parámetros, reanuda la cola.',
     aliases: ['p', 'resume'],
     parameters: '[URL de YouTube | término de búsqueda]'
 };

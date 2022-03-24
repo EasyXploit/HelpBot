@@ -65,7 +65,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 //Comprueba si el valor introducido es válido
                 if (args[0] > (reproductionQueue.tracks.length)) return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} Solo puedes hacer skip de \`${(reproductionQueue.tracks.length)}\` canciones.`)]
+                    .setDescription(`${client.customEmojis.redTick} Solo puedes hacer skip de \`${(reproductionQueue.tracks.length)}\` pistas.`)]
                 });
                 
                 //Comprueba si es necesaria una votación y cambia la cola

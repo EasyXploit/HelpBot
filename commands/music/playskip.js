@@ -39,7 +39,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             connection._state.subscription.player.stop();
 
             //Manda un mensaje de confirmación
-            await message.channel.send({ content: '⏭ | Canción omitida' });
+            await message.channel.send({ content: '⏭ | Pista omitida' });
         };
 
     } catch (error) {
@@ -51,7 +51,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'playskip',
-    description: 'Busca una canción o lista de reproducción por nombre o URL de YouTube y omite la pista actual.',
+    description: 'Busca una pista o lista de reproducción por nombre o URL de YouTube y omite la pista actual.',
     aliases: ['ps'],
     parameters: '<URL de YouTube | término de búsqueda>'
 };

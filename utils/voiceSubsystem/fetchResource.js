@@ -16,7 +16,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 	
 	
 		//COMPROBACIÓN DE LÍMITES DE COLA
-		//Para comprobar cuantas canciones puede subir un miembro a la cola
+		//Para comprobar cuantas pistas puede subir un miembro a la cola
 	
 		//Almacena las pistas autorizadas por usuario
 		let authorizedTracks = false;
@@ -27,15 +27,15 @@ exports.run = async (client, args, message, streamType, toStream) => {
 			//Actualiza la variable de pistas con el máximo teórico 
 			authorizedTracks = client.config.music.userQueueLimit;
 	
-			//Calcula cuantas canciones tiene el miembro en la cola
+			//Calcula cuantas pistas tiene el miembro en la cola
 			for (let i = 0; i < reproductionQueue.tracks.length; i++) {
 				if (message.member.id === reproductionQueue.tracks[i].requesterId) authorizedTracks--;
 			};
 	
-			//Comprueba si el miembro puede añadir más canciones a la cola
+			//Comprueba si el miembro puede añadir más pistas a la cola
 			if (authorizedTracks <= 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
 				.setColor(client.config.colors.error)
-				.setDescription(`${client.customEmojis.redTick} No puedes añadir más canciones a la cola.`)]
+				.setDescription(`${client.customEmojis.redTick} No puedes añadir más pistas a la cola.`)]
 			});
 	
 		};
@@ -122,7 +122,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 						//Comprueba si el resultado supera la duración máxima establecida
 						if (metadata.durationInSec * 1000 > client.config.music.maxTrackDuration) return message.channel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir canciones de más de \`${client.functions.msToHHMMSS(client.config.music.maxTrackDuration)}\`.`)]
+							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir pistas de más de \`${client.functions.msToHHMMSS(client.config.music.maxTrackDuration)}\`.`)]
 						});
 		
 						//Crea el objeto de la cola
@@ -141,7 +141,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 					//Devuelve un error si no se ha proporcionado una URL válida
 					return message.channel.send({ embeds: [ new client.MessageEmbed()
 						.setColor(client.config.colors.error)
-						.setDescription(`${client.customEmojis.redTick} Por el momento, <@${client.user.id}> solo puede obtener canciones desde YouTube.`)]
+						.setDescription(`${client.customEmojis.redTick} Por el momento, <@${client.user.id}> solo puede obtener pistas desde YouTube.`)]
 					});
 				};
 	
@@ -171,7 +171,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 						//Comprueba si el resultado supera la duración máxima establecida
 						if (results[0].durationInSec * 1000 > client.config.music.maxTrackDuration) return message.channel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir canciones de más de ${client.functions.msToHHMMSS(client.config.music.maxTrackDuration)}.`)]
+							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir pistas de más de ${client.functions.msToHHMMSS(client.config.music.maxTrackDuration)}.`)]
 						});
 	
 						//Crea el objeto de la cola

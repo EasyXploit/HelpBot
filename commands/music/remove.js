@@ -24,7 +24,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 await reproductionQueue.tracks.splice(1);
                 
                 //Manda un mensaje de confirmación
-                await message.channel.send({ content: `${client.customEmojis.greenTick} | He eliminado todas las canciones de la cola` });
+                await message.channel.send({ content: `${client.customEmojis.greenTick} | He eliminado todas las pistas de la cola` });
             };
 
         } else {

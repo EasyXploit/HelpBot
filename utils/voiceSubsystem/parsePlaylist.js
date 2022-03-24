@@ -7,10 +7,10 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
         const playlist = await playdl.playlist_info(playlistUrl);
         const playlistItems = await playlist.all_videos();
 
-        //Almacena las canciones autorizadas restantes
+        //Almacena las pistas autorizadas restantes
         let remainingTracks = authorizedTracks;
 
-        //Almacena la cantidad de canciones eliminadas
+        //Almacena la cantidad de pistas eliminadas
         let deletedCount = 0;
 
         //Elimina de la lista todos aquellos resultados que sean privados, directos o tengan una duración mayor a la establecida por la configuración
@@ -24,10 +24,10 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
         //Si hubieron omitidas por que no se podían reproducir o superaron la duración máxima, lo advierte
         if (deletedCount > 0) await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} Se han omitido \`${deletedCount}\` canciones por que no se podían reproducir o superaron la duración de ${client.functions.msToHHMMSS(client.config.music.maxTrackDuration)}.`)]
+            .setDescription(`${client.customEmojis.orangeTick} Se han omitido \`${deletedCount}\` pistas por que no se podían reproducir o superaron la duración de ${client.functions.msToHHMMSS(client.config.music.maxTrackDuration)}.`)]
         }).then(msg => {setTimeout(() => msg.delete(), 10000)});
 
-        //Almacena la cantidad de canciones duplicadas
+        //Almacena la cantidad de pistas duplicadas
         let duplicateCount = 0;
 
         //Para cada resultado de la lista
@@ -54,7 +54,7 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
                 break;
             };
 
-            //Calcula si quedan canciones autorizadas restantes
+            //Calcula si quedan pistas autorizadas restantes
             if (remainingTracks === 0) break;
             remainingTracks--;
         };
@@ -71,19 +71,19 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
             .setFooter({text: `${await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild)}`, iconURL: reproductionQueue.boundedTextChannel.guild.iconURL({dynamic: true})})
         ], files: ['./resources/images/dj.png']});
 
-        //Si hubieron canciones omitidas por que eran duplicadas, lo advierte
+        //Si hubieron pistas omitidas por que eran duplicadas, lo advierte
         if (duplicateCount > 0) await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} Se han omitido \`${duplicateCount}\` canciones duplicadas.`)]
+            .setDescription(`${client.customEmojis.orangeTick} Se han omitido \`${duplicateCount}\` pistas duplicadas.`)]
         }).then(msg => {setTimeout(() => msg.delete(), 10000)});
 
-        //Si hubieron canciones omitidas por que excedían la cantidad máxima de canciones autorizadas, lo advierte
+        //Si hubieron pistas omitidas por que excedían la cantidad máxima de pistas autorizadas, lo advierte
         if ((playlistItems.length - duplicateCount) > authorizedTracks) await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} Se han omitido \`${playlistItems.length - authorizedTracks}\` canciones por que no puedes añadir más.`)]
+            .setDescription(`${client.customEmojis.orangeTick} Se han omitido \`${playlistItems.length - authorizedTracks}\` pistas por que no puedes añadir más.`)]
         }).then(msg => {setTimeout(() => msg.delete(), 10000)});
 
-        //Devuelve true si el total de canciones no eran duplicadas
+        //Devuelve true si el total de pistas no eran duplicadas
         if (duplicateCount !== playlistItems.length) return true;
 
     } catch (error) {

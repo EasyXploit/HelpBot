@@ -20,7 +20,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             //Almacena la conexión de voz del bot
             let connection = await getVoiceConnection(message.guild.id);
 
-            //Slta la canción
+            //Salta la pista
             connection._state.subscription.player.stop();
             
             //Manda un mensaje de confirmación

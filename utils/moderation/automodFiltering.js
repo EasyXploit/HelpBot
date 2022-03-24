@@ -1,9 +1,9 @@
-const filters = require('../configs/automodFilters.json');
+const filters = require('../../configs/automodFilters.json');
 
 //Palabras malsonantes
 async function swearWords(client, message) {
     
-    const words = require('../configs/bannedWords.json');
+    const words = require('../../configs/bannedWords.json');
     if (words.some(word => message.content.toLowerCase().includes(word))) return true;
 };
 
@@ -83,7 +83,6 @@ async function repeatedText(client, message) {
     return /^(.+)(?: +\1){3}/.test(message.content);
 };
 
-
 module.exports = {
     swearWords : swearWords,
     invites : invites,
@@ -93,4 +92,4 @@ module.exports = {
     massMentions: massMentions,
     massSpoilers: massSpoilers,
     repeatedText: repeatedText
-}
+};

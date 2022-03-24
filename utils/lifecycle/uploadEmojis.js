@@ -29,7 +29,7 @@ exports.run = async (client) => {
         const normalGuildEmojis = await client.homeGuild.emojis.fetch().then(emojis => emojis.filter(emoji => !emoji.animated).map(emoji => emoji.id));
 
         //Carga la configuración dinámica
-        const dynamicConfig = require('../configs/dynamic.json');
+        const dynamicConfig = require('../../configs/dynamic.json');
 
         //Carga el listado de emojis a cargar en la guild
         const customEmojis = dynamicConfig.customEmojis;

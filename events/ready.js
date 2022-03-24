@@ -24,12 +24,12 @@ exports.run = async (event, client) => {
         if (!client.config.dynamic.homeGuild || client.config.dynamic.homeGuild !== cachedGuilds.first().id) {
 
             //Almacena la nueva configuración
-            await require('../utils/storeNewGuildConfig.js').run(client, cachedGuilds.first());
+            await require('../utils/lifecycle/newGuild.js').run(client, cachedGuilds.first());
             
         } else {
 
             //Carga la config. en memoria y arranca el sistema
-            await require('../utils/systemLoad.js').run(client);
+            await require('../utils/lifecycle/systemLoad.js').run(client);
         };
 
     } catch (error) {

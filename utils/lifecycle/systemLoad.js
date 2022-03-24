@@ -54,10 +54,10 @@ exports.run = async (client) => {
             console.log('\n - [OK] Carga de configuración de la guild.');
 
             //Carga las funciones globales
-            require('../utils/functions.js').run(client);
+            require('../functions.js').run(client);
 
             //Carga los customEmojis de sistema en la guild (si no los tiene ya)
-            if (client.homeGuild) await require('../utils/uploadEmojis.js').run(client);
+            if (client.homeGuild) await require('./uploadEmojis.js').run(client);
 
             //Carga los customEmojis en el cliente
             await require('./loadEmojis.js').run(client);
@@ -75,7 +75,7 @@ exports.run = async (client) => {
             console.log(' - [OK] Carga de presencia.');
 
             //Carga los scripts que funcionan a intervalos
-            require('./intervals.js').run(client);
+            require('../intervals.js').run(client);
 
             //Carga los estados de voz (si se su monitorización)
             if (client.config.xp.rewardVoice) {

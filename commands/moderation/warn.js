@@ -38,7 +38,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         };
 
         //Llama al manejador de infracciones
-        require('../../utils/infractionsHandler.js').run(client, message, member, reason, 2, message.author);
+        require('../../utils/lifecycle/infractionsHandler.js').run(client, message, member, reason, 2, message.author);
 
     } catch (error) {
 

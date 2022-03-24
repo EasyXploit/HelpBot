@@ -4,7 +4,7 @@ exports.run = async (message, client) => {
     if (message.author.bot || message.type !== 'DEFAULT') return;
 
     //Carga los scripts para filtrar mensajes
-    const automodFiltering = require('../utils/automodFiltering.js');
+    const automodFiltering = require('../utils/lifecycle/automodFiltering.js');
 
     //Por cada uno de los filtros de automoderación
     for (var filter in client.config.automodFilters) {
@@ -42,7 +42,7 @@ exports.run = async (message, client) => {
                 const reason = message.channel.type === 'DM' ? `${filterCfg.reason} (vía MD)` : filterCfg.reason; 
             
                 //Ejecuta el manejador de infracciones
-                require('../utils/infractionsHandler.js').run(client, message, guildMember, reason, filterCfg.action, client.user, message.content);
+                require('../utils/lifecycle/infractionsHandler.js').run(client, message, guildMember, reason, filterCfg.action, client.user, message.content);
             };
         });
     };

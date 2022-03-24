@@ -9,7 +9,7 @@ exports.run = async (guild, client) => {
         if (cachedGuilds.size === 1) {
 
             //Almacena la nueva configuración de la guild
-            await require('../utils/storeNewGuildConfig.js').run(client, cachedGuilds.first());
+            await require('../utils/lifecycle/newGuild.js').run(client, cachedGuilds.first());
 
             //Notifica por consola que el bot se ha unido a la guild
             console.log(`${new Date().toLocaleString()} 》${client.user.username} se ha unido a la guild "${guild.name}".`);

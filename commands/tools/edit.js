@@ -18,7 +18,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         ]});
         
         //Busca el mensaje en el canal
-        const msg = await channel.messages.fetch(args[1]);
+        const msg = await client.functions.fetchMessage(channel, args[1])
         if (!msg) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} El mensaje con ID \`${args[1]}\` no existe.`)

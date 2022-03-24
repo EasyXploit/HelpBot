@@ -173,7 +173,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             if (!client.db.polls[args[1]]) return message.channel.send({ embeds: [notFoundEmbed] });
 
             let channel = await client.functions.fetchChannel(message.guild, client.db.polls[args[1]].channel);
-            let poll = await channel.messages.fetch(args[1])
+            let poll = await client.functions.fetchMessage(channel, args[1])
 
             if (!poll) return message.channel.send({ embeds: [notFoundEmbed] });
 

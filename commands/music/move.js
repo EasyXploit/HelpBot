@@ -3,7 +3,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
     try {
 
         //Comprueba los requisitos previos para el comando
-        if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['bot-connected', 'same-channel', 'has-queue'])) return;
+        if (!await require('../../utils/voice/preChecks.js').run(client, message, ['bot-connected', 'same-channel', 'has-queue'])) return;
         
         //Comprueba si se han proporcionado argumentos
         if (!args[0] || !args[1]) return message.channel.send({ embeds: [ new client.MessageEmbed()
@@ -30,7 +30,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         });
 
         //Comprueba si es necesaria una votación
-        if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'move')) {
+        if (await require('../../utils/voice/testQueuePerms.js').run(client, message, 'move')) {
 
             //Obtiene el objeto a desplazar
             let toMove = reproductionQueue.tracks[args[0]];

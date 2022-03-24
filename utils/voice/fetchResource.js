@@ -303,6 +303,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 		
 	} catch (error) {
 
+		//Notifica si el error se debe a uns restricción de edad por falta de cookies
 		if (error.message.includes('Sign in to confirm your age')) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
             .setDescription(`${client.customEmojis.orangeTick} Por el momento, no puedo reproducir vídeos con restricción de edad.`)]

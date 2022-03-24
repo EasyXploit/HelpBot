@@ -3,7 +3,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
     try {
 
         //Comprueba los requisitos previos para el comando
-        if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['bot-connected', 'same-channel', 'has-queue', 'can-speak'])) return;
+        if (!await require('../../utils/voice/preChecks.js').run(client, message, ['bot-connected', 'same-channel', 'has-queue', 'can-speak'])) return;
 
         //Almacena los filtros de expresiones regulares para comprobar el formato del parámetro
         const ssFilter = (/(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)/gm);
@@ -38,7 +38,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         });
 
         //Comprueba si es necesaria una votación
-        if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, `seek-${args[0]}`, 0)) {
+        if (await require('../../utils/voice/testQueuePerms.js').run(client, message, `seek-${args[0]}`, 0)) {
 
             //Añade al objeto un tiempo a buscar
             queueItem.meta.seekTo = seekTo;

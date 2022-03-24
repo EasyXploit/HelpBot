@@ -4,7 +4,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
     try {
 
         //Comprueba los requisitos previos para el comando
-        if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['bot-connected',  'same-channel',  'has-queue'])) return;
+        if (!await require('../../utils/voice/preChecks.js').run(client, message, ['bot-connected',  'same-channel',  'has-queue'])) return;
 
         //Comprueba si se han proporcionado argumentos
         if (!args[0]) return message.channel.send({ embeds: [ new client.MessageEmbed()
@@ -18,7 +18,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         if (args[0] === 'all') {
 
             //Comprueba si es necesaria una votación
-            if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'remove-all')) {
+            if (await require('../../utils/voice/testQueuePerms.js').run(client, message, 'remove-all')) {
 
                 //Elimina el elemento de la cola
                 await reproductionQueue.tracks.splice(1);
@@ -45,7 +45,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             });
 
             //Comprueba si es necesaria una votación
-            if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'remove', args[0])) {
+            if (await require('../../utils/voice/testQueuePerms.js').run(client, message, 'remove', args[0])) {
 
                 //Elimina el elemento de la cola
                 await reproductionQueue.tracks.splice(args[0], 1);

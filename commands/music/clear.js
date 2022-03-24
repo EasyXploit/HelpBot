@@ -3,10 +3,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
     try {
 
         //Comprueba los requisitos previos para el comando
-        if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['bot-connected', 'same-channel', 'has-queue'])) return;
+        if (!await require('../../utils/voice/preChecks.js').run(client, message, ['bot-connected', 'same-channel', 'has-queue'])) return;
 
         //Comprueba si es necesaria una votación
-        if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'clear')) {
+        if (await require('../../utils/voice/testQueuePerms.js').run(client, message, 'clear')) {
 
             //Almacena la información de la cola de la guild
             const reproductionQueue = client.reproductionQueues[message.guild.id];

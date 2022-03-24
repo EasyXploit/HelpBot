@@ -6,7 +6,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         if (!args[0]) { //En este caso, "play" funcionará como "resume"
 
             //Comprueba los requisitos previos para el comando
-            if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['bot-connected', 'same-channel', 'can-speak'])) return;
+            if (!await require('../../utils/voice/preChecks.js').run(client, message, ['bot-connected', 'same-channel', 'can-speak'])) return;
 
             //Método para obtener conexiones de voz
             const { getVoiceConnection } = require('@discordjs/voice');
@@ -24,7 +24,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             ]});
 
             //Comprueba si es necesaria una votación
-            if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'pause')) {
+            if (await require('../../utils/voice/testQueuePerms.js').run(client, message, 'pause')) {
 
                 //Reanuda la reproducción y manda un mensaje de confirmación
                 await subscription.player.unpause();
@@ -34,7 +34,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         } else { //En este caso, "play" funcionará como "join" y reproducirá/añadirá a la cola
 
             //Comprueba los requisitos previos para el comando
-            if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['user-connection', 'forbidden-channel', 'can-speak', 'not-afk', 'can-join', 'full-channel'])) return;
+            if (!await require('../../utils/voice/preChecks.js').run(client, message, ['user-connection', 'forbidden-channel', 'can-speak', 'not-afk', 'can-join', 'full-channel'])) return;
 
             //Almacena la información de la cola de la guild
             const reproductionQueue = client.reproductionQueues[message.guild.id];
@@ -49,7 +49,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             message.channel.send({ content: `🔎 | Buscando \`${args.join(` `)}\` ...` });
 
             //Crea el objeto de la cola y almacena si se ha logrado crear o no
-            const resultFound = await require('../../utils/voiceSubsystem/fetchResource.js').run(client, args, message, 'stream', args.join(' '));
+            const resultFound = await require('../../utils/voice/fetchResource.js').run(client, args, message, 'stream', args.join(' '));
 
             //No continua si no se ha conseguido crear
             if (resultFound !== true) return;
@@ -64,7 +64,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             const { VoiceConnectionStatus, entersState } = require('@discordjs/voice');
 
             //Si ya había conexión y el reproductor estaba a la espera, solo ejecuta el mediaPlayer
-            if (connection && connection._state.subscription && connection._state.subscription.player.state.status === 'idle') return require('../../utils/voiceSubsystem/mediaPlayer.js').run(client, message, connection);
+            if (connection && connection._state.subscription && connection._state.subscription.player.state.status === 'idle') return require('../../utils/voice/mediaPlayer.js').run(client, message, connection);
 
             //Omite si ya hay reproducción en curso
             if (connection && connection._state.subscription && connection._state.subscription.player.state.status === 'playing') return;
@@ -119,7 +119,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             await entersState(connection, VoiceConnectionStatus.Ready, 5_000);
 
             //Ejecuta el reproductor de medios
-            require('../../utils/voiceSubsystem/mediaPlayer.js').run(client, message, connection);
+            require('../../utils/voice/mediaPlayer.js').run(client, message, connection);
         };
 
     } catch (error) {

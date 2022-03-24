@@ -3,16 +3,16 @@ exports.run = async (client, message, args, command, commandConfig) => {
     try {
 
         //Comprueba los requisitos previos para el comando
-        if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['bot-connected', 'same-channel', 'has-queue', 'can-speak'])) return;
+        if (!await require('../../utils/voice/preChecks.js').run(client, message, ['bot-connected', 'same-channel', 'has-queue', 'can-speak'])) return;
 
         //Comprueba si es necesaria una votación
-        if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'playskip', 0)) {
+        if (await require('../../utils/voice/testQueuePerms.js').run(client, message, 'playskip', 0)) {
 
             //Envía un mensaje de confirmación de la búsqueda
             message.channel.send({ content: `🔎 | Buscando \`${args.join(' ')}\` ...` });
 
             //Crea el objeto de la cola y almacena si se ha logrado crear o no
-            const resultFound = await require('../../utils/voiceSubsystem/fetchResource.js').run(client, args, message, 'stream', args.join(' '));
+            const resultFound = await require('../../utils/voice/fetchResource.js').run(client, args, message, 'stream', args.join(' '));
 
             //No continua si no se ha conseguido crear
             if (resultFound !== true) return;

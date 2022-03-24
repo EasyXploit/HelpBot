@@ -3,7 +3,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
     try {
 
         //Comprueba los requisitos previos para el comando
-        if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['bot-connected',  'same-channel',  'has-queue',  'can-speak'])) return;
+        if (!await require('../../utils/voice/preChecks.js').run(client, message, ['bot-connected',  'same-channel',  'has-queue',  'can-speak'])) return;
 
         //Función para omitir la pista y mandar un mensaje de confirmación
         async function skip() {
@@ -34,7 +34,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             if (args[0] === 'all') {
 
                 //Comprueba si es necesaria una votación y cambia la cola
-                if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'skip-all')) {
+                if (await require('../../utils/voice/testQueuePerms.js').run(client, message, 'skip-all')) {
                     await reproductionQueue.tracks.splice(0, reproductionQueue.tracks.length);
                     await skip();
                 };
@@ -69,7 +69,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 });
                 
                 //Comprueba si es necesaria una votación y cambia la cola
-                if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, `skip-${args[0]}`)) {
+                if (await require('../../utils/voice/testQueuePerms.js').run(client, message, `skip-${args[0]}`)) {
                     await reproductionQueue.tracks.splice(0, args[0] - 1);
                     await skip();
                 };
@@ -78,7 +78,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         } else {
 
             //Comprueba si es necesaria una votación y omite
-            if (await require('../../utils/voiceSubsystem/testQueuePerms.js').run(client, message, 'skip', 0)) await skip();
+            if (await require('../../utils/voice/testQueuePerms.js').run(client, message, 'skip', 0)) await skip();
         };
 
     } catch (error) {

@@ -38,7 +38,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         } else { //Si se desea reproducir una grabación
 
             //Comprueba los requisitos previos para el comando
-            if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['user-connection',  'forbidden-channel',  'can-speak', 'not-afk',  'can-join',  'full-channel'])) return;
+            if (!await require('../../utils/voice/preChecks.js').run(client, message, ['user-connection',  'forbidden-channel',  'can-speak', 'not-afk',  'can-join',  'full-channel'])) return;
 
             //Almacena la información de la cola de la guild
             const reproductionQueue = client.reproductionQueues[message.guild.id];
@@ -65,7 +65,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             });
 
             //Crea el objeto de la cola y almacena si se ha logrado crear o no
-            await require('../../utils/voiceSubsystem/fetchResource.js').run(client, args, message, 'file', selection);
+            await require('../../utils/voice/fetchResource.js').run(client, args, message, 'file', selection);
 
             //Almacena librerías necesarios para manejar conexiones de voz
             const { getVoiceConnection, joinVoiceChannel } = require('@discordjs/voice');
@@ -77,7 +77,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             const { VoiceConnectionStatus, entersState } = require('@discordjs/voice');
 
             //Si ya había conexión y el reproductor estaba a la espera, solo ejecuta el mediaPlayer
-            if (connection && connection._state.subscription && connection._state.subscription.player.state.status === 'idle') return require('../../utils/voiceSubsystem/mediaPlayer.js').run(client, message, connection);
+            if (connection && connection._state.subscription && connection._state.subscription.player.state.status === 'idle') return require('../../utils/voice/mediaPlayer.js').run(client, message, connection);
 
             //Omite si ya hay reproducción en curso
             if (connection && connection._state.subscription && connection._state.subscription.player.state.status === 'playing') return;
@@ -117,7 +117,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             await entersState(connection, VoiceConnectionStatus.Ready, 5_000);
 
             //Ejecuta el reproductor de medios
-            require('../../utils/voiceSubsystem/mediaPlayer.js').run(client, message, connection);
+            require('../../utils/voice/mediaPlayer.js').run(client, message, connection);
         };
 
     } catch (error) {

@@ -88,6 +88,7 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
 
     } catch (error) {
 
+        //Envía un mensaje de error a la consola
         console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
     };
 };

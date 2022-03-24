@@ -3,7 +3,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
     try {
 
         //Comprueba los requisitos previos para el comando
-        if (!await require('../../utils/voiceSubsystem/preChecks.js').run(client, message, ['bot-connected', 'has-queue'])) return;
+        if (!await require('../../utils/voice/preChecks.js').run(client, message, ['bot-connected', 'has-queue'])) return;
 
         //Método para obtener conexiones de voz
         const { getVoiceConnection } = require('@discordjs/voice');

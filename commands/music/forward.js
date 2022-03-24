@@ -46,7 +46,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'forward',
-    description: 'Avanza el momento de una canción en una cantidad de tiempo especificada.',
+    description: 'Avanza el momento de una pista en una cantidad de tiempo especificada.',
     aliases: ['fw'],
     parameters: '<HH:MM:SS>'
 };

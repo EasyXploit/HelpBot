@@ -1,6 +1,10 @@
+//Dependencia para generar arte ASCII
 const logo = require('asciiart-logo');
+
+//Carga la configuración del repositorio
 const packageConfig = require('../package.json');
 
+//Exporta un nuevo arte ASCII
 module.exports = {
     splash: logo({
         name: packageConfig.normalizedName,

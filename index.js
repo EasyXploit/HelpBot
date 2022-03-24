@@ -27,9 +27,7 @@ const client = new discord.Client({
 console.log('- ¡Cliente iniciado correctamente!\n');
 
 //Carga de librerías de métodos de Discord en el cliente
-client.MessageEmbed = discord.MessageEmbed;
-client.MessageAttachment = discord.MessageAttachment;
-client.Collection = discord.Collection;
+['MessageEmbed', 'MessageAttachment', 'Collection'].forEach(x => client[x] = discord[x]);
 
 //Dependencia de acceso al sistema de archivos
 client.fs = require('fs');
@@ -38,9 +36,8 @@ client.fs = require('fs');
 const configFiles = client.fs.readdirSync('./configs/', { withFileTypes: true });
 const databaseFiles = client.fs.readdirSync('./databases/', { withFileTypes: true });
 
-//Crea objetos para almacenar las configuraciones y bases de datos
-client.config = {};
-client.db = {};
+//Crea objetos para almacenar las configuraciones, bases de datos y cachés
+['config', 'db', 'usersVoiceStates', 'reproductionQueues'].forEach(x => client[x] = {});
 
 //Por cada uno de los archivos de config.
 configFiles.forEach(async file => {
@@ -56,10 +53,8 @@ databaseFiles.forEach(async file => {
     client.db[file.name.replace('.json', '')] = JSON.parse(client.fs.readFileSync(`./databases/${file.name}`));
 });
 
-//Datos de usuarios
-client.usersVoiceStates = {};           //Cambios de estado de voz de los usuarios
-client.cooldownedUsers = new Set();     //Cooldowns de los usuarios
-client.reproductionQueues = {};         //Almacena la cola de reproducción y otros datos
+//Cooldowns de los usuarios
+client.cooldownedUsers = new Set();
 
 //Creación de colecciones
 ['commands', 'aliases'].forEach(x => client[x] = new client.Collection());

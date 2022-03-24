@@ -13,7 +13,15 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             //Sube la pista a la cola en el primer puesto y hace skip
             await reproductionQueue.tracks.splice(1, 0, reproductionQueue.tracks[0]);
-            await player.stop();
+
+            //Método para obtener conexiones de voz
+            const { getVoiceConnection } = require('@discordjs/voice');
+
+            //Almacena la conexión de voz del bot
+            let connection = await getVoiceConnection(message.guild.id);
+
+            //Slta la canción
+            connection._state.subscription.player.stop();
             
             //Manda un mensaje de confirmación
             await message.channel.send({ content: `${client.customEmojis.greenTick} | La pista se volverá a reproducir` });

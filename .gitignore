@@ -1,23 +1,23 @@
-# Packages
+#Packages
 node_modules/
 
-# Log files
+#Log files
 logs/
 *.log
 npm-debug.log*
 
-# Runtime data
+#Runtime data
 pids
 *.pid
 *.seed
 
-# Env
+#Env
 .env
 
-# Dist
+#Dist
 dist/
 
-# Miscellaneous
+#Miscellaneous
 .tmp/
 .vscode/*
 !.vscode/extensions.json
@@ -27,7 +27,7 @@ dist/
 .turbo
 tsconfig.tsbuildinfo
 
-# yarn
+#yarn
 .pnp.*
 .yarn/*
 !.yarn/patches

@@ -63,6 +63,7 @@ exports.run = async (ban, client) => {
 
     } catch (error) {
 
+        //Ejecuta el manejador de errores
         await client.functions.eventErrorHandler(error, 'guildBanAdd');
     };
 };

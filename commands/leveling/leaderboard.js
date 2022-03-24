@@ -94,6 +94,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
         showLeaderboard();
 
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

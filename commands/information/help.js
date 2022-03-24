@@ -80,9 +80,11 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             //Envía el embed de ayuda
             await message.channel.send({ embeds: [ helpEmbed ], files: ['./resources/images/help.png'] });
-
         };
+
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

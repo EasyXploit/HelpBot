@@ -48,6 +48,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
         })], files: ['./resources/images/dj.png'] });
 
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

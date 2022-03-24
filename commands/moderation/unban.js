@@ -44,13 +44,21 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         await client.functions.loggingManager('embed', loggingEmbed);
         await message.channel.send({ embeds: [successEmbed] });
+        
     } catch (error) {
-        if (error.toString().includes(`Unknown Ban`)) {
-            let notBannedEmbed = new client.MessageEmbed()
+
+        //Si no reconoce al miembro a desbanear
+        if (error.toString().includes('Unknown Ban')) {
+
+            //Lo notifica
+            message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} Este miembro no ha sido baneado`);
-            message.channel.send({ embeds: [notBannedEmbed] });
+                .setDescription(`${client.customEmojis.redTick} Este miembro no ha sido baneado`)
+            ]});
+
         } else {
+
+            //Ejecuta el manejador de errores
             await client.functions.commandErrorHandler(error, message, command, args);
         };
     };

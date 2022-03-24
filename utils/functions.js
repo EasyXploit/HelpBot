@@ -140,7 +140,7 @@ exports.run = (client) => {
             });
             
             //Asigna el rol a la posición más alta posible
-            let botMember = await guild.members.cache.get(client.user.id);
+            const botMember = await guild.members.cache.get(client.user.id);
             await mutedRole.setPosition(botMember.roles.highest.position - 1);
 
             //Graba el nuevo rol en la configuración
@@ -155,8 +155,10 @@ exports.run = (client) => {
 
     //Función para propagar el rol silenciado
     client.functions.spreadMutedRole = async (guild) => {
+
         //Busca el rol silenciado
         let mutedRole = await guild.roles.cache.find(r => r.id === client.config.dynamic.mutedRoleId);
+
         //Para cada canal, añade el permiso para el rol
         await guild.channels.cache.forEach(async (channel) => {
 
@@ -164,10 +166,12 @@ exports.run = (client) => {
             if (client.config.moderation.mutedRoleExcludedChannels.includes(channel.id)) return;
 
             //Si el canal tiene un permiso para el rol silenciado, lo almacena
-            let mutedRolePermissions = channel.permissionOverwrites.resolve(mutedRole.id);
+            const mutedRolePermissions = channel.permissionOverwrites.resolve(mutedRole.id);
 
             //Si el canal no tiene el permiso y el bitfield no coincide con las negaciones pertinentes, añade el permiso
             if (!mutedRolePermissions || ((mutedRolePermissions.deny & BigInt(0x800)) !== BigInt(0x800) || (mutedRolePermissions.deny & BigInt(0x40)) !== BigInt(0x40)) || ((mutedRolePermissions.deny & BigInt(0x200000)) !== BigInt(0x200000))) {
+                
+                //Cambia los permisos del rol
                 await channel.permissionOverwrites.edit(mutedRole, {
                     SEND_MESSAGES: false,
                     ADD_REACTIONS: false,
@@ -177,112 +181,137 @@ exports.run = (client) => {
         });
     };
 
+    //Función para añadir XP (mode = message || voice)
+    client.functions.addXP = async (member, guild, mode, channel) => {
+
+        //Almacena la tabla de clasificación del servidor, y si no existe la crea
+        if (guild.id in client.db.stats === false) client.db.stats[guild.id] = {};
+        const guildStats = client.db.stats[guild.id];
+
+        //Para comprobar si el rol puede ganar XP o no.
+        let nonXP;
+
+        //Para cada rol que tiene prohibido ganar XP
+        for (let index = 0; index < client.config.xp.nonXPRoles.length; index++) {
+
+            //Si el miembro tiene dicho rol
+            if (await member.roles.cache.find(role => role.id === client.config.xp.nonXPRoles[index])) {
+
+                //Ajusta la variable de estado
+                nonXP = true;
+
+                //Para el bucle
+                break;
+            };
+        };
+
+        //Devuelve si no se puede ganar XP
+        if (nonXP) return;
+
+        //Si el miembro no tiene tabla de XP
+        if (member.id in guildStats === false) {
+
+            //Crea la tabla del miembro
+            guildStats[member.id] = {
+                totalXP: 0,
+                actualXP: 0,
+                level: 0,
+                last_message: 0
+            };
+        };
+
+        //Almacena las stats del miembro
+        const userStats = guildStats[member.id];
+
+        //Genera XP si es un canal de voz o si se ha sobrepasado el umbral de cola de mensajes
+        if (mode === 'voice' || (mode === 'message' && Date.now() - userStats.last_message > 5000)) {
+
+            //Genera XP aleatorio según los rangos
+            const newXp = await client.functions.randomIntBetween(client.config.xp.minimumXpReward, client.config.xp.maximumXpReward);
+
+            //Añade el XP a la cantidad actual del miembro
+            userStats.actualXP += newXp;
+            userStats.totalXP += newXp;
+
+            //Si es un mensaje, actualiza la variable para evitar spam
+            if (mode === 'message') userStats.last_message = Date.now();
+
+            //Fórmula para calcular el XP necesario para subir de nivel
+            const xpToNextLevel = ((5 * client.config.xp.dificultyModifier) * client.config.xp.dificultyModifier) * Math.pow(userStats.level, 3) + 50 * userStats.level + 100;
+
+            //Comprueba si el miembro ha de subir de nivel
+            if (userStats.totalXP >= xpToNextLevel) {
+
+                //Ajusta el nivel del miembro
+                userStats.level++;
+
+                //Ajusta el XP actual de miembro
+                userStats.actualXP = ((5 * client.config.xp.dificultyModifier) * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) - userStats.totalXP;
+
+                //Para cada recompensa, calcula si el miembro es elegible
+                for (let index = client.config.levelingRewards.length - 1; index >= 0; index--) {
+
+                    //Almacena la recompensa
+                    const reward = client.config.levelingRewards[index];
+        
+                    //Si el miembro tiene el nivel necesario para la recompensa, se la asigna
+                    if (userStats.level >= reward.requiredLevel) {
+
+                        //Si tiene un nivel superior al 1
+                        if (userStats.level > 1) {
+
+                            //Almacena la anterior recompensa
+                            const pastReward = client.config.levelingRewards[index - 1];
+
+                            //Para cada uno de los roles de la recompensa anterior
+                            pastReward.roles.forEach(async role => {
+
+                                //Le quita al miembro el rol de esta iteración
+                                if (member.roles.cache.has(role)) await member.roles.remove(role);
+                            });
+                        };
+        
+                        //Para cada uno de los roles de la recompensa
+                        reward.roles.forEach(async role => {
+
+                            //Se lo asigna al miembro
+                            if (!member.roles.cache.has(role)) await member.roles.add(role);
+                        });
+
+                        //Parar el bucle
+                        break;
+                    };
+                };
+
+                //Genera un embed de subida de nivel
+                const levelUpEmbed = new client.MessageEmbed()
+                    .setColor(client.config.colors.primary)
+                    .setAuthor({ name: '¡Subiste de nivel!', iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                    .setDescription(`Enhorabuena <@${member.id}>, has subido al nivel **${userStats.level}**`);
+
+                //Manda el mensaje de subida de nivel, si se ha configurado
+                if (mode === 'message' && client.config.xp.notifylevelUpOnChat) channel.send({ embeds: [levelUpEmbed] });
+                if (mode === 'voice' && client.config.xp.notifylevelUpOnVoice) member.send({ embeds: [levelUpEmbed] });
+            };
+
+            //Guarda las nuevas estadísticas del miembro en la base de datos
+            client.fs.writeFile('./databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
+                if (err) throw err;
+            });
+        };
+    };
+
     //Función para generar números enteros aleatorios dentro de un rango
     client.functions.randomIntBetween = async (min, max) => {
 
-            //Redondea a la baja el mínimo
-            min = Math.ceil(min);
+        //Redondea a la baja el mínimo
+        min = Math.ceil(min);
 
-            //Redondea al alza el máximo
-            max = Math.floor(max);
+        //Redondea al alza el máximo
+        max = Math.floor(max);
 
-            //Devuelve un entero aleatorio entre min y max
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-    };
-
-    //Función para añadir XP (mode = message || voice)
-    client.functions.addXP = async (member, guild, mode, channel) => {
-        try {
-
-            //Almacena la tabla de clasificación del servidor, y si no existe la crea
-            if (guild.id in client.db.stats === false) {
-                client.db.stats[guild.id] = {};
-            };
-            const guildStats = client.db.stats[guild.id];
-
-            //Para comprobar si el rol puede ganar XP o no.
-            let nonXP;
-            for (let i = 0; i < client.config.xp.nonXPRoles.length; i++) {
-                if (await member.roles.cache.find(r => r.id === client.config.xp.nonXPRoles[i])) {
-                    nonXP = true;
-                    break;
-                };
-            };
-            if (nonXP) return;
-
-            //Almacena la tabla de clasificación del miembro, y si no existe la crea
-            if (member.id in guildStats === false) {
-                guildStats[member.id] = {
-                    totalXP: 0,
-                    actualXP: 0,
-                    level: 0,
-                    last_message: 0
-                };
-            };
-            const userStats = guildStats[member.id];
-
-            //Genera XP si es un canal de voz o si se ha sobrepasado el umbral de cola de mensajes
-            if (mode === 'voice' || (mode === 'message' && Date.now() - userStats.last_message > 5000)) {
-
-                
-
-                //Genera XP y lo guarda
-                const newXp = await client.functions.randomIntBetween(client.config.xp.minimumXpReward, client.config.xp.maximumXpReward);
-                userStats.actualXP += newXp;
-                userStats.totalXP += newXp;
-                if (mode === 'message') userStats.last_message = Date.now();
-
-                //Fórmula para calcular el XP necesario para subir de nivel
-                const xpToNextLevel = ((5 * client.config.xp.dificultyModifier) * client.config.xp.dificultyModifier) * Math.pow(userStats.level, 3) + 50 * userStats.level + 100;
-
-                //Comprueba si el miembro ha de subir de nivel
-                if (userStats.totalXP >= xpToNextLevel) {
-                    userStats.level++;
-                    userStats.actualXP = ((5 * client.config.xp.dificultyModifier) * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) - userStats.totalXP;
-
-                    //Para cada recompensa, calcula si el miembro es elegible
-                    for (let i = client.config.levelingRewards.length - 1; i >= 0; i--) {
-                        let reward = client.config.levelingRewards[i];
-            
-                        //Si el miembro tiene el nivel necesario para la recompensa, se la asigna
-                        if (userStats.level >= reward.requiredLevel) {
-                            if (userStats.level > 1) {
-                                let pastReward = client.config.levelingRewards[i - 1];
-
-                                //Borra cada uno de los roles de la recompensa anterior
-                                pastReward.roles.forEach(async role => {
-                                    if (member.roles.cache.has(role)) await member.roles.remove(role);
-                                });
-                            };
-            
-                            //Asigna cada uno de los roles de la recompensa
-                            reward.roles.forEach(async role => {
-                                if (!member.roles.cache.has(role)) await member.roles.add(role);
-                            });
-                            break;
-                        };
-                    };
-
-                    let levelUpEmbed = new client.MessageEmbed()
-                        .setColor(client.config.colors.primary)
-                        .setAuthor({ name: '¡Subiste de nivel!', iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                        .setDescription(`Enhorabuena <@${member.id}>, has subido al nivel **${userStats.level}**`);
-
-                    //Manda el mensaje de subida de nivel, si se ha configurado
-                    if (mode === 'message' && client.config.xp.notifylevelUpOnChat) channel.send({ embeds: [levelUpEmbed] });
-                    if (mode === 'voice' && client.config.xp.notifylevelUpOnVoice) member.send({ embeds: [levelUpEmbed] });
-                    
-                };
-
-                //Guarda las nuevas estadísticas del miembro
-                client.fs.writeFile('./databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
-                    if (err) throw err;
-                });
-            };
-        } catch (error) {
-            console.log(error);
-            return false;
-        };
+        //Devuelve un entero aleatorio entre min y max
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
     //Función para convertir de MS a HH:MM:SS
@@ -302,9 +331,9 @@ exports.run = (client) => {
         seconds = parseInt(seconds % 60);
 
         //Muestra ceros de relleno si fuera necesario
-        let hoursStr = ('00' + hours).slice(-2);
-        let minutesStr = ('00' + minutes).slice(-2);
-        let secondsStr = ('00' + seconds).slice(-2);
+        const hoursStr = ('00' + hours).slice(-2);
+        const minutesStr = ('00' + minutes).slice(-2);
+        const secondsStr = ('00' + seconds).slice(-2);
 
         //Devuelve el resultado
         return `${hoursStr}:${minutesStr}:${secondsStr}`;
@@ -346,6 +375,7 @@ exports.run = (client) => {
         if (client.config.main.loggingChannel && client.loggingChannel) {
 
             try {
+
                 //Carga los permisos del bot en el canal de logging
                 const channelPermissions = client.loggingChannel.permissionsFor(client.user);
                 const missingPermission = ((channelPermissions & BigInt(0x800)) !== BigInt(0x800) || (channelPermissions & BigInt(0x4000)) !== BigInt(0x4000) || (channelPermissions & BigInt(0x8000)) !== BigInt(0x8000));
@@ -360,15 +390,17 @@ exports.run = (client) => {
                         case 'text': await client.loggingChannel.send({ text: [content] }); break;
                         default: break;
                     };
+
                 } else {
+
                     //Advertir por consola de que no se tienen permisos
                     console.error(`${new Date().toLocaleString()} 》ERROR: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos.`);
                 };
+
             } catch (error) {
+
                 //Si el canal no es accesible
                 if (error.toString().includes('DiscordAPIError')) {
-
-                    console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
 
                     //Borrarlo de la config y descargarlo de la memoria
                     client.config.main.loggingChannel = '';
@@ -380,6 +412,8 @@ exports.run = (client) => {
                     //Graba la nueva configuración en el almacenamiento
                     await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), async err => { if (err) throw err });
                 } else {
+
+                    //Muestra un error por consola
                     console.error(`${new Date().toLocaleString()} 》ERROR: Error durante la ejecución del loggingManager:`, error);
                 };
             };
@@ -393,6 +427,7 @@ exports.run = (client) => {
         if (client.config.main.debuggingChannel && client.debuggingChannel) {
 
             try {
+
                 //Carga los permisos del bot en el canal de debugging
                 const channelPermissions = client.debuggingChannel.permissionsFor(client.user);
                 const missingPermission = ((channelPermissions & BigInt(0x800)) !== BigInt(0x800) || (channelPermissions & BigInt(0x4000)) !== BigInt(0x4000) || (channelPermissions & BigInt(0x8000)) !== BigInt(0x8000));
@@ -407,13 +442,18 @@ exports.run = (client) => {
                         case 'text': await client.debuggingChannel.send({ text: [content] }); break;
                         default: break;
                     };
+
                 } else {
+
                     //Advertir por consola de que no se tienen permisos
                     console.error(`${new Date().toLocaleString()} 》ERROR: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos.`);
                 };
+
             } catch (error) {
+
                 //Si el canal no es accesible
                 if (error.toString().includes('DiscordAPIError')) {
+
                     //Borrarlo de la config y descargarlo de la memoria
                     client.config.main.debuggingChannel = '';
                     client.debuggingChannel = null;
@@ -423,7 +463,10 @@ exports.run = (client) => {
 
                     //Graba la nueva configuración en el almacenamiento
                     await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), async err => { if (err) throw err });
+                    
                 } else {
+
+                    //Muestra un error por consola
                     console.error(`${new Date().toLocaleString()} 》ERROR: Error durante la ejecución del debuggingManager:`, error);
                 };
             };
@@ -432,6 +475,7 @@ exports.run = (client) => {
 
     //Función para gestionar los errores en los comandos
     client.functions.commandErrorHandler = async (error, message, command, args) => {
+
         //Se comprueba si el error es provocado por la invocación de un comando no existente
         if (error.toLocaleString().includes('Cannot find module') || error.toLocaleString().includes('Cannot send messages to this user')) return;
 
@@ -439,14 +483,20 @@ exports.run = (client) => {
         console.error(`\n${new Date().toLocaleString()} 》ERROR: ${error.stack}\n`);
         
         //Se comprueba si se han proporcionado argumentos
-        let arguments = 'Ninguno';
-        if (args.length > 0) arguments = args.join(' ');
+        const arguments = args.length > 0 ? args.join(' ') : 'Ninguno';
 
-        let errorString = error.stack;
-        if (errorString.length > 1014) errorString = `${errorString.slice(0, 1014)} ...`;
+        //Almacena el string del error, y lo recorta si es necesario
+        const errorString = error.stack.length > 1014 ? error.stack : `${error.stack.slice(0, 1014)} ...`;
 
-        //Se muestra el error en el canal de depuración
-        let debuggEmbed = new client.MessageEmbed()
+        //Se indica al usuario que se ha notificado el error
+        await message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setTitle(`${client.customEmojis.redTick} ¡Vaya! Algo fue mal ...`)
+            .setDescription('Lo hemos reportado al equipo de desarrollo')
+        ]});
+
+        //Se muestra el error en el canal de depuración¡
+        await client.functions.debuggingManager( new client.MessageEmbed()
             .setColor(client.config.colors.debugging)
             .setTitle('📋 Depuración')
             .setDescription('Se declaró un error durante la ejecución de un comando')
@@ -456,15 +506,8 @@ exports.run = (client) => {
             .addField('Canal:', `<#${message.channel.id}>`, true)
             .addField('Autor:', `<@${message.author.id}>`, true)
             .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
-            .addField('Error:', `\`\`\`${errorString}\`\`\``, true);
-        
-        let reportedEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setTitle(`${client.customEmojis.redTick} ¡Vaya! Algo fue mal ...`)
-            .setDescription('Lo hemos reportado al equipo de desarrollo');
-        
-        await message.channel.send({ embeds: [reportedEmbed] });
-        await client.functions.debuggingManager(debuggEmbed);
+            .addField('Error:', `\`\`\`${errorString}\`\`\``, true)
+        );
     };
 
     //Función para gestionar los errores en los eventos
@@ -473,113 +516,41 @@ exports.run = (client) => {
         //Se muestra el error en consola
         console.error(`\n${new Date().toLocaleString()} 》ERROR: ${error.stack}\n`);
         
-        let errorString = error.stack;
-        if (errorString.length > 1014) errorString = `${errorString.slice(0, 1014)} ...`;
+        //Almacena el string del error, y lo recorta si es necesario
+        const errorString = error.stack.length > 1014 ? error.stack : `${error.stack.slice(0, 1014)} ...`;
 
         //Se muestra el error en el canal de depuración
-        let debuggEmbed = new client.MessageEmbed()
+        await client.functions.debuggingManager( new client.MessageEmbed()
             .setColor(client.config.colors.debugging)
             .setTitle('📋 Depuración')
             .setDescription('Se declaró un error durante la ejecución de un evento')
             .addField('Evento:', eventName, true)
             .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
-            .addField('Error:', `\`\`\`${errorString}\`\`\``);
-        
-        //Se envía el mensaje al canal de depuración
-        await client.functions.debuggingManager(debuggEmbed);
-    };
-
-    //Función para generar u obtener una invitación permanente
-    client.functions.getBotServerInvite = async () => {
-
-        //Almacena la futura invitación
-        let foundInvite;
-
-        //Función para crear una invitación
-        async function createInvite() {
-
-            //Almacena el canal para crear la invitación
-            let inviteChannel;
-            
-            //Comprueba si hay canal de reglas y si se tiene permiso para crear la invitación
-            if (client.homeGuild.rulesChannel && !(client.homeGuild.rulesChannel.permissionsFor(client.user) & BigInt(0x1)) !== BigInt(0x1)) {
-
-                //Almacena el canal de reglas
-                inviteChannel = client.homeGuild.rulesChannel;
-
-            } else {
-
-                //De lo contrario, hace lo propio con el primer canal que lo permita
-                await client.homeGuild.channels.fetch().then( async channels => {
-
-                    //Filtra los canales para que solo se incluyan los de texto
-                    channels = await channels.filter(channel => channel.type === 'GUILD_TEXT')
-
-                    //Hace un mapa de las IDs de los canales
-                    const channelIds = channels.map(channel => channel.id);
-
-                    //Comprueba en cada canal si se puede crear la invitación
-                    for (index = 0; index < channels.size; index++) {
-
-                        //Obtiene el canal en base a la ID de la lista
-                        const channel = channels.get(channelIds[index]);
-
-                        //Si tiene permisos, graba la invitación
-                        if(!(channel.permissionsFor(client.user) & BigInt(0x1)) !== BigInt(0x1)) return inviteChannel = channel;
-                    };
-                });
-            };
-
-            //Crea una invitación permanente en el canal
-            await inviteChannel.createInvite({maxAge: 0, reason: `Rutina de ${client.user.tag}`}).then(async invite => {foundInvite = invite.code;});
-
-            //Graba la invitación en memoria (en el cliente)
-            client.config.dynamic.inviteCode = foundInvite;
-
-            //Graba la invitación en el fichero de configuración
-            await client.fs.writeFile('./configs/dynamic.json', JSON.stringify(client.config.dynamic, null, 4), async err => { if (err) throw err });
-        };
-
-        //Si no hay una invitación grabada
-        if (!client.config.dynamic.inviteCode) {
-
-            //Comprueba si ya existe una invitación
-            await client.homeGuild.invites.fetch().then(invites => {
-                invites.forEach(async invite => {
-                    if (invite.inviter === client.user) foundInvite = invite.code;
-                });
-            });
-
-            //Crea la invitación si no existe
-            if (!foundInvite) await createInvite();
-
-            //Devuelve la URL, si se puedo obtener un código
-            if (client.config.dynamic.inviteCode) return `https://discord.gg/${client.config.dynamic.inviteCode}`;
-
-        } else {
-            //Busca la invitación
-            const invite = await client.homeGuild.invites.resolve(client.config.dynamic.inviteCode);
-
-            //Crea la invitación si no existe
-            if (!invite) await createInvite();
-
-            //Devuelve la URL, si se puedo obtener un código
-            return `https://discord.gg/${client.config.dynamic.inviteCode}`;
-        };
+            .addField('Error:', `\`\`\`${errorString}\`\`\``)
+        );
     };
 
     //Función para generar un footer para los embeds musicales
     client.functions.getMusicFooter = async (targetGuild) => {
+
+        //Stores the footer
         let footer = targetGuild.name;
+
+        //If there is a reproduction queue and a mode has been set
 		if (client.reproductionQueues[targetGuild.id] && client.reproductionQueues[targetGuild.id].mode) {
+
+            //Changes the footer to add the symbol of the mode
 			switch (client.reproductionQueues[targetGuild.id].mode) {
-				case 'shuffle': footer = footer + ` | 🔀`; break;
-				case 'loop': footer = footer + ` | 🔂`; break;
-				case 'loopqueue': footer = footer + ` | 🔁`; break;
+				case 'shuffle':     footer += ' | 🔀'; break;
+				case 'loop':        footer += ' | 🔂'; break;
+				case 'loopqueue':   footer += ' | 🔁'; break;
 			};
 		};
+
+        //Returns the footer
 		return footer;
     };
 
+    //Log the result of the functions loading
     console.log(' - [OK] Carga de funciones globales.');
 };

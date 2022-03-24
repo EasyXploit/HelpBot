@@ -32,6 +32,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
         await message.channel.send({ embeds: [ botPingEmbed, websocketPingEmbed] });
         
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

@@ -98,7 +98,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .addField(`Últimas 10 advertencias`, lastWarns || 'Ninguna');
         
         message.channel.send({ embeds: [resultEmbed] });
+        
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

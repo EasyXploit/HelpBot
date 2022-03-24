@@ -52,7 +52,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
         await member.send({ embeds: [toDMEmbed] });
         await member.kick(`Moderador: ${message.author.id}, Razón: ${reason}`);
         await message.channel.send({embeds: [successEmbed] });
+        
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

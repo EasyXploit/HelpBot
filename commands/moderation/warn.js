@@ -41,6 +41,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
         require('../../utils/infractionsHandler.js').run(client, message, member, reason, 2, message.author);
 
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

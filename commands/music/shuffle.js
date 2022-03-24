@@ -27,7 +27,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 message.channel.send({ content: '▶ | He desactivado el modo aleatorio' });
             };
         };
+        
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

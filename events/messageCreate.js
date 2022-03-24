@@ -120,6 +120,8 @@ exports.run = async (message, client) => {
             }, 2000);
         };
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

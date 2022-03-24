@@ -45,6 +45,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
         } else msg.edit({ content: newContent }); //Edita el embed con el nuevo contenido
 
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

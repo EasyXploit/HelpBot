@@ -27,7 +27,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
             await player.pause();
             await message.channel.send({ content: `⏸ | Cola pausada` });
         };
+        
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

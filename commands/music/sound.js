@@ -118,10 +118,11 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             //Ejecuta el reproductor de medios
             require('../../utils/voiceSubsystem/mediaPlayer.js').run(client, message, connection);
-
         };
 
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

@@ -57,7 +57,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
         await message.channel.send({ embeds: [successEmbed] });
         await client.functions.loggingManager('embed', loggingEmbed);
         await member.send({ embeds: [toDMEmbed] });
+        
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

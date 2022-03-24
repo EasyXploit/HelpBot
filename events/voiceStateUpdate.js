@@ -64,6 +64,8 @@ exports.run = async (oldState, newState, client) => {
             endVoiceTime();
         };
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.eventErrorHandler(error, 'voiceStateUpdate');
     };
 };

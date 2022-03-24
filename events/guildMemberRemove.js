@@ -72,7 +72,11 @@ exports.run = async (member, client) => {
             return await client.channels.cache.get(client.config.main.joinsAndLeavesChannel).send({ embeds: [loggingEmbed], files: ['./resources/images/out.png'] });
         }
     } catch (error) {
+
+        //Ignora si fue el propio bot el que fue expulsado
         if (member.user.id === client.user.id) return;
+
+        //Ejecuta el manejador de errores
         await client.functions.eventErrorHandler(error, 'guildMemberRemove');
     };
 };

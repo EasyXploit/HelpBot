@@ -71,7 +71,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
         if (member) await user.send({ embeds: [toDMEmbed] });
         await message.guild.members.ban(user, {reason: `Moderador: ${message.author.id}, Razón: ${reason}`});
         await message.channel.send({ embeds: [successEmbed] });
+        
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

@@ -17,7 +17,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
             //Manda un mensaje de confirmación
             await message.channel.send({ content: `${client.customEmojis.greenTick} | Cola eliminada` });
         };
+        
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

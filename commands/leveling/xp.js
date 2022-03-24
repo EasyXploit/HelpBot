@@ -204,7 +204,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .setDescription(`${client.customEmojis.greenTick} Se ha modificado la cantidad de XP del miembro **${member.user.tag}**.`)]
             });
         });
+        
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

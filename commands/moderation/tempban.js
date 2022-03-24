@@ -150,7 +150,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
             await message.guild.members.ban(user, {reason: `Moderador: ${message.author.id}, Duración: ${args[1]}, Razón: ${reason}`});
             await message.channel.send({ embeds: [successEmbed] });
         });
+        
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

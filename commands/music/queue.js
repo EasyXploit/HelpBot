@@ -105,6 +105,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
         generateEmbed(5 * position - 4, 5 * position);
         
     } catch (error) {
+
+        //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);
     };
 };

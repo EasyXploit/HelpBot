@@ -5,62 +5,115 @@ exports.run = (client) => {
 
     //Función para buscar miembros
     client.functions.fetchMember = async (guild, member) => {
+
         try {
+
+            //Almacena el resultado
             let result;
+
+            //Comprueba si el parámetro coincide con el formato de mención de miembro
             const matches = member.match(/^<@!?(\d+)>$/);
-            if (matches) {
-                result = await guild.members.fetch(matches[1]);
-            } else if (!isNaN(member)) {
-                result = await guild.members.fetch(member);
-            };
+
+            //Lo busca por ID o por mención (en función de la variable "matches")
+            if (matches) result = await guild.members.fetch(matches[1]);
+            else if (!isNaN(member)) result = await guild.members.fetch(member);
+
+            //Si hubo resultado (y era váido), lo devuelve
             if (result && typeof result !== 'undefined') return result;
+
         } catch (error) {
+
+            //Muestra un error en la consola
+            console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
+
+            //Devuelve "falso"
             return false;
         };
     };
 
     //Función para buscar usuarios
     client.functions.fetchUser = async  (user) => {
+
         try {
+
+            //Almacena el resultado
             let result;
+
+            //Comprueba si el parámetro coincide con el formato de mención de usuario
             const matches = user.match(/^<@!?(\d+)>$/);
-            if (matches) {
-                result = await client.users.fetch(matches[1]);
-            } else if (!isNaN(user)) {
-                result = await client.users.fetch(user);
-            };
+
+            //Lo busca por ID o por mención (en función de la variable "matches")
+            if (matches) result = await client.users.fetch(matches[1]);
+            else if (!isNaN(user)) result = await client.users.fetch(user);
+
+            //Si hubo resultado (y era váido), lo devuelve
             if (result && typeof result !== 'undefined') return result;
+
         } catch (error) {
+
+            //Muestra un error en la consola
+            console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
+
+            //Devuelve "falso"
             return false;
         };
     };
 
     //Función para buscar roles
     client.functions.fetchRole = async (guild, role) => {
+
         try {
+
+            //Almacena el resultado
             let result;
+
+            //Comprueba si el parámetro coincide con el formato de mención de rol
             const matches = role.match(/^<@&?(\d+)>$/);
-            if (matches) {
-                result = await guild.roles.fetch(matches[1]);
-            } else if (!isNaN(role)) {
-                result = await guild.roles.fetch(role);
-            };
+
+            //Lo busca por ID o por mención (en función de la variable "matches")
+            if (matches) result = await guild.roles.fetch(matches[1]);
+            else if (!isNaN(role)) result = await guild.roles.fetch(role);
+
+            //Si hubo resultado (y era váido), lo devuelve
             if (result && typeof result !== 'undefined') return result;
+
         } catch (error) {
+
+            //Muestra un error en la consola
             console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
+
+            //Devuelve "falso"
             return false;
         };
     };
 
     //Función para buscar canales
     client.functions.fetchChannel = async (guild, channel) => {
+
         try {
+
+            //Almacena el resultado
             let result;
+
+            //Comprueba si el parámetro coincide con el formato de mención de canal
             const matches = channel.match(/^<#?(\d+)>$/);
-            if (matches) {
-                result = await guild.channels.fetch(matches[1]);
-            } else if (!isNaN(channel)) {
-                result = await guild.channels.fetch(channel);
+
+            //Lo busca por ID o por mención (en función de la variable "matches")
+            if (matches) result = await guild.channels.fetch(matches[1]);
+            else if (!isNaN(channel)) result = await guild.channels.fetch(channel);
+
+            //Si hubo resultado (y era váido), lo devuelve
+            if (result && typeof result !== 'undefined') return result;
+
+        } catch (error) {
+
+            //Muestra un error en la consola
+            console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
+
+            //Devuelve "falso"
+            return false;
+        };
+    };
             };
             if (result && typeof result !== 'undefined') return result;
         } catch (error) {

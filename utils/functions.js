@@ -114,10 +114,46 @@ exports.run = (client) => {
             return false;
         };
     };
+
+    //Función para buscar mensajes
+    client.functions.fetchMessage = async (message, channel) => {
+
+        try {
+
+            //Almacena el resultado
+            let result;
+
+            //Si se proporcionó un canal
+            if (channel) {
+
+                //Busca dicho canal en la guild
+                const fetchedChannel = await client.functions.fetchChannel(client.homeGuild, channel);
+
+                //Si hubo canal, busca dicho mensaje en el canal
+                if (fetchedChannel && !isNaN(message)) result = await fetchedChannel.messages.fetch(message);
+
+            } else {
+
+                //Itera entre todos los canales de la guild
+                for (const channel in client.homeGuild.channels) {
+
+                    //Busca el mensaje en el canal de la iteración actual
+                    const fetchedMessage = await channel.messages.fetch(message);
+
+                    //Si encontró el mensaje, lo devuelve
+                    if (fetchedMessage) result = fetchedMessage;
+                };
             };
+
+            //Si hubo resultado (y era váido), lo devuelve
             if (result && typeof result !== 'undefined') return result;
+
         } catch (error) {
+
+            //Muestra un error en la consola
             console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
+
+            //Devuelve "falso"
             return false;
         };
     };

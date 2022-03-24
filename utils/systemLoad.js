@@ -57,7 +57,7 @@ exports.run = async (client) => {
             require('../utils/functions.js').run(client);
 
             //Carga los customEmojis de sistema en la guild (si no los tiene ya)
-            if (client.homeGuild) await client.functions.uploadSystemEmojis();
+            if (client.homeGuild) await require('../utils/uploadEmojis.js').run(client);
 
             //Carga los customEmojis en el cliente
             await require('./customEmojis.js').run(client);

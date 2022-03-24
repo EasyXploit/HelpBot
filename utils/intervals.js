@@ -275,6 +275,7 @@ exports.run = (client) => {
         };
     }, client.config.xp.XPGainInterval);
 
+    //PRESENCIA
     //Actualización de miembros totales en presencia
     setInterval(async () => {
 

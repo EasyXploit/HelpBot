@@ -60,7 +60,7 @@ exports.run = async (client) => {
             if (client.homeGuild) await require('../utils/uploadEmojis.js').run(client);
 
             //Carga los customEmojis en el cliente
-            await require('./customEmojis.js').run(client);
+            await require('./loadEmojis.js').run(client);
 
             //Carga la presencia del bot
             await client.user.setPresence({

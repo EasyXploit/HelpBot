@@ -37,7 +37,6 @@ exports.run = async (client, args, message, streamType, toStream) => {
 				.setColor(client.config.colors.error)
 				.setDescription(`${client.customEmojis.redTick} No puedes añadir más pistas a la cola.`)]
 			});
-	
 		};
 	
 		//Comprueba si la cola de reproducción está llena
@@ -133,7 +132,6 @@ exports.run = async (client, args, message, streamType, toStream) => {
 	
 						//Avisa sobre la adición a la cola
 						showNewQueueItem(newTrack);
-	
 					};
 	
 				} else {
@@ -196,16 +194,21 @@ exports.run = async (client, args, message, streamType, toStream) => {
 							//Solo añade el resultado si es una playlist, o un vídeo (que no esté en directo, no sea privado y no sea más largo de lo estipulado en la config.)
 							if (results[i].type === 'playlist' || (results[i].type === 'video' && results[i].durationRaw && results[i].title !== '[Private video]' && results[i].durationInSec * 1000 <= client.config.music.maxTrackDuration)) {
 	
-								asociatedPositions[pointer] = i; //Crea la asociación puntero-posición
-								let title = results[i].title; //Almacena el título
-								title = title.replace('[', '').replace(']', '').replace('|', '').replace('(', '').replace(')', '').replace('_', '').replace('*', ''); //Elimina signos que alteren la forma en la que se muestra la entrada
+								//Crea la asociación puntero-posición
+								asociatedPositions[pointer] = i;
+
+								//Almacena el título y elimina signos que alteren la forma en la que se muestra la entrada
+								let title = results[i].title.replace('[', '').replace(']', '').replace('|', '').replace('(', '').replace(')', '').replace('_', '').replace('*', '');
 	
-								if (title.length > 40) title = `${title.slice(0, 40)} ...`; //Acorta el título si es demasiado largo
+								//Acorta el título si es demasiado largo
+								if (title.length > 40) title = `${title.slice(0, 40)} ...`; 
+
 								if (results[i].type === 'playlist') { //Si se trata de una playlist, almacena el string "playlist" en vez de la duración de la pista
 									formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${results[i].url}) | \`${results[i].type}\``;
 								} else { //Si se trata de un vídeo, almacena la duración de la pista en vez de el string "playlist"
 									formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${results[i].url}) | \`${results[i].durationRaw}\``;
 								};
+
 								pointer ++; //Incremento de puntero
 							};
 						};
@@ -248,6 +251,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 
 									msg.delete();	//Elimina el menú de resultados
 
+									//Envía un mensaje de error
 									return message.channel.send({ embeds: [ new client.MessageEmbed()
 										.setColor(client.config.colors.error)
 										.setDescription(`${client.customEmojis.redTick} Debes escoger una pista de la lista.`)]
@@ -261,9 +265,8 @@ exports.run = async (client, args, message, streamType, toStream) => {
 								setTimeout(() => msg.delete(), 2000);
 	
 								//Maneja el resultado en función de si es una playlist o un vídeo
-								if (results[option].type === 'playlist') {
-									require('./parsePlaylist').run(reproductionQueue, results[option].url, authorizedTracks, message.member); //Maneja la playlist
-								} else if (results[option].type === 'video') {
+								if (results[option].type === 'playlist') require('./parsePlaylist').run(reproductionQueue, results[option].url, authorizedTracks, message.member); //Maneja la playlist
+								else if (results[option].type === 'video') {
 									
 									//Crea el objeto de la cola
 									const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'stream', message.member.id, results[option]);
@@ -288,13 +291,15 @@ exports.run = async (client, args, message, streamType, toStream) => {
 								msg.delete().catch((error) => {
 									if (error.httpStatus !== 404) client.functions.commandErrorHandler(error, message, args.shift().toLowerCase(), args);
 								});
-							}); //Si el miembro no responde, borra el menú
+							});
 						});
 					};
 				});
 			};
 	
 		} else {
+
+			//Muestra un error en la consola
 			return console.error(`${new Date().toLocaleString()} 》ERROR: No se ha proporcionado un valor válido para el parámetro "streamType".`);
 		};
 

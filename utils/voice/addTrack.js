@@ -69,7 +69,7 @@ exports.run = async (client, reproductionQueue, silentMode, contentType, request
 
         } else {
 
-            //Sueb el objeto a la cola y lo devuelve
+            //Sube el objeto a la cola y lo devuelve
             await reproductionQueue.tracks.push(newTrack);
             return newTrack;
         };

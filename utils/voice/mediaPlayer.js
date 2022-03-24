@@ -21,8 +21,6 @@ exports.run = async (client, message, connection) => {
             //Si el reproductor entra en estado de inactividad
             player.on(AudioPlayerStatus.Idle, () => {
 
-                //console.log('The player has entered the Idle state');
-
                 //Elimina de la cola la pista actual
                 if (reproductionQueue.mode === 'shuffle') { //Si el modo aleatorio está activado
 
@@ -42,7 +40,6 @@ exports.run = async (client, message, connection) => {
                     //Quita el primer elemento de la cola
                     reproductionQueue.tracks.shift();
                 };
-
 
                 //Si queda algo en la cola
                 if (reproductionQueue.tracks[0]) mediaPlayer(connection); //Vuelve a cargar la función de reproducción
@@ -103,7 +100,6 @@ exports.run = async (client, message, connection) => {
 
                 //Reproduce el recurso en el player
                 await player.play(resource);
-
             };
             
             //Suscribe el reproductor a la conexión

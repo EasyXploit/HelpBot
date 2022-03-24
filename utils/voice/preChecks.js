@@ -91,7 +91,6 @@ exports.run = async (client, message, checks) => {
 
                 //Devuelve el estado "falso"
                 return false;
-
             };
 
             //Devuelve el estado "verdadero"
@@ -148,7 +147,7 @@ exports.run = async (client, message, checks) => {
 
             //Devuelve el estado "verdadero"
             return true;
-        }
+        };
 
         //Comprueba que el bot tenga permiso para hablar.
         async function canSpeak() {
@@ -265,7 +264,6 @@ exports.run = async (client, message, checks) => {
 
             //Para el bucle si una prueba falló
             if (!passingStatus) break;
-
         };
 
         //Devuelve el estado de las comprobaciones

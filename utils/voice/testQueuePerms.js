@@ -5,6 +5,7 @@ exports.run = async (client, message, command, index) => {
         //Omite si no hay roles de DJ
         if (client.config.music.djRoles.length == 0) return true;
 
+        //Almacena la cola de reproducción
         let reproductionQueue = client.reproductionQueues[message.guild.id];
 
         //Omite si no hay reproducción
@@ -29,12 +30,23 @@ exports.run = async (client, message, command, index) => {
 
         //Si se activa el modo "por miembro"
         if (index) {
-            if (!counter[index]) counter[index] = []; //Crea e inicializa el contador de votos hijo si no lo estaba ya
-            if (!counter[index].includes(message.member.id)) counter[index].push(message.member.id); //Si el miembro no ha votado, añade su voto
-            actualVotes = counter[index].length; //Actualiza el contador de votos
+
+            //Crea e inicializa el contador de votos hijo si no lo estaba ya
+            if (!counter[index]) counter[index] = [];
+
+            //Si el miembro no ha votado, añade su voto
+            if (!counter[index].includes(message.member.id)) counter[index].push(message.member.id);
+
+            //Actualiza el contador de votos
+            actualVotes = counter[index].length;
+
         } else {
-            if (!counter.includes(message.member.id)) counter.push(message.member.id); //Si el miembro no ha votado, añade su voto
-            actualVotes = counter.length; //Actualiza el contador de votos
+
+            //Si el miembro no ha votado, añade su voto
+            if (!counter.includes(message.member.id)) counter.push(message.member.id);
+
+            //Actualiza el contador de votos
+            actualVotes = counter.length;
         };
 
         //Graba el nuevo contador de votos

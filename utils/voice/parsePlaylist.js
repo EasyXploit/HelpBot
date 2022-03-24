@@ -33,8 +33,11 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
         //Para cada resultado de la lista
         for (let i = 0; i < playlistItems.length; i++) {
 
+            //Almacena el resultado actual
             let result = playlistItems[i];
-            if (!result) continue; //Omite si el resultado fue borrado por la anterior ejecución del bucle
+
+            //Omite si el resultado fue borrado por la anterior ejecución del bucle
+            if (!result) continue;
 
             //Crea el objeto de la cola
             let queueTrackInfo = await require('./addTrack').run(client, reproductionQueue, true, 'stream', requestingMember.id, result);

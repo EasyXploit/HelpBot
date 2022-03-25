@@ -130,7 +130,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                                 .setAuthor({ name: `${message.member.user.tag} ha iniciado una ENCUESTA`, iconURL: message.member.user.displayAvatarURL({dynamic: true}) })
                                 .addField(`Título`, `__[${title}](${poll.url})__`, true)
                                 .addField(`Canal`, `<#${message.channel.id}>`, true)
-                                .addField(`Duración`, providedDuration, true);
+                                .addField(`Vencimiento`, duration != 0 ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : 'Indefinida', true);
                             
                             await client.functions.loggingManager('embed', loggingEmbed);
                         });

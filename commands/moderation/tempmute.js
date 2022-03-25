@@ -122,7 +122,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setDescription(`<@${member.id}>, has sido silenciado en ${message.guild.name}`)
             .addField('Moderador', message.author.tag, true)
             .addField('Razón', reason, true)
-            .addField('Duración', args[1], true);
+            .addField('Vencimiento', `<t:${Date.now() + milliseconds}:R>`, true);
 
         //Guarda en la base de datos
         client.db.mutes[member.id] = {

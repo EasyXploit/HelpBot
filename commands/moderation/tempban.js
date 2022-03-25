@@ -106,7 +106,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
             .addField(`Moderador`, message.author.tag, true)
             .addField(`Razón`, reason, true)
-            .addField(`Duración`, args[1], true);
+            .addField(`Vencimiento`, `<t:${Date.now() + milliseconds}:R>`, true);
         
         client.db.bans[user.id] = {
             time: Date.now() + milliseconds
@@ -116,7 +116,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             if (err) throw err;
 
             if (member) await user.send({ embeds: [toDMEmbed] });
-            await message.guild.members.ban(user, {reason: `Moderador: ${message.author.id}, Duración: ${args[1]}, Razón: ${reason}`});
+            await message.guild.members.ban(user, {reason: `Moderador: ${message.author.id}, Vencimiento: ${Date.now() + milliseconds}, Razón: ${reason}`});
             await message.channel.send({ embeds: [successEmbed] });
         });
         

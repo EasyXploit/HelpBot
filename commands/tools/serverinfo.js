@@ -24,61 +24,33 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         //Cálculo del tier de la guild
         let guildTier;
-
         switch (client.homeGuild.premiumTier) {
-            case 'NONE':
-                guildTier = 'Tier 0';
-                break;
-            case 'TIER_1':
-                guildTier = 'Tier 1';
-                break;
-            case 'TIER_2':
-                guildTier = 'Tier 2';
-                break;
-            case 'TIER_3':
-                guildTier = 'Tier 3';
-                break;
+            case 'NONE': guildTier = 'Tier 0'; break;
+            case 'TIER_1': guildTier = 'Tier 1'; break;
+            case 'TIER_2': guildTier = 'Tier 2'; break;
+            case 'TIER_3': guildTier = 'Tier 3'; break;
         };
 
         //Cálculo del nivel de filtro NSFW
         let guildNSFWLevel;
-
         switch (message.guild.explicitContentFilter) {
-            case 'DISABLED':
-                guildNSFWLevel = 'Deshabilitado';
-                break;
-            case 'MEMBERS_WITHOUT_ROLES':
-                guildNSFWLevel = 'Supervisando a miembros sin rol';
-                break;
-            case 'ALL_MEMBERS':
-                guildNSFWLevel = 'Supervisando a todo el mundo';
-                break;
+            case 'DISABLED':guildNSFWLevel = 'Deshabilitado'; break;
+            case 'MEMBERS_WITHOUT_ROLES': guildNSFWLevel = 'Supervisando a miembros sin rol'; break;
+            case 'ALL_MEMBERS': guildNSFWLevel = 'Supervisando a todo el mundo'; break;
         };
 
         //Cálculo del nivel de verificación
         let guildverificationLevel;
-
         switch (message.guild.verificationLevel) {
-            case 'NONE':
-                guildverificationLevel = 'Deshabilitado';
-                break;
-            case 'LOW':
-                guildverificationLevel = 'Bajo';
-                break;
-            case 'MEDIUM':
-                guildverificationLevel = 'Medio';
-                break;
-            case 'HIGH':
-                guildverificationLevel = 'Alto';
-                break;
-            case 'VERY_HIGH':
-                guildverificationLevel = 'Muy alto';
-                break;
+            case 'NONE': guildverificationLevel = 'Deshabilitado'; break;
+            case 'LOW': guildverificationLevel = 'Bajo'; break;
+            case 'MEDIUM': guildverificationLevel = 'Medio'; break;
+            case 'HIGH': guildverificationLevel = 'Alto'; break;
+            case 'VERY_HIGH': guildverificationLevel = 'Muy alto'; break;
         };
 
-
-        //Genera un embed con el resultado
-        let resultEmbed = new client.MessageEmbed()
+        //Envía un embed con el resultado
+        await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.primary)
             .setAuthor({ name: `Información sobre ${message.guild.name}`, iconURL: message.guild.iconURL({dynamic: true}) })
             .setDescription(message.guild.description)
@@ -98,10 +70,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .addField(`🔨 Baneos`, `${(await message.guild.bans.fetch()).size.toString()} usuarios baneados`, true)
             .addField(`🕗 Tiempo para AFK`, `${message.guild.afkTimeout / 60} minutos`, true)
             .addField(`💬 Canales`, `${(categories.size - 1)} categorías\n${guildChannels.filter(c => c.type === 'GUILD_TEXT').size} canales de texto\n${guildChannels.filter(c => c.type === 'GUILD_VOICE').size} canales de voz`, true)
-            .addField('⭐ Características', `\`\`\`${translatedFeatures.join(', ')}\`\`\``);
-
-        //Envía el embed resultante
-        await message.channel.send({ embeds: [resultEmbed] });
+            .addField('⭐ Características', `\`\`\`${translatedFeatures.join(', ')}\`\`\``)
+        ]});
 
     } catch (error) {
 

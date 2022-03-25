@@ -14,19 +14,18 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Comprueba si ha de enviar un embed o un mensaje normal
         if (args[0] === 'embed') {
 
-            //Genera el embed con el mensaje
-            let resultEmbed = new client.MessageEmbed()
+            //Envía un embed con el mensaje
+            message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
-                .setDescription(body);
-
-            //Envía el embed
-            message.channel.send({ embeds: [resultEmbed] });
+                .setDescription(body)]
+            });
 
         } else if (args[0] === 'normal') {
 
             //Envía el mensaje en texto plano
             message.channel.send({ content: body });
         };
+
     } catch (error) {
 
         //Ejecuta el manejador de errores

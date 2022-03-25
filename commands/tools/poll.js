@@ -152,7 +152,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             client.db.polls[args[1]].duration = Date.now();
 
-            client.fs.writeFile(`./databases/polls.json`, JSON.stringify(client.db.polls), async err => {
+            client.fs.writeFile('./databases/polls.json', JSON.stringify(client.db.polls), async err => {
                 if (err) throw err;
             });
         } else {

@@ -25,7 +25,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         
         if (client.db.bans.hasOwnProperty(user.id)) {
             await delete client.db.bans[user.id];
-            await client.fs.writeFile(`./databases/bans.json`, JSON.stringify(client.db.bans), async err => {
+            await client.fs.writeFile('./databases/bans.json', JSON.stringify(client.db.bans), async err => {
                 if (err) throw err;
             });
         };

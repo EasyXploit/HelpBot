@@ -7,7 +7,7 @@ exports.run = async (message, client) => {
     const automodFiltering = require('../utils/moderation/automodFiltering.js');
 
     //Por cada uno de los filtros de automoderación
-    for (var filter in client.config.automodFilters) {
+    for (const filter in client.config.automodFilters) {
 
         //Almacena la configuración del filtro
         const filterCfg = client.config.automodFilters[filter];

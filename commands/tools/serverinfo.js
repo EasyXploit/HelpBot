@@ -7,7 +7,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         const guildChannels = await message.guild.channels.fetch();
 
         //Almacena las traducciones de las características
-        let translations = require(`../../resources/translations/guildFeatures.json`);
+        let translations = require('../../resources/translations/guildFeatures.json');
 
         //Traduce las características de la guild
         let translatedFeatures = [];

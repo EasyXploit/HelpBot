@@ -12,7 +12,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             let newFileNames = [];
             
             //Para cada archivo, almacena su nombre sin extensión en el array "newFileNames"
-            for (var file = 0; file < fileNames.length - 1; file++) newFileNames.push(fileNames[file].slice(0, -4));
+            for (const file = 0; file < fileNames.length - 1; file++) newFileNames.push(fileNames[file].slice(0, -4));
 
             //Añade la palabra "zorra" a la lista
             if (fileNames.includes('zorra.mp3')) newFileNames.push('zorra'); //PROVISIONAL (no sé por qué no lo coge de normal)

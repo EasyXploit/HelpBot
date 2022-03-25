@@ -3,7 +3,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
     try {
         //Almacena las entradas de la leaderboard
         let entries = [];
-        for (var key in client.db.stats[message.guild.id]) {
+        for (const key in client.db.stats[message.guild.id]) {
             if (client.db.stats[message.guild.id].hasOwnProperty(key)) {           
                 entries.push({
                     userID: key,

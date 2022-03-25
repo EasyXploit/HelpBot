@@ -1,28 +1,16 @@
 exports.run = async (client) => {
 
-    try {    
+    try {
 
-        //TIER 0: 50 emojis + 50 animojis
-        //TIER 1: 100 emojis + 100 animojis
-        //TIER 2: 150 emojis + 150 animojis
-        //TIER 3: 250 emojis + 250 animojis
-
-        //Cálculo de umbral de emojis por tier de guild
+        //Almacena el umbral de emojis
         let emojisThreshold;
 
+        //Calcula el umbral de emojis por tier de guild
         switch (client.homeGuild.premiumTier) {
-            case 'NONE':
-                emojisThreshold = 50;
-                break;
-            case 'TIER_1':
-                emojisThreshold = 100;
-                break;
-            case 'TIER_2':
-                emojisThreshold = 150;
-                break;
-            case 'TIER_3':
-                emojisThreshold = 250;
-                break;
+            case 'NONE': emojisThreshold = 50; break;
+            case 'TIER_1': emojisThreshold = 100; break;
+            case 'TIER_2': emojisThreshold = 150; break;
+            case 'TIER_3': emojisThreshold = 250; break;
         };
 
         //Listado de emojis normales (sin animar) de la guild
@@ -58,8 +46,14 @@ exports.run = async (client) => {
                         //Crea el emoji
                         await client.homeGuild.emojis.create(`./resources/emojis/${emojiName}.png`, emojiName, `Necesario para el funcionamiento de ${client.user.username}.`)
                         .then(emoji => {
+
+                            //Almacena el ID del emoji
                             customEmojis[emojiName] = emoji.id;
+
+                            //Notifica por consola
                             console.log(`- Emoji [${emoji.name}] creado satisfactoriamente.`);
+
+                            //Aumenta el recuento de emojis creados
                             newEmojisCount++;
                         });
                     };
@@ -80,6 +74,8 @@ exports.run = async (client) => {
             });
         
         } else {
+
+            //Devuelve un error por consola
             console.error(`\nNo habían espacios para emojis suficientes.\nNecesitas al menos ${emojis.length} espacios.\nSe usarán emojis Unicode en su lugar.\n`);
         };
 

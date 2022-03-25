@@ -23,9 +23,6 @@ exports.run = (client) => {
 
         } catch (error) {
 
-            //Muestra un error en la consola
-            console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
-
             //Devuelve "falso"
             return false;
         };
@@ -50,9 +47,6 @@ exports.run = (client) => {
             if (result && typeof result !== 'undefined') return result;
 
         } catch (error) {
-
-            //Muestra un error en la consola
-            console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
 
             //Devuelve "falso"
             return false;
@@ -79,9 +73,6 @@ exports.run = (client) => {
 
         } catch (error) {
 
-            //Muestra un error en la consola
-            console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
-
             //Devuelve "falso"
             return false;
         };
@@ -106,9 +97,6 @@ exports.run = (client) => {
             if (result && typeof result !== 'undefined') return result;
 
         } catch (error) {
-
-            //Muestra un error en la consola
-            console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
 
             //Devuelve "falso"
             return false;
@@ -149,9 +137,6 @@ exports.run = (client) => {
             if (result && typeof result !== 'undefined') return result;
 
         } catch (error) {
-
-            //Muestra un error en la consola
-            console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
 
             //Devuelve "falso"
             return false;

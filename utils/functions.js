@@ -12,7 +12,7 @@ exports.run = (client) => {
             let result;
 
             //Comprueba si el parámetro coincide con el formato de mención de miembro
-            const matches = member.match(/^<@!?(\d+)>$/);
+            const matches = member.toString().match(/^<@!?(\d+)>$/);
 
             //Lo busca por ID o por mención (en función de la variable "matches")
             if (matches) result = await guild.members.fetch(matches[1]);
@@ -40,7 +40,7 @@ exports.run = (client) => {
             let result;
 
             //Comprueba si el parámetro coincide con el formato de mención de usuario
-            const matches = user.match(/^<@!?(\d+)>$/);
+            const matches = user.toString().match(/^<@!?(\d+)>$/);
 
             //Lo busca por ID o por mención (en función de la variable "matches")
             if (matches) result = await client.users.fetch(matches[1]);

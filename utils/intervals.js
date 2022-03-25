@@ -136,7 +136,7 @@ exports.run = (client) => {
             const channel = await client.functions.fetchChannel(client.homeGuild, client.db.polls[idKey].channel);
 
             //Busca el mensaje de la encuesta
-            const poll = await client.functions.fetchMessage(channel, idKey);
+            const poll = await client.functions.fetchMessage(idKey, channel);
 
             //Si no se encontró el canal o la encuesta
             if (!channel || !poll) {
@@ -207,11 +207,11 @@ exports.run = (client) => {
                 ], files: ['./resources/images/endFlag.png']}).then(async poll => {
 
                     //Envía una notificación al canal de auditoría
-                    await client.functions.loggingManager('embed', { embeds: [ new client.MessageEmbed()
+                    await client.functions.loggingManager('embed', new client.MessageEmbed()
                         .setColor(client.config.colors.logging)
                         .setTitle('📑 Auditoría - [ENCUESTAS]')
                         .setDescription(`La encuesta "__[${client.db.polls[idKey].title}](${poll.url})__" ha finalizado en el canal <#${client.db.polls[idKey].channel}>.`)
-                    ]});
+                    );
                 });
                 
                 //Elimina el mensaje de la encuesta

@@ -100,11 +100,13 @@ exports.run = async (client, message, args, command, commandConfig) => {
                             remainingTime = `${remainingDays}d ${remainingHours}h ${remainingMinutes}m`
                         };
 
+                        const pollID = client.functions.sidGenerator();
+
                         let resultEmbed = new client.MessageEmbed()
                             .setColor(client.config.colors.polls)
                             .setAuthor({ name: 'Encuesta disponible', iconURL: 'attachment://poll.png' })
                             .setDescription(`**${title}**\n\n${options}`)
-                            .setFooter({ text: `Duración: ${remainingTime}` });
+                            .setFooter({ text: `ID: ${pollID} - Duración: ${remainingTime}` });
                         
                         message.channel.send({ embeds: [resultEmbed], files: ['./resources/images/poll.png'] }).then(async poll => {
                             embed.delete();
@@ -112,18 +114,18 @@ exports.run = async (client, message, args, command, commandConfig) => {
                                 await poll.react(UTFemojis[count]);
                             };
 
-                            if (duration !== 0) {
-                                client.db.polls[poll.id] = {
-                                    duration: Date.now() + duration,
-                                    channel: message.channel.id,
-                                    title: title,
-                                    options: options
-                                };
-                        
-                                client.fs.writeFile('./databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
-                                    if (err) throw err;
-                                });
+                            client.db.polls[pollID] = {
+                                channel: message.channel.id,
+                                message: poll.id,
+                                title: title,
+                                options: options
                             };
+
+                            if (duration != 0) client.db.polls[pollID].expiration = Date.now() + duration;
+                    
+                            client.fs.writeFile('./databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
+                                if (err) throw err;
+                            });
 
                             let loggingEmbed = new client.MessageEmbed()
                                 .setColor(client.config.colors.logging)
@@ -137,7 +139,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                     });
                 });
             });
-        } else if (args[0] === 'end' && args[1] && !isNaN(args[1])) {
+        } else if (args[0] === 'end' && args[1]) {
 
             let notFoundEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
@@ -146,11 +148,11 @@ exports.run = async (client, message, args, command, commandConfig) => {
             if (!client.db.polls[args[1]]) return message.channel.send({ embeds: [notFoundEmbed] });
 
             let channel = await client.functions.fetchChannel(message.guild, client.db.polls[args[1]].channel);
-            let poll = await client.functions.fetchMessage(args[1], channel)
+            let poll = await client.functions.fetchMessage(client.db.polls[args[1]].message, channel)
 
             if (!poll) return message.channel.send({ embeds: [notFoundEmbed] });
 
-            client.db.polls[args[1]].duration = Date.now();
+            client.db.polls[args[1]].expiration = Date.now();
 
             client.fs.writeFile('./databases/polls.json', JSON.stringify(client.db.polls), async err => {
                 if (err) throw err;

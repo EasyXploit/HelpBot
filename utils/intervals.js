@@ -132,11 +132,17 @@ exports.run = (client) => {
         //Para cada una de las encuestas en la BD
         for (let idKey in client.db.polls) {
 
+            //Almacena la info. de la encuesta
+            const storedPoll = client.db.polls[idKey];
+
+            //Omite esta encuesta si no tiene expiración
+            if (!storedPoll.expiration) continue;
+
             //Busca el canal de la encuesta
-            const channel = await client.functions.fetchChannel(client.homeGuild, client.db.polls[idKey].channel);
+            const channel = await client.functions.fetchChannel(client.homeGuild, storedPoll.channel);
 
             //Busca el mensaje de la encuesta
-            const poll = await client.functions.fetchMessage(idKey, channel);
+            const poll = await client.functions.fetchMessage(storedPoll.message, channel);
 
             //Si no se encontró el canal o la encuesta
             if (!channel || !poll) {
@@ -152,11 +158,8 @@ exports.run = (client) => {
                 });
             };
 
-            //Almacena el momento de finalización de la encuesta
-            const endTime = client.db.polls[idKey].duration;
-
             //Si la encuesta ya ha expirado
-            if (Date.now() > endTime) {
+            if (Date.now() > storedPoll.expiration) {
 
                 //Almacena los votos realizados
                 let votes = [];
@@ -202,7 +205,7 @@ exports.run = (client) => {
                 //Envía los resultados al canal de la encuesta
                 await poll.channel.send({ embeds: [ new client.MessageEmbed()
                     .setAuthor({ name: 'Encuesta finalizada', iconURL: 'attachment://endFlag.png' })
-                    .setDescription(`**${client.db.polls[idKey].title}**\n\n${client.db.polls[idKey].options}`)
+                    .setDescription(`**${storedPoll.title}**\n\n${storedPoll.options}`)
                     .addField('Resultados', results.join(' '))
                 ], files: ['./resources/images/endFlag.png']}).then(async poll => {
 
@@ -210,7 +213,7 @@ exports.run = (client) => {
                     await client.functions.loggingManager('embed', new client.MessageEmbed()
                         .setColor(client.config.colors.logging)
                         .setTitle('📑 Auditoría - [ENCUESTAS]')
-                        .setDescription(`La encuesta "__[${client.db.polls[idKey].title}](${poll.url})__" ha finalizado en el canal <#${client.db.polls[idKey].channel}>.`)
+                        .setDescription(`La encuesta "__[${storedPoll.title}](${poll.url})__" ha finalizado en el canal <#${storedPoll.channel}>.`)
                     );
                 });
                 
@@ -230,7 +233,7 @@ exports.run = (client) => {
             } else { //Si la encuesta aún no ha expirado
 
                 //Calcula el tiempo restante
-                const remainingTime = client.db.polls[idKey].duration - Date.now();
+                const remainingTime = storedPoll.expiration - Date.now();
 
                 //Calcula el formato del tiempo restante
                 const remainingDays = Math.floor(remainingTime / (60 * 60 * 24 * 1000));
@@ -241,13 +244,13 @@ exports.run = (client) => {
                 const oldRemainingTime = poll.footer;
 
                 //Genera el string del nuevo footer
-                const newRemainingTime = `Restante: ${remainingDays}d ${remainingHours}h ${remainingMinutes}m `;
+                const newRemainingTime = `ID: ${idKey} - Restante: ${remainingDays}d ${remainingHours}h ${remainingMinutes}m `;
 
                 //Si el string de tiempo debería cambiar, edita el mensaje de la encuesta
                 if (oldRemainingTime !== newRemainingTime) await poll.edit({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.polls)
                     .setAuthor({ name: 'Encuesta disponible', iconURL: 'attachment://poll.png' })
-                    .setDescription(`**${client.db.polls[idKey].title}**\n\n${client.db.polls[idKey].options}`)
+                    .setDescription(`**${storedPoll.title}**\n\n${storedPoll.options}`)
                     .setFooter({ text: newRemainingTime })
                 ], files: ['./resources/images/poll.png']});
             };

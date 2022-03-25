@@ -59,7 +59,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         let reason = args.slice(2).join(' ');
 
         //Si se ha proporcionado razón, la adjunta al mensaje de confirmación
-        if (reason) successEmbed.setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido baneado debido a **${reason}**, ¿alguien más?`);
+        if (reason) successEmbed.setDescription(`${client.customEmojis.orangeTick} **${user.tag}** ha sido baneado debido a **${reason}**, ¿alguien más?`);
 
         //Esto comprueba si se debe proporcionar razón
         if (!reason && message.author.id !== message.guild.ownerId) return message.channel.send({ embeds: [noReasonEmbed] });

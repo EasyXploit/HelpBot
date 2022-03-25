@@ -51,39 +51,19 @@ exports.run = async (client, message, args, command, commandConfig) => {
         client.functions.spreadMutedRole(message.guild);
         
         //Comprueba la longitud del tiempo proporcionado
-        if (args[1].length < 2) return message.channel.send({ embeds: [noCorrectTimeEmbed] });
+        if (args[1].length < 2) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`)
+        ]});
 
-        //Divide el tiempo y la unidad de medida proporcionados
-        let time = args[1].slice(0, -1);
-        let measure = args[1].slice(-1).toLowerCase();
+        //Calcula el tiempo estimado en milisegundos
+        const milliseconds = await client.functions.magnitudesToMs(args[1]);
 
-        //Comprueba si se ha proporcionado un número.
-        if (isNaN(time)) return message.channel.send({ embeds: [noCorrectTimeEmbed] });
-
-        //Comprueba si se ha proporcionado una nunida de medida válida
-        if (measure !== 's' && measure !== 'm' && measure !== 'h' && measure !== 'd') return message.channel.send({ embeds: [noCorrectTimeEmbed] });
-
-        let milliseconds;
-
-        function stoms(seg) {milliseconds = seg * 1000}
-        function mtoms(min) {milliseconds = min * 60000}
-        function htoms(hour) {milliseconds = hour * 3600000}
-        function dtoms(day) {milliseconds = day * 86400000} 
-
-        switch (measure) {
-            case 's':
-                stoms(time);
-                break;
-            case 'm':
-                mtoms(time);
-                break;
-            case 'h':
-                htoms(time);
-                break;
-            case 'd':
-                dtoms(time);
-                break;
-        }
+        //Comprueba si se ha proporcionado un tiempo válido
+        if (!milliseconds) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`)
+        ]});
 
         let authorized;
 

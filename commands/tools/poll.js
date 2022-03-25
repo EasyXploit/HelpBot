@@ -49,46 +49,19 @@ exports.run = async (client, message, args, command, commandConfig) => {
                         if (!result) return;
 
                         if (result !== '-') {
-                            let inorrectTimeFormatEmbed = new client.MessageEmbed()
-                                .setColor(client.config.colors.secondaryError)
-                                .setDescription(`${client.customEmojis.redTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5d 10h 2m\`.`);
 
                             let parameters = result.split(' ');
 
-                            function stoms(seg) {return seg * 1000};
-                            function mtoms(min) {return min * 60000};
-                            function htoms(hour) {return hour * 3600000};
-                            function dtoms(day) {return day * 86400000};
+                            let milliseconds = await client.functions.magnitudesToMs(parameters);
 
-                            for (let i = 0; i < parameters.length; i++) {
-                                parameters[i] = {
-                                    time: parseInt(parameters[i].slice(0, -1)),
-                                    measure: parameters[i].slice(-1).toLowerCase()
-                                };
+                            if (!milliseconds) return message.channel.send({ embeds: [ new client.MessageEmbed()
+                                .setColor(client.config.colors.secondaryError)
+                                .setDescription(`${client.customEmojis.redTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5d 10h 2m\`.`)
+                            ]});
 
-                                if (isNaN(parameters[i].time)) return message.channel.send({ embeds: [inorrectTimeFormatEmbed] });
-                                if (parameters[i].measure !== 's' && parameters[i].measure !== 'm' && parameters[i].measure !== 'h' && parameters[i].measure !== 'd') return message.channel.send({ embeds: [inorrectTimeFormatEmbed] });
-
-                                let milliseconds;
-
-                                switch (parameters[i].measure) {
-                                    case 's':
-                                        milliseconds = stoms(parameters[i].time)
-                                        break;
-                                    case 'm':
-                                        milliseconds = mtoms(parameters[i].time);
-                                        break;
-                                    case 'h':
-                                        milliseconds = htoms(parameters[i].time);
-                                        break;
-                                    case 'd':
-                                        milliseconds = dtoms(parameters[i].time);
-                                        break;
-                                };
-                                providedDuration = result;
-                                duration = duration + milliseconds;
-                            };
-                        }
+                            providedDuration = result;
+                            duration = milliseconds;
+                        };
 
                         embed.edit({ embeds: [fieldEmbed] });
 
@@ -145,7 +118,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                                     channel: message.channel.id,
                                     title: title,
                                     options: options
-                                }
+                                };
                         
                                 client.fs.writeFile('./databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
                                     if (err) throw err;

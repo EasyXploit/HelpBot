@@ -52,6 +52,9 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Almacena la razón
         let reason = args.splice(1).join(' ');
 
+        //Capitaliza la razón
+        if (reason) reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;
+
         //Si se ha proporcionado razón, la adjunta al mensaje de confirmación
         if (reason) successEmbed.setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado debido a **${reason}**, ¿alguien más?`);
 

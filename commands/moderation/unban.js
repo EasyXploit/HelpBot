@@ -18,6 +18,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         //Esto comprueba si se debe proporcionar razón
         let reason = args.splice(1).join(' ');
+
+        //Capitaliza la razón
+        if (reason) reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;
+
         if (!reason && message.author.id !== message.guild.ownerId) return message.channel.send({ embeds: [noReasonEmbed] });
         if (!reason) reason = `Indefinida`;
 

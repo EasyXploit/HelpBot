@@ -30,10 +30,15 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Esto comprueba si se ha aportado alguna advertencia
         let warnID = args[1];
         if (!warnID && warnID.toLowerCase() !== 'all') return message.channel.send({ embeds: [noWarnIDEmbed] });
-        
-        //Esto comprueba si se ha aportado alguna razón
-        let reason = args.slice(2).join(' ') || 'Indefinida';
-        if (reason === 'Indefinida' && message.author.id !== message.guild.ownerId) return message.channel.send({ embeds: [undefinedReasonEmbed] });
+
+        //Almacena la razón
+        let reason = args.splice(2).join(' ');
+
+        //Si la razón es indefinida, lo advierte
+        if (!reason) return message.channel.send({ embeds: [undefinedReasonEmbed] });
+
+        //Capitaliza la razón
+        reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;
           
         let moderator = await client.functions.fetchMember(message.guild, message.author.id);
 

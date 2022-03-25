@@ -58,6 +58,9 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 reason = args.join(' ');
             };
 
+            //Capitaliza la razón
+            if (reason) reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;
+
             let successEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
                 .setTitle(`${client.customEmojis.greenTick} Operación completada`)

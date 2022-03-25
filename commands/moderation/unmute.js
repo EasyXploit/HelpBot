@@ -16,6 +16,9 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         let reason = args.splice(1).join(' ') || 'Indefinida';
 
+        //Capitaliza la razón
+        reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;
+
         if (member.bot) return message.channel.send({ embeds: [noBotsEmbed] });
 
         let notMutedEmbed = new client.MessageEmbed()

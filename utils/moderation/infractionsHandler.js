@@ -127,7 +127,6 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
         //Banea al miembro
         await client.homeGuild.members.ban(member.user, {reason: `Moderador: ${moderator.id}${time ? `, Vencimiento: ${Date.now() + time}` : ''}, Razón: Demasiadas advertencias`});
     };
-    
 
     //Capitaliza la razón de la advertencia
     const warnReason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;

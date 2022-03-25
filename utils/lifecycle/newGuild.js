@@ -18,8 +18,8 @@ exports.run = async (client, guild) => {
         //Informa sobre la necesidad de realizar la configuración inicial
         return await guild.members.fetch(guild.ownerId).then(async member => await member.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.correct)
-            .setTitle(`${client.customEmojis.greenTick} Asistente de configuración.`)
-            .setDescription(`¡Genial! Has añadido correctamente a **${client.user.username}**.\nUsa los ficheros de configuración del bot para configurarlo a tu gusto.\nSi necesitas ayuda, puedes [consultar la wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration).`)]
+            .setTitle(`${client.customEmojis.greenTick} ¡${client.user.username} añadido correctamente!`)
+            .setDescription(`Usa los ficheros de configuración para ajustarlo al bot a tu gusto.\nUsa el comando \`${client.config.main.prefix}help\` para ver los comandos.\nSi necesitas ayuda, puedes [consultar la wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration).`)]
         }));
 
     } catch (error) {

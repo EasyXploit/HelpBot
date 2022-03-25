@@ -68,7 +68,7 @@ exports.run = (client) => {
             let result;
 
             //Comprueba si el parámetro coincide con el formato de mención de rol
-            const matches = role.match(/^<@&?(\d+)>$/);
+            const matches = role.toString().match(/^<@&?(\d+)>$/);
 
             //Lo busca por ID o por mención (en función de la variable "matches")
             if (matches) result = await guild.roles.fetch(matches[1]);
@@ -96,7 +96,7 @@ exports.run = (client) => {
             let result;
 
             //Comprueba si el parámetro coincide con el formato de mención de canal
-            const matches = channel.match(/^<#?(\d+)>$/);
+            const matches = channel.toString().match(/^<#?(\d+)>$/);
 
             //Lo busca por ID o por mención (en función de la variable "matches")
             if (matches) result = await guild.channels.fetch(matches[1]);

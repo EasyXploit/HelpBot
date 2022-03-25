@@ -1,39 +1,38 @@
-exports.run = async (ban, client) => {
+exports.run = async (bannedMember, client) => {
 
     try {
 
         //Previene que continue la ejecución si el servidor no es el principal
-        if (ban.guild.id !== client.homeGuild.id) return;
+        if (bannedMember.guild.id !== client.homeGuild.id) return;
 
         async function sendLogEmbed(executor, reason, time, days) {
-            if (ban.user.bot) {
-                if (ban.user.id === client.user.id) return;
+
+            if (bannedMember.user.bot) {
+                if (bannedMember.user.id === client.user.id) return;
 
                 const loggingEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setTitle('📑 Auditoría - [BOTS]')
-                    .setDescription(`El **BOT** <@${ban.user.tag}> fue baneado del servidor.`);
+                    .setDescription(`El **BOT** <@${bannedMember.user.tag}> fue baneado del servidor.`);
 
                 await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [loggingEmbed] })
             } else {
-                let moderador = executor ? executor.tag : 'Desconocido';
-                let razon = reason || 'Indefinida';
 
-                const loggingEmbed = new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
-                    .setAuthor({ name: `${ban.user.tag} ha sido BANEADO`, iconURL: ban.user.displayAvatarURL({dynamic: true}) })
-                    .addField('Miembro', ban.user.tag, true)
-                    .addField('ID', ban.user.id, true)
-                    .addField('Moderador', moderador, true)
-                    .addField('Razón', razon, true)
-                    .addField('Duración', time || 'Indefinida', true)
-                    .addField('Días de mensajes borrados', days || 'Ninguno', true);
+                //Envía un mensaje al canal de auditoría
+                await client.functions.loggingManager('embed', new client.MessageEmbed()
+                    .setColor(client.config.colors.secondaryError)
+                    .setAuthor({ name: `${bannedMember.user.tag} ha sido BANEADO`, iconURL: bannedMember.user.displayAvatarURL({dynamic: true}) })
+                    .addField('Miembro', bannedMember.user.tag, true)
+                    .addField('ID', bannedMember.user.id, true)
+                    .addField('Moderador', executor ? executor.tag : 'Desconocido', true)
+                    .addField('Razón', reason || 'Indefinida', true)
+                    .addField('Vencimiento', time ? `<t:${Math.round(new Date(parseInt(time)) / 1000)}:R>` : 'No vence', true)
+                    .addField('Días de mensajes borrados', days || 'Ninguno', true)
+                );
+            };
+        };
 
-                await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [loggingEmbed] })
-            }
-        }
-
-        const fetchedLogs = await ban.guild.fetchAuditLogs({
+        const fetchedLogs = await bannedMember.guild.fetchAuditLogs({
             limit: 1,
             type: 'MEMBER_BAN_ADD',
         });
@@ -45,13 +44,12 @@ exports.run = async (ban, client) => {
         } 
     
         let { executor, target, reason } = banLog;
-        let time = '∞'
-        let days;
+        let time, days;
     
-        if (target.id === ban.user.id) {
+        if (target.id === bannedMember.user.id) {
             if (!reason) reason = 'Indefinida';
 
-            if (reason.includes('Duración: ')) time = reason.split('Duración: ').pop().split(',')[0];
+            if (reason.includes('Vencimiento: ')) time = reason.split('Vencimiento: ').pop().split(',')[0];
             if (reason.includes('Días de mensajes borrados: ')) days = reason.split('Días de mensajes borrados: ').pop().split(',')[0];
             if (reason.includes('Moderador: ')) executor = await client.users.fetch(reason.split(', ')[0].substring(11));
             if (reason.includes('Razón: ')) reason = reason.split('Razón: ').pop();

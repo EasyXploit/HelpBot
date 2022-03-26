@@ -19,16 +19,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Función para generar el mensaje de cola
         async function generateEmbed(fromRange, toRange, embed) {
 
-             //Carga el footer
-            let footer = `Página ${position} de ${pages}`;
-            if (reproductionQueue.mode) {
-                switch (reproductionQueue.mode) {
-                    case 'shuffle': footer = footer + ` | 🔀`; break;
-                    case 'loop': footer = footer + ` | 🔂`; break;
-                    case 'loopqueue': footer = footer + ` | 🔁`; break;
-                };
-            };
-
             //Herramienta para generar colores aleatorios
             const randomColor = require('randomcolor');
             
@@ -37,7 +27,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .setColor(randomColor())
                 .setAuthor({ name: 'Cola de reproducción - Ahora mismo:', iconURL: 'attachment://dj.png' })
                 .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n● Duración: \`${client.functions.msToHHMMSS(reproductionQueue.tracks[0].meta.length)}\`\n ● Requerida por: <@${reproductionQueue.tracks[0].requesterId}>`)
-                .setFooter({ text: footer, iconURL: client.homeGuild.iconURL({dynamic: true}) });
+                .setFooter({ text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild), iconURL: client.homeGuild.iconURL({dynamic: true}) });
             
             //Si hay cola, carga la cola en el embed
             if (reproductionQueue.tracks[1]) {

@@ -1,17 +1,13 @@
 exports.run = async (client, message, args, command, commandConfig) => {
 
     try {
-        
-        let noUserEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`);
 
         let noBotsEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No puedes obtener información de un bot`);
 
         const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);
-        if (!member) return message.channel.send({ embeds: [noUserEmbed] });
+        if (!member) return await client.functions.syntaxHandler(message.channel, commandConfig);
 
         //Comprueba, si corresponde, que el miembro tenga permiso para ver el historial de otros
         if (message.member.id !== member.id) {
@@ -64,10 +60,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
             });
 
             let userWarns = Object.entries(client.db.warns[member.id]).map((e) => ( { [e[0]]: e[1] } ));
-
-            console.log(userWarns.length)
-            console.log(userWarns.length - 10)
-
 
             for (let i = userWarns.length; i >= userWarns.length - 10; i--) {
                 if (!userWarns[i]) continue;

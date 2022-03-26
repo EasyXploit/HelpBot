@@ -6,10 +6,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         if (!await require('../../utils/voice/preChecks.js').run(client, message, ['bot-connected', 'same-channel', 'has-queue'])) return;
         
         //Comprueba si se han proporcionado argumentos
-        if (!args[0] || !args[1]) return message.channel.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`)
-        ]});
+        if (!args[0] || !args[1]) return await client.functions.syntaxHandler(message.channel, commandConfig);
 
         //Comprueba si se ha proporcionado un número entero
         if (isNaN(args[0]) || isNaN(args[1])) return message.channel.send({ embeds: [ new client.MessageEmbed()

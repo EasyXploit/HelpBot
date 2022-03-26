@@ -2,11 +2,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
     
     try {
         
-        let incorrectSyntaxEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`);
-        
-        if (args.length < 4 || (args[1] !== 'author' && args[1] !== 'anonymous') || (args[2] !== 'embed' && args[2] !== 'normal')) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
+        if (args.length < 4 || (args[1] !== 'author' && args[1] !== 'anonymous') || (args[2] !== 'embed' && args[2] !== 'normal')) return await client.functions.syntaxHandler(message.channel, commandConfig);
             
         let noUserEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)

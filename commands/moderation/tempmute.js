@@ -51,19 +51,13 @@ exports.run = async (client, message, args, command, commandConfig) => {
         client.functions.spreadMutedRole(message.guild);
         
         //Comprueba la longitud del tiempo proporcionado
-        if (args[1].length < 2) return message.channel.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`)
-        ]});
+        if (args[1].length < 2) return await client.functions.syntaxHandler(message.channel, commandConfig);
 
         //Calcula el tiempo estimado en milisegundos
         const milliseconds = await client.functions.magnitudesToMs(args[1]);
 
         //Comprueba si se ha proporcionado un tiempo válido
-        if (!milliseconds) return message.channel.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`)
-        ]});
+        if (!milliseconds) return await client.functions.syntaxHandler(message.channel, commandConfig);
 
         let authorized;
 

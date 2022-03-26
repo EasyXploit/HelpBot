@@ -3,10 +3,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
     try {
 
         //Envía un mensaje de error si no se ha proporcionado un comando
-        if (!args[0]) return message.channel.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`)
-        ]});
+        if (!args[0]) return await client.functions.syntaxHandler(message.channel, commandConfig);
 
         switch (args[0]) {
             case 'welcome':  //Emite el evento "guildMemberAdd"

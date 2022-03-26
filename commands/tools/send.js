@@ -3,10 +3,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
     try {
 
         //Comprueba si se han proporcionado los cargumentos correctamente
-        if (!args[0] || !args[1] || (args[0] !== 'embed' && args[0] !== 'normal')) return message.channel.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`)
-        ]});
+        if (!args[0] || !args[1] || (args[0] !== 'embed' && args[0] !== 'normal')) return await client.functions.syntaxHandler(message.channel, commandConfig);
 
         //Almacena el cuerpo del mensaje
         let body = args.slice(1).join(' ');

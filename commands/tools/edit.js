@@ -3,10 +3,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
     try {
     
         //Comprueba si los parámetros se han proporcionado correctamente
-        if (!args[0] || !args[1] || !args[2]) return message.channel.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`)
-        ]});
+        if (!args[0] || !args[1] || !args[2]) return await client.functions.syntaxHandler(message.channel, commandConfig);
             
         //Busca el canal en la guild
         const channel = await client.functions.fetchChannel(message.guild, args[0]);

@@ -1,13 +1,9 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
     try {
-        
-        let incorrectSyntaxEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`);
 
         if (args[0] === 'off') {
-            if (!message.channel.rateLimitPerUser) return message.channel.send({ embeds: [incorrectSyntaxEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
+            if (!message.channel.rateLimitPerUser) return await client.functions.syntaxHandler(message.channel, commandConfig);
 
             let successEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
@@ -26,7 +22,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             await message.channel.send({ embeds: [successEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
         } else {
             let seconds = args[0];
-            if (isNaN(seconds) || seconds < 5) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
+            if (isNaN(seconds) || seconds < 5) return await client.functions.syntaxHandler(message.channel, commandConfig);
 
             function checkIfCanUseUnlimitedTime() {
 
@@ -50,7 +46,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .setDescription(`${client.customEmojis.redTick} Los moderadores solo pueden activar el modo lento para un máximo de 30 segundos`);
 
             if (!checkIfCanUseUnlimitedTime() &&  args[0] > 30) return message.channel.send({ embeds: [tooManySeconds] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
-            if (!checkIfCanUseUnlimitedTime() &&  !args[1]) return message.channel.send({ embeds: [incorrectSyntaxEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
+            if (!checkIfCanUseUnlimitedTime() &&  !args[1]) return await client.functions.syntaxHandler(message.channel, commandConfig);
 
             let reason;
             if (args[1]) {

@@ -505,6 +505,17 @@ exports.run = (client) => {
         return nanoid();
     };
 
+    //Función para manejar sintaxis incorrectas
+    client.functions.syntaxHandler = (channel, commandConfig) => {
+        
+        //Genera y envía un embed con la sintaxis correcta
+        return channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setTitle(`${client.customEmojis.redTick} Sintaxis incorrecta`)
+            .setDescription(`La sintaxis de este comando es:\n\`${client.config.main.prefix}${commandConfig.export.name}${commandConfig.export.parameters.length > 0 ? ` ${commandConfig.export.parameters}` : ''}\``)
+        ]});
+    };
+
     //Función para gestionar el envío de registros al canal de registro
     client.functions.loggingManager = async (type, content) => {
 

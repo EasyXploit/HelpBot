@@ -1,12 +1,8 @@
 exports.run = async (client, message, args, command, commandConfig) => {
 
     try {
-        
-        let incorrectSyntaxEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} La sintaxis de este comando es:\n\`${client.config.main.prefix}${command}${commandConfig.export.parameters.length > 0 ? ' ' + commandConfig.export.parameters : ''}\`.`);
 
-        if (!args[0]) return message.channel.send({ embeds: [incorrectSyntaxEmbed] });
+        if (!args[0]) return await client.functions.syntaxHandler(message.channel, commandConfig);
 
         await client.functions.fetchRole(message.guild, args[0]).then(role => {
 

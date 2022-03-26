@@ -186,5 +186,5 @@ module.exports.config = {
     name: 'infractions',
     description: 'Muestra una lista con las infracciones de un miembro y sus respectivos ID.',
     aliases: ['warns'],
-    parameters: '[@miembro | id]'
+    parameters: '[@miembro | id] [número de página]'
 };

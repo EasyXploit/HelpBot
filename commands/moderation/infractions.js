@@ -158,9 +158,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
             //Almacena el total de páginas
             totalPages = memberWarns ? Math.ceil(memberWarns.length / 10) : 0;
 
-            //Comprueba si se ha proporcionado una página inicial
-            if (args[1] && !isNaN(args[1]) && args[1] > 0 && args[1] <= totalPages) actualPage = args[1];
-
             //Por cada advertencia del miembro
             Object.values(memberWarns).forEach(warn => {
 

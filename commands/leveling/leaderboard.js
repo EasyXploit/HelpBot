@@ -35,7 +35,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 if (!entry) break;
 
                 let member = await client.functions.fetchMember(message.guild, entry.userID);
-                if (!member) member = `<@${entry.userID}>`
+                if (!member) member = 'Desconocido';
                 board = `${board}\n**#${i + 1}** • \`${entry.totalXP} xp\` • \`lvl ${entry.lvl}\` • ${member}`;
 
             };

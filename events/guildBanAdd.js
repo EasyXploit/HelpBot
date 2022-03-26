@@ -12,13 +12,13 @@ exports.run = async (bannedMember, client) => {
 
                 const loggingEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
-                    .setTitle('📑 Auditoría - [BOTS]')
+                    .setTitle('📑 Registro - [BOTS]')
                     .setDescription(`El **BOT** <@${bannedMember.user.tag}> fue baneado del servidor.`);
 
                 await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [loggingEmbed] })
             } else {
 
-                //Envía un mensaje al canal de auditoría
+                //Envía un mensaje al canal de registro
                 await client.functions.loggingManager('embed', new client.MessageEmbed()
                     .setColor(client.config.colors.secondaryError)
                     .setAuthor({ name: `${bannedMember.user.tag} ha sido BANEADO`, iconURL: bannedMember.user.displayAvatarURL({dynamic: true}) })

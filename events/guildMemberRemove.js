@@ -10,7 +10,7 @@ exports.run = async (member, client) => {
                 if (member.user.id === client.user.id) return;
                 const loggingEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
-                    .setTitle('📑 Auditoría - [BOTS]')
+                    .setTitle('📑 Registro - [BOTS]')
                     .setDescription(`El **BOT** @${member.user.tag} fue expulsado del servidor.`);
                 
                 await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [loggingEmbed] })

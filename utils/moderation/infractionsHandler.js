@@ -31,7 +31,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
             });
         };
 
-        //Envía un mensaje al canal de auditoría
+        //Envía un mensaje al canal de registro
         await client.functions.loggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setAuthor({ name: `${member.user.tag} ha sido SILENCIADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
@@ -61,7 +61,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
     //Función para expulsar
     async function kick() {
 
-        //Envía un mensaje al canal de auditoría
+        //Envía un mensaje al canal de registro
         await client.functions.loggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setAuthor({ name: `${member.user.tag} ha sido EXPULSADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
@@ -171,7 +171,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
             //Si ocurrió un error, lo lanza a la consola
             if (err) throw err;
 
-            //Ejecuta el manejador de auditoría
+            //Ejecuta el manejador de registro
             await client.functions.loggingManager('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
                 .setAuthor({ name: `${member.user.tag} ha sido ADVERTIDO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })

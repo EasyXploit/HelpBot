@@ -182,7 +182,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             await client.functions.loggingManager('embed',  new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
-                .setTitle('📑 Auditoría - [SISTEMA DE XP]')
+                .setTitle('📑 Registro - [SISTEMA DE XP]')
                 .setDescription(`Se ha modificado la cantidad de XP de **${member.user.tag}**.`)
                 .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
                 .addField('Moderador:', message.author.tag, true)

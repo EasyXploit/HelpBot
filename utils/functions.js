@@ -505,7 +505,7 @@ exports.run = (client) => {
         return nanoid();
     };
 
-    //Función para gestionar el envío de registros al canal de auditoría
+    //Función para gestionar el envío de registros al canal de registro
     client.functions.loggingManager = async (type, content) => {
 
         //Comprobar si el canal está configurado y almacenado en memoria
@@ -531,7 +531,7 @@ exports.run = (client) => {
                 } else {
 
                     //Advertir por consola de que no se tienen permisos
-                    console.error(`${new Date().toLocaleString()} 》ERROR: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos.`);
+                    console.error(`${new Date().toLocaleString()} 》ERROR: No se pueden enviar mensajes al canal de registro.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos.`);
                 };
 
             } catch (error) {
@@ -544,7 +544,7 @@ exports.run = (client) => {
                     client.loggingChannel = null;
 
                     //Advertir por consola
-                    console.error(`${new Date().toLocaleString()} 》ERROR: No se puede tener acceso al canal de auditoría.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
+                    console.error(`${new Date().toLocaleString()} 》ERROR: No se puede tener acceso al canal de registro.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
 
                     //Graba la nueva configuración en el almacenamiento
                     await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), async err => { if (err) throw err });
@@ -583,7 +583,7 @@ exports.run = (client) => {
                 } else {
 
                     //Advertir por consola de que no se tienen permisos
-                    console.error(`${new Date().toLocaleString()} 》ERROR: No se pueden enviar mensajes al canal de auditoría.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos.`);
+                    console.error(`${new Date().toLocaleString()} 》ERROR: No se pueden enviar mensajes al canal de registro.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos.`);
                 };
 
             } catch (error) {

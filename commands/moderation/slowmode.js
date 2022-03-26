@@ -16,7 +16,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             loggingEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
-                .setTitle('📑 Auditoría - [MODO LENTO]')
+                .setTitle('📑 Registro - [MODO LENTO]')
                 .setDescription('Se ha des-habilitado el modo lento.')
                 .addField('Moderador:', message.author.tag, true)
                 .addField('Canal:', `<#${message.channel.id}>`, true);
@@ -68,7 +68,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             loggingEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
-                .setTitle('📑 Auditoría - [MODO LENTO]')
+                .setTitle('📑 Registro - [MODO LENTO]')
                 .setDescription('Se ha habilitado el modo lento.')
                 .addField('Moderador:', message.author.tag, true)
                 .addField('Duración:', `${seconds}s`, true)

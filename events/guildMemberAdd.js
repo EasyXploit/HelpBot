@@ -11,10 +11,10 @@ exports.run = async (member, client) => {
             //Añade el rol de bienvenida para nuevos bots (si no lo tiene ya)
             if (!member.roles.cache.has(client.config.main.newBotRole)) await member.roles.add(client.config.main.newBotRole);
 
-            //Envía un mensaje al canal de auditoría
+            //Envía un mensaje al canal de registro
             return client.functions.loggingManager('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
-                .setTitle('📑 Auditoría - [BOTS]')
+                .setTitle('📑 Registro - [BOTS]')
                 .setDescription(`El **BOT** @${member.user.tag} fue añadido al servidor.`)
             );
         };
@@ -43,7 +43,7 @@ exports.run = async (member, client) => {
             await member.kick(member.user, {reason: `Moderador: ${client.user.id}, Razón: El nombre de usuario contenía una palabra prohibida.`})
         };
 
-        //Se notifica en el canal de auditoría
+        //Se notifica en el canal de registro
         await client.joinsAndLeavesChannel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.correct)
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))

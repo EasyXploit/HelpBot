@@ -92,7 +92,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             loggingEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
-                .setTitle('📑 Auditoría - [INFRACCIONES]')
+                .setTitle('📑 Registro - [INFRACCIONES]')
                 .setDescription('Se han retirado todas las advertencias.')
                 .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
                 .addField('Moderador:', message.author.tag, true)
@@ -125,7 +125,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             loggingEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
-                .setTitle('📑 Auditoría - [INFRACCIONES]')
+                .setTitle('📑 Registro - [INFRACCIONES]')
                 .setDescription('Se ha retirado una advertencia.')
                 .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
                 .addField('Moderador:', message.author.tag, true)

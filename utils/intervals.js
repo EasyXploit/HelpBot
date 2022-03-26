@@ -31,7 +31,7 @@ exports.run = (client) => {
                 //Si hubo un error, lo devuelve
                 if (err) throw err;
 
-                //Ejecuta el manejador de auditoría
+                //Ejecuta el manejador de registro
                 await client.functions.loggingManager('embed', new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
                     .setAuthor({ name: `${member.user.tag} ha sido DES-SILENCIADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
@@ -82,7 +82,7 @@ exports.run = (client) => {
                     //Desbanea al usuario (si existe)
                     if (user) await client.homeGuild.members.unban(idKey);
 
-                    //Ejecuta el manejador de auditoría
+                    //Ejecuta el manejador de registro
                     await client.functions.loggingManager('embed', new client.MessageEmbed()
                         .setColor(client.config.colors.correct)
                         .setAuthor({ name: `${user.tag} ha sido DES-BANEADO`, iconURL: user.displayAvatarURL({dynamic: true}) })
@@ -209,10 +209,10 @@ exports.run = (client) => {
                     .addField('Resultados', results.join(' '))
                 ], files: ['./resources/images/endFlag.png']}).then(async poll => {
 
-                    //Envía una notificación al canal de auditoría
+                    //Envía una notificación al canal de registro
                     await client.functions.loggingManager('embed', new client.MessageEmbed()
                         .setColor(client.config.colors.logging)
-                        .setTitle('📑 Auditoría - [ENCUESTAS]')
+                        .setTitle('📑 Registro - [ENCUESTAS]')
                         .setDescription(`La encuesta "__[${storedPoll.title}](${poll.url})__" ha finalizado en el canal <#${storedPoll.channel}>.`)
                     );
                 });

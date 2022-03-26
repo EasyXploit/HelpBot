@@ -81,10 +81,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
             if (channel.id === message.channel.id) setTimeout(() => msg.delete(), 3000)
         }); 
 
-        //Envía un registro al canal de auditoría
+        //Envía un registro al canal de registro
         await client.functions.loggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.logging)
-            .setTitle('📑 Auditoría - [PURGA DE MENSAJES]')
+            .setTitle('📑 Registro - [PURGA DE MENSAJES]')
             .setDescription(`${message.author.tag} eliminó ${msgsToDelete.size - extraMessages} mensajes del canal <#${channel.id}>`)
         );
 

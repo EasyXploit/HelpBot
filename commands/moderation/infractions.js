@@ -65,7 +65,11 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             let userWarns = Object.entries(client.db.warns[member.id]).map((e) => ( { [e[0]]: e[1] } ));
 
-            for (let i = 0; i < 10; i++) {
+            console.log(userWarns.length)
+            console.log(userWarns.length - 10)
+
+
+            for (let i = userWarns.length; i >= userWarns.length - 10; i--) {
                 if (!userWarns[i]) continue;
 
                 Object.keys(userWarns[i]).forEach((key) => {

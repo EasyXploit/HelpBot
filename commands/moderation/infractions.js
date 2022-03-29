@@ -66,7 +66,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Función para cargar una página determinada
         async function loadEmbed(embed) {
 
-            //Almacena la sanción actyal, si aplica
+            //Almacena la sanción actual, si aplica
             let sanction;
 
             //Comprueba qué tipo de sanción tiene el miembro (si la tiene)
@@ -74,10 +74,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
             else if (member.roles.cache.has(client.config.dynamic.mutedRoleId)) sanction = 'Silenciado indefinidamente';
 
             //Genera el embed de las infracciones
-            let infractionsEmbed = new client.MessageEmbed()
+            const infractionsEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
                 .setTitle('⚠ Advertencias')
-                .setDescription(`Mostrando las advertencias del miembro **${member.user.tag}**\nSanción actual: \`${sanction || 'Ninguna'}\`.`)
+                .setDescription(`Mostrando las advertencias del miembro **${member.user.tag}**.\nSanción actual: \`${sanction || 'Ninguna'}\`.`)
                 .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
                 .addField('Últimas 24h', onDay.toString(), true)
                 .addField('Últimos 7 días', onWeek.toString(), true)
@@ -138,10 +138,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
         };
 
         //Almacena la página actual
-        let actualPage = 1;
+        let actualPage = totalPages = 1;
 
         //Almacena el total de sanciones, en 1 día y 1 semana, y las páginas totales
-        let onDay = onWeek = total = totalPages = 0;
+        let onDay = onWeek = total = 0;
 
         //Almacena las advertencias del miembro
         let memberWarns = client.db.warns[member.id];
@@ -156,7 +156,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             total = memberWarns.length
 
             //Almacena el total de páginas
-            totalPages = memberWarns ? Math.ceil(memberWarns.length / 10) : 0;
+            totalPages = Math.ceil(memberWarns.length / 10);
 
             //Por cada advertencia del miembro
             Object.values(memberWarns).forEach(warn => {

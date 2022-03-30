@@ -72,7 +72,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setDescription(`Mensajes eliminados: \`${msgsToDelete.size - extraMessages}\``);
 
         //Si se omitieron mensajes, se indica en el footer del embed
-        if (msgsToDelete.size < messages.size) successEmbed.setFooter(`Se omitieron ${messages.size - msgsToDelete.size} mensajes.`);
+        if (msgsToDelete.size < messages.size) successEmbed.setFooter({  text: `Se omitieron ${messages.size - msgsToDelete.size} mensajes.` });
 
         //Envía un mensaje de confirmación
         await message.channel.send({ embeds: [successEmbed] }).then(msg => {

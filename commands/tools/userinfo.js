@@ -18,10 +18,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
             let authorized;
 
             //Para cada ID de rol de la lista blanca
-            for (let i = 0; i < commandConfig.canSeeAny.length; i++) {
+            for (let index = 0; index < commandConfig.canSeeAny.length; index++) {
 
                 //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                if (message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.canSeeAny[i])) {
+                if (message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(role => role.id === commandConfig.canSeeAny[index])) {
                     authorized = true;
                     break;
                 };
@@ -79,7 +79,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .addField('⚖ Infracciones', client.db.warns[member.id] ? (Object.keys(client.db.warns[member.id]).length).toString() : '0', true)
             .addField('📓 Verificación', member.pending ? 'Verificación pendiente' : 'Verificado', true)
             .addField('⚠️ Sanción actual', sanction || 'Ninguna', true)
-            .addField('👮 Permisos', `\`\`\`${translatedPermissions.join(', ')}\`\`\``)
+            .addField('👮 Permisos efectivos', `\`\`\`${translatedPermissions.join(', ')}\`\`\``)
         ]});
 
     } catch (error) {

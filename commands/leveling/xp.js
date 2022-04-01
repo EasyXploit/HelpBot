@@ -120,8 +120,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             let toReward;
 
-            for (let i = 0; i < client.config.levelingRewards.length; i++) {
-                let reward = client.config.levelingRewards[i];
+            for (let index = 0; index < client.config.levelingRewards.length; index++) {
+                let reward = client.config.levelingRewards[index];
 
                 if (reward.requiredLevel !== level) {
                     reward.roles.forEach(async role => {
@@ -155,9 +155,9 @@ exports.run = async (client, message, args, command, commandConfig) => {
         } else if (newValue < oldValue) {
 
             //Cambia el nivel
-            for (let i = 0;; i++) {
-                if (((5 * client.config.xp.dificultyModifier) * Math.pow(i, 3) + 50 * i + 100) > newValue) {
-                    level = i;
+            for (let index = 0;; index++) {
+                if (((5 * client.config.xp.dificultyModifier) * Math.pow(index, 3) + 50 * index + 100) > newValue) {
+                    level = index;
                     if (level !== client.db.stats[message.guild.id][member.id].level) {
                         client.db.stats[message.guild.id][member.id].level = level;
                         await assignRewards();

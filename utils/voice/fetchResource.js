@@ -28,8 +28,8 @@ exports.run = async (client, args, message, streamType, toStream) => {
 			authorizedTracks = client.config.music.userQueueLimit;
 	
 			//Calcula cuantas pistas tiene el miembro en la cola
-			for (let i = 0; i < reproductionQueue.tracks.length; i++) {
-				if (message.member.id === reproductionQueue.tracks[i].requesterId) authorizedTracks--;
+			for (let index = 0; index < reproductionQueue.tracks.length; index++) {
+				if (message.member.id === reproductionQueue.tracks[index].requesterId) authorizedTracks--;
 			};
 	
 			//Comprueba si el miembro puede añadir más pistas a la cola
@@ -189,24 +189,24 @@ exports.run = async (client, args, message, streamType, toStream) => {
 						let asociatedPositions = {}; //Asocia la posición del puntero con la posición en la lista de resultados
 	
 						//Para cada resultado, evalúa si ha de ser añadido a la lista
-						for (let i = 0; i < results.length; i++) {
+						for (let index = 0; index < results.length; index++) {
 	
 							//Solo añade el resultado si es una playlist, o un vídeo (que no esté en directo, no sea privado y no sea más largo de lo estipulado en la config.)
-							if (results[i].type === 'playlist' || (results[i].type === 'video' && results[i].durationRaw && results[i].title !== '[Private video]' && results[i].durationInSec * 1000 <= client.config.music.maxTrackDuration)) {
+							if (results[index].type === 'playlist' || (results[index].type === 'video' && results[index].durationRaw && results[index].title !== '[Private video]' && results[index].durationInSec * 1000 <= client.config.music.maxTrackDuration)) {
 	
 								//Crea la asociación puntero-posición
-								asociatedPositions[pointer] = i;
+								asociatedPositions[pointer] = index;
 
 								//Almacena el título y elimina signos que alteren la forma en la que se muestra la entrada
-								let title = results[i].title.replace('[', '').replace(']', '').replace('|', '').replace('(', '').replace(')', '').replace('_', '').replace('*', '');
+								let title = results[index].title.replace('[', '').replace(']', '').replace('|', '').replace('(', '').replace(')', '').replace('_', '').replace('*', '');
 	
 								//Acorta el título si es demasiado largo
 								if (title.length > 40) title = `${title.slice(0, 40)} ...`; 
 
-								if (results[i].type === 'playlist') { //Si se trata de una playlist, almacena el string "playlist" en vez de la duración de la pista
-									formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${results[i].url}) | \`${results[i].type}\``;
+								if (results[index].type === 'playlist') { //Si se trata de una playlist, almacena el string "playlist" en vez de la duración de la pista
+									formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${results[index].url}) | \`${results[index].type}\``;
 								} else { //Si se trata de un vídeo, almacena la duración de la pista en vez de el string "playlist"
-									formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${results[i].url}) | \`${results[i].durationRaw}\``;
+									formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${results[index].url}) | \`${results[index].durationRaw}\``;
 								};
 
 								pointer ++; //Incremento de puntero

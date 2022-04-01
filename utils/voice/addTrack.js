@@ -48,10 +48,10 @@ exports.run = async (client, reproductionQueue, silentMode, contentType, request
         if (client.config.music.preventDuplicates) {
 
             //Por cada item de la cola, comprueba si su enlace coincide con el proporcionado
-            for (let i = 0; i <reproductionQueue.tracks.length; i++) {
+            for (let index = 0; index <reproductionQueue.tracks.length; index++) {
 
                 //Si coincide, no continua el bucle
-                if (newTrack.meta.location === reproductionQueue.tracks[i].meta.location) {
+                if (newTrack.meta.location === reproductionQueue.tracks[index].meta.location) {
                     duplicate = true;
                     break;
                 };

@@ -15,8 +15,8 @@ exports.run = async (client, message, command, index) => {
         if (message.member.id === reproductionQueue.tracks[index || 0].requesterId) return true;
         
         //Comprueba si el miembro es DJ, y de serlo omite la comprobación de votos
-        for (let i = 0; i < client.config.music.djRoles.length; i++) {
-            if (await message.member.roles.cache.find(r => r.id === client.config.music.djRoles[i])) {
+        for (let index = 0; index < client.config.music.djRoles.length; index++) {
+            if (await message.member.roles.cache.find(role => role.id === client.config.music.djRoles[index])) {
                 return true;
             };
         };

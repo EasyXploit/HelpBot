@@ -232,7 +232,7 @@ exports.run = (client) => {
     client.functions.spreadMutedRole = async (guild) => {
 
         //Busca el rol silenciado
-        let mutedRole = await guild.roles.cache.find(r => r.id === client.config.dynamic.mutedRoleId);
+        let mutedRole = await guild.roles.cache.find(role => role.id === client.config.dynamic.mutedRoleId);
 
         //Para cada canal, añade el permiso para el rol
         await guild.channels.cache.forEach(async (channel) => {

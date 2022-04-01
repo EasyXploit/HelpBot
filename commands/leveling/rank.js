@@ -27,8 +27,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
         const xpToNextLevel = (5 * client.config.xp.dificultyModifier) * Math.pow(userStats.level, 3) + 50 * userStats.level + 100;
 
         let nonXP;
-        for (let i = 0; i < client.config.xp.nonXPRoles.length; i++) {
-            if (await member.roles.cache.find(r => r.id === client.config.xp.nonXPRoles[i])) {
+        for (let index = 0; index < client.config.xp.nonXPRoles.length; index++) {
+            if (await member.roles.cache.find(role => role.id === client.config.xp.nonXPRoles[index])) {
                 nonXP = true;
                 break;
             };
@@ -39,8 +39,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             //Función para encontrar la siguiente recompensa
             function wichReward() {
-                for (let i = 0; i < client.config.levelingRewards.length; i++) {
-                    if (client.config.levelingRewards[i].requiredLevel >= userStats.level + 1) return client.config.levelingRewards[i].roles;
+                for (let index = 0; index < client.config.levelingRewards.length; index++) {
+                    if (client.config.levelingRewards[i].requiredLevel >= userStats.level + 1) return client.config.levelingRewards[index].roles;
                 };
             };
 

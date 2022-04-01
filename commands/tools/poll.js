@@ -65,22 +65,22 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
                         embed.edit({ embeds: [fieldEmbed] });
 
-                        for (let i = 0; i < 10; i++) {
+                        for (let index = 0; index < 10; index++) {
                             await awaitMessage(embed).then(async result => {
                                 if (!result) return;
 
                                 let anotherFieldEmbed = new client.MessageEmbed()
                                     .setColor(client.config.colors.primary)
-                                    .setTitle(`${emojiOptions[i + 1]} Campos`)
-                                    .setDescription(`Proporciona un nuevo campo (quedan **${10 - i - 1}**).\nEscribe \`end\` para finalizar el asistente.`);
+                                    .setTitle(`${emojiOptions[index + 1]} Campos`)
+                                    .setDescription(`Proporciona un nuevo campo (quedan **${10 - index - 1}**).\nEscribe \`end\` para finalizar el asistente.`);
 
-                                fields[i] = result;
+                                fields[index] = result;
                                 embed.edit({ embeds: [anotherFieldEmbed] });
                             })
 
-                            if (!fields[i]) break;
+                            if (!fields[index]) break;
 
-                            if (fields[i] === 'end' && fields.length > 2) {
+                            if (fields[index] === 'end' && fields.length > 2) {
                                 fields.splice(-1,1);
                                 break;
                             }

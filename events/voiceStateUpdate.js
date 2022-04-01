@@ -34,8 +34,8 @@ exports.run = async (oldState, newState, client) => {
 
             //Calcula si el miembro tiene un rol que no puede ganar XP
             let nonXPRole;
-            for (let i = 0; i < client.config.xp.nonXPRoles.length; i++) {
-                if (await member.roles.cache.find(r => r.id === client.config.xp.nonXPRoles[i])) {
+            for (let index = 0; index < client.config.xp.nonXPRoles.length; index++) {
+                if (await member.roles.cache.find(role => role.id === client.config.xp.nonXPRoles[index])) {
                     nonXPRole = true;
                     break;
                 };

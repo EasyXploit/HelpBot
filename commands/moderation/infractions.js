@@ -28,7 +28,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`)]
-            }).then(msg => {setTimeout(() => msg.delete(), 5000)});
+            }).then(msg => { setTimeout(() => msg.delete(), 5000) });
         };
 
         //Comprueba si se trata de un bot

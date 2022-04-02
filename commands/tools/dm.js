@@ -58,7 +58,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                         .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`);
 
                     //Envía el mensaje de error
-                    return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
+                    return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => { setTimeout(() => msg.delete(), 5000) });
                 };
 
                 if (type === 'embed') {

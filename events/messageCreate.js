@@ -102,7 +102,7 @@ exports.run = async (message, client) => {
             if (!await client.functions.checkCommandPermission(message, commandConfig)) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación.`)]
-            }).then(msg => {setTimeout(() => msg.delete(), 5000)});
+            }).then(msg => { setTimeout(() => msg.delete(), 5000) });
 
             //Borra el mensaje de invocación (tras 3 segundos) si se ha configurado para ello
             if (commandConfig.deleteInvocationCommand) setTimeout(() => message.delete(), 2000);

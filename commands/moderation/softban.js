@@ -104,10 +104,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setColor(client.config.colors.secondaryError)
             .setAuthor({ name: '[BANEADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
             .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
-            .addField(`Moderador`, message.author.tag, true)
-            .addField(`Razón`, reason || 'Indefinida', true)
-            .addField(`Días de mensajes borrados`, days.toString(), true)
-            .addField(`Duración`, `∞`, true)
+            .addField('Moderador', message.author.tag, true)
+            .addField('Razón', reason || 'Indefinida', true)
+            .addField('Días de mensajes borrados', days.toString(), true)
+            .addField('Duración', '∞', true)
         ]});
 
         //Notifica la acción en el canal de invocación

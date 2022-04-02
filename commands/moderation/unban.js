@@ -52,7 +52,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Si el miembro no estaba baneado, devuelve un error
         if (!banned) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Este usuario ya ha sido baneado`)
+            .setDescription(`${client.customEmojis.redTick} Este usuario no había sido baneado`)
         ]});
 
         //Desbanea al miembro
@@ -76,9 +76,9 @@ exports.run = async (client, message, args, command, commandConfig) => {
         await client.functions.loggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.correct)
             .setAuthor({ name: `${user.tag} ha sido DESBANEADO`, iconURL: user.displayAvatarURL({dynamic: true}) })
-            .addField(`Usuario`, user.tag, true)
-            .addField(`Moderador`, message.author.tag, true)
-            .addField(`Razón`, reason || 'Indefinida', true)
+            .addField('Usuario', user.tag, true)
+            .addField('Moderador', message.author.tag, true)
+            .addField('Razón', reason || 'Indefinida', true)
         );
 
         //Notifica la acción en el canal de invocación
@@ -90,20 +90,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
         
     } catch (error) {
 
-        //Si no reconoce al miembro a desbanear
-        if (error.toString().includes('Unknown Ban')) {
-
-            //Lo notifica
-            await message.channel.send({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} Este miembro no fue baneado.`)
-            ]});
-
-        } else {
-
-            //Ejecuta el manejador de errores
-            await client.functions.commandErrorHandler(error, message, command, args);
-        };
+        //Ejecuta el manejador de errores
+        await client.functions.commandErrorHandler(error, message, command, args);
     };
 };
 

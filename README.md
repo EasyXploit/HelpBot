@@ -21,7 +21,7 @@ Likewise, although the [wrapper](https://developer.mozilla.org/en-US/docs/Glossa
 
 
 > **NOTICE:**<br />
-The bot code is <ins>excessively full of comments</ins> (in Spanish), because it is a learning project and my goal in doing this was to understand at all times what I was programming, and to easily recover the thread (the commits were also written in Spanish).
+The bot code is <ins>excessively full of comments</ins> (in Spanish), because it is a learning project and my goal in doing this was to understand at all times what I was programming, and to easily recover the thread (the old commits, issues and projects were also written in Spanish).
 <br />
 
 ### Features

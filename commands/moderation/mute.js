@@ -53,7 +53,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         ]});
 
         //Almacena la razón
-        const reason = args.splice(1).join(' ');
+        let reason = args.splice(1).join(' ');
 
         //Capitaliza la razón
         if (reason) reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;

@@ -71,7 +71,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
 
             //Almacena la razón
-            const reason = args.splice(1).join(' ');
+            let reason = args.splice(1).join(' ');
 
             //Capitaliza la razón
             if (reason) reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;

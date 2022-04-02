@@ -6,7 +6,9 @@
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
-		"additionalAliases": []
+		"additionalAliases": [],
+		"reasonNotNeeded": [],
+		"botsAllowed": []
 	},
 	"clear": {
 		"enabled": true,
@@ -89,7 +91,9 @@
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
-		"additionalAliases": []
+		"additionalAliases": [],
+		"reasonNotNeeded": [],
+		"botsAllowed": []
 	},
 	"leaderboard": {
 		"enabled": true,
@@ -143,7 +147,9 @@
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
-		"additionalAliases": []
+		"additionalAliases": [],
+		"reasonNotNeeded": [],
+		"botsAllowed": []
 	},
 	"nowplaying": {
 		"enabled": true,
@@ -260,7 +266,8 @@
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
 		"additionalAliases": [],
-		"removeAnyWarn": []
+		"removeAnyWarn": [],
+		"reasonNotNeeded": []
 	},
 	"roleinfo": {
 		"enabled": true,
@@ -333,7 +340,9 @@
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
 		"additionalAliases": [],
-		"unlimitedTime": []
+		"unlimitedTime": [],
+		"maxRegularSeconds": 30,
+		"reasonNotNeeded": []
 	},
 	"softban": {
 		"enabled": true,
@@ -342,7 +351,9 @@
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
-		"additionalAliases": []
+		"additionalAliases": [],
+		"reasonNotNeeded": [],
+		"botsAllowed": []
 	},
 	"sound": {
 		"enabled": true,
@@ -362,7 +373,9 @@
 		"blacklistedRoles": [],
 		"additionalAliases": [],
 		"unlimitedTime": [],
-		"maxRegularTime": 86400000
+		"maxRegularTime": 86400000,
+		"reasonNotNeeded": [],
+		"botsAllowed": []
 	},
 	"tempmute": {
 		"enabled": true,
@@ -373,7 +386,9 @@
 		"blacklistedRoles": [],
 		"additionalAliases": [],
 		"unlimitedTime": [],
-		"maxRegularTime": 86400000
+		"maxRegularTime": 86400000,
+		"reasonNotNeeded": [],
+		"botsAllowed": []
 	},
 	"unban": {
 		"enabled": true,
@@ -382,7 +397,8 @@
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
-		"additionalAliases": []
+		"additionalAliases": [],
+		"reasonNotNeeded": []
 	},
 	"unmute": {
 		"enabled": true,
@@ -391,7 +407,8 @@
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
-		"additionalAliases": []
+		"additionalAliases": [],
+		"reasonNotNeeded": []
 	},
 	"userinfo": {
 		"enabled": true,
@@ -410,7 +427,7 @@
 		"blacklistedChannels": [],
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
-		"additionalAliases": []
+		"additionalAliases": [],
 	},
 	"xp": {
 		"enabled": true,

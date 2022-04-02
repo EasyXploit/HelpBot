@@ -1,95 +1,102 @@
 exports.run = async (client, message, args, command, commandConfig) => {
     
     try {
-        
-        let notToUnwarnEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Debes mencionar a un miembro o escribir su id`);
 
-        let noBotsEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Los bots no pueden ser advertidos`);
-        
-        let noWarnIDEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Debes proporcionar el ID de la advertencia a quitar`);
-        
-        let undefinedReasonEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Se debe adjuntar una razón`);
-        
-        let noWarnsEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Este miembro no tiene advertencias`);
+        //Devuelve un error si no se ha proporcionado un miembro objetivo
+        if (!args[0] || !args[1]) return await client.functions.syntaxHandler(message.channel, commandConfig);
 
-        //Esto comprueba si se ha mencionado a un miembro o se ha proporcionado su ID
+        //Busca al miembro proporcionado
         const member = await client.functions.fetchMember(message.guild, args[0]);
-        if (!member) return message.channel.send({ embeds: [notToUnwarnEmbed] });
-        if (member.user.bot) return message.channel.send({ embeds: [noBotsEmbed] });
+
+        //Devuelve un error si no se ha encontrado al miembro
+        if (!member) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID`)
+        ]});
+
+        //Devuelve un error si se ha proporcionado un bot
+        if (member.user.bot) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} Los bots no pueden ser advertidos`)
+        ]});
         
-        //Esto comprueba si se ha aportado alguna advertencia
-        let warnID = args[1];
-        if (!warnID && warnID.toLowerCase() !== 'all') return message.channel.send({ embeds: [noWarnIDEmbed] });
+        //Comprueba si se ha aportado alguna advertencia
+        const warnID = args[1];
 
         //Almacena la razón
-        let reason = args.splice(2).join(' ');
-
-        //Si la razón es indefinida, lo advierte
-        if (!reason) return message.channel.send({ embeds: [undefinedReasonEmbed] });
+        const reason = args.splice(2).join(' ');
 
         //Capitaliza la razón
-        reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;
-          
-        let moderator = await client.functions.fetchMember(message.guild, message.author.id);
+        if (reason) reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;
 
-        //Carga el embed de error de privilegios
-        const noPrivilegesEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`);
+        //Si no se ha proporcionado razón y el miembro no es el dueño
+        if (!reason && message.author.id !== message.guild.ownerId) {
 
-        
-        //Se comprueba si puede des-advertir al miembro
-        if (moderator.id !== message.guild.ownerId) {
-            if (moderator.roles.highest.position <= member.roles.highest.position) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
-        };
-
-        //Comprueba si el miembro tiene warns
-        if (!client.db.warns[member.id]) return message.channel.send({ embeds: [noWarnsEmbed] });
-
-        let successEmbed, loggingEmbed, toDMEmbed;
-
-        //Función para comprobar si el miembro puede borrar cualquier advertencia
-        function checkIfCanRemoveAny() {
+            //Almacena si el miembro puede omitir la razón
             let authorized;
 
-            //Para cada ID de rol de la lista blanca
-            for (let i = 0; i < commandConfig.removeAnyWarn.length; i++) {
+            //Por cada uno de los roles que pueden omitir la razón
+            for (let index = 0; index < commandConfig.reasonNotNeeded; index++) {
 
-                //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                if (message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(r => r.id === commandConfig.removeAnyWarn[i])) {
+                //Comprueba si el miembro ejecutor lo tiene
+                if (message.member.roles.cache.has(commandConfig.reasonNotNeeded[index])) {
                     authorized = true;
                     break;
                 };
             };
 
-            if (authorized) return true;
+            //Si no está autorizado, devuelve un mensaje de error
+            if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} Debes proporcionar una razón`)
+            ]});
+        };
+        
+        //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
+        if (message.member.id !== message.guild.ownerId && message.member.roles.highest.position <= member.roles.highest.position) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`)
+        ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
+
+        //Comprueba si el miembro tiene warns
+        if (!client.db.warns[member.id]) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} Este miembro no tiene advertencias`)
+        ]});
+
+        //Función para comprobar si el miembro puede borrar cualquier advertencia
+        function checkIfCanRemoveAny() {
+
+            //Almacena si el miembro puede borrar cualquiera
+            let authorized;
+
+            //Para cada ID de rol de la lista blanca
+            for (let index = 0; index < commandConfig.removeAnyWarn.length; index++) {
+
+                //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
+                if (message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(role => role.id === commandConfig.removeAnyWarn[index])) {
+                    authorized = true;
+                    break;
+                };
+            };
+
+            //Devuelve el estado de autorización
+            return authorized;
         };
 
+        //Crear variables para almacenar los embeds a enviar
+        let successEmbed, loggingEmbed, toDMEmbed;
+
+        //Si hay que eliminar todas las infracciones
         if (warnID === 'all') {
 
-            if (!checkIfCanRemoveAny()) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
+            //Comprueba si el miembro puede eliminar cualquier advertencia
+            if (!checkIfCanRemoveAny()) return message.channel.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`)
+            ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
 
-            successEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryCorrect)
-                .setDescription(`${client.customEmojis.greenTick} Se han retirado todas las advertencias al miembro **${member.user.tag}**`);
-
-            toDMEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.correct)
-                .setAuthor({ name: '[DES-ADVERTIDO]', iconURL: message.guild.iconURL({ dynamic: true}) })
-                .setDescription(`<@${member.id}>, se te han retirado todas la advertencias.`)
-                .addField('Moderador', message.author.tag, true)
-                .addField('Razón', reason, true);
-
+            //Genera un mensaje para el canal de registros
             loggingEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle('📑 Registro - [INFRACCIONES]')
@@ -97,32 +104,39 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
                 .addField('Moderador:', message.author.tag, true)
                 .addField('Miembro:', member.user.tag, true)
-                .addField('Razón:', reason, true);
+                .addField('Razón:', reason || 'Indefinida', true);
 
-            delete client.db.warns[member.id];
-        } else {
-
-            if (!client.db.warns[member.id][warnID]) return message.channel.send({ embeds: [new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} No existe la advertencia con ID **${warnID}**`)
-            ] });
-
-            if (!checkIfCanRemoveAny() && client.db.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send({ embeds: [noPrivilegesEmbed] }).then(msg => {setTimeout(() => msg.delete(), 5000)});
-
-            successEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryCorrect)
-                .setTitle(`${client.customEmojis.greenTick} Operación completada`)
-                .setDescription(`Se ha retirado la advertencia con ID **${warnID}** al miembro **${member.user.tag}**`);
-
+            //Genera una notificación para el miembro
             toDMEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.correct)
                 .setAuthor({ name: '[DES-ADVERTIDO]', iconURL: message.guild.iconURL({ dynamic: true}) })
-                .setDescription(`<@${member.id}>, se te ha retirado la advertencia con ID \`${warnID}\`.`)
+                .setDescription(`<@${member.id}>, se te han retirado todas la advertencias.`)
                 .addField('Moderador', message.author.tag, true)
-                .addField('ID de advertencia:', warnID, true)
-                .addField('Advertencia:', client.db.warns[member.id][warnID].reason, true)
-                .addField('Razón', reason, true);
+                .addField('Razón', reason || 'Indefinida', true);
 
+            //Genera una notificación de la acción para el canal de invocación
+            successEmbed = new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryCorrect)
+                .setDescription(`${client.customEmojis.greenTick} Se han retirado todas las advertencias al miembro **${member.user.tag}**`);
+
+            //Elimina la entrada de la base de datos
+            delete client.db.warns[member.id];
+
+        } else { //Si solo hay que eliminar una infracción
+
+            //Comprueba si la advertencia existe en la BD
+            if (!client.db.warns[member.id][warnID]) return message.channel.send({ embeds: [new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryError)
+                .setDescription(`${client.customEmojis.redTick} No existe la advertencia con ID **${warnID}**`)
+            ]});
+
+            //Comprueba si puede borrar esta advertencia
+            if (!checkIfCanRemoveAny() && client.db.warns[member.id][warnID].moderator !== message.author.id) return message.channel.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`)
+            ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
+
+            //Genera un mensaje para el canal de registros
             loggingEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle('📑 Registro - [INFRACCIONES]')
@@ -132,21 +146,44 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .addField('ID de advertencia:', warnID, true)
                 .addField('Advertencia:', client.db.warns[member.id][warnID].reason, true)
                 .addField('Miembro:', member.user.tag, true)
-                .addField('Razón:', reason, true);
+                .addField('Razón:', reason || 'Indefinida', true);
+
+            //Genera una notificación para el miembro
+            toDMEmbed = new client.MessageEmbed()
+                .setColor(client.config.colors.correct)
+                .setAuthor({ name: '[DES-ADVERTIDO]', iconURL: message.guild.iconURL({ dynamic: true}) })
+                .setDescription(`<@${member.id}>, se te ha retirado la advertencia con ID \`${warnID}\`.`)
+                .addField('Moderador', message.author.tag, true)
+                .addField('ID de advertencia:', warnID, true)
+                .addField('Advertencia:', client.db.warns[member.id][warnID].reason, true)
+                .addField('Razón', reason || 'Indefinida', true);
+
+            //Genera una notificación de la acción para el canal de invocación
+            successEmbed = new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryCorrect)
+                .setTitle(`${client.customEmojis.greenTick} Operación completada`)
+                .setDescription(`Se ha retirado la advertencia con ID **${warnID}** al miembro **${member.user.tag}**`);
 
             //Resta el warn indicado
             delete client.db.warns[member.id][warnID];
             
             //Si se queda en 0 warns, se borra la entrada del JSON
             if (Object.keys(client.db.warns[member.id]).length === 0) delete client.db.warns[member.id];
-        }
+        };
 
         //Escribe el resultado en el JSON
         client.fs.writeFile('./databases/warns.json', JSON.stringify(client.db.warns, null, 4), async err => {
+
+            //Si hubo un error, lo lanza a la consola
             if (err) throw err;
 
+            //Envía un registro al canal de registros
             await client.functions.loggingManager('embed', loggingEmbed);
+
+            //Envía un mensaje de confirmación al miembro
             await member.send({ embeds: [toDMEmbed] });
+
+            //Envía una notificación de la acción en el canal de invocación
             await message.channel.send({ embeds: [successEmbed] });
         });
         

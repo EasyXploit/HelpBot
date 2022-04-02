@@ -26,11 +26,44 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setDescription(`${client.customEmojis.redTick} No puedes advertir a un miembro con un rol igual o superior al tuyo`)
         ]});
 
+        //Si el miembro tenía advertencias previas y el ejecutor no es el owner de la guild
+        if (client.db.warns[member.id] && message.author.id !== message.guild.ownerId) {
+            
+            //Almacena las claves de cada uno de los warns del miembro
+            const warnsKeys = Object.keys(client.db.warns[member.id]);
+
+            //Almacena el último warn del miembro
+            const latestWarn = client.db.warns[member.id][warnsKeys[warnsKeys.length - 1]];
+
+            //Si no ha pasado el tiempo mínimo entre advertencias
+            if (Date.now() - latestWarn.timestamp < commandConfig.minimumTimeDifference) {
+
+                //Almacena si el miembro puede saltarse el intervalo mínimo
+                let authorized;
+
+                //Por cada uno de los roles que pueden saltarse el intervalo mínimo
+                for (let index = 0; index < commandConfig.unlimitedFrequency; index++) {
+
+                    //Comprueba si el miembro ejecutor lo tiene
+                    if (message.member.roles.cache.has(commandConfig.unlimitedFrequency[index])) {
+                        authorized = true;
+                        break;
+                    };
+                };
+
+                //Si no está autorizado, devuelve un mensaje de error
+                if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.error)
+                    .setDescription(`${client.customEmojis.redTick} Tienes que esperar antes de poder poner una nueva advertencia a <@${member.id}>`)
+                ]});
+            };
+        };
+
         //Esto comprueba si se ha aportado alguna razón
         const reason = args.slice(1).join(' ');
 
         //Llama al manejador de infracciones
-        require('../../utils/lifecycle/infractionsHandler.js').run(client, message, member, reason, 2, message.author);
+        await require('../../utils/moderation/infractionsHandler.js').run(client, message, member, reason, 2, message.author);
 
     } catch (error) {
 

@@ -428,6 +428,8 @@
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
 		"additionalAliases": [],
+		"minimumTimeDifference": 15000,
+		"unlimitedFrequency": []
 	},
 	"xp": {
 		"enabled": true,

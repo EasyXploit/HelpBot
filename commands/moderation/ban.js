@@ -50,14 +50,15 @@ exports.run = async (client, message, args, command, commandConfig) => {
         const guildBans = await message.guild.bans.fetch();
 
         //Comprueba si el usuario ya estaba baneado
-        const banned = async () => { for (const bans of guildBans) if (bans[0] === user.id) return true };
+        for (const bans of guildBans) {
 
-        //Si el usuario ya estaba baneado, devuelve un error
-        if (banned) return message.channel.send({embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Este usuario ya ha sido baneado`)
-        ]});
-
+            //Si el usuario ya estaba baneado, devuelve un error
+            if (bans[0] === user.id) return message.channel.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} Este usuario ya ha sido baneado`)
+            ]});
+        };
+        
         //Almacena la razón
         let reason = args.splice(1).join(' ');
 

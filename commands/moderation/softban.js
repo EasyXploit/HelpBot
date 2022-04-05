@@ -49,14 +49,15 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Se comprueba si el usuario ya estaba baneado
         const guildBans = await message.guild.bans.fetch();
 
-        //Comprueba si el miembro ya estaba baneado
-        const banned = async () => { for (const bans of guildBans) if (bans[0] === user.id) return true };
+        //Comprueba si el usuario ya estaba baneado
+        for (const bans of guildBans) {
 
-        //Si el miembro ya estaba baneado, devuelve un error
-        if (banned) return message.channel.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Este usuario ya ha sido baneado`)
-        ]});
+            //Si el usuario ya estaba baneado, devuelve un error
+            if (bans[0] === user.id) return message.channel.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} Este usuario ya ha sido baneado`)
+            ]});
+        };
 
         //Calcula los días de mensajes a borrar
         const days = Math.floor(args[1]);

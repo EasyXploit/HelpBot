@@ -127,9 +127,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
             //Si hubo un error, lo lanza a la consola
             if (err) throw err;
 
-            //Banea al miembro
-            await message.guild.members.ban(user, {reason: `Moderador: ${message.author.id}, Vencimiento: ${Date.now() + milliseconds}, Razón: ${reason || 'Indefinida'}`});
-
             //Envía una notificación al miembro
             if (member) await user.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
@@ -139,6 +136,9 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .addField('Razón', reason || 'Indefinida', true)
                 .addField('Vencimiento', `<t:${Date.now() + milliseconds}:R>`, true)
             ]});
+
+            //Banea al miembro
+            await message.guild.members.ban(user, {reason: `Moderador: ${message.author.id}, Vencimiento: ${Date.now() + milliseconds}, Razón: ${reason || 'Indefinida'}`});
 
             //Notifica la acción en el canal de invocación
             await message.channel.send({ embeds: [ new client.MessageEmbed()

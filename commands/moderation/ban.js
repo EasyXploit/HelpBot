@@ -87,10 +87,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .setDescription(`${client.customEmojis.redTick} Debes proporcionar una razón`)
             ]});
         };
-
-        //Banea al usuario
-        await message.guild.members.ban(user, {reason: `Moderador: ${message.author.id}, Razón: ${reason || 'Indefinida'}`});
-
+        
         //Envía una notificación al miembro
         if (member) await user.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
@@ -100,6 +97,9 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .addField('Razón', reason || 'Indefinida', true)
             .addField('Duración', '∞', true)
         ]});
+
+        //Banea al usuario
+        await message.guild.members.ban(user, {reason: `Moderador: ${message.author.id}, Razón: ${reason || 'Indefinida'}`});
 
         //Envía una confirmación al canal ejecutor
         await message.channel.send({ embeds: [ new client.MessageEmbed()

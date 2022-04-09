@@ -97,9 +97,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
             ]});
         };
 
-        //Banea al miembro y borra sus mensajes
-        await message.guild.members.ban(user, {days: days, reason: `Moderador: ${message.author.id}, Días de mensajes borrados: ${days}, Razón: ${reason || 'Indefinida'}`});
-
         //Envía una notificación al miembro
         if (member) await user.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
@@ -110,6 +107,9 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .addField('Días de mensajes borrados', days.toString(), true)
             .addField('Duración', '∞', true)
         ]});
+
+        //Banea al miembro y borra sus mensajes
+        await message.guild.members.ban(user, {days: days, reason: `Moderador: ${message.author.id}, Días de mensajes borrados: ${days}, Razón: ${reason || 'Indefinida'}`});
 
         //Notifica la acción en el canal de invocación
         await message.channel.send({ embeds: [ new client.MessageEmbed()

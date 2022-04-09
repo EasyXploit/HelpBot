@@ -71,9 +71,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .setDescription(`${client.customEmojis.redTick} Debes proporcionar una razón`)
             ]});
         };
-
-        //Expulsa al miembro
-        await member.kick(`Moderador: ${message.author.id}, Razón: ${reason || 'Indefinida'}`);
         
         //Envía una notificación al miembro
         await member.send({ embeds: [ new client.MessageEmbed()
@@ -83,6 +80,9 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .addField('Moderador', message.author.tag, true)
             .addField('Razón', reason || 'Indefinida', true)
         ]});
+
+        //Expulsa al miembro
+        await member.kick(`Moderador: ${message.author.id}, Razón: ${reason || 'Indefinida'}`);
 
         //Notifica la acción en el canal de invocación
         await message.channel.send({embeds: [ new client.MessageEmbed()

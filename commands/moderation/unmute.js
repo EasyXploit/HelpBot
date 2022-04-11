@@ -9,10 +9,13 @@ exports.run = async (client, message, args, command, commandConfig) => {
         const member = await client.functions.fetchMember(message.guild, args[0]);
 
         //Devuelve un error si no se ha encontrado al miembro
-        if (!member) return message.channel.send({ embeds: [ new client.MessageEmbed()
+        if (isNaN(args[0]) && !member) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID`)
         ]});
+
+        //Almacena el ID del miembro
+        const memberId = member ? member.id : args[0];
 
         //Almacena la razón
         let reason = args.splice(1).join(' ');
@@ -47,25 +50,25 @@ exports.run = async (client, message, args, command, commandConfig) => {
         const mutedRole = await client.functions.checkMutedRole(message.guild);
 
         //Comprueba si el miembro no estaba silenciado
-        if (!member.roles.cache.has(mutedRole.id)) return message.channel.send({ embeds: [ new client.MessageEmbed()
+        if (member && !member.roles.cache.has(mutedRole.id)) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Este miembro no esta silenciado`)
         ]});
 
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
-        if (message.member.id !== message.guild.ownerId && message.member.roles.highest.position <= member.roles.highest.position) return message.channel.send({ embeds: [ new client.MessageEmbed()
+        if (member && message.member.id !== message.guild.ownerId && message.member.roles.highest.position <= member.roles.highest.position) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`)
         ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
 
         //Elimina el rol silenciado al miembro
-        await member.roles.remove(mutedRole);
+        if (member) await member.roles.remove(mutedRole);
         
         //Si el silenciamiento estaba registrado en la base de datos
-        if (client.db.mutes.hasOwnProperty(member.id)) {
+        if (client.db.mutes.hasOwnProperty(memberId)) {
 
             //Elimina la entrada de la base de datos
-            delete client.db.mutes[member.id];
+            delete client.db.mutes[memberId];
 
             //Sobreescribe el fichero de la base de datos con los cambios
             await client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.db.mutes), async err => {
@@ -78,14 +81,14 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Envía un mensaje al canal de registros
         await client.functions.loggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.correct)
-            .setAuthor({ name: `${member.user.tag} ha sido DES-SILENCIADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
-            .addField('Miembro', member.user.tag, true)
+            .setAuthor({ name: `${member ? member.user.tag : `${memberId} (ID)`} ha sido DES-SILENCIADO`})
+            .addField('Miembro', member ? member.user.tag : `${memberId} (ID)`, true)
             .addField('Moderador', message.author.tag, true)
             .addField('Razón', reason || 'Indefinida', true)
         );
 
         //Envía una notificación al miembro
-        await member.send({ embeds: [ new client.MessageEmbed()
+        if (member) await member.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.correct)
             .setAuthor({ name: '[DES-SILENCIADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
             .setDescription(`${member}, has sido des-silenciado en ${message.guild.name}`)
@@ -97,7 +100,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryCorrect)
             .setTitle(`${client.customEmojis.greenTick} Operación completada`)
-            .setDescription(`El miembro **${member.user.tag}** ha sido des-silenciado`)
+            .setDescription(`El miembro **${member ? member.user.tag : `${memberId} (ID)`}** ha sido des-silenciado`)
         ]});
         
     } catch (error) {

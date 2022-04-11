@@ -6,10 +6,13 @@ exports.run = async (client, message, args, command, commandConfig) => {
         const member = await client.functions.fetchMember(message.guild, args[0] || message.author.id);
 
         //Si no se encuentra, devuelve un error
-        if (!member) return await client.functions.syntaxHandler(message.channel, commandConfig);
+        if (isNaN(args[0]) && !member) return await client.functions.syntaxHandler(message.channel, commandConfig);
+
+        //Almacena el ID del miembro
+        const memberId = member ? member.id : args[0];
 
         //Comprueba, si corresponde, que el miembro tenga permiso para ver el historial de otros
-        if (message.member.id !== member.id) {
+        if (message.member.id !== memberId) {
 
             //Variable para saber si está autorizado
             let authorized;
@@ -32,7 +35,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         };
 
         //Comprueba si se trata de un bot
-        if (member.user.bot) return message.channel.send({ embeds: [ new client.MessageEmbed()
+        if (member && member.user.bot) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} No puedes obtener información de un bot`)
         ]});
@@ -70,20 +73,22 @@ exports.run = async (client, message, args, command, commandConfig) => {
             let sanction;
 
             //Comprueba qué tipo de sanción tiene el miembro (si la tiene)
-            if (client.db.mutes[member.id]) sanction = `Silenciado hasta <t:${Math.round(new Date(client.db.mutes[member.id].time) / 1000)}>`;
-            else if (member.roles.cache.has(client.config.dynamic.mutedRoleId)) sanction = 'Silenciado indefinidamente';
+            if (client.db.mutes[memberId]) sanction = `Silenciado hasta <t:${Math.round(new Date(client.db.mutes[memberId].time) / 1000)}>`;
+            else if (member && member.roles.cache.has(client.config.dynamic.mutedRoleId)) sanction = 'Silenciado indefinidamente';
 
             //Genera el embed de las infracciones
-            const infractionsEmbed = new client.MessageEmbed()
+            let infractionsEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
                 .setTitle('⚠ Advertencias')
-                .setDescription(`Mostrando las advertencias del miembro **${member.user.tag}**.\nSanción actual: \`${sanction || 'Ninguna'}\`.`)
-                .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
+                .setDescription(`Mostrando las advertencias del miembro **${member ? member.user.tag : `${memberId} (ID)`}**.\nSanción actual: \`${sanction || 'Ninguna'}\`.`)
                 .addField('Últimas 24h', onDay.toString(), true)
                 .addField('Últimos 7 días', onWeek.toString(), true)
                 .addField('Total', total.toString(), true)
                 .addField('Listado de advertencias', total > 0 ? await loadWarns(10 * actualPage - 9, 10 * actualPage) : 'Ninguna')
                 .setFooter({ text: `Página ${actualPage} de ${totalPages}`, iconURL: client.homeGuild.iconURL({dynamic: true}) });
+
+            //Si se encontró el miembro, muestra su avatar en el embed
+            if (member) infractionsEmbed.setThumbnail(member.user.displayAvatarURL({dynamic: true}));
 
             //Comprueba si ha de editar o enviar el embed
             if (embed) await embed.edit({ embeds: [infractionsEmbed] }).then(async embed => { awaitReactions(embed) });
@@ -144,13 +149,13 @@ exports.run = async (client, message, args, command, commandConfig) => {
         let onDay = 0, onWeek = 0, total = 0;
 
         //Almacena las advertencias del miembro
-        let memberWarns = client.db.warns[member.id];
+        let memberWarns = client.db.warns[memberId];
 
         //Si el miembro tenía advertencias
-        if (client.db.warns[member.id]) {
+        if (client.db.warns[memberId]) {
 
             //Mapea las advertencias del miembro
-            memberWarns = Object.entries(client.db.warns[member.id]).reverse().map((warn) => ({ [warn[0]]: warn[1] }));
+            memberWarns = Object.entries(client.db.warns[memberId]).reverse().map((warn) => ({ [warn[0]]: warn[1] }));
 
             //Almacena el total de ellas
             total = memberWarns.length

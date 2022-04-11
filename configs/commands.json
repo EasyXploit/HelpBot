@@ -27,7 +27,7 @@
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
 		"additionalAliases": [],
-		"anonynmousMode": []
+		"anonymousMode": []
 	},
 	"edit": {
 		"enabled": true,

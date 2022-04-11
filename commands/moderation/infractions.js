@@ -138,10 +138,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
         };
 
         //Almacena la página actual
-        let actualPage = totalPages = 1;
+        let actualPage = 1, totalPages = 1;
 
         //Almacena el total de sanciones, en 1 día y 1 semana, y las páginas totales
-        let onDay = onWeek = total = 0;
+        let onDay = 0, onWeek = 0, total = 0;
 
         //Almacena las advertencias del miembro
         let memberWarns = client.db.warns[member.id];

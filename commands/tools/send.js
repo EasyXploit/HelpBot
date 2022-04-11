@@ -28,7 +28,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             //Comprueba si se excedió la longitud máxima
             if (body.length > 2000) return await message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} La longitud máxima es de \`4096\` carácteres.`)
+                .setDescription(`${client.customEmojis.redTick} La longitud máxima es de \`2000\` carácteres.`)
             ]});
 
             //Envía el mensaje en texto plano

@@ -82,7 +82,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         
     } catch (error) {
 
-        //Maneja si un miembro no admite mensajes directos del bot (pro la razón que sea)
+        //Maneja si un miembro no admite mensajes directos del bot (por la razón que sea)
         if (error.toLocaleString().includes('Cannot send messages to this user')) return await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Este miembro no admite mensajes directos de <@${client.user.id}>.`)

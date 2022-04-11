@@ -548,7 +548,7 @@ exports.run = (client) => {
             } catch (error) {
 
                 //Si el canal no es accesible
-                if (error.toString().includes('DiscordAPIError')) {
+                if (error.toString().includes('Unknown Channel')) {
 
                     //Borrarlo de la config y descargarlo de la memoria
                     client.config.main.loggingChannel = '';
@@ -600,7 +600,7 @@ exports.run = (client) => {
             } catch (error) {
 
                 //Si el canal no es accesible
-                if (error.toString().includes('DiscordAPIError')) {
+                if (error.toString().includes('Unknown Channel')) {
 
                     //Borrarlo de la config y descargarlo de la memoria
                     client.config.main.debuggingChannel = '';

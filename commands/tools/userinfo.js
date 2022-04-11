@@ -41,26 +41,30 @@ exports.run = async (client, message, args, command, commandConfig) => {
         if (member.permissions.has('MANAGE_MESSAGES')) status.push('Moderador');
         if (status.length < 1) status.push('Usuario regular');
 
-        //Comprueba los permisos del miembro
-        let memberPermissions = member.permissions.serialize();
-        let permissionsArray = Object.keys(memberPermissions).filter(function (x) {
+        //Serieliza los permisos del miembro
+        const memberPermissions = member.permissions.serialize();
+
+        //Obtiene los nombres de los permisos
+        const permissionsArray = Object.keys(memberPermissions).filter(function (x) {
             return memberPermissions[x] !== false;
         });
 
         //Almacena las traducciones de los permisos
-        let translations = require('../../resources/translations/permissions.json');
+        const translations = require('../../resources/translations/permissions.json');
+
+        //Almacena los permisos traducidos
+        let translatedPermissions = [];
 
         //Traduce los permisos del miembro
-        let translatedPermissions = [];
-        permissionsArray.forEach(async (permission) => {
-            translatedPermissions.push(translations[permission]);
-        });
+        permissionsArray.forEach(async (permission) => translatedPermissions.push(translations[permission] || permission));
 
         //Comprueba si existe el rol silenciado, sino lo crea
-        let mutedRole = await client.functions.checkMutedRole(message.guild);
+        const mutedRole = await client.functions.checkMutedRole(message.guild);
 
-        //Comprueba si el miembro está silenciado
+        //Almacena si el miembro está silenciado
         let sanction;
+
+        //Comprueba si el miembro está silenciado (y la duración)
         if (client.db.mutes[member.id]) sanction = `Silenciado hasta <t:${Math.round(new Date(client.db.mutes[member.id].time) / 1000)}>`;
         else if (member.roles.cache.has(mutedRole.id)) sanction = 'Silenciado indefinidamente';
 

@@ -14,6 +14,23 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setDescription(`${client.customEmojis.redTick} El rol **${args[0]}** no existe`)
         ]});
 
+        //Serieliza los permisos del rol
+        const rolePermissions = role.permissions.serialize();
+
+        //Obtiene los nombres de los permisos
+        const permissionsArray = Object.keys(rolePermissions).filter(permission => {
+            return rolePermissions[permission] !== false;
+        });
+
+        //Almacena las traducciones de los permisos
+        const translations = require('../../resources/translations/permissions.json');
+
+        //Almacena los permisos traducidos
+        let translatedPermissions = [];
+
+        //Traduce los permisos del rol
+        permissionsArray.forEach(async (permission) => translatedPermissions.push(translations[permission] || permission));
+
         //Envía un embed con la información del rol
         await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(role.hexColor)
@@ -26,7 +43,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .addField('👁️‍ Se muestra', role.hoist ? 'Visible' : 'Oculto', true)
             .addField('🔰 Color', role.hexColor, true)
             .addField('📝 Fecha de creación', `<t:${Math.round(role.createdTimestamp / 1000)}>`, true)
-            .addField('⚙ Administración', role.managed ? 'Externa' : 'Local', true)
+            .addField('🤖 Integración', role.managed ? 'Si' : 'No', true)
+            .addField('👮 Permisos específicos', `\`\`\`${translatedPermissions.join(', ')}\`\`\``)
         ]});
 
     } catch (error) {

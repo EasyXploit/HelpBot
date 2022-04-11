@@ -32,6 +32,7 @@
     "MANAGE_EMOJIS_AND_STICKERS": "Gestionar emojis y stickers",
     "USE_APPLICATION_COMMANDS": "Usar comandos de aplicación",
     "REQUEST_TO_SPEAK": "Solicitar hablar",
+    "MANAGE_EVENTS": "Administrar eventos",
     "MANAGE_THREADS": "Administrar hilos",
     "USE_PUBLIC_THREADS": "Usar hilos públicos",
     "CREATE_PUBLIC_THREADS": "Crear hilos públicos",
@@ -39,6 +40,6 @@
     "CREATE_PRIVATE_THREADS": "Crear hilos privados",
     "USE_EXTERNAL_STICKERS": "Usar stickers externos",
     "SEND_MESSAGES_IN_THREADS": "Enviar mensajes en los hilos",
-    "START_EMBEDDED_ACTIVITIES": "Iniciar actividades incorporadas"
-
+    "START_EMBEDDED_ACTIVITIES": "Iniciar actividades incorporadas",
+    "MODERATE_MEMBERS": "Moderar miembros"
 }

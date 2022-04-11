@@ -28,7 +28,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             case 'author':
                 if (type === 'embed') {
                     let resultMessage = new client.MessageEmbed()
-                        .setAuthor({ name: `Mensaje de ${message.author.tag}`, iconURL: message.author.avatarURL() })
+                        .setAuthor({ name: `Mensaje de: ${message.author.tag}`, iconURL: message.author.avatarURL() })
                         .setColor(client.config.colors.primary)
                         .setDescription(body);
 
@@ -81,6 +81,12 @@ exports.run = async (client, message, args, command, commandConfig) => {
         await message.channel.send({ embeds: [confirmEmbed] });
         
     } catch (error) {
+
+        //Maneja si un miembro no admite mensajes directos del bot (pro la razón que sea)
+        if (error.toLocaleString().includes('Cannot send messages to this user')) return await message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} Este miembro no admite mensajes directos de <@${client.user.id}>.`)
+        ]});
 
         //Ejecuta el manejador de errores
         await client.functions.commandErrorHandler(error, message, command, args);

@@ -27,6 +27,13 @@ exports.run = async (client, message, args, command, commandConfig) => {
         switch (mode) {
             case 'author':
                 if (type === 'embed') {
+
+                    //Comprueba si se excedió la longitud máxima
+                    if (body.length > 4096) return await message.channel.send({ embeds: [ new client.MessageEmbed()
+                        .setColor(client.config.colors.secondaryError)
+                        .setDescription(`${client.customEmojis.redTick} La longitud máxima es de \`4096\` carácteres.`)
+                    ]});
+
                     let resultMessage = new client.MessageEmbed()
                         .setAuthor({ name: `Mensaje de: ${message.author.tag}`, iconURL: message.author.avatarURL() })
                         .setColor(client.config.colors.primary)
@@ -35,6 +42,13 @@ exports.run = async (client, message, args, command, commandConfig) => {
                     await member.user.send({ embeds: [resultMessage] });
 
                 } else if (type === 'normal') {
+
+                    //Comprueba si se excedió la longitud máxima
+                    if (body.length > 2000) return await message.channel.send({ embeds: [ new client.MessageEmbed()
+                        .setColor(client.config.colors.secondaryError)
+                        .setDescription(`${client.customEmojis.redTick} La longitud máxima es de \`2000\` carácteres.`)
+                    ]});
+
                     await member.user.send({ content: `**Mensaje de ${message.author.tag}:**\n${body}` });
                 }
                 break;
@@ -63,12 +77,26 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 };
 
                 if (type === 'embed') {
+
+                    //Comprueba si se excedió la longitud máxima
+                    if (body.length > 4096) return await message.channel.send({ embeds: [ new client.MessageEmbed()
+                        .setColor(client.config.colors.secondaryError)
+                        .setDescription(`${client.customEmojis.redTick} La longitud máxima es de \`4096\` carácteres.`)
+                    ]});
+
                     let resultMessage = new client.MessageEmbed()
                         .setColor(client.config.colors.primary)
                         .setDescription(body);
 
                     await member.user.send({ embeds: [resultMessage] });
                 } else if (type === 'normal') {
+
+                    //Comprueba si se excedió la longitud máxima
+                    if (body.length > 2000) return await message.channel.send({ embeds: [ new client.MessageEmbed()
+                        .setColor(client.config.colors.secondaryError)
+                        .setDescription(`${client.customEmojis.redTick} La longitud máxima es de \`2000\` carácteres.`)
+                    ]});
+
                     await member.user.send({ content: body });
                 };
 

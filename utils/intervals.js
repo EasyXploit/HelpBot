@@ -36,7 +36,7 @@ exports.run = (client) => {
                     .setColor(client.config.colors.correct)
                     .setAuthor({ name: `${member.user.tag} ha sido DES-SILENCIADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
                     .addField('Miembro', member ? member.user.tag : `\`${idKey}\``, true)
-                    .addField('Moderador', `<@${client.user.id}>`, true)
+                    .addField('Moderador', `${client.user}`, true)
                     .addField('Razón', 'Venció la amonestación', true)
                 );
                 
@@ -45,7 +45,7 @@ exports.run = (client) => {
                     .setColor(client.config.colors.correct)
                     .setAuthor({ name: '[DES-SILENCIADO]', iconURL: guild.iconURL({dynamic: true}) })
                     .setDescription(`${member ? member.user.tag : `\`${idKey}\``}, has sido des-silenciado en ${client.homeGuild.name}`)
-                    .addField('Moderador', `<@${client.user.id}>`, true)
+                    .addField('Moderador', `${client.user}`, true)
                     .addField('Razón', 'Venció la amonestación', true)
                 ]});
             });
@@ -87,7 +87,7 @@ exports.run = (client) => {
                         .setColor(client.config.colors.correct)
                         .setAuthor({ name: `${user.tag} ha sido DES-BANEADO`, iconURL: user.displayAvatarURL({dynamic: true}) })
                         .addField('Usuario', user.tag, true)
-                        .addField('Moderador', `<@${client.user.id}>`, true)
+                        .addField('Moderador', `${client.user}`, true)
                         .addField('Razón', 'Venció la amonestación', true)
                     );
 

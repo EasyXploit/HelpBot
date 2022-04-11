@@ -34,7 +34,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         const memberPermissions = channel.permissionsFor(message.author).bitfield;
         if ((memberPermissions & BigInt(0x2000)) !== BigInt(0x2000)) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} No tienes permiso para administrar mensajes en <#${channel.id}>.`)
+            .setDescription(`${client.customEmojis.redTick} No tienes permiso para administrar mensajes en ${channel}.`)
         ]});
 
         //Se obtiene la cantidad de mensajes especificada (incluyendo el de invocación)
@@ -43,7 +43,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Si no se encontraron mensajes en el canal, devuelve un error
         if (messages.size <= extraMessages) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} No se pudo encontrar ningún mensaje en <#${channel.id}>.`)
+            .setDescription(`${client.customEmojis.redTick} No se pudo encontrar ningún mensaje en ${channel}.`)
         ]});
 
         //Almacena los mensajes que serán borrados
@@ -85,7 +85,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         await client.functions.loggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.logging)
             .setTitle('📑 Registro - [PURGA DE MENSAJES]')
-            .setDescription(`${message.author.tag} eliminó ${msgsToDelete.size - extraMessages} mensajes del canal <#${channel.id}>`)
+            .setDescription(`${message.author.tag} eliminó ${msgsToDelete.size - extraMessages} mensajes del canal ${channel}`)
         );
 
     } catch (error) {

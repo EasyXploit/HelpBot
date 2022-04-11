@@ -19,7 +19,7 @@ exports.run = async (client, guild) => {
         return await guild.members.fetch(guild.ownerId).then(async member => await member.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.correct)
             .setTitle(`${client.customEmojis.greenTick} ¡${client.user.username} añadido correctamente!`)
-            .setDescription(`Usa los ficheros de configuración para ajustarlo al bot a tu gusto.\nUsa el comando \`${client.config.main.prefix}help\` para ver los comandos.\nRecuerda que el bot solo podrá moderar a aquellas personas que tengan un rol por debajo del rol creado por <@${client.user.id}>\nSi necesitas ayuda, puedes [consultar la wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration).`)]
+            .setDescription(`Usa los ficheros de configuración para ajustarlo al bot a tu gusto.\nUsa el comando \`${client.config.main.prefix}help\` para ver los comandos.\nRecuerda que el bot solo podrá moderar a aquellas personas que tengan un rol por debajo del rol creado por ${client.user}.\nSi necesitas ayuda, puedes [consultar la wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration).`)]
         }));
 
     } catch (error) {

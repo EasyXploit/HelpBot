@@ -82,7 +82,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setAuthor({ name: '[EXPULSADO]', iconURL: client.homeGuild.iconURL({dynamic: true}) })
-                .setDescription(`<@${member.id}>, has sido expulsado en ${client.homeGuild.name}`)
+                .setDescription(`${member}, has sido expulsado en ${client.homeGuild.name}`)
                 .addField('Moderador', moderator.tag, true)
                 .addField('Razón', 'Demasiadas advertencias', true)
             ]});
@@ -120,7 +120,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setAuthor({ name: '[BANEADO]', iconURL: client.homeGuild.iconURL({ dynamic: true}) })
-                .setDescription(`<@${member.user.id}>, has sido baneado en ${client.homeGuild.name}`)
+                .setDescription(`${member.user}, has sido baneado en ${client.homeGuild.name}`)
                 .addField('Moderador', moderator.tag, true)
                 .addField('Razón', 'Demasiadas advertencias', true)
                 .addField('Vencimiento', time ? `<t:${Math.round(new Date(parseInt(Date.now() + time)) / 1000)}:R>` : 'No vence', true)
@@ -137,7 +137,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
         await member.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
             .setAuthor({ name: '[ADVERTIDO]', iconURL: client.homeGuild.iconURL({dynamic: true}) })
-            .setDescription(`<@${member.id}>, has sido advertido en ${client.homeGuild.name}`)
+            .setDescription(`${member}, has sido advertido en ${client.homeGuild.name}`)
             .addField('Moderador', moderator.tag, true)
             .addField('Razón', warnReason, true)
         ]});
@@ -181,7 +181,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
                     .addField('Moderador', moderator.tag, true)
                     .addField('Razón', warnReason, true)
                     .addField('ID de Advertencia', warnID, true)
-                    .addField('Canal', `<#${message.channel.id}>`, true)
+                    .addField('Canal', `${message.channel}`, true)
                     .addField('Infracciones', (Object.keys(client.db.warns[member.id]).length).toString(), true)
                 );
 

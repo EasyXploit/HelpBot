@@ -34,7 +34,7 @@ exports.run = async (member, client) => {
             await member.user.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setAuthor({ name: '[EXPULSADO]', iconURL: member.guild.iconURL({dynamic: true}) })
-                .setDescription(`<@${member.user.id}>, has sido expulsado de ${member.guild.name}`)
+                .setDescription(`${member.user}, has sido expulsado de ${member.guild.name}`)
                 .addField('Moderador', client.user, true)
                 .addField('Razón', 'Tu nombre de usuario contiene una palabra prohibida en la comunidad.', true)
             ]});

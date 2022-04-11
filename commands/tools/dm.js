@@ -108,7 +108,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         await client.functions.loggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.logging)
             .setTitle('📑 Registro - [MENSAJERÍA]')
-            .setDescription(`${message.author.tag} envió un mensaje privado a ${member.user.tag} a través de <@${client.user.id}>:`)
+            .setDescription(`${message.author.tag} envió un mensaje privado a ${member.user.tag} a través de ${client.user}:`)
             .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
             .addField('Modo:', args[1], true)
             .addField('Tipo:', args[2], true)
@@ -126,7 +126,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Maneja si un miembro no admite mensajes directos del bot (por la razón que sea)
         if (error.toLocaleString().includes('Cannot send messages to this user')) return await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Este miembro no admite mensajes directos de <@${client.user.id}>.`)
+            .setDescription(`${client.customEmojis.redTick} Este miembro no admite mensajes directos de ${client.user}.`)
         ]});
 
         //Ejecuta el manejador de errores

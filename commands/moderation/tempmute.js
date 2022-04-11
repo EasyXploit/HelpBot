@@ -140,7 +140,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setAuthor({ name: '[SILENCIADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
-                .setDescription(`<@${member.id}>, has sido silenciado en ${message.guild.name}`)
+                .setDescription(`${member}, has sido silenciado en ${message.guild.name}`)
                 .addField('Moderador', message.author.tag, true)
                 .addField('Razón', reason || 'Indefinida', true)
                 .addField('Vencimiento', `<t:${Date.now() + milliseconds}:R>`, true)

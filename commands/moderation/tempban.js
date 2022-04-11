@@ -131,7 +131,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             if (member) await user.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setAuthor({ name: '[BANEADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
-                .setDescription(`<@${user.id}>, has sido baneado en ${message.guild.name}`)
+                .setDescription(`${user}, has sido baneado en ${message.guild.name}`)
                 .addField('Moderador', message.author.tag, true)
                 .addField('Razón', reason || 'Indefinida', true)
                 .addField('Vencimiento', `<t:${Date.now() + milliseconds}:R>`, true)

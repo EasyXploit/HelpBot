@@ -139,7 +139,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 					//Devuelve un error si no se ha proporcionado una URL válida
 					return message.channel.send({ embeds: [ new client.MessageEmbed()
 						.setColor(client.config.colors.error)
-						.setDescription(`${client.customEmojis.redTick} Por el momento, <@${client.user.id}> solo puede obtener pistas desde YouTube.`)]
+						.setDescription(`${client.customEmojis.redTick} Por el momento, ${client.user} solo puede obtener pistas desde YouTube.`)]
 					});
 				};
 	

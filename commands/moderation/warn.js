@@ -54,7 +54,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 //Si no está autorizado, devuelve un mensaje de error
                 if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} Tienes que esperar antes de poder poner una nueva advertencia a <@${member.id}>`)
+                    .setDescription(`${client.customEmojis.redTick} Tienes que esperar antes de poder poner una nueva advertencia a ${member}`)
                 ]});
             };
         };

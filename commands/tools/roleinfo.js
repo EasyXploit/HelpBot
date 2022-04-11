@@ -32,7 +32,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             let resultEmbed = new client.MessageEmbed()
                 .setColor(role.hexColor)
                 .setTitle('🔖 Información de rol')
-                .setDescription(`Mostrando información acerca del rol <@&${role.id}>`)
+                .setDescription(`Mostrando información acerca del rol ${role}`)
                 .addField('🏷 Nombre del rol', role.name, true)
                 .addField('🆔 ID del rol', role.id, true)
                 .addField('👥 Miembros con el rol', membersWithRole.toString(), true)

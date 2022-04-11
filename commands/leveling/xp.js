@@ -190,7 +190,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.correct)
                 .setAuthor({ name: '[XP MODIFICADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
-                .setDescription(`<@${member.id}>, tu cantidad de XP ha sido modificada`)
+                .setDescription(`${member}, tu cantidad de XP ha sido modificada`)
                 .addField('Moderador', message.author.tag, true)
                 .addField('Anterior valor', oldValue.toString(), true)
                 .addField('Nuevo valor', newValue.toString(), true)]

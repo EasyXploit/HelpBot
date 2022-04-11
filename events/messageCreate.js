@@ -59,7 +59,7 @@ exports.run = async (message, client) => {
             //Advierte de que los comandos no funcionan por MD
             return await message.author.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.information)
-                .setDescription(`${client.customEmojis.grayTick} | Por el momento, los comandos de **${client.user.username}** solo están disponibles desde el servidor.`)
+                .setDescription(`${client.customEmojis.grayTick} | Los comandos de ${client.user} solo están disponibles desde ${client.homeGuild.name}.`)
             ]});
         };
 

@@ -20,7 +20,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} <@${client.user.id}> no está conectado a ningún canal.`)]
+                    .setDescription(`${client.customEmojis.redTick} ${client.user} no está conectado a ningún canal.`)]
                 });
 
                 //Devuelve el estado "falso"
@@ -63,7 +63,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que <@${client.user.id}>.`)]
+                    .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que ${client.user}.`)]
                 });
 
                 //Devuelve el estado "falso"
@@ -115,7 +115,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} <@${client.user.id}> ya está conectado a \`${voiceChannel.name}\`.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.user} ya está conectado a \`${voiceChannel.name}\`.`)
                 ]});
     
                 //Devuelve el estado "falso"
@@ -138,7 +138,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} <@${client.user.id}> no puede conectarse al canal de AFK.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.user} no puede conectarse al canal de AFK.`)
                 ]});
 
                 //Devuelve el estado "falso"
@@ -161,7 +161,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} <@${client.user.id}> no tiene permiso para hablar en \`${voiceChannel.name}\`.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.user} no tiene permiso para hablar en \`${voiceChannel.name}\`.`)
                 ]});
 
                 //Devuelve el estado "falso"
@@ -184,7 +184,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} <@${client.user.id}> tiene prohibido conetarse a \`${voiceChannel.name}\`.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.user} tiene prohibido conetarse a \`${voiceChannel.name}\`.`)
                 ]});
     
                 //Devuelve el estado "falso"
@@ -207,7 +207,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} <@${client.user.id}> no tiene permiso para unirse a \`${voiceChannel.name}\`.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.user} no tiene permiso para unirse a \`${voiceChannel.name}\`.`)
                 ]})
                 
                 //Devuelve el estado "falso"

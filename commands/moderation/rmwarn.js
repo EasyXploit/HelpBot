@@ -110,7 +110,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             toDMEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.correct)
                 .setAuthor({ name: '[DES-ADVERTIDO]', iconURL: message.guild.iconURL({ dynamic: true}) })
-                .setDescription(`<@${member.id}>, se te han retirado todas la advertencias.`)
+                .setDescription(`${member}, se te han retirado todas la advertencias.`)
                 .addField('Moderador', message.author.tag, true)
                 .addField('Razón', reason || 'Indefinida', true);
 
@@ -152,7 +152,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             toDMEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.correct)
                 .setAuthor({ name: '[DES-ADVERTIDO]', iconURL: message.guild.iconURL({ dynamic: true}) })
-                .setDescription(`<@${member.id}>, se te ha retirado la advertencia con ID \`${warnID}\`.`)
+                .setDescription(`${member}, se te ha retirado la advertencia con ID \`${warnID}\`.`)
                 .addField('Moderador', message.author.tag, true)
                 .addField('ID de advertencia:', warnID, true)
                 .addField('Advertencia:', client.db.warns[member.id][warnID].reason, true)

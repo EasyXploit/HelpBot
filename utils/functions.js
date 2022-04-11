@@ -362,7 +362,7 @@ exports.run = (client) => {
                 const levelUpEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.primary)
                     .setAuthor({ name: '¡Subiste de nivel!', iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                    .setDescription(`Enhorabuena <@${member.id}>, has subido al nivel **${userStats.level}**`);
+                    .setDescription(`Enhorabuena ${member}, has subido al nivel **${userStats.level}**`);
 
                 //Manda el mensaje de subida de nivel, si se ha configurado
                 if (mode === 'message' && client.config.xp.notifylevelUpOnChat) channel.send({ embeds: [levelUpEmbed] });
@@ -651,8 +651,8 @@ exports.run = (client) => {
             .addField('Comando:', command.slice(-0, -3), true)
             .addField('Argumentos:', arguments, true)
             .addField('Origen:', message.guild.name, true)
-            .addField('Canal:', `<#${message.channel.id}>`, true)
-            .addField('Autor:', `<@${message.author.id}>`, true)
+            .addField('Canal:', `${message.channel}`, true)
+            .addField('Autor:', `${message.author.tag}`, true)
             .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
             .addField('Error:', `\`\`\`${errorString}\`\`\``, true)
         );

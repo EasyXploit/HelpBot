@@ -70,7 +70,7 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
             .setColor(randomColor())
             .setAuthor({name: 'Playlist añadida a la cola 🎶', iconURL: 'attachment://dj.png'})
             .setDescription(`[${playlist.title}](${playlist.url})\n\n● **Autor:** \`${playlist.channel.name !== null ? playlist.channel.name : 'YouTube'}\`\n● **Pistas:** \`${playlistItems.length}\``)
-            .addField('Solicitado por:', `<@${requestingMember.id}>`, true)
+            .addField('Solicitado por:', `${requestingMember}`, true)
             .setFooter({text: `${await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild)}`, iconURL: reproductionQueue.boundedTextChannel.guild.iconURL({dynamic: true})})
         ], files: ['./resources/images/dj.png']});
 

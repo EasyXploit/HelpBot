@@ -26,7 +26,7 @@ exports.run = async (member, client) => {
                 const loggingEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.error)
                     .setAuthor({ name: `${member.user.tag} ha sido EXPULSADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                    .addField('Miembro', `<@${member.user.id}>`, true)
+                    .addField('ID', member.user.id, true)
                     .addField('Moderador', moderador.tag || 'Desconocido', true)
                     .addField('Razón', razon || 'Indefinida', true);
 

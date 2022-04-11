@@ -33,6 +33,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                         .setDescription(body);
 
                     await member.user.send({ embeds: [resultMessage] });
+
                 } else if (type === 'normal') {
                     await member.user.send({ content: `**Mensaje de ${message.author.tag}:**\n${body}` });
                 }
@@ -74,11 +75,22 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 break;
         };
 
-        let confirmEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryCorrect)
-            .setDescription(`${client.customEmojis.greenTick} ¡Mensaje enviado!`);
+        //Envía un registro al canal de registro
+        await client.functions.loggingManager('embed', new client.MessageEmbed()
+            .setColor(client.config.colors.logging)
+            .setTitle('📑 Registro - [MENSAJERÍA]')
+            .setDescription(`${message.author.tag} envió un mensaje privado a ${member.user.tag} a través de <@${client.user.id}>:`)
+            .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
+            .addField('Modo:', mode, true)
+            .addField('Tipo:', type, true)
+            .addField('Contenido:', `\`\`\`${body}\`\`\``)
+        );
 
-        await message.channel.send({ embeds: [confirmEmbed] });
+        //Envía un mensaje de confirmación
+        await message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryCorrect)
+            .setDescription(`${client.customEmojis.greenTick} ¡Mensaje enviado!`)
+        ]});
         
     } catch (error) {
 

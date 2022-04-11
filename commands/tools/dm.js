@@ -112,7 +112,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
             .addField('Modo:', args[1], true)
             .addField('Tipo:', args[2], true)
-            .addField('Contenido:', `\`\`\`${body}\`\`\``)
+            .addField('Contenido:', `\`\`\`${body.length > 1014 ? `${body.slice(0, 1014)} ...` : body}\`\`\``)
         );
 
         //Envía un mensaje de confirmación

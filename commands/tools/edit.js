@@ -30,6 +30,12 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Almacena el nuevo cuerpo del mensaje
         const newContent = args.splice(2).join(' ');
 
+        //Comprueba si se excedió la longitud máxima del cuerpo (en función de si es un embed o texto plano)
+        if ((msg.embeds[0] && newContent.length > 4096) || (!msg.embeds[0] && newContent.length > 2000)) return await message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} La longitud máxima es de \`${msg.embeds[0] ? '4096' : '2000'}\` carácteres.`)
+        ]});
+
         //Comprueba si ha de modificar un embed o un mensaje de texto plano
         if (msg.embeds.length > 0) {
 

@@ -323,46 +323,34 @@ exports.run = (client) => {
                 //Ajusta el XP actual de miembro
                 userStats.actualXP = ((5 * client.config.xp.dificultyModifier) * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) - userStats.totalXP;
 
-                //Para cada recompensa, calcula si el miembro es elegible
-                for (let index = client.config.levelingRewards.length - 1; index >= 0; index--) {
-
-                    //Almacena la recompensa
-                    const reward = client.config.levelingRewards[index];
-        
-                    //Si el miembro tiene el nivel necesario para la recompensa, se la asigna
-                    if (userStats.level >= reward.requiredLevel) {
-
-                        //Si tiene un nivel superior al 1
-                        if (userStats.level > 1) {
-
-                            //Almacena la anterior recompensa
-                            const pastReward = client.config.levelingRewards[index - 1];
-
-                            //Para cada uno de los roles de la recompensa anterior
-                            pastReward.roles.forEach(async role => {
-
-                                //Le quita al miembro el rol de esta iteración
-                                if (member.roles.cache.has(role)) await member.roles.remove(role);
-                            });
-                        };
-        
-                        //Para cada uno de los roles de la recompensa
-                        reward.roles.forEach(async role => {
-
-                            //Se lo asigna al miembro
-                            if (!member.roles.cache.has(role)) await member.roles.add(role);
-                        });
-
-                        //Parar el bucle
-                        break;
-                    };
-                };
+                //Asigna las recompensas correspondientes al nivel (si corresponde), y almacena los roles recompensados
+                const rewardedRoles = await client.functions.assignRewards(member, userStats.level);
 
                 //Genera un embed de subida de nivel
-                const levelUpEmbed = new client.MessageEmbed()
+                let levelUpEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.primary)
                     .setAuthor({ name: '¡Subiste de nivel!', iconURL: member.user.displayAvatarURL({dynamic: true}) })
                     .setDescription(`Enhorabuena ${member}, has subido al nivel **${userStats.level}**`);
+
+                //Si se recompensó al miembro con roles
+                if (rewardedRoles) {
+
+                    //Almacena los nombres de los roles
+                    const roleNames = [];
+
+                    //Por cada uno de los roles recompensados
+                    for (const roleId of rewardedRoles) {
+
+                        //Busca el rol en la guild
+                        const fetchedRole = await client.functions.fetchRole(client.homeGuild, roleId);
+
+                        //Sube al array de nombre, el nombre del rol iterado
+                        roleNames.push(fetchedRole.name);
+                    };
+
+                    //Añade un campo al embed de levelup con los roles recompensados
+                    levelUpEmbed.addField('Recompensas obtenidas', `\`${roleNames.join('`, `')}\``);
+                };
 
                 //Manda el mensaje de subida de nivel, si se ha configurado
                 if (mode === 'message' && client.config.xp.notifylevelUpOnChat) channel.send({ embeds: [levelUpEmbed] });
@@ -417,11 +405,19 @@ exports.run = (client) => {
         };
 
         //Si hubieron roles a asignar
-        if (toReward.length > 0) toReward.forEach(async role => {
+        if (toReward.length > 0) {
 
-            //Si el miembro aún no tiene el rol, se lo añade
-            if (!member.roles.cache.has(role)) await member.roles.add(role);
-        });
+            //Asigna cada uno de ellos
+            toReward.forEach(async role => {
+
+                //Si el miembro aún no tiene el rol, se lo añade
+                if (!member.roles.cache.has(role)) await member.roles.add(role);
+            });
+
+            //Devuelve los roles recompensados
+            return toReward;
+
+        };
     };
 
     //Función para generar números enteros aleatorios dentro de un rango

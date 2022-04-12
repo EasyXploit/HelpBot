@@ -117,6 +117,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                             client.db.polls[pollID] = {
                                 channel: message.channel.id,
                                 message: poll.id,
+                                author: message.author.id,
                                 title: title,
                                 options: options
                             };
@@ -151,6 +152,29 @@ exports.run = async (client, message, args, command, commandConfig) => {
             let poll = await client.functions.fetchMessage(client.db.polls[args[1]].message, channel)
 
             if (!poll) return message.channel.send({ embeds: [notFoundEmbed] });
+
+            //Comprueba, si corresponde, que el miembro tenga permiso para finalizar cualquier encuesta
+            if (message.member.id !== client.db.polls[args[1]].author) {
+
+                //Variable para saber si está autorizado
+                let authorized;
+
+                //Para cada ID de rol de la lista blanca
+                for (let index = 0; index < commandConfig.canEndAny.length; index++) {
+
+                    //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
+                    if (message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(role => role.id === commandConfig.canEndAny[index])) {
+                        authorized = true;
+                        break;
+                    };
+                };
+
+                //Si no se permitió la ejecución, manda un mensaje de error
+                if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.error)
+                    .setDescription(`${client.customEmojis.redTick} ${message.author}, solo puedes finalizar tus propias encuestas`)]
+                }).then(msg => { setTimeout(() => msg.delete(), 5000) });
+            };
 
             client.db.polls[args[1]].expiration = Date.now();
 

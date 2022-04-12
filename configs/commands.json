@@ -203,7 +203,8 @@
 		"blacklistedChannels": [],
 		"whitelistedRoles": ["everyone"],
 		"blacklistedRoles": [],
-		"additionalAliases": []
+		"additionalAliases": [],
+		"canEndAny": []
 	},
 	"purge": {
 		"enabled": true,

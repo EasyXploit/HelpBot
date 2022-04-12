@@ -136,10 +136,16 @@ exports.run = async (client, message, args, command, commandConfig) => {
             });
         };
 
+        //Almacena el campo de autor del embed de registro
+        let logingEmbedAuthor = { name: `${member ? member.user.tag : `${memberId} (ID)`} ha sido DES-SILENCIADO`};
+
+        //Si se especificó un miembro, añade su avatar al embed
+        if (member) logingEmbedAuthor.iconURL = member.user.displayAvatarURL({dynamic: true});
+
         //Envía un mensaje al canal de registros
         await client.functions.loggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.correct)
-            .setAuthor({ name: `${member ? member.user.tag : `${memberId} (ID)`} ha sido DES-SILENCIADO`})
+            .setAuthor(logingEmbedAuthor)
             .addField('Miembro', member ? member.user.tag : `${memberId} (ID)`, true)
             .addField('Moderador', message.author.tag, true)
             .addField('Razón', reason || 'Indefinida', true)

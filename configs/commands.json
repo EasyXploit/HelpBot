@@ -266,7 +266,7 @@
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
 		"additionalAliases": [],
-		"removeAnyWarn": [],
+		"removeAny": [],
 		"reasonNotNeeded": []
 	},
 	"roleinfo": {

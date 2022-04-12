@@ -113,7 +113,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
             let xpCount = newValue;
             while (((5 * client.config.xp.dificultyModifier) * Math.pow(level, 3) + 50 * level + 100) <= newValue) {
                 level++;
-                const xpToNextLevel = (5 * client.config.xp.dificultyModifier) * Math.pow(level, 3) + 50 * level + 100;
+
+                //Calcula el XP necesario para pasar al siguiente nivel
+                const xpToNextLevel = client.functions.xpToLevel(userStats.level);
+
                 if (xpCount >= xpToNextLevel) xpCount = xpCount - xpToNextLevel;
             }
             client.db.stats[member.id].actualXP = xpCount;

@@ -416,6 +416,13 @@ exports.run = (client) => {
         };
     };
 
+    //Función para calcular el XP necesario para obtener un nivel determinado
+    client.functions.xpToLevel = async level => {
+
+        //Devuelve el resultado
+        return (5 * client.config.xp.dificultyModifier) * Math.pow(level, 3) + 50 * level + 100;
+    };
+
     //Función para generar números enteros aleatorios dentro de un rango
     client.functions.randomIntBetween = async (min, max) => {
 

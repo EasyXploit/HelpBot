@@ -14,7 +14,7 @@ exports.run = async (oldState, newState, client) => {
                 if (!member || member.voice.mute || member.voice.deaf) return;
 
                 //Llama al manejador de leveling
-                await client.functions.addXP(member, newState.guild, 'voice');
+                await client.functions.addXP(member, 'voice');
             };
             
             //Borra el registro del miembro que ha dejado el canal de voz

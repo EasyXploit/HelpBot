@@ -274,7 +274,7 @@ exports.run = (client) => {
             if (!member || member.voice.mute || member.voice.deaf || member.voice.channel.members.filter(m => !m.user.bot).size === 1) return;
 
             //Añade XP al miembro
-            await client.functions.addXP(member, client.homeGuild, 'voice');
+            await client.functions.addXP(member, 'voice');
 
             //Actualiza el timestamp de la última recompensa de XP obtenida
             client.usersVoiceStates[member.id].lastXpReward = Date.now();

@@ -257,10 +257,7 @@ exports.run = (client) => {
     };
 
     //Función para añadir XP (mode = message || voice)
-    client.functions.addXP = async (member, guild, mode, channel) => {
-
-        //Almacena la tabla de clasificación del servidor
-        const guildStats = client.db.stats;
+    client.functions.addXP = async (member, mode, channel) => {
 
         //Para comprobar si el rol puede ganar XP o no.
         let nonXP;
@@ -283,10 +280,10 @@ exports.run = (client) => {
         if (nonXP) return;
 
         //Si el miembro no tiene tabla de XP
-        if (member.id in guildStats === false) {
+        if (member.id in client.db.stats === false) {
 
             //Crea la tabla del miembro
-            guildStats[member.id] = {
+            client.db.stats[member.id] = {
                 totalXP: 0,
                 actualXP: 0,
                 level: 0,
@@ -295,7 +292,7 @@ exports.run = (client) => {
         };
 
         //Almacena las stats del miembro
-        const userStats = guildStats[member.id];
+        const userStats = client.db.stats[member.id];
 
         //Genera XP si es un canal de voz o si se ha sobrepasado el umbral de cola de mensajes
         if (mode === 'voice' || (mode === 'message' && Date.now() - userStats.lastMessage > client.config.xp.minimumTimeBetweenMessages)) {

@@ -26,19 +26,16 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad válida`)]
         });
 
-        //Almacena la tabla de clasificación del servidor
-        const guildStats = client.db.stats;
-
         //Almacena la tabla de clasificación del miembro, y si no existe la crea
-        if (member.id in guildStats === false) {
-            guildStats[member.id] = {
+        if (member.id in client.db.stats === false) {
+            client.db.stats[member.id] = {
                 totalXP: 0,
                 actualXP: 0,
                 level: 0,
                 lastMessage: 0
             };
         };
-        const userStats = guildStats[member.id];
+        const userStats = client.db.stats[member.id];
 
         //Comprueba si se le puede restar esa cantidad al miembro
         if (args[1] === 'remove' && userStats.totalXP < args[2]) return message.channel.send({ embeds: [ new client.MessageEmbed()

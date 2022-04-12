@@ -106,7 +106,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                         while (userStats.totalXP >= (5 * client.config.xp.dificultyModifier) * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) {
 
                             //Añade al miembro la cantidad de XP generada al cumplirse un intervalo de voz, einforma por consola
-                            await client.functions.addXP(member, message.guild, 'voice').then(console.log(`Miembro ${member.displayName} actualizado\n- - - - - -`));
+                            await client.functions.addXP(member, 'voice').then(console.log(`Miembro ${member.displayName} actualizado\n- - - - - -`));
                         };
 
                     } else {

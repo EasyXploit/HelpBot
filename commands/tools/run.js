@@ -91,19 +91,19 @@ exports.run = async (client, message, args, command, commandConfig) => {
                     const member = await client.functions.fetchMember(message.guild, IDs[index]);
 
                     //Busca las estadísticas del miembro en la tabla de clasificación
-                    const userStats = client.db.stats[member.id];
+                    const memberStats = client.db.stats[member.id];
 
                     //Si se escpecifica, se cambiará el nivel del miembro por el número indicado
-                    if (args[1] && !isNaN(args[1]) && (userStats && userStats.level > args[1])) userStats.level = args[1];
+                    if (args[1] && !isNaN(args[1]) && (memberStats && memberStats.level > args[1])) memberStats.level = args[1];
 
                     //Comprueba si existe el miembro y si tiene nivel
-                    if (member && userStats.level > 0) {
+                    if (member && memberStats.level > 0) {
 
                         //Advierte por consola de que se omitirá al miembro en el caso de que su XP total sea menor o igual al umbral de su nivel
-                        if (userStats.totalXP <= (5 * client.config.xp.dificultyModifier) * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) console.log(`Miembro ${member.displayName} omitido\n- - - - - -`);
+                        if (memberStats.totalXP <= (5 * client.config.xp.dificultyModifier) * Math.pow(memberStats.level, 3) + 50 * memberStats.level + 100) console.log(`Miembro ${member.displayName} omitido\n- - - - - -`);
 
                         //Mientras que el XP del miembro sea superior o igual al umbral de su nivel
-                        while (userStats.totalXP >= (5 * client.config.xp.dificultyModifier) * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) {
+                        while (memberStats.totalXP >= (5 * client.config.xp.dificultyModifier) * Math.pow(memberStats.level, 3) + 50 * memberStats.level + 100) {
 
                             //Añade al miembro la cantidad de XP generada al cumplirse un intervalo de voz, einforma por consola
                             await client.functions.addXP(member, 'voice').then(console.log(`Miembro ${member.displayName} actualizado\n- - - - - -`));

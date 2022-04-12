@@ -35,16 +35,16 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 lastMessage: 0
             };
         };
-        const userStats = client.db.stats[member.id];
+        const memberStats = client.db.stats[member.id];
 
         //Comprueba si se le puede restar esa cantidad al miembro
-        if (args[1] === 'remove' && userStats.totalXP < args[2]) return message.channel.send({ embeds: [ new client.MessageEmbed()
+        if (args[1] === 'remove' && memberStats.totalXP < args[2]) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad válida`)]
         });
 
         //Comprueba si se le puede quitar el XP al miembro
-        if (args[1] === 'clear' && userStats.totalXP == 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
+        if (args[1] === 'clear' && memberStats.totalXP == 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Este miembro no tiene XP`)]
         });  
@@ -65,9 +65,9 @@ exports.run = async (client, message, args, command, commandConfig) => {
         
         //Se declaran variables para almacenar las cantidades de XP
         let oldValue, newValue, level, actualXP;
-        oldValue = parseInt(userStats.totalXP);
-        level = parseInt(userStats.level);
-        actualXP = parseInt(userStats.actualXP);
+        oldValue = parseInt(memberStats.totalXP);
+        level = parseInt(memberStats.level);
+        actualXP = parseInt(memberStats.actualXP);
 
         //Ejecuta la operación indicada en función del argumento
         switch (args[1]) {
@@ -115,7 +115,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 level++;
 
                 //Calcula el XP necesario para pasar al siguiente nivel
-                const xpToNextLevel = client.functions.xpToLevel(userStats.level);
+                const xpToNextLevel = client.functions.xpToLevel(memberStats.level);
 
                 if (xpCount >= xpToNextLevel) xpCount = xpCount - xpToNextLevel;
             }

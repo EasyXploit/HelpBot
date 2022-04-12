@@ -292,41 +292,41 @@ exports.run = (client) => {
         };
 
         //Almacena las stats del miembro
-        const userStats = client.db.stats[member.id];
+        const memberStats = client.db.stats[member.id];
 
         //Genera XP si es un canal de voz o si se ha sobrepasado el umbral de cola de mensajes
-        if (mode === 'voice' || (mode === 'message' && Date.now() - userStats.lastMessage > client.config.xp.minimumTimeBetweenMessages)) {
+        if (mode === 'voice' || (mode === 'message' && Date.now() - memberStats.lastMessage > client.config.xp.minimumTimeBetweenMessages)) {
 
             //Genera XP aleatorio según los rangos
             const newXp = await client.functions.randomIntBetween(client.config.xp.minimumXpReward, client.config.xp.maximumXpReward);
 
             //Añade el XP a la cantidad actual del miembro
-            userStats.actualXP += newXp;
-            userStats.totalXP += newXp;
+            memberStats.actualXP += newXp;
+            memberStats.totalXP += newXp;
 
             //Si es un mensaje, actualiza la variable para evitar spam
-            if (mode === 'message') userStats.lastMessage = Date.now();
+            if (mode === 'message') memberStats.lastMessage = Date.now();
 
             //Fórmula para calcular el XP necesario para subir de nivel
-            const xpToNextLevel = ((5 * client.config.xp.dificultyModifier) * client.config.xp.dificultyModifier) * Math.pow(userStats.level, 3) + 50 * userStats.level + 100;
+            const xpToNextLevel = ((5 * client.config.xp.dificultyModifier) * client.config.xp.dificultyModifier) * Math.pow(memberStats.level, 3) + 50 * memberStats.level + 100;
 
             //Comprueba si el miembro ha de subir de nivel
-            if (userStats.totalXP >= xpToNextLevel) {
+            if (memberStats.totalXP >= xpToNextLevel) {
 
                 //Ajusta el nivel del miembro
-                userStats.level++;
+                memberStats.level++;
 
                 //Ajusta el XP actual de miembro
-                userStats.actualXP = ((5 * client.config.xp.dificultyModifier) * Math.pow(userStats.level, 3) + 50 * userStats.level + 100) - userStats.totalXP;
+                memberStats.actualXP = ((5 * client.config.xp.dificultyModifier) * Math.pow(memberStats.level, 3) + 50 * memberStats.level + 100) - memberStats.totalXP;
 
                 //Asigna las recompensas correspondientes al nivel (si corresponde), y almacena los roles recompensados
-                const rewardedRoles = await client.functions.assignRewards(member, userStats.level);
+                const rewardedRoles = await client.functions.assignRewards(member, memberStats.level);
 
                 //Genera un embed de subida de nivel
                 let levelUpEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.primary)
                     .setAuthor({ name: '¡Subiste de nivel!', iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                    .setDescription(`Enhorabuena ${member}, has subido al nivel **${userStats.level}**`);
+                    .setDescription(`Enhorabuena ${member}, has subido al nivel **${memberStats.level}**`);
 
                 //Si se recompensó al miembro con roles
                 if (rewardedRoles) {

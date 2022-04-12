@@ -43,6 +43,19 @@ exports.run = async (member, client) => {
             await member.kick(member.user, {reason: `Moderador: ${client.user.id}, Razón: El nombre de usuario contenía una palabra prohibida.`})
         };
 
+        //Si el miembro tiene un silenciamiento en vigor
+        if (client.db.mutes[member.id]) {
+
+            //Comprueba si existe el rol silenciado, sino lo crea
+            const mutedRole = await client.functions.checkMutedRole(member.guild);
+
+            //Añade el rol silenciado al miembro
+            await member.roles.add(mutedRole);
+
+            //Propaga el rol silenciado
+            client.functions.spreadMutedRole(member.guild);
+        };
+
         //Se notifica en el canal de registro
         await client.joinsAndLeavesChannel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.correct)

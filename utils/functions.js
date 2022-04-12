@@ -299,7 +299,7 @@ exports.run = (client) => {
         const userStats = guildStats[member.id];
 
         //Genera XP si es un canal de voz o si se ha sobrepasado el umbral de cola de mensajes
-        if (mode === 'voice' || (mode === 'message' && Date.now() - userStats.last_message > 5000)) {
+        if (mode === 'voice' || (mode === 'message' && Date.now() - userStats.last_message > client.config.xp.minimumTimeBetweenMessages)) {
 
             //Genera XP aleatorio según los rangos
             const newXp = await client.functions.randomIntBetween(client.config.xp.minimumXpReward, client.config.xp.maximumXpReward);

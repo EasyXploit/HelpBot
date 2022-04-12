@@ -77,7 +77,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             for (let index = 0; index < commandConfig.removeAny.length; index++) {
 
                 //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                if (message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(role => role.id === commandConfig.removeAnyWarn[index])) {
+                if (message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(role => role.id === commandConfig.removeAny[index])) {
                     authorized = true;
                     break;
                 };
@@ -134,7 +134,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             ]});
 
             //Comprueba si puede borrar esta advertencia
-            if (!checkIfCanRemoveAny() && client.db.warns[memberId][warnID].moderator !== message.author.id) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            if (client.db.warns[memberId][warnID].moderator !== message.author.id && !checkIfCanRemoveAny()) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`)
             ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });

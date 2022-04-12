@@ -58,15 +58,12 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Traduce los permisos del miembro
         permissionsArray.forEach(async (permission) => translatedPermissions.push(translations[permission] || permission));
 
-        //Comprueba si existe el rol silenciado, sino lo crea
-        const mutedRole = await client.functions.checkMutedRole(message.guild);
-
-        //Almacena si el miembro está silenciado
+        //Almacena la sanción actual, si aplica
         let sanction;
 
-        //Comprueba si el miembro está silenciado (y la duración)
-        if (client.db.mutes[member.id]) sanction = `Silenciado hasta <t:${Math.round(new Date(client.db.mutes[member.id].until) / 1000)}>`;
-        else if (member.roles.cache.has(mutedRole.id)) sanction = 'Silenciado indefinidamente';
+        //Comprueba qué tipo de sanción tiene el miembro (si la tiene, según duración)
+        if (client.db.mutes[member.id] && client.db.mutes[member.id].until) sanction = `Silenciado hasta <t:${Math.round(new Date(client.db.mutes[member.id].until) / 1000)}>`;
+        else if (client.db.mutes[member.id] && !client.db.mutes[member.id].until) sanction = 'Silenciado indefinidamente';
 
         //Envía un embed con el resultado del comando
         await message.channel.send({ embeds: [ new client.MessageEmbed()

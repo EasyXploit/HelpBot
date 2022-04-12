@@ -81,37 +81,49 @@ exports.run = async (client, message, args, command, commandConfig) => {
             ]});
         };
 
-        //Añade el rol silenciado al miembro
-        member.roles.add(mutedRole);
+        //Guarda el silenciamiento en la base de datos
+        client.db.mutes[member.id] = {
+            until: null
+        };
 
-        //Propaga el rol silenciado
-        client.functions.spreadMutedRole(message.guild);
+        //Sobreescribe el fichero de la base de datos con los cambios
+        client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
 
-        //Envía un mensaje al canal de registros
-        await client.functions.loggingManager('embed', new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setAuthor({ name: `${member.user.tag} ha sido SILENCIADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
-            .addField('Miembro', member.user.tag, true)
-            .addField('Moderador', message.author.tag, true)
-            .addField('Razón', reason || 'Indefinida', true)
-            .addField('Duración', '∞', true)
-        );
+            //Si hubo un error, lo lanza a la consola
+            if (err) throw err;
 
-        //Envía una notificación al miembro
-        await member.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setAuthor({ name: '[SILENCIADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
-            .setDescription(`${member}, has sido silenciado en ${message.guild.name}`)
-            .addField('Moderador', message.author.tag, true)
-            .addField('Razón', reason || 'Indefinida', true)
-            .addField('Duración', '∞', true)
-        ]});
+            //Añade el rol silenciado al miembro
+            member.roles.add(mutedRole);
 
-        //Notifica la acción en el canal de invocación
-        await message.channel.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado${ reason ? ` debido a **${reason}**` : ''}, ¿alguien más?`)
-        ]});
+            //Propaga el rol silenciado
+            client.functions.spreadMutedRole(message.guild);
+
+            //Envía un mensaje al canal de registros
+            await client.functions.loggingManager('embed', new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setAuthor({ name: `${member.user.tag} ha sido SILENCIADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                .addField('Miembro', member.user.tag, true)
+                .addField('Moderador', message.author.tag, true)
+                .addField('Razón', reason || 'Indefinida', true)
+                .addField('Duración', '∞', true)
+            );
+
+            //Envía una notificación al miembro
+            await member.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setAuthor({ name: '[SILENCIADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
+                .setDescription(`${member}, has sido silenciado en ${message.guild.name}`)
+                .addField('Moderador', message.author.tag, true)
+                .addField('Razón', reason || 'Indefinida', true)
+                .addField('Duración', '∞', true)
+            ]});
+
+            //Notifica la acción en el canal de invocación
+            await message.channel.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.warning)
+                .setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado${ reason ? ` debido a **${reason}**` : ''}, ¿alguien más?`)
+            ]});
+        });
         
     } catch (error) {
 

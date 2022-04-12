@@ -13,6 +13,9 @@ exports.run = (client) => {
             //Almacena el tiempo de finalización del silenciamiento
             const endTime = client.db.mutes[idKey].until;
 
+            //Omite si la sanción es indefinida
+            if (!endTime) continue; 
+
             //Omite si aún no ha expirado la sanción
             if (Date.now() < endTime) continue;
             

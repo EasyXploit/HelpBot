@@ -72,15 +72,15 @@ exports.run = async (client, message, args, command, commandConfig) => {
             //Almacena la sanción actual, si aplica
             let sanction;
 
-            //Comprueba qué tipo de sanción tiene el miembro (si la tiene)
-            if (client.db.mutes[memberId]) sanction = `Silenciado hasta <t:${Math.round(new Date(client.db.mutes[memberId].until) / 1000)}>`;
-            else if (member && member.roles.cache.has(client.config.dynamic.mutedRoleId)) sanction = 'Silenciado indefinidamente';
+            //Comprueba qué tipo de sanción tiene el miembro (si la tiene, según duración)
+            if (client.db.mutes[memberId] && client.db.mutes[memberId].until) sanction = `\`Silenciado hasta\` <t:${Math.round(new Date(client.db.mutes[memberId].until) / 1000)}>`;
+            else if (client.db.mutes[memberId] && !client.db.mutes[memberId].until) sanction = '\`Silenciado indefinidamente\`';
 
             //Genera el embed de las infracciones
             let infractionsEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
                 .setTitle('⚠ Advertencias')
-                .setDescription(`Mostrando las advertencias del miembro **${member ? member.user.tag : `${memberId} (ID)`}**.\nSanción actual: \`${sanction || 'Ninguna'}\`.`)
+                .setDescription(`Mostrando las advertencias del miembro **${member ? member.user.tag : `${memberId} (ID)`}**.\nSanción actual: ${sanction || '\`Ninguna\`'}.`)
                 .addField('Últimas 24h', onDay.toString(), true)
                 .addField('Últimos 7 días', onWeek.toString(), true)
                 .addField('Total', total.toString(), true)

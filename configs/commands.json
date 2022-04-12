@@ -408,7 +408,8 @@
 		"whitelistedRoles": [],
 		"blacklistedRoles": [],
 		"additionalAliases": [],
-		"reasonNotNeeded": []
+		"reasonNotNeeded": [],
+		"removeAny": []
 	},
 	"userinfo": {
 		"enabled": true,

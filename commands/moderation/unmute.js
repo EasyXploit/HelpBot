@@ -55,10 +55,68 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setDescription(`${client.customEmojis.redTick} Este miembro no esta silenciado`)
         ]});
 
+        //Crea una copia de los roles del miembro
+        let newRolesCollection = member.roles.cache.clone();
+
+        //Elimina el rol silenciado de la copia de roles
+        newRolesCollection.delete(mutedRole.id);
+
+        //Crea un array para almacenar los roles ordenados por posición
+        let sortedRoles = [];
+
+        //Por cada uno de los IDs de roles del miembro
+        for (const key of newRolesCollection) {   
+            
+            //Obtiene el rol en base al ID
+            const role = newRolesCollection.get(key[0]);
+            
+            //Sube al array de roles ordenados, un objeto con la propiedades deseadas
+            sortedRoles.push({
+                roleId: role.id,
+                position: role.rawPosition,
+            });
+        };
+
+        //Función para comprar un array
+        function compare(a, b) {
+            if (a.position < b.position) return 1;
+            if (a.position > b.position) return -1;
+            return 0;
+        };
+
+        //Compara y ordena el array de roles
+        sortedRoles.sort(compare);
+
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
-        if (member && message.member.id !== message.guild.ownerId && message.member.roles.highest.position <= member.roles.highest.position) return message.channel.send({ embeds: [ new client.MessageEmbed()
+        if (member && message.member.id !== message.guild.ownerId && message.member.roles.highest.position <= sortedRoles[0].position) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`)
+        ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
+
+        //Función para comprobar si el miembro puede borrar cualquier advertencia
+        function checkIfCanRemoveAny() {
+
+            //Almacena si el miembro puede borrar cualquier muteo
+            let authorized;
+
+            //Para cada ID de rol de la lista blanca
+            for (let index = 0; index < commandConfig.removeAny.length; index++) {
+
+                //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
+                if (message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(role => role.id === commandConfig.removeAny[index])) {
+                    authorized = true;
+                    break;
+                };
+            };
+
+            //Devuelve el estado de autorización
+            return authorized;
+        };
+
+        //Devuelve el estado de autorización
+        if (client.db.mutes[memberId].moderator !== message.author.id && !checkIfCanRemoveAny()) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} ${message.author}, no puedes dessilenciar a alguien que no has silenciado tú`)
         ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
 
         //Elimina el rol silenciado al miembro

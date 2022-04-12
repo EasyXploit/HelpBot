@@ -28,7 +28,7 @@
     "get-mp3-duration": "^1.0.0",
     "libsodium-wrappers": "^0.7.10",
     "nanoid": "^3.3.2",
-    "play-dl": "^1.9.2",
+    "play-dl": "^1.9.4",
     "randomcolor": "^0.6.2"
   },
   "devDependencies": {

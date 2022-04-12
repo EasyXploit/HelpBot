@@ -111,7 +111,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         //Guarda el silenciamiento en la base de datos
         client.db.mutes[member.id] = {
-            until: Date.now() + milliseconds
+            until: Date.now() + milliseconds,
+            moderator: message.author.id
         };
 
         //Sobreescribe el fichero de la base de datos con los cambios

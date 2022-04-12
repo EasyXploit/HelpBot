@@ -367,7 +367,7 @@ exports.run = (client) => {
     //Función para asignar recompensas
     client.functions.assignRewards = async (member, memberLevel) => {
 
-        //Función para comprar un array
+        //Función para comparar un array
         function compare(a, b) {
             if (a.requiredLevel > b.requiredLevel) return 1;
             if (a.requiredLevel < b.requiredLevel) return -1;

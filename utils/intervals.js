@@ -20,7 +20,7 @@ exports.run = (client) => {
             const member = await client.functions.fetchMember(client.homeGuild, idKey);
 
             //Si el miembro estaba en la guild (y tenía el rol), se lo elimina
-            if (member && member.roles.cache.has(mutedRole.id)) await member.roles.remove(role);
+            if (member && member.roles.cache.has(role.id)) await member.roles.remove(role);
 
             //Bora el silenciamiento de la base de datos
             delete client.db.mutes[idKey];
@@ -43,7 +43,7 @@ exports.run = (client) => {
                 //Envía una confirmación al miembro
                 if (member) await member.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
-                    .setAuthor({ name: '[DES-SILENCIADO]', iconURL: guild.iconURL({dynamic: true}) })
+                    .setAuthor({ name: '[DES-SILENCIADO]', iconURL: client.homeGuild.iconURL({dynamic: true}) })
                     .setDescription(`${member ? member.user.tag : `\`${idKey}\``}, has sido des-silenciado en ${client.homeGuild.name}`)
                     .addField('Moderador', `${client.user}`, true)
                     .addField('Razón', 'Venció la amonestación', true)

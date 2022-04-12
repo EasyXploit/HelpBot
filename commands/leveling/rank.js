@@ -40,7 +40,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             //Función para encontrar la siguiente recompensa
             function wichReward() {
                 for (let index = 0; index < client.config.levelingRewards.length; index++) {
-                    if (client.config.levelingRewards[i].requiredLevel >= userStats.level + 1) return client.config.levelingRewards[index].roles;
+                    if (client.config.levelingRewards[index].requiredLevel >= userStats.level + 1) return client.config.levelingRewards[index].roles;
                 };
             };
 

@@ -7,7 +7,7 @@ exports.run = async (oldState, newState, client) => {
 
         async function endVoiceTime() {
             //Si el timestamp actual es superior a los MS de intervalo de ganancia de XP configurado, le asigna XP
-            if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].last_xpReward + client.config.xp.XPGainInterval)) {
+            if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].lastXpReward + client.config.xp.XPGainInterval)) {
 
                 //Almacena el miembro, y si está muteado o ensordecido, no hace nada
                 const member = await client.functions.fetchMember(newState.guild, newState.id);
@@ -57,7 +57,7 @@ exports.run = async (oldState, newState, client) => {
                 client.usersVoiceStates[newState.id] = {
                     guild: newState.guild.id,
                     channelID: newState.channelId,
-                    last_xpReward: Date.now()
+                    lastXpReward: Date.now()
                 };
             };
         } else if (!newState.channel || newState.channelId == null || newState.channel == null) { //Si la conexión desaparece

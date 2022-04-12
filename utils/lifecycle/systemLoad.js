@@ -115,7 +115,7 @@ exports.run = async (client) => {
                         client.usersVoiceStates[voiceState.id] = {
                             guild: voiceState.guild.id,
                             channelID: voiceState.channelId,
-                            last_xpReward: Date.now()
+                            lastXpReward: Date.now()
                         };
                     };
                 });

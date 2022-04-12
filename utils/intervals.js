@@ -277,7 +277,7 @@ exports.run = (client) => {
             await client.functions.addXP(member, client.homeGuild, 'voice');
 
             //Actualiza el timestamp de la última recompensa de XP obtenida
-            client.usersVoiceStates[member.id].last_xpReward = Date.now();
+            client.usersVoiceStates[member.id].lastXpReward = Date.now();
         };
     }, client.config.xp.XPGainInterval);
 

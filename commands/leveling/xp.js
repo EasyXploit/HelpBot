@@ -38,7 +38,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 totalXP: 0,
                 actualXP: 0,
                 level: 0,
-                last_message: 0
+                lastMessage: 0
             };
         };
         const userStats = guildStats[member.id];

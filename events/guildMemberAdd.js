@@ -43,28 +43,21 @@ exports.run = async (member, client) => {
             await member.kick(member.user, {reason: `Moderador: ${client.user.id}, Razón: El nombre de usuario contenía una palabra prohibida.`})
         };
 
-        //Si el miembro tiene un silenciamiento en vigor
-        if (client.db.mutes[member.id]) {
-
-            //Comprueba si existe el rol silenciado, sino lo crea
-            const mutedRole = await client.functions.checkMutedRole(member.guild);
-
-            //Añade el rol silenciado al miembro
-            await member.roles.add(mutedRole);
-
-            //Propaga el rol silenciado
-            client.functions.spreadMutedRole(member.guild);
-        };
-
-        //Se notifica en el canal de registro
-        await client.joinsAndLeavesChannel.send({ embeds: [ new client.MessageEmbed()
+        //Genera un con el registro de bienvenida
+        let welcomeEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.correct)
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
             .setAuthor({ name: 'Nuevo miembro', iconURL: 'attachment://in.png' })
             .setDescription(`${member.user.tag} se unió al servidor`)
             .addField('🆔 ID del miembro', member.user.id, true)
             .addField('📝 Fecha de registro', `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
-        ], files: ['./resources/images/in.png'] });
+
+        //Comprueba qué tipo de sanción tiene el miembro (si la tiene, según duración), y añade el campo al embed de registro (si pertoca)
+        if (client.db.mutes[member.id] && client.db.mutes[member.id].until) welcomeEmbed.addField('🔇 Sanción actual', `Silenciado hasta <t:${Math.round(new Date(client.db.mutes[member.id].until) / 1000)}>`, false);
+        else if (client.db.mutes[member.id] && !client.db.mutes[member.id].until) welcomeEmbed.addField('🔇 Sanción actual', 'Silenciado indefinidamente', false);
+
+        //Se notifica en el canal de registro
+        await client.joinsAndLeavesChannel.send({ embeds: [ welcomeEmbed ], files: ['./resources/images/in.png'] });
 
         //Añade el rol de bienvenida para nuevos miembros (si no lo tiene ya)
         if (member.roles.cache.has(client.config.main.newMemberRole)) await member.roles.add(client.config.main.newMemberRole);

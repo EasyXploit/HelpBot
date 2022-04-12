@@ -115,30 +115,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 break;
         };
 
-        //Función para asignar recompensas
-        async function assignRewards() {
-
-            let toReward;
-
-            for (let index = 0; index < client.config.levelingRewards.length; index++) {
-                let reward = client.config.levelingRewards[index];
-
-                if (reward.requiredLevel !== level) {
-                    reward.roles.forEach(async role => {
-                        if (member.roles.cache.has(role)) await member.roles.remove(role);
-                    });
-                };
-
-                if (reward.requiredLevel <= level && level !== 0) toReward = reward.roles;
-            };
-
-            if (toReward) {
-                toReward.forEach(async role => {
-                    if (!member.roles.cache.has(role)) await member.roles.add(role);
-                });
-            };
-        };
-
         if (newValue > oldValue) { //Cambia el nivel y el XP actual
             let xpCount = newValue;
             while (((5 * client.config.xp.dificultyModifier) * Math.pow(level, 3) + 50 * level + 100) <= newValue) {
@@ -150,7 +126,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             
             if (level !== client.db.stats[message.guild.id][member.id].level) {
                 client.db.stats[message.guild.id][member.id].level = level;
-                await assignRewards();
+                await client.functions.assignRewards(member, level);
             };
         } else if (newValue < oldValue) {
 
@@ -160,7 +136,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                     level = index;
                     if (level !== client.db.stats[message.guild.id][member.id].level) {
                         client.db.stats[message.guild.id][member.id].level = level;
-                        await assignRewards();
+                        await client.functions.assignRewards(member, level);
                     };
                     break;
                 };

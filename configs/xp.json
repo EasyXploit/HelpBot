@@ -9,5 +9,7 @@
     "minimumTimeBetweenMessages": 5000,
     "dificultyModifier": 1,
     "minimumXpReward": 5,
-    "maximumXpReward": 15
+    "maximumXpReward": 15,
+    "preserveStats": true,
+    "removePreviousRewards": true
 }

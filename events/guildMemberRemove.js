@@ -69,8 +69,23 @@ exports.run = async (member, client) => {
                 .addField('🆔 ID del miembro', member.user.id, true)     
                 .addField('📝 Fecha de registro', `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
             
-            return await client.channels.cache.get(client.config.main.joinsAndLeavesChannel).send({ embeds: [loggingEmbed], files: ['./resources/images/out.png'] });
-        }
+            await client.channels.cache.get(client.config.main.joinsAndLeavesChannel).send({ embeds: [loggingEmbed], files: ['./resources/images/out.png'] });
+        };
+
+        //Si el miembro tiene estadísticas y no se desea preservarlas
+        if (client.db.stats[member.guild.id][member.id] && !client.config.xp.preserveStats) {
+
+            //Borra la entrada de la base de datos
+            delete client.db.stats[member.guild.id][member.id];
+
+            //Sobreescribe el fichero de la base de datos con los cambios
+            client.fs.writeFile('./databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
+
+                //Si hubo un error, lo lanza a la consola
+                if (err) throw err;
+            });
+        };
+
     } catch (error) {
 
         //Ignora si fue el propio bot el que fue expulsado

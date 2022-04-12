@@ -73,10 +73,10 @@ exports.run = async (member, client) => {
         };
 
         //Si el miembro tiene estadísticas y no se desea preservarlas
-        if (client.db.stats[member.guild.id][member.id] && !client.config.xp.preserveStats) {
+        if (client.db.stats[member.id] && !client.config.xp.preserveStats) {
 
             //Borra la entrada de la base de datos
-            delete client.db.stats[member.guild.id][member.id];
+            delete client.db.stats[member.id];
 
             //Sobreescribe el fichero de la base de datos con los cambios
             client.fs.writeFile('./databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {

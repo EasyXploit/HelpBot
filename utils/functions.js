@@ -259,9 +259,8 @@ exports.run = (client) => {
     //Función para añadir XP (mode = message || voice)
     client.functions.addXP = async (member, guild, mode, channel) => {
 
-        //Almacena la tabla de clasificación del servidor, y si no existe la crea
-        if (guild.id in client.db.stats === false) client.db.stats[guild.id] = {};
-        const guildStats = client.db.stats[guild.id];
+        //Almacena la tabla de clasificación del servidor
+        const guildStats = client.db.stats;
 
         //Para comprobar si el rol puede ganar XP o no.
         let nonXP;

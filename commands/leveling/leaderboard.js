@@ -6,10 +6,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
         let entries = [];
 
         //Por cada miembro en la base de datos de stats
-        for (const memberId in client.db.stats[message.guild.id]) {
+        for (const memberId in client.db.stats) {
 
             //Almacena las stats del miembro iterado
-            const memberStats = client.db.stats[message.guild.id][memberId];
+            const memberStats = client.db.stats[memberId];
                 
             //Sube una entrada al array de entradas
             entries.push({

@@ -6,7 +6,7 @@ exports.run = async (oldMember, newMember, client) => {
         if (oldMember.pending && !newMember.pending) {
 
             //Si el miembro tiene entradas en la tabla de estadísticas, asigna las recompensas que le corresponda
-            if (client.db.stats[newMember.guild.id][newMember.id] && client.config.xp.preserveStats) client.functions.assignRewards(newMember, client.db.stats[newMember.guild.id][newMember.id].level);
+            if (client.db.stats[newMember.id] && client.config.xp.preserveStats) client.functions.assignRewards(newMember, client.db.stats[newMember.id].level);
 
             //Si el miembro tiene un silenciamiento en vigor
             if (client.db.mutes[newMember.id]) {

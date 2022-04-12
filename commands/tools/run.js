@@ -78,11 +78,8 @@ exports.run = async (client, message, args, command, commandConfig) => {
                     .setDescription('Comenzando operación de cuadre de la tabla de clasificación.\nRevisa la consola para evaluar el progreso del comando.')
                 ]});
 
-                //Almacena la tabla de clasificación de la guild
-                const guildStats = client.db.stats[message.guild.id];
-
-                //Almacena los IDs de cada miembro
-                const IDs = Object.keys(guildStats);
+                //Almacena los IDs de cada miembro de las stats
+                const IDs = Object.keys(client.db.stats);
 
                 //Inicializa un contador
                 let index = 0;
@@ -94,7 +91,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                     const member = await client.functions.fetchMember(message.guild, IDs[index]);
 
                     //Busca las estadísticas del miembro en la tabla de clasificación
-                    const userStats = guildStats[member.id];
+                    const userStats = client.db.stats[member.id];
 
                     //Si se escpecifica, se cambiará el nivel del miembro por el número indicado
                     if (args[1] && !isNaN(args[1]) && (userStats && userStats.level > args[1])) userStats.level = args[1];

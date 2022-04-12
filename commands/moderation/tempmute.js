@@ -51,9 +51,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} Este miembro ya esta silenciado`)
         ]});
-
-        //Propaga el rol silenciado
-        client.functions.spreadMutedRole(message.guild);
         
         //Comprueba la longitud del tiempo proporcionado
         if (args[1].length < 2) return await client.functions.syntaxHandler(message.channel, commandConfig);
@@ -125,6 +122,9 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             //Silencia al miembro
             member.roles.add(mutedRole);
+
+            //Propaga el rol silenciado
+            client.functions.spreadMutedRole(message.guild);
 
             //Envía un mensaje al canal de registros
             await client.functions.loggingManager('embed', new client.MessageEmbed()

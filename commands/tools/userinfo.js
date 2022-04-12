@@ -65,7 +65,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         let sanction;
 
         //Comprueba si el miembro está silenciado (y la duración)
-        if (client.db.mutes[member.id]) sanction = `Silenciado hasta <t:${Math.round(new Date(client.db.mutes[member.id].time) / 1000)}>`;
+        if (client.db.mutes[member.id]) sanction = `Silenciado hasta <t:${Math.round(new Date(client.db.mutes[member.id].until) / 1000)}>`;
         else if (member.roles.cache.has(mutedRole.id)) sanction = 'Silenciado indefinidamente';
 
         //Envía un embed con el resultado del comando

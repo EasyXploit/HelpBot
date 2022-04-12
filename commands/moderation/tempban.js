@@ -118,7 +118,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         
         //Registra el baneo en la base de datos
         client.db.bans[user.id] = {
-            time: Date.now() + milliseconds
+            until: Date.now() + milliseconds
         };
 
         //Sobreescribe el fichero de la base de datos con los cambios

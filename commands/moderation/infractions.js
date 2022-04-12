@@ -73,7 +73,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             let sanction;
 
             //Comprueba qué tipo de sanción tiene el miembro (si la tiene)
-            if (client.db.mutes[memberId]) sanction = `Silenciado hasta <t:${Math.round(new Date(client.db.mutes[memberId].time) / 1000)}>`;
+            if (client.db.mutes[memberId]) sanction = `Silenciado hasta <t:${Math.round(new Date(client.db.mutes[memberId].until) / 1000)}>`;
             else if (member && member.roles.cache.has(client.config.dynamic.mutedRoleId)) sanction = 'Silenciado indefinidamente';
 
             //Genera el embed de las infracciones

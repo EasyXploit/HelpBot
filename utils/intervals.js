@@ -11,7 +11,7 @@ exports.run = (client) => {
         for (let idKey in client.db.mutes) {
 
             //Almacena el tiempo de finalización del silenciamiento
-            const endTime = client.db.mutes[idKey].time;
+            const endTime = client.db.mutes[idKey].until;
 
             //Omite si aún no ha expirado la sanción
             if (Date.now() < endTime) continue;
@@ -60,7 +60,7 @@ exports.run = (client) => {
         for (let idKey in client.db.bans) {
 
             //Almacena el tiempo de finalización
-            const endTime = client.db.bans[idKey].time;
+            const endTime = client.db.bans[idKey].until;
 
             //Busca el usuario de Discord
             const user = await client.users.fetch(idKey);

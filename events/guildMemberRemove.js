@@ -1,72 +1,76 @@
 exports.run = async (member, client) => {
     
     try {
-
-        async function sendLogEmbed(executor, reason) {
-            if (member.user.bot) {
-                if (member.user.id === client.user.id) return;
-                const loggingEmbed = new client.MessageEmbed()
-                    .setColor(client.config.colors.warning)
-                    .setTitle('📑 Registro - [BOTS]')
-                    .setDescription(`El **BOT** @${member.user.tag} fue expulsado del servidor.`);
-                
-                await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [loggingEmbed] })
-            } else {
-                let moderador = executor;
-                let razon = reason || 'Indefinida';
-
-                if (reason.includes('Moderador: ')) {
-                    moderador = await client.users.fetch(reason.split(', ')[0].substring(11));
-                    razon = reason.split(', Razón: ')[1];
-                }
-
-                const loggingEmbed = new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
-                    .setAuthor({ name: `${member.user.tag} ha sido EXPULSADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                    .addField('ID', member.user.id, true)
-                    .addField('Moderador', moderador.tag || 'Desconocido', true)
-                    .addField('Razón', razon || 'Indefinida', true);
-
-                await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [loggingEmbed] })
-            }
-        }
         
+        //Busca la última expulsión en el registro de auditoría
         const fetchedLogs = await member.guild.fetchAuditLogs({
             limit: 1,
             type: 'MEMBER_KICK',
         });
 
+        //Almacena el primer resultado de la búsqueda
         const kickLog = fetchedLogs.entries.first();
         
+        //Si se encontró una expulsión en el primer resultado, y han pasado menos de 5 segundos
         if (kickLog && (kickLog.createdTimestamp > (Date.now() - 5000))) {
         
-            let { executor, target, reason } = kickLog;
+            //Si el miembro expulsado era un bot
+            if (member.user.bot) {
 
-            if (!reason) reason = 'Indefinida'
-        
-            if (target.id === member.user.id) {
-                sendLogEmbed(executor, reason);
-            } else {
-                sendLogEmbed();
-            }
-        } else {
+                //Si la expulsión fue al propio bot, ignora
+                if (member.user.id === client.user.id) return;
+                
+                //Envía un registro al canal de registros
+                return await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.warning)
+                    .setTitle('📑 Registro - [BOTS]')
+                    .setDescription(`El **BOT** @${member.user.tag} fue expulsado del servidor.`)
+                ]});
+            };
 
+            //Almacena el ejecutor y la razón
+            let { executor, reason } = kickLog;
+
+            //Si hubo razón, y se detecta que la expulsión fue realizada por el bot
+            //Las expulsiones y baneos con el bot tienen una razón pre-formateada para contener varios campos
+            if (reason && reason.includes('Moderador: ')) {
+
+                //Cambia el ejecutor, por el especificado en la razón
+                executor = await client.users.fetch(reason.split(', ')[0].substring(11));
+
+                //Cambia la razón provista, para contener solo el campo de razón
+                reason = reason.split(', Razón: ')[1];
+            };
+
+            //Envía un registro al canal de registros
+            await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setAuthor({ name: `${member.user.tag} ha sido EXPULSADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                .addField('ID', member.user.id, true)
+                .addField('Moderador', executor ? executor.tag : 'Desconocido', true)
+                .addField('Razón', reason ? reason : 'Indefinida', true)
+            ]});
+
+        } else { //Si no se encontró una expulsión
+
+            //Busca el último baneo en el registro de auditoría
             const fetchedBans = await member.guild.fetchAuditLogs({
                 limit: 1,
                 type: 'MEMBER_BAN_ADD',
             });
 
+            //Si se encontró un baneo en el primer resultado, y han pasado más de 5 segundos, ignora
             if (fetchedBans.entries.first() && (fetchedBans.entries.first().createdTimestamp > (Date.now() - 5000))) return;
-
-            let loggingEmbed = new client.MessageEmbed()
+            
+            //Envía un registro al canal de bienvenidas/despedidas (por que no se traó ni de una explusión ni de un baneo)
+            await client.channels.cache.get(client.config.main.joinsAndLeavesChannel).send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
                 .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
                 .setAuthor({ name: 'Un miembro abandonó', iconURL: 'attachment://out.png' })
                 .setDescription(`${member.user.tag} abandonó el servidor`)
                 .addField('🆔 ID del miembro', member.user.id, true)     
                 .addField('📝 Fecha de registro', `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
-            
-            await client.channels.cache.get(client.config.main.joinsAndLeavesChannel).send({ embeds: [loggingEmbed], files: ['./resources/images/out.png'] });
+            ], files: ['./resources/images/out.png'] });
         };
 
         //Si el miembro tiene estadísticas y no se desea preservarlas

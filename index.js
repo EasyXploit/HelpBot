@@ -105,6 +105,7 @@ client.fs.readdirSync('./commands/').forEach(subDirectory => {
             console.log(` - [OK] Comando [${pulledCommand.config.name}]`);
 
         } else {
+            
             //Si hay un error, no carga el comando
             return console.log(`Error al cargar el comando en ./commands/${subDirectory}/. Falta config.name o config.name no es una cadena.`);
         };

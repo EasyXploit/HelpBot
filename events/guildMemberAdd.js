@@ -2,9 +2,6 @@ exports.run = async (member, client) => {
     
     try {
 
-        //Previene que continue la ejecución si el servidor no es el principal
-        if (member.guild.id !== client.homeGuild.id) return;
-
         //Si el nuevo miembro es un bot
         if (member.user.bot) {
 

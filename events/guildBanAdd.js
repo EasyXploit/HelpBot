@@ -2,9 +2,6 @@ exports.run = async (bannedMember, client) => {
 
     try {
 
-        //Previene que continue la ejecución si el servidor no es el principal
-        if (bannedMember.guild.id !== client.homeGuild.id) return;
-
         async function sendLogEmbed(executor, reason, time, days) {
 
             if (bannedMember.user.bot) {

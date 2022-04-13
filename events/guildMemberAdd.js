@@ -27,6 +27,16 @@ exports.run = async (member, client) => {
         //Si contiene alguna palabra prohibida
         if (containsForbiddenNames || containsBannedWords) {
 
+            //Si no hay caché de registros
+            if (!client.loggingCache) client.loggingCache = {};
+
+            //Crea una nueva entrada en la caché de registros
+            client.loggingCache[member.id] = {
+                action: 'kick',
+                executor: client.user.id,
+                reason: 'El nombre de usuario contenía una palabra prohibida'
+            };
+
             //Alerta al miembro de que ha sido expulsado
             await member.user.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
@@ -37,7 +47,7 @@ exports.run = async (member, client) => {
             ]});
 
             //Se expulsa al miembro
-            await member.kick(member.user, {reason: `Moderador: ${client.user.id}, Razón: El nombre de usuario contenía una palabra prohibida.`})
+            await member.kick(member.user, { reason: 'El nombre de usuario contenía una palabra prohibida' });
         };
 
         //Genera un con el registro de bienvenida

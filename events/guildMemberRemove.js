@@ -31,15 +31,17 @@ exports.run = async (member, client) => {
             //Almacena el ejecutor y la razón
             let { executor, reason } = kickLog;
 
-            //Si hubo razón, y se detecta que la expulsión fue realizada por el bot
-            //Las expulsiones y baneos con el bot tienen una razón pre-formateada para contener varios campos
-            if (reason && reason.includes('Moderador: ')) {
+            //Si se detecta que la expulsión fue realizada por el bot
+            if (client.loggingCache && client.loggingCache[member.id] && client.loggingCache[member.id].action === 'kick') {
 
                 //Cambia el ejecutor, por el especificado en la razón
-                executor = await client.users.fetch(reason.split(', ')[0].substring(11));
+                executor = await client.users.fetch(client.loggingCache[member.id].executor);
 
                 //Cambia la razón provista, para contener solo el campo de razón
-                reason = reason.split(', Razón: ')[1];
+                reason = client.loggingCache[member.id].reason;
+
+                //Borra la caché de registros del miembro
+                delete client.loggingCache[member.id];
             };
 
             //Envía un registro al canal de registros
@@ -59,18 +61,22 @@ exports.run = async (member, client) => {
                 type: 'MEMBER_BAN_ADD',
             });
 
-            //Si se encontró un baneo en el primer resultado, y han pasado más de 5 segundos, ignora
-            if (fetchedBans.entries.first() && (fetchedBans.entries.first().createdTimestamp > (Date.now() - 5000))) return;
-            
-            //Envía un registro al canal de bienvenidas/despedidas (por que no se traó ni de una explusión ni de un baneo)
-            await client.channels.cache.get(client.config.main.joinsAndLeavesChannel).send({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.warning)
-                .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
-                .setAuthor({ name: 'Un miembro abandonó', iconURL: 'attachment://out.png' })
-                .setDescription(`${member.user.tag} abandonó el servidor`)
-                .addField('🆔 ID del miembro', member.user.id, true)     
-                .addField('📝 Fecha de registro', `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
-            ], files: ['./resources/images/out.png'] });
+            //Almacena el primer resultado de la búsqueda
+            const banLog = fetchedBans.entries.first();
+
+            //Si no encontró un baneo en el primer resultado, o han pasado más de 5 segundos desde el último baneo
+            if (!banLog || Date.now() > (banLog.createdTimestamp + 5000)) {
+                
+                //Envía un registro al canal de bienvenidas/despedidas (por que no se traó ni de una expulsión ni de un baneo)
+                await client.channels.cache.get(client.config.main.joinsAndLeavesChannel).send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.warning)
+                    .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
+                    .setAuthor({ name: 'Un miembro abandonó', iconURL: 'attachment://out.png' })
+                    .setDescription(`${member.user.tag} abandonó el servidor`)
+                    .addField('🆔 ID del miembro', member.user.id, true)     
+                    .addField('📝 Fecha de registro', `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
+                ], files: ['./resources/images/out.png'] });
+            };
         };
 
         //Si el miembro tiene estadísticas y no se desea preservarlas

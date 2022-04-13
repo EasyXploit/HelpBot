@@ -15,7 +15,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         ]});
 
         //Si el usuario era un bot
-        if (member.user.bot) {
+        if (user.bot) {
 
             //Almacena si el miembro puede banear bots
             let authorized;
@@ -97,6 +97,17 @@ exports.run = async (client, message, args, command, commandConfig) => {
             ]});
         };
 
+        //Si no hay caché de registros
+        if (!client.loggingCache) client.loggingCache = {};
+
+        //Crea una nueva entrada en la caché de registros
+        client.loggingCache[user.id] = {
+            action: 'softban',
+            executor: message.author.id,
+            reason: reason || 'Indefinida',
+            deletedDays: days.toString()
+        };
+
         //Envía una notificación al miembro
         if (member) await user.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
@@ -109,7 +120,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         ]});
 
         //Banea al miembro y borra sus mensajes
-        await message.guild.members.ban(user, {days: days, reason: `Moderador: ${message.author.id}, Días de mensajes borrados: ${days}, Razón: ${reason || 'Indefinida'}`});
+        await message.guild.members.ban(user, { days: days, reason: reason || 'Indefinida' });
 
         //Notifica la acción en el canal de invocación
         await message.channel.send({ embeds: [ new client.MessageEmbed()

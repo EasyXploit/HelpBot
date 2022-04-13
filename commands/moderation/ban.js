@@ -87,6 +87,16 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .setDescription(`${client.customEmojis.redTick} Debes proporcionar una razón`)
             ]});
         };
+
+        //Si no hay caché de registros
+        if (!client.loggingCache) client.loggingCache = {};
+
+        //Crea una nueva entrada en la caché de registros
+        client.loggingCache[user.id] = {
+            action: 'ban',
+            executor: message.author.id,
+            reason: reason || 'Indefinida'
+        };
         
         //Envía una notificación al miembro
         if (member) await user.send({ embeds: [ new client.MessageEmbed()
@@ -99,7 +109,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         ]});
 
         //Banea al usuario
-        await message.guild.members.ban(user, {reason: `Moderador: ${message.author.id}, Razón: ${reason || 'Indefinida'}`});
+        await message.guild.members.ban(user, { reason: reason || 'Indefinida' });
 
         //Envía una confirmación al canal ejecutor
         await message.channel.send({ embeds: [ new client.MessageEmbed()

@@ -127,6 +127,17 @@ exports.run = async (client, message, args, command, commandConfig) => {
             //Si hubo un error, lo lanza a la consola
             if (err) throw err;
 
+            //Si no hay caché de registros
+            if (!client.loggingCache) client.loggingCache = {};
+
+            //Crea una nueva entrada en la caché de registros
+            client.loggingCache[user.id] = {
+                action: 'tempban',
+                executor: message.author.id,
+                reason: reason || 'Indefinida',
+                expiration: Date.now() + milliseconds
+            };
+
             //Envía una notificación al miembro
             if (member) await user.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
@@ -138,7 +149,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             ]});
 
             //Banea al miembro
-            await message.guild.members.ban(user, {reason: `Moderador: ${message.author.id}, Vencimiento: ${Date.now() + milliseconds}, Razón: ${reason || 'Indefinida'}`});
+            await message.guild.members.ban(user, { reason: reason || 'Indefinida' });
 
             //Notifica la acción en el canal de invocación
             await message.channel.send({ embeds: [ new client.MessageEmbed()

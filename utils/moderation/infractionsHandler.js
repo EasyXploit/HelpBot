@@ -98,7 +98,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
             if (time) {
 
                 //Almacena el baneo en la BD
-                client.db.bans[member.user.id] = {
+                client.db.bans[member.id] = {
                     time: Date.now() + time
                 };
         
@@ -109,6 +109,19 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
                     if (err) throw err;
                 });
             };
+
+            //Si no hay caché de registros
+            if (!client.loggingCache) client.loggingCache = {};
+
+            //Crea una nueva entrada en la caché de registros
+            client.loggingCache[member.id] = {
+                action: time ? 'tempban' : 'ban',
+                executor: client.user.id,
+                reason: 'Demasiadas advertencias'
+            };
+
+            //Si se especificó expiración, la almacena el la caché
+            if (time) client.loggingCache[user.id].time = Date.now() + time;
 
             //Envía un mensaje al canal de la infracción
             await message.channel.send({ embeds: [ new client.MessageEmbed()
@@ -127,7 +140,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
             ]});
 
             //Banea al miembro
-            await client.homeGuild.members.ban(member.user, {reason: `Moderador: ${moderator.id}${time ? `, Vencimiento: ${Date.now() + time}` : ''}, Razón: Demasiadas advertencias`});
+            await client.homeGuild.members.ban(member.user, {reason: 'Demasiadas advertencias' });
         };
 
         //Capitaliza la razón de la advertencia

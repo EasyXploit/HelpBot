@@ -71,6 +71,16 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .setDescription(`${client.customEmojis.redTick} Debes proporcionar una razón`)
             ]});
         };
+
+        //Si no hay caché de registros
+        if (!client.loggingCache) client.loggingCache = {};
+
+        //Crea una nueva entrada en la caché de registros
+        client.loggingCache[member.id] = {
+            action: 'kick',
+            executor: message.author.id,
+            reason: reason || 'Indefinida'
+        };
         
         //Envía una notificación al miembro
         await member.send({ embeds: [ new client.MessageEmbed()
@@ -82,7 +92,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         ]});
 
         //Expulsa al miembro
-        await member.kick(`Moderador: ${message.author.id}, Razón: ${reason || 'Indefinida'}`);
+        await member.kick(reason || 'Indefinida');
 
         //Notifica la acción en el canal de invocación
         await message.channel.send({embeds: [ new client.MessageEmbed()

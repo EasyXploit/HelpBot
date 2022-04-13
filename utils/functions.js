@@ -317,7 +317,7 @@ exports.run = (client) => {
                 memberStats.level++;
 
                 //Ajusta el XP actual de miembro
-                memberStats.actualXP = ((5 * client.config.xp.dificultyModifier) * Math.pow(memberStats.level, 3) + 50 * memberStats.level + 100) - memberStats.totalXP;
+                memberStats.actualXP = (await client.functions.xpToLevel(memberStats.level)) - memberStats.totalXP;
 
                 //Asigna las recompensas correspondientes al nivel (si corresponde), y almacena los roles recompensados
                 const rewardedRoles = await client.functions.assignRewards(member, memberStats.level);

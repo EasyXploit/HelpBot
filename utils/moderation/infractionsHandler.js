@@ -186,7 +186,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
                 );
 
                 //Si procede, adjunta el mensaje filtrado
-                if (msg && client.config.moderation.attachFilteredMessages) client.functions.loggingManager('file', new client.MessageAttachment(Buffer.from(`CONTENIDO DEL MENSAJE: \n${msg}`, 'utf-8'), `mensaje-filtrado-${Date.now()}.txt`));
+                if (msg && client.config.moderation.attachFilteredMessages) client.functions.loggingManager('file', new client.MessageAttachment(Buffer.from(`CONTENIDO DEL MENSAJE: \n${msg}`, 'utf-8'), `filtered-${Date.now()}.txt`));
             });
 
             //Banea temporalmente a los miembros que se acaban de unir al servidor y han mandado invitaciones

@@ -280,7 +280,7 @@ exports.run = (client) => {
         if (nonXP) return;
 
         //Si el miembro no tiene tabla de XP
-        if (member.id in client.db.stats === false) {
+        if (!client.db.stats[member.id]) {
 
             //Crea la tabla del miembro
             client.db.stats[member.id] = {
@@ -370,7 +370,7 @@ exports.run = (client) => {
             return 0;
         };
 
-        //Compara y ordena el array de roles
+        //Compara y ordena el array de recompensas
         const sortedRewards = client.config.levelingRewards.sort(compare);
 
         //Almacena los roles de recompensa a asignar

@@ -27,7 +27,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         });
 
         //Almacena la tabla de clasificación del miembro, y si no existe la crea
-        if (member.id in client.db.stats === false) {
+        if (!client.db.stats[member.id]) {
             client.db.stats[member.id] = {
                 totalXP: 0,
                 actualXP: 0,
@@ -115,7 +115,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 level++;
 
                 //Calcula el XP necesario para pasar al siguiente nivel
-                const xpToNextLevel = client.functions.xpToLevel(memberStats.level);
+                const xpToNextLevel = await client.functions.xpToLevel(level);
 
                 if (xpCount >= xpToNextLevel) xpCount = xpCount - xpToNextLevel;
             }

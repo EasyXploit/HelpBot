@@ -223,7 +223,7 @@
 		"blacklistedRoles": [],
 		"additionalAliases": []
 	},
-	"rank": {
+	"stats": {
 		"enabled": true,
 		"deleteInvocationCommand": false,
 		"whitelistedChannels": [],

@@ -308,7 +308,7 @@ exports.run = (client) => {
             if (mode === 'message') memberStats.lastMessage = Date.now();
 
             //Fórmula para calcular el XP necesario para subir al siguiente nivel
-            const xpToNextLevel = await client.functions.xpToLevel(memberStats.level)
+            const xpToNextLevel = await client.functions.xpToLevel(memberStats.level + 1)
 
             //Comprueba si el miembro ha de subir de nivel
             if (memberStats.totalXP >= xpToNextLevel) {
@@ -361,7 +361,7 @@ exports.run = (client) => {
     };
 
     //Función para asignar recompensas
-    client.functions.assignRewards = async (member, memberLevel) => {
+    client.functions.assignRewards = async (member, memberLevel, updateSubsequents) => {
 
         //Función para comparar un array
         function compare(a, b) {
@@ -383,18 +383,18 @@ exports.run = (client) => {
             const reward = sortedRewards[index];
 
             //Si la recompensa sobrepasa el nivel del miembro, para el bucle
-            if (reward.requiredLevel > memberLevel) break;
+            if (!updateSubsequents && reward.requiredLevel > memberLevel) break;
 
-            //Si no se deben preservar viejas recompensas, y si el el nivel de la recompensa es menor que el del miembro
-            if (client.config.xp.removePreviousRewards && reward.requiredLevel < memberLevel) {
+            //Por cada uno de los roles de dicha recompensa
+            reward.roles.forEach(async role => {
 
-                //Por cada uno de los roles de dicha recompensa
-                reward.roles.forEach(async role => {
+                //Si no se deben preservar viejas recompensas y si el el nivel de la recompensa es menor que el del miembro, o si el nivel de la recompensa es mayor que el del miembro
+                if ((client.config.xp.removePreviousRewards && reward.requiredLevel < memberLevel) || reward.requiredLevel > memberLevel) {
 
                     //Le elimina el rol al miembro, si lo tiene
                     if (member.roles.cache.has(role)) await member.roles.remove(role);
-                });
-            };
+                };
+            });
 
             //Si el miembro puede stackear todas las recompensas, o tiene el nivel de esta, se almacena
             if (!client.config.xp.removePreviousRewards || reward.requiredLevel === memberLevel) toReward = toReward.concat(reward.roles);
@@ -412,7 +412,6 @@ exports.run = (client) => {
 
             //Devuelve los roles recompensados
             return toReward;
-
         };
     };
 
@@ -420,7 +419,7 @@ exports.run = (client) => {
     client.functions.xpToLevel = async level => {
 
         //Devuelve el resultado
-        return (5 * client.config.xp.dificultyModifier) * Math.pow(level, 3) + 50 * level + 100;
+        return (5 * client.config.xp.dificultyModifier) * Math.pow((level - 1), 3) + 50 * (level - 1) + 100;
     };
 
     //Función para generar números enteros aleatorios dentro de un rango

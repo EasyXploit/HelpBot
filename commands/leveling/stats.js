@@ -21,7 +21,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         const memberStats = client.db.stats[member.id];
 
         //Calcula el XP necesario para pasar al siguiente nivel
-        const xpToNextLevel = await client.functions.xpToLevel(memberStats.level);
+        const xpToNextLevel = await client.functions.xpToLevel(memberStats.level + 1);
 
         //Comprueba si el miembro puede ganar XP
         let nonXP;

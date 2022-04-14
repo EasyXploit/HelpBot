@@ -156,7 +156,7 @@ exports.run = (client) => {
             for (let index = 0; index < commandConfig.whitelistedRoles.length; index++) {
 
                 //Si se permite a todo el mundo, el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                if (commandConfig.whitelistedRoles[index] === 'everyone' || message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(role => role.id === commandConfig.whitelistedRoles[index])) {
+                if (commandConfig.whitelistedRoles[index] === 'everyone' || message.author.id === message.guild.ownerId || message.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || message.member.roles.cache.find(role => role.id === commandConfig.whitelistedRoles[index])) {
 
                     //Autoriza la ejecución
                     authorized = true;
@@ -181,7 +181,7 @@ exports.run = (client) => {
                 if (index === commandConfig.blacklistedRoles.length - 1) authorized = true;
             };
 
-        } else if (message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole) {
+        } else if (message.author.id === message.guild.ownerId || message.member.roles.cache.find(role => role.id === client.config.main.botManagerRole)) {
 
             //Autoriza la ejecución
             authorized = true;

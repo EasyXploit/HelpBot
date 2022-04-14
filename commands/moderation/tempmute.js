@@ -68,7 +68,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         for (let index = 0; index < commandConfig.unlimitedTime.length; index++) {
 
             //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-            if (message.author.id === message.guild.ownerId || message.author.id === client.config.main.botManagerRole || message.member.roles.cache.find(role => role.id === commandConfig.unlimitedTime[index])) {
+            if (message.author.id === message.guild.ownerId || message.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || message.member.roles.cache.find(role => role.id === commandConfig.unlimitedTime[index])) {
                 authorized = true;
                 break;
             };

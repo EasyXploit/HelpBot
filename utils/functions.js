@@ -307,8 +307,8 @@ exports.run = (client) => {
             //Si es un mensaje, actualiza la variable para evitar spam
             if (mode === 'message') memberStats.lastMessage = Date.now();
 
-            //Fórmula para calcular el XP necesario para subir de nivel
-            const xpToNextLevel = ((5 * client.config.xp.dificultyModifier) * client.config.xp.dificultyModifier) * Math.pow(memberStats.level, 3) + 50 * memberStats.level + 100;
+            //Fórmula para calcular el XP necesario para subir al siguiente nivel
+            const xpToNextLevel = await client.functions.xpToLevel(memberStats.level)
 
             //Comprueba si el miembro ha de subir de nivel
             if (memberStats.totalXP >= xpToNextLevel) {
@@ -317,7 +317,7 @@ exports.run = (client) => {
                 memberStats.level++;
 
                 //Ajusta el XP actual de miembro
-                memberStats.actualXP = (await client.functions.xpToLevel(memberStats.level)) - memberStats.totalXP;
+                memberStats.actualXP = xpToNextLevel - memberStats.totalXP;
 
                 //Asigna las recompensas correspondientes al nivel (si corresponde), y almacena los roles recompensados
                 const rewardedRoles = await client.functions.assignRewards(member, memberStats.level);

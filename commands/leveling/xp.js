@@ -156,7 +156,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .setDescription(`Se ha modificado la cantidad de XP de **${member.user.tag}**.`)
                 .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
                 .addField('Moderador:', message.author.tag, true)
-                .addField('Miembro:', member.user.tag, true)
+                .addField('ID del miembro:', member.id.toString(), true)
                 .addField('Anterior valor', oldValue.toString(), true)
                 .addField('Nuevo valor', newValue.toString(), true));
 

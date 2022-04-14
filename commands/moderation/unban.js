@@ -76,7 +76,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         await client.functions.loggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.correct)
             .setAuthor({ name: `${user.tag} ha sido DESBANEADO`, iconURL: user.displayAvatarURL({dynamic: true}) })
-            .addField('Usuario', user.tag, true)
+            .addField('ID de usuario', user.id.toString(), true)
             .addField('Moderador', message.author.tag, true)
             .addField('Razón', reason || 'Indefinida', true)
         );

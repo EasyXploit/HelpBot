@@ -85,7 +85,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         await client.functions.loggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.logging)
             .setTitle('📑 Registro - [PURGA DE MENSAJES]')
-            .setDescription(`${message.author.tag} eliminó ${msgsToDelete.size - extraMessages} mensajes del canal ${channel}`)
+            .setDescription(`${message.author.tag} eliminó ${msgsToDelete.size - extraMessages} mensajes del canal ${channel}.`)
         );
 
     } catch (error) {

@@ -48,7 +48,7 @@ exports.run = async (member, client) => {
             await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setAuthor({ name: `${member.user.tag} ha sido EXPULSADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                .addField('ID', member.user.id, true)
+                .addField('ID del miembro', member.id, true)
                 .addField('Moderador', executor ? executor.tag : 'Desconocido', true)
                 .addField('Razón', reason ? reason : 'Indefinida', true)
             ]});

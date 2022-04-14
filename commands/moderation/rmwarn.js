@@ -103,11 +103,14 @@ exports.run = async (client, message, args, command, commandConfig) => {
             loggingEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle('📑 Registro - [INFRACCIONES]')
-                .setDescription('Se han retirado todas las advertencias.')
+                .setDescription('Se han retirado todas las advertencias de un miembro.')
                 .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
                 .addField('Moderador:', message.author.tag, true)
-                .addField('Miembro:', member ? member.user.tag : `${memberId} (ID)`, true)
-                .addField('Razón:', reason || 'Indefinida', true);
+                .addField('Razón:', reason || 'Indefinida', true)
+                .addField('ID del miembro:', memberId.toString(), true);
+
+            //Si se encontró al miembro, añade su tag al registro
+            member ? loggingEmbed.addField('Miembro:', member.user.tag, true) : null;
 
             //Genera una notificación para el miembro
             if (member) toDMEmbed = new client.MessageEmbed()
@@ -143,13 +146,16 @@ exports.run = async (client, message, args, command, commandConfig) => {
             loggingEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle('📑 Registro - [INFRACCIONES]')
-                .setDescription('Se ha retirado una advertencia.')
+                .setDescription('Se ha retirado una advertencia de un miembro.')
                 .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
                 .addField('Moderador:', message.author.tag, true)
                 .addField('ID de advertencia:', warnID, true)
                 .addField('Advertencia:', client.db.warns[memberId][warnID].reason, true)
-                .addField('Miembro:', member ? member.user.tag : `${memberId} (ID)`, true)
-                .addField('Razón:', reason || 'Indefinida', true);
+                .addField('Razón:', reason || 'Indefinida', true)
+                .addField('ID del miembro:', memberId.toString(), true);
+
+            //Si se encontró al miembro, añade su tag al registro
+            member ? loggingEmbed.addField('Miembro:', member.user.tag, true) : null;
 
             //Genera una notificación para el miembro
             if (member) toDMEmbed = new client.MessageEmbed()

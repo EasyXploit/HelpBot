@@ -103,10 +103,10 @@ exports.run = async (client, message, args, command, commandConfig) => {
             await client.functions.loggingManager('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setAuthor({ name: `${member.user.tag} ha sido SILENCIADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                .addField('Miembro', member.user.tag, true)
+                .addField('ID del miembro', member.id, true)
                 .addField('Moderador', message.author.tag, true)
                 .addField('Razón', reason || 'Indefinida', true)
-                .addField('Duración', '∞', true)
+                .addField('Vencimiento', 'No vence', true)
             );
 
             //Envía una notificación al miembro
@@ -116,13 +116,13 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .setDescription(`${member}, has sido silenciado en ${message.guild.name}`)
                 .addField('Moderador', message.author.tag, true)
                 .addField('Razón', reason || 'Indefinida', true)
-                .addField('Duración', '∞', true)
+                .addField('Vencimiento', 'No vence', true)
             ]});
 
             //Notifica la acción en el canal de invocación
             await message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
-                .setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado${ reason ? ` debido a **${reason}**` : ''}, ¿alguien más?`)
+                .setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado${ reason ? ` debido a __${reason}__` : ''}, ¿alguien más?`)
             ]});
         });
         

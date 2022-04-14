@@ -108,7 +108,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 .setTitle('📑 Registro - [MODO LENTO]')
                 .setDescription('Se ha habilitado el modo lento.')
                 .addField('Moderador:', message.author.tag, true)
-                .addField('Duración:', `${args[0]}s`, true)
+                .addField('Retraso:', `${args[0]}s`, true)
                 .addField('Canal:', `${message.channel}`, true)
                 .addField('Razón:', reason || 'Indefinida', true)
             );

@@ -125,7 +125,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Notifica la acción en el canal de invocación
         await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} **${user.tag}** ha sido baneado${ reason ? ` debido a **${reason}**` : ''}, ¿alguien más?`)
+            .setDescription(`${client.customEmojis.orangeTick} **${user.tag}** ha sido baneado${ reason ? ` debido a __${reason}__` : ''}, ¿alguien más?`)
         ]});
 
     } catch (error) {

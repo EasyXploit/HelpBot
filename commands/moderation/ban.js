@@ -105,7 +105,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setDescription(`${user}, has sido baneado en ${message.guild.name}`)
             .addField('Moderador', message.author.tag, true)
             .addField('Razón', reason || 'Indefinida', true)
-            .addField('Duración', '∞', true)
+            .addField('Vencimiento', 'No vence', true)
         ]});
 
         //Banea al usuario
@@ -114,7 +114,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Envía una confirmación al canal ejecutor
         await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} **${user.tag}** ha sido baneado${ reason ? ` debido a **${reason}**` : ''}, ¿alguien más?`)
+            .setDescription(`${client.customEmojis.orangeTick} **${user.tag}** ha sido baneado${ reason ? ` debido a __${reason}__` : ''}, ¿alguien más?`)
         ]});
         
     } catch (error) {

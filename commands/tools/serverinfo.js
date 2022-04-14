@@ -74,7 +74,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .addField('🎟️ Invitaciones', `${(await message.guild.invites.fetch()).size.toString()} invitaciones en total`, true)
             .addField('🔖 Roles', `${(await message.guild.roles.fetch()).size.toString()} roles en total`, true)
             .addField('🌝 Stickers y Emojis', `${(await message.guild.emojis.fetch()).size.toString()} emojis\n${(await message.guild.stickers.fetch()).size.toString()} stickers`, true)
-            .addField('👥 Miembros', `${guildMembers.size} miembros\n${guildMembers.filter(m => !m.user.bot).size} humanos\n${guildMembers.filter(m => m.user.bot).size} bots`, true)
+            .addField('👥 Miembros', `${guildMembers.size} miembros\n${guildMembers.filter(member => !member.user.bot).size} humanos\n${guildMembers.filter(member => member.user.bot).size} bots`, true)
             .addField('🔨 Baneos', `${(await message.guild.bans.fetch()).size.toString()} usuarios baneados`, true)
             .addField('🕗 Tiempo para AFK', `${message.guild.afkTimeout / 60} minutos`, true)
             .addField('💬 Canales', `${(categories.size - 1)} categorías\n${guildChannels.filter(c => c.type === 'GUILD_TEXT').size} canales de texto\n${guildChannels.filter(c => c.type === 'GUILD_VOICE').size} canales de voz`, true)

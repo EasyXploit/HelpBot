@@ -28,9 +28,7 @@ exports.run = async (oldState, newState, client) => {
             if (!member) return;
 
             //Acaba el conteo de minutos si el miembro se queda solo o con únicamente bots en la sala
-            if (newState.channel.members.filter(m => !m.user.bot).size === 1 && client.usersVoiceStates[newState.id]) {
-                return endVoiceTime();
-            };
+            if (newState.channel.members.filter(member => !member.user.bot).size === 1 && client.usersVoiceStates[newState.id]) return endVoiceTime();
 
             //Calcula si el miembro tiene un rol que no puede ganar XP
             let nonXPRole;

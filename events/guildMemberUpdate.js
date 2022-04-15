@@ -20,6 +20,9 @@ exports.run = async (oldMember, newMember, client) => {
                 //Propaga el rol silenciado
                 client.functions.spreadMutedRole(newMember.guild);
             };
+
+            //Ejecuta el manejador de nuevos miembros (si procede)
+            if (client.config.main.newMemberMode === 'after') client.functions.manageNewMember(newMember);
         };
 
     } catch (error) {

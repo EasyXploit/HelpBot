@@ -75,7 +75,7 @@ exports.run = async (message, client) => {
     if (client.config.xp.rewardMessages && !message.content.startsWith(client.config.main.prefix) && !client.config.xp.nonXPChannels.includes(message.channel.id)) return await client.functions.addXP(message.member, 'message', message.channel);
 
     //Comprueba si el comando contiene el prefijo y un nombre de comando 
-    if (!message.content.startsWith(client.config.main.prefix) || message.content.length <= (client.config.main.prefix.length + 1)) return;
+    if (!message.content.startsWith(client.config.main.prefix) || message.content.length <= client.config.main.prefix.length) return;
 
     //Extrae los argumentos del input
     const args = message.content.slice(client.config.main.prefix.length).trim().split(/ +/g);

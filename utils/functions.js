@@ -694,7 +694,7 @@ exports.run = (client) => {
             .setColor(client.config.colors.debugging)
             .setTitle('📋 Depuración')
             .setDescription('Se declaró un error durante la ejecución de un comando')
-            .addField('Comando:', command.slice(-0, -3), true)
+            .addField('Comando:', command, true)
             .addField('Argumentos:', arguments, true)
             .addField('Origen:', message.guild.name, true)
             .addField('Canal:', `${message.channel}`, true)

@@ -21,15 +21,19 @@ exports.run = async (message, client) => {
         //Lo omite si el autor del mensaje es el propietario de la guild
         if (message.author.id === client.homeGuild.ownerId) continue;
 
-        //Lo omite si el canal tiene el filtro desactivado
+        //Almacena los canales a los que no afecta
         const bypassChannels = filterCfg.bypassChannels;
+
+        //Lo omite si el canal tiene el filtro desactivado
         if (message.channel && bypassChannels.includes(message.channel.id)) continue;
 
         //Busca y almacena al miembro en la guild
         const guildMember = await client.functions.fetchMember(client.homeGuild, message.author.id)
 
-        //Lo omite si algún rol del miembro tiene el filtro desactivado
+        //Almacena los roles a los que no afecta
         const bypassRoles = filterCfg.bypassRoles;
+
+        //Lo omite si algún rol del miembro tiene el filtro desactivado
         for (let index = 0; index < bypassRoles.length; index++) if (guildMember.roles.cache.has(bypassRoles[index])) continue;
 
         //Ejecuta el filtro
@@ -50,16 +54,16 @@ exports.run = async (message, client) => {
     //Si el mensaje proviene de un MD
     if (message.channel.type === 'DM') {
 
-        //Devuelve si el mensaje no tiene contenido
+        //Aborta si el mensaje no tiene contenido
         if (!message.content) return;
 
         //Si se trata de un comando
         if (message.content.startsWith(client.config.main.prefix)) {
 
-            //Advierte de que los comandos no funcionan por MD
+            //Advierte de que los comandos no funcionan por MD y aborta
             return await message.author.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.information)
-                .setDescription(`${client.customEmojis.grayTick} | Los comandos de ${client.user} solo están disponibles desde ${client.homeGuild.name}.`)
+                .setDescription(`${client.customEmojis.grayTick} | Los comandos de ${client.user} solo están disponibles desde **${client.homeGuild.name}**.`)
             ]});
         };
 
@@ -67,58 +71,64 @@ exports.run = async (message, client) => {
         return;
     };
 
-    //Llama al manejador de leveling
+    //Aumenta la cantidad de XP del miembro (si procede)
     if (client.config.xp.rewardMessages && !message.content.startsWith(client.config.main.prefix) && !client.config.xp.nonXPChannels.includes(message.channel.id)) return await client.functions.addXP(message.member, 'message', message.channel);
 
-    // Función para eliminar el prefijo, extraer el comando y sus argumentos (en caso de tenerlos)
+    //Comprueba si el comando contiene el prefijo y un nombre de comando 
+    if (!message.content.startsWith(client.config.main.prefix) || message.content.length <= (client.config.main.prefix.length + 1)) return;
+
+    //Extrae los argumentos del input
     const args = message.content.slice(client.config.main.prefix.length).trim().split(/ +/g);
-    const cmd = args.shift().toLowerCase();
-    const command = `${cmd}.js`;
 
-    if (command.length <= 0) return console.warn(`${new Date().toLocaleString()} 》AVISO: No hubo ningún comando a cargar.`);
+    //Extrae el nombre del comando
+    const command = args.shift().toLowerCase();
 
-    // Función para ejecutar el comando
     try {
-        //Comprueba si es un comando con prefijo
-        if (message.content.startsWith(client.config.main.prefix)) {
-            let waitEmbed = new client.MessageEmbed().setColor(client.config.colors.secondaryError).setDescription(`${client.customEmojis.redTick} Debes esperar 2 segundos antes de usar este comando`);
-            if (client.cooldownedUsers.has(message.author.id)) return message.channel.send({ embeds: [waitEmbed] }).then(msg => {setTimeout(() => msg.delete(), 1000)});
 
-            //Busca el comando por su nombre o su alias
-            const listedCmd = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
-            if (!listedCmd) return; //Devuelve si no lo encuentra
+        //Comprueba si el miembro ha respetado la espera mínima entre comandos
+        if (client.cooldownedUsers.has(message.author.id)) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} Debes esperar 2 segundos antes de usar este comando`)
+        ]}).then(msg => {setTimeout(() => msg.delete(), 1000)});
 
-            //Almacena la configuración del comando
-            let commandConfig = client.config.commands[listedCmd.config.name];
+        //Busca el comando por su nombre o su alias
+        const pulledCommand = client.commands.get(command) || client.commands.get(client.aliases.get(command));
 
-            //Devuelve si el comando está deshabilitado
-            if (!commandConfig || !commandConfig.enabled) return;
+        //Aborta si no lo encuentra
+        if (!pulledCommand) return;
 
-            //Devuelve si el canal no está autorizado
-            if (commandConfig.whitelistedChannels.length > 0 && !commandConfig.whitelistedChannels.includes(message.channel.id)) return;
-            if (commandConfig.blacklistedChannels.length > 0 && commandConfig.blacklistedChannels.includes(message.channel.id)) return;
+        //Almacena la configuración del comando
+        let commandConfig = client.config.commands[pulledCommand.config.name];
 
-            //Comprueba si el miembro tiene permiso para ejecutar el comando
-            if (!await client.functions.checkCommandPermission(message, commandConfig)) return message.channel.send({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación.`)]
-            }).then(msg => { setTimeout(() => msg.delete(), 5000) });
+        //Aborta si el comando está deshabilitado
+        if (!commandConfig || !commandConfig.enabled) return;
 
-            //Borra el mensaje de invocación (tras 3 segundos) si se ha configurado para ello
-            if (commandConfig.deleteInvocationCommand) setTimeout(() => message.delete(), 2000);
+        //Aborta si el canal no está autorizado en la lista blanca
+        if (commandConfig.whitelistedChannels.length > 0 && !commandConfig.whitelistedChannels.includes(message.channel.id)) return;
 
-            //Añade el export de la config al objeto "commandConfig";
-            commandConfig.export = listedCmd.config;
+        //Aborta si el canal está bloqueado por la lista negra
+        if (commandConfig.blacklistedChannels.length > 0 && commandConfig.blacklistedChannels.includes(message.channel.id)) return;
 
-            //Ejecuta el comando
-            listedCmd.run(client, message, args, listedCmd.config.name, commandConfig);
+        //Comprueba si el miembro tiene permiso para ejecutar el comando
+        if (!await client.functions.checkCommandPermission(message, commandConfig)) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación.`)]
+        }).then(msg => { setTimeout(() => msg.delete(), 5000) });
 
-            //Añade un cooldown
-            client.cooldownedUsers.set(message.author.id);
-            setTimeout(() => {
-                client.cooldownedUsers.delete(message.author.id);
-            }, 2000);
-        };
+        //Borra el mensaje de invocación (tras 3 segundos) si se ha configurado para ello
+        if (commandConfig.deleteInvocationCommand) setTimeout(() => message.delete(), 2000);
+
+        //Añade el export de la config al objeto "commandConfig";
+        commandConfig.export = pulledCommand.config;
+
+        //Ejecuta el comando
+        pulledCommand.run(client, message, args, command, commandConfig);
+
+        //Añade un cooldown para el miembro
+        client.cooldownedUsers.set(message.author.id);
+
+        //Elimina el cooldown pasado el tiempo configurado
+        setTimeout(() => { client.cooldownedUsers.delete(message.author.id); }, client.config.main.commandCooldown);
         
     } catch (error) {
 

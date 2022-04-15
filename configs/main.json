@@ -7,5 +7,6 @@
     "newBotRole": "",
     "newMemberRole": "",
     "loadMention": true,
-    "pingTreshold": 1000
+    "pingTreshold": 1000,
+    "commandCooldown": 2000
 }

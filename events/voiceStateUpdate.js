@@ -2,7 +2,49 @@ exports.run = async (oldState, newState, client) => {
     
     try {
 
-        //Aborta si no están habilitadas las recompensas de XP
+        //Método para obtener conexiones de voz
+        const { getVoiceConnection } = require('@discordjs/voice');
+
+        //Almacena la conexión de voz del bot (si tiene)
+        const connection = await getVoiceConnection(oldState.guild.id);
+
+        //Si el bot está conectado
+        if (connection) {
+
+            //Almacena la información de reproducción de la guild
+            const reproductionQueue = client.reproductionQueues[connection.joinConfig.guildId];
+
+            //Almacena el número de miembros del canal de voz
+            const memberCount = oldState.guild.me.voice.channel.members.filter(member => !member.user.bot).size;
+
+            //Si el bot se queda solo o con únicamente bots en el canal
+            if (memberCount === 0) {
+
+                //Crea un contador para demorar la salida del canal y la destrucción de la cola
+                if (reproductionQueue) reproductionQueue.timeout = setTimeout(() => {
+
+                    //Aborta la conexión
+                    if (connection.state.status !== 'Destroyed') connection.destroy();
+
+                    //Confirma la acción
+                    reproductionQueue.boundedTextChannel.send({ content: '⏏ | He abandonado el canal' });
+
+                    //Borra la información de reproducción de la guild
+                    delete client.reproductionQueues[connection.joinConfig.guildId];
+
+                }, client.config.music.maxIdleTime);
+
+            } else if (memberCount !== 0 && reproductionQueue && reproductionQueue.timeout) { //Si el canal recupera un mínimo de miembros, y hay cola en reproducción
+
+                //Finalzia el timeout
+                clearTimeout(reproductionQueue.timeout);
+
+                //Anula la variable dle timeout
+                reproductionQueue.timeout = null;
+            };
+        };
+
+        //Aborta el resto de la ejecución si no están habilitadas las recompensas de XP
         if (!client.config.xp.rewardVoice) return;
 
         //Función para que el miembro deje de ganar XP

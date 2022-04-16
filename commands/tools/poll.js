@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
 
     try {
 
@@ -298,7 +298,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'poll',
-    description: 'Inicia un asistente interactivo para crear una encuesta o finaliza una en curso.',
-    aliases: [],
-    parameters: '["new" | "end"] [id]'
+    aliases: []
 };

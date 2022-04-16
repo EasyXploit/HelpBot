@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
     
     try {
 
@@ -243,8 +243,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'xp',
-    description: 'Modifica la cantidad de XP de un miembro.',
-    aliases: ['modifyxp'],
-    parameters: '<@miembro | id> <"set" | "add" | "addrandom" | "remove" | "clear"> <cantidad>'
+    aliases: ['modifyxp']
 };
 

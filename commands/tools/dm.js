@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
     
     try {
         
@@ -136,7 +136,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'dm',
-    description: 'El bot enviará un mensaje al miembro, de forma anónima o con el autor referenciado, con formato incrustado o no.',
-    aliases: ['direct'],
-    parameters: '<@miembro | id> <"author" | "anonymous"> <"embed" | "normal"> <mensaje>'
+    aliases: ['direct']
 };

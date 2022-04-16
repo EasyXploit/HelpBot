@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
 
     try {
 
@@ -129,7 +129,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'sound',
-    description: 'Reproduce un archivo .mp3 de la carpeta `media/audios` o muestra una lista de ellos.',
+    description: '',
     aliases: ['snd'],
-    parameters: '[nombre del sonido | "list"]'
+    parameters: ''
 };

@@ -1,4 +1,4 @@
-exports.run = async (oldState, newState, client) => {
+exports.run = async (oldState, newState, client, locale) => {
     
     try {
 

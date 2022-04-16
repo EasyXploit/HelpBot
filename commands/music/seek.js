@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
 
     try {
 
@@ -71,7 +71,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'seek',
-    description: 'Cambia el tiempo de la pista a una marca de tiempo específica.',
-    aliases: ['sk'],
-    parameters: '<HH:MM:SS>'
+    aliases: ['sk']
 };

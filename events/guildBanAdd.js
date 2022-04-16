@@ -1,4 +1,4 @@
-exports.run = async (banData, client) => {
+exports.run = async (banData, client, locale) => {
 
     try {
 

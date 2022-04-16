@@ -1,3 +1,9 @@
+//Almacena el idioma configurado
+const language = require('./configs/main.json').language;
+
+//Almacena las traducciones al idioma configurado
+const locale = require(`./resources/locales/${language}.json`);
+
 //Gestión de promesas rechazadas y no manejadas
 process.on('unhandledRejection', error => {
 
@@ -5,17 +11,16 @@ process.on('unhandledRejection', error => {
     if (!error.toString().includes('Cannot send messages to this user') && !error.toString().includes('Unknown Message')) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》ERROR: Promesa rechazada no manejada:`, error.stack);
+        console.error(`${new Date().toLocaleString()} 》${locale.index.unhandledRejection}:`, error.stack);
     };
 });
 
 //Muestra el logo de arranque en la consola
-const { splash, divider } = require('./utils/splashLogo.js');
-console.log(splash, divider);
+require('./utils/splashLogo.js').run(locale.utils.splashLogo);
 
 //CARGA DE CLIENTE
 //Carga una nueva instancia de cliente en Discord
-console.log('- Iniciando cliente ...');
+console.log(`${locale.index.startingClient} ...`);
 const discord = require('discord.js');  //Carga el wrapper para interactuar con la API de Discord
 const client = new discord.Client({     //Inicia el cliente con el array de intentos necesarios
     intents: [
@@ -29,7 +34,7 @@ const client = new discord.Client({     //Inicia el cliente con el array de inte
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
     retryLimit: Infinity 
 });
-console.log('- ¡Cliente iniciado correctamente!\n');
+console.log(`- ${locale.index.clientStarted}\n`);
 
 //CARGA DE ESTRUCTURAS ADICIONALES
 //Carga de módulos, objetos y colecciones en el cliente
@@ -63,7 +68,7 @@ databaseFiles.forEach(async file => {
 client.fs.readdir('./events/', async (err, files) => {
 
     //Si se genera un error, aborta la carga del resto de eventos
-    if (err) return console.error(`${new Date().toLocaleString()} 》ERROR: No se ha podido completar la carga de los eventos.`, error.stack);
+    if (err) return console.error(`${new Date().toLocaleString()} 》${locale.index.uncompleteEventsLoad}.`, error.stack);
     
     //Precarga cada uno de los eventos
     files.forEach(file => {
@@ -72,10 +77,10 @@ client.fs.readdir('./events/', async (err, files) => {
         const eventName = file.split('.')[0];               //Almacena el nombre del evento
 
         //Añade un listener para el evento en cuestión (usando spread syntax)
-        client.on(eventName, (...arguments) => eventFunction.run(...arguments, client));
+        client.on(eventName, (...arguments) => eventFunction.run(...arguments, client, locale.events[eventName]));
 
         //Notifica la carga en la consola
-        console.log(` - [OK] Evento [${eventName}]`);
+        console.log(` - [OK] ${locale.index.eventLoaded}: [${eventName}]`);
     });
 });
 
@@ -90,24 +95,27 @@ client.fs.readdirSync('./commands/').forEach(subDirectory => {
     commands.forEach(command => {
 
         //Requiere el comando para obtener su información
-        const pulledCommand = require(`./commands/${subDirectory}/${command}`);
+        let pulledCommand = require(`./commands/${subDirectory}/${command}`);
         
         //Verifica si el nombre del comando es una cadena o no, y verifica si existe
         if (pulledCommand.config && typeof (pulledCommand.config.name) === 'string') {
 
+            //Carga la categoría en el objeto de config. del comando
+            pulledCommand.config.category = subDirectory;
+
             //Comprueba si hay conflictos con otros comandos que tengan el mismo nombre
-            if (client.commands.get(pulledCommand.config.name)) return console.warn(`Dos comandos o más comandos tienen el mismo nombre: ${pulledCommand.config.name}.`);
+            if (client.commands.get(pulledCommand.config.name)) return console.warn(`${locale.index.conflictedNames}: ${pulledCommand.config.name}.`);
 
             //Añade el comando a la colección
             client.commands.set(pulledCommand.config.name, pulledCommand);
 
             //Manda un mensaje de confirmación
-            console.log(` - [OK] Comando [${pulledCommand.config.name}]`);
+            console.log(` - [OK] ${locale.index.commandLoaded}: [${pulledCommand.config.name}]`);
 
         } else {
             
             //Si hay un error, no carga el comando
-            return console.log(`Error al cargar el comando en ./commands/${subDirectory}/. Falta config.name o config.name no es una cadena.`);
+            return console.log(`${locale.index.configError}: ./commands/${subDirectory}/.`);
         };
 
         //Comprueba si el comando tiene alias, y de ser así, los añade a la colección
@@ -117,7 +125,7 @@ client.fs.readdirSync('./commands/').forEach(subDirectory => {
             pulledCommand.config.aliases.forEach(alias => {
 
                 //Comprueba si hay conflictos con otros alias que tengan el mismo nombre
-                if (client.aliases.get(alias)) return console.warn(`Dos comandos o más comandos tienen los mismos alias: ${alias}`);
+                if (client.aliases.get(alias)) return console.warn(`${locale.index.conflictedAlias}: ${alias}`);
 
                 //Añade el alias a la colección
                 client.aliases.set(alias, pulledCommand.config.name);
@@ -134,7 +142,7 @@ client.fs.readdirSync('./commands/').forEach(subDirectory => {
             commandConfig.additionalAliases.forEach(alias => {
 
                 //Comprueba si hay conflictos con otros alias que tengan el mismo nombre
-                if (client.aliases.get(alias)) return console.warn(`Dos comandos o más comandos tienen los mismos alias: ${alias}`);
+                if (client.aliases.get(alias)) return console.warn(`${locale.index.conflictedAlias}: ${alias}`);
 
                 //Añade el alias adicional a la colección general de alias
                 client.aliases.set(alias, pulledCommand.config.name);
@@ -144,5 +152,5 @@ client.fs.readdirSync('./commands/').forEach(subDirectory => {
 });
 
 //Inica sesión en el cliente
-console.log('\n- Iniciando sesión ...\n');
-client.login(client.config.token.key).then(() => console.log('\n - ¡Sesion iniciada correctamente!'));
+console.log(`\n- ${locale.index.loggingIn} ...\n`);
+client.login(client.config.token.key).then(() => console.log(`\n - ${locale.index.loggedIn}`));

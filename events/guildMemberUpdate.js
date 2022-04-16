@@ -1,4 +1,4 @@
-exports.run = async (oldMember, newMember, client) => {
+exports.run = async (oldMember, newMember, client, locale) => {
     
     try {
 

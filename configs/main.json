@@ -1,5 +1,6 @@
 {
     "prefix": "!",
+    "language": "en",
     "botManagerRole": "",
     "loggingChannel": "",
     "debuggingChannel": "",

@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
 
     try {
 
@@ -14,7 +14,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             .setDescription(`${client.customEmojis.redTick} El rol **${args[0]}** no existe`)
         ]});
 
-        //Serieliza los permisos del rol
+        //Serializa los permisos del rol
         const rolePermissions = role.permissions.serialize();
 
         //Obtiene los nombres de los permisos
@@ -23,7 +23,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         });
 
         //Almacena las traducciones de los permisos
-        const translations = require('../../resources/translations/permissions.json');
+        const translations = require(`../../resources/locales/${client.config.main.language}.json`).permissions;
 
         //Almacena los permisos traducidos
         let translatedPermissions = [];
@@ -56,7 +56,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'roleinfo',
-    description: 'Muestra información sobre un rol.',
-    aliases: ['role'],
-    parameters: '<@rol | nombre de rol | id>'
+    aliases: ['role']
 };

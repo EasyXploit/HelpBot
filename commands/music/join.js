@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
 
     try {
 
@@ -71,7 +71,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'join',
-    description: 'Conecta al bot a tu canal de voz.',
-    aliases: ['j'],
-    parameters: ''
+    aliases: ['j']
 };

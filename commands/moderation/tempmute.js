@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
     
     try {
 
@@ -163,7 +163,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'tempmute',
-    description: 'Silencia temporalmente a un miembro de los canales de texto y voz.',
     aliases: [],
-    parameters: '<@miembro| id> <días"S" | minutos"M" | horas"H" | días"D"> [razón]'
 };

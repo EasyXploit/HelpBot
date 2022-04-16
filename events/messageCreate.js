@@ -1,4 +1,4 @@
-exports.run = async (message, client) => {
+exports.run = async (message, client, locale) => {
 
     //Previene la ejecución si el mensaje fue enviado por un bot o por el sistema
     if (message.author.bot || message.type !== 'DEFAULT') return;
@@ -43,7 +43,7 @@ exports.run = async (message, client) => {
             if (match) {
 
                 //Almacena la razón de la infracción
-                const reason = message.channel.type === 'DM' ? `${filterCfg.reason} (vía MD)` : filterCfg.reason; 
+                const reason = message.channel.type === 'DM' ? `${filterCfg.reason} (${locale.filteredDm})` : filterCfg.reason; 
             
                 //Ejecuta el manejador de infracciones
                 require('../utils/moderation/infractionsHandler.js').run(client, message, guildMember, reason, filterCfg.action, client.user, message.content);
@@ -63,7 +63,7 @@ exports.run = async (message, client) => {
             //Advierte de que los comandos no funcionan por MD y aborta
             return await message.author.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.information)
-                .setDescription(`${client.customEmojis.grayTick} | Los comandos de ${client.user} solo están disponibles desde **${client.homeGuild.name}**.`)
+                .setDescription(`${client.customEmojis.grayTick} | ${client.functions.localeParser(locale.unavailableOnDm, { clientUser: client.user, guildName: client.homeGuild.name })}.`)
             ]});
         };
 
@@ -88,7 +88,7 @@ exports.run = async (message, client) => {
         //Comprueba si el miembro ha respetado la espera mínima entre comandos
         if (client.cooldownedUsers.has(message.author.id)) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Debes esperar 2 segundos antes de usar este comando`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.cooldown}`)
         ]}).then(msg => {setTimeout(() => msg.delete(), 1000)});
 
         //Busca el comando por su nombre o su alias
@@ -112,7 +112,7 @@ exports.run = async (message, client) => {
         //Comprueba si el miembro tiene permiso para ejecutar el comando
         if (!await client.functions.checkCommandPermission(message, commandConfig)) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación.`)]
+            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.nonPrivileged, { messageAuthor: message.author })}.`)]
         }).then(msg => { setTimeout(() => msg.delete(), 5000) });
 
         //Borra el mensaje de invocación (tras 3 segundos) si se ha configurado para ello
@@ -121,8 +121,11 @@ exports.run = async (message, client) => {
         //Añade el export de la config al objeto "commandConfig";
         commandConfig.export = pulledCommand.config;
 
+        //Almacena las traducciones del comando al idioma configurado
+        const commandLocale = await require(`../resources/locales/${client.config.main.language}.json`).commands[pulledCommand.config.category][pulledCommand.config.name];
+
         //Ejecuta el comando
-        pulledCommand.run(client, message, args, command, commandConfig);
+        pulledCommand.run(client, message, args, command, commandConfig, commandLocale);
 
         //Añade un cooldown para el miembro
         client.cooldownedUsers.set(message.author.id);

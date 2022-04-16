@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
     
     try {
     
@@ -56,7 +56,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'edit',
-    description: 'Edita un mensaje enviado previamente por el bot.',
-    aliases: [],
-    parameters: '<#canal | id> <ID del mensaje> <nuevo contenido>'
+    aliases: []
 };

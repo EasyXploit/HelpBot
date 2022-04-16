@@ -1,0 +1,404 @@
+{
+    "guildFeatures": {
+        "ANIMATED_ICON": "Icono animado",
+        "BANNER": "Cartel de servidor",
+        "COMMERCE": "Servidor de comercio",
+        "COMMUNITY": "Servidor de comunidad",
+        "HAS_DIRECTORY_ENTRY": "Tiene una entrada en el directorio",
+        "DISCOVERABLE": "Servidor de descubrimiento",
+        "ENABLED_DISCOVERABLE_BEFORE": "Descubrimiento habilitado previamente",
+        "LINKED_TO_HUB": "Vinculado a un Hub de Estudio",
+        "FEATURABLE": "Servidor promocionado",
+        "INVITE_SPLASH": "Fondo de invitación",
+        "MEMBER_VERIFICATION_GATE_ENABLED": "Selección de miembros",
+        "NEWS": "Crear canales de novedades",
+        "PARTNERED": "Servidor asociado",
+        "PREVIEW_ENABLED": "Vista previa",
+        "VANITY_URL": "URL personalizada",
+        "VERIFIED": "Servidor verificado",
+        "VIP_REGIONS": "Voz VIP",
+        "WELCOME_SCREEN_ENABLED": "Pantalla de bienvenida",
+        "TICKETED_EVENTS_ENABLED": "Eventos con entrada",
+        "MONETIZATION_ENABLED": "Servidor monetizado",
+        "MORE_STICKERS": "Slots de stickers aumentados",
+        "NEW_THREAD_PERMISSIONS": "Nuevos permisos para hilos",
+        "THREADS_ENABLED": "Hilos habilitados",
+        "THREE_DAY_THREAD_ARCHIVE": "Tiempo de archivo de 3 días",
+        "SEVEN_DAY_THREAD_ARCHIVE": "Tiempo de archivo de 7 días",
+        "PRIVATE_THREADS": "Hilos privados",
+        "ROLE_ICONS": "Iconos de rol"
+    },
+    "permissions": {
+        "ADMINISTRATOR": "Administrador",
+        "CREATE_INSTANT_INVITE": "Crear invitaciones instantáneas",
+        "KICK_MEMBERS": "Expulsar miembros",
+        "BAN_MEMBERS": "Banear miembros",
+        "MANAGE_CHANNELS": "Gestionar canales",
+        "MANAGE_GUILD": "Gestionar servidor",
+        "ADD_REACTIONS": "Añadir reacciones",
+        "VIEW_AUDIT_LOG": "Ver el registro de auditoría",
+        "PRIORITY_SPEAKER": "Prioridad de palabra",
+        "STREAM": "Emitir en directo",
+        "VIEW_CHANNEL": "Ver canal",
+        "SEND_MESSAGES": "Enviar mensajes",
+        "SEND_TTS_MESSAGES": "Enviar mensajes de texto a voz",
+        "MANAGE_MESSAGES": "Gestionar mensajes",
+        "EMBED_LINKS": "Insertar enlaces",
+        "ATTACH_FILES": "Adjuntar archivos",
+        "READ_MESSAGE_HISTORY": "Ver el historial de mensajes",
+        "MENTION_EVERYONE": "Mencionar a todos",
+        "USE_EXTERNAL_EMOJIS": "Usar emojis externos",
+        "VIEW_GUILD_INSIGHTS": "Ver mejoras del servidor",
+        "CONNECT": "Conectar",
+        "SPEAK": "Hablar",
+        "MUTE_MEMBERS": "Silenciar miembros",
+        "DEAFEN_MEMBERS": "Ensordecer miembros",
+        "MOVE_MEMBERS": "Mover miembros",
+        "USE_VAD": "Usar actividad de voz",
+        "CHANGE_NICKNAME": "Cambiar apodo",
+        "MANAGE_NICKNAMES": "Gestionar apodos",
+        "MANAGE_ROLES": "Gestionar roles",
+        "MANAGE_WEBHOOKS": "Gestionar webhooks",
+        "MANAGE_EMOJIS_AND_STICKERS": "Gestionar emojis y stickers",
+        "USE_APPLICATION_COMMANDS": "Usar comandos de aplicación",
+        "REQUEST_TO_SPEAK": "Solicitar hablar",
+        "MANAGE_EVENTS": "Administrar eventos",
+        "MANAGE_THREADS": "Administrar hilos",
+        "USE_PUBLIC_THREADS": "Usar hilos públicos",
+        "CREATE_PUBLIC_THREADS": "Crear hilos públicos",
+        "USE_PRIVATE_THREADS": "Usar hilos privados",
+        "CREATE_PRIVATE_THREADS": "Crear hilos privados",
+        "USE_EXTERNAL_STICKERS": "Usar stickers externos",
+        "SEND_MESSAGES_IN_THREADS": "Enviar mensajes en los hilos",
+        "START_EMBEDDED_ACTIVITIES": "Iniciar actividades incorporadas",
+        "MODERATE_MEMBERS": "Moderar miembros"
+    },
+    "index": {
+        "unhandledRejection": "ERROR: Promesa rechazada no manejada",
+        "startingClient": "Iniciando cliente",
+        "clientStarted": "¡Cliente iniciado correctamente!",
+        "uncompleteEventsLoad": "ERROR: No se ha podido completar la carga de los eventos",
+        "eventLoaded": "Evento",
+        "conflictedNames": "Dos comandos o más tienen el mismo nombre",
+        "commandLoaded": "Comando",
+        "configError": "Error al cargar el comando",
+        "conflictedAlias": "Dos comandos o más tienen los mismos alias",
+        "loggingIn": "Iniciando sesión",
+        "loggedIn": "¡Sesion iniciada correctamente!"
+    },
+    "events": {
+        "channelDelete": {
+
+        },
+        "error": {
+
+        },
+        "guildBanAdd": {
+            
+        },
+        "guildCreate": {
+            
+        },
+        "guildDelete": {
+            
+        },
+        "guildMemberAdd": {
+            
+        },
+        "guildMemberRemove": {
+            
+        },
+        "guildMemberUpdate": {
+            
+        },
+        "messageCreate": {
+            "filteredDm": "vía DM",
+            "unavailableOnDm": "Los comandos de {{clientUser}} solo están disponibles desde **{{guildName}}**",
+            "cooldown": "Debes esperar 2 segundos antes de usar este comando",
+            "nonPrivileged": "{{messageAuthor}}, no dispones de privilegios para realizar esta operación"
+        },
+        "ready": {
+            
+        },
+        "shardError": {
+            
+        },
+        "voiceStateUpdate": {
+            
+        },
+        "warn": {
+            
+        }
+    },
+    "commands": {
+        "information": {
+            "categoryName": "Información",
+            "help": {
+                "description": "Muestra una lista con los comandos del bot, o la ayuda para uno solo",
+                "parameters": "[nombre del comando]",
+                "nonexistentCommand": "El comando `{{cmd}}` no existe",
+                "nonPrivileged": "{{messageAuthor}}, no dispones de privilegios para visualizar este comando",
+                "helpEmbed": {
+                    "command": "Comando \"{{commandName}}\"",
+                    "description": "Descripción",
+                    "noDescription": "Ninguna",
+                    "alias": "Alias",
+                    "noAlias": "Ninguno",
+                    "syntax": "Sintaxis",
+                    "notationTitle": "Notación de la sintaxis",
+                    "notation": "- Corchetes: _[argumento opcional]_\n- Corchetes angulares: _<argumento obligatorio>_\n- Llaves: _{argumento predeterminado}_\n- Paréntesis: _(información diversa)_\n- Comillas dobles: _\"argumento de texto literal\"_\n- Barra vertical: _posibilidad1 | posibilidad2_"
+                },
+                "commandListEmbed": {
+                    "author": "Lista de comandos de {{clientUsername}}",
+                    "footer": "Para aprender a utilizar un comando, escribe: {{prefix}}help <nombre del comando>"
+                }
+            },
+            "ping": {
+                "description": "Proporciona información sobre el estado del bot",
+                "parameters": ""
+            }
+        },
+        "leveling": {
+            "categoryName": "Niveles",
+            "leaderboard": {
+                "description": "Muestra la tabla de clasificación de XP de la comunidad",
+                "parameters": "[número de página]"
+            },
+            "stats": {
+                "description": "Muestra tus estadísticas de XP o las de otro miembro",
+                "parameters": "[@miembro | id]"
+            },
+            "xp": {
+                "description": "Modifica la cantidad de XP de un miembro",
+                "parameters": "<@miembro | id> <\"set\" | \"add\" | \"addrandom\" | \"remove\" | \"clear\"> <cantidad>"
+            }
+        },
+        "moderation": {
+            "categoryName": "Moderación",
+            "ban": {
+                "description": "Banea a un miembro",
+                "parameters": "<@miembro| id> [razón]"
+            },
+            "infractions": {
+                "description": "Muestra una lista con las infracciones de un miembro y sus respectivos ID",
+                "parameters": "[@miembro | id]"
+            },
+            "kick": {
+                "description": "Expulsa a un miembro",
+                "parameters": "<@miembro| id> [razón]"
+            },
+            "mute": {
+                "description": "Silencia a un miembro de los canales de texto y voz",
+                "parameters": "<@miembro| id> [razón]"
+            },
+            "rmwarn": {
+                "description": "Para eliminar una advertencia (o todas) a un miembro",
+                "parameters": "<@miembro| id> <ID de advertencia | \"all\"> [razón]"
+            },
+            "slowmode": {
+                "description": "Activa el modo lento en un canal de texto",
+                "parameters": "<\"off\" | segundos> [razón]"
+            },
+            "softban": {
+                "description": "Banea a un miembro, eliminando X días de mensajes suyos",
+                "parameters": "<@miembro| id> <días (1-7)> [razón]"
+            },
+            "tempban": {
+                "description": "Banea temporalmente a un miembro",
+                "parameters": "<@miembro| id> <días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"> [razón]"
+            },
+            "tempmute": {
+                "description": "Silencia temporalmente a un miembro de los canales de texto y voz",
+                "parameters": "<@miembro| id> <días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"> [razón]"
+            },
+            "unban": {
+                "description": "Desbanea a un miembro",
+                "parameters": "<@miembro| id> [razón]"
+            },
+            "unmute": {
+                "description": "Dessilencia a un miembro",
+                "parameters": "<@miembro| id> [razón]"
+            },
+            "warn": {
+                "description": "Agrega una advertencia a un miembro",
+                "parameters": "<@miembro| id> <razón>"
+            }
+        },
+        "music": {
+            "categoryName": "Música",
+            "clear": {
+                "description": "Vacía la cola de reproducción",
+                "parameters": ""
+            },
+            "forward": {
+                "description": "Avanza el momento de una pista en una cantidad de tiempo especificada",
+                "parameters": "<HH:MM:SS>"
+            },
+            "join": {
+                "description": "Conecta al bot a tu canal de voz",
+                "parameters": ""
+            },
+            "leave": {
+                "description": "Hace que el bot abandone el canal de voz",
+                "parameters": ""
+            },
+            "loop": {
+                "description": "Activa el modo bucle para la pista actual",
+                "parameters": ""
+            },
+            "loopqueue": {
+                "description": "Activa el modo bucle para la cola de reproducción",
+                "parameters": ""
+            },
+            "move": {
+                "description": "Modifica la posición de una pista en la cola",
+                "parameters": "<posición 1> <posición 2>"
+            },
+            "nowplaying": {
+                "description": "Muestra información sobre la pista actual",
+                "parameters": ""
+            },
+            "pause": {
+                "description": "Pausa la cola de reproducción",
+                "parameters": ""
+            },
+            "play": {
+                "description": "Busca una pista o lista de reproducción por nombre o URL de YouTube. Si no proporcionas parámetros, reanuda la cola",
+                "parameters": "[URL de YouTube | término de búsqueda]"
+            },
+            "playskip": {
+                "description": "Busca una pista o lista de reproducción por nombre o URL de YouTube y omite la pista actual",
+                "parameters": "<URL de YouTube | término de búsqueda>"
+            },
+            "queue": {
+                "description": "Muestra las pistas que están en la cola",
+                "parameters": "[número de página]"
+            },
+            "remove": {
+                "description": "Elimina una pista de la cola de reproducción",
+                "parameters": "<posición | \"all\">"
+            },
+            "replay": {
+                "description": "Reproduce la pista actual desde el principio",
+                "parameters": ""
+            },
+            "rewind": {
+                "description": "Retrocede el momento de una pista una cierta cantidad de tiempo",
+                "parameters": "<HH:MM:SS>"
+            },
+            "seek": {
+                "description": "Cambia el tiempo de la pista a una marca de tiempo específica",
+                "parameters": "<HH:MM:SS>"
+            },
+            "shuffle": {
+                "description": "Activa el modo aleatorio en la cola de reproducción",
+                "parameters": ""
+            },
+            "skip": {
+                "description": "Salta la pista actual o una cantidad especificada",
+                "parameters": "[cantidad | \"all\"]"
+            },
+            "sound": {
+                "description": "Reproduce un archivo .mp3 de la carpeta `media/audios` o muestra una lista de ellos",
+                "parameters": "[nombre del sonido | \"list\"]"
+            }
+        },
+        "tools": {
+            "categoryName": "Herramientas",
+            "dm": {
+                "description": "El bot enviará un mensaje al miembro, de forma anónima o con el autor referenciado, con formato incrustado o no",
+                "parameters": "<@miembro | id> <\"author\" | \"anonymous\"> <\"embed\" | \"normal\"> <mensaje>"
+            },
+            "edit": {
+                "description": "Edita un mensaje enviado previamente por el bot",
+                "parameters": "<#canal | id> <ID del mensaje> <nuevo contenido>"
+            },
+            "invitation": {
+                "description": "Genera o recupera un enlace de invitación permanente en el canal de reglas, o en el primer canal de texto que lo permita",
+                "parameters": ""
+            },
+            "poll": {
+                "description": "Inicia un asistente interactivo para crear una encuesta o finaliza una en curso",
+                "parameters": "[\"new\" | \"end\"] [id]"
+            },
+            "purge": {
+                "description": "Elimina una cierta cantidad de mensajes en un canal (siempre que tenga menos de 14 días de antiguedad)",
+                "parameters": "<cantidad> [#canal | id]"
+            },
+            "roleinfo": {
+                "description": "Muestra información sobre un rol",
+                "parameters": "<@rol | nombre de rol | id>"
+            },
+            "run": {
+                "description": "Ejecuta uno de los scripts preprogramados (consulte la sección \"[Scripts preprogramados](https://github.com/EasyXploit/HelpBot/wiki/preprogrammed-scripts)\" de la wiki)",
+                "parameters": "<script> [parámetro/s]"
+            },
+            "send": {
+                "description": "El bot enviará un mensaje al canal de texto actual, con o sin formato incrustado",
+                "parameters": "<\"embed\" | \"normal\"> <mensaje>"
+            },
+            "serverinfo": {
+                "description": "Muestra información sobre el servidor",
+                "parameters": ""
+            },
+            "userinfo": {
+                "description": "Muestra información sobre ti o cualquier otro miembro",
+                "parameters": "[@miembro | id]"
+            }
+        }
+    },
+    "utils": {
+        "lifecycle": {
+            "loadEmojis": {
+
+            },
+            "newGuild": {
+
+            },
+            "systemLoad": {
+
+            },
+            "uploadEmojis": {
+
+            }
+        },
+        "moderation": {
+            "automodFiltering": {
+
+            },
+            "infractionsHandler": {
+
+            }
+        },
+        "voice":{
+            "addTrack": {
+
+            },
+            "fetchResource": {
+
+            },
+            "mediaPlayer": {
+
+            },
+            "parsePlaylist": {
+
+            },
+            "preChecks": {
+
+            },
+            "testQueuePerms": {
+
+            }
+        },
+        "functions": {
+
+        },
+        "intervals": {
+
+        },
+        "splashLogo": {
+            "description": "I'm a bot designed for automated community moderation, music reproduction, leveling, and much more!",
+            "divider": "Iniciando aplicación"
+        }
+    }
+}

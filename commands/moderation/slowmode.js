@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
     
     try {
 
@@ -130,7 +130,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'slowmode',
-    description: 'Activa el modo lento en un canal de texto.',
-    aliases: ['slow'],
-    parameters: '<"off" | segundos> [razón]'
+    aliases: ['slow']
 };

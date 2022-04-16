@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
     
     try {
 
@@ -118,7 +118,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'stats',
-    description: 'Muestra tus estadísticas de XP o las de otro miembro.',
-    aliases: ['rank'],
-    parameters: '[@miembro | id]'
+    aliases: ['rank']
 };

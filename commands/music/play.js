@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
 
     try {
 
@@ -97,21 +97,6 @@ exports.run = async (client, message, args, command, commandConfig) => {
             //Manda un mensaje de confirmación
             message.channel.send({ content: `📥 | Unido a \`${voiceChannel.name}\` y vinculado a ${message.channel}.` });
 
-            /* //ESTATUS DE LA CONEXIÓN - Depuración
-
-            connection.on(VoiceConnectionStatus.Signalling, () => {
-                console.log('La conexión ha entrado en el estado "Obteniendo señal".');
-            });
-
-            connection.on(VoiceConnectionStatus.Connecting, () => {
-                console.log('La conexión ha entrado en el estado "Conectando".');
-            });
-
-            connection.on(VoiceConnectionStatus.Ready, async () => {
-                console.log('La conexión ha entrado en el estado "Preparado".');
-            });
-            */
-
             //Si la conexión desaparece
             connection.on(VoiceConnectionStatus.Disconnected, async () => {
                 try {
@@ -146,7 +131,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'play',
-    description: 'Busca una pista o lista de reproducción por nombre o URL de YouTube. Si no proporcionas parámetros, reanuda la cola.',
-    aliases: ['p', 'resume'],
-    parameters: '[URL de YouTube | término de búsqueda]'
+    aliases: ['p', 'resume']
 };

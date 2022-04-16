@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
 
     try {
 
@@ -104,7 +104,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'queue',
-    description: 'Muestra las pistas que están en la cola.',
-    aliases: ['q'],
-    parameters: '[número de página]'
+    aliases: ['q']
 };

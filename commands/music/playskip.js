@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
 
     try {
 
@@ -51,7 +51,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'playskip',
-    description: 'Busca una pista o lista de reproducción por nombre o URL de YouTube y omite la pista actual.',
-    aliases: ['ps'],
-    parameters: '<URL de YouTube | término de búsqueda>'
+    aliases: ['ps']
 };

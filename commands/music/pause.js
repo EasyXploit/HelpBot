@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
 
     try {
 
@@ -56,7 +56,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'pause',
-    description: 'Pausa la cola de reproducción.',
-    aliases: [],
-    parameters: ''
+    aliases: []
 };

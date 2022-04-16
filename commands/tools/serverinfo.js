@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
 
     try {
 
@@ -9,7 +9,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         const guildChannels = await message.guild.channels.fetch();
 
         //Almacena las traducciones de las características
-        const translations = require('../../resources/translations/guildFeatures.json');
+        const translations = require(`../../resources/locales/${client.config.main.language}.json`).guildFeatures;
 
         //Almacena las características traducidas
         let translatedFeatures = [];
@@ -90,7 +90,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'serverinfo',
-    description: 'Muestra información sobre el servidor.',
-    aliases: ['server'],
-    parameters: ''
+    aliases: ['server']
 };

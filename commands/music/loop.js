@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
 
     try {
 
@@ -38,7 +38,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'loop',
-    description: 'Activa el modo bucle para la pista actual.',
-    aliases: ['l'],
-    parameters: ''
+    aliases: ['l']
 };

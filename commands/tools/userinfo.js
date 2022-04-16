@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
 
     try {
 
@@ -41,7 +41,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         if (member.permissions.has('MANAGE_MESSAGES')) status.push('Moderador');
         if (status.length < 1) status.push('Usuario regular');
 
-        //Serieliza los permisos del miembro
+        //Serializa los permisos del miembro
         const memberPermissions = member.permissions.serialize();
 
         //Obtiene los nombres de los permisos
@@ -50,7 +50,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
         });
 
         //Almacena las traducciones de los permisos
-        const translations = require('../../resources/translations/permissions.json');
+        const translations = require(`../../resources/locales/${client.config.main.language}.json`).permissions;
 
         //Almacena los permisos traducidos
         let translatedPermissions = [];
@@ -92,7 +92,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'userinfo',
-    description: 'Muestra información sobre ti o cualquier otro miembro.',
-    aliases: ['user'],
-    parameters: '[@miembro | id]'
+    aliases: ['user']
 };

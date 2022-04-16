@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
     
     try {
 
@@ -12,13 +12,13 @@ exports.run = async (client, message, args, command, commandConfig) => {
             //Comprueba si el comando existe
             if (!command) return message.channel.send({ embeds: [new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} El comando \`${args[0]}\` no existe.`)
+                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.nonexistentCommand, { cmd: args[0] })}.`)
             ]});
 
             //Comprueba si el miembro tiene permiso para ejecutar el comando
             if (!await client.functions.checkCommandPermission(message, client.config.commands[command.config.name])) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para usar este comando.`)]
+                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.nonPrivileged, { messageAuthor: message.author })}.`)]
             });
 
             //Obtiene la configuración del comando
@@ -26,16 +26,19 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
             //Almacena los alias adicionales del comando
             commandConfig.aliases = commandConfig.aliases.concat(client.config.commands[commandConfig.name].additionalAliases);
+
+            //Almacena las traducciones del comando al idioma configurado
+            const commandLocale = await require(`../../resources/locales/${client.config.main.language}.json`).commands[commandConfig.category][commandConfig.name];
     
             //Genera un embed para la lista de comandos
             let helpEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
                 .setThumbnail('attachment://help.png')
-                .setTitle(`Comando "${commandConfig.name}":`)
-                .addField('Descripción 🧭', commandConfig.description || 'Ninguna')
-                .addField('Alias 👥', `${commandConfig.aliases.length > 0 ? commandConfig.aliases.join(', ') : 'Ninguno'}`)
-                .addField('Sintaxis ⌨', `\`${client.config.main.prefix}${commandConfig.name}${commandConfig.parameters.length > 0 ? ' ' + commandConfig.parameters : ''}\``)
-                .addField('Notación de la sintaxis ✍️', '- Corchetes: _[argumento opcional]_\n- Corchetes angulares: _<argumento obligatorio>_\n- Llaves: _{argumento predeterminado}_\n- Paréntesis: _(información diversa)_\n- Comillas dobles: _"argumento de texto literal"_\n- Barra vertical: _posibilidad1 | posibilidad2_');
+                .setTitle(`${client.functions.localeParser(locale.helpEmbed.command, { commandName: commandConfig.name })}:`)
+                .addField(`${locale.helpEmbed.description} 🧭`, commandLocale.description || locale.helpEmbed.noDescription)
+                .addField(`${locale.helpEmbed.alias} 👥`, `${commandConfig.aliases.length > 0 ? commandConfig.aliases.join(', ') : locale.helpEmbed.noAlias}`)
+                .addField(`${locale.helpEmbed.syntax} ⌨`, `\`${client.config.main.prefix}${commandConfig.name}${commandLocale.parameters.length > 0 ? ' ' + commandLocale.parameters : ''}\``)
+                .addField(`${locale.helpEmbed.notationTitle} ✍️`, locale.helpEmbed.notation);
 
             //Envía el embed de ayuda
             await message.channel.send({ embeds: [ helpEmbed ], files: ['./resources/images/help.png'] });
@@ -43,11 +46,14 @@ exports.run = async (client, message, args, command, commandConfig) => {
         } else { //Si no se proporciona un parámetro
 
             //Genera un embed para la lista de comandos
-            let helpEmbed = new client.MessageEmbed()
+            let commandListEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
                 .setThumbnail('attachment://help.png')
-                .setAuthor({ name: `Lista de comandos de ${client.user.username}`, iconURL: client.user.displayAvatarURL({dynamic: true})})
-                .setFooter({ text: `Para aprender a utilizar un comando, escribe: ${client.config.main.prefix}help <nombre del comando>` });
+                .setAuthor({ name: client.functions.localeParser(locale.commandListEmbed.author, { clientUsername: client.user.username }), iconURL: client.user.displayAvatarURL({dynamic: true})})
+                .setFooter({ text: client.functions.localeParser(locale.commandListEmbed.footer, { prefix: client.config.main.prefix }) });
+
+            //Almacena las traducciones de los comandos
+            const translations = require(`../../resources/locales/${client.config.main.language}.json`).commands;
 
             //Examina cada directorio "categoría" de comandos
             for (let category of await client.fs.readdirSync('./commands/')) {
@@ -71,15 +77,12 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 //Omite la categoría si no hay comandos habilitados para el miembro
                 if (commands.length === 0) continue;
 
-                //Capitaliza el nombre de la categoría
-                category = `● ${category.charAt(0).toUpperCase()}${category.slice(1)}`;
-
                 //Añade un campo al embed con la categoría y sus comandos
-                await helpEmbed.addField(`${category}:`, `\`${commands.join('`, `')}\``);
+                await commandListEmbed.addField(`${translations[category].categoryName}:`, `\`${commands.join('`, `')}\``);
             };
 
             //Envía el embed de ayuda
-            await message.channel.send({ embeds: [ helpEmbed ], files: ['./resources/images/help.png'] });
+            await message.channel.send({ embeds: [ commandListEmbed ], files: ['./resources/images/help.png'] });
         };
 
     } catch (error) {
@@ -91,7 +94,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'help',
-    description: 'Muestra una lista con los comandos del bot, o la ayuda para uno solo.',
     aliases: ['commands', 'command', 'cmds', 'cmd', '?'],
-    parameters: '[nombre del comando]'
 };

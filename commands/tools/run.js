@@ -1,4 +1,4 @@
-exports.run = async (client, message, args, command, commandConfig) => {
+exports.run = async (client, message, args, command, commandConfig, locale) => {
     
     try {
 
@@ -159,7 +159,5 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
 module.exports.config = {
     name: 'run',
-    description: 'Ejecuta uno de los scripts preprogramados (consulte la sección "[Scripts preprogramados](https://github.com/EasyXploit/HelpBot/wiki/preprogrammed-scripts)" de la wiki).',
-    aliases: ['execute', 'exec'],
-    parameters: '<script> [parámetro/s]'
+    aliases: ['execute', 'exec']
 };

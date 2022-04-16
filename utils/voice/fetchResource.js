@@ -167,7 +167,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 						});
 
 						//Comprueba si el resultado supera la duración máxima establecida
-						if (results[0].durationInSec * 1000 > client.config.music.maxTrackDuration) return message.channel.send({ embeds: [ new client.MessageEmbed()
+						if (client.config.music.maxTrackDuration > 0 && results[0].durationInSec * 1000 > client.config.music.maxTrackDuration) return message.channel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
 							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir pistas de más de ${client.functions.msToHHMMSS(client.config.music.maxTrackDuration)}.`)]
 						});
@@ -192,7 +192,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 						for (let index = 0; index < results.length; index++) {
 	
 							//Solo añade el resultado si es una playlist, o un vídeo (que no esté en directo, no sea privado y no sea más largo de lo estipulado en la config.)
-							if (results[index].type === 'playlist' || (results[index].type === 'video' && results[index].durationRaw && results[index].title !== '[Private video]' && results[index].durationInSec * 1000 <= client.config.music.maxTrackDuration)) {
+							if (results[index].type === 'playlist' || (results[index].type === 'video' && results[index].durationRaw && results[index].title !== '[Private video]' && (client.config.music.maxTrackDuration > 0 && results[index].durationInSec * 1000 <= client.config.music.maxTrackDuration))) {
 	
 								//Crea la asociación puntero-posición
 								asociatedPositions[pointer] = index;

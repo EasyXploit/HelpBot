@@ -6,5 +6,6 @@
     "queueLimit": 100,
     "userQueueLimit": 50,
     "maxTrackDuration": 3600000,
-    "maxIdleTime": 60000
+    "maxIdleTime": 60000,
+    "maxPausedTime": 120000
 }

@@ -22,10 +22,29 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         //Comprueba si es necesaria una votación
         if (await require('../../utils/voice/testQueuePerms.js').run(client, message, 'pause')) {
+
+            //Almacena la información de reproducción de la guild
+            const reproductionQueue = client.reproductionQueues[connection.joinConfig.guildId];
+
+            //Crea un contador para demorar la salida del canal y la destrucción de la cola
+            if (reproductionQueue) reproductionQueue.timeout = setTimeout(() => {
+
+                //Aborta la conexión
+                if (connection.state.status !== 'Destroyed') connection.destroy();
+
+                //Confirma la acción
+                reproductionQueue.boundedTextChannel.send({ content: '⏏ | He abandonado el canal y borrado la cola' });
+
+                //Borra la información de reproducción de la guild
+                delete client.reproductionQueues[connection.joinConfig.guildId];
+
+            }, client.config.music.maxPausedTime);
             
-            //Reanuda la reproducción y manda un mensaje de confirmación
+            //Pausa la reproducción
             await player.pause();
-            await message.channel.send({ content: `⏸ | Cola pausada` });
+
+            //Manda un mensaje de confirmación
+            await message.channel.send({ content: '⏸ | Cola pausada' });
         };
         
     } catch (error) {

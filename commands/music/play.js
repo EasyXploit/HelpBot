@@ -26,9 +26,24 @@ exports.run = async (client, message, args, command, commandConfig) => {
             //Comprueba si es necesaria una votación
             if (await require('../../utils/voice/testQueuePerms.js').run(client, message, 'pause')) {
 
-                //Reanuda la reproducción y manda un mensaje de confirmación
+                //Almacena la información de reproducción de la guild
+                const reproductionQueue = client.reproductionQueues[connection.joinConfig.guildId];
+
+                //Si había un timeout de pausa
+                if (reproductionQueue.timeout) {
+
+                    //Finalzia el timeout
+                    clearTimeout(reproductionQueue.timeout);
+
+                    //Anula la variable dle timeout
+                    reproductionQueue.timeout = null;
+                };
+
+                //Reanuda la reproducción
                 await subscription.player.unpause();
-                await message.channel.send({ content: `▶ | Cola reanudada` });
+
+                //Manda un mensaje de confirmación
+                await message.channel.send({ content: '▶ | Cola reanudada' });
             };
 
         } else { //En este caso, "play" funcionará como "join" y reproducirá/añadirá a la cola

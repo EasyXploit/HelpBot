@@ -24,7 +24,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             const pollMessage = pollChannel ? await client.functions.fetchMessage(pollData.message, pollChannel) : null;
 
             //Si el canal o el mensaje de la encuesta ya no existen
-            if (!pollMessage || !pollMessage) {
+            if (!pollChannel || !pollMessage) {
 
                 //Elimina la encuesta de la base de datos
                 delete client.db.polls[args[1]];

@@ -2,159 +2,42 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
     try {
 
-        if (args[0] === 'new' || !args[0]) {
+        //Comprueba si los parámetros se han proporcionado correctamente
+        if ((args[0] && !['new', 'end'].includes(args[0])) || (args[0] && args[0] === 'end' && !args[1])) return await client.functions.syntaxHandler(message.channel, commandConfig);
 
-            let title;
-            let duration = 0;
-            let providedDuration;
-            let fields = [];
+        //Si hay que finalizar una encuesta
+        if (args[0] === 'end') {
 
-            let titleEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.primary)
-                .setTitle('📊 Título')
-                .setDescription(`Proporciona un título para la encuesta.`);
+            //Busca la encuesta en la base de datos
+            const pollData = client.db.polls[args[1]];
 
-            let durationEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.primary)
-                .setTitle('⏱ Duración')
-                .setDescription(`Proporciona una duración. Por ejemplo: \`1d 2h 3m 4s\`.\nIntroduce \`-\` para que no tenga fin.`);
-
-            let fieldEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.primary)
-                .setTitle(':one: Campos')
-                .setDescription(`Proporciona un nuevo campo (máximo 10).\nEscribe \`end\` para finalizar el asistente.`);
-
-            let options = '';
-            let emojiOptions = [':one:', ':two:', ':three:', ':four:', ':five:', ':six:', ':seven:', ':eight:', ':nine:', ':keycap_ten:'];
-            let UTFemojis = ['\u0031\u20E3', '\u0032\u20E3', '\u0033\u20E3', '\u0034\u20E3', '\u0035\u20E3', '\u0036\u20E3', '\u0037\u20E3', '\u0038\u20E3', '\u0039\u20E3', '\uD83D\uDD1F'];
-            
-            async function awaitMessage(msg) {
-                let resultMsg;
-                const filter = msg => msg.author.id === message.author.id;
-                await msg.channel.awaitMessages({filter, max: 1, time: 60000}).then(async collected => {
-                    const result = collected.first().content;
-                    setTimeout(() => collected.first().delete(), 2000);
-                    resultMsg =  result;
-                }).catch(() => msg.delete());
-                return resultMsg;
-            }
-
-            message.channel.send({ embeds: [titleEmbed] }).then(async embed => {
-                await awaitMessage(embed).then(async result => {
-                    if (!result) return;
-                    title = result;
-                    embed.edit({ embeds: [durationEmbed] });
-
-                    await awaitMessage(embed).then(async result => {
-                        if (!result) return;
-
-                        if (result !== '-') {
-
-                            let parameters = result.split(' ');
-
-                            let milliseconds = await client.functions.magnitudesToMs(parameters);
-
-                            if (!milliseconds) return message.channel.send({ embeds: [ new client.MessageEmbed()
-                                .setColor(client.config.colors.secondaryError)
-                                .setDescription(`${client.customEmojis.redTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5d 10h 2m\`.`)
-                            ]});
-
-                            providedDuration = result;
-                            duration = milliseconds;
-                        };
-
-                        embed.edit({ embeds: [fieldEmbed] });
-
-                        for (let index = 0; index < 10; index++) {
-                            await awaitMessage(embed).then(async result => {
-                                if (!result) return;
-
-                                let anotherFieldEmbed = new client.MessageEmbed()
-                                    .setColor(client.config.colors.primary)
-                                    .setTitle(`${emojiOptions[index + 1]} Campos`)
-                                    .setDescription(`Proporciona un nuevo campo (quedan **${10 - index - 1}**).\nEscribe \`end\` para finalizar el asistente.`);
-
-                                fields[index] = result;
-                                embed.edit({ embeds: [anotherFieldEmbed] });
-                            })
-
-                            if (!fields[index]) break;
-
-                            if (fields[index] === 'end' && fields.length > 2) {
-                                fields.splice(-1,1);
-                                break;
-                            }
-                        };
-
-                        if (fields.length < 2) return;
-
-                        for (count = 0; count < fields.length; count++) {
-                            options = options + `${emojiOptions[count]} ${fields[count]}\n\n`
-                        };
-
-                        let remainingTime = '∞';
-                        if (duration !== 0) {
-                            let remainingDays = Math.floor((duration) / (60*60*24*1000));
-                            let remainingHours = Math.floor((duration - (remainingDays * 86400000)) / (60*60*1000));
-                            let remainingMinutes = Math.floor((duration - (remainingHours * 3600000) - (remainingDays * 86400000)) / (60*1000));
-                            remainingTime = `${remainingDays}d ${remainingHours}h ${remainingMinutes}m`
-                        };
-
-                        const pollID = client.functions.sidGenerator();
-
-                        let resultEmbed = new client.MessageEmbed()
-                            .setColor(client.config.colors.polls)
-                            .setAuthor({ name: 'Encuesta disponible', iconURL: 'attachment://poll.png' })
-                            .setDescription(`**${title}**\n\n${options}`)
-                            .setFooter({ text: `ID: ${pollID} - Duración: ${remainingTime}` });
-                        
-                        message.channel.send({ embeds: [resultEmbed], files: ['./resources/images/poll.png'] }).then(async poll => {
-                            embed.delete();
-                            for (count = 0; count < fields.length; count++) {
-                                await poll.react(UTFemojis[count]);
-                            };
-
-                            client.db.polls[pollID] = {
-                                channel: message.channel.id,
-                                message: poll.id,
-                                author: message.author.id,
-                                title: title,
-                                options: options
-                            };
-
-                            if (duration != 0) client.db.polls[pollID].expiration = Date.now() + duration;
-                    
-                            client.fs.writeFile('./databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
-                                if (err) throw err;
-                            });
-
-                            let loggingEmbed = new client.MessageEmbed()
-                                .setColor(client.config.colors.logging)
-                                .setAuthor({ name: `${message.member.user.tag} ha iniciado una ENCUESTA`, iconURL: message.member.user.displayAvatarURL({dynamic: true}) })
-                                .addField(`Título`, `__[${title}](${poll.url})__`, true)
-                                .addField(`Canal`, `${message.channel}`, true)
-                                .addField(`Vencimiento`, duration != 0 ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : 'Indefinida', true);
-                            
-                            await client.functions.loggingManager('embed', loggingEmbed);
-                        });
-                    });
-                });
-            });
-        } else if (args[0] === 'end' && args[1]) {
-
-            let notFoundEmbed = new client.MessageEmbed()
+            //Si la encuesta no existe, devuelve un error
+            if (!pollData) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} La encuesta con ID ${args[1]} no se ha podido encontrar`);
+                .setDescription(`${client.customEmojis.redTick} La encuesta con ID ${args[1]} no existe`)
+            ]});
 
-            if (!client.db.polls[args[1]]) return message.channel.send({ embeds: [notFoundEmbed] });
+            //Busca y almacena el canal de la encuesta
+            const pollChannel = await client.functions.fetchChannel(message.guild, pollData.channel);
 
-            let channel = await client.functions.fetchChannel(message.guild, client.db.polls[args[1]].channel);
-            let poll = await client.functions.fetchMessage(client.db.polls[args[1]].message, channel)
+            //Busca y almacena el mensaje de la encuesta (si se pudo encontrar el canal)
+            const pollMessage = pollChannel ? await client.functions.fetchMessage(pollData.message, pollChannel) : null;
 
-            if (!poll) return message.channel.send({ embeds: [notFoundEmbed] });
+            //Si el canal o el mensaje de la encuesta ya no existen
+            if (!pollMessage || !pollMessage) {
+
+                //Elimina la encuesta de la base de datos
+                delete client.db.polls[args[1]];
+            
+                //Notifica del error al miembro
+                return message.channel.send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.secondaryError)
+                    .setDescription(`${client.customEmojis.redTick} La encuesta con ID ${args[1]} ya no existe, por lo que se ha eliminado de la base de datos`)
+                ]});
+            };
 
             //Comprueba, si corresponde, que el miembro tenga permiso para finalizar cualquier encuesta
-            if (message.member.id !== client.db.polls[args[1]].author) {
+            if (message.member.id !== pollData.author) {
 
                 //Variable para saber si está autorizado
                 let authorized;
@@ -172,18 +55,239 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 //Si no se permitió la ejecución, manda un mensaje de error
                 if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${message.author}, solo puedes finalizar tus propias encuestas`)]
-                }).then(msg => { setTimeout(() => msg.delete(), 5000) });
+                    .setDescription(`${client.customEmojis.redTick} ${message.author}, solo puedes finalizar tus propias encuestas`)
+                ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
             };
 
-            client.db.polls[args[1]].expiration = Date.now();
+            //Fuerza la expiración de la encuesta
+            pollData.expiration = Date.now();
 
+            //Sobreescribe el fichero de la base de datos con los cambios
             client.fs.writeFile('./databases/polls.json', JSON.stringify(client.db.polls), async err => {
+
+                //Si hubo un error, lo lanza a la consola
                 if (err) throw err;
+
+                //Envía una confirmación al miembro
+                return message.channel.send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.secondaryCorrect)
+                    .setTitle(`${client.customEmojis.greenTick} Operación completada`)
+                    .setDescription(`La encuesta "__[${pollData.title}](${pollMessage.url})__" finalizará en breve en el canal ${pollChannel}.`)
+                ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
             });
-        } else {
-            return await client.functions.syntaxHandler(message.channel, commandConfig);
-        }
+
+            //Aborta el resto del código
+            return;
+        };
+
+        //Función para esperar mensajes del miembro
+        async function awaitMessage(msg) {
+
+            //Almacena el mensaje resultante
+            let resultMessage;
+
+            //Genera un filtro de mensajes
+            const filter = msg => msg.author.id === message.author.id;
+
+            //Espera mensajes en el canal
+            await msg.channel.awaitMessages({filter, max: 1, time: 60000}).then(async collected => {
+
+                //Almacena el contenido del primer resultado
+                resultMessage = collected.first().content;
+
+                //Elimina el mensaje pasados 2 segundos
+                setTimeout(() => collected.first().delete(), 2000);
+
+            }).catch(() => msg.delete()); //Aborta el colector si no se envían mensajes
+
+            //Devuelve el mensaje capturado
+            return resultMessage;
+        };
+
+        //Envía el assistantEmbed del título
+        message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.primary)
+            .setTitle('📊 Título')
+            .setDescription('Proporciona un título para la encuesta.')
+        ]}).then(async assistantEmbed => {
+
+            //Espera un mensaje del miembro
+            await awaitMessage(assistantEmbed).then(async title => {
+
+                //Aborta si no hubo mensaje
+                if (!title) return;
+
+                //Edita el asistente para preguntar por la duración
+                assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.primary)
+                    .setTitle('⏱ Duración')
+                    .setDescription('Proporciona una duración. Por ejemplo: `1d 2h 3m 4s`.\nIntroduce `-` para que no tenga fin.')
+                ]});
+
+                //Espera un mensaje del miembro
+                await awaitMessage(assistantEmbed).then(async duration => {
+
+                    //Aborta si no hubo mensaje
+                    if (!duration) return;
+
+                    //Si se proporcionó duración
+                    if (duration !== '-') {
+
+                        //Separa la duración en parámetros
+                        const parameters = duration.split(' ');
+
+                        //Convierte y almacena las magnitudes en milisegundos
+                        duration = await client.functions.magnitudesToMs(parameters);
+
+                        //Si no se puedieron obtener milisegundos
+                        if (!duration) {
+
+                            //Aborta el asistente
+                            assistantEmbed.delete();
+
+                            //Devuelve un error
+                            return message.channel.send({ embeds: [ new client.MessageEmbed()
+                                .setColor(client.config.colors.secondaryError)
+                                .setDescription(`${client.customEmojis.redTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5d 10h 2m\`.`)
+                            ]});
+                        };
+
+                    } else duration = 0; //Si es indefinido, se establece "0" cómo duración
+
+                    //Edita el asistente para preguntar por un campo
+                    assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
+                        .setColor(client.config.colors.primary)
+                        .setTitle(':one: Campos')
+                        .setDescription('Proporciona un nuevo campo (máximo 10).')
+                    ]});
+
+                    //Almacena los campos introducidos
+                    let options = [];
+
+                    //Almacena las opciones numeradas cómo emojis
+                    const emojiOptions = [':one:', ':two:', ':three:', ':four:', ':five:', ':six:', ':seven:', ':eight:', ':nine:', ':keycap_ten:'];
+
+                    //Itera desde el 0 hasta el 9 (tope de campos)
+                    for (let index = 0; index < 10; index++) {
+
+                        //Espera un mensaje del miembro
+                        await awaitMessage(assistantEmbed).then(async option => {
+
+                            //Aborta si no hubo mensaje
+                            if (!option) return;
+
+                            //Almacena la opción en la lista de campos
+                            options[index] = option;
+
+                            //Edita el asistente para preguntar por otro campo
+                            assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
+                                .setColor(client.config.colors.primary)
+                                .setTitle(`${emojiOptions[index + 1]} Campos`)
+                                .setDescription(`Proporciona un nuevo campo (quedan **${10 - index - 1}**).${ index > 0 ? '\nEscribe \`end\` para finalizar el asistente.' : ''}`)
+                            ]});
+                        });
+
+                        //Si no se ha proporcionado un campo, para el bucle
+                        if (!options[index]) break;
+
+                        //Si no se desea proporcionar más campos
+                        if (options[index] === 'end' && options.length > 2) {
+
+                            //Elimina el último campo almacenado
+                            options.splice(-1,1);
+
+                            //Para el bucle
+                            break;
+                        };
+                    };
+
+                    //Si no se proporcionaron suficientes campos, aborta
+                    if (options.length < 2) return;
+
+                    //Almacena las opciones formateadas
+                    let formattedOptions = '';
+
+                    //Por cada una de las opciones, la concatena formateada
+                    for (count = 0; count < options.length; count++) formattedOptions += `${emojiOptions[count]} ${options[count]}\n\n`;
+
+                    //Almacena el tiempo restante
+                    let remainingTime = '∞';
+
+                    //Si la duración es diferente de 0
+                    if (duration !== 0) {
+
+                        //Calcula el formato del tiempo restante
+                        const remainingDays = Math.floor((duration) / (60 * 60 * 24 * 1000));
+                        const remainingHours = Math.floor((duration - (remainingDays * 86400000)) / (60 * 60 * 1000));
+                        const remainingMinutes = Math.floor((duration - (remainingHours * 3600000) - (remainingDays * 86400000)) / (60 * 1000));
+
+                        //Almacena la cadena de tiempo restante
+                        remainingTime = `${remainingDays}d ${remainingHours}h ${remainingMinutes}m`
+                    };
+
+                    //Almacena un nuevo ID para la encuesta
+                    const pollId = client.functions.sidGenerator();
+                    
+                    //Envía la encuesta generada al canal de invocación
+                    message.channel.send({ embeds: [ new client.MessageEmbed()
+                        .setColor(client.config.colors.polls)
+                        .setAuthor({ name: 'Encuesta disponible', iconURL: 'attachment://poll.png' })
+                        .setDescription(`**${title}**\n\n${formattedOptions}`)
+                        .setFooter({ text: `ID: ${pollId} - Duración: ${remainingTime}` })
+                    ], files: ['./resources/images/poll.png'] }).then(async pollEmbed => {
+
+                        //Borra el embed del asistente
+                        assistantEmbed.delete();
+
+                        //Por cada una de las opciones
+                        for (count = 0; count < options.length; count++) {
+
+                            //Reacciona al embed con el el emoji adecuado
+                            await pollEmbed.react([
+                                '\u0031\u20E3',
+                                '\u0032\u20E3',
+                                '\u0033\u20E3',
+                                '\u0034\u20E3',
+                                '\u0035\u20E3',
+                                '\u0036\u20E3',
+                                '\u0037\u20E3',
+                                '\u0038\u20E3',
+                                '\u0039\u20E3',
+                                '\uD83D\uDD1F'
+                            ][count]);
+                        };
+
+                        //Almacena la encuesta en la base de datos
+                        client.db.polls[pollId] = {
+                            channel: message.channel.id,
+                            message: pollEmbed.id,
+                            author: message.author.id,
+                            title: title,
+                            options: formattedOptions
+                        };
+
+                        //Si la encuesta expira, almacena dicho timestamp
+                        if (duration !== 0) client.db.polls[pollId].expiration = Date.now() + duration;
+                
+                        //Sobreescribe el fichero de la base de datos con los cambios
+                        client.fs.writeFile('./databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
+
+                            //Si hubo un error, lo lanza a la consola
+                            if (err) throw err;
+                        });
+                        
+                        //Envía un mensaje al canal de registros
+                        await client.functions.loggingManager('embed', new client.MessageEmbed()
+                            .setColor(client.config.colors.logging)
+                            .setAuthor({ name: `${message.member.user.tag} ha iniciado una ENCUESTA`, iconURL: message.member.user.displayAvatarURL({dynamic: true}) })
+                            .addField('Título', `__[${title}](${pollEmbed.url})__`, true)
+                            .addField('Canal', `${message.channel}`, true)
+                            .addField('Vencimiento', duration !== 0 ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : 'Indefinida', true)
+                        );
+                    });
+                });
+            });
+        });
 
     } catch (error) {
 

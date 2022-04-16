@@ -216,7 +216,7 @@ exports.run = (client) => {
                     await client.functions.loggingManager('embed', new client.MessageEmbed()
                         .setColor(client.config.colors.logging)
                         .setTitle('📑 Registro - [ENCUESTAS]')
-                        .setDescription(`La encuesta "__[${storedPoll.title}](${poll.url})__" ha finalizado en el canal <#${storedPoll.channel}>.`)
+                        .setDescription(`La encuesta "__[${storedPoll.title}](${poll.url})__" ha finalizado en el canal ${channel}.`)
                     );
                 });
                 

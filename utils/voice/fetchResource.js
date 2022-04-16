@@ -20,12 +20,15 @@ exports.run = async (client, args, message, streamType, toStream) => {
 	
 		//Almacena las pistas autorizadas por usuario
 		let authorizedTracks = false;
+
+		//Almacena la configuración de música
+		const musicConfig = client.config.music;
 	
 		//Comprueba si los usuarios tienen límite para añadir a la cola
-		if (client.config.music.userQueueLimit > 0) {
+		if (musicConfig.userQueueLimit > 0) {
 	
 			//Actualiza la variable de pistas con el máximo teórico 
-			authorizedTracks = client.config.music.userQueueLimit;
+			authorizedTracks = musicConfig.userQueueLimit;
 	
 			//Calcula cuantas pistas tiene el miembro en la cola
 			for (let index = 0; index < reproductionQueue.tracks.length; index++) {
@@ -40,7 +43,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 		};
 	
 		//Comprueba si la cola de reproducción está llena
-		if (client.config.music.queueLimit !== 0 && reproductionQueue.tracks.length >= client.config.music.queueLimit) return message.channel.send({ embeds: [ new client.MessageEmbed()
+		if (musicConfig.queueLimit !== 0 && reproductionQueue.tracks.length >= musicConfig.queueLimit) return message.channel.send({ embeds: [ new client.MessageEmbed()
 			.setColor(client.config.colors.error)
 			.setDescription(`${client.customEmojis.redTick} La cola de reproducción está llena.`)]
 		});
@@ -119,9 +122,9 @@ exports.run = async (client, args, message, streamType, toStream) => {
 						});
 
 						//Comprueba si el resultado supera la duración máxima establecida
-						if (metadata.durationInSec * 1000 > client.config.music.maxTrackDuration) return message.channel.send({ embeds: [ new client.MessageEmbed()
+						if (musicConfig.maxTrackDuration > 0 && (metadata.durationInSec * 1000 > musicConfig.maxTrackDuration || metadata.durationInSec * 1000 < 0)) return message.channel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir pistas de más de \`${client.functions.msToHHMMSS(client.config.music.maxTrackDuration)}\`.`)]
+							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir pistas de más de \`${client.functions.msToHHMMSS(musicConfig.maxTrackDuration)}\`.`)]
 						});
 		
 						//Crea el objeto de la cola
@@ -160,16 +163,16 @@ exports.run = async (client, args, message, streamType, toStream) => {
 					//Si solo hay un resultado, no muestra menú
 					if (results.length == 1) {
 
-						//Comprueba si el resultado es un directo o un vídeo privado
-						if (results[0].live || results[0].private) return message.channel.send({ embeds: [ new client.MessageEmbed()
+						//Comprueba si el resultado es un vídeo privado
+						if (results[0].private) return message.channel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
 							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir directos o vídeo privados.`)]
 						});
 
 						//Comprueba si el resultado supera la duración máxima establecida
-						if (client.config.music.maxTrackDuration > 0 && results[0].durationInSec * 1000 > client.config.music.maxTrackDuration) return message.channel.send({ embeds: [ new client.MessageEmbed()
+						if (musicConfig.maxTrackDuration > 0 && (results[0].durationInSec * 1000 > musicConfig.maxTrackDuration || results[0].durationInSec * 1000 < 0)) return message.channel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir pistas de más de ${client.functions.msToHHMMSS(client.config.music.maxTrackDuration)}.`)]
+							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir pistas de más de ${client.functions.msToHHMMSS(musicConfig.maxTrackDuration)}.`)]
 						});
 	
 						//Crea el objeto de la cola
@@ -190,28 +193,43 @@ exports.run = async (client, args, message, streamType, toStream) => {
 	
 						//Para cada resultado, evalúa si ha de ser añadido a la lista
 						for (let index = 0; index < results.length; index++) {
+
+							//Almacena el resultado iterado
+							const result = results[index];
+
+							//Convierte la duración a milisegundos
+							const milliseconds = result.durationInSec * 1000;
 	
-							//Solo añade el resultado si es una playlist, o un vídeo (que no esté en directo, no sea privado y no sea más largo de lo estipulado en la config.)
-							if (results[index].type === 'playlist' || (results[index].type === 'video' && results[index].durationRaw && results[index].title !== '[Private video]' && (client.config.music.maxTrackDuration > 0 && results[index].durationInSec * 1000 <= client.config.music.maxTrackDuration))) {
+							//Solo añade el resultado si es una playlist, o un vídeo (que no esté en directo y no sea privado)
+							if (result.type === 'playlist' || (result.type === 'video' && !result.private)) {
+
+								//Omite si el vídeo excede la duración máxima, o es un directo
+								if (musicConfig.maxTrackDuration > 0 && (milliseconds > musicConfig.maxTrackDuration || milliseconds <= 0)) continue;
 	
 								//Crea la asociación puntero-posición
 								asociatedPositions[pointer] = index;
 
 								//Almacena el título y elimina signos que alteren la forma en la que se muestra la entrada
-								let title = results[index].title.replace('[', '').replace(']', '').replace('|', '').replace('(', '').replace(')', '').replace('_', '').replace('*', '');
+								let title = result.title.replace('[', '').replace(']', '').replace('|', '').replace('(', '').replace(')', '').replace('_', '').replace('*', '');
 	
 								//Acorta el título si es demasiado largo
 								if (title.length > 40) title = `${title.slice(0, 40)} ...`; 
 
-								if (results[index].type === 'playlist') { //Si se trata de una playlist, almacena el string "playlist" en vez de la duración de la pista
-									formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${results[index].url}) | \`${results[index].type}\``;
+								if (result.type === 'playlist') { //Si se trata de una playlist, almacena el string "playlist" en vez de la duración de la pista
+									formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${result.url}) | \`${result.type}\``;
 								} else { //Si se trata de un vídeo, almacena la duración de la pista en vez de el string "playlist"
-									formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${results[index].url}) | \`${results[index].durationRaw}\``;
+									formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${result.url}) | \`${result.durationInSec > 0 ? result.durationRaw : 'Directo'}\``;
 								};
 
 								pointer ++; //Incremento de puntero
 							};
 						};
+
+						//Devuelve un error si no se encontraron resultados
+						if (Object.keys(asociatedPositions).length === 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
+							.setColor(client.config.colors.error)
+							.setDescription(`${client.customEmojis.redTick} No se encontraron resultados válidos.`)]
+						});
 	
 						//Se espera a que el miembro elija una pista de la lista
 						await message.channel.send({ embeds: [ new client.MessageEmbed()

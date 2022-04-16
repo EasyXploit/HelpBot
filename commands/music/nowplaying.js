@@ -38,12 +38,15 @@ exports.run = async (client, message, args, command, commandConfig) => {
 
         //Requiere librería para el color
         const randomColor = require('randomcolor');
-        
+
+        //Almacena el progreso formateado
+        const formatteProgress = reproductionQueue.tracks[0].meta.length !== 0 ? `${progressBar.join('')} ${percentage}%\n\`${client.functions.msToHHMMSS(progress)} / ${client.functions.msToHHMMSS(total)}\`.` : `Vídeo en directo (transcurrido: \`${client.functions.msToHHMMSS(progress)}\`).`;
+
         //Envía el mensaje con el resultado
         message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(randomColor())
             .setAuthor({ name: 'Ahora mismo:', iconURL: 'attachment://dj.png' })
-            .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n${progressBar.join('')} ${percentage}%\n\`${client.functions.msToHHMMSS(progress)} / ${client.functions.msToHHMMSS(total)}\`.`)
+            .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n${formatteProgress}`)
             .setFooter({ text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild), iconURL: client.homeGuild.iconURL({dynamic: true})
         })], files: ['./resources/images/dj.png'] });
 

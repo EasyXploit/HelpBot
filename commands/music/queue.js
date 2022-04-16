@@ -26,7 +26,7 @@ exports.run = async (client, message, args, command, commandConfig) => {
             let queueEmbed = new client.MessageEmbed()
                 .setColor(randomColor())
                 .setAuthor({ name: 'Cola de reproducción - Ahora mismo:', iconURL: 'attachment://dj.png' })
-                .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n● Duración: \`${client.functions.msToHHMMSS(reproductionQueue.tracks[0].meta.length)}\`\n ● Requerida por: <@${reproductionQueue.tracks[0].requesterId}>`)
+                .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n● Duración: \`${reproductionQueue.tracks[0].meta.length !== 0 ? client.functions.msToHHMMSS(reproductionQueue.tracks[0].meta.length) : 'Directo'}\`\n ● Requerida por: <@${reproductionQueue.tracks[0].requesterId}>`)
                 .setFooter({ text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild), iconURL: client.homeGuild.iconURL({dynamic: true}) });
             
             //Si hay cola, carga la cola en el embed
@@ -36,10 +36,11 @@ exports.run = async (client, message, args, command, commandConfig) => {
                 //Genera la página de la cola
                 for (let id = fromRange; id < toRange; id++) {
                     if (!reproductionQueue.tracks[id]) break; //Si no hay resultado, para la ejecución
-                    let title = reproductionQueue.tracks[id].meta.title; //Almacena el título
+                    const trackMeta = reproductionQueue.tracks[id].meta; //Almacena los metadatos de la pista
+                    let title = trackMeta.title; //Almacena el título
                     title = title.replace('[', '').replace('[', '').replace(']', '').replace('|', '').replace('(', '').replace(')', '').replace('_', '').replace('*', ''); //Elimina signos que alteren la forma en la que se muestra la entrada
                     if (title.length > 40) title = `${title.slice(0, 40)} ...`; //Acorta el título si es demasiado largo
-                    queueList = `${queueList}\`${id}.\` [${title}](${reproductionQueue.tracks[id].meta.location}) | \`${client.functions.msToHHMMSS(reproductionQueue.tracks[id].meta.length)}\` | <@${reproductionQueue.tracks[id].requesterId}>\n`;
+                    queueList = `${queueList}\`${id}.\` [${title}](${trackMeta.location}) | \`${trackMeta.length !== 0 ? client.functions.msToHHMMSS(trackMeta.length) : 'Directo'}\` | <@${reproductionQueue.tracks[id].requesterId}>\n`;
                 };
                 
                 //Añade el campo al embed

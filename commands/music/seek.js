@@ -19,6 +19,12 @@ exports.run = async (client, message, args, command, commandConfig) => {
         //Almacena la información de la cola de la guild
         const reproductionQueue = client.reproductionQueues[message.guild.id];
 
+        //Devuelve un error si se trata de un vídeo en directo
+        if (reproductionQueue.tracks[0].meta.length === 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryError)
+            .setDescription(`${client.customEmojis.redTick} No puedes ajustar el momento de una transmisión en directo`)
+        ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
+
         //Almacena el objeto de cola
         const queueItem = reproductionQueue.tracks[0];
 

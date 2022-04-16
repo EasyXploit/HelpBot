@@ -15,7 +15,7 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
 
         //Elimina de la lista todos aquellos resultados que sean privados, directos o tengan una duración mayor a la establecida por la configuración
         for (let index = 0; index < playlistItems.length; index++) {
-            if (playlistItems[index].title === '[Private video]' || !playlistItems[index].durationRaw || (client.config.music.maxTrackDuration > 0 && playlistItems[index].durationInSec * 1000 > client.config.music.maxTrackDuration)) {
+            if (playlistItems[index].title === '[Private video]' || !playlistItems[index].durationRaw || (client.config.music.maxTrackDuration > 0 && playlistItems[index].durationInSec * 1000 > client.config.music.maxTrackDuration && results[index].durationInSec * 1000 > 0)) {
                 delete playlistItems[index];
                 deletedCount++;
             };

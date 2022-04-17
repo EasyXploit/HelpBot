@@ -491,23 +491,32 @@
                 "error": "ERROR: Error durante la ejecución del debuggingManager"
             },
             "commandErrorHandler": {
-                "error": "",
-                "noArguments": "",
+                "error": "ERROR",
+                "noArguments": "Ninguno",
                 "errorEmbed": {
-                    "title": "",
-                    "description": ""
+                    "title": "¡Vaya! Algo fue mal",
+                    "description": "Lo hemos reportado al equipo de desarrollo"
                 },
                 "debuggingEmbed": {
-                    "title": "",
-                    "description": "",
-                    "command": "",
-                    "arguments": "",
-                    "channel": "",
-                    "author": ""
+                    "title": "Depuración",
+                    "description": "Se declaró un error durante la ejecución de un comando",
+                    "command": "Comando",
+                    "arguments": "Argumentos",
+                    "channel": "Canal",
+                    "author": "Autor",
+                    "date": "Fecha",
+                    "error": "Error"
                 }
             },
             "eventErrorHandler": {
-
+                "error": "ERROR",
+                "debuggingEmbed": {
+                    "title": "Depuración",
+                    "description": "Se declaró un error durante la ejecución de un evento",
+                    "event": "Evento",
+                    "date": "Fecha",
+                    "error": "Error"
+                }
             },
             "functionLoaded": "Carga de funciones globales"
         },

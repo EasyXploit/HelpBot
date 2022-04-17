@@ -8,13 +8,13 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Si no se encuentra, devuelve un error
         if (!member) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID.`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.unknownMember}.`)
         ]});
 
         //Devuelve un error si el miembro no tiene stats
         if (!client.db.stats[member.id]) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} ${member} no tiene puntos de XP`)
+            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.noXp, { member: member })}.`)
         ]});
         
         //Almacena las stats del miembro
@@ -64,7 +64,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         };
 
         //Almacena la próxima recompensa por defecto
-        let nextRewards = 'Ninguna';
+        let nextRewards = locale.defaultReward;
 
         //Si se encontró una próxima recompensa
         if (nextRewardedRoles) {
@@ -100,13 +100,13 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Envía el mensaje con las estadísticas
         await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.primary)
-            .setTitle('🥇 Estadísticas')
-            .setDescription(`Mostrando las estadísticas del miembro **${member.user.tag}**`)
+            .setTitle(`🥇 ${locale.statsEmbed.title}`)
+            .setDescription(client.functions.localeParser(locale.statsEmbed.description, { memberTag: member.user.tag }))
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
-            .addField('Nivel actual', `\`${memberStats.level}\``, true)
-            .addField('XP Total', `\`${memberStats.totalXP}\``, true)
-            .addField('XP para el siguiente nivel', nonXP ? '\`No puede subir de nivel\`' : `\`${xpToNextLevel - memberStats.totalXP}\``, true)
-            .addField('Siguiente recompensa', nonXP ? '\`No puede ganar recompensas\`' : `\`${nextRewards}\``, true)
+            .addField(locale.statsEmbed.actualLevel, `\`${memberStats.level}\``, true)
+            .addField(locale.statsEmbed.totalXp, `\`${memberStats.totalXP}\``, true)
+            .addField(locale.statsEmbed.xpToNextLevel, nonXP ? `\`${locale.statsEmbed.noXpToNextLevel}\`` : `\`${xpToNextLevel - memberStats.totalXP}\``, true)
+            .addField(locale.statsEmbed.nextRewards, nonXP ? `\`${locale.statsEmbed.noNextRewards}\`` : `\`${nextRewards}\``, true)
         ]});
 
     } catch (error) {

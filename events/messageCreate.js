@@ -63,7 +63,7 @@ exports.run = async (message, client, locale) => {
             //Advierte de que los comandos no funcionan por MD y aborta
             return await message.author.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.information)
-                .setDescription(`${client.customEmojis.grayTick} | ${client.functions.localeParser(locale.unavailableOnDm, { clientUser: client.user, guildName: client.homeGuild.name })}.`)
+                .setDescription(`${client.customEmojis.grayTick} | ${client.functions.localeParser(locale.unavailableOnDm, { botUser: client.user, guildName: client.homeGuild.name })}.`)
             ]});
         };
 

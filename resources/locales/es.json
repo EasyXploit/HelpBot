@@ -97,7 +97,9 @@
             
         },
         "guildCreate": {
-            
+            "newGuild": "{{botUsername}} se ha unido a la guild \"{{guildName}}\"",
+            "justOneGuild": "AVISO: {{botUsername}} no está diseñado para funcionar en más de un servidor",
+            "error": "ERROR:"
         },
         "guildDelete": {
             
@@ -113,12 +115,14 @@
         },
         "messageCreate": {
             "filteredDm": "vía DM",
-            "unavailableOnDm": "Los comandos de {{clientUser}} solo están disponibles desde **{{guildName}}**",
+            "unavailableOnDm": "Los comandos de {{botUser}} solo están disponibles desde **{{guildName}}**",
             "cooldown": "Debes esperar 2 segundos antes de usar este comando",
             "nonPrivileged": "{{messageAuthor}}, no dispones de privilegios para realizar esta operación"
         },
         "ready": {
-            
+            "justOneGuild": "AVISO: {{botUsername}} no está diseñado para funcionar en más de una guild (servidor).\nExpulse al bot del resto de guilds y reinicie al bot",
+            "waitingGuild": "AVISO: Esperando a que {{botUsername}} se una a una guild",
+            "error": "ERROR"
         },
         "shardError": {
             
@@ -149,35 +153,77 @@
                     "notation": "- Corchetes: _[argumento opcional]_\n- Corchetes angulares: _<argumento obligatorio>_\n- Llaves: _{argumento predeterminado}_\n- Paréntesis: _(información diversa)_\n- Comillas dobles: _\"argumento de texto literal\"_\n- Barra vertical: _posibilidad1 | posibilidad2_"
                 },
                 "commandListEmbed": {
-                    "author": "Lista de comandos de {{clientUsername}}",
+                    "author": "Lista de comandos de {{botUsername}}",
                     "footer": "Para aprender a utilizar un comando, escribe: {{prefix}}help <nombre del comando>"
                 }
             },
             "ping": {
                 "description": "Proporciona información sobre el estado del bot",
-                "parameters": ""
+                "parameters": "",
+                "botResponseTime": "Tiempo de respuesta del bot",
+                "websocketResponseTime": "Tiempo de respuesta del Websocket"
             }
         },
         "leveling": {
             "categoryName": "Niveles",
             "leaderboard": {
                 "description": "Muestra la tabla de clasificación de XP de la comunidad",
-                "parameters": "[número de página]"
+                "parameters": "[número de página]",
+                "unknownMember": "Desconocido",
+                "leaderboard": {
+                    "title": "Tabla de clasificación",
+                    "footer": "Página {{position}} de {{totalPages}}"
+                }
             },
             "stats": {
                 "description": "Muestra tus estadísticas de XP o las de otro miembro",
-                "parameters": "[@miembro | id]"
+                "parameters": "[@miembro | id]",
+                "unknownMember": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
+                "noXp": "{{member}} no tiene puntos de XP",
+                "defaultReward": "Ninguna",
+                "statsEmbed": {
+                    "title": "Estadísticas",
+                    "description": "Mostrando las estadísticas del miembro **{{memberTag}}**",
+                    "actualLevel": "Nivel actual",
+                    "totalXp": "XP total",
+                    "xpToNextLevel": "XP para el siguiente nivel",
+                    "noXpToNextLevel": "No puede subir de nivel",
+                    "nextRewards": "Siguiente recompensa",
+                    "noNextRewards": "No puede ganar recompensas"
+                }
             },
             "xp": {
                 "description": "Modifica la cantidad de XP de un miembro",
-                "parameters": "<@miembro | id> <\"set\" | \"add\" | \"addrandom\" | \"remove\" | \"clear\"> <cantidad>"
+                "parameters": "<@miembro | id> <\"set\" | \"add\" | \"addrandom\" | \"remove\" | \"clear\"> <cantidad>",
+                "invalidMember": "No has proporcionado un miembro válido",
+                "noBots": "Los bots no pueden ganar puntos de XP",
+                "invalidQuantity": "Debes proporcionar una cantidad válida",
+                "hasNoXp": "Este miembro no tiene XP",
+                "unauthorizedModify": "No puedes modificar el XP de un miembro con un rol igual o superior al tuyo",
+                "loggingEmbed": {
+                    "title": "Registro - [SISTEMA DE XP]",
+                    "description": "Se ha modificado la cantidad de XP de **{{memberTag}}**",
+                    "date": "Fecha",
+                    "moderator": "Moderador",
+                    "memberId": "ID del miembro",
+                    "oldValue": "XP anterior",
+                    "newValue": "Nuevo XP"
+                },
+                "privateEmbed": {
+                    "author": "[XP MODIFICADO]",
+                    "description": "{{member}}, tu cantidad de XP ha sido modificada",
+                    "moderator": "Moderador",
+                    "oldValue": "XP anterior",
+                    "newValue": "Nuevo XP"
+                },
+                "notificationEmbed": "Se ha modificado la cantidad de XP del miembro **{{memberTag}}**"
             }
         },
         "moderation": {
             "categoryName": "Moderación",
             "ban": {
                 "description": "Banea a un miembro",
-                "parameters": "<@miembro| id> [razón]"
+                "parameters": "<@miembro | id> [razón]"
             },
             "infractions": {
                 "description": "Muestra una lista con las infracciones de un miembro y sus respectivos ID",
@@ -185,15 +231,15 @@
             },
             "kick": {
                 "description": "Expulsa a un miembro",
-                "parameters": "<@miembro| id> [razón]"
+                "parameters": "<@miembro | id> [razón]"
             },
             "mute": {
                 "description": "Silencia a un miembro de los canales de texto y voz",
-                "parameters": "<@miembro| id> [razón]"
+                "parameters": "<@miembro | id> [razón]"
             },
             "rmwarn": {
                 "description": "Para eliminar una advertencia (o todas) a un miembro",
-                "parameters": "<@miembro| id> <ID de advertencia | \"all\"> [razón]"
+                "parameters": "<@miembro | id> <ID de advertencia | \"all\"> [razón]"
             },
             "slowmode": {
                 "description": "Activa el modo lento en un canal de texto",
@@ -201,27 +247,27 @@
             },
             "softban": {
                 "description": "Banea a un miembro, eliminando X días de mensajes suyos",
-                "parameters": "<@miembro| id> <días (1-7)> [razón]"
+                "parameters": "<@miembro | id> <días (1-7)> [razón]"
             },
             "tempban": {
                 "description": "Banea temporalmente a un miembro",
-                "parameters": "<@miembro| id> <días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"> [razón]"
+                "parameters": "<@miembro | id> <días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"> [razón]"
             },
             "tempmute": {
                 "description": "Silencia temporalmente a un miembro de los canales de texto y voz",
-                "parameters": "<@miembro| id> <días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"> [razón]"
+                "parameters": "<@miembro | id> <días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"> [razón]"
             },
             "unban": {
                 "description": "Desbanea a un miembro",
-                "parameters": "<@miembro| id> [razón]"
+                "parameters": "<@miembro | id> [razón]"
             },
             "unmute": {
                 "description": "Dessilencia a un miembro",
-                "parameters": "<@miembro| id> [razón]"
+                "parameters": "<@miembro | id> [razón]"
             },
             "warn": {
                 "description": "Agrega una advertencia a un miembro",
-                "parameters": "<@miembro| id> <razón>"
+                "parameters": "<@miembro | id> <razón>"
             }
         },
         "music": {
@@ -353,10 +399,19 @@
 
             },
             "newGuild": {
-
+                "title": "¡{{botUsername}} añadido correctamente!",
+                "description": "Usa los ficheros de configuración para ajustarlo al bot a tu gusto.\nUsa el comando `{{prefix}}help` para ver los comandos.\nRecuerda que el bot solo podrá moderar a aquellas personas que tengan un rol por debajo del rol creado por {{botUser}}.\nSi necesitas ayuda, puedes [consultar la wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)"
             },
             "systemLoad": {
-
+                "loadingSystem": "Cargando el sistema",
+                "configLoaded": "Cargado correctamente",
+                "configNotLoaded": "No se pudo cargar",
+                "guildConfigLoaded": "Carga de configuración de la guild completada",
+                "presenceLoaded": "Carga de presencia completada",
+                "voiceStatesLoaded": "Carga de estados de voz completada",
+                "loadedCorrectly": "{{botUsername}} iniciado correctamente",
+                "loadMention": "{{botUsername}} iniciado correctamente",
+                "error": "ERROR"
             },
             "uploadEmojis": {
 
@@ -391,7 +446,70 @@
             }
         },
         "functions": {
+            "checkMutedRole": {
+                "replacing": "Será reemplazado por uno nuevo",
+                "reason": "Rol para gestionar miembros silenciados"
+            },
+            "addXP": {
+                "levelUpEmbed": {
+                    "author": "¡Subiste de nivel!",
+                    "description": "Enhorabuena {{member}}, has subido al nivel **{{memberLevel}}**.",
+                    "rewards": "Recompensas obtenidas"
+                }
+            },
+            "manageNewMember": {
+                "kickReason": "El nombre de usuario contenía una palabra prohibida",
+                "privateEmbed": {
+                    "author": "[EXPULSADO]",
+                    "description": "{{member}}, has sido expulsado de {{guildName}}",
+                    "moderator": "Moderador",
+                    "reasonTitle": "Razón",
+                    "reasonDescription": "Tu nombre de usuario contiene una palabra prohibida en la comunidad"
+                },
+                "welcomeEmbed": {
+                    "author": "Nuevo miembro",
+                    "description": "{{memberTag}} se unió al servidor",
+                    "memberId": "ID del miembro",
+                    "registerDate": "Fecha de registro",
+                    "actualSanction": "Sanción actual",
+                    "limitedSanction": "Silenciado hasta",
+                    "unlimitedSantion": "Silenciado indefinidamente"
+                }
+            },
+            "syntaxHandler": {
+                "title": "Sintaxis incorrecta",
+                "description": "La sintaxis de este comando es"
+            },
+            "loggingManager": {
+                "cannotSend": "ERROR: No se pueden enviar mensajes al canal de registro.\n{{botUsername}} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos",
+                "cannotAccess": "ERROR: No se puede tener acceso al canal de registro.\n Se ha borrado de la configuración y se ha descargado de la memoria",
+                "error": "ERROR: Error durante la ejecución del loggingManager"
+            },
+            "debuggingManager": {
+                "cannotSend": "ERROR: No se pueden enviar mensajes al canal de registro.\n{{clientUsername}} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos",
+                "cannotAccess": "ERROR: No se puede tener acceso al canal de depuración.\n Se ha borrado de la configuración y se ha descargado de la memoria",
+                "error": "ERROR: Error durante la ejecución del debuggingManager"
+            },
+            "commandErrorHandler": {
+                "error": "",
+                "noArguments": "",
+                "errorEmbed": {
+                    "title": "",
+                    "description": ""
+                },
+                "debuggingEmbed": {
+                    "title": "",
+                    "description": "",
+                    "command": "",
+                    "arguments": "",
+                    "channel": "",
+                    "author": ""
+                }
+            },
+            "eventErrorHandler": {
 
+            },
+            "functionLoaded": "Carga de funciones globales"
         },
         "intervals": {
 

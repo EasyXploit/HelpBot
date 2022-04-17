@@ -7,7 +7,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
 
         //Genera un embed para el tiempo de respuesta
         let botPingEmbed = new client.MessageEmbed()
-            .setTitle('Tiempo de respuesta del bot: ')
+            .setTitle(`${locale.botResponseTime}: `)
             .setDescription(`:stopwatch: | ${botPing} ms`);
 
         //Asigna un color al embed en función del valor del ping
@@ -20,7 +20,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
 
         //Genera un embed para el tiempo de respuesta
         let websocketPingEmbed = new client.MessageEmbed()
-            .setTitle('Tiempo de respuesta del Websocket: ')
+            .setTitle(`${locale.websocketResponseTime}: `)
             .setDescription(`:stopwatch: | ${websocketPing} ms`);
 
         //Asigna un color al embed en función del valor del ping

@@ -11,7 +11,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Comprueba si se ha proporcionado un miembro válido
         if (!member && !client.db.stats[args[0]]) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`)]
+            .setDescription(`${client.customEmojis.redTick} ${locale.invalidMember}.`)]
         });
 
         //Almacena el ID del miembro
@@ -20,13 +20,13 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Si el miembro era un bot
         if (member && member.user.bot) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Los bots no pueden ganar puntos de XP`)]
+            .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)]
         });
         
         //Comprueba si los argumentos se han introducido adecuadamente
         if (args[1] !== 'clear' && (!args[2] || isNaN(args[2]))) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad válida`)]
+            .setDescription(`${client.customEmojis.redTick} ${locale.invalidQuantity}.`)]
         });
 
         //Si el miembro no tiene estadísticas, se las crea
@@ -45,13 +45,13 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Comprueba si se le puede restar esa cantidad al miembro
         if (args[1] === 'remove' && memberStats.totalXP < args[2]) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad válida`)]
+            .setDescription(`${client.customEmojis.redTick} ${locale.invalidQuantity}.`)]
         });
 
         //Comprueba si se le puede quitar el XP al miembro
         if (args[1] === 'clear' && memberStats.totalXP === 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Este miembro no tiene XP`)]
+            .setDescription(`${client.customEmojis.redTick} ${locale.hasNoXp}.`)]
         });  
         
         //Si el ejecutor no es el dueño de la guild, o un botManager
@@ -63,7 +63,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 //Devuelve un mensaje de error
                 return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} No puedes modificar el XP de un miembro con un rol igual o superior al tuyo`)]
+                    .setDescription(`${client.customEmojis.redTick} ${locale.unauthorizedModify}.`)]
                 });
             };
         };
@@ -209,28 +209,28 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Envía un mensaje al canal de registros
             await client.functions.loggingManager('embed',  new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
-                .setTitle('📑 Registro - [SISTEMA DE XP]')
-                .setDescription(`Se ha modificado la cantidad de XP de **${member.user.tag}**.`)
-                .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
-                .addField('Moderador:', message.author.tag, true)
-                .addField('ID del miembro:', memberId.toString(), true)
-                .addField('XP anterior', oldValue.toString(), true)
-                .addField('Nuevo XP', newValue.toString(), true));
+                .setTitle(`📑 ${locale.loggingEmbed.title}`)
+                .setDescription(`${client.functions.localeParser(locale.loggingEmbed.description, { memberTag: member.user.tag })}.`)
+                .addField(locale.loggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
+                .addField(locale.loggingEmbed.moderator, message.author.tag, true)
+                .addField(locale.loggingEmbed.memberId, memberId.toString(), true)
+                .addField(locale.loggingEmbed.oldValue, oldValue.toString(), true)
+                .addField(locale.loggingEmbed.newValue, newValue.toString(), true));
 
             //Envía una notificación al miembro
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.correct)
-                .setAuthor({ name: '[XP MODIFICADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
-                .setDescription(`${member}, tu cantidad de XP ha sido modificada`)
-                .addField('Moderador', message.author.tag, true)
-                .addField('XP anterior', oldValue.toString(), true)
-                .addField('Nuevo XP', newValue.toString(), true)
+                .setAuthor({ name: locale.privateEmbed.author, iconURL: message.guild.iconURL({ dynamic: true}) })
+                .setDescription(`${client.functions.localeParser(locale.privateEmbed.description, { member: member })}.`)
+                .addField(locale.privateEmbed.moderator, message.author.tag, true)
+                .addField(locale.privateEmbed.oldValue, oldValue.toString(), true)
+                .addField(locale.privateEmbed.newValue, newValue.toString(), true)
             ]});
 
             //Notifica la acción en el canal de invocación
             await message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
-                .setDescription(`${client.customEmojis.greenTick} Se ha modificado la cantidad de XP del miembro **${member.user.tag}**.`)]
+                .setDescription(`${client.customEmojis.greenTick} ${client.functions.localeParser(locale.notificationEmbed, { memberTag: member.user.tag })}.`)]
             });
         });
         

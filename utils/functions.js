@@ -1,4 +1,4 @@
-exports.run = (client) => {
+exports.run = (client, locale) => {
     
     //Crea un objeto para almacenar todas las funciones
     client.functions = {};
@@ -219,7 +219,7 @@ exports.run = (client) => {
         if (!mutedRole || mutedRole.name !== client.config.moderation.mutedRoleName) {
 
             //Borra el anterior rol si es necesario
-            if (mutedRole.name !== client.config.moderation.mutedRoleName) await mutedRole.delete('Será reemplazado por uno nuevo.');
+            if (mutedRole.name !== client.config.moderation.mutedRoleName) await mutedRole.delete(locale.checkMutedRole.replacing);
 
             //Crea un nuevo rol silenciado
             mutedRole = await guild.roles.create({
@@ -228,7 +228,7 @@ exports.run = (client) => {
                     color: client.config.colors.mutedRole,
                     permissions: []
                 },
-                reason: 'Rol para gestionar miembros silenciados'
+                reason: locale.checkMutedRole.reason
             });
             
             //Asigna el rol a la posición más alta posible
@@ -343,8 +343,8 @@ exports.run = (client) => {
                 //Genera un embed de subida de nivel
                 let levelUpEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.primary)
-                    .setAuthor({ name: '¡Subiste de nivel!', iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                    .setDescription(`Enhorabuena ${member}, has subido al nivel **${memberStats.level}**`);
+                    .setAuthor({ name: locale.addXP.levelUpEmbed.author, iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                    .setDescription(`${client.functions.localeParser(locale.addXP.levelUpEmbed.description, { member: member, memberLevel: memberStats.level })}.`);
 
                 //Si se recompensó al miembro con roles
                 if (rewardedRoles) {
@@ -363,7 +363,7 @@ exports.run = (client) => {
                     };
 
                     //Añade un campo al embed de levelup con los roles recompensados
-                    levelUpEmbed.addField('Recompensas obtenidas', `\`${roleNames.join('`, `')}\``);
+                    levelUpEmbed.addField(`${locale.addXP.levelUpEmbed.rewards}.`, `\`${roleNames.join('`, `')}\``);
                 };
 
                 //Manda el mensaje de subida de nivel, si se ha configurado
@@ -579,34 +579,34 @@ exports.run = (client) => {
                 client.loggingCache[member.id] = {
                     action: 'kick',
                     executor: client.user.id,
-                    reason: 'El nombre de usuario contenía una palabra prohibida'
+                    reason: locale.manageNewMember.kickReason
                 };
 
                 //Alerta al miembro de que ha sido expulsado
                 await member.user.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.secondaryError)
-                    .setAuthor({ name: '[EXPULSADO]', iconURL: member.guild.iconURL({dynamic: true}) })
-                    .setDescription(`${member}, has sido expulsado de ${member.guild.name}`)
-                    .addField('Moderador', client.user, true)
-                    .addField('Razón', 'Tu nombre de usuario contiene una palabra prohibida en la comunidad.', true)
+                    .setAuthor({ name: locale.manageNewMember.privateEmbed.author, iconURL: member.guild.iconURL({dynamic: true}) })
+                    .setDescription(`${client.functions.localeParser(locale.manageNewMember.privateEmbed.description, { member: member, guildName: member.guild.name })}.`)
+                    .addField(locale.manageNewMember.privateEmbed.moderator, client.user, true)
+                    .addField(locale.manageNewMember.privateEmbed.reasonTitle, `${locale.manageNewMember.privateEmbed.reasonDescription}.`, true)
                 ]});
 
                 //Se expulsa al miembro
-                await member.kick(member.user, { reason: 'El nombre de usuario contenía una palabra prohibida' });
+                await member.kick(member.user, { reason: locale.manageNewMember.kickReason });
             };
 
             //Genera un embed con el registro de bienvenida
             let welcomeEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.correct)
                 .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
-                .setAuthor({ name: 'Nuevo miembro', iconURL: 'attachment://in.png' })
-                .setDescription(`${member.user.tag} se unió al servidor`)
-                .addField('🆔 ID del miembro', member.user.id, true)
-                .addField('📝 Fecha de registro', `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
+                .setAuthor({ name: locale.manageNewMember.welcomeEmbed.author, iconURL: 'attachment://in.png' })
+                .setDescription(`${client.functions.localeParser(locale.manageNewMember.welcomeEmbed.description, { memberTag: member.user.tag })}.`)
+                .addField(`🆔 ${locale.manageNewMember.welcomeEmbed.memberId}`, member.user.id, true)
+                .addField(`📝 ${locale.manageNewMember.welcomeEmbed.registerDate}`, `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
 
             //Comprueba qué tipo de sanción tiene el miembro (si la tiene, según duración), y añade el campo al embed de registro (si pertoca)
-            if (client.db.mutes[member.id] && client.db.mutes[member.id].until) welcomeEmbed.addField('🔇 Sanción actual', `Silenciado hasta <t:${Math.round(new Date(client.db.mutes[member.id].until) / 1000)}>`, false);
-            else if (client.db.mutes[member.id] && !client.db.mutes[member.id].until) welcomeEmbed.addField('🔇 Sanción actual', 'Silenciado indefinidamente', false);
+            if (client.db.mutes[member.id] && client.db.mutes[member.id].until) welcomeEmbed.addField(`🔇 ${locale.manageNewMember.welcomeEmbed.actualSanction}`, `${locale.manageNewMember.welcomeEmbed.limitedSanction}: <t:${Math.round(new Date(client.db.mutes[member.id].until) / 1000)}>`, false);
+            else if (client.db.mutes[member.id] && !client.db.mutes[member.id].until) welcomeEmbed.addField(`🔇 ${locale.manageNewMember.welcomeEmbed.actualSanction}`, locale.manageNewMember.welcomeEmbed.unlimitedSantion, false);
 
             //Se notifica en el canal de registro
             await client.joinsAndLeavesChannel.send({ embeds: [ welcomeEmbed ], files: ['./resources/images/in.png'] });
@@ -637,12 +637,15 @@ exports.run = (client) => {
 
     //Función para manejar sintaxis incorrectas
     client.functions.syntaxHandler = (channel, commandConfig) => {
+
+        //Almacena la traducción de los parámetros del comando
+        const translation = require(`../resources/locales/${client.config.main.language}.json`).commands[commandConfig.export.category][commandConfig.export.name];
         
         //Genera y envía un embed con la sintaxis correcta
         return channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setTitle(`${client.customEmojis.redTick} Sintaxis incorrecta`)
-            .setDescription(`La sintaxis de este comando es:\n\`${client.config.main.prefix}${commandConfig.export.name}${commandConfig.export.parameters.length > 0 ? ` ${commandConfig.export.parameters}` : ''}\``)
+            .setTitle(`${client.customEmojis.redTick} ${locale.syntaxHandler.title}`)
+            .setDescription(`${locale.syntaxHandler.description}:\n\`${client.config.main.prefix}${commandConfig.export.name}${translation.parameters.length > 0 ? ` ${translation.parameters}` : ''}\``)
         ]});
     };
 
@@ -672,7 +675,7 @@ exports.run = (client) => {
                 } else {
 
                     //Advertir por consola de que no se tienen permisos
-                    console.error(`${new Date().toLocaleString()} 》ERROR: No se pueden enviar mensajes al canal de registro.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos.`);
+                    console.error(`${new Date().toLocaleString()} 》${client.functions.localeParser(locale.loggingManager.cannotSend, { botUser: client.user.username })}.`);
                 };
 
             } catch (error) {
@@ -685,14 +688,14 @@ exports.run = (client) => {
                     client.loggingChannel = null;
 
                     //Advertir por consola
-                    console.error(`${new Date().toLocaleString()} 》ERROR: No se puede tener acceso al canal de registro.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
+                    console.error(`${new Date().toLocaleString()} 》${locale.loggingManager.cannotAccess}.`);
 
                     //Graba la nueva configuración en el almacenamiento
                     await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), async err => { if (err) throw err });
                 } else {
 
                     //Muestra un error por consola
-                    console.error(`${new Date().toLocaleString()} 》ERROR: Error durante la ejecución del loggingManager:`, error.stack);
+                    console.error(`${new Date().toLocaleString()} 》${locale.loggingManager.error}:`, error.stack);
                 };
             };
         };
@@ -724,7 +727,7 @@ exports.run = (client) => {
                 } else {
 
                     //Advertir por consola de que no se tienen permisos
-                    console.error(`${new Date().toLocaleString()} 》ERROR: No se pueden enviar mensajes al canal de registro.\n${client.user.username} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos.`);
+                    console.error(`${new Date().toLocaleString()} 》${client.functions.localeParser(locale.debuggingManager.cannotSend, { botUser: client.user.username })}.`);
                 };
 
             } catch (error) {
@@ -737,7 +740,7 @@ exports.run = (client) => {
                     client.debuggingChannel = null;
 
                     //Advertir por consola
-                    console.error(`${new Date().toLocaleString()} 》ERROR: No se puede tener acceso al canal de depuración.\n Se ha borrado de la configuración y se ha descargado de la memoria.`);
+                    console.error(`${new Date().toLocaleString()} 》${locale.debuggingManager.cannotAccess}.`);
 
                     //Graba la nueva configuración en el almacenamiento
                     await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), async err => { if (err) throw err });
@@ -745,7 +748,7 @@ exports.run = (client) => {
                 } else {
 
                     //Muestra un error por consola
-                    console.error(`${new Date().toLocaleString()} 》ERROR: Error durante la ejecución del debuggingManager:`, error.stack);
+                    console.error(`${new Date().toLocaleString()} 》${locale.debuggingManager.error}:`, error.stack);
                 };
             };
         };
@@ -758,10 +761,10 @@ exports.run = (client) => {
         if (error.toLocaleString().includes('Cannot find module') || error.toLocaleString().includes('Cannot send messages to this user')) return;
 
         //Se muestra el error en consola
-        console.error(`\n${new Date().toLocaleString()} 》ERROR:`, error.stack);
+        console.error(`\n${new Date().toLocaleString()} 》${locale.commandErrorHandler.error}:`, error.stack);
         
         //Se comprueba si se han proporcionado argumentos
-        const arguments = args.length > 0 ? args.join(' ') : 'Ninguno';
+        const arguments = args.length > 0 ? args.join(' ') : locale.commandErrorHandler.noArguments;
 
         //Almacena el string del error, y lo recorta si es necesario
         const errorString = error.stack.length > 1014 ? error.stack : `${error.stack.slice(0, 1014)} ...`;
@@ -769,22 +772,21 @@ exports.run = (client) => {
         //Se indica al usuario que se ha notificado el error
         await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setTitle(`${client.customEmojis.redTick} ¡Vaya! Algo fue mal ...`)
-            .setDescription('Lo hemos reportado al equipo de desarrollo')
+            .setTitle(`${client.customEmojis.redTick} ${locale.commandErrorHandler.errorEmbed.title} ...`)
+            .setDescription(locale.commandErrorHandler.errorEmbed.description)
         ]});
 
         //Se muestra el error en el canal de depuración¡
         await client.functions.debuggingManager( new client.MessageEmbed()
             .setColor(client.config.colors.debugging)
-            .setTitle('📋 Depuración')
-            .setDescription('Se declaró un error durante la ejecución de un comando')
-            .addField('Comando:', command, true)
-            .addField('Argumentos:', arguments, true)
-            .addField('Origen:', message.guild.name, true)
-            .addField('Canal:', `${message.channel}`, true)
-            .addField('Autor:', `${message.author.tag}`, true)
-            .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
-            .addField('Error:', `\`\`\`${errorString}\`\`\``, true)
+            .setTitle(`📋 ${locale.commandErrorHandler.debuggingEmbed.title}`)
+            .setDescription(locale.commandErrorHandler.debuggingEmbed.description)
+            .addField(`${locale.commandErrorHandler.debuggingEmbed.command}:`, command, true)
+            .addField(`${locale.commandErrorHandler.debuggingEmbed.arguments}:`, arguments, true)
+            .addField(`${locale.commandErrorHandler.debuggingEmbed.channel}:`, `${message.channel}`, true)
+            .addField(`${locale.commandErrorHandler.debuggingEmbed.author}:`, message.author.tag, true)
+            .addField(`${locale.commandErrorHandler.debuggingEmbed.date}:`, `<t:${Math.round(new Date() / 1000)}>`, true)
+            .addField(`${locale.commandErrorHandler.debuggingEmbed.error}:`, `\`\`\`${errorString}\`\`\``, true)
         );
     };
 
@@ -792,7 +794,7 @@ exports.run = (client) => {
     client.functions.eventErrorHandler = async (error, eventName) => {
 
         //Se muestra el error en consola
-        console.error(`\n${new Date().toLocaleString()} 》ERROR:`, error.stack);
+        console.error(`\n${new Date().toLocaleString()} 》${locale.eventErrorHandler.error}:`, error.stack);
         
         //Almacena el string del error, y lo recorta si es necesario
         const errorString = error.stack.length > 1014 ? error.stack : `${error.stack.slice(0, 1014)} ...`;
@@ -800,11 +802,11 @@ exports.run = (client) => {
         //Se muestra el error en el canal de depuración
         await client.functions.debuggingManager( new client.MessageEmbed()
             .setColor(client.config.colors.debugging)
-            .setTitle('📋 Depuración')
-            .setDescription('Se declaró un error durante la ejecución de un evento')
-            .addField('Evento:', eventName, true)
-            .addField('Fecha:', `<t:${Math.round(new Date() / 1000)}>`, true)
-            .addField('Error:', `\`\`\`${errorString}\`\`\``)
+            .setTitle(`📋 ${locale.eventErrorHandler.debuggingEmbed.title}`)
+            .setDescription(locale.eventErrorHandler.debuggingEmbed.description)
+            .addField(`${locale.eventErrorHandler.debuggingEmbed.event}:`, eventName, true)
+            .addField(`${locale.eventErrorHandler.debuggingEmbed.date}:`, `<t:${Math.round(new Date() / 1000)}>`, true)
+            .addField(`${locale.eventErrorHandler.debuggingEmbed.error}:`, `\`\`\`${errorString}\`\`\``)
         );
     };
 
@@ -830,5 +832,5 @@ exports.run = (client) => {
     };
 
     //Log the result of the functions loading
-    console.log(' - [OK] Carga de funciones globales.');
+    console.log(` - [OK] ${locale.functionLoaded}.`);
 };

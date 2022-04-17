@@ -1,9 +1,9 @@
-exports.run = async (client) => {
+exports.run = async (client, locale) => {
 
     try {
 
         //Notifica el inicio de la carga del sistema
-        console.log('\n - Cargando el sistema.\n');
+        console.log(`\n - ${locale.loadingSystem} ...\n`);
 
         //Carga en memoria de los recursos de la guild necesarios para el bot
         const loadGuildSettings = new Promise(async (resolve, reject) => {
@@ -29,12 +29,12 @@ exports.run = async (client) => {
                         client[config] = await client.channels.fetch(client.config.main[config]);
 
                         //Notifica la resolución positiva de la carga
-                        console.log(` - [OK] [${config}] cargado correctamente`);
+                        console.log(` - [OK] [${config}] -> ${locale.configLoaded}`);
 
                     } catch (error) {
 
                         //Notifica la resolución negativa de la carga
-                        console.log(` - [ERROR] [${config}] no se pudo cargar`);
+                        console.log(` - [ERROR] [${config}] -> ${locale.configNotLoaded}`);
                     };
                 } else { //Sino
 
@@ -51,10 +51,13 @@ exports.run = async (client) => {
         await loadGuildSettings.then(async () => {
 
             //Notifica que la carga se ha completado
-            console.log('\n - [OK] Carga de configuración de la guild.');
+            console.log(`\n - [OK] ${locale.guildConfigLoaded}.`);
+
+            //Almacena las traducciones de las funciones
+            const functionsLocale = await require(`../../resources/locales/${client.config.main.language}.json`).utils.functions;
 
             //Carga las funciones globales
-            require('../functions.js').run(client);
+            require('../functions.js').run(client, functionsLocale);
 
             //Carga los customEmojis de sistema en la guild (si no los tiene ya)
             if (client.homeGuild) await require('./uploadEmojis.js').run(client);
@@ -72,7 +75,7 @@ exports.run = async (client) => {
             });
 
             //Notifica la correcta carga de la presencia
-            console.log(' - [OK] Carga de presencia.');
+            console.log(` - [OK] ${locale.presenceLoaded}.`);
 
             //Carga los scripts que funcionan a intervalos
             require('../intervals.js').run(client);
@@ -121,19 +124,19 @@ exports.run = async (client) => {
                 });
 
                 //Notifica la correcta carga de los estados de voz
-                console.log(' - [OK] Carga de estados de voz.');
+                console.log(` - [OK] ${locale.voiceStatesLoaded}.`);
             };
 
             //Notifica la correcta carga del bot
-            console.log(`\n 》${client.user.username} iniciado correctamente`);
+            console.log(`\n 》${client.functions.localeParser(locale.loadedCorrectly, { botUsername: client.user.username })}.`);
 
             //Genera un registro en el canal de registro
-            if (client.debuggingChannel && client.config.main.loadMention) client.debuggingChannel.send({ content: `${client.user.username} iniciado correctamente [<@${client.homeGuild.ownerId}>]` }).then(msg => { setTimeout(() => msg.delete(), 5000) });
+            if (client.debuggingChannel && client.config.main.loadMention) client.debuggingChannel.send({ content: `${client.functions.localeParser(locale.loadMention, { botUsername: client.user.username })} [<@${client.homeGuild.ownerId}>]` }).then(msg => { setTimeout(() => msg.delete(), 5000) });
         });
 
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
+        console.error(`${new Date().toLocaleString()} ${locale.error}:`, error.stack);
     };
 };

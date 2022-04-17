@@ -49,7 +49,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             let commandListEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
                 .setThumbnail('attachment://help.png')
-                .setAuthor({ name: client.functions.localeParser(locale.commandListEmbed.author, { clientUsername: client.user.username }), iconURL: client.user.displayAvatarURL({dynamic: true})})
+                .setAuthor({ name: client.functions.localeParser(locale.commandListEmbed.author, { botUsername: client.user.username }), iconURL: client.user.displayAvatarURL({dynamic: true})})
                 .setFooter({ text: client.functions.localeParser(locale.commandListEmbed.footer, { prefix: client.config.main.prefix }) });
 
             //Almacena las traducciones de los comandos

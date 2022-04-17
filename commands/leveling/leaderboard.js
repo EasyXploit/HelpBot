@@ -51,7 +51,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 if (!entry) break;
 
                 //Busca el miembro en la guild
-                const member = await client.functions.fetchMember(message.guild, entry.memberId) || 'Desconocido';
+                const member = await client.functions.fetchMember(message.guild, entry.memberId) || locale.unknownMember;
 
                 //Actualiza la tabla con una entrada formateada
                 board += `\n**#${index + 1}** • \`${entry.totalXP} xp\` • \`lvl ${entry.lvl}\` • ${member}`;
@@ -68,9 +68,9 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Genera una tabla de clasificación (cómo embed)
             const leaderboard = new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
-                .setTitle(':trophy: Tabla de clasificación')
+                .setTitle(`:trophy: ${locale.leaderboard.title}`)
                 .setDescription(await loadBoard(10 * position - 9, 10 * position))
-                .setFooter({ text: `Página ${position} de ${pages}`, iconURL: client.homeGuild.iconURL({dynamic: true}) });
+                .setFooter({ text: client.functions.localeParser(locale.leaderboard.footer, { position: position, totalPages: pages }), iconURL: client.homeGuild.iconURL({dynamic: true}) });
 
             //Envía o actualiza la tabla de clasificación
             if (embed) await embed.edit({ embeds: [leaderboard] }).then(async embed => {awaitReactions(embed)});

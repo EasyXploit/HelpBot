@@ -1,4 +1,4 @@
-exports.run = async (client, guild) => {
+exports.run = async (client, guild, locale) => {
 
     try {
 
@@ -12,14 +12,17 @@ exports.run = async (client, guild) => {
         //Graba la nueva configuración en el almacenamiento
         await client.fs.writeFile('./configs/dynamic.json', JSON.stringify(client.config.dynamic, null, 4), async err => { if (err) throw err });
         
+        //Almacena las traducciones de la función de carga del sistema
+        const systemLoadLocale = await require(`../../resources/locales/${client.config.main.language}.json`).utils.lifecycle.systemLoad;
+
         //Carga la config. en memoria y arranca el sistema
-        await require('./systemLoad.js').run(client);
+        await require('./systemLoad.js').run(client, systemLoadLocale);
 
         //Informa sobre la necesidad de realizar la configuración inicial
         return await guild.members.fetch(guild.ownerId).then(async member => await member.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.correct)
-            .setTitle(`${client.customEmojis.greenTick} ¡${client.user.username} añadido correctamente!`)
-            .setDescription(`Usa los ficheros de configuración para ajustarlo al bot a tu gusto.\nUsa el comando \`${client.config.main.prefix}help\` para ver los comandos.\nRecuerda que el bot solo podrá moderar a aquellas personas que tengan un rol por debajo del rol creado por ${client.user}.\nSi necesitas ayuda, puedes [consultar la wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration).`)]
+            .setTitle(`${client.customEmojis.greenTick} ${client.functions.localeParser(locale.title, { botUsername: client.user.username })}`)
+            .setDescription(`${client.functions.localeParser(locale.description, { prefix: client.config.main.prefix, botUser: client.user })}.`)]
         }));
 
     } catch (error) {

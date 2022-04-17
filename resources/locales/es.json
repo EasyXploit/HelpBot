@@ -486,7 +486,7 @@
                 "error": "ERROR: Error durante la ejecución del loggingManager"
             },
             "debuggingManager": {
-                "cannotSend": "ERROR: No se pueden enviar mensajes al canal de registro.\n{{clientUsername}} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos",
+                "cannotSend": "ERROR: No se pueden enviar mensajes al canal de registro.\n{{botUsername}} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos",
                 "cannotAccess": "ERROR: No se puede tener acceso al canal de depuración.\n Se ha borrado de la configuración y se ha descargado de la memoria",
                 "error": "ERROR: Error durante la ejecución del debuggingManager"
             },

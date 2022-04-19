@@ -22,14 +22,11 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             return rolePermissions[permission] !== false;
         });
 
-        //Almacena las traducciones de los permisos
-        const translations = require(`../../resources/locales/${client.config.main.language}.json`).permissions;
-
         //Almacena los permisos traducidos
         let translatedPermissions = [];
 
         //Traduce los permisos del rol
-        permissionsArray.forEach(async (permission) => translatedPermissions.push(translations[permission] || permission));
+        permissionsArray.forEach(async (permission) => translatedPermissions.push(client.locale.permissions[permission] || permission));
 
         //Envía un embed con la información del rol
         await message.channel.send({ embeds: [ new client.MessageEmbed()

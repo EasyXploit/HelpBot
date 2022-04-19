@@ -49,14 +49,11 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             return memberPermissions[x] !== false;
         });
 
-        //Almacena las traducciones de los permisos
-        const translations = require(`../../resources/locales/${client.config.main.language}.json`).permissions;
-
         //Almacena los permisos traducidos
         let translatedPermissions = [];
 
         //Traduce los permisos del miembro
-        permissionsArray.forEach(async (permission) => translatedPermissions.push(translations[permission] || permission));
+        permissionsArray.forEach(async (permission) => translatedPermissions.push(client.locale.permissions[permission] || permission));
 
         //Almacena la sanción actual, si aplica
         let sanction;

@@ -8,14 +8,11 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Almacena los canales de la guild
         const guildChannels = await message.guild.channels.fetch();
 
-        //Almacena las traducciones de las características
-        const translations = require(`../../resources/locales/${client.config.main.language}.json`).guildFeatures;
-
         //Almacena las características traducidas
         let translatedFeatures = [];
 
         //Traduce las características de la guild
-        await message.guild.features.forEach(async (feature) => translatedFeatures.push(translations[feature] || permission));
+        await message.guild.features.forEach(async (feature) => translatedFeatures.push(client.locale.guildFeatures[feature] || permission));
         
         //Almacena las categorías que hay en la guild
         let categories = new Set();

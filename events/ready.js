@@ -23,19 +23,13 @@ exports.run = async (event, client, locale) => {
         //Comprueba si la config de la guild ya está almacenada o no
         if (!client.config.dynamic.homeGuild || client.config.dynamic.homeGuild !== cachedGuilds.first().id) {
 
-            //Almacena las traducciones del manejador de nueva guild
-            const newGuildLocale = await require(`../resources/locales/${client.config.main.language}.json`).utils.lifecycle.newGuild;
-
             //Almacena la nueva configuración
-            await require('../utils/lifecycle/newGuild.js').run(client, cachedGuilds.first(), newGuildLocale);
+            await require('../utils/lifecycle/newGuild.js').run(client, cachedGuilds.first());
             
         } else {
 
-            //Almacena las traducciones de la función de carga del sistema
-            const systemLoadLocale = await require(`../resources/locales/${client.config.main.language}.json`).utils.lifecycle.systemLoad;
-
             //Carga la config. en memoria y arranca el sistema
-            await require('../utils/lifecycle/systemLoad.js').run(client, systemLoadLocale);
+            await require('../utils/lifecycle/systemLoad.js').run(client);
         };
 
     } catch (error) {

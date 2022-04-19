@@ -51,7 +51,7 @@ exports.run = async (client) => {
                             customEmojis[emojiName] = emoji.id;
 
                             //Notifica por consola
-                            console.log(`- Emoji [${emoji.name}] creado satisfactoriamente.`);
+                            console.log(`- ${client.functions.localeParser(client.locale.utils.lifecycle.uploadEmojis.emojiCreated, { emojiName: emoji.name })}.`);
 
                             //Aumenta el recuento de emojis creados
                             newEmojisCount++;
@@ -76,12 +76,12 @@ exports.run = async (client) => {
         } else {
 
             //Devuelve un error por consola
-            console.error(`\nNo habían espacios para emojis suficientes.\nNecesitas al menos ${emojis.length} espacios.\nSe usarán emojis Unicode en su lugar.\n`);
+            console.error(`\n${client.functions.localeParser(client.locale.utils.lifecycle.uploadEmojis.insufficientSpace, { neededSpaced: emojis.length })}.\n`);
         };
 
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
+        console.error(`${new Date().toLocaleString()} 》${client.locale.utils.lifecycle.uploadEmojis.error}:`, error.stack);
     };
 };

@@ -1,7 +1,10 @@
-exports.run = (client, locale) => {
+exports.run = (client) => {
     
     //Crea un objeto para almacenar todas las funciones
     client.functions = {};
+
+    //Almacena las traducciones
+    const locale = client.locale.utils.functions;
 
     //Función para buscar miembros
     client.functions.fetchMember = async (guild, member) => {

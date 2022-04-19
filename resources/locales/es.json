@@ -396,11 +396,13 @@
     "utils": {
         "lifecycle": {
             "loadEmojis": {
-
+                "configLoaded": "Carga de emojis personalizados completada",
+                "error": "ERROR"
             },
             "newGuild": {
                 "title": "¡{{botUsername}} añadido correctamente!",
-                "description": "Usa los ficheros de configuración para ajustarlo al bot a tu gusto.\nUsa el comando `{{prefix}}help` para ver los comandos.\nRecuerda que el bot solo podrá moderar a aquellas personas que tengan un rol por debajo del rol creado por {{botUser}}.\nSi necesitas ayuda, puedes [consultar la wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)"
+                "description": "Usa los ficheros de configuración para ajustarlo al bot a tu gusto.\nUsa el comando `{{prefix}}help` para ver los comandos.\nRecuerda que el bot solo podrá moderar a aquellas personas que tengan un rol por debajo del rol creado por {{botUser}}.\nSi necesitas ayuda, puedes [consultar la wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)",
+                "error": "ERROR"
             },
             "systemLoad": {
                 "loadingSystem": "Cargando el sistema",
@@ -414,15 +416,74 @@
                 "error": "ERROR"
             },
             "uploadEmojis": {
-
+                "emojiCreated": "Emoji [{{emojiName}}] creado satisfactoriamente",
+                "insufficientSpace": "No habían espacios para emojis suficientes.\nNecesitas al menos {{neededSpaced}} espacios.\nSe usarán emojis Unicode en su lugar",
+                "error": "ERROR"
             }
         },
         "moderation": {
-            "automodFiltering": {
-
-            },
             "infractionsHandler": {
-
+                "muteFunction": {
+                    "loggingEmbed": {
+                        "author": "{{memberTag}} ha sido SILENCIADO",
+                        "memberId": "ID del miembro",
+                        "moderator": "Moderador",
+                        "reason": "Razón",
+                        "expiration": "Vencimiento",
+                        "noExpiration": "No vence"
+                    },
+                    "notificationEmbed": "**{{memberTag}}** ha sido silenciado por que acumuló __demasiadas advertencias__, ¿alguien más?",
+                    "privateEmbed": {
+                        "author": "[SILENCIADO]",
+                        "description": "{{member}}, has sido silenciado en {{guildName}}",
+                        "moderator": "Moderador",
+                        "reason": "Razón",
+                        "expiration": "Vencimiento",
+                        "noExpiration": "No vence"
+                    },
+                    "reason": "Demasiadas advertencias"
+                },
+                "kickFunction": {
+                    "notificationEmbed": "{{memberTag}} ha sido expulsado por que acumuló __demasiadas advertencias__, ¿alguien más?",
+                    "privateEmbed": {
+                        "author": "[EXPULSADO]",
+                        "description": "{{member}}, has sido expulsado en {{guildName}}",
+                        "moderator": "Moderador",
+                        "reason": "Razón"
+                    },
+                    "reason": "Demasiadas advertencias"
+                },
+                "banFunction": {
+                    "notificationEmbed": "{{memberTag}} ha sido baneado por que acumuló __demasiadas advertencias__, ¿alguien más?",
+                    "privateEmbed": {
+                        "author": "[BANEADO]",
+                        "description": "{{member}}, has sido baneado en {{guildName}}",
+                        "moderator": "Moderador",
+                        "reason": "Razón",
+                        "expiration": "Vencimiento",
+                        "noExpiration": "No vence"
+                    },
+                    "reason": "Demasiadas advertencias"
+                },
+                "warn": {
+                    "privateEmbed": {
+                        "author": "[ADVERTIDO]",
+                        "description": "{{member}}, has sido advertido en {{guildName}}",
+                        "moderator": "Moderador",
+                        "reason": "Razón"
+                    },
+                    "notificationEmbed": "El miembro **{{memberTag}}** ha sido advertido debido a __{{warnReason}}__",
+                    "loggingEmbed": {
+                        "author": "{{memberTag}} ha sido ADVERTIDO",
+                        "memberId": "ID del miembro",
+                        "moderator": "Moderador",
+                        "reason": "Razón",
+                        "warnId": "ID de advertencia",
+                        "channel": "Canal",
+                        "infractions": "Infracciones"
+                    }
+                },
+                "error": "ERROR"
             }
         },
         "voice":{
@@ -518,7 +579,7 @@
                     "error": "Error"
                 }
             },
-            "functionLoaded": "Carga de funciones globales"
+            "functionLoaded": "Carga de funciones globales completada"
         },
         "intervals": {
 

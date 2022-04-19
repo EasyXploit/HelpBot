@@ -1,9 +1,9 @@
-exports.run = async (client, locale) => {
+exports.run = async (client) => {
 
     try {
 
         //Notifica el inicio de la carga del sistema
-        console.log(`\n - ${locale.loadingSystem} ...\n`);
+        console.log(`\n - ${client.locale.utils.lifecycle.systemLoad.loadingSystem} ...\n`);
 
         //Carga en memoria de los recursos de la guild necesarios para el bot
         const loadGuildSettings = new Promise(async (resolve, reject) => {
@@ -29,12 +29,12 @@ exports.run = async (client, locale) => {
                         client[config] = await client.channels.fetch(client.config.main[config]);
 
                         //Notifica la resolución positiva de la carga
-                        console.log(` - [OK] [${config}] -> ${locale.configLoaded}`);
+                        console.log(` - [OK] [${config}] -> ${client.locale.utils.lifecycle.systemLoad.configLoaded}`);
 
                     } catch (error) {
 
                         //Notifica la resolución negativa de la carga
-                        console.log(` - [ERROR] [${config}] -> ${locale.configNotLoaded}`);
+                        console.log(` - [ERROR] [${config}] -> ${client.locale.utils.lifecycle.systemLoad.configNotLoaded}`);
                     };
                 } else { //Sino
 
@@ -51,13 +51,10 @@ exports.run = async (client, locale) => {
         await loadGuildSettings.then(async () => {
 
             //Notifica que la carga se ha completado
-            console.log(`\n - [OK] ${locale.guildConfigLoaded}.`);
-
-            //Almacena las traducciones de las funciones
-            const functionsLocale = await require(`../../resources/locales/${client.config.main.language}.json`).utils.functions;
+            console.log(`\n - [OK] ${client.locale.utils.lifecycle.systemLoad.guildConfigLoaded}.`);
 
             //Carga las funciones globales
-            require('../functions.js').run(client, functionsLocale);
+            require('../functions.js').run(client);
 
             //Carga los customEmojis de sistema en la guild (si no los tiene ya)
             if (client.homeGuild) await require('./uploadEmojis.js').run(client);
@@ -75,7 +72,7 @@ exports.run = async (client, locale) => {
             });
 
             //Notifica la correcta carga de la presencia
-            console.log(` - [OK] ${locale.presenceLoaded}.`);
+            console.log(` - [OK] ${client.locale.utils.lifecycle.systemLoad.presenceLoaded}.`);
 
             //Carga los scripts que funcionan a intervalos
             require('../intervals.js').run(client);
@@ -124,19 +121,19 @@ exports.run = async (client, locale) => {
                 });
 
                 //Notifica la correcta carga de los estados de voz
-                console.log(` - [OK] ${locale.voiceStatesLoaded}.`);
+                console.log(` - [OK] ${client.locale.utils.lifecycle.systemLoad.voiceStatesLoaded}.`);
             };
 
             //Notifica la correcta carga del bot
-            console.log(`\n 》${client.functions.localeParser(locale.loadedCorrectly, { botUsername: client.user.username })}.`);
+            console.log(`\n 》${client.functions.localeParser(client.locale.utils.lifecycle.systemLoad.loadedCorrectly, { botUsername: client.user.username })}.`);
 
             //Genera un registro en el canal de registro
-            if (client.debuggingChannel && client.config.main.loadMention) client.debuggingChannel.send({ content: `${client.functions.localeParser(locale.loadMention, { botUsername: client.user.username })} [<@${client.homeGuild.ownerId}>]` }).then(msg => { setTimeout(() => msg.delete(), 5000) });
+            if (client.debuggingChannel && client.config.main.loadMention) client.debuggingChannel.send({ content: `${client.functions.localeParser(client.locale.utils.lifecycle.systemLoad.loadMention, { botUsername: client.user.username })} [<@${client.homeGuild.ownerId}>]` }).then(msg => { setTimeout(() => msg.delete(), 5000) });
         });
 
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} ${locale.error}:`, error.stack);
+        console.error(`${new Date().toLocaleString()} ${client.locale.utils.lifecycle.systemLoad.error}:`, error.stack);
     };
 };

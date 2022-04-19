@@ -37,7 +37,7 @@ exports.run = async (message, client, locale) => {
         for (let index = 0; index < bypassRoles.length; index++) if (guildMember.roles.cache.has(bypassRoles[index])) continue;
 
         //Ejecuta el filtro
-        await automodFiltering[filter](client, message).then(match => {
+        await automodFiltering[filter](client, message).then(async match => {
 
             //Si se encontró una infracción
             if (match) {
@@ -121,11 +121,8 @@ exports.run = async (message, client, locale) => {
         //Añade el export de la config al objeto "commandConfig";
         commandConfig.export = pulledCommand.config;
 
-        //Almacena las traducciones del comando al idioma configurado
-        const commandLocale = await require(`../resources/locales/${client.config.main.language}.json`).commands[pulledCommand.config.category][pulledCommand.config.name];
-
         //Ejecuta el comando
-        pulledCommand.run(client, message, args, command, commandConfig, commandLocale);
+        pulledCommand.run(client, message, args, command, commandConfig, client.locale.commands[pulledCommand.config.category][pulledCommand.config.name]);
 
         //Añade un cooldown para el miembro
         client.cooldownedUsers.set(message.author.id);

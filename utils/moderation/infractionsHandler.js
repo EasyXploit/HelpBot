@@ -2,6 +2,9 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
 
     try {
 
+        //Almacena las traducciones
+        const locale = client.locale.utils.moderation.infractionsHandler;
+
         //Función para silenciar
         async function mute(time) {
 
@@ -36,27 +39,27 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
             //Envía un mensaje al canal de registro
             await client.functions.loggingManager('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setAuthor({ name: `${member.user.tag} ha sido SILENCIADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                .addField('ID del miembro', member.id, true)
-                .addField('Moderador', client.user, true)
-                .addField('Razón', 'Demasiadas advertencias', true)
-                .addField('Vencimiento', time ? `<t:${Math.round(new Date(parseInt(time)) / 1000)}:R>` : 'No vence', true)
+                .setAuthor({ name: client.functions.localeParser(locale.muteFunction.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                .addField(locale.muteFunction.loggingEmbed.memberId, member.id, true)
+                .addField(locale.muteFunction.loggingEmbed.moderator, client.user, true)
+                .addField(locale.muteFunction.loggingEmbed.reason, locale.muteFunction.reason, true)
+                .addField(locale.muteFunction.loggingEmbed.expiration, time ? `<t:${Math.round(new Date(parseInt(time)) / 1000)}:R>` : locale.muteFunction.loggingEmbed.noExpiration, true)
             );
 
             //Envía un mensaje al canal de la infracción
             await message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
-                .setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado por que acumuló __demasiadas advertencias__, ¿alguien más?`)
+                .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.muteFunction.notificationEmbed, { memberTag: member.user.tag })}`)
             ]});
 
             //Envía un mensaje al miembro
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setAuthor({ name: '[SILENCIADO]', iconURL: client.homeGuild.iconURL({dynamic: true}) })
-                .setDescription(`${member}, has sido silenciado en ${client.homeGuild.name}`)
-                .addField('Moderador', client.user, true)
-                .addField('Razón', 'Demasiadas advertencias', true)
-                .addField('Vencimiento', time ? `<t:${Math.round(new Date(parseInt(time)) / 1000)}:R>` : 'No vence', true)
+                .setAuthor({ name: locale.muteFunction.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
+                .setDescription(client.functions.localeParser(locale.muteFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
+                .addField(locale.muteFunction.privateEmbed.moderator, client.user, true)
+                .addField(locale.muteFunction.privateEmbed.reason, locale.muteFunction.reason, true)
+                .addField(locale.muteFunction.privateEmbed.expiration, time ? `<t:${Math.round(new Date(parseInt(time)) / 1000)}:R>` : locale.muteFunction.privateEmbed.noExpiration, true)
             ]});
         };
 
@@ -66,16 +69,16 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
             //Envía un mensaje al canal de la infracción
             await message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
-                .setDescription(`${client.customEmojis.orangeTick} ${member.user.tag} ha sido expulsado por que acumuló __demasiadas advertencias__, ¿alguien más?`)
+                .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.kickFunction.notificationEmbed, { memberTag: member.user.tag })}`)
             ]});
 
             //Envía un mensaje al miembro
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setAuthor({ name: '[EXPULSADO]', iconURL: client.homeGuild.iconURL({dynamic: true}) })
-                .setDescription(`${member}, has sido expulsado en ${client.homeGuild.name}`)
-                .addField('Moderador', client.user, true)
-                .addField('Razón', 'Demasiadas advertencias', true)
+                .setAuthor({ name: locale.kickFunction.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
+                .setDescription(client.functions.localeParser(locale.kickFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
+                .addField(locale.kickFunction.privateEmbed.moderator, client.user, true)
+                .addField(locale.kickFunction.privateEmbed.reason, locale.kickFunction.reason, true)
             ]});
 
             //Expulsa al miembro
@@ -108,7 +111,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
             client.loggingCache[member.id] = {
                 action: time ? 'tempban' : 'ban',
                 executor: client.user.id,
-                reason: 'Demasiadas advertencias'
+                reason: locale.banFunction.reason
             };
 
             //Si se especificó expiración, la almacena el la caché
@@ -117,21 +120,21 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
             //Envía un mensaje al canal de la infracción
             await message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
-                .setDescription(`${client.customEmojis.orangeTick} ${member.user.tag} ha sido baneado por que acumuló __demasiadas advertencias__, ¿alguien más?`)
+                .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.banFunction.notificationEmbed, { memberTag: member.user.tag })}`)
             ]});
 
             //Envía un mensaje al miembro
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setAuthor({ name: '[BANEADO]', iconURL: client.homeGuild.iconURL({ dynamic: true}) })
-                .setDescription(`${member}, has sido baneado en ${client.homeGuild.name}`)
-                .addField('Moderador', moderator.tag, true)
-                .addField('Razón', 'Demasiadas advertencias', true)
-                .addField('Vencimiento', time ? `<t:${Math.round(new Date(parseInt(Date.now() + time)) / 1000)}:R>` : 'No vence', true)
+                .setAuthor({ name: locale.banFunction.privateEmbed.author, iconURL: client.homeGuild.iconURL({ dynamic: true}) })
+                .setDescription(client.functions.localeParser(locale.banFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
+                .addField(locale.banFunction.privateEmbed.moderator, moderator.tag, true)
+                .addField(locale.banFunction.privateEmbed.reason, locale.banFunction.reason, true)
+                .addField(locale.banFunction.privateEmbed.expiration, time ? `<t:${Math.round(new Date(parseInt(Date.now() + time)) / 1000)}:R>` : locale.banFunction.privateEmbed.noExpiration, true)
             ]});
 
             //Banea al miembro
-            await client.homeGuild.members.ban(member.user, {reason: 'Demasiadas advertencias' });
+            await client.homeGuild.members.ban(member.user, {reason: locale.banFunction.reason });
         };
 
         //Capitaliza la razón de la advertencia
@@ -140,16 +143,16 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
         //Envía un mensaje de advertencia al miembro por MD
         await member.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setAuthor({ name: '[ADVERTIDO]', iconURL: client.homeGuild.iconURL({dynamic: true}) })
-            .setDescription(`${member}, has sido advertido en ${client.homeGuild.name}`)
-            .addField('Moderador', moderator.tag, true)
-            .addField('Razón', warnReason, true)
+            .setAuthor({ name: locale.warn.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
+            .setDescription(client.functions.localeParser(locale.warn.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
+            .addField(locale.warn.privateEmbed.moderator, moderator.tag, true)
+            .addField(locale.warn.privateEmbed.reason, warnReason, true)
         ]});
 
         //Envía un mensaje de advertencia
         if (message.channel.type !== 'DM') await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} El miembro **${member.user.tag}** ha sido advertido debido a __${warnReason}__.`)
+            .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.warn.notificationEmbed, { memberTag: member.user.tag, warnReason: warnReason })}.`)
         ]});
 
         //Borra el mensaje si se ha de hacer
@@ -180,13 +183,13 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
                 //Ejecuta el manejador de registro
                 await client.functions.loggingManager('embed', new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
-                    .setAuthor({ name: `${member.user.tag} ha sido ADVERTIDO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                    .addField('ID del miembro', member.id, true)
-                    .addField('Moderador', moderator.tag, true)
-                    .addField('Razón', warnReason, true)
-                    .addField('ID de advertencia', warnID, true)
-                    .addField('Canal', `${message.channel}`, true)
-                    .addField('Infracciones', (Object.keys(client.db.warns[member.id]).length).toString(), true)
+                    .setAuthor({ name: client.functions.localeParser(locale.warn.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                    .addField(locale.warn.loggingEmbed.memberId, member.id, true)
+                    .addField(locale.warn.loggingEmbed.moderator, moderator.tag, true)
+                    .addField(locale.warn.loggingEmbed.reason, warnReason, true)
+                    .addField(locale.warn.loggingEmbed.warnId, warnID, true)
+                    .addField(locale.warn.loggingEmbed.channel, `${message.channel}`, true)
+                    .addField(locale.warn.loggingEmbed.infractions, (Object.keys(client.db.warns[member.id]).length).toString(), true)
                 );
 
                 //Si procede, adjunta el mensaje filtrado
@@ -234,6 +237,6 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
+        console.error(`${new Date().toLocaleString()} 》${client.locale.utils.moderation.infractionsHandler.error}:`, error.stack);
     };
 };

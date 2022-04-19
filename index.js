@@ -45,6 +45,9 @@ console.log(`- ${locale.index.clientStarted}\n`);
 //Dependencia de acceso al sistema de archivos
 client.fs = require('fs');
 
+//Carga las traducciones en el cliente
+client.locale = locale;
+
 //Carga los archivos de configuración y bases de datos
 const configFiles = client.fs.readdirSync('./configs/', { withFileTypes: true });
 const databaseFiles = client.fs.readdirSync('./databases/', { withFileTypes: true });
@@ -68,7 +71,7 @@ databaseFiles.forEach(async file => {
 client.fs.readdir('./events/', async (err, files) => {
 
     //Si se genera un error, aborta la carga del resto de eventos
-    if (err) return console.error(`${new Date().toLocaleString()} 》${locale.index.uncompleteEventsLoad}.`, error.stack);
+    if (err) return console.error(`${new Date().toLocaleString()} 》${client.locale.index.uncompleteEventsLoad}.`, error.stack);
     
     //Precarga cada uno de los eventos
     files.forEach(file => {
@@ -77,10 +80,10 @@ client.fs.readdir('./events/', async (err, files) => {
         const eventName = file.split('.')[0];               //Almacena el nombre del evento
 
         //Añade un listener para el evento en cuestión (usando spread syntax)
-        client.on(eventName, (...arguments) => eventFunction.run(...arguments, client, locale.events[eventName]));
+        client.on(eventName, (...arguments) => eventFunction.run(...arguments, client, client.locale.events[eventName]));
 
         //Notifica la carga en la consola
-        console.log(` - [OK] ${locale.index.eventLoaded}: [${eventName}]`);
+        console.log(` - [OK] ${client.locale.index.eventLoaded}: [${eventName}]`);
     });
 });
 
@@ -104,18 +107,18 @@ client.fs.readdirSync('./commands/').forEach(subDirectory => {
             pulledCommand.config.category = subDirectory;
 
             //Comprueba si hay conflictos con otros comandos que tengan el mismo nombre
-            if (client.commands.get(pulledCommand.config.name)) return console.warn(`${locale.index.conflictedNames}: ${pulledCommand.config.name}.`);
+            if (client.commands.get(pulledCommand.config.name)) return console.warn(`${client.locale.index.conflictedNames}: ${pulledCommand.config.name}.`);
 
             //Añade el comando a la colección
             client.commands.set(pulledCommand.config.name, pulledCommand);
 
             //Manda un mensaje de confirmación
-            console.log(` - [OK] ${locale.index.commandLoaded}: [${pulledCommand.config.name}]`);
+            console.log(` - [OK] ${client.locale.index.commandLoaded}: [${pulledCommand.config.name}]`);
 
         } else {
             
             //Si hay un error, no carga el comando
-            return console.log(`${locale.index.configError}: ./commands/${subDirectory}/.`);
+            return console.log(`${client.locale.index.configError}: ./commands/${subDirectory}/.`);
         };
 
         //Comprueba si el comando tiene alias, y de ser así, los añade a la colección
@@ -125,7 +128,7 @@ client.fs.readdirSync('./commands/').forEach(subDirectory => {
             pulledCommand.config.aliases.forEach(alias => {
 
                 //Comprueba si hay conflictos con otros alias que tengan el mismo nombre
-                if (client.aliases.get(alias)) return console.warn(`${locale.index.conflictedAlias}: ${alias}`);
+                if (client.aliases.get(alias)) return console.warn(`${client.locale.index.conflictedAlias}: ${alias}`);
 
                 //Añade el alias a la colección
                 client.aliases.set(alias, pulledCommand.config.name);
@@ -142,7 +145,7 @@ client.fs.readdirSync('./commands/').forEach(subDirectory => {
             commandConfig.additionalAliases.forEach(alias => {
 
                 //Comprueba si hay conflictos con otros alias que tengan el mismo nombre
-                if (client.aliases.get(alias)) return console.warn(`${locale.index.conflictedAlias}: ${alias}`);
+                if (client.aliases.get(alias)) return console.warn(`${client.locale.index.conflictedAlias}: ${alias}`);
 
                 //Añade el alias adicional a la colección general de alias
                 client.aliases.set(alias, pulledCommand.config.name);
@@ -152,5 +155,5 @@ client.fs.readdirSync('./commands/').forEach(subDirectory => {
 });
 
 //Inica sesión en el cliente
-console.log(`\n- ${locale.index.loggingIn} ...\n`);
-client.login(client.config.token.key).then(() => console.log(`\n - ${locale.index.loggedIn}`));
+console.log(`\n- ${client.locale.index.loggingIn} ...\n`);
+client.login(client.config.token.key).then(() => console.log(`\n - ${client.locale.index.loggedIn}`));

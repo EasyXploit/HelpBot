@@ -164,7 +164,7 @@
             "errorMessage": "ERROR: Una conexión al websocket encontró un error"
         },
         "voiceStateUpdate": {
-            
+            "leftWhenIdle": "He abandonado el canal y borrado la cola"
         },
         "warn": {
             "warnMessage": "AVISO"

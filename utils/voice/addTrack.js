@@ -64,7 +64,7 @@ exports.run = async (client, reproductionQueue, silentMode, contentType, request
             //Devuelve un error si así se desea
             if (!silentMode) await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
-                .setDescription(`${client.customEmojis.orangeTick} Esta pista ya está en la cola.`)]
+                .setDescription(`${client.customEmojis.orangeTick} ${client.locale.utils.voice.addTrack.actuallyOnQueue}.`)]
             });
 
         } else {
@@ -77,6 +77,6 @@ exports.run = async (client, reproductionQueue, silentMode, contentType, request
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
+        console.error(`${new Date().toLocaleString()} 》${client.locale.utils.voice.addTrack.error}:`, error.stack);
     };
 };

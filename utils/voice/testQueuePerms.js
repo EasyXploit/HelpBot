@@ -2,6 +2,9 @@ exports.run = async (client, message, command, index) => {
 
     try {
 
+        //Almacena las traducciones
+        const locale = client.locale.utils.voice.testQueuePerms;
+
         //Omite si no hay roles de DJ
         if (client.config.music.djRoles.length == 0) return true;
 
@@ -60,7 +63,7 @@ exports.run = async (client, message, command, index) => {
 
         //Maneja la cantidad de votos necesarios para realizar la acción
         if (actualPercentage < client.config.music.votesPercentage) {
-            message.channel.send({ content: `🗳 | Votos necesarios: \`${actualVotes}\` de \`${requiredVotes}\`` });
+            message.channel.send({ content: client.functions.localeParser(locale.neededVotes, { actualVotes: actualVotes, requiredVotes: requiredVotes }) });
             return false;
         } else {
             reproductionQueue.votes[command] = 0;
@@ -70,6 +73,6 @@ exports.run = async (client, message, command, index) => {
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
+        console.error(`${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
     };
 };

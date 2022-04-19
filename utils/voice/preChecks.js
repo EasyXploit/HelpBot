@@ -1,6 +1,9 @@
 exports.run = async (client, message, checks) => {
 
     try {
+
+        //Almacena las traducciones
+        const locale = client.locale.utils.voice.preChecks;
         
         //Variable para almacenar el estado de las comprobaciones
         let passingStatus = true;
@@ -20,7 +23,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${client.user} no está conectado a ningún canal.`)]
+                    .setDescription(`${client.customEmojis.redTick} ${client.user} ${client.functions.localeParser(locale.botNotConnected, { botUser: client.user })}.`)]
                 });
 
                 //Devuelve el estado "falso"
@@ -43,7 +46,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} Debes estar conectado a un canal de voz.`)
+                    .setDescription(`${client.customEmojis.redTick} ${locale.notConnected}.`)
                 ]});
 
                 //Devuelve el estado "falso"
@@ -63,7 +66,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} Debes estar en el mismo canal de voz que ${client.user}.`)]
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.notSameChannel, { botUser: client.user })}.`)]
                 });
 
                 //Devuelve el estado "falso"
@@ -86,7 +89,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} El reproductor está inactivo.`)]
+                    .setDescription(`${client.customEmojis.redTick} ${locale.inactive}.`)]
                 });
 
                 //Devuelve el estado "falso"
@@ -115,7 +118,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${client.user} ya está conectado a \`${voiceChannel.name}\`.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.alreadyConnected, { botUser: client.user, channelName: voiceChannel.name })}.`)
                 ]});
     
                 //Devuelve el estado "falso"
@@ -138,7 +141,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${client.user} no puede conectarse al canal de AFK.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.isAfk, { botUser: client.user })}.`)
                 ]});
 
                 //Devuelve el estado "falso"
@@ -161,7 +164,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${client.user} no tiene permiso para hablar en \`${voiceChannel.name}\`.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantSpeak, { botUser: client.user, channelName: voiceChannel.name })}.`)
                 ]});
 
                 //Devuelve el estado "falso"
@@ -184,7 +187,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${client.user} tiene prohibido conetarse a \`${voiceChannel.name}\`.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.forbiddenJoin, { botUser: client.user, channelName: voiceChannel.name })}.`)
                 ]});
     
                 //Devuelve el estado "falso"
@@ -207,7 +210,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${client.user} no tiene permiso para unirse a \`${voiceChannel.name}\`.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantJoin, { botUser: client.user, channelName: voiceChannel.name })}.`)
                 ]})
                 
                 //Devuelve el estado "falso"
@@ -230,7 +233,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} El canal de voz \`${voiceChannel.name}\` está lleno.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantJoin, { channelName: voiceChannel.name })}.`)
                 ]});
     
                 //Devuelve el estado "falso"
@@ -272,6 +275,6 @@ exports.run = async (client, message, checks) => {
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
+        console.error(`${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
     };
 };

@@ -488,22 +488,75 @@
         },
         "voice":{
             "addTrack": {
-
+                "actuallyOnQueue": "Esta pista ya está en la cola",
+                "error": "ERROR"
             },
             "fetchResource": {
-
+                "cantAddMore": "No puedes añadir más pistas a la cola",
+                "fullQueue": "La cola de reproducción está llena",
+                "newItemEmbed": {
+                    "authorTitle": "Añadido a la cola",
+                    "author": "Autor",
+                    "duration": "Duración"
+                },
+                "newMp3Author": "Archivo local",
+                "noResults": "No se ha encontrado ningún resultado que coincida con `{{searchInput}}`",
+                "cantPlayPrivate": "No se pueden reproducir vídeos privados",
+                "exceededLength": "No se pueden reproducir pistas de más de `{{duration}}`",
+                "onlyFromYouTube": "{{botUser}} solo puede obtener pistas desde YouTube",
+                "invalidResults": "No se encontraron resultados válidos",
+                "selectionEmbed": {
+                    "author": "Elige una pista",
+                    "footer": "Escribe el número de la pista/playlist que deseas añadir a la cola"
+                },
+                "didntChoose": "Debes escoger una pista de la lista",
+                "cantPlay": "No se puede reproducir este resultado",
+                "ageRestricted": "No puedes reproducir vídeos con restricción de edad"
             },
             "mediaPlayer": {
-
+                "finishedReproduction": "Reproducción finalizada",
+                "channelLeave": "He abandonado el canal",
+                "error": "ERROR",
+                "errorAndSkip": "Ocurrió un error. Se ha omitido esta pista",
+                "random": "Aleatorio",
+                "playingEmbed": {
+                    "authorTitle": "Reproduciendo",
+                    "author": "Autor",
+                    "duration": "Duración",
+                    "requestedBy": "Solicitado por",
+                    "upNext": "Siguiente"
+                },
+                "apiRateLimit": "Límite de solicitudes a la API de YouTube alcanzado"
             },
             "parsePlaylist": {
-
+                "ignoredTracks": "Se han omitido `{{ignoredCount}}` pistas por que no se podían reproducir o superaron la duración de `{{duration}}`",
+                "fullQueue": "La cola de reproducción está llena",
+                "addedPlaylistEmbed": {
+                    "authorTitle": "Playlist añadida a la cola",
+                    "author": "Autor",
+                    "tracks": "Pistas",
+                    "requestedBy": "Solicitado por"
+                },
+                "ignoredDuplicates": "Se han omitido `{{ignoredCount}}` pistas duplicadas",
+                "ignoredFull": "Se han omitido `{{ignoredCount}}` pistas por que no puedes añadir más",
+                "error": "ERROR"
             },
             "preChecks": {
-
+                "botNotConnected": "{{botUser}} no está conectado a ningún canal",
+                "notConnected": "Debes estar conectado a un canal de voz",
+                "notSameChannel": "Debes estar en el mismo canal de voz que {{botUser}}",
+                "inactive": "El reproductor está inactivo",
+                "alreadyConnected": "{{botUser}} ya está conectado a `{{channelName}}`",
+                "isAfk": "{{botUser}} no puede conectarse al canal de AFK",
+                "cantSpeak": "{{botUser}} no tiene permiso para hablar en `{{channelName}}`",
+                "forbiddenJoin": "{{botUser}} tiene prohibido conetarse a `{{channelName}}`",
+                "cantJoin": "{{botUser}} no tiene permiso para unirse a `{{channelName}}`",
+                "fullChannel": "El canal de voz `{{channelName}}` está lleno",
+                "error": "ERROR"
             },
             "testQueuePerms": {
-
+                "neededVotes": "Votos necesarios: `{{actualVotes}}` de `{{requiredVotes}}`",
+                "error": "ERROR"
             }
         },
         "functions": {
@@ -514,7 +567,7 @@
             "addXP": {
                 "levelUpEmbed": {
                     "author": "¡Subiste de nivel!",
-                    "description": "Enhorabuena {{member}}, has subido al nivel **{{memberLevel}}**.",
+                    "description": "Enhorabuena {{member}}, has subido al nivel **{{memberLevel}}**",
                     "rewards": "Recompensas obtenidas"
                 }
             },
@@ -612,7 +665,7 @@
                 "debuggingMsg": "El tiempo de respuesta del Websocket es anormalmente alto"
             },
             "polls": {
-                "votesPercentage": "{{votesCount} votos, el {{percentage}}%",
+                "votesPercentage": "{{votesCount}} votos, el {{percentage}}%",
                 "finishedEmbed": {
                     "author": "Encuesta finalizada",
                     "results": "Resultados"

@@ -4,6 +4,9 @@ exports.run = async (client, args, message, streamType, toStream) => {
 
 		//Herramienta para generar colores aleatorios
 		const randomColor = require('randomcolor');
+
+		//Almacena las traducciones
+		const locale = client.locale.utils.voice.fetchResource;
 		
 		//Comprueba si debe crear el objeto global de colas
 		if (!client.reproductionQueues[message.guild.id]) client.reproductionQueues[message.guild.id] = { boundedTextChannel: null, timeout: null, votes: {}, mode: false, tracks: [] };
@@ -38,14 +41,14 @@ exports.run = async (client, args, message, streamType, toStream) => {
 			//Comprueba si el miembro puede añadir más pistas a la cola
 			if (authorizedTracks <= 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
 				.setColor(client.config.colors.error)
-				.setDescription(`${client.customEmojis.redTick} No puedes añadir más pistas a la cola.`)]
+				.setDescription(`${client.customEmojis.redTick} ${locale.cantAddMore}.`)]
 			});
 		};
 	
 		//Comprueba si la cola de reproducción está llena
 		if (musicConfig.queueLimit !== 0 && reproductionQueue.tracks.length >= musicConfig.queueLimit) return message.channel.send({ embeds: [ new client.MessageEmbed()
 			.setColor(client.config.colors.error)
-			.setDescription(`${client.customEmojis.redTick} La cola de reproducción está llena.`)]
+			.setDescription(`${client.customEmojis.redTick} ${locale.fullQueue}.`)]
 		});
 
 		//Variable para almacenar el estado de la búsqueda
@@ -58,8 +61,8 @@ exports.run = async (client, args, message, streamType, toStream) => {
 			if (reproductionQueue.tracks.length > 1) await message.channel.send({ embeds: [ new client.MessageEmbed()
 				.setColor(randomColor())
 				.setThumbnail(trackItem.meta.thumbnail)
-				.setAuthor({ name: 'Añadido a la cola 🎶', iconURL: 'attachment://dj.png' })
-				.setDescription(`[${trackItem.meta.title}](${trackItem.meta.location})\n\n● **Autor:** \`${trackItem.meta.author}\`\n● **Duración:** \`${client.functions.msToHHMMSS(trackItem.meta.length)}\``)
+				.setAuthor({ name: `${locale.newItemEmbed.authorTitle} 🎶`, iconURL: 'attachment://dj.png' })
+				.setDescription(`[${trackItem.meta.title}](${trackItem.meta.location})\n\n● **${locale.newItemEmbed.author}:** \`${trackItem.meta.author}\`\n● **${locale.newItemEmbed.duration}:** \`${client.functions.msToHHMMSS(trackItem.meta.length)}\``)
 				.setFooter({ text: await client.functions.getMusicFooter(message.guild), iconURL: client.homeGuild.iconURL({dynamic: true}) })
 			], files: ['./resources/images/dj.png'] });
 		};
@@ -77,7 +80,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 			const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'file', message.member.id, {
 				location: `./media/audios/${toStream}.mp3`,
 				title: toStream,
-				author: 'Archivo local',
+				author: locale.newMp3Author,
 				length: getMP3Duration(buffer),
 				thumbnail: 'attachment://dj.png'
 			});
@@ -112,19 +115,18 @@ exports.run = async (client, args, message, streamType, toStream) => {
 						//Comprueba si se han obtenido resultados
 						if (!metadata) return message.channel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} No se ha encontrado ningún resultado que coincida con ${args.join(' ')}.`)]
+							.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.noResults, { searchInput: args.join(' ') })}.`)]
 						});
-		
 						//Comprueba si el resultado es un directo o un vídeo privado
-						if (metadata.live || metadata.private) return message.channel.send({ embeds: [ new client.MessageEmbed()
+						if (metadata.private) return message.channel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir directos o vídeo privados.`)]
+							.setDescription(`${client.customEmojis.redTick} ${locale.cantPlayPrivate}.`)]
 						});
 
 						//Comprueba si el resultado supera la duración máxima establecida
 						if (musicConfig.maxTrackDuration > 0 && (metadata.durationInSec * 1000 > musicConfig.maxTrackDuration || metadata.durationInSec * 1000 < 0)) return message.channel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir pistas de más de \`${client.functions.msToHHMMSS(musicConfig.maxTrackDuration)}\`.`)]
+							.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededLength, { duration: client.functions.msToHHMMSS(musicConfig.maxTrackDuration) })}.`)]
 						});
 		
 						//Crea el objeto de la cola
@@ -142,7 +144,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 					//Devuelve un error si no se ha proporcionado una URL válida
 					return message.channel.send({ embeds: [ new client.MessageEmbed()
 						.setColor(client.config.colors.error)
-						.setDescription(`${client.customEmojis.redTick} Por el momento, ${client.user} solo puede obtener pistas desde YouTube.`)]
+						.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.onlyFromYouTube, { botUser: client.user })}.`)]
 					});
 				};
 	
@@ -157,7 +159,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 					//Comprueba si se han obtenido resultados
 					if (!results || results.length === 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
 						.setColor(client.config.colors.error)
-						.setDescription(`${client.customEmojis.redTick} No se ha encontrado ningún resultado que encaje con \`${args.join(' ')}\`.`)]
+						.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.noResults, { searchInput: args.join(' ') })}.`)]
 					});
 	
 					//Si solo hay un resultado, no muestra menú
@@ -166,13 +168,13 @@ exports.run = async (client, args, message, streamType, toStream) => {
 						//Comprueba si el resultado es un vídeo privado
 						if (results[0].private) return message.channel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir directos o vídeo privados.`)]
+							.setDescription(`${client.customEmojis.redTick} ${locale.cantPlayPrivate}.`)]
 						});
 
 						//Comprueba si el resultado supera la duración máxima establecida
 						if (musicConfig.maxTrackDuration > 0 && (results[0].durationInSec * 1000 > musicConfig.maxTrackDuration || results[0].durationInSec * 1000 < 0)) return message.channel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} No se pueden reproducir pistas de más de ${client.functions.msToHHMMSS(musicConfig.maxTrackDuration)}.`)]
+							.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededLength, { duration: client.functions.msToHHMMSS(musicConfig.maxTrackDuration) })}.`)]
 						});
 	
 						//Crea el objeto de la cola
@@ -228,14 +230,14 @@ exports.run = async (client, args, message, streamType, toStream) => {
 						//Devuelve un error si no se encontraron resultados
 						if (Object.keys(asociatedPositions).length === 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} No se encontraron resultados válidos.`)]
+							.setDescription(`${client.customEmojis.redTick} ${locale.invalidResults}.`)]
 						});
 	
 						//Se espera a que el miembro elija una pista de la lista
 						await message.channel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(randomColor())
-							.setAuthor({ name: 'Elige una pista 🎶', iconURL: 'attachment://dj.png' })
-							.setFooter({ text: 'Escribe el número de la pista/playlist que deseas añadir a la cola.' })
+							.setAuthor({ name: `${locale.selectionEmbed.author} 🎶`, iconURL: 'attachment://dj.png' })
+							.setFooter({ text: `${locale.selectionEmbed.footer}.` })
 							.setDescription(formattedResults)
 						], files: ['./resources/images/dj.png'] }).then(async msg => {
 
@@ -272,7 +274,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 									//Envía un mensaje de error
 									return message.channel.send({ embeds: [ new client.MessageEmbed()
 										.setColor(client.config.colors.error)
-										.setDescription(`${client.customEmojis.redTick} Debes escoger una pista de la lista.`)]
+										.setDescription(`${client.customEmojis.redTick} ${locale.didntChoose}.`)]
 									});
 								};
 	
@@ -300,7 +302,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 									//Si es un tipo de resultado inesperado, lo maneja y lanza un error
 									return message.channel.send({ embeds: [ new client.MessageEmbed()
 										.setColor(client.config.colors.error)
-										.setDescription(`${client.customEmojis.redTick} No se puede reproducir este resultado.`)]
+										.setDescription(`${client.customEmojis.redTick} ${locale.cantPlay}.`)]
 									});
 								};
 							}).catch(() => {
@@ -314,11 +316,6 @@ exports.run = async (client, args, message, streamType, toStream) => {
 					};
 				});
 			};
-	
-		} else {
-
-			//Muestra un error en la consola
-			return console.error(`${new Date().toLocaleString()} 》ERROR: No se ha proporcionado un valor válido para el parámetro "streamType".`);
 		};
 
 		//Devuelve el estado de la búsqueda
@@ -329,7 +326,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 		//Notifica si el error se debe a uns restricción de edad por falta de cookies
 		if (error.message.includes('Sign in to confirm your age')) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} Por el momento, no puedo reproducir vídeos con restricción de edad.`)]
+            .setDescription(`${client.customEmojis.orangeTick} ${locale.ageRestricted}.`)]
         });
 
 		//Maneja el error

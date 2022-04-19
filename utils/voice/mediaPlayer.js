@@ -2,6 +2,9 @@ exports.run = async (client, message, connection) => {
 
     try {
 
+        //Almacena las traducciones
+        const locale = client.locale.utils.voice.mediaPlayer;
+
         //Función para reproducir
         async function mediaPlayer(connection) {
 
@@ -46,7 +49,7 @@ exports.run = async (client, message, connection) => {
                 else { //O abandona el canal y borra la cola
 
                     //Manda un mensaje de abandono
-                    message.channel.send({ content: '⏹ | Reproducción finalizada' });
+                    message.channel.send({ content: `⏹ | ${locale.finishedReproduction}` });
 
                     //Crea un contador para demorar la salida del canal y la destrucción de la cola
                     reproductionQueue.timeout = setTimeout(() => {
@@ -55,7 +58,7 @@ exports.run = async (client, message, connection) => {
                         if (connection.state.status !== 'Destroyed') connection.destroy();
 
                         //Confirma la acción
-                        message.channel.send({ content: '⏏ | He abandonado el canal' });
+                        message.channel.send({ content: `⏏ | ${locale.channelLeave}` });
 
                         //Borra la información de reproducción del server
                         delete client.reproductionQueues[message.guild.id];
@@ -68,10 +71,10 @@ exports.run = async (client, message, connection) => {
             player.on('error', error => {
 
                 //Envía el error por la consola
-                console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
+                console.error(`${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
 
                 //Envía un mensaje de error al canal vinculado
-                reproductionQueue.boundedTextChannel.send({ content: `${client.customEmojis.redTick} | Ocurrió un error. Se ha omitido esta pista.` });
+                reproductionQueue.boundedTextChannel.send({ content: `${client.customEmojis.redTick} | ${locale.errorAndSkip}.` });
             });
 
             //Vacía el timeout de desconexión por inactividad
@@ -113,7 +116,7 @@ exports.run = async (client, message, connection) => {
 
             //Calcula cual es el título de la siguiente pista, si es que hay
             if (reproductionQueue.tracks[1]) {
-                if (reproductionQueue.mode === 'shuffle') upNext = 'Aleatorio'; //Caso aleatorio
+                if (reproductionQueue.mode === 'shuffle') upNext = locale.random; //Caso aleatorio
                 else if (reproductionQueue.mode === 'loop') upNext = `[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})`; //Caso loop
                 else upNext = `[${reproductionQueue.tracks[1].meta.title}](${reproductionQueue.tracks[1].meta.location})`; //Caso normal / loopqueue
             };
@@ -125,10 +128,10 @@ exports.run = async (client, message, connection) => {
             if (!info.meta.seekTo) reproductionQueue.boundedTextChannel.send({ embeds: [new client.MessageEmbed()
                 .setColor(randomColor())
                 .setThumbnail(info.meta.thumbnail)
-                .setAuthor({name: 'Reproduciendo 🎶', iconURL: 'attachment://dj.png'})
-                .setDescription(`${info.meta.location.startsWith('http') ? `[${info.meta.title}](${info.meta.location})` : info.meta.title}\n\n● **Autor:** \`${info.meta.author}\`\n● **Duración:** \`${client.functions.msToHHMMSS(info.meta.length)}\``)
-                .addField('Solicitado por:', `<@${reproductionQueue.tracks[toPlay].requesterId}>`, true)
-                .addField('Siguiente:', upNext, true)
+                .setAuthor({name: `${locale.playingEmbed.authorTitle} 🎶`, iconURL: 'attachment://dj.png'})
+                .setDescription(`${info.meta.location.startsWith('http') ? `[${info.meta.title}](${info.meta.location})` : info.meta.title}\n\n● **${locale.playingEmbed.author}:** \`${info.meta.author}\`\n● **${locale.playingEmbed.duration}:** \`${client.functions.msToHHMMSS(info.meta.length)}\``)
+                .addField(`${locale.playingEmbed.requestedBy}:`, `<@${reproductionQueue.tracks[toPlay].requesterId}>`, true)
+                .addField(`${locale.playingEmbed.upNext}:`, upNext, true)
                 .setFooter({text: `${await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild)}`, iconURL: client.homeGuild.iconURL({dynamic: true})})
             ], files: ['./resources/images/dj.png'] });
         };
@@ -141,10 +144,10 @@ exports.run = async (client, message, connection) => {
         //Se comprueba si el error es provocado por una limitación de API
         if (error.toLocaleString().includes('416') || error.toLocaleString().includes('429')) reproductionQueue.boundedTextChannel.send({ embeds: [new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Límite de solicitudes a la API de YouTube alcanzado.`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.apiRateLimit}.`)
         ]});
 
         //Devuelve un error por consola
-        console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
+        console.error(`${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
     };
 };

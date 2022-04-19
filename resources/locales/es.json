@@ -88,13 +88,30 @@
     },
     "events": {
         "channelDelete": {
-
+            "missingDebuggingChannel": "AVISO: El canal de depuración ya no existe o no se puede tener acceso.\n Se ha borrado de la configuración y se ha descargado de la memoria",
+            "missingLoggingChannel": "AVISO: El canal de registro ya no existe o no se puede tener acceso.\n Se ha borrado de la configuración y se ha descargado de la memoria"
         },
         "error": {
-
+            "econnresetError": "ERROR: La conexión fue cerrada inesperadamente",
+            "otherError": "ERROR"
         },
         "guildBanAdd": {
-            
+            "botLoggingEmbed": {
+                "title": "Registro - [BOTS]",
+                "description": "El **BOT** {{userTag}} fue baneado del servidor"
+            },
+            "loggingEmbed": {
+                "author": "{{userTag}} ha sido BANEADO",
+                "memberId": "ID del miembro",
+                "moderator": "Moderador",
+                "unknownModerator": "Desconocido",
+                "reason": "Razón",
+                "undefinedReason": "Indefinida",
+                "expiration": "Vencimiento",
+                "noExpiration": "No vence",
+                "deletedDays": "Días de mensajes borrados",
+                "noDeletedDays": "Ninguno"
+            }
         },
         "guildCreate": {
             "newGuild": "{{botUsername}} se ha unido a la guild \"{{guildName}}\"",
@@ -102,16 +119,35 @@
             "error": "ERROR:"
         },
         "guildDelete": {
-            
+            "abandonedGuild": "AVISO: {{botUsername}} ha abandonado la guild \"{{guildName}}\"",
+            "shouldReboot": "AVISO: Para continuar, debes volver a iniciar al bot",
+            "error": "ERROR"
         },
         "guildMemberAdd": {
-            
+            "botLoggingEmbed": {
+                "title": "Registro - [BOTS]",
+                "description": "El **BOT** {{memberTag}} fue añadido al servidor"
+            }
         },
         "guildMemberRemove": {
-            
-        },
-        "guildMemberUpdate": {
-            
+            "botLoggingEmbed": {
+                "title": "Registro - [BOTS]",
+                "description": "El **BOT** {{memberTag}} fue expulsado del servidor"
+            },
+            "loggingEmbed": {
+                "author": "{{memberTag}} ha sido EXPULSADO",
+                "memberId": "ID del miembro",
+                "moderator": "Moderador",
+                "unknownModerator": "Desconocido",
+                "reason": "Razón",
+                "undefinedReason": "Indefinida"
+            },
+            "welcomeEmbed": {
+                "author": "Un miembro abandonó",
+                "description": "{{memberTag}} abandonó el servidor",
+                "memberId": "ID del miembro",
+                "registerDate": "Fecha de registro"
+            }
         },
         "messageCreate": {
             "filteredDm": "vía DM",
@@ -125,13 +161,13 @@
             "error": "ERROR"
         },
         "shardError": {
-            
+            "errorMessage": "ERROR: Una conexión al websocket encontró un error"
         },
         "voiceStateUpdate": {
             
         },
         "warn": {
-            
+            "warnMessage": "AVISO"
         }
     },
     "commands": {

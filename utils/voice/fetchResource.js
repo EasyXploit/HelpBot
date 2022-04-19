@@ -326,7 +326,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 		//Notifica si el error se debe a uns restricción de edad por falta de cookies
 		if (error.message.includes('Sign in to confirm your age')) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} ${locale.ageRestricted}.`)]
+            .setDescription(`${client.customEmojis.orangeTick} ${client.locale.utils.voice.fetchResource.ageRestricted}.`)]
         });
 
 		//Maneja el error

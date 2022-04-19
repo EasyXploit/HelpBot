@@ -275,6 +275,6 @@ exports.run = async (client, message, checks) => {
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
+        console.error(`${new Date().toLocaleString()} 》${client.locale.utils.voice.preChecks.error}:`, error.stack);
     };
 };

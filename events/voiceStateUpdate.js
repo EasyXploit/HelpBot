@@ -27,7 +27,7 @@ exports.run = async (oldState, newState, client, locale) => {
                     if (connection.state.status !== 'Destroyed') connection.destroy();
 
                     //Confirma la acción
-                    reproductionQueue.boundedTextChannel.send({ content: '⏏ | He abandonado el canal y borrado la cola' });
+                    reproductionQueue.boundedTextChannel.send({ content: `⏏ | ${locale.leftWhenIdle}` });
 
                     //Borra la información de reproducción de la guild
                     delete client.reproductionQueues[connection.joinConfig.guildId];

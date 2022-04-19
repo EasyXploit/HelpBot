@@ -11,8 +11,8 @@ exports.run = async (member, client, locale) => {
             //Envía un mensaje al canal de registro
             return client.functions.loggingManager('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
-                .setTitle('📑 Registro - [BOTS]')
-                .setDescription(`El **BOT** @${member.user.tag} fue añadido al servidor.`)
+                .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
+                .setDescription(`${client.functions.localeParser(locale.botLoggingEmbed.description, { memberTag: member.user.tag })}.`)
             );
         };
 

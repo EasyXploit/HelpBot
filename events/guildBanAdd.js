@@ -51,20 +51,20 @@ exports.run = async (banData, client, locale) => {
                 //Envía un registro al canal de registros
                 return await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
-                    .setTitle('📑 Registro - [BOTS]')
-                    .setDescription(`El **BOT** <@${banData.user.tag}> fue baneado del servidor.`)
+                    .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
+                    .setDescription(client.functions.localeParser(locale.botLoggingEmbed.description, { userTag: banData.user.tag }))
                 ]});
             };
 
             //Envía un mensaje al canal de registros
             await client.functions.loggingManager('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setAuthor({ name: `${banData.user.tag} ha sido BANEADO`, iconURL: banData.user.displayAvatarURL({dynamic: true}) })
-                .addField('ID del miembro', banData.user.id, true)
-                .addField('Moderador', executor ? executor.tag : 'Desconocido', true)
-                .addField('Razón', reason ? reason : 'Indefinida', true)
-                .addField('Vencimiento', expiration ? `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>` : 'No vence', true)
-                .addField('Días de mensajes borrados', deletedDays || 'Ninguno', true)
+                .setAuthor({ name: client.functions.localeParser(locale.loggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
+                .addField(locale.loggingEmbed.memberId, banData.user.id, true)
+                .addField(locale.loggingEmbed.moderator, executor ? executor.tag : locale.loggingEmbed.unknownModerator, true)
+                .addField(locale.loggingEmbed.reason, reason ? reason : locale.loggingEmbed.undefinedReason, true)
+                .addField(locale.loggingEmbed.expiration, expiration ? `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>` : locale.loggingEmbed.noExpiration, true)
+                .addField(locale.loggingEmbed.deletedDays, deletedDays || locale.loggingEmbed.noDeletedDays, true)
             );
         };
 

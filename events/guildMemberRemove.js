@@ -23,8 +23,8 @@ exports.run = async (member, client, locale) => {
                 //Envía un registro al canal de registros
                 return await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
-                    .setTitle('📑 Registro - [BOTS]')
-                    .setDescription(`El **BOT** @${member.user.tag} fue expulsado del servidor.`)
+                    .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
+                    .setDescription(client.functions.localeParser(locale.botLoggingEmbed.description, { memberTag: member.user.tag }))
                 ]});
             };
 
@@ -47,10 +47,10 @@ exports.run = async (member, client, locale) => {
             //Envía un registro al canal de registros
             await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setAuthor({ name: `${member.user.tag} ha sido EXPULSADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                .addField('ID del miembro', member.id, true)
-                .addField('Moderador', executor ? executor.tag : 'Desconocido', true)
-                .addField('Razón', reason ? reason : 'Indefinida', true)
+                .setAuthor({ name: client.functions.localeParser(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                .addField(locale.loggingEmbed.memberId, member.id, true)
+                .addField(locale.loggingEmbed.moderator, executor ? executor.tag : locale.loggingEmbed.unknownModerator, true)
+                .addField(locale.loggingEmbed.reason, reason ? reason : locale.loggingEmbed.undefinedReason, true)
             ]});
 
         } else { //Si no se encontró una expulsión
@@ -71,10 +71,10 @@ exports.run = async (member, client, locale) => {
                 await client.channels.cache.get(client.config.main.joinsAndLeavesChannel).send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
-                    .setAuthor({ name: 'Un miembro abandonó', iconURL: 'attachment://out.png' })
-                    .setDescription(`${member.user.tag} abandonó el servidor`)
-                    .addField('🆔 ID del miembro', member.user.id, true)     
-                    .addField('📝 Fecha de registro', `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
+                    .setAuthor({ name: locale.welcomeEmbed.author, iconURL: 'attachment://out.png' })
+                    .setDescription(client.functions.localeParser(locale.welcomeEmbed.description, { memberTag: member.user.tag }))
+                    .addField(`🆔 ${locale.welcomeEmbed.memberId}`, member.user.id, true)     
+                    .addField(`📝 ${locale.welcomeEmbed.registerDate}`, `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
                 ], files: ['./resources/images/out.png'] });
             };
         };

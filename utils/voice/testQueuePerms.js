@@ -73,6 +73,6 @@ exports.run = async (client, message, command, index) => {
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
+        console.error(`${new Date().toLocaleString()} 》${client.locale.utils.voice.testQueuePerms.error}:`, error.stack);
     };
 };

@@ -3,7 +3,7 @@ exports.run = async (guild, client, locale) => {
     try {
 
         //Notifica el abandono de la guild
-        console.warn(`${new Date().toLocaleString()} 》AVISO: ${client.user.username} ha abandonado la guild "${guild.name}".`);
+        console.warn(`${new Date().toLocaleString()} 》${client.functions.localeParser(locale.abandonedGuild, { botUsername: client.user.username, guildName: guild.name })}.`);
 
         //Carga el listado de guilds a las que el bot está unido
         const cachedGuilds = client.guilds.cache;
@@ -12,7 +12,7 @@ exports.run = async (guild, client, locale) => {
         if (cachedGuilds.size === 0) {
 
             //Notifica que se debe volver a iniciar al bot
-            console.warn(`${new Date().toLocaleString()} 》AVISO: Para continuar, debes volver a iniciar al bot.`);
+            console.warn(`${new Date().toLocaleString()} 》${locale.shouldReboot}.`);
 
             //Aborta el proceso de manera limpia
             process.exit();
@@ -21,6 +21,6 @@ exports.run = async (guild, client, locale) => {
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》ERROR:`, error.stack);
+        console.error(`${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
     };
 };

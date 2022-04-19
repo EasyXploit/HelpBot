@@ -148,6 +148,6 @@ exports.run = async (client, message, connection) => {
         ]});
 
         //Devuelve un error por consola
-        console.error(`${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
+        console.error(`${new Date().toLocaleString()} 》${client.locale.utils.voice.mediaPlayer.error}:`, error.stack);
     };
 };

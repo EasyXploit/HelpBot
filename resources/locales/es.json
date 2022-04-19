@@ -582,7 +582,54 @@
             "functionLoaded": "Carga de funciones globales completada"
         },
         "intervals": {
-
+            "mutes": {
+                "loggingEmbed": {
+                    "author": "{{memberTag}} ha sido DES-SILENCIADO",
+                    "member": "Miembro",
+                    "moderator": "Moderador",
+                    "reason": "Razón"
+                },
+                "privateEmbed": {
+                    "author": "[DES-SILENCIADO]",
+                    "description": "{{memberTag}}, has sido des-silenciado en {{guildName}}",
+                    "moderator": "Moderador",
+                    "reason": "Razón"
+                },
+                "reason": "Venció la amonestación"
+            },
+            "bans": {
+                "loggingEmbed": {
+                    "author": "{{userTag}} ha sido DES-BANEADO",
+                    "user": "Usuario",
+                    "moderator": "Moderador",
+                    "reason": "Razón"
+                },
+                "reason": "Venció la amonestación",
+                "error": "ERROR"
+            },
+            "ping": {
+                "consoleMsg": "AVISO: Tiempo de respuesta del Websocket elevado",
+                "debuggingMsg": "El tiempo de respuesta del Websocket es anormalmente alto"
+            },
+            "polls": {
+                "votesPercentage": "{{votesCount} votos, el {{percentage}}%",
+                "finishedEmbed": {
+                    "author": "Encuesta finalizada",
+                    "results": "Resultados"
+                },
+                "loggingEmbed": {
+                    "title": "Registro - [ENCUESTAS]",
+                    "description": "La encuesta \"__{{poll}}__\" ha finalizado en el canal {{channel}}"
+                },
+                "progressEmbed": {
+                    "author": "Encuesta disponible",
+                    "remaining": "Restante: {{remainingDays}}d {{remainingHours}}h {{remainingMinutes}}m"
+                }
+            },
+            "presence": {
+                "name": "{{memberCount}} miembros"
+            },
+            "configLoaded": "Carga de intervalos completada"
         },
         "splashLogo": {
             "description": "I'm a bot designed for automated community moderation, music reproduction, leveling, and much more!",

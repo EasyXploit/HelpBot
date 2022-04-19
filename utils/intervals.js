@@ -1,5 +1,8 @@
 exports.run = (client) => {
 
+    //Traducciones de los intervalos
+    const locale = client.locale.utils.intervals;
+
     //SILENCIADOS
     //Comprobación de miembros silenciados temporalmente
     setInterval(async () => {
@@ -37,19 +40,19 @@ exports.run = (client) => {
                 //Ejecuta el manejador de registro
                 await client.functions.loggingManager('embed', new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
-                    .setAuthor({ name: `${member.user.tag} ha sido DES-SILENCIADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                    .addField('Miembro', member ? member.user.tag : `\`${idKey}\``, true)
-                    .addField('Moderador', `${client.user}`, true)
-                    .addField('Razón', 'Venció la amonestación', true)
+                    .setAuthor({ name: client.functions.localeParser(locale.mutes.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                    .addField(locale.mutes.loggingEmbed.member, member ? member.user.tag : `\`${idKey}\``, true)
+                    .addField(locale.mutes.loggingEmbed.moderator, `${client.user}`, true)
+                    .addField(locale.mutes.loggingEmbed.reason, locale.mutes.reason, true)
                 );
                 
                 //Envía una confirmación al miembro
                 if (member) await member.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
-                    .setAuthor({ name: '[DES-SILENCIADO]', iconURL: client.homeGuild.iconURL({dynamic: true}) })
-                    .setDescription(`${member ? member.user.tag : `\`${idKey}\``}, has sido des-silenciado en ${client.homeGuild.name}`)
-                    .addField('Moderador', `${client.user}`, true)
-                    .addField('Razón', 'Venció la amonestación', true)
+                    .setAuthor({ name: locale.mutes.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
+                    .setDescription(client.functions.localeParser(locale.mutes.privateEmbed.description, { memberTag: member ? member.user.tag : `\`${idKey}\``, guildName: client.homeGuild.name }))
+                    .addField(locale.mutes.privateEmbed.moderator, `${client.user}`, true)
+                    .addField(locale.mutes.privateEmbed.reason, locale.mutes.reason, true)
                 ]});
             });
         };
@@ -88,10 +91,10 @@ exports.run = (client) => {
                     //Ejecuta el manejador de registro
                     await client.functions.loggingManager('embed', new client.MessageEmbed()
                         .setColor(client.config.colors.correct)
-                        .setAuthor({ name: `${user.tag} ha sido DES-BANEADO`, iconURL: user.displayAvatarURL({dynamic: true}) })
-                        .addField('Usuario', user.tag, true)
-                        .addField('Moderador', `${client.user}`, true)
-                        .addField('Razón', 'Venció la amonestación', true)
+                        .setAuthor({ name: client.functions.localeParser(locale.bans.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
+                        .addField(locale.loggingEmbed.user, user.tag, true)
+                        .addField(locale.loggingEmbed.moderator, `${client.user}`, true)
+                        .addField(locale.loggingEmbed.reason, locale.bans.reason, true)
                     );
 
                 } catch (error) {
@@ -100,7 +103,7 @@ exports.run = (client) => {
                     if (error.toString().includes('Unknown Ban')) return;
 
                     //Envía un mensaje de error a la consola
-                    console.error(`${new Date().toLocaleString()} 》ERROR: `, error.stack);
+                    console.error(`${new Date().toLocaleString()} 》${locale.bans.error}: `, error.stack);
                 };
             });
         };
@@ -117,13 +120,13 @@ exports.run = (client) => {
         if (actualPing > client.config.main.pingTreshold) {
 
             //Envía una advertencia a la consola
-            console.warn(`${new Date().toLocaleString()} 》AVISO: Tiempo de respuesta del Websocket elevado: ${actualPing} ms\n`);
+            console.warn(`${new Date().toLocaleString()} 》${locale.ping.consoleMsg}: ${actualPing} ms\n`);
 
             //Ejecuta el manejador de depuración
             await client.functions.debuggingManager('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
                 .setFooter({ text: client.user.username, iconURL: client.user.avatarURL() })
-                .setDescription(`${client.customEmojis.orangeTick} El tiempo de respuesta del Websocket es anormalmente alto: **${actualPing}** ms`)
+                .setDescription(`${client.customEmojis.orangeTick} ${locale.ping.debuggingMsg}: **${actualPing}** ms`)
             );
         };
     }, 60000);
@@ -202,21 +205,21 @@ exports.run = (client) => {
                     if(isNaN(roundedPercentage)) roundedPercentage = 0;
 
                     //Añade la cadena del resultado al array de resultados
-                    results.push(`🞄 ${votes[index].emoji} ${count} votos, el ${roundedPercentage}%`);
+                    results.push(`🞄 ${votes[index].emoji} ${client.functions.localeParser(locale.polls.votesPercentage, { votesCount: count, percentage: roundedPercentage })}`);
                 };
 
                 //Envía los resultados al canal de la encuesta
                 await poll.channel.send({ embeds: [ new client.MessageEmbed()
-                    .setAuthor({ name: 'Encuesta finalizada', iconURL: 'attachment://endFlag.png' })
+                    .setAuthor({ name: locale.polls.finishedEmbed.author, iconURL: 'attachment://endFlag.png' })
                     .setDescription(`**${storedPoll.title}**\n\n${storedPoll.options}`)
-                    .addField('Resultados', results.join(' '))
+                    .addField(locale.polls.finishedEmbed.results, results.join(' '))
                 ], files: ['./resources/images/endFlag.png']}).then(async poll => {
 
                     //Envía una notificación al canal de registro
                     await client.functions.loggingManager('embed', new client.MessageEmbed()
                         .setColor(client.config.colors.logging)
-                        .setTitle('📑 Registro - [ENCUESTAS]')
-                        .setDescription(`La encuesta "__[${storedPoll.title}](${poll.url})__" ha finalizado en el canal ${channel}.`)
+                        .setTitle(`📑 ${locale.polls.loggingEmbed.title}`)
+                        .setDescription(`${client.functions.localeParser(locale.polls.loggingEmbed.description, { poll: `[${storedPoll.title}](${poll.url})`, channel: channel })}.`)
                     );
                 });
                 
@@ -247,12 +250,12 @@ exports.run = (client) => {
                 const oldRemainingTime = poll.footer;
 
                 //Genera el string del nuevo footer
-                const newRemainingTime = `ID: ${idKey} - Restante: ${remainingDays}d ${remainingHours}h ${remainingMinutes}m `;
+                const newRemainingTime = `ID: ${idKey} - ${client.functions.localeParser(locale.polls.progressEmbed.remaining, { remainingDays: remainingDays, remainingHours: remainingHours, remainingMinutes: remainingMinutes })}`;
 
                 //Si el string de tiempo debería cambiar, edita el mensaje de la encuesta
                 if (oldRemainingTime !== newRemainingTime) await poll.edit({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.polls)
-                    .setAuthor({ name: 'Encuesta disponible', iconURL: 'attachment://poll.png' })
+                    .setAuthor({ name: locale.polls.progressEmbed.author, iconURL: 'attachment://poll.png' })
                     .setDescription(`**${storedPoll.title}**\n\n${storedPoll.options}`)
                     .setFooter({ text: newRemainingTime })
                 ], files: ['./resources/images/poll.png']});
@@ -290,7 +293,7 @@ exports.run = (client) => {
         if (!client.config.presence.membersCount) return;
 
         //Genera el nuevo string para la actividad
-        const name = `${await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size)} miembros | ${client.config.presence.name}`;
+        const name = `${client.functions.localeParser(locale.presence.name, { memberCount: await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}`;
 
         //Actualiza la presencia del bot
         await client.user.setPresence({
@@ -302,5 +305,5 @@ exports.run = (client) => {
         })
     }, 60000);
 
-    console.log(' - [OK] Carga de intervalos.');
+    console.log(` - [OK] ${locale.configLoaded}.`);
 };

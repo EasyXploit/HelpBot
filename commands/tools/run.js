@@ -13,7 +13,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 //Devuelve un error si no se ha proporcionado un miembro
                 if (!args[1]) return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro`)
+                    .setDescription(`${client.customEmojis.redTick} ${locale.welcome.memberNotProvided}.`)
                 ]});
 
                 //Busca el miembro en la guild
@@ -22,7 +22,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 //Devuelve un error si no se ha proporcionado un miembro válido
                 if (!targetWelcomeMember) return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`)
+                    .setDescription(`${client.customEmojis.redTick} ${locale.welcome.invalidMember}.`)
                 ]});
                 
                 //Emite el evento
@@ -31,7 +31,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 //Envía un mensaje de confirmación
                 await message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.secondaryCorrect)
-                    .setDescription(`${client.customEmojis.greenTick} ¡Listo!`)
+                    .setDescription(`${client.customEmojis.greenTick} ${locale.welcome.done}`)
                 ]}).then(msg => {setTimeout(() => msg.delete(), 2000)});
 
                 //Para la ejecución
@@ -42,7 +42,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 //Devuelve un error si no se ha proporcionado un miembro
                 if (!args[1]) return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro`)
+                    .setDescription(`${client.customEmojis.redTick} ${locale.goodbye.memberNotProvided}.`)
                 ]});
 
                 //Busca el miembro en la guild
@@ -51,7 +51,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 //Devuelve un error si no se ha proporcionado un miembro válido
                 if (!targetGoodybeMember) return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`)
+                    .setDescription(`${client.customEmojis.redTick} ${locale.goodbye.invalidMember}.`)
                 ]});
                 
                 //Emite el evento
@@ -60,7 +60,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 //Envía un mensaje de confirmación
                 await message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.secondaryCorrect)
-                    .setDescription(`${client.customEmojis.greenTick} ¡Listo!`)
+                    .setDescription(`${client.customEmojis.greenTick} ${locale.goodbye.done}`)
                 ]}).then(msg => {setTimeout(() => msg.delete(), 2000)});
 
                 //Para la ejecución
@@ -69,13 +69,13 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             case 'assortStats': //Para encuadrar stats
 
                 //Envía una confirmación de inicio a la consola
-                console.log(`${new Date().toLocaleString()} 》Comenzando operación de cuadre de stats ...\n\n`);
+                console.log(`${new Date().toLocaleString()} 》${locale.assortStats.startingLog} ...\n\n`);
 
                 //Envía una confirmación de inicio al canal
                 await message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.information)
-                    .setTitle(`${client.customEmojis.grayTick} Cuadrando stats`)
-                    .setDescription('Comenzando operación de cuadre de la tabla de clasificación.\nRevisa la consola para evaluar el progreso del comando.')
+                    .setTitle(`${client.customEmojis.grayTick} ${locale.assortStats.startingEmbed.title}`)
+                    .setDescription(locale.assortStats.startingEmbed.description)
                 ]});
 
                 //Almacena los IDs de cada miembro de las stats
@@ -100,19 +100,19 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                     if (member && memberStats.level > 0) {
 
                         //Advierte por consola de que se omitirá al miembro en el caso de que su XP total sea menor o igual al umbral de su nivel
-                        if (memberStats.totalXP <= (5 * client.config.xp.dificultyModifier) * Math.pow(memberStats.level, 3) + 50 * memberStats.level + 100) console.log(`Miembro ${member.displayName} omitido\n- - - - - -`);
+                        if (memberStats.totalXP <= (5 * client.config.xp.dificultyModifier) * Math.pow(memberStats.level, 3) + 50 * memberStats.level + 100) console.log(`${client.functions.localeParser(locale.assortStats.memberOmitted, { member: memberDisplayName.displayName })}\n- - - - - -`);
 
                         //Mientras que el XP del miembro sea superior o igual al umbral de su nivel
                         while (memberStats.totalXP >= (5 * client.config.xp.dificultyModifier) * Math.pow(memberStats.level, 3) + 50 * memberStats.level + 100) {
 
                             //Añade al miembro la cantidad de XP generada al cumplirse un intervalo de voz, einforma por consola
-                            await client.functions.addXP(member, 'voice').then(console.log(`Miembro ${member.displayName} actualizado\n- - - - - -`));
+                            await client.functions.addXP(member, 'voice').then(console.log(`${client.functions.localeParser(locale.assortStats.memberUpdated, { member: memberDisplayName.displayName })}\n- - - - - -`));
                         };
 
                     } else {
 
                         //Advierte por consola, de que el miembro se ha omitido
-                        console.log(`Usuario ${IDs[index]} omitido\n- - - - - -`);
+                        console.log(`${client.functions.localeParser(locale.assortStats.userOmitted, { userId: IDs[index] })}\n- - - - - -`);IDs[index]
                     };
                     
                     //Incrementa el contador
@@ -125,13 +125,13 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                         clearInterval(interval);
 
                         //Envía una confirmación de finalización a la consola
-                        console.log(`\n\n${new Date().toLocaleString()} 》Operación finalizada`);
+                        console.log(`\n\n${new Date().toLocaleString()} 》${locale.assortStats.finishedLog}`);
 
                         //Envía una confirmación de finalización al canal
                         await message.channel.send({ embeds: [ new client.MessageEmbed()
                             .setColor(client.config.colors.secondaryCorrect)
-                            .setTitle(`${client.customEmojis.greenTick} Stats encuadradas`)
-                            .setDescription('La operación de encuadre de estadísticas ha finalizado.\nPor favor, realice una revisión manual para confirmar su efectividad.')
+                            .setTitle(`${client.customEmojis.greenTick} ${locale.assortStats.finishedEmbed.title}`)
+                            .setDescription(locale.assortStats.finishedEmbed.description)
                         ]});
                     };
                 }, 1000);
@@ -144,7 +144,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 //Envía un mensaje de error
                 await message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} No has especificado una plantilla válida`)
+                    .setDescription(`${client.customEmojis.redTick} ${locale.invalidCommand}.`)
                 ]});
 
                 //Para la ejecución

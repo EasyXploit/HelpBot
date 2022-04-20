@@ -11,7 +11,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Si el rol no existe, devuelve un error
         if (!role) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} El rol **${args[0]}** no existe`)
+            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.roleNotFound, { role: args[0] })}.`)
         ]});
 
         //Serializa los permisos del rol
@@ -31,17 +31,17 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Envía un embed con la información del rol
         await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(role.hexColor)
-            .setTitle('🔖 Información de rol')
-            .setDescription(`Mostrando información acerca del rol ${role}`)
-            .addField('🏷 Nombre del rol', role.name, true)
-            .addField('🆔 ID del rol', role.id, true)
-            .addField('👥 Miembros con el rol', role.members.size.toString(), true)
-            .addField('🗣 Mencionable', role.mentionable ? 'Si' : 'No', true)
-            .addField('👁️‍ Se muestra', role.hoist ? 'Visible' : 'Oculto', true)
-            .addField('🔰 Color', role.hexColor, true)
-            .addField('📝 Fecha de creación', `<t:${Math.round(role.createdTimestamp / 1000)}>`, true)
-            .addField('🤖 Integración', role.managed ? 'Si' : 'No', true)
-            .addField('👮 Permisos específicos', `\`\`\`${translatedPermissions.join(', ')}\`\`\``)
+            .setTitle(`🔖 ${locale.resultEmbed.title}`)
+            .setDescription(client.functions.localeParser(locale.resultEmbed.description, { role: role }))
+            .addField(`🏷 ${locale.resultEmbed.roleName}`, role.name, true)
+            .addField(`🆔 ${locale.resultEmbed.roleId}`, role.id, true)
+            .addField(`👥 ${locale.resultEmbed.roleMembers}`, role.members.size.toString(), true)
+            .addField(`🗣 ${locale.resultEmbed.mentionable}`, role.mentionable ? locale.resultEmbed.isMentionable : locale.resultEmbed.isntMntionable, true)
+            .addField(`👁️‍ ${locale.resultEmbed.hoisted}`, role.hoist ? locale.resultEmbed.isHoisted : locale.resultEmbed.isntHoisted, true)
+            .addField(`🎨 ${locale.resultEmbed.color}`, role.hexColor, true)
+            .addField(`📝 ${locale.resultEmbed.creationDate}`, `<t:${Math.round(role.createdTimestamp / 1000)}>`, true)
+            .addField(`🤖 ${locale.resultEmbed.integration}`, role.managed ? locale.resultEmbed.isIntegration : locale.resultEmbed.isntIntegration, true)
+            .addField(`👮 ${locale.resultEmbed.permissions}`, `\`\`\`${translatedPermissions.join(', ')}\`\`\``)
         ]});
 
     } catch (error) {

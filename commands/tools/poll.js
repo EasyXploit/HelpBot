@@ -14,7 +14,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Si la encuesta no existe, devuelve un error
             if (!pollData) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} La encuesta con ID ${args[1]} no existe`)
+                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.unknownPoll, { id: args[1] })}.`)
             ]});
 
             //Busca y almacena el canal de la encuesta
@@ -32,7 +32,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 //Notifica del error al miembro
                 return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.secondaryError)
-                    .setDescription(`${client.customEmojis.redTick} La encuesta con ID ${args[1]} ya no existe, por lo que se ha eliminado de la base de datos`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.deletedPoll, { id: args[1] })}.`)
                 ]});
             };
 
@@ -55,7 +55,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 //Si no se permitió la ejecución, manda un mensaje de error
                 if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${message.author}, solo puedes finalizar tus propias encuestas`)
+                    .setDescription(`${client.customEmojis.redTick} ${locale.onlyYours}.`)
                 ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
             };
 
@@ -71,8 +71,8 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 //Envía una confirmación al miembro
                 return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.secondaryCorrect)
-                    .setTitle(`${client.customEmojis.greenTick} Operación completada`)
-                    .setDescription(`La encuesta "__[${pollData.title}](${pollMessage.url})__" finalizará en breve en el canal ${pollChannel}.`)
+                    .setTitle(`${client.customEmojis.greenTick} ${locale.endedPollEmbed.title}`)
+                    .setDescription(`${client.functions.localeParser(locale.endedPollEmbed.description, { poll: `[${pollData.title}](${pollMessage.url})`, pollChannel: pollChannel })}.`)
                 ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
             });
 
@@ -107,8 +107,8 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Envía el assistantEmbed del título
         message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.primary)
-            .setTitle('📊 Título')
-            .setDescription('Proporciona un título para la encuesta.')
+            .setTitle(`📊 ${locale.titleEmbed.title}`)
+            .setDescription(locale.titleEmbed.description)
         ]}).then(async assistantEmbed => {
 
             //Espera un mensaje del miembro
@@ -120,8 +120,8 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 //Edita el asistente para preguntar por la duración
                 assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.primary)
-                    .setTitle('⏱ Duración')
-                    .setDescription('Proporciona una duración. Por ejemplo: `1d 2h 3m 4s`.\nIntroduce `-` para que no tenga fin.')
+                    .setTitle(`⏱ ${locale.durationEmbed.title}`)
+                    .setDescription(locale.durationEmbed.description)
                 ]});
 
                 //Espera un mensaje del miembro
@@ -148,7 +148,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                             //Devuelve un error
                             return message.channel.send({ embeds: [ new client.MessageEmbed()
                                 .setColor(client.config.colors.secondaryError)
-                                .setDescription(`${client.customEmojis.redTick} Debes proporcionar una unidad de medida de tiempo. Por ejemplo: \`5d 10h 2m\`.`)
+                                .setDescription(`${client.customEmojis.redTick} ${locale.invalidDuration}.`)
                             ]});
                         };
 
@@ -157,8 +157,8 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                     //Edita el asistente para preguntar por un campo
                     assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
                         .setColor(client.config.colors.primary)
-                        .setTitle(':one: Campos')
-                        .setDescription('Proporciona un nuevo campo (máximo 10).')
+                        .setTitle(`:one: ${locale.firstFieldEmbed.title}`)
+                        .setDescription(locale.firstFieldEmbed.description)
                     ]});
 
                     //Almacena los campos introducidos
@@ -182,10 +182,12 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                             //Edita el asistente para preguntar por otro campo
                             assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
                                 .setColor(client.config.colors.primary)
-                                .setTitle(`${emojiOptions[index + 1]} Campos`)
-                                .setDescription(`Proporciona un nuevo campo (quedan **${10 - index - 1}**).${ index > 0 ? '\nEscribe \`end\` para finalizar el asistente.' : ''}`)
+                                .setTitle(`${emojiOptions[index + 1]} ${locale.newFieldEmbed.title}`)
+                                .setDescription(`${client.functions.localeParser(locale.newFieldEmbed.description, { remaining: 10 - index - 1 })}${ index > 0 ? `.\n${locale.newFieldEmbed.endAssistant}.` : ''}`)
                             ]});
                         });
+
+                        
 
                         //Si no se ha proporcionado un campo, para el bucle
                         if (!options[index]) break;
@@ -231,9 +233,9 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                     //Envía la encuesta generada al canal de invocación
                     message.channel.send({ embeds: [ new client.MessageEmbed()
                         .setColor(client.config.colors.polls)
-                        .setAuthor({ name: 'Encuesta disponible', iconURL: 'attachment://poll.png' })
+                        .setAuthor({ name: locale.pollEmbed.author, iconURL: 'attachment://poll.png' })
                         .setDescription(`**${title}**\n\n${formattedOptions}`)
-                        .setFooter({ text: `ID: ${pollId} - Duración: ${remainingTime}` })
+                        .setFooter({ text: `ID: ${pollId} - ${locale.pollEmbed.duration}: ${remainingTime}` })
                     ], files: ['./resources/images/poll.png'] }).then(async pollEmbed => {
 
                         //Borra el embed del asistente
@@ -279,10 +281,10 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                         //Envía un mensaje al canal de registros
                         await client.functions.loggingManager('embed', new client.MessageEmbed()
                             .setColor(client.config.colors.logging)
-                            .setAuthor({ name: `${message.member.user.tag} ha iniciado una ENCUESTA`, iconURL: message.member.user.displayAvatarURL({dynamic: true}) })
-                            .addField('Título', `__[${title}](${pollEmbed.url})__`, true)
-                            .addField('Canal', `${message.channel}`, true)
-                            .addField('Vencimiento', duration !== 0 ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : 'Indefinida', true)
+                            .setAuthor({ name: client.functions.localeParser(locale.loggingEmbed.author, { memberTag: message.member.user.tag }), iconURL: message.member.user.displayAvatarURL({dynamic: true}) })
+                            .addField(locale.loggingEmbed.title, `__[${title}](${pollEmbed.url})__`, true)
+                            .addField(locale.loggingEmbed.channel, `${message.channel}`, true)
+                            .addField(locale.loggingEmbed.expiration, duration !== 0 ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : locale.loggingEmbed.noExpiration, true)
                         );
                     });
                 });

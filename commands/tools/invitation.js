@@ -41,7 +41,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             };
 
             //Crea una invitación permanente en el canal
-            await inviteChannel.createInvite({maxAge: 0, reason: `Rutina de ${client.user.tag}`}).then(async invite => {foundInvite = invite.code;});
+            await inviteChannel.createInvite({maxAge: 0, reason: client.functions.localeParser(locale.inviteReason, { botTag: client.user.tag })}).then(async invite => { foundInvite = invite.code; });
 
             //Graba la invitación en memoria (en el cliente)
             client.config.dynamic.inviteCode = foundInvite;
@@ -83,9 +83,9 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Genera el embed y lo envía, buscando el contenido necesario con la función
         await message.channel.send({ embeds: [new client.MessageEmbed()
             .setColor(client.config.colors.primary)
-            .setAuthor({ name: 'Invitación permanente', iconURL: client.homeGuild.iconURL({dynamic: true}) })
+            .setAuthor({ name: locale.embed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
             .setDescription(obtainedInvite)
-            .setFooter({ text: 'Este enlace nunca caduca y tiene usos ilimitados.' })
+            .setFooter({ text: `${locale.embed.footer}.` })
         ]});
 
     } catch (error) {

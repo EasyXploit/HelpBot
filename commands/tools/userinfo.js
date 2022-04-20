@@ -8,7 +8,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Comprueba si se ha proporcionado un miembro válido
         if (!member) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} No has proporcionado un miembro válido`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.invalidMember}.`)
         ]});
 
         //Comprueba, si corresponde, que el miembro tenga permiso para ver los datos de otros
@@ -30,16 +30,16 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`)]
+                .setDescription(`${client.customEmojis.redTick} ${locale.cantSeeAny}.`)]
             }).then(msg => { setTimeout(() => msg.delete(), 5000) });
         };
 
         //Comprueba los status de los que dispone el miembro
         let status = [];
-        if (member.id === message.guild.ownerId) status.push('Propietario');
-        if (member.permissions.has('ADMINISTRATOR')) status.push('Administrador');
-        if (member.permissions.has('MANAGE_MESSAGES')) status.push('Moderador');
-        if (status.length < 1) status.push('Usuario regular');
+        if (member.id === message.guild.ownerId) status.push(locale.memberType.owner);
+        if (member.permissions.has('ADMINISTRATOR')) status.push(locale.memberType.administrator);
+        if (member.permissions.has('MANAGE_MESSAGES')) status.push(locale.memberType.moderator);
+        if (status.length < 1) status.push(locale.memberType.regular);
 
         //Serializa los permisos del miembro
         const memberPermissions = member.permissions.serialize();
@@ -59,25 +59,25 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         let sanction;
 
         //Comprueba qué tipo de sanción tiene el miembro (si la tiene, según duración)
-        if (client.db.mutes[member.id] && client.db.mutes[member.id].until) sanction = `Silenciado hasta <t:${Math.round(new Date(client.db.mutes[member.id].until) / 1000)}>`;
-        else if (client.db.mutes[member.id] && !client.db.mutes[member.id].until) sanction = 'Silenciado indefinidamente';
+        if (client.db.mutes[member.id] && client.db.mutes[member.id].until) sanction = `${locale.embed.mutedUntil}: <t:${Math.round(new Date(client.db.mutes[member.id].until) / 1000)}>`;
+        else if (client.db.mutes[member.id] && !client.db.mutes[member.id].until) sanction = locale.embed.undefinedMute;
 
         //Envía un embed con el resultado del comando
         await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(member.displayHexColor)
-            .setTitle(`🙍 Información sobre ${member.displayName}`)
-            .setDescription(`Mostrando información acerca de **${member.user.tag}**`)
+            .setTitle(client.functions.localeParser(locale.embed.title, { memberDisplayName: member.displayName }))
+            .setDescription(client.functions.localeParser(locale.embed.description, { memberTag: member.user.tag }))
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
-            .addField('🆔 ID del miembro', member.id, true)
-            .addField('📝 Fecha de registro', `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
-            .addField('↙ Unido al servidor', `<t:${Math.round(member.joinedTimestamp / 1000)}>`, true)
-            .addField('👑 Estatus', status.join(', '), true)
-            .addField('💎 Nitro Booster', member.premiumSince ? `Desde <t:${Math.round(member.premiumSinceTimestamp / 1000)}>` : 'No', true)
-            .addField('🎖 Rol más alto', member.roles.highest.name, true)
-            .addField('⚖ Infracciones', client.db.warns[member.id] ? (Object.keys(client.db.warns[member.id]).length).toString() : '0', true)
-            .addField('📓 Verificación', member.pending ? 'Verificación pendiente' : 'Verificado', true)
-            .addField('⚠️ Sanción actual', sanction || 'Ninguna', true)
-            .addField('👮 Permisos efectivos', `\`\`\`${translatedPermissions.join(', ')}\`\`\``)
+            .addField(`🆔 ${locale.embed.memberId}`, member.id, true)
+            .addField(`📝 ${locale.embed.registerDate}`, `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
+            .addField(`↙ ${locale.embed.joinDate}`, `<t:${Math.round(member.joinedTimestamp / 1000)}>`, true)
+            .addField(`👑 ${locale.embed.status}`, status.join(', '), true)
+            .addField(`💎 ${locale.embed.nitroBooster}`, member.premiumSince ? client.functions.localeParser(locale.embed.isBooster, { time: `<t:${Math.round(member.premiumSinceTimestamp / 1000)}>` }) : locale.embed.isntBooster, true)
+            .addField(`🎖 ${locale.embed.highestRole}`, member.roles.highest.name, true)
+            .addField(`⚖ ${locale.embed.infractions}`, client.db.warns[member.id] ? (Object.keys(client.db.warns[member.id]).length).toString() : '0', true)
+            .addField(`📓 ${locale.embed.verification}`, member.pending ? locale.embed.isntVerified : locale.embed.isVerified, true)
+            .addField(`⚠️ ${locale.embed.actualSanction}`, sanction || locale.embed.noSanction, true)
+            .addField(`👮 ${locale.embed.permissions}`, `\`\`\`${translatedPermissions.join(', ')}\`\`\``)
         ]});
 
     } catch (error) {
@@ -89,5 +89,5 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
 
 module.exports.config = {
     name: 'userinfo',
-    aliases: ['user']
+    aliases: ['user', 'memberinfo', 'member']
 };

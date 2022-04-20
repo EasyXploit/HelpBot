@@ -652,7 +652,7 @@
                 "allDeleted": "He eliminado todas las pistas de la cola",
                 "nonInt": "Debes proporcionar un número entero",
                 "belowOne": "Quieres jugar sucio eh ...",
-                "doesntExist": "La pista Nº`${number}` no está añadida a la cola",
+                "doesntExist": "La pista Nº`{{number}}` no está añadida a la cola",
                 "deletedTrack": "Pista eliminada"
             },
             "replay": {
@@ -706,43 +706,250 @@
             "categoryName": "Herramientas",
             "dm": {
                 "description": "El bot enviará un mensaje al miembro, de forma anónima o con el autor referenciado, con formato incrustado o no",
-                "parameters": "<@miembro | id> <\"author\" | \"anonymous\"> <\"embed\" | \"normal\"> <mensaje>"
+                "parameters": "<@miembro | id> <\"author\" | \"anonymous\"> <\"embed\" | \"normal\"> <mensaje>",
+                "unknownMember": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
+                "noBots": "No puedes entablar una conversación con un bot",
+                "normalFrom": "Mensaje de {{messageAuthorTag}}",
+                "maxEmbedLength": "La longitud máxima es de `4096` carácteres",
+                "maxNormalLength": "La longitud máxima es de `{{length}}` carácteres",
+                "embedFrom": "Mensaje de",
+                "unauthorized": "{{messageAuthor}}, no dispones de privilegios para realizar esta operación",
+                "loggingEmbed": {
+                    "title": "Registro - [MENSAJERÍA]",
+                    "description": "{{messageAuthorTag}} envió un mensaje privado a {{memberTag}} a través de {{botUser}}",
+                    "date": "Fecha",
+                    "mode": "Modo",
+                    "type": "Tipo",
+                    "content": "Contenido"
+                },
+                "notificationEmbed": "¡Mensaje enviado!",
+                "cantReceiveDms": "Este miembro no admite mensajes directos de {{botUser}}"
             },
             "edit": {
                 "description": "Edita un mensaje enviado previamente por el bot",
-                "parameters": "<#canal | id> <ID del mensaje> <nuevo contenido>"
+                "parameters": "<#canal | id> <ID del mensaje> <nuevo contenido>",
+                "noChannel": {
+                    "mention": "El canal {{channel}} no existe",
+                    "id": "El canal con ID {{id}} no existe"
+                },
+                "msgNotFound": "El mensaje con ID `{{msgId}}` no existe",
+                "cantEdit": "No puedo editar un mensaje que no he enviado",
+                "exceededLength": "La longitud máxima es de `{{length}}` carácteres"
             },
             "invitation": {
                 "description": "Genera o recupera un enlace de invitación permanente en el canal de reglas, o en el primer canal de texto que lo permita",
-                "parameters": ""
+                "parameters": "",
+                "inviteReason": "Rutina de {{botTag}}",
+                "embed": {
+                    "author": "Invitación permanente",
+                    "footer": "Este enlace nunca caduca y tiene usos ilimitados"
+                }
             },
             "poll": {
                 "description": "Inicia un asistente interactivo para crear una encuesta o finaliza una en curso",
-                "parameters": "[\"new\" | \"end\"] [id]"
+                "parameters": "[\"new\" | \"end\"] [id]",
+                "unknownPoll": "La encuesta con ID {{id}} no existe",
+                "deletedPoll": "La encuesta con ID {{id}} ya no existe, por lo que se ha eliminado de la base de datos",
+                "onlyYours": "Solo puedes finalizar tus propias encuestas",
+                "endedPollEmbed": {
+                    "title": "Operación completada",
+                    "description": "La encuesta \"__{{poll}}__\" finalizará en breve en el canal {{pollChannel}}"
+                },
+                "titleEmbed": {
+                    "title": "Título",
+                    "description": "Proporciona un título para la encuesta"
+                },
+                "durationEmbed": {
+                    "title": "Duración",
+                    "description": "Proporciona una duración. Por ejemplo: `1d 2h 3m 4s`.\nIntroduce `-` para que no tenga fin"
+                },
+                "invalidDuration": "Debes proporcionar una unidad de medida de tiempo. Por ejemplo: `5d 10h 2m`",
+                "firstFieldEmbed": {
+                    "title": "Campos",
+                    "description": "Proporciona un nuevo campo (máximo 10)"
+                },
+                "newFieldEmbed": {
+                    "title": "Campos",
+                    "description": "Proporciona un nuevo campo (quedan {{remaining}})",
+                    "endAssistant": "Escribe `end` para finalizar el asistente"
+                },
+                "pollEmbed": {
+                    "author": "Encuesta disponible",
+                    "duration": "Duración"
+                },
+                "loggingEmbed": {
+                    "author": "{{memberTag}} ha iniciado una ENCUESTA",
+                    "title": "Título",
+                    "channel": "Canal",
+                    "expiration": "Vencimiento",
+                    "noExpiration": "No vence"
+                }
             },
             "purge": {
                 "description": "Elimina una cierta cantidad de mensajes en un canal (siempre que tenga menos de 14 días de antiguedad)",
-                "parameters": "<cantidad> [#canal | id]"
+                "parameters": "<cantidad> [#canal | id]",
+                "quantityNotProvided": "Debes proporcionar la cantidad de mensajes a eliminar",
+                "wrongQuantity": "Debes proporcionar una cantidad numérica igual o superior a 1, e inferior a 100",
+                "invalidChannel": "El canal de texto proporcionado no es válido",
+                "noPermission": "No tienes permiso para administrar mensajes en {{channel}}",
+                "noMessages": "No se pudo encontrar ningún mensaje en {{channel}}",
+                "expiredMessages": "Solo se pueden borar mensajes con una antigüedad inferior a `14 días`",
+                "successEmbed": {
+                    "title": "Operación completada",
+                    "description": "Mensajes eliminados",
+                    "footer": "Se omitieron {{omittedCount}} mensajes"
+                },
+                "loggingEmbed": {
+                    "title": "Registro - [PURGA DE MENSAJES]",
+                    "description": "{{messageAuthorTag}} eliminó {{deletedCount}} mensajes del canal {{channel}}"
+                }
             },
             "roleinfo": {
                 "description": "Muestra información sobre un rol",
-                "parameters": "<@rol | nombre de rol | id>"
+                "parameters": "<@rol | nombre de rol | id>",
+                "roleNotFound": "El rol **{{role}}** no existe",
+                "resultEmbed": {
+                    "title": "Información de rol",
+                    "description": "Mostrando información acerca del rol {{role}}",
+                    "roleName": "Nombre del rol",
+                    "roleId": "ID del rol",
+                    "roleMembers": "Miembros con el rol",
+                    "mentionable": "Mencionable",
+                    "isMentionable": "Si",
+                    "isntMntionable": "No",
+                    "hoisted": "Se muestra",
+                    "isHoisted": "Visible",
+                    "isntHoisted": "Oculto",
+                    "color": "Color",
+                    "creationDate": "Fecha de creación",
+                    "integration": "Integración",
+                    "isIntegration": "Si",
+                    "isntIntegration": "No",
+                    "permissions": "Permisos específicos"
+                }
             },
             "run": {
                 "description": "Ejecuta uno de los scripts preprogramados (consulte la sección \"[Scripts preprogramados](https://github.com/EasyXploit/HelpBot/wiki/preprogrammed-scripts)\" de la wiki)",
-                "parameters": "<script> [parámetro/s]"
+                "parameters": "<script> [parámetro/s]",
+                "welcome": {
+                    "memberNotProvided": "No has proporcionado un miembro",
+                    "invalidMember": "No has proporcionado un miembro válido",
+                    "done": "¡Listo!"
+                },
+                "goodbye": {
+                    "memberNotProvided": "No has proporcionado un miembro",
+                    "invalidMember": "No has proporcionado un miembro válido",
+                    "done": "¡Listo!"
+                },
+                "assortStats": {
+                    "startingLog": "Comenzando operación de cuadre de estadísticas",
+                    "startingEmbed": {
+                        "title": "Cuadrando stats",
+                        "description": "Comenzando operación de cuadre de la tabla de clasificación.\nRevisa la consola para evaluar el progreso del comando"
+                    },
+                    "memberOmitted": "Miembro {{memberDisplayName}} omitido",
+                    "memberUpdated": "Miembro {{memberDisplayName}} actualizado",
+                    "userOmitted": "Usuario {{userId}} omitido"
+                },
+                "invalidCommand": "No has especificado un comando válido",
+                "finishedLog": "Operación finalizada",
+                "finishedEmbed": {
+                    "title": "Stats encuadradas",
+                    "description": "La operación de encuadre de estadísticas ha finalizado.\nPor favor, realice una revisión manual para confirmar su efectividad"
+                }
             },
             "send": {
                 "description": "El bot enviará un mensaje al canal de texto actual, con o sin formato incrustado",
-                "parameters": "<\"embed\" | \"normal\"> <mensaje>"
+                "parameters": "<\"embed\" | \"normal\"> <mensaje>",
+                "exceededEmbedLength": "La longitud máxima es de `4096` carácteres.",
+                "exceededNormalLength": "La longitud máxima es de `2000` carácteres"
             },
             "serverinfo": {
                 "description": "Muestra información sobre el servidor",
-                "parameters": ""
+                "parameters": "",
+                "guildTiers": {
+                    "NONE": "Nivel 0",
+                    "TIER_1": "Nivel 1",
+                    "TIER_2": "Nivel 2",
+                    "TIER_3": "Nivel 3"
+                },
+                "guildNsfwLevel": {
+                    "DISABLED": "Deshabilitado",
+                    "MEMBERS_WITHOUT_ROLES": "Supervisando a miembros sin rol",
+                    "ALL_MEMBERS": "Supervisando a todo el mundo"
+                },
+                "guildverificationLevel": {
+                    "NONE": "Deshabilitado",
+                    "LOW": "Bajo",
+                    "MEDIUM": "Medio",
+                    "HIGH": "Alto",
+                    "VERY_HIGH": "Muy alto"
+                },
+                "embed": {
+                    "author": "Información sobre {{guildName}}",
+                    "name": "Nombre",
+                    "id": "ID del servidor",
+                    "region": "Región",
+                    "creationDate": "Fecha de creación",
+                    "owner": "Propietario",
+                    "nsfwFilter": "Filtro NSFW",
+                    "tier": "Nivel de mejora",
+                    "boostsCount": "({{boostsCount}} mejoras)",
+                    "verification": "Nivel de verificación",
+                    "invitations": "Invitaciones",
+                    "totalInvites": "{{totalInvites}} invitaciones en total",
+                    "roles": "Roles",
+                    "totalRoles": "{{totalRoles}} roles en total",
+                    "stickersAndEmojis": "Stickers y Emojis",
+                    "totalesEmojis": "{{totalesEmojis}} emojis",
+                    "totalStickers": "{{totalStickers}} stickers",
+                    "members": "Miembros",
+                    "totalMembers": "{{totalMembers}} miembros",
+                    "totalHumans": "{{totalHumans}} humanos",
+                    "totalBots": "{{totalBots}} bots",
+                    "bans": "Baneos",
+                    "bannedUsers": "{{bannedUsers}} usuarios baneados",
+                    "afk": "Tiempo para AFK",
+                    "afkTime": "{{afkTime}} minutos",
+                    "channels": "Canales",
+                    "totalCategories": "{{totalCategories}} categorías",
+                    "totalTextChannels": "{{totalTextChannels}} canales de texto",
+                    "totalVoiceChannels": "{{totalVoiceChannels}} canales de voz",
+                    "features": "Características"
+                }
             },
             "userinfo": {
                 "description": "Muestra información sobre ti o cualquier otro miembro",
-                "parameters": "[@miembro | id]"
+                "parameters": "[@miembro | id]",
+                "invalidMember": "No has proporcionado un miembro válido",
+                "cantSeeAny": "No dispones de privilegios para ver la información de otros miembros",
+                "memberType": {
+                    "owner": "Propietario",
+                    "administrator": "Administrador",
+                    "moderator": "Moderador",
+                    "regular": "Miembro regular"
+                },
+                "embed": {
+                    "mutedUntil": "Silenciado hasta",
+                    "undefinedMute": "Silenciado indefinidamente",
+                    "title": "Información sobre {{memberDisplayName}}",
+                    "description": "Mostrando información acerca de **{{memberTag}}**",
+                    "memberId": "ID del miembro",
+                    "registerDate": "Fecha de registro",
+                    "joinDate": "Unido al servidor",
+                    "status": "Estatus",
+                    "nitroBooster": "Nitro Booster",
+                    "isBooster": "Desde {{time}}",
+                    "isntBooster": "No",
+                    "highestRole": "Rol más alto",
+                    "infractions": "Infracciones",
+                    "verification": "Verificación",
+                    "isVerified": "Verificado",
+                    "isntVerified": "Verificación pendiente",
+                    "actualSanction": "Sanción actual",
+                    "noSanction": "Ninguna",
+                    "permissions": "Permisos efectivos"
+                }
             }
         }
     },

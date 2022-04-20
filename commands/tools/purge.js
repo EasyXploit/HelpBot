@@ -5,13 +5,13 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Comprueba si se ha proporcionado una cantidad
         if (!args[0]) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Debes proporcionar la cantidad de mensajes a eliminar`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.quantityNotProvided}.`)
         ]});
         
         //Comprueba si se ha especificado una cantidad válida
         if (isNaN(args[0]) || args[0] < 1 || args[0] >= 100) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad numérica igual o superior a 1, e inferior a 100.`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.wrongQuantity}.`)
         ]});
 
         //Almacena el canal a purgar
@@ -27,14 +27,14 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Comprueba si el canal existe
         if (!channel) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} El canal de texto proporcionado no es válido.`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.invalidChannel}.`)
         ]});
 
         //Comprueba si el miembro tiene permisos para ejecutar esta acción
         const memberPermissions = channel.permissionsFor(message.author).bitfield;
         if ((memberPermissions & BigInt(0x2000)) !== BigInt(0x2000)) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} No tienes permiso para administrar mensajes en ${channel}.`)
+            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.noPermission, { channel: channel })}.`)
         ]});
 
         //Se obtiene la cantidad de mensajes especificada (incluyendo el de invocación)
@@ -43,7 +43,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Si no se encontraron mensajes en el canal, devuelve un error
         if (messages.size <= extraMessages) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} No se pudo encontrar ningún mensaje en ${channel}.`)
+            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.noMessages, { channel: channel })}.`)
         ]});
 
         //Almacena los mensajes que serán borrados
@@ -59,7 +59,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Si ningún mensaje era lo suficientemente reciente, devuelve un error
         if (msgsToDelete.size <= extraMessages) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Solo se pueden borar mensajes con una antigüedad inferior a \`14 días\`.`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.expiredMessages}.`)
         ]});
 
         //Purga los mensajes del canal seleccionado
@@ -68,11 +68,11 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Almacena el mensaje de confirmación
         let successEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryCorrect)
-            .setTitle(`${client.customEmojis.greenTick} Operación completada.`)
-            .setDescription(`Mensajes eliminados: \`${msgsToDelete.size - extraMessages}\``);
+            .setTitle(`${client.customEmojis.greenTick} ${locale.successEmbed.title}.`)
+            .setDescription(`${locale.successEmbed.description}: \`${msgsToDelete.size - extraMessages}\``);
 
         //Si se omitieron mensajes, se indica en el footer del embed
-        if (msgsToDelete.size < messages.size) successEmbed.setFooter({  text: `Se omitieron ${messages.size - msgsToDelete.size} mensajes.` });
+        if (msgsToDelete.size < messages.size) successEmbed.setFooter({  text: `${client.functions.localeParser(locale.successEmbed.footer, { omittedCount: messages.size - msgsToDelete.size })}.` });
 
         //Envía un mensaje de confirmación
         await message.channel.send({ embeds: [successEmbed] }).then(msg => {
@@ -84,8 +84,8 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Envía un registro al canal de registro
         await client.functions.loggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.logging)
-            .setTitle('📑 Registro - [PURGA DE MENSAJES]')
-            .setDescription(`${message.author.tag} eliminó ${msgsToDelete.size - extraMessages} mensajes del canal ${channel}.`)
+            .setTitle(`📑 ${locale.title}`)
+            .setDescription(client.functions.localeParser(locale.description, { messageAuthorTag: message.author.tag, deletedCount: msgsToDelete.size - extraMessages, channel: channel }))
         );
 
     } catch (error) {

@@ -11,7 +11,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Si el modo lento no estaba activado, envía un error
             if (!message.channel.rateLimitPerUser) return await message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} El modo lento no estaba activado`)
+                .setDescription(`${client.customEmojis.redTick} ${locale.notEnabled}`)
             ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
 
             //Desactiva el modo lento
@@ -20,17 +20,17 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Envía un mensaje al canal de registros
             await client.functions.loggingManager('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
-                .setTitle('📑 Registro - [MODO LENTO]')
-                .setDescription('Se ha des-habilitado el modo lento.')
-                .addField('Moderador:', message.author.tag, true)
-                .addField('Canal:', `${message.channel}`, true)
+                .setTitle(`📑 ${locale.disbledLoggingEmbed.title}`)
+                .setDescription(locale.disbledLoggingEmbed.description)
+                .addField(locale.disbledLoggingEmbed.moderator, message.author.tag, true)
+                .addField(locale.disbledLoggingEmbed.channel, `${message.channel}`, true)
             );
 
             //Notifica la acción en el canal de invocación
             await message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
-                .setTitle(`${client.customEmojis.greenTick} Operación completada`)
-                .setDescription(`El modo lento ha sido desactivado`)
+                .setTitle(`${client.customEmojis.greenTick} ${locale.disbledNotificationEmbed.title}`)
+                .setDescription(locale.disbledNotificationEmbed.description)
             ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
 
         } else { //Si se debe activar el modo lento
@@ -61,13 +61,13 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Comprueba si los segundos excedieron el límite de la API
             if (args[0] > 21600) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} Solo puedes activar el modo lento para un máximo de \`21600s\``)
+                .setDescription(`${client.customEmojis.redTick} ${locale.maximumDefaultLengthError}`)
             ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
 
             //Comprueba si los segundos excedieron el máximo configurado
             if (!checkIfCanUseUnlimitedTime() && args[0] > commandConfig.maxRegularSeconds) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} Solo puedes activar el modo lento para un máximo de \`${commandConfig.maxRegularSeconds}s\``)
+                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.privateEmbedSingle.description, { max: commandConfig.maxRegularSeconds })}`)
             ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
 
             //Almacena la razón
@@ -95,29 +95,29 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 //Si no está autorizado, devuelve un mensaje de error
                 if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} Debes proporcionar una razón`)
+                    .setDescription(`${client.customEmojis.redTick} ${locale.noReason}`)
                 ]});
             };
 
             //Activa el modo lento en el canal
-            await message.channel.setRateLimitPerUser(args[0], reason || 'Indefinida');
+            await message.channel.setRateLimitPerUser(args[0], reason || locale.undefinedReason);
 
             //Envía un mensaje al canal de registros
             await client.functions.loggingManager('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
-                .setTitle('📑 Registro - [MODO LENTO]')
-                .setDescription('Se ha habilitado el modo lento.')
-                .addField('Moderador:', message.author.tag, true)
-                .addField('Retraso:', `${args[0]}s`, true)
-                .addField('Canal:', `${message.channel}`, true)
-                .addField('Razón:', reason || 'Indefinida', true)
+                .setTitle(`📑 ${locale.enabledLoggingEmbed.title}`)
+                .setDescription(locale.enabledLoggingEmbed.description)
+                .addField(locale.enabledLoggingEmbed.moderator, message.author.tag, true)
+                .addField(locale.enabledLoggingEmbed.delay, client.functions.localeParser(locale.enabledLoggingEmbed.delayed, { seconds: args[0] }), true)
+                .addField(locale.enabledLoggingEmbed.channel, `${message.channel}`, true)
+                .addField(locale.enabledLoggingEmbed.reason, reason || locale.undefinedReason, true)
             );
 
             //Notifica la acción en el canal de invocación
             await message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
-                .setTitle(`${client.customEmojis.greenTick} Operación completada`)
-                .setDescription(`El modo lento ha sido activado con un retraso de \`${args[0]}s\`.`)
+                .setTitle(`${client.customEmojis.greenTick} ${locale.enabledNotificationEmbed.title}`)
+                .setDescription(client.functions.localeParser(locale.enabledNotificationEmbed.description, { seconds: args[0] }))
             ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
         };
         

@@ -30,14 +30,14 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`)]
+                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.description, { messageAuthor: message.author })}.`)]
             }).then(msg => { setTimeout(() => msg.delete(), 5000) });
         };
 
         //Comprueba si se trata de un bot
         if (member && member.user.bot) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} No puedes obtener información de un bot`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ]});
 
         //Función para cargar un rango de advertencias
@@ -56,7 +56,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 let warn = Object.values(memberWarns[index])[0];
 
                 //Busca y almacena el moderador que aplicó la sanción
-                const moderator = await client.functions.fetchMember(client.homeGuild, warn.moderator) || 'Moderador desconocido';
+                const moderator = await client.functions.fetchMember(client.homeGuild, warn.moderator) || locale.unknownModerator;
 
                 //Añade una nueva fila con los detalles de la advertencia
                 board += `\`${Object.keys(memberWarns[index])[0]}\` • ${moderator} • <t:${Math.round(new Date(parseInt(warn.timestamp)) / 1000)}>\n${warn.reason}\n\n`;
@@ -73,19 +73,19 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             let sanction;
 
             //Comprueba qué tipo de sanción tiene el miembro (si la tiene, según duración)
-            if (client.db.mutes[memberId] && client.db.mutes[memberId].until) sanction = `\`Silenciado hasta\` <t:${Math.round(new Date(client.db.mutes[memberId].until) / 1000)}>`;
-            else if (client.db.mutes[memberId] && !client.db.mutes[memberId].until) sanction = '\`Silenciado indefinidamente\`';
+            if (client.db.mutes[memberId] && client.db.mutes[memberId].until) sanction = `\`${locale.mutedUntil}:\` <t:${Math.round(new Date(client.db.mutes[memberId].until) / 1000)}>`;
+            else if (client.db.mutes[memberId] && !client.db.mutes[memberId].until) sanction = `\`${locale.mutedUndefinetly}\``;
 
             //Genera el embed de las infracciones
             let infractionsEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
-                .setTitle('⚠ Advertencias')
-                .setDescription(`Mostrando las advertencias del miembro **${member ? member.user.tag : `${memberId} (ID)`}**.\nSanción actual: ${sanction || '\`Ninguna\`'}.`)
-                .addField('Últimas 24h', onDay.toString(), true)
-                .addField('Últimos 7 días', onWeek.toString(), true)
-                .addField('Total', total.toString(), true)
-                .addField('Listado de advertencias', total > 0 ? await loadWarns(10 * actualPage - 9, 10 * actualPage) : 'Ninguna')
-                .setFooter({ text: `Página ${actualPage} de ${totalPages}`, iconURL: client.homeGuild.iconURL({dynamic: true}) });
+                .setTitle(`⚠ ${locale.infractionsEmbed.title}`)
+                .setDescription(`${client.functions.localeParser(locale.infractionsEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)`, sanction: sanction || '\`Ninguna\`' })}.`)
+                .addField(locale.infractionsEmbed.last24h, onDay.toString(), true)
+                .addField(locale.infractionsEmbed.last7d, onWeek.toString(), true)
+                .addField(locale.infractionsEmbed.total, total.toString(), true)
+                .addField(locale.infractionsEmbed.list, total > 0 ? await loadWarns(10 * actualPage - 9, 10 * actualPage) : locale.infractionsEmbed.noList)
+                .setFooter({ text: client.functions.localeParser(locale.infractionsEmbed.page, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.homeGuild.iconURL({dynamic: true}) });
 
             //Si se encontró el miembro, muestra su avatar en el embed
             if (member) infractionsEmbed.setThumbnail(member.user.displayAvatarURL({dynamic: true}));

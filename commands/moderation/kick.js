@@ -11,7 +11,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Devuelve un error si no se ha encontrado al miembro
         if (!member) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ]});
 
         //Si el miembro era un bot
@@ -33,14 +33,14 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Si no está autorizado para ello, devuelve un mensaje de error
             if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} No puedes banear a un bot`)
+                .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
             ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
         };
         
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
         if (message.author.id !== message.guild.ownerId && message.member.roles.highest.position <= member.roles.highest.position) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} No puedes expulsar a un miembro con un rol igual o superior al tuyo`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ]});
 
         //Almacena la razón
@@ -68,7 +68,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} Debes proporcionar una razón`)
+                .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ]});
         };
 
@@ -79,25 +79,28 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         client.loggingCache[member.id] = {
             action: 'kick',
             executor: message.author.id,
-            reason: reason || 'Indefinida'
+            reason: reason || locale.undefinedReason
         };
         
         //Envía una notificación al miembro
         await member.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setAuthor({ name: '[EXPULSADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
-            .setDescription(`${member}, has sido expulsado de ${message.guild.name}`)
-            .addField('Moderador', message.author.tag, true)
-            .addField('Razón', reason || 'Indefinida', true)
+            .setAuthor({ name: locale.privateEmbed.author, iconURL: message.guild.iconURL({ dynamic: true}) })
+            .setDescription(client.functions.localeParser(locale.privateEmbed.description, { member: member, guildName: message.guild.name }))
+            .addField(locale.privateEmbed.moderator, message.author.tag, true)
+            .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
         ]});
 
         //Expulsa al miembro
-        await member.kick(reason || 'Indefinida');
+        await member.kick(reason || locale.undefinedReason);
+
+        //Genera una descripción para el embed de notificación
+        const notificationEmbedDescription = reason ? client.functions.localeParser(locale.notificationEmbed.withReason, { memberTag: member.user.tag, reason: reason }) : client.functions.localeParser(locale.notificationEmbed.withoutReason, { memberTag: member.user.tag })
 
         //Notifica la acción en el canal de invocación
         await message.channel.send({embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido expulsado${ reason ? ` debido a __${reason}__` : ''}, ¿alguien más?`)
+            .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
         ]});
         
     } catch (error) {

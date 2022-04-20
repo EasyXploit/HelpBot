@@ -259,27 +259,180 @@
             "categoryName": "Moderación",
             "ban": {
                 "description": "Banea a un miembro",
-                "parameters": "<@miembro | id> [razón]"
+                "parameters": "<@miembro | id> [razón]",
+                "userNotFound": "Usuario no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID",
+                "noBots": "No puedes banear a un bot",
+                "badHierarchy": "No puedes banear a un miembro con un rol igual o superior al tuyo",
+                "alreadyBanned": "Este usuario ya ha sido baneado",
+                "noReason": "Debes proporcionar una razón",
+                "undefinedReason": "Indefinida",
+                "privateEmbed": {
+                    "author": "[BANEADO]",
+                    "description": "{{user}}, has sido baneado en {{guildName}}",
+                    "moderator": "Moderador",
+                    "reason": "Razón",
+                    "expiration": "Vencimiento",
+                    "noExpiration": "No vence"
+                },
+                "notificationEmbed": {
+                    "withReason": "**{{userTag}}** ha sido baneado debido a __{{reason}}__, ¿alguien más?",
+                    "withoutReason": "**{{userTag}}** ha sido baneado, ¿alguien más?"
+                }
             },
             "infractions": {
                 "description": "Muestra una lista con las infracciones de un miembro y sus respectivos ID",
-                "parameters": "[@miembro | id]"
+                "parameters": "[@miembro | id]",
+                "nonPrivileged": "{{messageAuthor}}, no dispones de privilegios para realizar esta operación",
+                "noBots": "No puedes obtener información de un bot",
+                "unknownModerator": "Moderador desconocido",
+                "mutedUntil": "Silenciado hasta",
+                "mutedUndefinetly": "Silenciado indefinidamente",
+                "noMute": "Ninguna",
+                "infractionsEmbed": {
+                    "title": "Advertencias",
+                    "description": "Mostrando las advertencias del miembro **{{member}}**.\nSanción actual: {{sanction}}",
+                    "last24h": "Últimas 24h",
+                    "last7d": "Últimos 7 días",
+                    "total": "Total",
+                    "list": "Listado de advertencias",
+                    "noList": "Ninguna",
+                    "page": "Página {{actualPage}} de {{totalPages}}"
+                }
             },
             "kick": {
                 "description": "Expulsa a un miembro",
-                "parameters": "<@miembro | id> [razón]"
+                "parameters": "<@miembro | id> [razón]",
+                "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
+                "noBots": "No puedes banear a un bot",
+                "badHierarchy": "No puedes expulsar a un miembro con un rol igual o superior al tuyo",
+                "noReason": "Debes proporcionar una razón",
+                "undefinedReason": "Indefinida",
+                "privateEmbed": {
+                    "author": "[EXPULSADO]",
+                    "description": "{{member}}, has sido expulsado de {{guildName}}",
+                    "moderator": "Moderador",
+                    "reason": "Razón"
+                },
+                "notificationEmbed": {
+                    "withReason": "**{{memberTag}}** ha sido expulsado debido a __{{reason}}__, ¿alguien más?",
+                    "withoutReason": "**{{memberTag}}** ha sido expulsado, ¿alguien más?"
+                }
             },
             "mute": {
                 "description": "Silencia a un miembro de los canales de texto y voz",
-                "parameters": "<@miembro | id> [razón]"
+                "parameters": "<@miembro | id> [razón]",
+                "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
+                "noBots": "No puedes banear a un bot",
+                "badHierarchy": "No puedes silenciar a un miembro con un rol igual o superior al tuyo",
+                "alreadySilenced": "Este miembro ya esta silenciado",
+                "noReason": "Debes proporcionar una razón",
+                "undefinedReason": "Indefinida",
+                "loggingEmbed": {
+                    "author": "{{memberTag}} ha sido SILENCIADO",
+                    "memberId": "ID del miembro",
+                    "moderator": "Moderador",
+                    "reason": "Razón",
+                    "expiration": "Vencimiento",
+                    "noExpiration": "No vence"
+                },
+                "privateEmbed": {
+                    "author": "[SILENCIADO]'",
+                    "description": "{{member}}, has sido silenciado en {{guildName}",
+                    "moderator": "Moderador",
+                    "reason": "Razón",
+                    "expiration": "Vencimiento",
+                    "noExpiration": "No vence"
+                },
+                "notificationEmbed": {
+                    "withReason": "**{{memberTag}}** ha sido silenciado debido a __{{reason}}__, ¿alguien más?",
+                    "withoutReason": "**{{memberTag}}** ha sido silenciado, ¿alguien más?"
+                }
             },
             "rmwarn": {
                 "description": "Para eliminar una advertencia (o todas) a un miembro",
-                "parameters": "<@miembro | id> <ID de advertencia | \"all\"> [razón]"
+                "parameters": "<@miembro | id> <ID de advertencia | \"all\"> [razón]",
+                "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
+                "noBots": "Los bots no pueden ser advertidos",
+                "noReason": "Debes proporcionar una razón",
+                "badHierarchy": "No puedes quitar una advertencia a un miembro con un rol igual o superior al tuyo",
+                "noWarns": "Este miembro no tiene advertencias",
+                "cantRemoveAny": "No puedes eliminar advertencias que no has realizado",
+                "undefinedReason": "Indefinida",
+                "loggingEmbedAll": {
+                    "title": "Registro - [INFRACCIONES]",
+                    "description": "Se han retirado todas las advertencias de un miembro",
+                    "date": "Fecha",
+                    "moderator": "Moderador",
+                    "reason": "Razón",
+                    "memberId": "ID del miembro",
+                    "member": "Miembro"
+                },
+                "privateEmbedAll": {
+                    "author": "[DES-ADVERTIDO]",
+                    "description": "{{member}}, se te han retirado todas la advertencias",
+                    "moderator": "Moderador",
+                    "reason": "Razón"
+                },
+                "notificationEmbedAll": {
+                    "title": "Operación completada",
+                    "description": "Se han retirado todas las advertencias al miembro **{{member}}**"
+                },
+                "warnNotFound": "No existe la advertencia con ID **{{warnId}}**",
+                "loggingEmbedSingle": {
+                    "title": "Registro - [INFRACCIONES]",
+                    "description": "Se ha retirado una advertencia de un miembro",
+                    "date": "Fecha",
+                    "moderator": "Moderador",
+                    "warnId": "ID de advertencia",
+                    "warn": "Advertencia",
+                    "reason": "Razón",
+                    "memberId": "ID del miembro",
+                    "member": "Miembro"
+                },
+                "privateEmbedSingle": {
+                    "author": "[DES-ADVERTIDO]",
+                    "description": "{{member}}, se te ha retirado la advertencia con ID `{{warnId}}`",
+                    "moderator": "Moderador",
+                    "warnId": "ID de advertencia",
+                    "warn": "Advertencia",
+                    "reason": "Razón"
+                },
+                "notificationEmbedSingle": {
+                    "title": "Operación completada",
+                    "description": "Se ha retirado la advertencia con ID **{{warnId}}** al miembro **{{member}}**"
+                }
             },
             "slowmode": {
                 "description": "Activa el modo lento en un canal de texto",
-                "parameters": "<\"off\" | segundos> [razón]"
+                "parameters": "<\"off\" | segundos> [razón]",
+                "notEnabled": "El modo lento no está activado",
+                "disbledLoggingEmbed": {
+                    "title": "Registro - [MODO LENTO]",
+                    "description": "Se ha des-habilitado el modo lento",
+                    "moderator": "Moderador",
+                    "channel": "Canal"
+                },
+                "disbledNotificationEmbed": {
+                    "title": "Operación completada",
+                    "description": "El modo lento ha sido desactivado"
+                },
+                "maximumDefaultLengthError": "Solo puedes activar el modo lento para un máximo de `21600s`",
+                "maximumConfiguredLengthError": "Solo puedes activar el modo lento para un máximo de `{{max}}s`",
+                "noReason": "Debes proporcionar una razón",
+                "undefinedReason": "Indefinida",
+                "enabledLoggingEmbed": {
+                    "title": "Registro - [MODO LENTO]",
+                    "description": "Se ha habilitado el modo lento",
+                    "moderator": "Moderador",
+                    "delay": "Retraso",
+                    "delayed": "{{seconds}} segundos",
+                    "channel": "Canal",
+                    "reason": "Razón"
+                },
+                "enabledNotificationEmbed": {
+                    "title": "Operación completada",
+                    "description": "El modo lento ha sido activado con un retraso de `{{seconds}}s`"
+                }
             },
             "softban": {
                 "description": "Banea a un miembro, eliminando X días de mensajes suyos",

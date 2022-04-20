@@ -12,10 +12,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             let newFileNames = [];
             
             //Para cada archivo, almacena su nombre sin extensión en el array "newFileNames"
-            for (let file = 0; file < fileNames.length - 1; file++) newFileNames.push(fileNames[file].slice(0, -4));
-
-            //Añade la palabra "zorra" a la lista
-            if (fileNames.includes('zorra.mp3')) newFileNames.push('zorra'); //PROVISIONAL (no sé por qué no lo coge de normal)
+            for (let file = 0; file < fileNames.length; file ++) newFileNames.push(fileNames[file].replace('.mp3', ''));
 
             //Devuelve la lista
             return newFileNames;
@@ -32,7 +29,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 .setColor(client.config.colors.primary)
                 .setTitle(`🎙 ${locale.soundListEmbed.title}`)
                 .setDescription(`\`\`\`${soundNames.join('    ')}\`\`\``)
-                .setFooter({ text: client.functions.localeParser(locale.footer, { prefix: client.config.main.prefix }) })
+                .setFooter({ text: client.functions.localeParser(locale.soundListEmbed.footer, { prefix: client.config.main.prefix }) })
             ]});
 
         } else { //Si se desea reproducir una grabación

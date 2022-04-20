@@ -21,24 +21,24 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 await reproductionQueue.tracks.splice(1);
                 
                 //Manda un mensaje de confirmación
-                await message.channel.send({ content: `${client.customEmojis.greenTick} | He eliminado todas las pistas de la cola` });
+                await message.channel.send({ content: `${client.customEmojis.greenTick} | ${locale.allDeleted}` });
             };
 
         } else {
 
             //Comprueba si se ha proporcionado un número entero
-            if (isNaN(args[0])) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            if (!Number.isInteger(args[0])) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} Debes proporcionar un número entero.`)]
+                .setDescription(`${client.customEmojis.redTick} ${locale.nonInt}.`)]
             });
             
             //Comprueba si no es 0
-            if (args[0] === '0') return message.channel.send({ content: 'Quieres jugar sucio eh ...' });
+            if (args[0] === '0') return message.channel.send({ content: locale.belowOne });
             
             //Comprueba si el valor introducido es válido
             if (args[0] >= (reproductionQueue.tracks.length)) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} La pista Nº\`${args[0]}\` no está añadida a la cola.`)]
+                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.doesntExist, { number: args[0] })}.`)]
             });
 
             //Comprueba si es necesaria una votación
@@ -48,7 +48,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 await reproductionQueue.tracks.splice(args[0], 1);
                 
                 //Manda un mensaje de confirmación
-                await message.channel.send({ content: `${client.customEmojis.greenTick} | He eliminado la pista de la cola` });
+                await message.channel.send({ content: `🗑️ | ${locale.deletedTrack}` });
             };
         };
 

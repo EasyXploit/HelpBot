@@ -22,7 +22,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Devuelve un error si se trata de un vídeo en directo
         if (reproductionQueue.tracks[0].meta.length === 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} No puedes ajustar el momento de una transmisión en directo`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.cantAdjustLive}.`)
         ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
 
         //Calcula los milisegundos a retroceder
@@ -40,7 +40,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Comprueba si la cantidad es válida
         if (rewindToMs < 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} No puedes especificar un momento anterior al \`00:00:00\`.`)]
+            .setDescription(`${client.customEmojis.redTick} ${locale.cantRweindMore}.`)]
         });
 
         //Almacena el objetivo de avance (en HH:MM:SS)

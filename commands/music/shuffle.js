@@ -17,14 +17,14 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 reproductionQueue.mode = 'shuffle';
     
                 //Manda un mensaje de confirmación
-                message.channel.send({ content: '🔀 | He activado el modo aleatorio' });
+                message.channel.send({ content: `🔀 | ${locale.enabled}` });
             } else if (reproductionQueue.mode === 'shuffle') {
                 
                 //Desactiva el modo shuffle
                 reproductionQueue.mode = false;
     
                 //Manda un mensaje de confirmación
-                message.channel.send({ content: '▶ | He desactivado el modo aleatorio' });
+                message.channel.send({ content: `▶ | ${locale.disabled}` });
             };
         };
         

@@ -567,79 +567,139 @@
             "categoryName": "Música",
             "clear": {
                 "description": "Vacía la cola de reproducción",
-                "parameters": ""
+                "parameters": "",
+                "queueDeleted": "Cola eliminada"
             },
             "forward": {
                 "description": "Avanza el momento de una pista en una cantidad de tiempo especificada",
-                "parameters": "<HH:MM:SS>"
+                "parameters": "<HH:MM:SS>",
+                "cantAdjustLive": "No puedes ajustar el momento de una transmisión en directo"
             },
             "join": {
                 "description": "Conecta al bot a tu canal de voz",
-                "parameters": ""
+                "parameters": "",
+                "bounded": "Unido a `{{voiceChannelName}}` y vinculado a {{textChannel}}",
+                "leftChannel": "He abandonado el canal"
             },
             "leave": {
                 "description": "Hace que el bot abandone el canal de voz",
-                "parameters": ""
+                "parameters": "",
+                "leftChannel": "He abandonado el canal"
             },
             "loop": {
                 "description": "Activa el modo bucle para la pista actual",
-                "parameters": ""
+                "parameters": "",
+                "enabled": "He activado el modo bucle en la pista actual",
+                "disabled": "He desactivado el modo bucle en la pista actual"
             },
             "loopqueue": {
                 "description": "Activa el modo bucle para la cola de reproducción",
-                "parameters": ""
+                "parameters": "",
+                "enabled": "He activado el modo bucle en la cola",
+                "disabled": "He desactivado el modo bucle en la cola"
             },
             "move": {
                 "description": "Modifica la posición de una pista en la cola",
-                "parameters": "<posición 1> <posición 2>"
+                "parameters": "<posición 1> <posición 2>",
+                "notInteger": "Debes proporcionar un número entero",
+                "tooHigh": "Valor demasiado grande",
+                "belowOne": "Quieres jugar sucio eh ...",
+                "movedTrack": "He reubicado la pista en la cola"
             },
             "nowplaying": {
                 "description": "Muestra información sobre la pista actual",
-                "parameters": ""
+                "parameters": "",
+                "rightNow": "Ahora mismo",
+                "isLive": "Vídeo en directo",
+                "elapsed": "transcurrido"
             },
             "pause": {
                 "description": "Pausa la cola de reproducción",
-                "parameters": ""
+                "parameters": "",
+                "alreadyPaused": "El bot ya está pausado",
+                "abandonOnIdle": "He abandonado el canal y borrado la cola",
+                "paused": "Cola pausada"
             },
             "play": {
                 "description": "Busca una pista o lista de reproducción por nombre o URL de YouTube. Si no proporcionas parámetros, reanuda la cola",
-                "parameters": "[URL de YouTube | término de búsqueda]"
+                "parameters": "[URL de YouTube | término de búsqueda]",
+                "notPaused": "El bot no está pausado",
+                "resumed": "Cola reanudada",
+                "unavailable": "El reproductor se encuentra en ejecución en otro canal",
+                "searching": "Buscando `{{serachTerm}}`",
+                "bounded": "Unido a `{{voiceChannelName}}` y vinculado a {{textChannel}}"
             },
             "playskip": {
                 "description": "Busca una pista o lista de reproducción por nombre o URL de YouTube y omite la pista actual",
-                "parameters": "<URL de YouTube | término de búsqueda>"
+                "parameters": "<URL de YouTube | término de búsqueda>",
+                "searching": "Buscando `{{serachTerm}}`",
+                "skipped": "Pista omitida"
             },
             "queue": {
                 "description": "Muestra las pistas que están en la cola",
-                "parameters": "[número de página]"
+                "parameters": "[número de página]",
+                "queueEmbed": {
+                    "isLive": "Directo",
+                    "author": "Cola de reproducción - Ahora mismo",
+                    "duration": "Duración",
+                    "requestedBy": "Solicitada por",
+                    "upNext": "A continuación"
+                }
             },
             "remove": {
                 "description": "Elimina una pista de la cola de reproducción",
-                "parameters": "<posición | \"all\">"
+                "parameters": "<posición | \"all\">",
+                "allDeleted": "He eliminado todas las pistas de la cola",
+                "nonInt": "Debes proporcionar un número entero",
+                "belowOne": "Quieres jugar sucio eh ...",
+                "doesntExist": "La pista Nº`${number}` no está añadida a la cola",
+                "deletedTrack": "Pista eliminada"
             },
             "replay": {
                 "description": "Reproduce la pista actual desde el principio",
-                "parameters": ""
+                "parameters": "",
+                "willReplay": "La pista se volverá a reproducir"
             },
             "rewind": {
                 "description": "Retrocede el momento de una pista una cierta cantidad de tiempo",
-                "parameters": "<HH:MM:SS>"
+                "parameters": "<HH:MM:SS>",
+                "cantAdjustLive": "No puedes ajustar el momento de una transmisión en directo",
+                "cantRweindMore": "No puedes especificar un momento anterior al `00:00:00`"
             },
             "seek": {
                 "description": "Cambia el tiempo de la pista a una marca de tiempo específica",
-                "parameters": "<HH:MM:SS>"
+                "parameters": "<HH:MM:SS>",
+                "cantAdjustLive": "No puedes ajustar el momento de una transmisión en directo",
+                "cantAdjustFiles": "No se puede modificar el punto de reproducción de archvios locales",
+                "cantForward": "No se puede avanzar más allá de `{{time}}`",
+                "seeked": "Situado en el momento `{{time}}`"
             },
             "shuffle": {
                 "description": "Activa el modo aleatorio en la cola de reproducción",
-                "parameters": ""
+                "parameters": "",
+                "enabled": "He activado el modo aleatorio",
+                "disabled": "He desactivado el modo aleatorio"
             },
             "skip": {
                 "description": "Salta la pista actual o una cantidad especificada",
-                "parameters": "[cantidad | \"all\"]"
+                "parameters": "[cantidad | \"all\"]",
+                "skipped": "Pista/s omitida/s",
+                "cantSkipOnRandom": "No puedes omitir más de una pista con el modo aleatorio activado",
+                "cantMultipleOnLoop": "No puedes omitir más de una pista con el modo loop activado",
+                "notInteger": "Debes proporcionar un número entero",
+                "belowOne": "Quieres jugar sucio eh ...",
+                "cantSkipThis": "Solo puedes hacer skip de `{{quantity}}` pistas"
             },
             "sound": {
                 "description": "Reproduce un archivo .mp3 de la carpeta `media/audios` o muestra una lista de ellos",
-                "parameters": "[nombre del sonido | \"list\"]"
+                "parameters": "[nombre del sonido | \"list\"]",
+                "soundListEmbed": {
+                    "title": "Lista de grabaciones",
+                    "footer": "Para escuchar un audio, escribe: {{prefix}}sound <nombre del audio>"
+                },
+                "alreadyPlaying": "El reproductor se encuentra en ejecución en otro canal",
+                "doesntExist": "La grabación **{{recordName}}** no existe",
+                "bounded": "Unido a `{{voiceChannelName}}` y vinculado a {{textChannel}}"
             }
         },
         "tools": {

@@ -15,7 +15,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             await reproductionQueue.tracks.splice(1);
             
             //Manda un mensaje de confirmación
-            await message.channel.send({ content: `${client.customEmojis.greenTick} | Cola eliminada` });
+            await message.channel.send({ content: `🗑️ | ${locale.queueDeleted}` });
         };
         
     } catch (error) {

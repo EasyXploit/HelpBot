@@ -17,7 +17,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Comprueba si el bot ya estaba pausado
         if (player.state.status === 'paused') return message.channel.send({ embeds: [new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} El bot ya está pausado.`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.alreadyPaused}.`)
         ]});
 
         //Comprueba si es necesaria una votación
@@ -33,7 +33,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 if (connection.state.status !== 'Destroyed') connection.destroy();
 
                 //Confirma la acción
-                reproductionQueue.boundedTextChannel.send({ content: '⏏ | He abandonado el canal y borrado la cola' });
+                reproductionQueue.boundedTextChannel.send({ content: `⏏ | ${locale.abandonOnIdle}` });
 
                 //Borra la información de reproducción de la guild
                 delete client.reproductionQueues[connection.joinConfig.guildId];
@@ -44,7 +44,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             await player.pause();
 
             //Manda un mensaje de confirmación
-            await message.channel.send({ content: '⏸ | Cola pausada' });
+            await message.channel.send({ content: `⏸ | ${locale.paused}` });
         };
         
     } catch (error) {

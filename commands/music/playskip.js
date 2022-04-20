@@ -9,7 +9,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         if (await require('../../utils/voice/testQueuePerms.js').run(client, message, 'playskip', 0)) {
 
             //Envía un mensaje de confirmación de la búsqueda
-            message.channel.send({ content: `🔎 | Buscando \`${args.join(' ')}\` ...` });
+            message.channel.send({ content: `🔎 | ${client.functions.localeParser(locale.searching, { serachTerm: args.join(' ') })} ...` });
 
             //Crea el objeto de la cola y almacena si se ha logrado crear o no
             const resultFound = await require('../../utils/voice/fetchResource.js').run(client, args, message, 'stream', args.join(' '));
@@ -39,7 +39,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             connection._state.subscription.player.stop();
 
             //Manda un mensaje de confirmación
-            await message.channel.send({ content: '⏭ | Pista omitida' });
+            await message.channel.send({ content: `⏭ | ${locale.skipped}` });
         };
 
     } catch (error) {

@@ -30,9 +30,9 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Envía una lista con las grabaciones
             message.channel.send({embeds : [ new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
-                .setTitle('🎙 Lista de grabaciones')
+                .setTitle(`🎙 ${locale.soundListEmbed.title}`)
                 .setDescription(`\`\`\`${soundNames.join('    ')}\`\`\``)
-                .setFooter({ text: `Para escuchar un audio, escribe: ${client.config.main.prefix}sound <nombre del audio>` })
+                .setFooter({ text: client.functions.localeParser(locale.footer, { prefix: client.config.main.prefix }) })
             ]});
 
         } else { //Si se desea reproducir una grabación
@@ -46,7 +46,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Comprueba si no hay cola y si el miembro está el mismo canal que el bot
             if (reproductionQueue && message.guild.me.voice.channel.id !== message.member.voice.channel.id) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} El reproductor se encuentra en ejecución en otro canal.`)]
+                .setDescription(`${client.customEmojis.redTick} ${locale.alreadyPlaying}.`)]
             });
 
             //Almacena la selección del usuario
@@ -61,7 +61,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Si la grabación no existe, devuelve un error
             if (!soundNames.includes(selection)) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} **${selection}** no existe.`)]
+                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.doesntExist, { recordName: selection })}.`)]
             });
 
             //Crea el objeto de la cola y almacena si se ha logrado crear o no
@@ -93,7 +93,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             });
 
             //Manda un mensaje de confirmación
-            message.channel.send({ content: `📥 | Unido a \`${voiceChannel.name}\` y vinculado a ${message.channel}.` });
+            message.channel.send({ content: `📥 | ${client.functions.localeParser(locale.bounded, { voiceChannelName: voiceChannel.name, textChannel: message.channel })}.` });
 
             //Si la conexión desaparece
             connection.on(VoiceConnectionStatus.Disconnected, async () => {
@@ -129,7 +129,5 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
 
 module.exports.config = {
     name: 'sound',
-    description: '',
     aliases: ['snd'],
-    parameters: ''
 };

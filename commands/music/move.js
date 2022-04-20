@@ -9,13 +9,13 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         if (!args[0] || !args[1]) return await client.functions.syntaxHandler(message.channel, commandConfig);
 
         //Comprueba si se ha proporcionado un número entero
-        if (isNaN(args[0]) || isNaN(args[1])) return message.channel.send({ embeds: [ new client.MessageEmbed()
+        if (!Number.isInteger(args[0]) || !Number.isInteger(args[1])) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Debes proporcionar un número entero.`)]
+            .setDescription(`${client.customEmojis.redTick} ${locale.notInteger}.`)]
         });
         
         //Comprueba si no es 0
-        if (args[0] === '0' || args[1] === '0') return message.channel.send({ content: 'Quieres jugar sucio eh ...' });
+        if (args[0] === '0' || args[1] === '0') return message.channel.send({ content: locale.belowOne });
 
         //Almacena la información de la cola de la guild
         const reproductionQueue = client.reproductionQueues[message.guild.id];
@@ -23,7 +23,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Comprueba si el valor introducido es válido
         if (args[0] > (reproductionQueue.tracks.length) || args[1] > (reproductionQueue.tracks.length)) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Valor demasiado grande.`)]
+            .setDescription(`${client.customEmojis.redTick} ${locale.tooHigh}.`)]
         });
 
         //Comprueba si es necesaria una votación
@@ -39,7 +39,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             reproductionQueue.tracks.splice(args[1], 0, toMove);
             
             //Manda un mensaje de confirmación
-            await message.channel.send({ content: `${client.customEmojis.greenTick} | He reubicado la pista en la cola` });
+            await message.channel.send({ content: `${client.customEmojis.greenTick} | ${locale.movedTrack}` });
         };
         
     } catch (error) {

@@ -22,7 +22,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Devuelve un error si se trata de un vídeo en directo
         if (reproductionQueue.tracks[0].meta.length === 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} No puedes ajustar el momento de una transmisión en directo`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.cantAdjustLive}.`)
         ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
 
         //Almacena el objeto de cola
@@ -31,13 +31,13 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Comprueba si se quiere modificar la reproducción de un fichero local.
         if (queueItem.type === 'file') return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} No se puede modificar el punto de reproducción de archvios locales.`)]
+            .setDescription(`${client.customEmojis.redTick} ${locale.cantAdjustFiles}.`)]
         });
 
         //Comprueba si se ha excedido el tiempo máximo
         if (seekTo * 1000 > queueItem.meta.length - 1000) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} No se puede avanzar más allá de \`${client.functions.msToHHMMSS(queueItem.meta.length - 1000)}\`.`)]
+            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantForward, { time: client.functions.msToHHMMSS(queueItem.meta.length - 1000) })}.`)]
         });
 
         //Comprueba si es necesaria una votación
@@ -59,7 +59,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             connection._state.subscription.player.stop();
 
             //Envía un mensaje de confirmación
-            message.channel.send({ content: `📍 | Situado en el momento \`${client.functions.msToHHMMSS(seekTo * 1000)}\`.` });
+            message.channel.send({ content: `📍 | ${client.functions.localeParser(locale.seeked, { time: client.functions.msToHHMMSS(seekTo * 1000) })}` });
         };
 
     } catch (error) {

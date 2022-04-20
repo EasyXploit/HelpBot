@@ -17,14 +17,14 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 reproductionQueue.mode = 'loopqueue';
     
                 //Manda un mensaje de confirmación
-                message.channel.send({ content: '🔁 | He activado el modo bucle en la cola' });
+                message.channel.send({ content: `🔁 | ${locale.enabled}` });
             } else if (reproductionQueue.mode === 'loopqueue') {
 
                 //Desactiva el modo Loop
                 reproductionQueue.mode = false;
     
                 //Manda un mensaje de confirmación
-                message.channel.send({ content: '▶ | He desactivado el modo bucle en la cola' });
+                message.channel.send({ content: `▶ | ${locale.disabled}` });
             };
         };
         

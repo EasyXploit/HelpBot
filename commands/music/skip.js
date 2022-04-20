@@ -21,7 +21,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             player.stop();
 
             //Manda un mensaje de confirmación
-            await message.channel.send({ content: '⏭ | Pista/s omitida/s' });
+            await message.channel.send({ content: `⏭ | ${locale.skipped}` });
         };
         
         //Si se especifica una cantidad, se omitirá dicha cantidad
@@ -44,28 +44,28 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 //Comprueba si está activado el modo aleatorio
                 if (reproductionQueue.mode === 'shuffle') return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} No puedes omitir más de una pista con el modo aleatorio activado.`)]
+                    .setDescription(`${client.customEmojis.redTick} ${locale.cantSkipOnRandom}.`)]
                 });
 
                 //Comprueba si está activado el modo loop
                 if (reproductionQueue.mode === 'loop' || reproductionQueue.mode === 'loopqueue') return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} No puedes omitir más de una pista con el modo loop activado.`)]
+                    .setDescription(`${client.customEmojis.redTick} ${cantMultipleOnLoop}.`)]
                 });
                 
                 //Comprueba si se ha proporcionado un número entero
-                if (isNaN(args[0])) return message.channel.send({ embeds: [ new client.MessageEmbed()
+                if (!Number.isInteger(args[0])) return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} Debes proporcionar un número entero.`)]
+                    .setDescription(`${client.customEmojis.redTick} ${locale.notInteger}.`)]
                 });
                 
                 //Comprueba si no es 0
-                if (args[0] === '0') return message.channel.send({ content: 'Quieres jugar sucio eh ...' });
+                if (args[0] === '0') return message.channel.send({ content: locale.belowOne });
                 
                 //Comprueba si el valor introducido es válido
                 if (args[0] > (reproductionQueue.tracks.length)) return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} Solo puedes hacer skip de \`${(reproductionQueue.tracks.length)}\` pistas.`)]
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantSkipThis, { quantity: reproductionQueue.tracks.length })}.`)]
                 });
                 
                 //Comprueba si es necesaria una votación y cambia la cola

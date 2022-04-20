@@ -28,7 +28,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
 		reproductionQueue.boundedTextChannel = message.channel;
 
         //Manda un mensaje de confirmación
-        message.channel.send({ content: `📥 | Unido a \`${voiceChannel.name}\` y vinculado a ${message.channel}.` });
+        message.channel.send({ content: `📥 | ${client.functions.localeParser(locale.bounded, { voiceChannelName: voiceChannel.name, textChannel: message.channel })}.` });
 
         //Si la conexión desaparece
         connection.on(VoiceConnectionStatus.Disconnected, async () => {
@@ -55,7 +55,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             connection.destroy();
 
             //Confirma la acción
-            message.channel.send({ content: '⏏ | He abandonado el canal' });
+            message.channel.send({ content: `⏏ | ${locale.leftChannel}` });
 
             //Borra la información de reproducción del server
             delete client.reproductionQueues[message.guild.id];

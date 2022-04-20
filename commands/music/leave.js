@@ -30,7 +30,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             delete client.reproductionQueues[message.guild.id];
             
             //Confirma la acción
-            message.channel.send({ content: '⏏ | He abandonado el canal' });
+            message.channel.send({ content: `⏏ | ${locale.leftChannel}` });
         };
 
     } catch (error) {

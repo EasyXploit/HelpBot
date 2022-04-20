@@ -20,7 +20,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Comprueba si el bot no estaba pausado
             if (!subscription || subscription.player.state.status !== 'paused') return message.channel.send({ embeds: [new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} El bot no está pausado.`)
+                .setDescription(`${client.customEmojis.redTick} ${locale.notPaused}.`)
             ]});
 
             //Comprueba si es necesaria una votación
@@ -43,7 +43,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 await subscription.player.unpause();
 
                 //Manda un mensaje de confirmación
-                await message.channel.send({ content: '▶ | Cola reanudada' });
+                await message.channel.send({ content: `▶ | ${locale.resumed}` });
             };
 
         } else { //En este caso, "play" funcionará como "join" y reproducirá/añadirá a la cola
@@ -57,11 +57,11 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Comprueba si no hay cola y si el miembro está el mismo canal que el bot
             if (reproductionQueue && message.guild.me.voice.channel && message.guild.me.voice.channel.id !== message.member.voice.channel.id) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} El reproductor se encuentra en ejecución en otro canal.`)]
+                .setDescription(`${client.customEmojis.redTick} ${locale.unavailable}.`)]
             });
 
             //Envía un mensaje de confirmación de la búsqueda
-            message.channel.send({ content: `🔎 | Buscando \`${args.join(` `)}\` ...` });
+            message.channel.send({ content: `🔎 | ${client.functions.localeParser(locale.searching, { serachTerm: args.join(' ') })} ...` });
 
             //Crea el objeto de la cola y almacena si se ha logrado crear o no
             const resultFound = await require('../../utils/voice/fetchResource.js').run(client, args, message, 'stream', args.join(' '));
@@ -95,7 +95,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             });
 
             //Manda un mensaje de confirmación
-            message.channel.send({ content: `📥 | Unido a \`${voiceChannel.name}\` y vinculado a ${message.channel}.` });
+            message.channel.send({ content: `📥 | ${client.functions.localeParser(locale.bounded, { voiceChannelName: voiceChannel.name, textChannel: message.channel })}.` });
 
             //Si la conexión desaparece
             connection.on(VoiceConnectionStatus.Disconnected, async () => {

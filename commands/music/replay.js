@@ -24,7 +24,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             connection._state.subscription.player.stop();
             
             //Manda un mensaje de confirmación
-            await message.channel.send({ content: `${client.customEmojis.greenTick} | La pista se volverá a reproducir` });
+            await message.channel.send({ content: `🔁 | ${locale.willReplay}` });
         };
         
     } catch (error) {

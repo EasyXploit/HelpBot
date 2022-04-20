@@ -150,7 +150,7 @@
             }
         },
         "messageCreate": {
-            "filteredDm": "vía DM",
+            "filteredDm": "vía MD",
             "unavailableOnDm": "Los comandos de {{botUser}} solo están disponibles desde **{{guildName}}**",
             "cooldown": "Debes esperar 2 segundos antes de usar este comando",
             "nonPrivileged": "{{messageAuthor}}, no dispones de privilegios para realizar esta operación"
@@ -224,7 +224,7 @@
                     "totalXp": "XP total",
                     "xpToNextLevel": "XP para el siguiente nivel",
                     "noXpToNextLevel": "No puede subir de nivel",
-                    "nextRewards": "Siguiente recompensa",
+                    "nextRewards": "Siguientes recompensas",
                     "noNextRewards": "No puede ganar recompensas"
                 }
             },
@@ -303,7 +303,7 @@
                 "description": "Expulsa a un miembro",
                 "parameters": "<@miembro | id> [razón]",
                 "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
-                "noBots": "No puedes banear a un bot",
+                "noBots": "No puedes expulsar a un bot",
                 "badHierarchy": "No puedes expulsar a un miembro con un rol igual o superior al tuyo",
                 "noReason": "Debes proporcionar una razón",
                 "undefinedReason": "Indefinida",
@@ -322,7 +322,7 @@
                 "description": "Silencia a un miembro de los canales de texto y voz",
                 "parameters": "<@miembro | id> [razón]",
                 "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
-                "noBots": "No puedes banear a un bot",
+                "noBots": "No puedes silenciar a un bot",
                 "badHierarchy": "No puedes silenciar a un miembro con un rol igual o superior al tuyo",
                 "alreadySilenced": "Este miembro ya esta silenciado",
                 "noReason": "Debes proporcionar una razón",
@@ -694,11 +694,11 @@
                 "description": "Reproduce un archivo .mp3 de la carpeta `media/audios` o muestra una lista de ellos",
                 "parameters": "[nombre del sonido | \"list\"]",
                 "soundListEmbed": {
-                    "title": "Lista de grabaciones",
+                    "title": "Lista de audios",
                     "footer": "Para escuchar un audio, escribe: {{prefix}}sound <nombre del audio>"
                 },
                 "alreadyPlaying": "El reproductor se encuentra en ejecución en otro canal",
-                "doesntExist": "La grabación **{{recordName}}** no existe",
+                "doesntExist": "El audio **{{recordName}}** no existe",
                 "bounded": "Unido a `{{voiceChannelName}}` y vinculado a {{textChannel}}"
             }
         },
@@ -723,7 +723,7 @@
                     "content": "Contenido"
                 },
                 "notificationEmbed": "¡Mensaje enviado!",
-                "cantReceiveDms": "Este miembro no admite mensajes directos de {{botUser}}"
+                "cantReceiveDms": "Este miembro no acepta mensajes directos de {{botUser}}"
             },
             "edit": {
                 "description": "Edita un mensaje enviado previamente por el bot",
@@ -849,14 +849,14 @@
                     },
                     "memberOmitted": "Miembro {{memberDisplayName}} omitido",
                     "memberUpdated": "Miembro {{memberDisplayName}} actualizado",
-                    "userOmitted": "Usuario {{userId}} omitido"
+                    "userOmitted": "Usuario {{userId}} omitido",
+                    "finishedLog": "Operación finalizada",
+                    "finishedEmbed": {
+                        "title": "Stats encuadradas",
+                        "description": "La operación de encuadre de estadísticas ha finalizado.\nPor favor, realice una revisión manual para confirmar su efectividad"
+                    }
                 },
-                "invalidCommand": "No has especificado un comando válido",
-                "finishedLog": "Operación finalizada",
-                "finishedEmbed": {
-                    "title": "Stats encuadradas",
-                    "description": "La operación de encuadre de estadísticas ha finalizado.\nPor favor, realice una revisión manual para confirmar su efectividad"
-                }
+                "invalidCommand": "No has especificado un comando válido"
             },
             "send": {
                 "description": "El bot enviará un mensaje al canal de texto actual, con o sin formato incrustado",
@@ -1160,7 +1160,7 @@
                 "error": "ERROR: Error durante la ejecución del loggingManager"
             },
             "debuggingManager": {
-                "cannotSend": "ERROR: No se pueden enviar mensajes al canal de registro.\n{{botUsername}} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos",
+                "cannotSend": "ERROR: No se pueden enviar mensajes al canal de depuración.\n{{botUsername}} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos",
                 "cannotAccess": "ERROR: No se puede tener acceso al canal de depuración.\n Se ha borrado de la configuración y se ha descargado de la memoria",
                 "error": "ERROR: Error durante la ejecución del debuggingManager"
             },
@@ -1169,7 +1169,7 @@
                 "noArguments": "Ninguno",
                 "errorEmbed": {
                     "title": "¡Vaya! Algo fue mal",
-                    "description": "Lo hemos reportado al equipo de desarrollo"
+                    "description": "Lo hemos reportado a los responsables del servidor"
                 },
                 "debuggingEmbed": {
                     "title": "Depuración",
@@ -1221,8 +1221,8 @@
                 "error": "ERROR"
             },
             "ping": {
-                "consoleMsg": "AVISO: Tiempo de respuesta del Websocket elevado",
-                "debuggingMsg": "El tiempo de respuesta del Websocket es anormalmente alto"
+                "consoleMsg": "AVISO: Tiempo de respuesta del websocket elevado",
+                "debuggingMsg": "El tiempo de respuesta del websocket es anormalmente alto"
             },
             "polls": {
                 "votesPercentage": "{{votesCount}} votos, el {{percentage}}%",
@@ -1245,7 +1245,7 @@
             "configLoaded": "Carga de intervalos completada"
         },
         "splashLogo": {
-            "description": "I'm a bot designed for automated community moderation, music reproduction, leveling, and much more!",
+            "description": "Soy un bot diseñado para moderación de comunidades automatizada, reproducción de música, gestión de niveles ¡y mucho más!",
             "divider": "Iniciando aplicación"
         }
     }

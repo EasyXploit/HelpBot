@@ -34,7 +34,7 @@ const client = new discord.Client({     //Inicia el cliente con el array de inte
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
     retryLimit: Infinity 
 });
-console.log(`- ${locale.index.clientStarted}\n`);
+console.log(`${locale.index.clientStarted}\n`);
 
 //CARGA DE ESTRUCTURAS ADICIONALES
 //Carga de módulos, objetos y colecciones en el cliente

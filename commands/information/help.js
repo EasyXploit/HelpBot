@@ -24,8 +24,8 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Obtiene la configuración del comando
             let commandConfig = command.config;
 
-            //Almacena los alias adicionales del comando
-            commandConfig.aliases = commandConfig.aliases.concat(client.config.commands[commandConfig.name].additionalAliases);
+            //Almacena los alias del comando
+            const commandAliases = commandConfig.aliases.concat(client.config.commands[commandConfig.name].additionalAliases);
 
             //Almacena las traducciones del comando al idioma configurado
             const commandLocale = await require(`../../resources/locales/${client.config.main.language}.json`).commands[commandConfig.category][commandConfig.name];
@@ -36,7 +36,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 .setThumbnail('attachment://help.png')
                 .setTitle(`${client.functions.localeParser(locale.helpEmbed.command, { commandName: commandConfig.name })}:`)
                 .addField(`${locale.helpEmbed.description} 🧭`, commandLocale.description || locale.helpEmbed.noDescription)
-                .addField(`${locale.helpEmbed.alias} 👥`, `${commandConfig.aliases.length > 0 ? commandConfig.aliases.join(', ') : locale.helpEmbed.noAlias}`)
+                .addField(`${locale.helpEmbed.alias} 👥`, `${commandAliases.length > 0 ? commandAliases.join(', ') : locale.helpEmbed.noAlias}`)
                 .addField(`${locale.helpEmbed.syntax} ⌨`, `\`${client.config.main.prefix}${commandConfig.name}${commandLocale.parameters.length > 0 ? ' ' + commandLocale.parameters : ''}\``)
                 .addField(`${locale.helpEmbed.notationTitle} ✍️`, locale.helpEmbed.notation);
 

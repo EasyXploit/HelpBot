@@ -113,7 +113,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setAuthor({ name: locale.privateEmbed.author, iconURL: message.guild.iconURL({ dynamic: true}) })
-                .setDescription(client.functions.localeParser(locale.privateEmbed.description, { member: member.user.tag, guildName: message.guild.name }))
+                .setDescription(client.functions.localeParser(locale.privateEmbed.description, { member: member, guildName: message.guild.name }))
                 .addField(locale.privateEmbed.moderator, message.author.tag, true)
                 .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
                 .addField(locale.privateEmbed.expiration, locale.privateEmbed.noExpiration, true)

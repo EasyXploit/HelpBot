@@ -11,7 +11,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Devuelve un error si no se ha encontrado al miembro
         if (isNaN(args[0]) && !member) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ]});
 
         //Almacena el ID del miembro
@@ -42,7 +42,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} Debes proporcionar una razón`)
+                .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ]});
         };
 
@@ -52,7 +52,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Comprueba si el miembro no estaba silenciado
         if (member && !member.roles.cache.has(mutedRole.id)) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Este miembro no esta silenciado`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.notSilenced}.`)
         ]});
 
         //Crea una copia de los roles del miembro
@@ -90,7 +90,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
         if (member && message.member.id !== message.guild.ownerId && message.member.roles.highest.position <= sortedRoles[0].position) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} ${message.author}, no dispones de privilegios para realizar esta operación`)
+            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.badHierarchy, { messageAuthor: message.author })}.`)
         ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
 
         //Función para comprobar si el miembro puede borrar cualquier advertencia
@@ -116,7 +116,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Devuelve el estado de autorización
         if (client.db.mutes[memberId].moderator !== message.author.id && !checkIfCanRemoveAny()) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} ${message.author}, no puedes dessilenciar a alguien que no has silenciado tú`)
+            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantRemoveAny, { messageAuthor: message.author })}.`)
         ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
 
         //Elimina el rol silenciado al miembro
@@ -137,7 +137,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         };
 
         //Almacena el campo de autor del embed de registro
-        let logingEmbedAuthor = { name: `${member ? member.user.tag : 'Un miembro'} ha sido DES-SILENCIADO`};
+        let logingEmbedAuthor = { name: client.functions.localeParser(locale.loggingEmbed.author, { userTag: member ? member.user.tag : locale.loggingEmbed.aunknownAuthor })};
 
         //Si se especificó un miembro, añade su avatar al embed
         if (member) logingEmbedAuthor.iconURL = member.user.displayAvatarURL({dynamic: true});
@@ -146,25 +146,25 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         await client.functions.loggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.correct)
             .setAuthor(logingEmbedAuthor)
-            .addField('ID del miembro', memberId.toString(), true)
-            .addField('Moderador', message.author.tag, true)
-            .addField('Razón', reason || 'Indefinida', true)
+            .addField(locale.logingEmbed.memberId, memberId.toString(), true)
+            .addField(locale.logingEmbed.moderator, message.author.tag, true)
+            .addField(locale.logingEmbed.reason, reason || locale.undefinedReason, true)
         );
 
         //Envía una notificación al miembro
         if (member) await member.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.correct)
-            .setAuthor({ name: '[DES-SILENCIADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
-            .setDescription(`${member}, has sido des-silenciado en ${message.guild.name}`)
-            .addField('Moderador', message.author.tag, true)
-            .addField('Razón', reason || 'Indefinida', true)
+            .setAuthor({ name: locale.privateEmbed.author, iconURL: message.guild.iconURL({ dynamic: true}) })
+            .setDescription(client.functions.localeParser(locale.privateEmbed.description, { member: member, guildName: message.guild.name }))
+            .addField(locale.privateEmbed.moderator, message.author.tag, true)
+            .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
         ]});
 
         //Notifica la acción en el canal de invocación
         await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryCorrect)
-            .setTitle(`${client.customEmojis.greenTick} Operación completada`)
-            .setDescription(`El miembro **${member ? member.user.tag : `${memberId} (ID)`}** ha sido des-silenciado`)
+            .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbed.title}`)
+            .setDescription(client.functions.localeParser(locale.notificationEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)` }))
         ]});
         
     } catch (error) {

@@ -436,27 +436,131 @@
             },
             "softban": {
                 "description": "Banea a un miembro, eliminando X días de mensajes suyos",
-                "parameters": "<@miembro | id> <días (1-7)> [razón]"
+                "parameters": "<@miembro | id> <días (1-7)> [razón]",
+                "userNotFound": "Usuario no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID",
+                "noBots": "No puedes banear a un bot",
+                "badHierarchy": "No puedes banear a un miembro con un rol igual o superior al tuyo",
+                "alreadyBanned": "Este usuario ya ha sido baneado",
+                "invalidQuantity": "Debes proporcionar una cantidad válida de días de mensajes a borrar, entre 1 y 7",
+                "noReason": "Debes proporcionar una razón",
+                "undefinedReason": "Indefinida",
+                "privateEmbed": {
+                    "author": "[BANEADO]",
+                    "description": "{{user}}, has sido baneado en {{guildName}}",
+                    "moderator": "Moderador",
+                    "reason": "Razón",
+                    "deletedDays": "Días de mensajes borrados",
+                    "expiration": "Vencimiento",
+                    "noExpiration": "No vence"
+                },
+                "notificationEmbed": {
+                    "withReason": "**{{userTag}}** ha sido baneado debido a __{{reason}}__, ¿alguien más?",
+                    "withoutReason": "**{{userTag}}** ha sido baneado, ¿alguien más?"
+                }
             },
             "tempban": {
                 "description": "Banea temporalmente a un miembro",
-                "parameters": "<@miembro | id> <días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"> [razón]"
+                "parameters": "<@miembro | id> <días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"> [razón]",
+                "userNotFound": "Usuario no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID",
+                "noBots": "No puedes banear a un bot",
+                "badHierarchy": "No puedes banear a un miembro con un rol igual o superior al tuyo",
+                "alreadyBanned": "Este usuario ya ha sido baneado",
+                "exceededDuration": "Solo puedes banear un máximo de `{{time}}`",
+                "noReason": "Debes proporcionar una razón",
+                "undefinedReason": "Indefinida",
+                "privateEmbed": {
+                    "author": "[BANEADO]",
+                    "description": "{{user}}, has sido baneado en {{guildName}}",
+                    "moderator": "Moderador",
+                    "reason": "Razón",
+                    "expiration": "Vencimiento"
+                },
+                "notificationEmbed": {
+                    "withReason": "**{{userTag}}** ha sido baneado debido a __{{reason}}__, ¿alguien más?",
+                    "withoutReason": "**{{userTag}}** ha sido baneado, ¿alguien más?"
+                }
             },
             "tempmute": {
                 "description": "Silencia temporalmente a un miembro de los canales de texto y voz",
-                "parameters": "<@miembro | id> <días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"> [razón]"
+                "parameters": "<@miembro | id> <días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"> [razón]",
+                "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
+                "noBots": "No puedes banear a un bot",
+                "badHierarchy": "No puedes silenciar a un miembro con un rol igual o superior al tuyo",
+                "alreadySilenced": "Este miembro ya esta silenciado",
+                "exceededDuration": "Solo puedes silenciar un máximo de `{{time}}`",
+                "noReason": "Debes proporcionar una razón",
+                "undefinedReason": "Indefinida",
+                "loggingEmbed": {
+                    "author": "{{memberTag}} ha sido SILENCIADO",
+                    "memberId": "ID del miembro",
+                    "moderator": "Moderador",
+                    "reason": "Razón",
+                    "expiration": "Vencimiento"
+                },
+                "privateEmbed": {
+                    "author": "[SILENCIADO]'",
+                    "description": "{{member}}, has sido silenciado en {{guildName}",
+                    "moderator": "Moderador",
+                    "reason": "Razón",
+                    "expiration": "Vencimiento"
+                },
+                "notificationEmbed": {
+                    "withReason": "**{{memberTag}}** ha sido silenciado debido a __{{reason}}__, ¿alguien más?",
+                    "withoutReason": "**{{memberTag}}** ha sido silenciado, ¿alguien más?"
+                }
             },
             "unban": {
                 "description": "Desbanea a un miembro",
-                "parameters": "<@miembro | id> [razón]"
+                "parameters": "<@miembro | id> [razón]",
+                "userNotFound": "Usuario no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID",
+                "noReason": "Debes proporcionar una razón",
+                "notBanned": "Este usuario no había sido baneado",
+                "undefinedReason": "Indefinida",
+                "loggingEmbed": {
+                    "author": "{{userTag}} ha sido DESBANEADO",
+                    "userId": "ID de usuario",
+                    "moderator": "Moderador",
+                    "reason": "Razón"
+                },
+                "notificationEmbed": {
+                    "title": "Operación completada",
+                    "description": "El miembro **{{userTag}}** ha sido desbaneado"
+                }
             },
             "unmute": {
                 "description": "Dessilencia a un miembro",
-                "parameters": "<@miembro | id> [razón]"
+                "parameters": "<@miembro | id> [razón]",
+                "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
+                "noReason": "Debes proporcionar una razón",
+                "notSilenced": "Este miembro no esta silenciado",
+                "badHierarchy": "{{messageAuthor}}, no puedes des-silenciar a alguien con un rol igual o superior al tuyo",
+                "cantRemoveAny": "{{messageAuthor}}, no puedes des-silenciar a alguien que no has silenciado tú",
+                "undefinedReason": "Indefinida",
+                "logingEmbed": {
+                    "author": "{{member}} ha sido DES-SILENCIADO",
+                    "aunknownAuthor": "Un miembro",
+                    "memberId": "ID del miembro",
+                    "moderator": "Moderador",
+                    "reason": "Razón"
+                },
+                "privateEmbed": {
+                    "author": "[DES-SILENCIADO]",
+                    "description": "{{member}}, has sido des-silenciado en {{guildName}",
+                    "moderator": "Moderador",
+                    "reason": "Razón"
+                },
+                "notificationEmbed": {
+                    "title": "Operación completada",
+                    "description": "El miembro **{{member}}** ha sido des-silenciado"
+                }
             },
             "warn": {
                 "description": "Agrega una advertencia a un miembro",
-                "parameters": "<@miembro | id> <razón>"
+                "parameters": "<@miembro | id> <razón>",
+                "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
+                "noBots": "No puedes advertir a un bot",
+                "badHierarchy": "No puedes advertir a un miembro con un rol igual o superior al tuyo",
+                "cooldown": "Tienes que esperar antes de poder poner una nueva advertencia a {{member}}"
             }
         },
         "music": {

@@ -11,19 +11,19 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Devuelve un error si no se ha encontrado al miembro
         if (!member) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ]});
 
         //Devuelve un error si se ha proporcionado un bot
         if (member.user.bot) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} No puedes advertir a un bot`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ]});
         
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
         if (message.member.id !== message.guild.ownerId && message.member.roles.highest.position <= member.roles.highest.position) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} No puedes advertir a un miembro con un rol igual o superior al tuyo`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ]});
 
         //Si el miembro tenía advertencias previas y el ejecutor no es el owner de la guild
@@ -54,7 +54,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 //Si no está autorizado, devuelve un mensaje de error
                 if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} Tienes que esperar antes de poder poner una nueva advertencia a ${member}`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cooldown, { member: member })}.`)
                 ]});
             };
         };

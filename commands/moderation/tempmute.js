@@ -11,7 +11,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Devuelve un error si no se ha encontrado al miembro
         if (!member) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Miembro no encontrado. Debes mencionar a un miembro o escribir su ID`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ]});
 
         //Si el miembro era un bot
@@ -33,14 +33,14 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Si no está autorizado para ello, devuelve un mensaje de error
             if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} No puedes banear a un bot`)
+                .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
             ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
         };
         
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
         if (message.member.id !== message.guild.ownerId && message.member.roles.highest.position <= member.roles.highest.position) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} No puedes silenciar a un miembro con un rol igual o superior al tuyo`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ]});
 
         //Comprueba si existe el rol silenciado, sino lo crea
@@ -49,7 +49,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Comprueba si el miembro ya tenía el rol silenciado
         if (member.roles.cache.has(mutedRole.id)) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Este miembro ya esta silenciado`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.alreadySilenced}.`)
         ]});
         
         //Comprueba la longitud del tiempo proporcionado
@@ -77,7 +77,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Si no se permitió la ejecución, manda un mensaje de error
         if (!authorized && milliseconds > commandConfig.maxRegularTime) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} Solo puedes silenciar un máximo de \`${client.functions.msToHHMMSS(commandConfig.maxRegularTime)}\`.`)
+            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededDuration, { time: client.functions.msToHHMMSS(commandConfig.maxRegularTime) })}.`)
         ]});
 
         //Almacena la razón
@@ -105,7 +105,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} Debes proporcionar una razón`)
+                .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ]});
         };
 
@@ -130,27 +130,30 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Envía un mensaje al canal de registros
             await client.functions.loggingManager('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setAuthor({ name: `${member.user.tag} ha sido SILENCIADO`, iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                .addField('ID del miembro', member.id, true)
-                .addField('Moderador', message.author.tag, true)
-                .addField('Razón', reason || 'Indefinida', true)
-                .addField('Vencimiento', `<t:${Date.now() + milliseconds}:R>`, true)
+                .setAuthor({ name: client.functions.localeParser(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                .addField(locale.loggingEmbed.memberId, member.id, true)
+                .addField(locale.loggingEmbed.moderator, message.author.tag, true)
+                .addField(locale.loggingEmbed.reason, reason || locale.undefinedReason, true)
+                .addField(locale.loggingEmbed.expiration, `<t:${Date.now() + milliseconds}:R>`, true)
             );
 
             //Envía una notificación al miembro
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setAuthor({ name: '[SILENCIADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
-                .setDescription(`${member}, has sido silenciado en ${message.guild.name}`)
-                .addField('Moderador', message.author.tag, true)
-                .addField('Razón', reason || 'Indefinida', true)
-                .addField('Vencimiento', `<t:${Date.now() + milliseconds}:R>`, true)
+                .setAuthor({ name: locale.privateEmbed.author, iconURL: message.guild.iconURL({ dynamic: true}) })
+                .setDescription(client.functions.localeParser(locale.privateEmbed.description, { member: member, guildName: message.guild.name }))
+                .addField(locale.privateEmbed.moderator, message.author.tag, true)
+                .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
+                .addField(locale.privateEmbed.expiration, `<t:${Date.now() + milliseconds}:R>`, true)
             ]});
+
+            //Genera una descripción para el embed de notificación
+            const notificationEmbedDescription = reason ? client.functions.localeParser(locale.notificationEmbed.withReason, { memberTag: member.user.tag, reason: reason }) : client.functions.localeParser(locale.notificationEmbed.withoutReason, { memberTag: member.user.tag })
 
             //Notifica la acción en el canal de invocación
             await message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
-                .setDescription(`${client.customEmojis.orangeTick} **${member.user.tag}** ha sido silenciado${ reason ? ` debido a __${reason}__` : ''}, ¿alguien más?`)
+                .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
             ]});
         });
         

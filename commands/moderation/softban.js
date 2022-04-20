@@ -11,7 +11,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Devuelve un error si no se ha encontrado al usuario
         if (!user) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Usuario no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.userNotFound}.`)
         ]});
 
         //Si el usuario era un bot
@@ -33,7 +33,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Si no está autorizado para ello, devuelve un mensaje de error
             if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} No puedes banear a un bot`)
+                .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
             ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
         };
 
@@ -43,7 +43,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
         if (member && message.author.id !== message.guild.ownerId && message.member.roles.highest.position <= member.roles.highest.position) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} No puedes banear a un miembro con un rol igual o superior al tuyo`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ]});
         
         //Se comprueba si el usuario ya estaba baneado
@@ -55,7 +55,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Si el usuario ya estaba baneado, devuelve un error
             if (bans[0] === user.id) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} Este usuario ya ha sido baneado`)
+                .setDescription(`${client.customEmojis.redTick} ${locale.alreadyBanned}.`)
             ]});
         };
 
@@ -65,7 +65,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Comprueba si la cantidad de días es correcta
         if (isNaN(days) || days < 1 || days > 7) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Debes proporcionar una cantidad válida de días de mensajes a borrar, entre 1 y 7`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.invalidQuantity}.`)
         ]});
 
         //Almacena la razón
@@ -93,7 +93,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} Debes proporcionar una razón`)
+                .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ]});
         };
 
@@ -104,28 +104,31 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         client.loggingCache[user.id] = {
             action: 'softban',
             executor: message.author.id,
-            reason: reason || 'Indefinida',
+            reason: reason || locale.undefinedReason,
             deletedDays: days.toString()
         };
 
         //Envía una notificación al miembro
         if (member) await user.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setAuthor({ name: '[BANEADO]', iconURL: message.guild.iconURL({ dynamic: true}) })
-            .setDescription(`${user}, has sido baneado en ${message.guild.name}`)
-            .addField('Moderador', message.author.tag, true)
-            .addField('Razón', reason || 'Indefinida', true)
-            .addField('Días de mensajes borrados', days.toString(), true)
-            .addField('Duración', '∞', true)
+            .setAuthor({ name: locale.privateEmbed.author, iconURL: message.guild.iconURL({ dynamic: true}) })
+            .setDescription(client.functions.localeParser(locale.privateEmbed.description, { user: user, guildName: message.guild.name }))
+            .addField(locale.privateEmbed.moderator, message.author.tag, true)
+            .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
+            .addField(locale.privateEmbed.deletedDays, days.toString(), true)
+            .addField(locale.privateEmbed.expiration, locale.privateEmbed.noExpiration, true)
         ]});
 
         //Banea al miembro y borra sus mensajes
-        await message.guild.members.ban(user, { days: days, reason: reason || 'Indefinida' });
+        await message.guild.members.ban(user, { days: days, reason: reason || locale.undefinedReason });
+
+        //Genera una descripción para el embed de notificación
+        const notificationEmbedDescription = reason ? client.functions.localeParser(locale.notificationEmbed.withReason, { userTag: user.tag, reason: reason }) : client.functions.localeParser(locale.notificationEmbed.withoutReason, { userTag: user.tag })
 
         //Notifica la acción en el canal de invocación
         await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} **${user.tag}** ha sido baneado${ reason ? ` debido a __${reason}__` : ''}, ¿alguien más?`)
+            .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
         ]});
 
     } catch (error) {

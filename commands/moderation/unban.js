@@ -11,7 +11,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Devuelve un error si no se ha encontrado al usuario
         if (!user) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Usuario no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.userNotFound}.`)
         ]});
 
         //Almacena la razón
@@ -39,7 +39,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} Debes proporcionar una razón`)
+                .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ]});
         };
 
@@ -52,7 +52,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Si el miembro no estaba baneado, devuelve un error
         if (!banned) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} Este usuario no había sido baneado`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.notBanned}.`)
         ]});
 
         //Desbanea al miembro
@@ -75,17 +75,17 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Envía un mensaje al canal de registros
         await client.functions.loggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.correct)
-            .setAuthor({ name: `${user.tag} ha sido DESBANEADO`, iconURL: user.displayAvatarURL({dynamic: true}) })
-            .addField('ID de usuario', user.id.toString(), true)
-            .addField('Moderador', message.author.tag, true)
-            .addField('Razón', reason || 'Indefinida', true)
+            .setAuthor({ name: client.functions.localeParser(locale.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
+            .addField(locale.loggingEmbed.userId, user.id.toString(), true)
+            .addField(locale.loggingEmbed.moderator, message.author.tag, true)
+            .addField(locale.loggingEmbed.reason, reason || locale.undefinedReason, true)
         );
 
         //Notifica la acción en el canal de invocación
         await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryCorrect)
-            .setTitle(`${client.customEmojis.greenTick} Operación completada`)
-            .setDescription(`El miembro **${user.tag}** ha sido desbaneado`)
+            .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbed.title}`)
+            .setDescription(client.functions.localeParser(locale.loggingEmbed.author, { userTag: user.tag }))
         ]});
         
     } catch (error) {

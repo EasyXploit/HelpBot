@@ -155,7 +155,7 @@
                 "author": "A member left",
                 "description": "{{memberTag}} left the server",
                 "memberId": "Member ID",
-                "registerDate": "Register Date"
+                "registerDate": "Register date"
             }
         },
         "messageCreate": {

@@ -66,7 +66,7 @@ exports.run = async (client) => {
             await client.user.setPresence({
                 status: client.config.presence.status,
                 activities: [{
-                    name: client.config.presence.membersCount ? `${await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size)} miembros | ${client.config.presence.name}` : client.config.presence.name,
+                    name: client.config.presence.membersCount ? `${client.functions.localeParser(client.locale.utils.intervals.presence.name, { memberCount: await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}` : client.config.presence.name,
                     type: client.config.presence.type
                 }]
             });

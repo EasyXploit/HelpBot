@@ -603,7 +603,7 @@ exports.run = (client) => {
                 .setColor(client.config.colors.correct)
                 .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
                 .setAuthor({ name: locale.manageNewMember.welcomeEmbed.author, iconURL: 'attachment://in.png' })
-                .setDescription(`${client.functions.localeParser(locale.manageNewMember.welcomeEmbed.description, { memberTag: member.user.tag })}.`)
+                .setDescription(client.functions.localeParser(locale.manageNewMember.welcomeEmbed.description, { memberTag: member.user.tag }))
                 .addField(`🆔 ${locale.manageNewMember.welcomeEmbed.memberId}`, member.user.id, true)
                 .addField(`📝 ${locale.manageNewMember.welcomeEmbed.registerDate}`, `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
 

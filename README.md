@@ -41,6 +41,7 @@ In the [wiki](https://github.com/EasyXploit/HelpBot/wiki) of this repository, yo
 
 ## Acknowledgments
 * Thanks to my programming teacher María José Lozano, for teaching me the basics of JavaScript and how to think like a programmer. Without her lessons, I probably would not have started this project.
+* Thanks to the [supported languages](https://github.com/EasyXploit/HelpBot/wiki/Translation#supported-languages) translators who make this repository accessible to many more people.
 * Thanks to the community of [Discord.js](https://github.com/discordjs/discord.js), who have always been there to answer all my questions about the library, and that they constantly work to cover the 100% of the API.<br />
 * Thanks to [Flaticon](https://www.flaticon.com) for providing the images contained in the [resources/images/](https://github.com/EasyXploit/HelpBot/tree/master/resources/images) directory.<br />
 <br />

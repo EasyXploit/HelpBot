@@ -134,7 +134,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 .addField(locale.loggingEmbed.memberId, member.id, true)
                 .addField(locale.loggingEmbed.moderator, message.author.tag, true)
                 .addField(locale.loggingEmbed.reason, reason || locale.undefinedReason, true)
-                .addField(locale.loggingEmbed.expiration, `<t:${Date.now() + milliseconds}:R>`, true)
+                .addField(locale.loggingEmbed.expiration, `<t:${Math.round(new Date(parseInt(Date.now() + milliseconds)) / 1000)}:R>`, true)
             );
 
             //Envía una notificación al miembro
@@ -144,7 +144,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 .setDescription(client.functions.localeParser(locale.privateEmbed.description, { member: member, guildName: message.guild.name }))
                 .addField(locale.privateEmbed.moderator, message.author.tag, true)
                 .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
-                .addField(locale.privateEmbed.expiration, `<t:${Date.now() + milliseconds}:R>`, true)
+                .addField(locale.privateEmbed.expiration, `<t:${Math.round(new Date(parseInt(Date.now() + milliseconds)) / 1000)}:R>`, true)
             ]});
 
             //Genera una descripción para el embed de notificación

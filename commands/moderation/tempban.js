@@ -145,7 +145,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 .setDescription(client.functions.localeParser(locale.privateEmbed.description, { user: user, guildName: message.guild.name }))
                 .addField(locale.privateEmbed.moderator, message.author.tag, true)
                 .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
-                .addField(locale.privateEmbed.expiration, `<t:${Date.now() + milliseconds}:R>`, true)
+                .addField(locale.privateEmbed.expiration, `<t:${Math.round(new Date(parseInt(Date.now() + milliseconds)) / 1000)}:R>`, true)
             ]});
 
             //Banea al miembro

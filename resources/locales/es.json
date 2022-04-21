@@ -536,7 +536,7 @@
                 "badHierarchy": "{{messageAuthor}}, no puedes des-silenciar a alguien con un rol igual o superior al tuyo",
                 "cantRemoveAny": "{{messageAuthor}}, no puedes des-silenciar a alguien que no has silenciado tú",
                 "undefinedReason": "Indefinida",
-                "logingEmbed": {
+                "loggingEmbed": {
                     "author": "{{userTag}} ha sido DES-SILENCIADO",
                     "unknownAuthor": "Un miembro",
                     "memberId": "ID del miembro",

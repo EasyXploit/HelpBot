@@ -6,35 +6,39 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
         const locale = client.locale.utils.moderation.infractionsHandler;
 
         //Función para silenciar
-        async function mute(time) {
+        async function mute(duration) {
 
             //Comprueba si existe el rol silenciado, sino lo crea
             const mutedRole = await client.functions.checkMutedRole(client.homeGuild);
 
-            //Comprueba si el miembro ya tenía el rol silenciado
-            if (member.roles.cache.has(mutedRole.id)) return;
+            //Si el miembro no estaba silenciado
+            if (!member.roles.cache.has(mutedRole.id)) {
 
-            //Añade el rol silenciado al miembro
-            member.roles.add(mutedRole);
+                //Añade el rol silenciado al miembro 
+                member.roles.add(mutedRole);
 
-            //Propaga el rol silenciado por todos los canales
-            client.functions.spreadMutedRole(client.homeGuild);
-
-            //Si se especificó una duración limitada
-            if (time) {
-
-                //Almacena el silenciamiento en la BD
-                client.db.mutes[member.id] = {
-                    time: Date.now() + time
-                };
-
-                //Sobreescribe el fichero de BD
-                client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
-
-                    //Si hubo algún error, lo lanza por consola
-                    if (err) throw err;
-                });
+                //Propaga el rol silenciado por todos los canales
+                client.functions.spreadMutedRole(client.homeGuild);
             };
+
+            //Almacena la anterior duración del silenciamiento
+            const oldDuration = client.db.mutes[member.id] ? client.db.mutes[member.id].until : null;
+
+            //Almacena el silenciamiento en la BD
+            client.db.mutes[member.id] = {
+                until: duration ? Date.now() + duration : null,
+                moderator: client.user.id
+            };
+
+            //Sobreescribe el fichero de BD
+            client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
+
+                //Si hubo algún error, lo lanza por consola
+                if (err) throw err;
+            });
+
+            //Si ya estaba silenciado indefinidamente, no lo notifica
+            if (member.roles.cache.has(mutedRole.id) && !oldDuration && !duration) return;
 
             //Envía un mensaje al canal de registro
             await client.functions.loggingManager('embed', new client.MessageEmbed()
@@ -43,7 +47,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
                 .addField(locale.muteFunction.loggingEmbed.memberId, member.id, true)
                 .addField(locale.muteFunction.loggingEmbed.moderator, `${client.user}`, true)
                 .addField(locale.muteFunction.loggingEmbed.reason, locale.muteFunction.reason, true)
-                .addField(locale.muteFunction.loggingEmbed.expiration, time ? `<t:${Math.round(new Date(parseInt(Date.now() + time)) / 1000)}:R>` : locale.muteFunction.loggingEmbed.noExpiration, true)
+                .addField(locale.muteFunction.loggingEmbed.expiration, duration ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : locale.muteFunction.loggingEmbed.noExpiration, true)
             );
 
             //Envía un mensaje al canal de la infracción
@@ -59,7 +63,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
                 .setDescription(client.functions.localeParser(locale.muteFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
                 .addField(locale.muteFunction.privateEmbed.moderator, `${client.user}`, true)
                 .addField(locale.muteFunction.privateEmbed.reason, locale.muteFunction.reason, true)
-                .addField(locale.muteFunction.privateEmbed.expiration, time ? `<t:${Math.round(new Date(parseInt(Date.now() + time)) / 1000)}:R>` : locale.muteFunction.privateEmbed.noExpiration, true)
+                .addField(locale.muteFunction.privateEmbed.expiration, duration ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : locale.muteFunction.privateEmbed.noExpiration, true)
             ]});
         };
 
@@ -86,14 +90,14 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
         };
 
         //Función para banear
-        async function ban(time) {
+        async function ban(duration) {
 
             //Si se especificó una duración limitada
-            if (time) {
+            if (duration) {
 
                 //Almacena el baneo en la BD
                 client.db.bans[member.id] = {
-                    time: Date.now() + time
+                    until: Date.now() + duration
                 };
         
                 //Sobreescribe el fichero de BD
@@ -109,13 +113,13 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
 
             //Crea una nueva entrada en la caché de registros
             client.loggingCache[member.id] = {
-                action: time ? 'tempban' : 'ban',
+                action: duration ? 'tempban' : 'ban',
                 executor: client.user.id,
                 reason: locale.banFunction.reason
             };
 
             //Si se especificó expiración, la almacena el la caché
-            if (time) client.loggingCache[user.id].time = Date.now() + time;
+            if (duration) client.loggingCache[member.id].until = Date.now() + duration;
 
             //Envía un mensaje al canal de la infracción
             await message.channel.send({ embeds: [ new client.MessageEmbed()
@@ -130,7 +134,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
                 .setDescription(client.functions.localeParser(locale.banFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
                 .addField(locale.banFunction.privateEmbed.moderator, moderator.tag, true)
                 .addField(locale.banFunction.privateEmbed.reason, locale.banFunction.reason, true)
-                .addField(locale.banFunction.privateEmbed.expiration, time ? `<t:${Math.round(new Date(parseInt(Date.now() + time)) / 1000)}:R>` : locale.banFunction.privateEmbed.noExpiration, true)
+                .addField(locale.banFunction.privateEmbed.expiration, duration ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : locale.banFunction.privateEmbed.noExpiration, true)
             ]});
 
             //Banea al miembro
@@ -203,8 +207,18 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
                 return ban(client.config.moderation.newSpammerMemberBanDuration);
             };
 
+            //Función para comparar un array
+            function compare(a, b) {
+                if (a.quantity < b.quantity) return 1;
+                if (a.quantity > b.quantity) return -1;
+                return 0;
+            };
+
+            //Compara y ordena el array de recompensas
+            const automodRules = client.config.automodRules.sort(compare);
+
             //Por cada una de las reglas de automoderación
-            for (const rule of client.config.automodRules) {
+            for (const rule of automodRules) {
 
                 //Almacena el conteo de infracciones
                 let warnsCount = 0;

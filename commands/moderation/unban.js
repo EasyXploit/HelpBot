@@ -46,10 +46,17 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Se comprueba si el usuario ya estaba baneado
         const guildBans = await message.guild.bans.fetch();
 
-        //Comprueba si el miembro ya estaba baneado
-        const banned = async () => { for (const bans of guildBans) if (bans[0] === user.id) return true };
+        //Almacena el estado de baneo del usuario
+        let banned = false;
 
-        //Si el miembro no estaba baneado, devuelve un error
+        //Por cada uno de los baneos de la guild
+        for (const bans of guildBans) {
+
+            //Comprueba si el ID del usuario coincide con el del baneo
+            if (bans[0] === user.id) banned = true
+        };
+
+        //Si el usuario no estaba baneado, devuelve un error
         if (!banned) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} ${locale.notBanned}.`)

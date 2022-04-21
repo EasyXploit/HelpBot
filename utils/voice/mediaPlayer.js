@@ -112,7 +112,7 @@ exports.run = async (client, message, connection) => {
             let info = reproductionQueue.tracks[toPlay];
 
             //Almacena una variable para guardar el título de la siguiente pista
-            let upNext = 'Nada';
+            let upNext = locale.nothingUpNext;
 
             //Calcula cual es el título de la siguiente pista, si es que hay
             if (reproductionQueue.tracks[1]) {

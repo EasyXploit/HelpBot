@@ -20,17 +20,17 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Envía un mensaje al canal de registros
             await client.functions.loggingManager('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
-                .setTitle(`📑 ${locale.disbledLoggingEmbed.title}`)
-                .setDescription(locale.disbledLoggingEmbed.description)
-                .addField(locale.disbledLoggingEmbed.moderator, message.author.tag, true)
-                .addField(locale.disbledLoggingEmbed.channel, `${message.channel}`, true)
+                .setTitle(`📑 ${locale.disabledLoggingEmbed.title}`)
+                .setDescription(locale.disabledLoggingEmbed.description)
+                .addField(locale.disabledLoggingEmbed.moderator, message.author.tag, true)
+                .addField(locale.disabledLoggingEmbed.channel, `${message.channel}`, true)
             );
 
             //Notifica la acción en el canal de invocación
             await message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
-                .setTitle(`${client.customEmojis.greenTick} ${locale.disbledNotificationEmbed.title}`)
-                .setDescription(locale.disbledNotificationEmbed.description)
+                .setTitle(`${client.customEmojis.greenTick} ${locale.disabledNotificationEmbed.title}`)
+                .setDescription(locale.disabledNotificationEmbed.description)
             ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
 
         } else { //Si se debe activar el modo lento

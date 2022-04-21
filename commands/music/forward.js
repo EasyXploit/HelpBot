@@ -38,7 +38,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         const forwardTo = await client.functions.msToHHMMSS(actualProgress + forwardMs);
 
         //Ejecuta el comando "seek"
-        await require('./seek.js').run(client, message, [forwardTo], command, commandConfig);
+        await require('./seek.js').run(client, message, [forwardTo], command, commandConfig, client.locale.commands.music.seek);
 
     } catch (error) {
 

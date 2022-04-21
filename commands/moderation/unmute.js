@@ -137,18 +137,18 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         };
 
         //Almacena el campo de autor del embed de registro
-        let logingEmbedAuthor = { name: client.functions.localeParser(locale.loggingEmbed.author, { userTag: member ? member.user.tag : locale.loggingEmbed.aunknownAuthor })};
+        let loggingEmbedAuthor = { name: client.functions.localeParser(locale.loggingEmbed.author, { userTag: member ? member.user.tag : locale.loggingEmbed.unknownAuthor })};
 
         //Si se especificó un miembro, añade su avatar al embed
-        if (member) logingEmbedAuthor.iconURL = member.user.displayAvatarURL({dynamic: true});
+        if (member) loggingEmbedAuthor.iconURL = member.user.displayAvatarURL({dynamic: true});
 
         //Envía un mensaje al canal de registros
         await client.functions.loggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.correct)
-            .setAuthor(logingEmbedAuthor)
-            .addField(locale.logingEmbed.memberId, memberId.toString(), true)
-            .addField(locale.logingEmbed.moderator, message.author.tag, true)
-            .addField(locale.logingEmbed.reason, reason || locale.undefinedReason, true)
+            .setAuthor(loggingEmbedAuthor )
+            .addField(locale.loggingEmbed.memberId, memberId.toString(), true)
+            .addField(locale.loggingEmbed.moderator, message.author.tag, true)
+            .addField(locale.loggingEmbed.reason, reason || locale.undefinedReason, true)
         );
 
         //Envía una notificación al miembro

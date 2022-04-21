@@ -68,9 +68,9 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Genera una tabla de clasificación (cómo embed)
             const leaderboard = new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
-                .setTitle(`:trophy: ${locale.leaderboard.title}`)
+                .setTitle(`:trophy: ${locale.embed.title}`)
                 .setDescription(await loadBoard(10 * position - 9, 10 * position))
-                .setFooter({ text: client.functions.localeParser(locale.leaderboard.footer, { position: position, totalPages: pages }), iconURL: client.homeGuild.iconURL({dynamic: true}) });
+                .setFooter({ text: client.functions.localeParser(locale.embed.footer, { position: position, totalPages: pages }), iconURL: client.homeGuild.iconURL({dynamic: true}) });
 
             //Envía o actualiza la tabla de clasificación
             if (embed) await embed.edit({ embeds: [leaderboard] }).then(async embed => {awaitReactions(embed)});

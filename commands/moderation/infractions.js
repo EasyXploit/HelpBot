@@ -80,7 +80,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             let infractionsEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
                 .setTitle(`⚠ ${locale.infractionsEmbed.title}`)
-                .setDescription(`${client.functions.localeParser(locale.infractionsEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)`, sanction: sanction || '\`Ninguna\`' })}.`)
+                .setDescription(`${client.functions.localeParser(locale.infractionsEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)`, sanction: sanction || `\`${locale.noMute}\`` })}.`)
                 .addField(locale.infractionsEmbed.last24h, onDay.toString(), true)
                 .addField(locale.infractionsEmbed.last7d, onWeek.toString(), true)
                 .addField(locale.infractionsEmbed.total, total.toString(), true)

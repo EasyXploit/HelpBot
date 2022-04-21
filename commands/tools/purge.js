@@ -68,7 +68,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Almacena el mensaje de confirmación
         let successEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.secondaryCorrect)
-            .setTitle(`${client.customEmojis.greenTick} ${locale.successEmbed.title}.`)
+            .setTitle(`${client.customEmojis.greenTick} ${locale.successEmbed.title}`)
             .setDescription(`${locale.successEmbed.description}: \`${msgsToDelete.size - extraMessages}\``);
 
         //Si se omitieron mensajes, se indica en el footer del embed
@@ -84,8 +84,8 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Envía un registro al canal de registro
         await client.functions.loggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.logging)
-            .setTitle(`📑 ${locale.title}`)
-            .setDescription(client.functions.localeParser(locale.description, { messageAuthorTag: message.author.tag, deletedCount: msgsToDelete.size - extraMessages, channel: channel }))
+            .setTitle(`📑 ${locale.loggingEmbed.title}`)
+            .setDescription(client.functions.localeParser(locale.loggingEmbed.description, { messageAuthorTag: message.author.tag, deletedCount: msgsToDelete.size - extraMessages, channel: channel }))
         );
 
     } catch (error) {

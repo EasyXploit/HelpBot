@@ -83,7 +83,7 @@
         "commandLoaded": "Command",
         "configError": "Error loading command",
         "conflictedAlias": "Two or more commands have the same aliases",
-        "loggingIn": "Login",
+        "loggingIn": "Logging in",
         "loggedIn": "Logged in successfully!"
     },
     "events": {
@@ -97,7 +97,7 @@
         },
         "guildBanAdd": {
             "botLoggingEmbed": {
-                "title": "Log - [BOTS]",
+                "title": "Logging - [BOTS]",
                 "description": "The **BOT** {{userTag}} was banned from the server"
             },
             "loggingEmbed": {
@@ -125,13 +125,13 @@
         },
         "guildMemberAdd": {
             "botLoggingEmbed": {
-                "title": "Log - [BOTS]",
+                "title": "Logging - [BOTS]",
                 "description": "The **BOT** {{memberTag}} was added to the server"
             }
         },
         "guildMemberRemove": {
             "botLoggingEmbed": {
-                "title": "Log - [BOTS]",
+                "title": "Logging - [BOTS]",
                 "description": "The **BOT** {{memberTag}} was kicked from the server"
             },
             "loggingEmbed": {
@@ -179,14 +179,14 @@
                 "nonexistentCommand": "Command `{{cmd}}` does not exist",
                 "nonPrivileged": "{{messageAuthor}}, you do not have privileges to view this command",
                 "helpEmbed": {
-                    "command": "Command \"{{commandName}}\"",
+                    "command": "\"{{commandName}}\" command",
                     "description": "Description",
                     "noDescription": "None",
                     "aliases": "Aliases",
                     "noAliases": "None",
                     "syntax": "Syntax",
                     "notationTitle": "Syntax Notation",
-                    "notation": "- Square brackets: _[optional argument]_\n- Angle brackets: _<mandatory argument>_\n- Braces: {default argument}_\n- Parentheses: _(miscellaneous information)_\n - Double quotes: _\"literal text argument\"_\n- Vertical bar: _chance1 | chance2_"
+                    "notation": "- Square brackets: _[optional argument]_\n- Angle brackets: _<mandatory argument>_\n- Braces: _{default argument}_\n- Parentheses: _(miscellaneous information)_\n - Double quotes: _\"literal text argument\"_\n- Vertical bar: _chance1 | chance2_"
                 },
                 "commandListEmbed": {
                     "author": "List of {{botUsername}} commands",
@@ -202,11 +202,11 @@
         },
         "leveling": {
             "categoryName": "Levels",
-             "leader board": {
+             "leaderboard": {
                 "description": "Shows the community XP leaderboard",
                 "parameters": "[page number]",
                 "unknownMember": "Unknown",
-                "leader board": {
+                "embed": {
                     "title": "Leaderboard",
                     "footer": "Page {{position}} of {{totalPages}}"
                 }
@@ -237,7 +237,7 @@
                 "hasNoXp": "This member has no XP",
                 "unauthorizedModify": "You cannot modify the XP of a member with a role equal to or higher than yours",
                 "loggingEmbed": {
-                    "title": "Log - [XP SYSTEM]",
+                    "title": "Logging - [XP SYSTEM]",
                     "description": "The XP amount of **{{memberTag}}** has changed",
                     "date": "Date",
                     "moderator": "Moderator",
@@ -359,7 +359,7 @@
                 "cantRemoveAny": "You can't remove warnings you haven't done",
                 "undefinedReason": "Undefined",
                 "loggingEmbedAll": {
-                    "title": "Log - [INFRACTIONS]",
+                    "title": "Logging - [INFRACTIONS]",
                     "description": "All warnings on a member have been removed",
                     "date": "Date",
                     "moderator": "Moderator",
@@ -379,7 +379,7 @@
                 },
                 "warnNotFound": "Warning with ID **{{warnId}}** does not exist",
                 "loggingEmbedSingle": {
-                    "title": "Log - [INFRACTIONS]",
+                    "title": "Logging - [INFRACTIONS]",
                     "description": "A member warning has been removed",
                     "date": "Date",
                     "moderator": "Moderator",
@@ -399,7 +399,7 @@
                 },
                 "notificationEmbedSingle": {
                     "title": "Operation completed",
-                    "description": "Removed warning with ID **{{warnId}}** to member **{{member}}**"
+                    "description": "Removed warning with ID `{{warnId}}` to member **{{member}}**"
                 }
             },
             "slowmode": {
@@ -407,7 +407,7 @@
                 "parameters": "<\"off\" | seconds> [reason]",
                 "notEnabled": "Slow mode is not enabled",
                 "disabledLoggingEmbed": {
-                    "title": "Log - [SLOW MODE]",
+                    "title": "Logging - [SLOW MODE]",
                     "description": "Slow mode has been disabled",
                     "moderator": "Moderator",
                     "channel": "Channel"
@@ -421,7 +421,7 @@
                 "noReason": "You must provide a reason",
                 "undefinedReason": "Undefined",
                 "enabledLoggingEmbed": {
-                    "title": "Log - [SLOW MODE]",
+                    "title": "Logging - [SLOW MODE]",
                     "description": "Slow mode has been enabled",
                     "moderator": "Moderator",
                     "delay": "Delay",
@@ -537,7 +537,7 @@
                 "cantRemoveAny": "{{messageAuthor}}, you can't unmute someone you haven't muted yourself",
                 "undefinedReason": "Undefined",
                 "loggingEmbed": {
-                    "author": "{{member}} has been UN-MUTED",
+                    "author": "{{userTag}} has been UN-MUTED",
                     "unknownAuthor": "A member",
                     "memberId": "Member ID",
                     "moderator": "Moderator",
@@ -568,6 +568,7 @@
             "clear": {
                 "description": "Empty the play queue",
                 "parameters": "",
+                "noQueue": "There are no items in the queue",
                 "queueDeleted": "Queue deleted"
             },
             "forward": {
@@ -623,7 +624,7 @@
             "play": {
                 "description": "Searchs for a track or playlist by name or YouTube URL. If you don't provide parameters, resumes queue",
                 "parameters": "[YouTube URL | search term]",
-                "notPaused": "Bot is not paused",
+                "notPaused": "The bot is not paused",
                 "resumed": "Queue resumed",
                 "unavailable": "Player is running on another channel",
                 "searching": "Searching for `{{serachTerm}}`",
@@ -653,7 +654,7 @@
                 "nonInt": "You must provide an integer number",
                 "belowOne": "You want to play dirty huh...",
                 "doesntExist": "Track #`{{number}}` is not added to the queue",
-                "deletedTrack": "Deleted track"
+                "deletedTrack": "Track deleted"
             },
             "replay": {
                 "description": "Plays the current track from the beginning",
@@ -683,7 +684,7 @@
             "skip": {
                 "description": "Skips the current track or a specified amount",
                 "parameters": "[amount | \"all\"]",
-                "skipped": "Skipped track/s",
+                "skipped": "Track/s skipped",
                 "cantSkipOnRandom": "You cannot skip more than one track with shuffle mode enabled",
                 "cantMultipleOnLoop": "You cannot skip more than one track with loop mode enabled",
                 "notInteger": "You must provide an integer number",
@@ -715,7 +716,7 @@
                 "embedFrom": "Message from",
                 "unauthorized": "{{messageAuthor}}, you do not have privileges to perform this operation",
                 "loggingEmbed": {
-                    "title": "Log - [MESSAGING]",
+                    "title": "Logging - [MESSAGING]",
                     "description": "{{messageAuthorTag}} sent a private message to {{memberTag}} via {{botUser}}",
                     "date": "Date",
                     "mode": "Mode",
@@ -746,18 +747,18 @@
                 }
             },
             "poll": {
-                "description": "Starts an interactive wizard to create a survey or ends an ongoing one",
+                "description": "Starts an interactive wizard to create a poll or ends an ongoing one",
                 "parameters": "[\"new\" | \"end\"] [id]",
                 "unknownPoll": "Poll with ID {{id}} does not exist",
                 "deletedPoll": "The poll with ID {{id}} no longer exists, so it has been deleted from the database",
-                "onlyYours": "You can only end your own surveys",
+                "onlyYours": "You can only end your own polls",
                 "endedPollEmbed": {
                     "title": "Operation completed",
                     "description": "The poll \"__{{poll}}__\" will end shortly on channel {{pollChannel}}"
                 },
                 "titleEmbed": {
                     "title": "Title",
-                    "description": "Provide a title for the survey"
+                    "description": "Provide a title for the poll"
                 },
                 "durationEmbed": {
                     "title": "Duration",
@@ -774,7 +775,7 @@
                     "endAssistant": "Type `end` to end the wizard"
                 },
                 "pollEmbed": {
-                    "author": "Survey available",
+                    "author": "Poll available",
                     "duration": "Duration"
                 },
                 "loggingEmbed": {
@@ -800,7 +801,7 @@
                     "footer": "{{omittedCount}} messages were skipped"
                 },
                 "loggingEmbed": {
-                    "title": "Log - [MESSAGE PURGE]",
+                    "title": "Logging - [MESSAGE PURGE]",
                     "description": "{{messageAuthorTag}} deleted {{deletedCount}} messages from channel {{channel}}"
                 }
             },
@@ -820,7 +821,7 @@
                     "hoisted": "Displayed",
                     "isHoisted": "Visible",
                     "isntHoisted": "Hoisted",
-                    "colour": "Colour",
+                    "color": "Color",
                     "creationDate": "Creation date",
                     "integration": "Integration",
                     "isIntegration": "Yes",
@@ -850,7 +851,7 @@
                     "memberOmitted": "Member {{memberDisplayName}} omitted",
                     "memberUpdated": "Member {{memberDisplayName}} updated",
                     "userOmitted": "User {{userId}} omitted",
-                    "finishedLog": "Operation finished",
+                    "finishedLog": "Operation completed",
                     "finishedEmbed": {
                         "title": "Stats assorted",
                         "description": "The stat assorting operation has been completed.\nPlease perform a manual review to confirm its effectiveness"
@@ -893,7 +894,7 @@
                     "creationDate": "Creation date",
                     "owner": "Owner",
                     "nsfwFilter": "NSFW filter",
-                    "tier": "Improvement level",
+                    "tier": "Boost level",
                     "boostsCount": "({{boostsCount}} boosts)",
                     "verification": "Verification level",
                     "invitations": "Invitations",
@@ -1078,8 +1079,9 @@
                 "channelLeave": "I have left the channel",
                 "error": "ERROR",
                 "errorAndSkip": "An error occurred. This track has been skipped",
+                "nothingUpNext": "Nothing",
                 "random": "Random",
-                "playEmbed": {
+                "playingEmbed": {
                     "authorTitle": "Now playing",
                     "author": "Author",
                     "duration": "Duration",
@@ -1231,7 +1233,7 @@
                     "results": "Results"
                 },
                 "loggingEmbed": {
-                    "title": "Log - [POLLS]",
+                    "title": "Logging - [POLLS]",
                     "description": "Poll \"__{{poll}}__\" has ended on channel {{channel}}"
                 },
                 "progressEmbed": {
@@ -1242,7 +1244,7 @@
             "presence": {
                 "name": "{{memberCount}} members"
             },
-            "configLoaded": "Interval loading completed"
+            "configLoaded": "Intervals loading completed"
         },
         "splashLogo": {
             "description": "I'm a bot designed for automated community moderation, music reproduction, leveling, and much more!",

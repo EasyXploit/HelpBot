@@ -11,6 +11,12 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Almacena la información de la cola de la guild
             const reproductionQueue = client.reproductionQueues[message.guild.id];
 
+            //Si la cola está vacía, no la borra
+            if (!reproductionQueue || reproductionQueue.tracks.length <= 1) return message.channel.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} ${locale.noQueue}.`)
+            ]});
+
             //Borra la cola
             await reproductionQueue.tracks.splice(1);
             

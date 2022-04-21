@@ -54,7 +54,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 });
                 
                 //Comprueba si se ha proporcionado un número entero
-                if (!Number.isInteger(args[0])) return message.channel.send({ embeds: [ new client.MessageEmbed()
+                if (!Number.isInteger(parseInt(args[0]))) return message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} ${locale.notInteger}.`)]
                 });

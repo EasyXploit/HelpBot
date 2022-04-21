@@ -9,7 +9,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         if (!args[0] || !args[1]) return await client.functions.syntaxHandler(message.channel, commandConfig);
 
         //Comprueba si se ha proporcionado un número entero
-        if (!Number.isInteger(args[0]) || !Number.isInteger(args[1])) return message.channel.send({ embeds: [ new client.MessageEmbed()
+        if (!Number.isInteger(parseInt(args[0])) || !Number.isInteger(parseInt(args[1]))) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} ${locale.notInteger}.`)]
         });

@@ -182,8 +182,8 @@
                     "command": "Comando \"{{commandName}}\"",
                     "description": "Descripción",
                     "noDescription": "Ninguna",
-                    "alias": "Alias",
-                    "noAlias": "Ninguno",
+                    "aliases": "Alias",
+                    "noAliases": "Ninguno",
                     "syntax": "Sintaxis",
                     "notationTitle": "Notación de la sintaxis",
                     "notation": "- Corchetes: _[argumento opcional]_\n- Corchetes angulares: _<argumento obligatorio>_\n- Llaves: _{argumento predeterminado}_\n- Paréntesis: _(información diversa)_\n- Comillas dobles: _\"argumento de texto literal\"_\n- Barra vertical: _posibilidad1 | posibilidad2_"
@@ -206,7 +206,7 @@
                 "description": "Muestra la tabla de clasificación de XP de la comunidad",
                 "parameters": "[número de página]",
                 "unknownMember": "Desconocido",
-                "leaderboard": {
+                "embed": {
                     "title": "Tabla de clasificación",
                     "footer": "Página {{position}} de {{totalPages}}"
                 }
@@ -399,20 +399,20 @@
                 },
                 "notificationEmbedSingle": {
                     "title": "Operación completada",
-                    "description": "Se ha retirado la advertencia con ID **{{warnId}}** al miembro **{{member}}**"
+                    "description": "Se ha retirado la advertencia con ID `{{warnId}}` al miembro **{{member}}**"
                 }
             },
             "slowmode": {
                 "description": "Activa el modo lento en un canal de texto",
                 "parameters": "<\"off\" | segundos> [razón]",
                 "notEnabled": "El modo lento no está activado",
-                "disbledLoggingEmbed": {
+                "disabledLoggingEmbed": {
                     "title": "Registro - [MODO LENTO]",
                     "description": "Se ha des-habilitado el modo lento",
                     "moderator": "Moderador",
                     "channel": "Canal"
                 },
-                "disbledNotificationEmbed": {
+                "disabledNotificationEmbed": {
                     "title": "Operación completada",
                     "description": "El modo lento ha sido desactivado"
                 },
@@ -537,8 +537,8 @@
                 "cantRemoveAny": "{{messageAuthor}}, no puedes des-silenciar a alguien que no has silenciado tú",
                 "undefinedReason": "Indefinida",
                 "logingEmbed": {
-                    "author": "{{member}} ha sido DES-SILENCIADO",
-                    "aunknownAuthor": "Un miembro",
+                    "author": "{{userTag}} ha sido DES-SILENCIADO",
+                    "unknownAuthor": "Un miembro",
                     "memberId": "ID del miembro",
                     "moderator": "Moderador",
                     "reason": "Razón"
@@ -568,6 +568,7 @@
             "clear": {
                 "description": "Vacía la cola de reproducción",
                 "parameters": "",
+                "noQueue": "No hay elementos en la cola",
                 "queueDeleted": "Cola eliminada"
             },
             "forward": {
@@ -850,7 +851,7 @@
                     "memberOmitted": "Miembro {{memberDisplayName}} omitido",
                     "memberUpdated": "Miembro {{memberDisplayName}} actualizado",
                     "userOmitted": "Usuario {{userId}} omitido",
-                    "finishedLog": "Operación finalizada",
+                    "finishedLog": "Operación completada",
                     "finishedEmbed": {
                         "title": "Stats encuadradas",
                         "description": "La operación de encuadre de estadísticas ha finalizado.\nPor favor, realice una revisión manual para confirmar su efectividad"
@@ -901,7 +902,7 @@
                     "roles": "Roles",
                     "totalRoles": "{{totalRoles}} roles en total",
                     "stickersAndEmojis": "Stickers y Emojis",
-                    "totalesEmojis": "{{totalesEmojis}} emojis",
+                    "totalEmojis": "{{totalEmojis}} emojis",
                     "totalStickers": "{{totalStickers}} stickers",
                     "members": "Miembros",
                     "totalMembers": "{{totalMembers}} miembros",
@@ -1078,6 +1079,7 @@
                 "channelLeave": "He abandonado el canal",
                 "error": "ERROR",
                 "errorAndSkip": "Ocurrió un error. Se ha omitido esta pista",
+                "nothingUpNext": "Nada",
                 "random": "Aleatorio",
                 "playingEmbed": {
                     "authorTitle": "Reproduciendo",

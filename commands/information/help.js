@@ -36,7 +36,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 .setThumbnail('attachment://help.png')
                 .setTitle(`${client.functions.localeParser(locale.helpEmbed.command, { commandName: commandConfig.name })}:`)
                 .addField(`${locale.helpEmbed.description} 🧭`, commandLocale.description || locale.helpEmbed.noDescription)
-                .addField(`${locale.helpEmbed.alias} 👥`, `${commandAliases.length > 0 ? commandAliases.join(', ') : locale.helpEmbed.noAlias}`)
+                .addField(`${locale.helpEmbed.aliases} 👥`, `${commandAliases.length > 0 ? commandAliases.join(', ') : locale.helpEmbed.noAliases}`)
                 .addField(`${locale.helpEmbed.syntax} ⌨`, `\`${client.config.main.prefix}${commandConfig.name}${commandLocale.parameters.length > 0 ? ' ' + commandLocale.parameters : ''}\``)
                 .addField(`${locale.helpEmbed.notationTitle} ✍️`, locale.helpEmbed.notation);
 

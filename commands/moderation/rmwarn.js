@@ -172,7 +172,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             successEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbedSingle.title}`)
-                .setDescription(client.functions.localeParser(locale.privateEmbedSingle.description, { warnId: warnId, member: member ? member.user.tag : `${memberId} (ID)` }));
+                .setDescription(client.functions.localeParser(locale.notificationEmbedSingle.description, { warnId: warnId, member: member ? member.user.tag : `${memberId} (ID)` }));
 
             //Resta el warn indicado
             delete client.db.warns[memberId][warnId];

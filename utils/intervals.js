@@ -125,8 +125,8 @@ exports.run = (client) => {
             //Ejecuta el manejador de depuración
             await client.functions.debuggingManager('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
-                .setFooter({ text: client.user.username, iconURL: client.user.avatarURL() })
                 .setDescription(`${client.customEmojis.orangeTick} ${locale.ping.debuggingMsg}: **${actualPing}** ms`)
+                .setFooter({ text: client.user.username, iconURL: client.user.avatarURL() })
             );
         };
     }, 60000);

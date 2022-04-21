@@ -780,16 +780,17 @@ exports.run = (client) => {
         ]});
 
         //Se muestra el error en el canal de depuración¡
-        await client.functions.debuggingManager( new client.MessageEmbed()
+        await client.functions.debuggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.debugging)
             .setTitle(`📋 ${locale.commandErrorHandler.debuggingEmbed.title}`)
             .setDescription(locale.commandErrorHandler.debuggingEmbed.description)
-            .addField(`${locale.commandErrorHandler.debuggingEmbed.command}:`, command, true)
-            .addField(`${locale.commandErrorHandler.debuggingEmbed.arguments}:`, arguments, true)
-            .addField(`${locale.commandErrorHandler.debuggingEmbed.channel}:`, `${message.channel}`, true)
-            .addField(`${locale.commandErrorHandler.debuggingEmbed.author}:`, message.author.tag, true)
-            .addField(`${locale.commandErrorHandler.debuggingEmbed.date}:`, `<t:${Math.round(new Date() / 1000)}>`, true)
-            .addField(`${locale.commandErrorHandler.debuggingEmbed.error}:`, `\`\`\`${errorString}\`\`\``, true)
+            .addField(locale.commandErrorHandler.debuggingEmbed.command, command, true)
+            .addField(locale.commandErrorHandler.debuggingEmbed.arguments, arguments, true)
+            .addField(locale.commandErrorHandler.debuggingEmbed.channel, `${message.channel}`, true)
+            .addField(locale.commandErrorHandler.debuggingEmbed.author, message.author.tag, true)
+            .addField(locale.commandErrorHandler.debuggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
+            .addField(locale.commandErrorHandler.debuggingEmbed.error, `\`\`\`${errorString}\`\`\``)
+            .setFooter({ text: locale.commandErrorHandler.debuggingEmbed.footer })
         );
     };
 
@@ -803,13 +804,14 @@ exports.run = (client) => {
         const errorString = error.stack.length > 1014 ? error.stack : `${error.stack.slice(0, 1014)} ...`;
 
         //Se muestra el error en el canal de depuración
-        await client.functions.debuggingManager( new client.MessageEmbed()
+        await client.functions.debuggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.debugging)
             .setTitle(`📋 ${locale.eventErrorHandler.debuggingEmbed.title}`)
             .setDescription(locale.eventErrorHandler.debuggingEmbed.description)
-            .addField(`${locale.eventErrorHandler.debuggingEmbed.event}:`, eventName, true)
-            .addField(`${locale.eventErrorHandler.debuggingEmbed.date}:`, `<t:${Math.round(new Date() / 1000)}>`, true)
-            .addField(`${locale.eventErrorHandler.debuggingEmbed.error}:`, `\`\`\`${errorString}\`\`\``)
+            .addField(locale.eventErrorHandler.debuggingEmbed.event, eventName, true)
+            .addField(locale.eventErrorHandler.debuggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
+            .addField(locale.eventErrorHandler.debuggingEmbed.error, `\`\`\`${errorString}\`\`\``)
+            .setFooter({ text: locale.eventErrorHandler.debuggingEmbed.footer })
         );
     };
 

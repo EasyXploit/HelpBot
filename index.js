@@ -4,17 +4,6 @@ const language = require('./configs/main.json').language;
 //Almacena las traducciones al idioma configurado
 const locale = require(`./resources/locales/${language}.json`);
 
-//Gestión de promesas rechazadas y no manejadas
-process.on('unhandledRejection', error => {
-
-    //Omite determinados errores que no se espera manejar
-    if (!error.toString().includes('Cannot send messages to this user') && !error.toString().includes('Unknown Message')) {
-
-        //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》${locale.index.unhandledRejection}:`, error.stack);
-    };
-});
-
 //Muestra el logo de arranque en la consola
 require('./utils/splashLogo.js').run(locale.utils.splashLogo);
 
@@ -41,6 +30,30 @@ console.log(`${locale.index.clientStarted}\n`);
 ['MessageEmbed', 'MessageAttachment', 'Collection'].forEach(x => client[x] = discord[x]);       //Carga de métodos de Discord.js en el cliente
 ['config', 'db', 'usersVoiceStates', 'reproductionQueues'].forEach(x => client[x] = {});        //Creación de objetos para almacenar las configuraciones, bases de datos y cachés
 ['commands', 'aliases', 'cooldownedUsers'].forEach(x => client[x] = new client.Collection());   //Creación de colecciones para comandos, alias y cooldowns
+
+//Gestión de promesas rechazadas y no manejadas
+process.on('unhandledRejection', error => {
+
+    //Omite determinados errores que no se espera manejar
+    if (!error.toString().includes('Cannot send messages to this user') && !error.toString().includes('Unknown Message')) {
+
+        //Envía un mensaje de error a la consola
+        console.error(`${new Date().toLocaleString()} 》${locale.index.unhandledRejection.consoleMsg}:`, error.stack);
+
+        //Almacena el string del error, y lo recorta si es necesario
+        const errorString = error.stack.length > 1014 ? error.stack : `${error.stack.slice(0, 1014)} ...`;
+
+        //Ejecuta el manejador de depuración
+        client.functions.debuggingManager('embed', new client.MessageEmbed()
+            .setColor(client.config.colors.debugging)
+            .setTitle(`📋 ${locale.index.unhandledRejection.debuggingEmbed.title}`)
+            .setDescription(locale.index.unhandledRejection.debuggingEmbed.description)
+            .addField(locale.index.unhandledRejection.debuggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
+            .addField(locale.index.unhandledRejection.debuggingEmbed.error, `\`\`\`${errorString}\`\`\``)
+            .setFooter({ text: locale.index.unhandledRejection.debuggingEmbed.footer })
+        );
+    };
+});
 
 //Dependencia de acceso al sistema de archivos
 client.fs = require('fs');

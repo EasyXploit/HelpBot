@@ -30,7 +30,7 @@ The bot code is <ins>excessively full of comments</ins> (in Spanish), because it
 | Swear words filtering        | Excesive mentions filtering | XP & role rewards by activity (text & voice) | Preprogrammed scripts support |
 | Server inviets filtering     | Excesive spoilers filtering | Embed formatting tools                       | Message purging tool          |
 | Excesive uppercase filtering | Repetitive text filtering   | Infractions history                          | YouTube music player          |
-| Links filtering              | Automatic penalty dispenser | Invite generation tool                       | Local .mp3 tracks player      |
+| Links filtering              | Automatic penalty dispenser | Multiple locales                             | Local .mp3 tracks player      |
 | Excesive emojis filtering    | Manual moderation commands  | Role, user and server info. showing          | Polls maker                   |
 <br />
 

@@ -366,7 +366,7 @@ exports.run = (client) => {
                     };
 
                     //Añade un campo al embed de levelup con los roles recompensados
-                    levelUpEmbed.addField(`${locale.addXP.levelUpEmbed.rewards}.`, `\`${roleNames.join('`, `')}\``);
+                    levelUpEmbed.addField(locale.addXP.levelUpEmbed.rewards, `\`${roleNames.join('`, `')}\``);
                 };
 
                 //Manda el mensaje de subida de nivel, si se ha configurado
@@ -590,7 +590,7 @@ exports.run = (client) => {
                     .setColor(client.config.colors.secondaryError)
                     .setAuthor({ name: locale.manageNewMember.privateEmbed.author, iconURL: member.guild.iconURL({dynamic: true}) })
                     .setDescription(`${client.functions.localeParser(locale.manageNewMember.privateEmbed.description, { member: member, guildName: member.guild.name })}.`)
-                    .addField(locale.manageNewMember.privateEmbed.moderator, client.user, true)
+                    .addField(locale.manageNewMember.privateEmbed.moderator, `${client.user}`, true)
                     .addField(locale.manageNewMember.privateEmbed.reasonTitle, `${locale.manageNewMember.privateEmbed.reasonDescription}.`, true)
                 ]});
 
@@ -816,17 +816,20 @@ exports.run = (client) => {
     //Función para generar un footer para los embeds musicales
     client.functions.getMusicFooter = async (targetGuild) => {
 
+        //Almacena la cola de reproducción de la guild
+        const reproductionQueue = client.reproductionQueues[targetGuild.id];
+
         //Stores the footer
-        let footer = targetGuild.name;
+        let footer = `${locale.getMusicFooter.mode}: ${reproductionQueue && reproductionQueue.mode ? '' : '▶️'}`;
 
         //If there is a reproduction queue and a mode has been set
-		if (client.reproductionQueues[targetGuild.id] && client.reproductionQueues[targetGuild.id].mode) {
+		if (reproductionQueue && reproductionQueue.mode) {
 
             //Changes the footer to add the symbol of the mode
-			switch (client.reproductionQueues[targetGuild.id].mode) {
-				case 'shuffle':     footer += ' | 🔀'; break;
-				case 'loop':        footer += ' | 🔂'; break;
-				case 'loopqueue':   footer += ' | 🔁'; break;
+			switch (reproductionQueue.mode) {
+				case 'shuffle':     footer += '🔀'; break;
+				case 'loop':        footer += '🔂'; break;
+				case 'loopqueue':   footer += '🔁'; break;
 			};
 		};
 

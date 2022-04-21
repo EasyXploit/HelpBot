@@ -252,7 +252,7 @@
                     "oldValue": "Old XP",
                     "newValue": "New XP"
                 },
-                "notificationEmbed": "XP amount of **{{memberTag}}** changed"
+                "notificationEmbed": "The XP amount of **{{memberTag}}** has changed"
             }
         },
         "moderation": {
@@ -289,12 +289,12 @@
                 "mutedUndefinetly": "Muted indefinitely",
                 "noMute": "None",
                 "infractionsEmbed": {
-                    "title": "Warnings",
-                    "description": "Displaying warnings for member **{{member}}**.\nCurrent sanction: {{sanction}}",
+                    "title": "Infractions",
+                    "description": "Displaying infractions for member **{{member}}**.\nCurrent sanction: {{sanction}}",
                     "last24h": "Last 24h",
                     "last7d": "Last 7 days",
                     "total": "Total",
-                    "list": "List of warnings",
+                    "list": "List of infractions",
                     "noList": "None",
                     "page": "Page {{actualPage}} of {{totalPages}}"
                 }
@@ -626,7 +626,7 @@
                 "parameters": "[YouTube URL | search term]",
                 "notPaused": "The bot is not paused",
                 "resumed": "Queue resumed",
-                "unavailable": "Player is running on another channel",
+                "unavailable": "The player is running on another channel",
                 "searching": "Searching for `{{serachTerm}}`",
                 "bounded": "Joined `{{voiceChannelName}}` and bound to {{textChannel}}"
             },
@@ -698,7 +698,7 @@
                     "title": "List of audios",
                     "footer": "To listen an audio, type: {{prefix}}sound <audio name>"
                 },
-                "alreadyPlaying": "Player is running on another channel",
+                "alreadyPlaying": "The player is running on another channel",
                 "doesntExist": "The audio **{{recordName}}** does not exist",
                 "bounded": "Joined `{{voiceChannelName}}` and bound to {{textChannel}}"
             }
@@ -1107,7 +1107,7 @@
                 "botNotConnected": "{{botUser}} is not connected to any channel",
                 "notConnected": "You must be connected to a voice channel",
                 "notSameChannel": "You must be on the same voice channel as {{botUser}}",
-                "inactive": "Player is inactive",
+                "inactive": "The player is inactive",
                 "alreadyConnected": "{{botUser}} is already connected to `{{channelName}}`",
                 "isAfk": "{{botUser}} cannot be connected to the AFK channel",
                 "cantSpeak": "{{botUser}} does not have permission to speak on `{{channelName}}`",
@@ -1171,7 +1171,7 @@
                 "noArguments": "None",
                 "errorEmbed": {
                     "title": "Oops! Something went wrong",
-                    "description": "We have reported it to those responsible for the server"
+                    "description": "We have reported it to those responsible for the bot"
                 },
                 "debuggingEmbed": {
                     "title": "Debugging",
@@ -1193,6 +1193,9 @@
                     "date": "Date",
                     "error": "Error"
                 }
+            },
+            "getMusicFooter": {
+                "mode": "Mode"
             },
             "functionLoaded": "Global functions loading completed"
         },

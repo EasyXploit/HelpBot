@@ -166,11 +166,17 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Por cada advertencia del miembro
             Object.values(memberWarns).forEach(warn => {
 
+                //
+                const warnId = Object.keys(warn)[0];
+
+                //
+                const warnData = warn[warnId];
+
                 //Si ocurrió en un día o menos, lo contabiliza
-                if (Date.now() - warn.timestamp <= '86400000') onDay++;
+                if ((Date.now() - warnData.timestamp) <= 86400000) onDay++;
 
                 //Si ocurrió en una semana o menos, lo contabiliza
-                if (Date.now() - warn.timestamp <= '604800000') onWeek++;
+                if ((Date.now() - warnData.timestamp) <= 604800000) onWeek++;
             });
         };
 

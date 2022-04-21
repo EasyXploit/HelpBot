@@ -63,7 +63,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 				.setThumbnail(trackItem.meta.thumbnail)
 				.setAuthor({ name: `${locale.newItemEmbed.authorTitle} 🎶`, iconURL: 'attachment://dj.png' })
 				.setDescription(`[${trackItem.meta.title}](${trackItem.meta.location})\n\n● **${locale.newItemEmbed.author}:** \`${trackItem.meta.author}\`\n● **${locale.newItemEmbed.duration}:** \`${client.functions.msToHHMMSS(trackItem.meta.length)}\``)
-				.setFooter({ text: await client.functions.getMusicFooter(message.guild), iconURL: client.homeGuild.iconURL({dynamic: true}) })
+				.setFooter({ text: await client.functions.getMusicFooter(message.guild) })
 			], files: ['./resources/images/dj.png'] });
 		};
 	

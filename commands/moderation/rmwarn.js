@@ -115,16 +115,16 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             //Genera una notificación para el miembro
             if (member) toDMEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.correct)
-                .setAuthor({ name: locale.privateEmbed.author, iconURL: message.guild.iconURL({ dynamic: true}) })
-                .setDescription(client.functions.localeParser(locale.privateEmbed.description, { member: member }))
-                .addField(locale.privateEmbed.moderator, message.author.tag, true)
-                .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true);
+                .setAuthor({ name: locale.privateEmbedAll.author, iconURL: message.guild.iconURL({ dynamic: true}) })
+                .setDescription(client.functions.localeParser(locale.privateEmbedAll.description, { member: member }))
+                .addField(locale.privateEmbedAll.moderator, message.author.tag, true)
+                .addField(locale.privateEmbedAll.reason, reason || locale.undefinedReason, true);
 
             //Genera una notificación de la acción para el canal de invocación
             successEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
-                .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbed.title}`)
-                .setDescription(`${client.customEmojis.greenTick} ${client.functions.localeParser(locale.notificationEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)` })}`);
+                .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbedAll.title}`)
+                .setDescription(client.functions.localeParser(locale.notificationEmbedAll.description, { member: member ? member.user.tag : `${memberId} (ID)` }));
 
             //Elimina la entrada de la base de datos
             delete client.db.warns[memberId];

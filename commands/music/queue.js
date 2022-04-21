@@ -27,7 +27,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 .setColor(randomColor())
                 .setAuthor({ name: locale.queueEmbed.author, iconURL: 'attachment://dj.png' })
                 .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n● ${locale.queueEmbed.duration}: \`${reproductionQueue.tracks[0].meta.length !== 0 ? client.functions.msToHHMMSS(reproductionQueue.tracks[0].meta.length) : locale.queueEmbed.isLive}\`\n ● ${locale.queueEmbed.requestedBy}: <@${reproductionQueue.tracks[0].requesterId}>`)
-                .setFooter({ text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild), iconURL: client.homeGuild.iconURL({dynamic: true}) });
+                .setFooter({ text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild) });
             
             //Si hay cola, carga la cola en el embed
             if (reproductionQueue.tracks[1]) {

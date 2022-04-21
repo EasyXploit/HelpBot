@@ -47,8 +47,8 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             .setColor(randomColor())
             .setAuthor({ name: `${locale.rightNow}:`, iconURL: 'attachment://dj.png' })
             .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n${formatteProgress}`)
-            .setFooter({ text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild), iconURL: client.homeGuild.iconURL({dynamic: true})
-        })], files: ['./resources/images/dj.png'] });
+            .setFooter({ text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild) })
+        ], files: ['./resources/images/dj.png'] });
 
     } catch (error) {
 

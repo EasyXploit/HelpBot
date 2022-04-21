@@ -41,9 +41,9 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
                 .setColor(client.config.colors.error)
                 .setAuthor({ name: client.functions.localeParser(locale.muteFunction.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                 .addField(locale.muteFunction.loggingEmbed.memberId, member.id, true)
-                .addField(locale.muteFunction.loggingEmbed.moderator, client.user, true)
+                .addField(locale.muteFunction.loggingEmbed.moderator, `${client.user}`, true)
                 .addField(locale.muteFunction.loggingEmbed.reason, locale.muteFunction.reason, true)
-                .addField(locale.muteFunction.loggingEmbed.expiration, time ? `<t:${Math.round(new Date(parseInt(time)) / 1000)}:R>` : locale.muteFunction.loggingEmbed.noExpiration, true)
+                .addField(locale.muteFunction.loggingEmbed.expiration, time ? `<t:${Math.round(new Date(parseInt(Date.now() + time)) / 1000)}:R>` : locale.muteFunction.loggingEmbed.noExpiration, true)
             );
 
             //Envía un mensaje al canal de la infracción
@@ -57,9 +57,9 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
                 .setColor(client.config.colors.error)
                 .setAuthor({ name: locale.muteFunction.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
                 .setDescription(client.functions.localeParser(locale.muteFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
-                .addField(locale.muteFunction.privateEmbed.moderator, client.user, true)
+                .addField(locale.muteFunction.privateEmbed.moderator, `${client.user}`, true)
                 .addField(locale.muteFunction.privateEmbed.reason, locale.muteFunction.reason, true)
-                .addField(locale.muteFunction.privateEmbed.expiration, time ? `<t:${Math.round(new Date(parseInt(time)) / 1000)}:R>` : locale.muteFunction.privateEmbed.noExpiration, true)
+                .addField(locale.muteFunction.privateEmbed.expiration, time ? `<t:${Math.round(new Date(parseInt(Date.now() + time)) / 1000)}:R>` : locale.muteFunction.privateEmbed.noExpiration, true)
             ]});
         };
 
@@ -77,7 +77,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
                 .setColor(client.config.colors.secondaryError)
                 .setAuthor({ name: locale.kickFunction.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
                 .setDescription(client.functions.localeParser(locale.kickFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
-                .addField(locale.kickFunction.privateEmbed.moderator, client.user, true)
+                .addField(locale.kickFunction.privateEmbed.moderator, `${client.user}`, true)
                 .addField(locale.kickFunction.privateEmbed.reason, locale.kickFunction.reason, true)
             ]});
 

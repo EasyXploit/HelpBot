@@ -289,12 +289,12 @@
                 "mutedUndefinetly": "Silenciado indefinidamente",
                 "noMute": "Ninguna",
                 "infractionsEmbed": {
-                    "title": "Advertencias",
-                    "description": "Mostrando las advertencias del miembro **{{member}}**.\nSanción actual: {{sanction}}",
+                    "title": "Infracciones",
+                    "description": "Mostrando las infracciones del miembro **{{member}}**.\nSanción actual: {{sanction}}",
                     "last24h": "Últimas 24h",
                     "last7d": "Últimos 7 días",
                     "total": "Total",
-                    "list": "Listado de advertencias",
+                    "list": "Listado de infracciones",
                     "noList": "Ninguna",
                     "page": "Página {{actualPage}} de {{totalPages}}"
                 }
@@ -1171,7 +1171,7 @@
                 "noArguments": "Ninguno",
                 "errorEmbed": {
                     "title": "¡Vaya! Algo fue mal",
-                    "description": "Lo hemos reportado a los responsables del servidor"
+                    "description": "Lo hemos reportado a los responsables del bot"
                 },
                 "debuggingEmbed": {
                     "title": "Depuración",
@@ -1193,6 +1193,9 @@
                     "date": "Fecha",
                     "error": "Error"
                 }
+            },
+            "getMusicFooter": {
+                "mode": "Modo"
             },
             "functionLoaded": "Carga de funciones globales completada"
         },

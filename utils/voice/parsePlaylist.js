@@ -74,7 +74,7 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
             .setAuthor({name: `${locale.addedPlaylistEmbed.authorTitle} 🎶`, iconURL: 'attachment://dj.png'})
             .setDescription(`[${playlist.title}](${playlist.url})\n\n● **${locale.addedPlaylistEmbed.author}:** \`${playlist.channel.name !== null ? playlist.channel.name : 'YouTube'}\`\n● **${locale.addedPlaylistEmbed.tracks}:** \`${playlistItems.length}\``)
             .addField(`${locale.addedPlaylistEmbed.requestedBy}:`, `${requestingMember}`, true)
-            .setFooter({text: `${await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild)}`, iconURL: reproductionQueue.boundedTextChannel.guild.iconURL({dynamic: true})})
+            .setFooter({text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild) })
         ], files: ['./resources/images/dj.png']});
 
         //Si hubieron pistas omitidas por que eran duplicadas, lo advierte

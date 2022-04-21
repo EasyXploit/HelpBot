@@ -132,7 +132,7 @@ exports.run = async (client, message, connection) => {
                 .setDescription(`${info.meta.location.startsWith('http') ? `[${info.meta.title}](${info.meta.location})` : info.meta.title}\n\n● **${locale.playingEmbed.author}:** \`${info.meta.author}\`\n● **${locale.playingEmbed.duration}:** \`${client.functions.msToHHMMSS(info.meta.length)}\``)
                 .addField(`${locale.playingEmbed.requestedBy}:`, `<@${reproductionQueue.tracks[toPlay].requesterId}>`, true)
                 .addField(`${locale.playingEmbed.upNext}:`, upNext, true)
-                .setFooter({text: `${await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild)}`, iconURL: client.homeGuild.iconURL({dynamic: true})})
+                .setFooter({text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild) })
             ], files: ['./resources/images/dj.png'] });
         };
 

@@ -68,11 +68,11 @@ exports.run = (client) => {
             //Almacena el tiempo de finalización
             const endTime = client.db.bans[idKey].until;
 
-            //Busca el usuario de Discord
-            const user = await client.users.fetch(idKey);
-
             //Omite si aún no se ha de desbanear
             if (Date.now() < endTime) continue;
+
+            //Busca el usuario de Discord
+            const user = await client.users.fetch(idKey);
 
             //Elimina la entrada del baneo en la BD
             delete client.db.bans[idKey];
@@ -92,9 +92,9 @@ exports.run = (client) => {
                     await client.functions.loggingManager('embed', new client.MessageEmbed()
                         .setColor(client.config.colors.correct)
                         .setAuthor({ name: client.functions.localeParser(locale.bans.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
-                        .addField(locale.loggingEmbed.user, user.tag, true)
-                        .addField(locale.loggingEmbed.moderator, `${client.user}`, true)
-                        .addField(locale.loggingEmbed.reason, locale.bans.reason, true)
+                        .addField(locale.bans.loggingEmbed.user, user.tag, true)
+                        .addField(locale.bans.loggingEmbed.moderator, `${client.user}`, true)
+                        .addField(locale.bans.loggingEmbed.reason, locale.bans.reason, true)
                     );
 
                 } catch (error) {

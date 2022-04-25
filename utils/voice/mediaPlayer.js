@@ -54,11 +54,15 @@ exports.run = async (client, message, connection) => {
                     //Crea un contador para demorar la salida del canal y la destrucción de la cola
                     reproductionQueue.timeout = setTimeout(() => {
 
-                        //Aborta la conexión
-                        if (connection.state.status !== 'Destroyed') connection.destroy();
+                        //Si la conexión no estaba destruida
+                        if (connection.state.status !== 'Destroyed') {
 
-                        //Confirma la acción
-                        message.channel.send({ content: `⏏ | ${locale.channelLeave}` });
+                            //Aborta la conexión
+                            connection.destroy();
+
+                            //Confirma la acción
+                            message.channel.send({ content: `⏏ | ${locale.channelLeave}` });
+                        };
 
                         //Borra la información de reproducción del server
                         delete client.reproductionQueues[message.guild.id];

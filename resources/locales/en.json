@@ -851,21 +851,6 @@
                     "invalidMember": "You have not provided a valid member",
                     "done": "Done!"
                 },
-                "assortStats": {
-                    "startingLog": "Starting stat assorting operation",
-                    "startingEmbed": {
-                        "title": "Assorting stats",
-                        "description": "Beginning leaderboard matching operation.\nCheck the console to assess the progress of the command"
-                    },
-                    "memberOmitted": "Member {{memberDisplayName}} omitted",
-                    "memberUpdated": "Member {{memberDisplayName}} updated",
-                    "userOmitted": "User {{userId}} omitted",
-                    "finishedLog": "Operation completed",
-                    "finishedEmbed": {
-                        "title": "Stats assorted",
-                        "description": "The stat assorting operation has been completed.\nPlease perform a manual review to confirm its effectiveness"
-                    }
-                },
                 "invalidCommand": "You did not specify a valid command"
             },
             "send": {

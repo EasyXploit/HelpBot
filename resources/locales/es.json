@@ -851,21 +851,6 @@
                     "invalidMember": "No has proporcionado un miembro válido",
                     "done": "¡Listo!"
                 },
-                "assortStats": {
-                    "startingLog": "Comenzando operación de cuadre de estadísticas",
-                    "startingEmbed": {
-                        "title": "Cuadrando stats",
-                        "description": "Comenzando operación de cuadre de la tabla de clasificación.\nRevisa la consola para evaluar el progreso del comando"
-                    },
-                    "memberOmitted": "Miembro {{memberDisplayName}} omitido",
-                    "memberUpdated": "Miembro {{memberDisplayName}} actualizado",
-                    "userOmitted": "Usuario {{userId}} omitido",
-                    "finishedLog": "Operación completada",
-                    "finishedEmbed": {
-                        "title": "Stats encuadradas",
-                        "description": "La operación de encuadre de estadísticas ha finalizado.\nPor favor, realice una revisión manual para confirmar su efectividad"
-                    }
-                },
                 "invalidCommand": "No has especificado un comando válido"
             },
             "send": {

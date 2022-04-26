@@ -1150,7 +1150,7 @@
                 "title": "Incorrect syntax",
                 "description": "The syntax of this command is"
             },
-            "logManager": {
+            "loggingManager": {
                 "cannotSend": "ERROR: Cannot send messages to the logging channel.\n{{botUsername}} must have the following permissions on the channel: Send Messages, Send Links, Attach Files",
                 "cannotAccess": "ERROR: Cannot access the logging channel.\n The channel has been cleared from the configuration and unloaded from memory",
                 "error": "ERROR: Error while executing the loggingManager"

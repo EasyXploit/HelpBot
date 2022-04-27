@@ -37,7 +37,7 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
         for (let index = 0; index < playlistItems.length; index++) {
 
             //Almacena el resultado actual
-            let result = playlistItems[i];
+            let result = playlistItems[index];
 
             //Omite si el resultado fue borrado por la anterior ejecución del bucle
             if (!result) continue;

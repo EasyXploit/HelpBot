@@ -2,17 +2,11 @@ exports.run = async (oldState, newState, client, locale) => {
     
     try {
 
-        //Método para obtener conexiones de voz
-        const { getVoiceConnection } = require('@discordjs/voice');
-
-        //Almacena la conexión de voz del bot (si tiene)
-        const connection = await getVoiceConnection(oldState.guild.id);
-
         //Si el bot está conectado
-        if (connection) {
+        if (newState.guild.me.voice.channelId) {
 
             //Almacena la información de reproducción de la guild
-            const reproductionQueue = client.reproductionQueues[connection.joinConfig.guildId];
+            const reproductionQueue = client.reproductionQueues[newState.guild.id];
 
             //Almacena el número de miembros del canal de voz
             const memberCount = oldState.guild.me.voice.channel.members.filter(member => !member.user.bot).size;
@@ -21,7 +15,13 @@ exports.run = async (oldState, newState, client, locale) => {
             if (memberCount === 0) {
 
                 //Crea un contador para demorar la salida del canal y la destrucción de la cola
-                if (reproductionQueue) reproductionQueue.timeout = setTimeout(() => {
+                if (reproductionQueue) reproductionQueue.timeout = setTimeout(async () => {
+
+                    //Método para obtener conexiones de voz
+                    const { getVoiceConnection } = require('@discordjs/voice');
+
+                    //Almacena la conexión de voz del bot (si tiene)
+                    const connection = await getVoiceConnection(newState.guild.id);
 
                     //Aborta la conexión
                     if (connection.state.status !== 'Destroyed') connection.destroy();
@@ -30,7 +30,7 @@ exports.run = async (oldState, newState, client, locale) => {
                     reproductionQueue.boundedTextChannel.send({ content: `⏏ | ${locale.leftWhenIdle}` });
 
                     //Borra la información de reproducción de la guild
-                    delete client.reproductionQueues[connection.joinConfig.guildId];
+                    delete client.reproductionQueues[newState.guild.id];
 
                 }, client.config.music.maxIdleTime);
 

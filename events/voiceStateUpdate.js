@@ -24,7 +24,7 @@ exports.run = async (oldState, newState, client, locale) => {
                     const connection = await getVoiceConnection(newState.guild.id);
 
                     //Aborta la conexión
-                    if (connection.state.status !== 'Destroyed') connection.destroy();
+                    if (connextion && connection.state.status !== 'Destroyed') connection.destroy();
 
                     //Confirma la acción
                     reproductionQueue.boundedTextChannel.send({ content: `⏏ | ${locale.leftWhenIdle}` });

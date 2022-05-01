@@ -424,15 +424,25 @@ exports.run = (client) => {
         //Si hubieron roles a asignar
         if (toReward.length > 0) {
 
+            //Almacena los roles recompensados
+            let rewarded = [];
+
             //Asigna cada uno de ellos
             toReward.forEach(async role => {
 
-                //Si el miembro aún no tiene el rol, se lo añade
-                if (!member.roles.cache.has(role)) await member.roles.add(role);
+                //Si el miembro aún no tiene el rol
+                if (!member.roles.cache.has(role)) {
+
+                    //Le añade el rol
+                    await member.roles.add(role);
+
+                    //Almacena el rol recompensado
+                    rewarded.push(role);
+                };
             });
 
             //Devuelve los roles recompensados
-            return toReward;
+            if (rewarded.length > 0) return toReward;
         };
     };
 

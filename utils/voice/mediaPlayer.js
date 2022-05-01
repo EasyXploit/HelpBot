@@ -54,11 +54,17 @@ exports.run = async (client, message, connection) => {
                     //Crea un contador para demorar la salida del canal y la destrucción de la cola
                     reproductionQueue.timeout = setTimeout(() => {
 
+                        //Método para obtener conexiones de voz
+                        const { getVoiceConnection } = require('@discordjs/voice');
+
+                        //Almacena la conexión de voz del bot (si tiene)
+                        const actualConnection = await getVoiceConnection(message.guild.id);
+
                         //Si la conexión no estaba destruida
-                        if (connection.state.status !== 'Destroyed') {
+                        if (actualConnection.state.status !== 'Destroyed') {
 
                             //Aborta la conexión
-                            connection.destroy();
+                            actualConnection.destroy();
 
                             //Confirma la acción
                             message.channel.send({ content: `⏏ | ${locale.channelLeave}` });

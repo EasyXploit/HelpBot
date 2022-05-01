@@ -52,7 +52,7 @@ exports.run = async (client, message, connection) => {
                     message.channel.send({ content: `⏹ | ${locale.finishedReproduction}` });
 
                     //Crea un contador para demorar la salida del canal y la destrucción de la cola
-                    reproductionQueue.timeout = setTimeout(() => {
+                    reproductionQueue.timeout = setTimeout(async () => {
 
                         //Método para obtener conexiones de voz
                         const { getVoiceConnection } = require('@discordjs/voice');

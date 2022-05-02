@@ -34,13 +34,26 @@ exports.run = async (oldState, newState, client, locale) => {
 
                 }, client.config.music.maxIdleTime);
 
-            } else if (memberCount !== 0 && reproductionQueue && reproductionQueue.timeout) { //Si el canal recupera un mínimo de miembros, y hay cola en reproducción
+            } else if (memberCount !== 0 && reproductionQueue && reproductionQueue.timeout && reproductionQueue.tracks.length > 0) { //Si el canal recupera un mínimo de miembros
 
-                //Finalzia el timeout
-                clearTimeout(reproductionQueue.timeout);
+                //Método para obtener conexiones de voz
+                const { getVoiceConnection } = require('@discordjs/voice');
 
-                //Anula la variable dle timeout
-                reproductionQueue.timeout = null;
+                //Almacena la conexión de voz del bot
+                const connection = await getVoiceConnection(newState.guild.id);
+
+                //Almacena el reproductor suscrito
+                const player = connection._state.subscription.player;
+                
+                //Si el reproductor no estaba pausado
+                if (player.state.status !== 'paused') {
+
+                    //Finalzia el timeout
+                    clearTimeout(reproductionQueue.timeout);
+
+                    //Anula la variable del timeout
+                    reproductionQueue.timeout = null;
+                };
             };
         };
 

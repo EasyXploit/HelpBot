@@ -41,7 +41,7 @@ process.on('unhandledRejection', error => {
         console.error(`${new Date().toLocaleString()} 》${locale.index.unhandledRejection.consoleMsg}:`, error.stack);
 
         //Almacena el string del error, y lo recorta si es necesario
-        const errorString = error.stack.length > 1014 ? error.stack : `${error.stack.slice(0, 1014)} ...`;
+        const errorString = error.stack.length > 1014 ? `${error.stack.slice(0, 1014)} ...` : error.stack;
 
         //Ejecuta el manejador de depuración
         client.functions.debuggingManager('embed', new client.MessageEmbed()

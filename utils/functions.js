@@ -780,7 +780,7 @@ exports.run = (client) => {
         const arguments = args.length > 0 ? args.join(' ') : locale.commandErrorHandler.noArguments;
 
         //Almacena el string del error, y lo recorta si es necesario
-        const errorString = error.stack.length > 1014 ? error.stack : `${error.stack.slice(0, 1014)} ...`;
+        const errorString = error.stack.length > 1014 ? `${error.stack.slice(0, 1014)} ...` : error.stack;
 
         //Se indica al usuario que se ha notificado el error
         await message.channel.send({ embeds: [ new client.MessageEmbed()
@@ -811,7 +811,7 @@ exports.run = (client) => {
         console.error(`\n${new Date().toLocaleString()} 》${locale.eventErrorHandler.error}:`, error.stack);
         
         //Almacena el string del error, y lo recorta si es necesario
-        const errorString = error.stack.length > 1014 ? error.stack : `${error.stack.slice(0, 1014)} ...`;
+        const errorString = error.stack.length > 1014 ? `${error.stack.slice(0, 1014)} ...` : error.stack;
 
         //Se muestra el error en el canal de depuración
         await client.functions.debuggingManager('embed', new client.MessageEmbed()

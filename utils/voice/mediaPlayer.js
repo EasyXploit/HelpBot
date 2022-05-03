@@ -157,6 +157,12 @@ exports.run = async (client, message, connection) => {
             .setDescription(`${client.customEmojis.redTick} ${locale.apiRateLimit}.`)
         ]});
 
+        //Notifica si el error se debe a uns restricción de edad por falta de cookies
+		if (error.message.includes('Sign in to confirm your age')) return reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.warning)
+            .setDescription(`${client.customEmojis.orangeTick} ${client.locale.utils.voice.fetchResource.ageRestricted}.`)]
+        });
+
         //Devuelve un error por consola
         console.error(`${new Date().toLocaleString()} 》${client.locale.utils.voice.mediaPlayer.error}:`, error.stack);
     };

@@ -434,7 +434,7 @@ exports.run = (client) => {
                 if (!member.roles.cache.has(role)) {
 
                     //Le añade el rol
-                    await member.roles.add(role);
+                    member.roles.add(role);
 
                     //Almacena el rol recompensado
                     rewarded.push(role);

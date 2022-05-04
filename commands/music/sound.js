@@ -41,7 +41,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             const reproductionQueue = client.reproductionQueues[message.guild.id];
 
             //Comprueba si no hay cola y si el miembro está el mismo canal que el bot
-            if (reproductionQueue && message.guild.me.voice.channel.id !== message.member.voice.channel.id) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            if (reproductionQueue && message.guild.me.voice.channelId && message.guild.me.voice.channelId !== message.member.voice.channelId) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} ${locale.alreadyPlaying}.`)]
             });

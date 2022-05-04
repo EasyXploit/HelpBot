@@ -40,7 +40,7 @@ exports.run = (client) => {
                 //Ejecuta el manejador de registro
                 await client.functions.loggingManager('embed', new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
-                    .setAuthor({ name: client.functions.localeParser(locale.mutes.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                    .setAuthor({ name: client.functions.localeParser(locale.mutes.loggingEmbed.author, { memberTag: member ? member.user.tag : idKey }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                     .addField(locale.mutes.loggingEmbed.member, member ? member.user.tag : `\`${idKey}\``, true)
                     .addField(locale.mutes.loggingEmbed.moderator, `${client.user}`, true)
                     .addField(locale.mutes.loggingEmbed.reason, locale.mutes.reason, true)

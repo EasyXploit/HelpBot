@@ -211,7 +211,7 @@ exports.run = (client) => {
                 //Envía los resultados al canal de la encuesta
                 await poll.channel.send({ embeds: [ new client.MessageEmbed()
                     .setAuthor({ name: locale.polls.finishedEmbed.author, iconURL: 'attachment://endFlag.png' })
-                    .setDescription(`**${storedPoll.title}**\n\n${storedPoll.options}`)
+                    .setDescription(`${storedPoll.title}\n\n${storedPoll.options}`)
                     .addField(locale.polls.finishedEmbed.results, results.join(' '))
                 ], files: ['./resources/images/endFlag.png']}).then(async poll => {
 
@@ -256,7 +256,7 @@ exports.run = (client) => {
                 if (oldRemainingTime !== newRemainingTime) await poll.edit({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.polls)
                     .setAuthor({ name: locale.polls.progressEmbed.author, iconURL: 'attachment://poll.png' })
-                    .setDescription(`**${storedPoll.title}**\n\n${storedPoll.options}`)
+                    .setDescription(`${storedPoll.title}\n\n${storedPoll.options}`)
                     .setFooter({ text: newRemainingTime })
                 ], files: ['./resources/images/poll.png']});
             };

@@ -234,7 +234,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                     message.channel.send({ embeds: [ new client.MessageEmbed()
                         .setColor(client.config.colors.polls)
                         .setAuthor({ name: locale.pollEmbed.author, iconURL: 'attachment://poll.png' })
-                        .setDescription(`**${title}**\n\n${formattedOptions}`)
+                        .setDescription(`${title}\n\n${formattedOptions}`)
                         .setFooter({ text: `ID: ${pollId} - ${locale.pollEmbed.duration}: ${remainingTime}` })
                     ], files: ['./resources/images/poll.png'] }).then(async pollEmbed => {
 

@@ -61,7 +61,7 @@ exports.run = async (client, message, connection) => {
                         const actualConnection = await getVoiceConnection(message.guild.id);
 
                         //Si la conexión no estaba destruida
-                        if (actualConnection.state.status !== 'Destroyed') {
+                        if (actualConnection && actualConnection.state.status !== 'Destroyed') {
 
                             //Aborta la conexión
                             actualConnection.destroy();

@@ -12,7 +12,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         let translatedFeatures = [];
 
         //Traduce las características de la guild
-        await message.guild.features.forEach(async (feature) => translatedFeatures.push(client.locale.guildFeatures[feature] || permission));
+        await message.guild.features.forEach(async (feature) => translatedFeatures.push(client.locale.guildFeatures[feature] || feature));
         
         //Almacena las categorías que hay en la guild
         let categories = new Set();

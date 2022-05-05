@@ -47,7 +47,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         const sortedRewards = client.config.levelingRewards.sort(compare);
 
         //Almacena los próximos roles recompensados
-        let nextRewardedRoles;
+        let nextRewardedRoles = {};
 
         //Por cada recompensa
         for (let index = 0; index < sortedRewards.length; index++) {
@@ -56,7 +56,8 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             if (sortedRewards[index].requiredLevel >= (memberStats.level + 1)) {
 
                 //Almacena los roles de la próxima recompensa
-                nextRewardedRoles = sortedRewards[index].roles;
+                nextRewardedRoles.roles = sortedRewards[index].roles;
+                nextRewardedRoles.requiredLevel = sortedRewards[index].requiredLevel
 
                 //Para el bucle
                 break;
@@ -67,7 +68,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         let nextRewards = locale.defaultReward;
 
         //Si se encontró una próxima recompensa
-        if (nextRewardedRoles) {
+        if (nextRewardedRoles.roles) {
 
             //Almacena los nombres de los roles de la recompensa
             let roleNames = []; 
@@ -76,7 +77,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             const getRewards = new Promise((resolve, reject) => {
 
                 //Para cada ID de rol, busca su nombre
-                nextRewardedRoles.forEach(async (value, index, array) => {
+                nextRewardedRoles.roles.forEach(async (value, index, array) => {
 
                     //Busca y almacena el rol
                     const role = await message.guild.roles.fetch(value);
@@ -93,7 +94,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             await getRewards.then(() => {
 
                 //Sobreescribe la variable "nextRewards" con los resultados obtenidos
-                nextRewards = roleNames.join(', ');
+                nextRewards = `${roleNames.join(', ')} (lvl ${nextRewardedRoles.requiredLevel})`;
             });
         };
 

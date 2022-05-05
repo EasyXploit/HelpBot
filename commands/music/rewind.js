@@ -44,7 +44,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         });
 
         //Almacena el objetivo de avance (en HH:MM:SS)
-        const rewindTo = await client.functions.msToHHMMSS(rewindToMs);
+        const rewindTo = await client.functions.msToDHHMMSS(rewindToMs);
 
         //Ejecuta el comando "seek"
         await require('./seek.js').run(client, message, [rewindTo], command, commandConfig, client.locale.commands.music.seek);

@@ -467,10 +467,14 @@ exports.run = (client) => {
     };
 
     //Función para convertir de MS a HH:MM:SS
-    client.functions.msToHHMMSS = (ms) => {
+    client.functions.msToDHHMMSS = (ms) => {
 
         //Convierte a segundos
         let seconds = parseInt(ms / 1000);
+
+        //Extrae los dias
+        const days = parseInt(seconds / 86400);
+        seconds = seconds % 86400;
 
         //Extrae las horas
         const hours = parseInt(seconds / 3600);
@@ -488,7 +492,7 @@ exports.run = (client) => {
         const secondsStr = ('00' + seconds).slice(-2);
 
         //Devuelve el resultado
-        return `${hoursStr}:${minutesStr}:${secondsStr}`;
+        return `${days > 0 ? `${days}d ` : ''}${hoursStr}:${minutesStr}:${secondsStr}`;
     };
 
     //Función para convertir de HH:MM:SS a MS

@@ -139,7 +139,7 @@ exports.run = async (client, message, connection) => {
                 .setColor(randomColor())
                 .setThumbnail(info.meta.thumbnail)
                 .setAuthor({name: `${locale.playingEmbed.authorTitle} 🎶`, iconURL: 'attachment://dj.png'})
-                .setDescription(`${info.meta.location.startsWith('http') ? `[${info.meta.title}](${info.meta.location})` : info.meta.title}\n\n● **${locale.playingEmbed.author}:** \`${info.meta.author}\`\n● **${locale.playingEmbed.duration}:** \`${client.functions.msToHHMMSS(info.meta.length)}\``)
+                .setDescription(`${info.meta.location.startsWith('http') ? `[${info.meta.title}](${info.meta.location})` : info.meta.title}\n\n● **${locale.playingEmbed.author}:** \`${info.meta.author}\`\n● **${locale.playingEmbed.duration}:** \`${client.functions.msToDHHMMSS(info.meta.length)}\``)
                 .addField(`${locale.playingEmbed.requestedBy}:`, `<@${reproductionQueue.tracks[toPlay].requesterId}>`, true)
                 .addField(`${locale.playingEmbed.upNext}:`, upNext, true)
                 .setFooter({text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild) })

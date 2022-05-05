@@ -26,7 +26,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             let queueEmbed = new client.MessageEmbed()
                 .setColor(randomColor())
                 .setAuthor({ name: locale.queueEmbed.author, iconURL: 'attachment://dj.png' })
-                .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n● ${locale.queueEmbed.duration}: \`${reproductionQueue.tracks[0].meta.length !== 0 ? client.functions.msToHHMMSS(reproductionQueue.tracks[0].meta.length) : locale.queueEmbed.isLive}\`\n ● ${locale.queueEmbed.requestedBy}: <@${reproductionQueue.tracks[0].requesterId}>`)
+                .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n● ${locale.queueEmbed.duration}: \`${reproductionQueue.tracks[0].meta.length !== 0 ? client.functions.msToDHHMMSS(reproductionQueue.tracks[0].meta.length) : locale.queueEmbed.isLive}\`\n ● ${locale.queueEmbed.requestedBy}: <@${reproductionQueue.tracks[0].requesterId}>`)
                 .setFooter({ text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild) });
             
             //Si hay cola, carga la cola en el embed
@@ -40,7 +40,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                     let title = trackMeta.title; //Almacena el título
                     title = title.replace('[', '').replace('[', '').replace(']', '').replace('|', '').replace('(', '').replace(')', '').replace('_', '').replace('*', ''); //Elimina signos que alteren la forma en la que se muestra la entrada
                     if (title.length > 40) title = `${title.slice(0, 40)} ...`; //Acorta el título si es demasiado largo
-                    queueList = `${queueList}\`${id}.\` [${title}](${trackMeta.location}) | \`${trackMeta.length !== 0 ? client.functions.msToHHMMSS(trackMeta.length) : locale.queueEmbed.isLive}\` | <@${reproductionQueue.tracks[id].requesterId}>\n`;
+                    queueList = `${queueList}\`${id}.\` [${title}](${trackMeta.location}) | \`${trackMeta.length !== 0 ? client.functions.msToDHHMMSS(trackMeta.length) : locale.queueEmbed.isLive}\` | <@${reproductionQueue.tracks[id].requesterId}>\n`;
                 };
                 
                 //Añade el campo al embed

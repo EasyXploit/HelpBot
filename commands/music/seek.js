@@ -37,7 +37,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         //Comprueba si se ha excedido el tiempo máximo
         if (seekTo * 1000 > queueItem.meta.length - 1000) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantForward, { time: client.functions.msToHHMMSS(queueItem.meta.length - 1000) })}.`)]
+            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantForward, { time: client.functions.msToDHHMMSS(queueItem.meta.length - 1000) })}.`)]
         });
 
         //Comprueba si es necesaria una votación
@@ -59,7 +59,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             connection._state.subscription.player.stop();
 
             //Envía un mensaje de confirmación
-            message.channel.send({ content: `📍 | ${client.functions.localeParser(locale.seeked, { time: client.functions.msToHHMMSS(seekTo * 1000) })}` });
+            message.channel.send({ content: `📍 | ${client.functions.localeParser(locale.seeked, { time: client.functions.msToDHHMMSS(seekTo * 1000) })}` });
         };
 
     } catch (error) {

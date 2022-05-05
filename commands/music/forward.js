@@ -35,7 +35,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         if (reproductionQueue.tracks[0].meta.seekTo) actualProgress = actualProgress + (reproductionQueue.tracks[0].meta.seekTo * 1000);
 
         //Almacena el objetivo de avance
-        const forwardTo = await client.functions.msToHHMMSS(actualProgress + forwardMs);
+        const forwardTo = await client.functions.msToDHHMMSS(actualProgress + forwardMs);
 
         //Ejecuta el comando "seek"
         await require('./seek.js').run(client, message, [forwardTo], command, commandConfig, client.locale.commands.music.seek);

@@ -308,7 +308,8 @@ exports.run = (client) => {
                 totalXP: 0,
                 actualXP: 0,
                 level: 0,
-                lastMessage: 0
+                lastMessage: 0,
+                aproxVoiceTime: 0
             };
         };
 
@@ -327,6 +328,9 @@ exports.run = (client) => {
 
             //Si es un mensaje, actualiza la variable para evitar spam
             if (mode === 'message') memberStats.lastMessage = Date.now();
+
+            //Si es un intervalo de voz, concatena la duración de un intervalo de voz en las stats del miembro
+            if (mode === 'voice') memberStats.aproxVoiceTime += client.config.xp.XPGainInterval;
 
             //Fórmula para calcular el XP necesario para subir al siguiente nivel
             const xpToNextLevel = await client.functions.xpToLevel(memberStats.level + 1)

@@ -97,6 +97,9 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             });
         };
 
+        //Almacena el tiempo de voz aproximado
+        const aproxVoiceTime = memberStats.aproxVoiceTime > 0 ? `\`${await client.functions.msToDHHMMSS(memberStats.aproxVoiceTime)}\`` : '\`0d 00:00:00\`';
+
         //Envía el mensaje con las estadísticas
         await message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.primary)
@@ -106,6 +109,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             .addField(locale.statsEmbed.actualLevel, `\`${memberStats.level}\``, true)
             .addField(locale.statsEmbed.totalXp, `\`${memberStats.totalXP}\``, true)
             .addField(locale.statsEmbed.xpToNextLevel, nonXP ? `\`${locale.statsEmbed.noXpToNextLevel}\`` : `\`${xpToNextLevel - memberStats.totalXP}\``, true)
+            .addField(locale.statsEmbed.voiceTime, nonXP ? `\`${locale.statsEmbed.noVoiceTime}\`` : `\`${aproxVoiceTime}\``, true)
             .addField(locale.statsEmbed.nextRewards, nonXP ? `\`${locale.statsEmbed.noNextRewards}\`` : `\`${nextRewards}\``, true)
         ]});
 

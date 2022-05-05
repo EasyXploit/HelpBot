@@ -233,6 +233,8 @@
                     "totalXp": "XP total",
                     "xpToNextLevel": "XP para el siguiente nivel",
                     "noXpToNextLevel": "No puede subir de nivel",
+                    "voiceTime": "Tiempo de voz aprox.",
+                    "noVoiceTime": "No se contabiliza",
                     "nextRewards": "Siguientes recompensas",
                     "noNextRewards": "No puede ganar recompensas"
                 }

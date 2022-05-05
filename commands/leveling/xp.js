@@ -35,7 +35,8 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 totalXP: 0,
                 actualXP: 0,
                 level: 0,
-                lastMessage: 0
+                lastMessage: 0,
+                aproxVoiceTime: 0
             };
         };
 

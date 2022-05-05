@@ -99,12 +99,71 @@ exports.run = async (client, message, connection) => {
             //Reproduce la pista
             if (reproductionQueue.tracks[toPlay].type === 'stream') { //Si es un streaming de internet
 
-                //Obtiene el streaming desde YouTube
-                const playdl = require('play-dl');
-                const stream = await playdl.stream(reproductionQueue.tracks[toPlay].meta.location, { seek : reproductionQueue.tracks[toPlay].meta.seekTo || 0 });
+                try {
 
-                //Crea el recurso y lo reproduce en el player
-                await player.play(createAudioResource(stream.stream, { inputType: stream.type }));
+                    //Obtiene el streaming desde YouTube
+                    const playdl = require('play-dl');
+                    const stream = await playdl.stream(reproductionQueue.tracks[toPlay].meta.location, { seek : reproductionQueue.tracks[toPlay].meta.seekTo || 0 });
+
+                    //Crea el recurso y lo reproduce en el player
+                    await player.play(createAudioResource(stream.stream, { inputType: stream.type }));
+
+                } catch (error) {
+
+                    //Notifica si el error se debe a uns restricción de edad por falta de cookies
+                    if (error.toLocaleString().includes('Sign in to confirm your age')) {
+
+                        //Elimina de la cola la pista actual
+                        if (reproductionQueue.mode === 'shuffle') { //Si el modo aleatorio está activado
+
+                            //Elimina la pista de la cola
+                            reproductionQueue.tracks.splice(toPlay, 1);
+
+                        } else {
+
+                            //Quita el primer elemento de la cola
+                            reproductionQueue.tracks.shift();
+                        };
+
+                        //Notifica el error al usuario
+                        reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
+                            .setColor(client.config.colors.warning)
+                            .setDescription(`${client.customEmojis.orangeTick} ${client.locale.utils.voice.fetchResource.ageRestricted}.`)]
+                        });
+
+                        //Si queda algo en la cola
+                        if (reproductionQueue.tracks[0]) return mediaPlayer(connection); //Vuelve a cargar la función de reproducción
+                        else { //O abandona el canal y borra la cola
+
+                            //Manda un mensaje de abandono
+                            message.channel.send({ content: `⏹ | ${locale.finishedReproduction}` });
+
+                            //Crea un contador para demorar la salida del canal y la destrucción de la cola
+                            return reproductionQueue.timeout = setTimeout(async () => {
+
+                                //Método para obtener conexiones de voz
+                                const { getVoiceConnection } = require('@discordjs/voice');
+
+                                //Almacena la conexión de voz del bot (si tiene)
+                                const actualConnection = await getVoiceConnection(message.guild.id);
+
+                                //Si la conexión no estaba destruida
+                                if (actualConnection && actualConnection.state.status !== 'Destroyed') {
+
+                                    //Aborta la conexión
+                                    actualConnection.destroy();
+
+                                    //Confirma la acción
+                                    message.channel.send({ content: `⏏ | ${locale.channelLeave}` });
+                                };
+
+                                //Borra la información de reproducción del server
+                                delete client.reproductionQueues[message.guild.id];
+
+                            }, client.config.music.maxIdleTime);
+                        };
+                    };
+                };
 
             } else if (reproductionQueue.tracks[toPlay].type === 'file') { //Si es un archivo local
 
@@ -156,12 +215,6 @@ exports.run = async (client, message, connection) => {
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} ${locale.apiRateLimit}.`)
         ]});
-
-        //Notifica si el error se debe a uns restricción de edad por falta de cookies
-		if (error.message.includes('Sign in to confirm your age')) return reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} ${client.locale.utils.voice.fetchResource.ageRestricted}.`)]
-        });
 
         //Devuelve un error por consola
         console.error(`${new Date().toLocaleString()} 》${client.locale.utils.voice.mediaPlayer.error}:`, error.stack);

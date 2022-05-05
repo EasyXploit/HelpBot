@@ -122,5 +122,5 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
 
 module.exports.config = {
     name: 'stats',
-    aliases: ['rank']
+    aliases: ['rank', 'level', 'lvl']
 };

@@ -44,7 +44,7 @@ process.on('unhandledRejection', error => {
         const errorString = error.stack.length > 1014 ? `${error.stack.slice(0, 1014)} ...` : error.stack;
 
         //Ejecuta el manejador de depuración
-        client.functions.debuggingManager('embed', new client.MessageEmbed()
+        if (client.functions) client.functions.debuggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.debugging)
             .setTitle(`📋 ${locale.index.unhandledRejection.debuggingEmbed.title}`)
             .setDescription(locale.index.unhandledRejection.debuggingEmbed.description)

@@ -258,7 +258,7 @@ exports.run = (client) => {
                     .setAuthor({ name: locale.polls.progressEmbed.author, iconURL: 'attachment://poll.png' })
                     .setDescription(`${storedPoll.title}\n\n${storedPoll.options}`)
                     .setFooter({ text: newRemainingTime })
-                ], files: ['./resources/images/poll.png']});
+                ]});
             };
         };
     }, 5000);

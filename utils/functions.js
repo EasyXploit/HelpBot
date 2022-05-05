@@ -413,8 +413,8 @@ exports.run = (client) => {
             //Por cada uno de los roles de dicha recompensa
             reward.roles.forEach(async role => {
 
-                //Si no se deben preservar viejas recompensas y si el el nivel de la recompensa es menor que el del miembro, o si el nivel de la recompensa es mayor que el del miembro
-                if ((client.config.xp.removePreviousRewards && reward.requiredLevel < memberLevel && index !== (sortedRewards.length - 1)) || reward.requiredLevel > memberLevel) {
+                //Si no se deben preservar viejas recompensas
+                if ((client.config.xp.removePreviousRewards && !(sortedRewards[index + 1] && reward.requiredLevel < memberLevel && sortedRewards[index + 1].requiredLevel > memberLevel) && index !== (sortedRewards.length - 1)) || reward.requiredLevel > memberLevel) {
 
                     //Le elimina el rol al miembro, si lo tiene
                     if (member.roles.cache.has(role)) await member.roles.remove(role);
@@ -423,6 +423,9 @@ exports.run = (client) => {
 
             //Si el miembro puede stackear todas las recompensas, o tiene el nivel de esta, se almacena
             if (!client.config.xp.removePreviousRewards || reward.requiredLevel === memberLevel || (reward.requiredLevel < memberLevel && index === (sortedRewards.length - 1))) toReward = toReward.concat(reward.roles);
+
+            //Si el miembro tiene cómo mínimo el nivel de la recompensa anterior, esta se almacena
+            if (client.config.xp.removePreviousRewards && sortedRewards[index + 1] && reward.requiredLevel < memberLevel && memberLevel < sortedRewards[index + 1].requiredLevel) toReward = toReward.concat(reward.roles);
         };
 
         //Si hubieron roles a asignar

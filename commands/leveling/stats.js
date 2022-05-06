@@ -99,7 +99,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         };
 
         //Almacena el tiempo de voz aproximado
-        const aproxVoiceTime = memberStats.aproxVoiceTime > 0 ? `\`${await client.functions.msToDHHMMSS(memberStats.aproxVoiceTime)}\`` : '\`0d 00:00:00\`';
+        const aproxVoiceTime = memberStats.aproxVoiceTime > 0 ? `\`${await client.functions.msToDHHMMSS(memberStats.aproxVoiceTime)}\`` : '\`00:00:00\`';
 
         //Envía el mensaje con las estadísticas
         await message.channel.send({ embeds: [ new client.MessageEmbed()

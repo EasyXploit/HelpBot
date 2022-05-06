@@ -1250,6 +1250,9 @@
         "splashLogo": {
             "description": "Soy un bot diseñado para moderación de comunidades automatizada, reproducción de música, gestión de niveles ¡y mucho más!",
             "divider": "Iniciando aplicación"
+        },
+        "timers": {
+            "configLoaded": "Carga de temporizadores completada"
         }
     }
 }

@@ -27,7 +27,7 @@ console.log(`${locale.index.clientStarted}\n`);
 
 //CARGA DE ESTRUCTURAS ADICIONALES
 //Carga de módulos, objetos y colecciones en el cliente
-['MessageEmbed', 'MessageAttachment', 'Collection'].forEach(x => client[x] = discord[x]);       //Carga de métodos de Discord.js en el cliente
+['MessageEmbed', 'MessageAttachment', 'MessageActionRow', 'MessageButton', 'Collection'].forEach(x => client[x] = discord[x]);       //Carga de métodos de Discord.js en el cliente
 ['config', 'db', 'usersVoiceStates', 'reproductionQueues'].forEach(x => client[x] = {});        //Creación de objetos para almacenar las configuraciones, bases de datos y cachés
 ['commands', 'aliases', 'cooldownedUsers'].forEach(x => client[x] = new client.Collection());   //Creación de colecciones para comandos, alias y cooldowns
 
@@ -169,4 +169,4 @@ client.fs.readdirSync('./commands/').forEach(subDirectory => {
 
 //Inica sesión en el cliente
 console.log(`\n- ${client.locale.index.loggingIn} ...\n`);
-client.login(client.config.token.key).then(() => console.log(`\n - ${client.locale.index.loggedIn}`));
+client.login(client.config.token.key).then(() => console.log(`\n - ${client.locale.index.loggedIn}\n`));

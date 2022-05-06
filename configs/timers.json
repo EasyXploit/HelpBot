@@ -1,0 +1,39 @@
+[
+    {
+        "channelId": "916413649504047204",
+        "interval": "86400000",
+        "weekDays": ["1", "2", "3", "4", "5", "6", "7"],
+        "minimumMessagesSinceLast": "5",
+        "content": "Thank you for being part of **{{serverName}}**! 🎉🎉🎉",
+        "embed": {
+            "enabled": true,
+            "color": "FEB526",
+            "title": "Hello!",
+            "fields": [
+                {
+                    "name": "Member count",
+                    "value": "Right now we are **{{memberCount}}** members",
+                    "inline": true
+                },
+                {
+                    "name": "Lorem ipsum",
+                    "value": "Dolor sit amet, consectetur adipiscing elit",
+                    "inline": true
+                }
+            ],
+            "footer": "Do you like my feet?"
+        },
+        "linkButton": {
+            "label": "Click here",
+            "emoji": "🔗",
+            "url": "https://discord.com/"
+        }
+    },
+    {
+        "channelId": "916413649504047204",
+        "interval": "21600000",
+        "weekDays": ["1", "2", "3", "4", "5", "6", "7"],
+        "minimumMessagesSinceLast": "5",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sed lacus malesuada, scelerisque lacus pharetra, ornare libero. Nam at massa sed nisi consectetur scelerisque eget ut ligula."
+    }
+]

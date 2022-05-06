@@ -77,6 +77,9 @@ exports.run = async (client) => {
             //Carga los scripts que funcionan a intervalos
             require('../intervals.js').run(client);
 
+            //Carga los temporizadores configurados
+            await require('../timers.js').run(client);
+
             //Carga los estados de voz (si se su monitorización)
             if (client.config.xp.rewardVoice) {
 

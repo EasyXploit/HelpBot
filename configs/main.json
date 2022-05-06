@@ -10,5 +10,6 @@
     "newMemberRole": "",
     "loadMention": true,
     "pingTreshold": 1000,
-    "commandCooldown": 2000
+    "commandCooldown": 2000,
+    "timers": true
 }

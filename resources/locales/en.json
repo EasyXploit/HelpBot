@@ -1250,6 +1250,9 @@
         "splashLogo": {
             "description": "I'm a bot designed for automated community moderation, music reproduction, leveling, and much more!",
             "divider": "Starting application"
+        },
+        "timers": {
+            "configLoaded": "Timers loading completed"
         }
     }
 }

@@ -38,7 +38,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         };
         
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
-        if (message.author.id !== message.guild.ownerId && message.member.roles.highest.position <= member.roles.highest.position) return message.channel.send({ embeds: [ new client.MessageEmbed()
+        if ((message.author.id !== message.guild.ownerId && message.member.roles.highest.position <= member.roles.highest.position) || !member.bannable) return message.channel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ]});

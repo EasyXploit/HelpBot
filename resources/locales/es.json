@@ -123,8 +123,8 @@
             }
         },
         "guildCreate": {
-            "newGuild": "El bot se ha unido a la guild \"{{guildName}}\"",
-            "justOneGuild": "AVISO: El bot no está diseñado para funcionar en más de un servidor",
+            "newGuild": "{{botUsername}} se ha unido a la guild \"{{guildName}}\"",
+            "justOneGuild": "AVISO: {{botUsername}} no está diseñado para funcionar en más de un servidor",
             "error": "ERROR:"
         },
         "guildDelete": {
@@ -165,8 +165,8 @@
             "nonPrivileged": "{{messageAuthor}}, no dispones de privilegios para realizar esta operación"
         },
         "ready": {
-            "justOneGuild": "AVISO: {{botUsername}} no está diseñado para funcionar en más de una guild (servidor).\nExpulse al bot del resto de guilds y reinicie al bot",
-            "waitingGuild": "AVISO: Esperando a que {{botUsername}} se una a una guild",
+            "justOneGuild": "AVISO: El bot no está diseñado para funcionar en más de una guild (servidor).\nExpulse al bot del resto de guilds y reinicie al bot",
+            "waitingGuild": "AVISO: Esperando a que el bot se una a una guild",
             "error": "ERROR"
         },
         "shardError": {

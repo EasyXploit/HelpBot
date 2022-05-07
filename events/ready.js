@@ -9,7 +9,7 @@ exports.run = async (event, client, locale) => {
         if (cachedGuilds.size > 1) {    //Si la cantidad es superior a 1
 
             //Notifica que el bot no puede funcionar en más de una guild
-            console.warn(`${new Date().toLocaleString()} 》${client.functions.localeParser(locale.justOneGuild, { botUsername: client.user.username })}.`);
+            console.warn(`\n${new Date().toLocaleString()} 》${locale.justOneGuild}.`);
 
             //Aborta el proceso de manera limpia
             process.exit();
@@ -17,7 +17,7 @@ exports.run = async (event, client, locale) => {
         } else if (cachedGuilds.size === 0) {   //Si la cantidad es 0
 
             //Notifica que el bot está esperando a que sea unido a una guild
-            return console.warn(`${new Date().toLocaleString()} 》${client.functions.localeParser(locale.waitingGuild, { botUsername: client.user.username })}.`);
+            return console.warn(`\n${new Date().toLocaleString()} 》${locale.waitingGuild}.`);
         };
             
         //Comprueba si la config de la guild ya está almacenada o no

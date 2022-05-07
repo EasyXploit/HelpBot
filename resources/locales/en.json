@@ -165,8 +165,8 @@
             "nonPrivileged": "{{messageAuthor}}, you do not have privileges to perform this operation"
         },
         "ready": {
-            "justOneGuild": "WARNING: {{botUsername}} is not designed to work on more than one guild (server).\nPlease kick the bot from all other guilds and restart the bot",
-            "waitingGuild": "WARNING: Waiting for {{botUsername}} to join a guild",
+            "justOneGuild": "WARNING: The bot is not designed to work on more than one guild (server).\nPlease kick the bot from all other guilds and restart the bot",
+            "waitingGuild": "WARNING: Waiting for the bot to join a guild",
             "error": "ERROR"
         },
         "shardError": {

@@ -123,8 +123,8 @@
             }
         },
         "guildCreate": {
-            "newGuild": "{{botUsername}} se ha unido a la guild \"{{guildName}}\"",
-            "justOneGuild": "AVISO: {{botUsername}} no está diseñado para funcionar en más de un servidor",
+            "newGuild": "El bot se ha unido a la guild \"{{guildName}}\"",
+            "justOneGuild": "AVISO: El bot no está diseñado para funcionar en más de un servidor",
             "error": "ERROR:"
         },
         "guildDelete": {

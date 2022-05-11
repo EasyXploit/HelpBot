@@ -9,8 +9,11 @@ exports.run = async (client) => {
     //Aborta si los timers no son un array
     if (!Array.isArray(client.config.timers)) return;
 
-    //Almacena un objeto estrcuturado con los timers
-    let timers = {};
+    //Crea un objeto para almacenar la config. de todos los timers
+    if (!client.db.timers.sents) client.db.timers.sents = {}
+
+    //Crea un objeto para almacenar el historial de mensajes enviados
+    client.db.timers.messages = {}
 
     //Por cada uno de los timers configurados
     for (const timer of client.config.timers) {
@@ -40,7 +43,7 @@ exports.run = async (client) => {
         await timer.weekDays.forEach(day => {
 
             //Comprueba si es válido, correlaciona su valor con los resultados de Date.getDay() y lo almacena
-            if (['1', '2', '3', '4', '5', '6', '7'].includes(day)) effectiveWeekDays.push(parseInt(day) - 1);
+            if ([1, 2, 3, 4, 5, 6, 7].includes(day)) effectiveWeekDays.push(parseInt(day) - 1);
         });
 
         //Función para reemplazar placeholders por cadenas
@@ -132,7 +135,7 @@ exports.run = async (client) => {
                 for (let index = 0; index < embedProperties.fields.length; index++) {
 
                     //Aborta si se ha superado el límite de API
-                    if (index > 25) break;
+                    if (index > 25) break;timedmessages
 
                     //Almacena las propiedades del campo iterado
                     const field = embedProperties.fields[index];
@@ -160,77 +163,122 @@ exports.run = async (client) => {
             timedMessage.components = [button];
         };
 
-        //Crea y almacena el objeto estructurado de timers con el mismo canal 
-        if (!timers[timer.channelId]) timers[timer.channelId] = {};
-        const actualTimedChannel = timers[timer.channelId];
+        //Genera un objeto para guardar la config. del timer en la BD
+        const timerData = {
+            "channelId": timer.channelId,
+            "interval": timer.interval,
+            "weekDays": timer.weekDays,
+            "minimumMessagesSinceLast": timer.minimumMessagesSinceLast,
+            "message": timedMessage,
+        };
 
-        //Crea y almacena el objeto estructurado de timers con el mismo intervalo 
-        if (!actualTimedChannel[timer.interval]) actualTimedChannel[timer.interval] = {};
-        const actualTimedInterval = actualTimedChannel[timer.interval];
+        //Dependencia para generar hashes MD5
+        const md5 = require('md5');
 
-        //Crea y almacena el objeto estructurado de timers con el mismo margen de mensajes anteriores 
-        if (!actualTimedInterval[timer.minimumMessagesSinceLast]) actualTimedInterval[timer.minimumMessagesSinceLast] = [];
-        const actualTimedSince = actualTimedInterval[timer.minimumMessagesSinceLast];
+        //Genera un hash MD5 a partir de la config. del timer
+        const hash = md5(JSON.stringify(timerData));
 
-        //Almacena los días de la semana de ejecución configurados, si son válidos
-        if (effectiveWeekDays.includes(new Date().getDay())) actualTimedSince.push(timedMessage);
+        //Si el timer no estaba almacenado en la BD
+        if (!client.db.timers.messages[hash]) {
+
+            //Lo añade a la BD
+            client.db.timers.messages[hash] = timerData;
+        };
+
+        //Sobreescribe la base de datos
+        client.fs.writeFile('./databases/timers.json', JSON.stringify(client.db.timers, null, 4), async err => {
+
+            //Si hubo un error, lo devuelve
+            if (err) throw err;
+        });
     };
 
-    //Función para enviar los lotes de mensajes a los canales
-    async function sendTimedMessages(channel, minimumMessagesSinceLast, timedMessages) {
+    //Función para enviar mensajes temporizados
+    async function sendMessage(hash, timerConfig, channel) {
 
-        //Almacena los últimos mensajes del canal
-        const lastMessages = await channel.messages.fetch({ limit: minimumMessagesSinceLast });
+        //Almacena el número de día de la semana
+        const actualWeekDay = new Date().getDay() + 1;
 
-        //Almacena un array con los IDs de los mensajes
-        const messagesIds = Array.from(lastMessages.keys());
+        //Si hoy no se tiene que enviar, aborta
+        if (!timerConfig.weekDays.includes(actualWeekDay)) return;
 
-        //Por cada mensaje obtenido
-        for (let index = 0; index < lastMessages.size; index++) {
+        //Almacena el ID del último timer enviado
+        const lastSentMsgId = client.db.timers.sents[hash];
 
-            //Almacena el mensaje
-            const message = lastMessages.get(messagesIds[index]);
+        //Almacena si lo ha encontrado o no
+        let msgFound = false;
 
-            //Comprueba que no sea de un bot
-            if (message.author.bot) return;
+        //Si se ha enviado el timer al menos una vez
+        if (lastSentMsgId) {
 
-            //Si se ha llegado al final de la lista de mensajes
-            if ((index + 1) === lastMessages.size) {
+            //Busca los N últimos mensajes del canal en busca de un timer que no haya alcanzado el mínimo de mensajes posteriores
+            const lastMessages = await channel.messages.fetch({ limit: timerConfig.minimumMessagesSinceLast });
 
-                //Por cada uno de los mensajes a enviar
-                await timedMessages.forEach(async timedMessage => {
+            //Almacena un array con los IDs de los mensajes
+            const messagesIds = Array.from(lastMessages.keys());
 
-                    //Envía el mensaje al canal especificado
-                    await channel.send(timedMessage);
-                });
+            //Por cada mensaje obtenido
+            for (let index = 0; index < lastMessages.size; index++) {
+
+                //Almacena el mensaje
+                const message = lastMessages.get(messagesIds[index]);
+
+                //Si se encontró el mensaje, para el bucle y cambia el estado de la variable msgFound
+                if (message.id === lastSentMsgId) return msgFound = true;
             };
         };
+
+        //Si se encontró el mensaje, aborta el envío
+        if (msgFound) return;
+
+        //Envía el mensaje al canal especificado
+        const sentMsg = await channel.send(timerConfig.message);
+
+        //Actualiza la BD para guardar el ID del último timer
+        client.db.timers.sents[hash] = sentMsg.id;
+
+        //Sobreescribe la base de datos
+        client.fs.writeFile('./databases/timers.json', JSON.stringify(client.db.timers, null, 4), async err => {
+
+            //Si hubo un error, lo devuelve
+            if (err) throw err;
+        });
     };
 
-    //Por cada uno de los timers
-    for (const sameChannelId in timers) {
+    //Por cada uno de los hashes (timers) de la BD
+    for (const hash in client.db.timers.messages) {
 
-        //Busca y almacena el canal
-        const channel = await client.functions.fetchChannel(client.homeGuild, sameChannelId);
+        //Almacena la config. del timer
+        const timerConfig = client.db.timers.messages[hash]; 
 
-        //Si no hay canal, omite la iteración
+        //Busca el canal especificado en la config.
+        const channel = await client.functions.fetchChannel(client.homeGuild, timerConfig.channelId);
+
+        //Omite la iteración si no encuentra el mensaje
         if (!channel) continue;
 
-        //Por cada uno de los timers con el mismo intervalo
-        for (const sameInterval in timers[sameChannelId]) {
+        //Envía el mensaje al menos una vez
+        sendMessage(hash, timerConfig, channel);
 
-            //Por cada uno de los timers con el mismo margen de mensajes anteriores 
-            for (const sinceSameTime in timers[sameChannelId][sameInterval]) {
+        //Programa un intervalo paar enviar el timer
+        setInterval(async () => { sendMessage(hash, timerConfig, channel) }, timerConfig.interval);
+    };
 
-                //Almacena el grupo de mensajes a enviar
-                const timedGroup = timers[sameChannelId][sameInterval][sinceSameTime];
+    //Por cada hash de los timers enviado
+    for (const hash in client.db.timers.sents) {
 
-                //Envía el grupo de mensajes por primera vez (si corresponde)
-                //sendTimedMessages(channel, sinceSameTime, timedGroup);
+        //Si el timer asociado ya no existe
+        if (!client.db.timers.messages[hash]) {
 
-                //Crea un intervalo para enviar los grupos de mensajes (si corresponde)
-                setInterval(async () => { sendTimedMessages(channel, sinceSameTime, timedGroup) }, sameInterval);
-            };
+            //Lo borra de la BD
+            delete client.db.timers.sents[hash];
+
+            //Sobreescribe la base de datos
+            client.fs.writeFile('./databases/timers.json', JSON.stringify(client.db.timers, null, 4), async err => {
+
+                //Si hubo un error, lo devuelve
+                if (err) throw err;
+            });
         };
     };
 

@@ -197,7 +197,7 @@ exports.run = async (client) => {
     async function sendMessage(hash, timerConfig, channel) {
 
         //Almacena el número de día de la semana
-        const actualWeekDay = new Date().getDay() + 1;
+        const actualWeekDay = new Date().getDay();
 
         //Si hoy no se tiene que enviar, aborta
         if (!timerConfig.weekDays.includes(actualWeekDay)) return;

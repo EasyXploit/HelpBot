@@ -21,6 +21,12 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
                 .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.nonPrivileged, { messageAuthor: message.author })}.`)]
             });
 
+            //Comprueba si el comando está deshabilitado
+            if (!client.config.commands[command.config.name].enabled) return message.channel.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.nonPrivileged, { messageAuthor: message.author })}.`)]
+            });
+
             //Obtiene la configuración del comando
             let commandConfig = command.config;
 
@@ -69,6 +75,9 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
 
                     //Comprueba si el miembro tiene permiso para ejecutar el comando
                     if (!await client.functions.checkCommandPermission(message, client.config.commands[command])) continue;
+
+                    //Comprueba si el comando está deshabilitado
+                    if (!client.config.commands[command].enabled) continue;
 
                     //Añade el comando al array
                     commands.push(command);

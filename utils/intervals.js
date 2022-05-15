@@ -131,6 +131,19 @@ exports.run = (client) => {
         };
     }, 60000);
 
+    //NOMBRES DE USUARIO
+    //Comprobación de nombres de usuario de miembros
+    if (client.config.moderation.kickOnBadUsername) setInterval(async () => {
+
+        //Por cada uno de los miembros de la guild
+        await client.homeGuild.members.cache.forEach(async guildMember => {
+
+            //Comprueba si el nombre de usuario (visible) del miembro es válido
+            await client.functions.checkUsername(guildMember);
+        });
+
+    }, 120000);
+
     //ENCUESTAS
     //Comprobación de encuestas expiradas
     setInterval(async () => {

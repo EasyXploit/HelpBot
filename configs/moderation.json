@@ -1,6 +1,7 @@
 {
     "mutedRoleName": "Muted",
     "mutedRoleExcludedChannels": [],
+    "kickOnBadUsername": true,
     "newMemberForbiddenNames": [],
     "includeBannedWords": false,
     "newMemberTimeDelimiter": 1800000,

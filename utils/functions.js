@@ -580,43 +580,63 @@ exports.run = (client) => {
         if (result > 0) return result;
     };
 
+    //Función para comprobar los nombres de usuario de los miembros
+    client.functions.checkUsername = async member => {
+
+        //Almacena las listas de palabras prohibidas
+        const forbiddenNames = client.config.moderation.newMemberForbiddenNames;
+        const bannedWords = client.config.bannedWords;
+
+        //Si procede, comprueba si han de comprobarse los nombres de usuario
+        const containsForbiddenNames = forbiddenNames.some(word => member.displayName.toLowerCase().includes(word));
+        const containsBannedWords = client.config.moderation.includeBannedWords ? bannedWords.some(word => member.displayName.toLowerCase().includes(word)) : false;
+
+        //Si contiene alguna palabra prohibida
+        if (containsForbiddenNames || containsBannedWords) {
+
+            //Si no hay caché de registros
+            if (!client.loggingCache) client.loggingCache = {};
+
+            //Crea una nueva entrada en la caché de registros
+            client.loggingCache[member.id] = {
+                action: 'kick',
+                executor: client.user.id,
+                reason: locale.manageNewMember.kickReason
+            };
+
+            //Alerta al miembro de que ha sido expulsado
+            await member.user.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryError)
+                .setAuthor({ name: locale.manageNewMember.privateEmbed.author, iconURL: member.guild.iconURL({dynamic: true}) })
+                .setDescription(`${client.functions.localeParser(locale.manageNewMember.privateEmbed.description, { member: member, guildName: member.guild.name })}.`)
+                .addField(locale.manageNewMember.privateEmbed.moderator, `${client.user}`, true)
+                .addField(locale.manageNewMember.privateEmbed.reasonTitle, `${locale.manageNewMember.privateEmbed.reasonDescription}.`, true)
+            ]});
+
+            //Se expulsa al miembro
+            await member.kick(member.user, { reason: locale.manageNewMember.kickReason });
+
+            //Devuelve "false"
+            return false;
+        };
+
+        //Devuelve "true"
+        return true;
+    };
+
     //Función para dar gestionar nuevos miembros
     client.functions.manageNewMember = async member => {
 
         try {
 
-            //Almacena las listas de palabras prohibidas
-            const forbiddenNames = client.config.moderation.newMemberForbiddenNames;
-            const bannedWords = client.config.bannedWords;
+            //Si hay que explicar a los miembros con un nombre de usuario prohibido
+            if (client.configkickOnBadUsername) {
 
-            //Si procede, comprueba si han de comprobarse los nombres de usuario
-            const containsForbiddenNames = forbiddenNames.some(word => member.user.username.toLowerCase().includes(word));
-            const containsBannedWords = client.config.moderation.includeBannedWords ? bannedWords.some(word => member.user.username.toLowerCase().includes(word)) : false;
+                //Comprueba si el nombre de usuario del miembro es válido
+                const usernameIsValid = await client.functions.checkUsername(member);
 
-            //Si contiene alguna palabra prohibida
-            if (containsForbiddenNames || containsBannedWords) {
-
-                //Si no hay caché de registros
-                if (!client.loggingCache) client.loggingCache = {};
-
-                //Crea una nueva entrada en la caché de registros
-                client.loggingCache[member.id] = {
-                    action: 'kick',
-                    executor: client.user.id,
-                    reason: locale.manageNewMember.kickReason
-                };
-
-                //Alerta al miembro de que ha sido expulsado
-                await member.user.send({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.secondaryError)
-                    .setAuthor({ name: locale.manageNewMember.privateEmbed.author, iconURL: member.guild.iconURL({dynamic: true}) })
-                    .setDescription(`${client.functions.localeParser(locale.manageNewMember.privateEmbed.description, { member: member, guildName: member.guild.name })}.`)
-                    .addField(locale.manageNewMember.privateEmbed.moderator, `${client.user}`, true)
-                    .addField(locale.manageNewMember.privateEmbed.reasonTitle, `${locale.manageNewMember.privateEmbed.reasonDescription}.`, true)
-                ]});
-
-                //Se expulsa al miembro
-                await member.kick(member.user, { reason: locale.manageNewMember.kickReason });
+                //Aborta si el nombre no era válido
+                if (!usernameIsValid) return;
             };
 
             //Genera un embed con el registro de bienvenida

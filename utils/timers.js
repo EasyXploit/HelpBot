@@ -22,7 +22,7 @@ exports.run = async (client) => {
         if (!timer.channelId || isNaN(timer.channelId)) continue;
 
         //Omite si no se ha proporcionado correctamente el intervalo de ejecución
-        if (!timer.interval || isNaN(timer.interval) || timer.interval < 60000 || timer.interval > 86400000) continue;
+        if (!timer.interval || isNaN(timer.interval) || timer.interval < 60000 || timer.interval > 86399999) continue;
 
         //Omite si no se han proporcionado correctamente los días de la semana
         if (!timer.weekDays || !Array.isArray(timer.weekDays)) continue;

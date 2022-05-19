@@ -601,20 +601,20 @@ exports.run = (client) => {
             client.loggingCache[member.id] = {
                 action: 'kick',
                 executor: client.user.id,
-                reason: locale.manageNewMember.kickReason
+                reason: locale.checkUsername.kickReason
             };
 
             //Alerta al miembro de que ha sido expulsado
             await member.user.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setAuthor({ name: locale.manageNewMember.privateEmbed.author, iconURL: member.guild.iconURL({dynamic: true}) })
-                .setDescription(`${client.functions.localeParser(locale.manageNewMember.privateEmbed.description, { member: member, guildName: member.guild.name })}.`)
-                .addField(locale.manageNewMember.privateEmbed.moderator, `${client.user}`, true)
-                .addField(locale.manageNewMember.privateEmbed.reasonTitle, `${locale.manageNewMember.privateEmbed.reasonDescription}.`, true)
+                .setAuthor({ name: locale.checkUsername.privateEmbed.author, iconURL: member.guild.iconURL({dynamic: true}) })
+                .setDescription(`${client.functions.localeParser(locale.checkUsername.privateEmbed.description, { member: member, guildName: member.guild.name })}.`)
+                .addField(locale.checkUsername.privateEmbed.moderator, `${client.user}`, true)
+                .addField(locale.checkUsername.privateEmbed.reasonTitle, `${locale.checkUsername.privateEmbed.reasonDescription}.`, true)
             ]});
 
             //Se expulsa al miembro
-            await member.kick(member.user, { reason: locale.manageNewMember.kickReason });
+            await member.kick(member.user, { reason: locale.checkUsername.kickReason });
 
             //Devuelve "false"
             return false;
@@ -643,14 +643,14 @@ exports.run = (client) => {
             let welcomeEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.correct)
                 .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
-                .setAuthor({ name: locale.manageNewMember.welcomeEmbed.author, iconURL: 'attachment://in.png' })
-                .setDescription(client.functions.localeParser(locale.manageNewMember.welcomeEmbed.description, { memberTag: member.user.tag }))
-                .addField(`🆔 ${locale.manageNewMember.welcomeEmbed.memberId}`, member.user.id, true)
-                .addField(`📝 ${locale.manageNewMember.welcomeEmbed.registerDate}`, `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
+                .setAuthor({ name: locale.manageNewMember.author, iconURL: 'attachment://in.png' })
+                .setDescription(client.functions.localeParser(locale.manageNewMember.description, { memberTag: member.user.tag }))
+                .addField(`🆔 ${locale.manageNewMember.memberId}`, member.user.id, true)
+                .addField(`📝 ${locale.manageNewMember.registerDate}`, `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
 
             //Comprueba qué tipo de sanción tiene el miembro (si la tiene, según duración), y añade el campo al embed de registro (si pertoca)
-            if (client.db.mutes[member.id] && client.db.mutes[member.id].until) welcomeEmbed.addField(`🔇 ${locale.manageNewMember.welcomeEmbed.actualSanction}`, `${locale.manageNewMember.welcomeEmbed.limitedSanction}: <t:${Math.round(new Date(client.db.mutes[member.id].until) / 1000)}>`, false);
-            else if (client.db.mutes[member.id] && !client.db.mutes[member.id].until) welcomeEmbed.addField(`🔇 ${locale.manageNewMember.welcomeEmbed.actualSanction}`, locale.manageNewMember.welcomeEmbed.unlimitedSantion, false);
+            if (client.db.mutes[member.id] && client.db.mutes[member.id].until) welcomeEmbed.addField(`🔇 ${locale.manageNewMember.actualSanction}`, `${locale.manageNewMember.limitedSanction}: <t:${Math.round(new Date(client.db.mutes[member.id].until) / 1000)}>`, false);
+            else if (client.db.mutes[member.id] && !client.db.mutes[member.id].until) welcomeEmbed.addField(`🔇 ${locale.manageNewMember.actualSanction}`, locale.manageNewMember.unlimitedSantion, false);
 
             //Se notifica en el canal de registro
             await client.joinsAndLeavesChannel.send({ embeds: [ welcomeEmbed ], files: ['./resources/images/in.png'] });

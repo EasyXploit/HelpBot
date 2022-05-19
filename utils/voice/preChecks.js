@@ -118,7 +118,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.alreadyConnected, { botUser: client.user, channelName: voiceChannel.name })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.alreadyConnected, { botUser: client.user, voiceChannel: voiceChannel })}.`)
                 ]});
     
                 //Devuelve el estado "falso"
@@ -164,7 +164,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantSpeak, { botUser: client.user, channelName: voiceChannel.name })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantSpeak, { botUser: client.user, voiceChannel: voiceChannel })}.`)
                 ]});
 
                 //Devuelve el estado "falso"
@@ -187,7 +187,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.forbiddenJoin, { botUser: client.user, channelName: voiceChannel.name })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.forbiddenJoin, { botUser: client.user, voiceChannel: voiceChannel })}.`)
                 ]});
     
                 //Devuelve el estado "falso"
@@ -210,7 +210,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantJoin, { botUser: client.user, channelName: voiceChannel.name })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantJoin, { botUser: client.user, voiceChannel: voiceChannel })}.`)
                 ]})
                 
                 //Devuelve el estado "falso"
@@ -233,7 +233,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantJoin, { channelName: voiceChannel.name })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantJoin, { voiceChannel: voiceChannel })}.`)
                 ]});
     
                 //Devuelve el estado "falso"

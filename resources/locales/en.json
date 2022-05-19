@@ -590,7 +590,7 @@
             "join": {
                 "description": "Connects the bot to your voice channel",
                 "parameters": "",
-                "bounded": "Joined `{{voiceChannelName}}` and bound to {{textChannel}}",
+                "bounded": "Joined {{voiceChannel}} and bound to {{textChannel}}",
                 "leftChannel": "I have left the channel"
             },
             "leave": {
@@ -639,7 +639,7 @@
                 "resumed": "Queue resumed",
                 "unavailable": "The player is running on another channel",
                 "searching": "Searching for `{{serachTerm}}`",
-                "bounded": "Joined `{{voiceChannelName}}` and bound to {{textChannel}}"
+                "bounded": "Joined {{voiceChannel}} and bound to {{textChannel}}"
             },
             "playskip": {
                 "description": "Searchs for a track or playlist by name or YouTube URL and skips the current track",
@@ -711,7 +711,7 @@
                 },
                 "alreadyPlaying": "The player is running on another channel",
                 "doesntExist": "The audio **{{recordName}}** does not exist",
-                "bounded": "Joined `{{voiceChannelName}}` and bound to {{textChannel}}"
+                "bounded": "Joined {{voiceChannel}} and bound to {{textChannel}}"
             }
         },
         "tools": {
@@ -1104,12 +1104,12 @@
                 "notConnected": "You must be connected to a voice channel",
                 "notSameChannel": "You must be on the same voice channel as {{botUser}}",
                 "inactive": "The player is inactive",
-                "alreadyConnected": "{{botUser}} is already connected to `{{channelName}}`",
+                "alreadyConnected": "{{botUser}} is already connected to {{voiceChannel}}",
                 "isAfk": "{{botUser}} cannot be connected to the AFK channel",
-                "cantSpeak": "{{botUser}} does not have permission to speak on `{{channelName}}`",
-                "forbiddenJoin": "{{botUser}} is prohibited from connecting to `{{channelName}}`",
-                "cantJoin": "{{botUser}} does not have permission to join `{{channelName}}`",
-                "fullChannel": "Voice channel `{{channelName}}` is full",
+                "cantSpeak": "{{botUser}} does not have permission to speak on {{voiceChannel}}",
+                "forbiddenJoin": "{{botUser}} is prohibited from connecting to {{voiceChannel}}",
+                "cantJoin": "{{botUser}} does not have permission to join {{voiceChannel}}",
+                "fullChannel": "Voice channel {{voiceChannel}} is full",
                 "error": "ERROR"
             },
             "testQueuePerms": {
@@ -1129,7 +1129,7 @@
                     "rewards": "Rewards earned"
                 }
             },
-            "manageNewMember": {
+            "checkUsername": {
                 "kickReason": "The username contained a banned word",
                 "privateEmbed": {
                     "author": "[KICKED]",
@@ -1137,16 +1137,16 @@
                     "moderator": "Moderator",
                     "reasonTitle": "Reason",
                     "reasonDescription": "Your username contains a word that is banned in the community"
-                },
-                "welcomeEmbed": {
-                    "author": "New member",
-                    "description": "{{memberTag}} joined the server",
-                    "memberId": "Member ID",
-                    "registerDate": "Register date",
-                    "actualSanction": "Current sanction",
-                    "limitedSanction": "Muted until",
-                    "unlimitedSantion": "Muted indefinitely"
                 }
+            },
+            "manageNewMember": {
+                "author": "New member",
+                "description": "{{memberTag}} joined the server",
+                "memberId": "Member ID",
+                "registerDate": "Register date",
+                "actualSanction": "Current sanction",
+                "limitedSanction": "Muted until",
+                "unlimitedSantion": "Muted indefinitely"
             },
             "syntaxHandler": {
                 "title": "Incorrect syntax",

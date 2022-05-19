@@ -28,7 +28,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
 		reproductionQueue.boundedTextChannel = message.channel;
 
         //Manda un mensaje de confirmación
-        message.channel.send({ content: `📥 | ${client.functions.localeParser(locale.bounded, { voiceChannelName: voiceChannel.name, textChannel: message.channel })}.` });
+        message.channel.send({ content: `📥 | ${client.functions.localeParser(locale.bounded, { voiceChannel: voiceChannel, textChannel: message.channel })}.` });
 
         //Si la conexión desaparece
         connection.on(VoiceConnectionStatus.Disconnected, async () => {

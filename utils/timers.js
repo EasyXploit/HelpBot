@@ -22,7 +22,7 @@ exports.run = async (client) => {
         if (!timer.channelId || isNaN(timer.channelId)) continue;
 
         //Omite si no se ha proporcionado correctamente el intervalo de ejecución
-        if (!timer.interval || isNaN(timer.interval) || timer.interval < 60000 || timer.interval > 86399999) continue;
+        if (!timer.interval || isNaN(timer.interval) || timer.interval < 60000 || timer.interval > 86400000) continue;
 
         //Omite si no se han proporcionado correctamente los días de la semana
         if (!timer.weekDays || !Array.isArray(timer.weekDays)) continue;
@@ -202,14 +202,19 @@ exports.run = async (client) => {
         //Si hoy no se tiene que enviar, aborta
         if (!timerConfig.weekDays.includes(actualWeekDay)) return;
 
-        //Almacena el ID del último timer enviado
-        const lastSentMsgId = client.db.timers.sents[hash];
+        //Almacena el último timer enviado
+        const lastSentMsg = client.db.timers.sents[hash];
 
         //Almacena si lo ha encontrado o no
         let msgFound = false;
 
         //Si se ha enviado el timer al menos una vez
-        if (lastSentMsgId) {
+        if (lastSentMsg) {
+
+            console.log(`${Date.now() - lastSentMsg.timestamp} < ${timerConfig.interval - 1000} ? : ${(Date.now() - lastSentMsg.timestamp) < (timerConfig.interval + 1000)}`);
+
+            //Si no se ha rebasado el intervalo de tiempo mínimo, aborta
+            if ((Date.now() - lastSentMsg.timestamp) < (timerConfig.interval - 1000)) return;
 
             //Busca los N últimos mensajes del canal en busca de un timer que no haya alcanzado el mínimo de mensajes posteriores
             const lastMessages = await channel.messages.fetch({ limit: timerConfig.minimumMessagesSinceLast });
@@ -224,7 +229,7 @@ exports.run = async (client) => {
                 const message = lastMessages.get(messagesIds[index]);
 
                 //Si se encontró el mensaje, para el bucle y cambia el estado de la variable msgFound
-                if (message.id === lastSentMsgId) return msgFound = true;
+                if (message.id === lastSentMsg.id) return msgFound = true;
             };
         };
 
@@ -235,7 +240,10 @@ exports.run = async (client) => {
         const sentMsg = await channel.send(timerConfig.message);
 
         //Actualiza la BD para guardar el ID del último timer
-        client.db.timers.sents[hash] = sentMsg.id;
+        client.db.timers.sents[hash] = {
+            id: sentMsg.id,
+            timestamp: Date.now()
+        };
 
         //Sobreescribe la base de datos
         client.fs.writeFile('./databases/timers.json', JSON.stringify(client.db.timers, null, 4), async err => {
@@ -260,7 +268,7 @@ exports.run = async (client) => {
         //Envía el mensaje al menos una vez
         sendMessage(hash, timerConfig, channel);
 
-        //Programa un intervalo paar enviar el timer
+        //Programa un intervalo para enviar el timer
         setInterval(async () => { sendMessage(hash, timerConfig, channel) }, timerConfig.interval);
     };
 

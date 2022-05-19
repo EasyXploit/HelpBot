@@ -211,8 +211,6 @@ exports.run = async (client) => {
         //Si se ha enviado el timer al menos una vez
         if (lastSentMsg) {
 
-            console.log(`${Date.now() - lastSentMsg.timestamp} < ${timerConfig.interval - 1000} ? : ${(Date.now() - lastSentMsg.timestamp) < (timerConfig.interval + 1000)}`);
-
             //Si no se ha rebasado el intervalo de tiempo mínimo, aborta
             if ((Date.now() - lastSentMsg.timestamp) < (timerConfig.interval - 1000)) return;
 

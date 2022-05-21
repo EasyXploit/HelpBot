@@ -1,5 +1,8 @@
 exports.run = async (message, client, locale) => {
 
+    //Aborta si no es un evento de la guild registrada
+    if (message.guild && message.guild.id !== client.homeGuild.id) return;
+
     //Previene la ejecución si el mensaje fue enviado por un bot o por el sistema
     if (message.author.bot || message.type !== 'DEFAULT') return;
 

@@ -2,6 +2,9 @@ exports.run = async (oldState, newState, client, locale) => {
     
     try {
 
+        //Aborta si no es un evento de la guild registrada
+        if (oldState.guild.id !== client.homeGuild.id) return;
+
         //Si el bot está conectado
         if (newState.guild.me.voice.channelId) {
 

@@ -8,11 +8,18 @@ exports.run = async (event, client, locale) => {
         //Comprueba cuantas guilds hay disponibles
         if (cachedGuilds.size > 1) {    //Si la cantidad es superior a 1
 
-            //Notifica que el bot no puede funcionar en más de una guild
-            console.warn(`\n${new Date().toLocaleString()} 》${locale.justOneGuild}.`);
+            //Por cada guild en caché
+            await cachedGuilds.forEach(guild => {
+                
+                //Omite la iteración si la guild es la configurada o es del propio bot
+                if (guild.ownerId === client.user.id || guild.id === client.config.dynamic.homeGuild) return;
 
-            //Aborta el proceso de manera limpia
-            process.exit();
+                //Notifica que el bot no puede funcionar en más de una guild
+                console.warn(`\n${new Date().toLocaleString()} 》${locale.justOneGuild}.`);
+
+                //Aborta el proceso de manera limpia
+                process.exit();
+            });
 
         } else if (cachedGuilds.size === 0) {   //Si la cantidad es 0
 

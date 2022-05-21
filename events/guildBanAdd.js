@@ -2,6 +2,9 @@ exports.run = async (banData, client, locale) => {
 
     try {
 
+        //Aborta si no es un evento de la guild registrada
+        if (banData.guild.id !== client.homeGuild.id) return;
+
         //Busca el último baneo en el registro de auditoría
         const fetchedLogs = await banData.guild.fetchAuditLogs({
             limit: 1,

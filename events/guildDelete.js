@@ -2,6 +2,9 @@ exports.run = async (guild, client, locale) => {
     
     try {
 
+        //Omite si la guild es del propio bot
+        if (guild.ownerId === client.user.id) return;
+
         //Notifica el abandono de la guild
         console.warn(`${new Date().toLocaleString()} 》${client.functions.localeParser(locale.abandonedGuild, { botUsername: client.user.username, guildName: guild.name })}.`);
 

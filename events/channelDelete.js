@@ -5,6 +5,9 @@ exports.run = async (channel, client, locale) => {
         //Solo si el canal era de texto
         if (channel.type === 'GUILD_TEXT') {
 
+            //Aborta si no es un evento de la guild registrada
+            if (channel.guild.id !== client.homeGuild.id) return;
+
             //Solo si el canal era el de depuración
             if (channel.id === client.config.main.debuggingChannel) {
 

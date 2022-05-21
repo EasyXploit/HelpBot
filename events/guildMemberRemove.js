@@ -1,6 +1,9 @@
 exports.run = async (member, client, locale) => {
     
     try {
+
+        //Aborta si no es un evento de la guild registrada
+        if (member.guild.id !== client.homeGuild.id) return;
         
         //Busca la última expulsión en el registro de auditoría
         const fetchedLogs = await member.guild.fetchAuditLogs({

@@ -2,6 +2,9 @@ exports.run = async (member, client, locale) => {
     
     try {
 
+        //Aborta si no es un evento de la guild registrada
+        if (member.guild.id !== client.homeGuild.id) return;
+
         //Si el nuevo miembro es un bot
         if (member.user.bot) {
 

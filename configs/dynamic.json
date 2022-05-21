@@ -1,11 +1,6 @@
 {
     "homeGuild": "",
+    "serviceGuildId": "",
     "inviteCode": "",
-    "mutedRoleId": "",
-    "customEmojis": {
-        "greenTick": "",
-        "redTick": "",
-        "orangeTick": "",
-        "grayTick": ""
-    }
+    "mutedRoleId": ""
 }

@@ -954,6 +954,7 @@
         "lifecycle": {
             "loadEmojis": {
                 "configLoaded": "Carga de emojis personalizados completada",
+                "maxExceeded": "No se pueden cargar más de 50 emojis",
                 "error": "ERROR"
             },
             "newGuild": {
@@ -970,11 +971,6 @@
                 "voiceStatesLoaded": "Carga de estados de voz completada",
                 "loadedCorrectly": "{{botUsername}} iniciado correctamente",
                 "loadMention": "{{botUsername}} iniciado correctamente",
-                "error": "ERROR"
-            },
-            "uploadEmojis": {
-                "emojiCreated": "Emoji [{{emojiName}}] creado satisfactoriamente",
-                "insufficientSpace": "No habían espacios para emojis suficientes.\nNecesitas al menos {{neededSpaced}} espacios.\nSe usarán emojis Unicode en su lugar",
                 "error": "ERROR"
             }
         },

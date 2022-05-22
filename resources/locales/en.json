@@ -347,7 +347,7 @@
                     "noExpiration": "Does not expire"
                 },
                 "privateEmbed": {
-                    "author": "[MUTED]'",
+                    "author": "[MUTED]",
                     "description": "{{member}}, you have been muted on {{guildName}",
                     "moderator": "Moderator",
                     "reason": "Reason",
@@ -509,7 +509,7 @@
                     "expiration": "Expiration"
                 },
                 "privateEmbed": {
-                    "author": "[MUTED]'",
+                    "author": "[MUTED]",
                     "description": "{{member}}, you have been muted on {{guildName}",
                     "moderator": "Moderator",
                     "reason": "Reason",

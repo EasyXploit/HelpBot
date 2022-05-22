@@ -347,7 +347,7 @@
                     "noExpiration": "No vence"
                 },
                 "privateEmbed": {
-                    "author": "[SILENCIADO]'",
+                    "author": "[SILENCIADO]",
                     "description": "{{member}}, has sido silenciado en {{guildName}",
                     "moderator": "Moderador",
                     "reason": "Razón",
@@ -509,7 +509,7 @@
                     "expiration": "Vencimiento"
                 },
                 "privateEmbed": {
-                    "author": "[SILENCIADO]'",
+                    "author": "[SILENCIADO]",
                     "description": "{{member}}, has sido silenciado en {{guildName}",
                     "moderator": "Moderador",
                     "reason": "Razón",

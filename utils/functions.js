@@ -216,21 +216,19 @@ exports.run = (client) => {
     client.functions.checkMutedRole = async (guild) => {
 
         //Busca el rol silenciado
-        let mutedRole = await guild.roles.cache.find(role => role.id === client.config.dynamic.mutedRoleId);
+        let mutedRole = await guild.roles.fetch(client.config.dynamic.mutedRoleId);
 
         //Si no existe el rol silenciado (o su nombre es diferente al configurado), lo crea
         if (!mutedRole || mutedRole.name !== client.config.moderation.mutedRoleName) {
 
             //Borra el anterior rol si es necesario
-            if (mutedRole.name !== client.config.moderation.mutedRoleName) await mutedRole.delete(locale.checkMutedRole.replacing);
+            if (mutedRole && mutedRole.name !== client.config.moderation.mutedRoleName) await mutedRole.delete(locale.checkMutedRole.replacing);
 
             //Crea un nuevo rol silenciado
             mutedRole = await guild.roles.create({
-                data: {
-                    name: client.config.moderation.mutedRoleName,
-                    color: client.config.colors.mutedRole,
-                    permissions: []
-                },
+                name: client.config.moderation.mutedRoleName,
+                color: client.config.colors.mutedRole,
+                permissions: [],
                 reason: locale.checkMutedRole.reason
             });
             
@@ -243,6 +241,16 @@ exports.run = (client) => {
 
             //Graba el ID en el fichero de configuración
             await client.fs.writeFile('./configs/dynamic.json', JSON.stringify(client.config.dynamic, null, 4), async err => { if (err) throw err });
+
+            //Por cada ID de miembro en la base de datos de muteos
+            for (const memberId in client.db.mutes) {
+
+                //Busca y almacena el miembro
+                const member = await client.functions.fetchMember(guild, memberId);
+
+                //Añade el rol silenciado al miembro
+                await member.roles.add(mutedRole);
+            };
         };
         
         //Devuelve el rol silenciado

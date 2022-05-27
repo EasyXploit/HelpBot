@@ -233,7 +233,7 @@ exports.run = async (client, message, checks) => {
                 //Devuelve un mensaje de error
                 await message.channel.send({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantJoin, { voiceChannel: voiceChannel })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.fullChannel, { voiceChannel: voiceChannel })}.`)
                 ]});
     
                 //Devuelve el estado "falso"

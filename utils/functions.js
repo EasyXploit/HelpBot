@@ -269,6 +269,9 @@ exports.run = (client) => {
             //Ignora este canal si debe estar excluido del silenciamiento
             if (client.config.moderation.mutedRoleExcludedChannels.includes(channel.id)) return;
 
+            //Ignora este canal si se trata de canal sin permisos propios (e.g. hilos)
+            if (!channel.permissionOverwrites) return;
+
             //Si el canal tiene un permiso para el rol silenciado, lo almacena
             const mutedRolePermissions = channel.permissionOverwrites.resolve(mutedRole.id);
 
@@ -279,6 +282,10 @@ exports.run = (client) => {
                 await channel.permissionOverwrites.edit(mutedRole, {
                     SEND_MESSAGES: false,
                     ADD_REACTIONS: false,
+                    CREATE_PUBLIC_THREADS: false,
+                    CREATE_PRIVATE_THREADS: false,
+                    SEND_MESSAGES_IN_THREADS: false,
+                    START_EMBEDDED_ACTIVITIES: false,
                     CONNECT: false
                 });
             };

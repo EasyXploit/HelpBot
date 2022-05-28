@@ -6,8 +6,8 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
         if (args[0]) {
             
             //Obtiene el export del comando, o del alias
-            let command = client.commands.get(args[0]);
-            if (!command) command = client.commands.get(client.aliases.get(args[0]));
+            let command = client.commands.legacyCommands.get(args[0]);
+            if (!command) command = client.commands.legacyCommands.get(client.aliases.get(args[0]));
 
             //Comprueba si el comando existe
             if (!command) return message.channel.send({ embeds: [new client.MessageEmbed()
@@ -16,13 +16,13 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             ]});
 
             //Comprueba si el miembro tiene permiso para ejecutar el comando
-            if (!await client.functions.checkCommandPermission(message, client.config.commands[command.config.name])) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            if (!await client.functions.checkCommandPermission(message, client.config.legacyCommands[command.config.name])) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.nonPrivileged, { messageAuthor: message.author })}.`)]
             });
 
             //Comprueba si el comando está deshabilitado
-            if (!client.config.commands[command.config.name].enabled) return message.channel.send({ embeds: [ new client.MessageEmbed()
+            if (!client.config.legacyCommands[command.config.name].enabled) return message.channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.nonPrivileged, { messageAuthor: message.author })}.`)]
             });
@@ -31,7 +31,7 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             let commandConfig = command.config;
 
             //Almacena los alias del comando
-            const commandAliases = commandConfig.aliases.concat(client.config.commands[commandConfig.name].additionalAliases);
+            const commandAliases = commandConfig.aliases.concat(client.config.legacyCommands[commandConfig.name].additionalAliases);
 
             //Almacena las traducciones del comando al idioma configurado
             const commandLocale = await require(`../../resources/locales/${client.config.main.language}.json`).commands[commandConfig.category][commandConfig.name];
@@ -62,22 +62,22 @@ exports.run = async (client, message, args, command, commandConfig, locale) => {
             const translations = require(`../../resources/locales/${client.config.main.language}.json`).commands;
 
             //Examina cada directorio "categoría" de comandos
-            for (let category of await client.fs.readdirSync('./commands/')) {
+            for (let category of await client.fs.readdirSync('./legacyCommands/')) {
 
                 //Almacena la lista de comandos de la categoría
                 let commands = [];
 
                 //Para cada comando de dicha categoría
-                for (let command of await client.fs.readdirSync(`./commands/${category}/`)) {
+                for (let command of await client.fs.readdirSync(`./legacyCommands/${category}/`)) {
 
                     //Elimina la extensión del archivo
                     command = command.replace('.js', '');
 
                     //Comprueba si el miembro tiene permiso para ejecutar el comando
-                    if (!await client.functions.checkCommandPermission(message, client.config.commands[command])) continue;
+                    if (!await client.functions.checkCommandPermission(message, client.config.legacyCommands[command])) continue;
 
                     //Comprueba si el comando está deshabilitado
-                    if (!client.config.commands[command].enabled) continue;
+                    if (!client.config.legacyCommands[command].enabled) continue;
 
                     //Añade el comando al array
                     commands.push(command);

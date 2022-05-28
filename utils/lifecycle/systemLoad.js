@@ -53,6 +53,9 @@ exports.run = async (client) => {
             //Notifica que la carga se ha completado
             console.log(`\n - [OK] ${client.locale.utils.lifecycle.systemLoad.guildConfigLoaded}.`);
 
+            //Carga de comandos en memoria
+            await require('./loadInteractions.js').run(client);
+
             //Carga las funciones globales
             require('../functions.js').run(client);
 

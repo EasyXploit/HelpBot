@@ -100,18 +100,21 @@ client.fs.readdir('./events/', async (err, files) => {
     });
 });
 
-//MANEJADOR DE COMANDOS
+//MANEJADOR DE COMANDOS HEREDADOS
 //Lee el directorio de las categorías de comandos
-client.fs.readdirSync('./commands/').forEach(subDirectory => {
+client.fs.readdirSync('./legacyCommands/').forEach(subDirectory => {
 
     //Por cada subdirectorio, filtra los scripts de comandos
-    const commands = client.fs.readdirSync(`./commands/${subDirectory}/`).filter(files => files.endsWith('.js'));
+    const commands = client.fs.readdirSync(`./legacyCommands/${subDirectory}/`).filter(files => files.endsWith('.js'));
+
+    //Crea una colección para los comandos heredados
+    client.commands.legacyCommands = new client.Collection();
 
     //Para cada comando de la categoría
     commands.forEach(command => {
 
         //Requiere el comando para obtener su información
-        let pulledCommand = require(`./commands/${subDirectory}/${command}`);
+        let pulledCommand = require(`./legacyCommands/${subDirectory}/${command}`);
         
         //Verifica si el nombre del comando es una cadena o no, y verifica si existe
         if (pulledCommand.config && typeof (pulledCommand.config.name) === 'string') {
@@ -120,10 +123,10 @@ client.fs.readdirSync('./commands/').forEach(subDirectory => {
             pulledCommand.config.category = subDirectory;
 
             //Comprueba si hay conflictos con otros comandos que tengan el mismo nombre
-            if (client.commands.get(pulledCommand.config.name)) return console.warn(`${client.locale.index.conflictedNames}: ${pulledCommand.config.name}.`);
+            if (client.commands.legacyCommands.get(pulledCommand.config.name)) return console.warn(`${client.locale.index.conflictedNames}: ${pulledCommand.config.name}.`);
 
             //Añade el comando a la colección
-            client.commands.set(pulledCommand.config.name, pulledCommand);
+            client.commands.legacyCommands.set(pulledCommand.config.name, pulledCommand);
 
             //Manda un mensaje de confirmación
             console.log(` - [OK] ${client.locale.index.commandLoaded}: [${pulledCommand.config.name}]`);
@@ -131,7 +134,7 @@ client.fs.readdirSync('./commands/').forEach(subDirectory => {
         } else {
             
             //Si hay un error, no carga el comando
-            return console.log(`${client.locale.index.configError}: ./commands/${subDirectory}/.`);
+            return console.log(`${client.locale.index.configError}: ./legacyCommands/${subDirectory}/.`);
         };
 
         //Comprueba si el comando tiene alias, y de ser así, los añade a la colección
@@ -149,7 +152,7 @@ client.fs.readdirSync('./commands/').forEach(subDirectory => {
         };
 
         //Almacena la configuración del comando, si existe
-        const commandConfig = client.config.commands[pulledCommand.config.name];
+        const commandConfig = client.config.legacyCommands[pulledCommand.config.name];
 
         //Comprueba si el comando tiene alias adicionales configurados, y de ser así, los añade a la colección
         if (commandConfig && commandConfig.additionalAliases && typeof (commandConfig.additionalAliases) === 'object') {

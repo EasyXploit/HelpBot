@@ -95,13 +95,13 @@ exports.run = async (message, client, locale) => {
         ]}).then(msg => {setTimeout(() => msg.delete(), 1000)});
 
         //Busca el comando por su nombre o su alias
-        const pulledCommand = client.commands.get(command) || client.commands.get(client.aliases.get(command));
+        const pulledCommand = client.commands.legacyCommands.get(command) || client.commands.legacyCommands.get(client.aliases.get(command));
 
         //Aborta si no lo encuentra
         if (!pulledCommand) return;
 
         //Almacena la configuración del comando
-        let commandConfig = client.config.commands[pulledCommand.config.name];
+        let commandConfig = client.config.legacyCommands[pulledCommand.config.name];
 
         //Aborta si el comando está deshabilitado
         if (!commandConfig || !commandConfig.enabled) return;

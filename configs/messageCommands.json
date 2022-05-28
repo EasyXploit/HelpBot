@@ -1,0 +1,6 @@
+{
+    "TestMessageCommand": {
+		"enabled": true,
+		"defaultPermission": true
+	}
+}

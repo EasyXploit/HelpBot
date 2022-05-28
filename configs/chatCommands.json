@@ -1,0 +1,6 @@
+{
+    "test": {
+		"enabled": true,
+		"defaultPermission": true
+	}
+}

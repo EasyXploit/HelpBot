@@ -70,7 +70,7 @@ exports.run = async (oldState, newState, client, locale) => {
             if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].lastXpReward + client.config.xp.XPGainInterval)) {
 
                 //Almacena al miembro
-                const member = await client.functions.fetchMember(newState.guild, newState.id);
+                const member = await client.functions.fetchMember(newState.id);
 
                 //Si el miembro está muteado o ensordecido, no hace nada
                 if (!member || member.voice.mute || member.voice.deaf) return;

@@ -1,4 +1,4 @@
-exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, requestingMember) => {
+exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, requestingMember, interaction) => {
 
     try {
 
@@ -8,7 +8,7 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
         const playlistItems = await playlist.all_videos();
 
         //Almacena las traducciones
-        const locale = client.locale.utils.voice.parsePlaylist;
+		const locale = client.locale.utils.voice.parsePlaylist;
 
         //Almacena las pistas autorizadas restantes
         let remainingTracks = authorizedTracks;
@@ -43,7 +43,7 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
             if (!result) continue;
 
             //Crea el objeto de la cola
-            let queueTrackInfo = await require('./addTrack').run(client, reproductionQueue, true, 'stream', requestingMember.id, result);
+            let queueTrackInfo = await require('./addTrack').run(client, reproductionQueue, true, 'stream', requestingMember.id, result, interaction);
 
             //Continua si es un duplicado y aumenta la cantidad de duplicados
             if (!queueTrackInfo) {
@@ -94,7 +94,7 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
 
     } catch (error) {
 
-        //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》${client.locale.utils.voice.parsePlaylist.error}:`, error.stack);
+        //Ejecuta el manejador de errores
+        await client.functions.interactionErrorHandler(error, interaction);
     };
 };

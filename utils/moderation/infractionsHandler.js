@@ -1,4 +1,4 @@
-exports.run = async (client, message, member, reason, action, moderator, msg) => {
+exports.run = async (client, member, reason, action, moderator, message, interaction, channel) => {
 
     try {
 
@@ -51,7 +51,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
             );
 
             //Envía un mensaje al canal de la infracción
-            await message.channel.send({ embeds: [ new client.MessageEmbed()
+            await channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
                 .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.muteFunction.notificationEmbed, { memberTag: member.user.tag })}`)
             ]});
@@ -71,7 +71,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
         async function kick() {
 
             //Envía un mensaje al canal de la infracción
-            await message.channel.send({ embeds: [ new client.MessageEmbed()
+            await channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
                 .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.kickFunction.notificationEmbed, { memberTag: member.user.tag })}`)
             ]});
@@ -122,7 +122,7 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
             if (duration) client.loggingCache[member.id].until = Date.now() + duration;
 
             //Envía un mensaje al canal de la infracción
-            await message.channel.send({ embeds: [ new client.MessageEmbed()
+            await channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
                 .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.banFunction.notificationEmbed, { memberTag: member.user.tag })}`)
             ]});
@@ -153,11 +153,27 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
             .addField(locale.warn.privateEmbed.reason, warnReason, true)
         ]});
 
-        //Envía un mensaje de advertencia
-        if (message.channel.type !== 'DM') await message.channel.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.warn.notificationEmbed, { memberTag: member.user.tag, warnReason: warnReason })}.`)
-        ]});
+        //Si se trata de un canal que no es de DM
+        if (channel.type !== 'DM') {
+
+            //Si se trata de una interacción
+            if (interaction) {
+
+                //Responde a la interacción con la advertencia
+                await interaction.reply({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.warning)
+                    .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.warn.notificationEmbed, { memberTag: member.user.tag, warnReason: warnReason })}.`)
+                ]});
+
+            } else {
+
+                //Envía un mensaje con la advertencia
+                await message.channel.send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.warning)
+                    .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.warn.notificationEmbed, { memberTag: member.user.tag, warnReason: warnReason })}.`)
+                ]});
+            };
+        };
 
         //Borra el mensaje si se ha de hacer
         if (action === 1 || action === 3) if (message.deletable) message.delete();
@@ -192,16 +208,16 @@ exports.run = async (client, message, member, reason, action, moderator, msg) =>
                     .addField(locale.warn.loggingEmbed.moderator, moderator.tag, true)
                     .addField(locale.warn.loggingEmbed.reason, warnReason, true)
                     .addField(locale.warn.loggingEmbed.warnId, warnID, true)
-                    .addField(locale.warn.loggingEmbed.channel, `${message.channel}`, true)
+                    .addField(locale.warn.loggingEmbed.channel, `${channel}`, true)
                     .addField(locale.warn.loggingEmbed.infractions, (Object.keys(client.db.warns[member.id]).length).toString(), true)
                 );
 
                 //Si procede, adjunta el mensaje filtrado
-                if (msg && client.config.moderation.attachFilteredMessages) client.functions.loggingManager('file', new client.MessageAttachment(Buffer.from(msg, 'utf-8'), `filtered-${Date.now()}.txt`));
+                if (message && client.config.moderation.attachFilteredMessages) client.functions.loggingManager('file', new client.MessageAttachment(Buffer.from(message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
             });
 
             //Banea temporalmente a los miembros que se acaban de unir al servidor y han mandado invitaciones
-            if (message.channel.type === 'DM' && (member.joinedTimestamp + client.config.moderation.newMemberTimeDelimiter) < Date.now()) {
+            if (message && channel.type === 'DM' && (member.joinedTimestamp + client.config.moderation.newMemberTimeDelimiter) < Date.now()) {
 
                 //Ejecuta la función de baneo
                 return ban(client.config.moderation.newSpammerMemberBanDuration);

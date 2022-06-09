@@ -1,4 +1,4 @@
-exports.run = async (client, reproductionQueue, silentMode, contentType, requesterId, metadata) => {
+exports.run = async (client, reproductionQueue, silentMode, contentType, requesterId, metadata, interaction) => {
 
     try {
 
@@ -76,7 +76,7 @@ exports.run = async (client, reproductionQueue, silentMode, contentType, request
 
     } catch (error) {
 
-        //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》${client.locale.utils.voice.addTrack.error}:`, error.stack);
+        //Ejecuta el manejador de errores
+        await client.functions.interactionErrorHandler(error, interaction);
     };
 };

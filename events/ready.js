@@ -36,7 +36,7 @@ exports.run = async (event, client, locale) => {
         } else {
 
             //Carga la config. en memoria y arranca el sistema
-            await require('../utils/lifecycle/systemLoad.js').run(client);
+            await require('../utils/lifecycle/systemLoad.js').run(client, client.locale.utils.lifecycle.systemLoad);
         };
 
     } catch (error) {

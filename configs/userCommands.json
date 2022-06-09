@@ -1,6 +1,0 @@
-{
-    "TestUserCommand": {
-		"enabled": true,
-		"defaultPermission": true
-	}
-}

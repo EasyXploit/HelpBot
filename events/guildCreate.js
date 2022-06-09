@@ -15,12 +15,12 @@ exports.run = async (guild, client, locale) => {
             await require('../utils/lifecycle/newGuild.js').run(client, cachedGuilds.first());
 
             //Notifica por consola que el bot se ha unido a la guild
-            console.log(`${new Date().toLocaleString()} 》${client.functions.localeParser(client.locale.events.guildCreate.newGuild, { botUsername: client.user.username, guildName: guild.name })}.`);
+            console.log(`${new Date().toLocaleString()} 》${client.functions.localeParser(locale.newGuild, { botUsername: client.user.username, guildName: guild.name })}.`);
 
         } else {
 
             //Lanza una advertencia por consola
-            console.warn(`${new Date().toLocaleString()} 》${client.functions.localeParser(client.locale.events.guildCreate.justOneGuild, { botUsername: client.user.username })}.`);
+            console.warn(`${new Date().toLocaleString()} 》${client.functions.localeParser(locale.justOneGuild, { botUsername: client.user.username })}.`);
 
             //Abandona la guild
             await guild.leave();
@@ -29,6 +29,6 @@ exports.run = async (guild, client, locale) => {
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》${client.locale.events.guildCreate.error}:`, error.stack);
+        console.error(`${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
     };
 };

@@ -1,4 +1,4 @@
-exports.run = async (client, args, message, streamType, toStream) => {
+exports.run = async (client, interaction, streamType, toStream) => {
 
 	try {
 
@@ -9,15 +9,17 @@ exports.run = async (client, args, message, streamType, toStream) => {
 		const locale = client.locale.utils.voice.fetchResource;
 		
 		//Comprueba si debe crear el objeto global de colas
-		if (!client.reproductionQueues[message.guild.id]) client.reproductionQueues[message.guild.id] = { boundedTextChannel: null, timeout: null, votes: {}, mode: false, tracks: [] };
+		if (!client.reproductionQueues[interaction.guild.id]) client.reproductionQueues[interaction.guild.id] = { boundedTextChannel: null, timeout: null, votes: {}, mode: false, tracks: [] };
 	
 		//Almacena el objeto de colas de la guild
-		const reproductionQueue = client.reproductionQueues[message.guild.id];
+		const reproductionQueue = client.reproductionQueues[interaction.guild.id];
+
+		 //Almacena el canal de texto de la interacción
+		 const interactionChannel = await client.functions.fetchChannel(interaction.channelId);
 	
 		//Almacena el canal del mensaje para vincular los mensajes de reproducción
-		reproductionQueue.boundedTextChannel = message.channel;
-	
-	
+		reproductionQueue.boundedTextChannel = interactionChannel;
+
 		//COMPROBACIÓN DE LÍMITES DE COLA
 		//Para comprobar cuantas pistas puede subir un miembro a la cola
 	
@@ -35,21 +37,21 @@ exports.run = async (client, args, message, streamType, toStream) => {
 	
 			//Calcula cuantas pistas tiene el miembro en la cola
 			for (let index = 0; index < reproductionQueue.tracks.length; index++) {
-				if (message.member.id === reproductionQueue.tracks[index].requesterId) authorizedTracks--;
+				if (interaction.member.id === reproductionQueue.tracks[index].requesterId) authorizedTracks--;
 			};
 	
 			//Comprueba si el miembro puede añadir más pistas a la cola
-			if (authorizedTracks <= 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
+			if (authorizedTracks <= 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
 				.setColor(client.config.colors.error)
-				.setDescription(`${client.customEmojis.redTick} ${locale.cantAddMore}.`)]
-			});
+				.setDescription(`${client.customEmojis.redTick} ${locale.cantAddMore}.`)
+			], ephemeral: true});
 		};
 	
 		//Comprueba si la cola de reproducción está llena
-		if (musicConfig.queueLimit !== 0 && reproductionQueue.tracks.length >= musicConfig.queueLimit) return message.channel.send({ embeds: [ new client.MessageEmbed()
+		if (musicConfig.queueLimit !== 0 && reproductionQueue.tracks.length >= musicConfig.queueLimit) return interaction.reply({ embeds: [ new client.MessageEmbed()
 			.setColor(client.config.colors.error)
-			.setDescription(`${client.customEmojis.redTick} ${locale.fullQueue}.`)]
-		});
+			.setDescription(`${client.customEmojis.redTick} ${locale.fullQueue}.`)
+		], ephemeral: true});
 
 		//Variable para almacenar el estado de la búsqueda
 		let resultFound = false;
@@ -58,12 +60,12 @@ exports.run = async (client, args, message, streamType, toStream) => {
 		async function showNewQueueItem(trackItem) {
 
 			//Envía un mensaje con el resultado
-			if (reproductionQueue.tracks.length > 1) await message.channel.send({ embeds: [ new client.MessageEmbed()
+			if (reproductionQueue.tracks.length > 1) await interactionChannel.send({ embeds: [ new client.MessageEmbed()
 				.setColor(randomColor())
 				.setThumbnail(trackItem.meta.thumbnail)
 				.setAuthor({ name: `${locale.newItemEmbed.authorTitle} 🎶`, iconURL: 'attachment://dj.png' })
 				.setDescription(`[${trackItem.meta.title}](${trackItem.meta.location})\n\n● **${locale.newItemEmbed.author}:** \`${trackItem.meta.author}\`\n● **${locale.newItemEmbed.duration}:** \`${client.functions.msToDHHMMSS(trackItem.meta.length)}\``)
-				.setFooter({ text: await client.functions.getMusicFooter(message.guild) })
+				.setFooter({ text: await client.functions.getMusicFooter(interaction.guild) })
 			], files: ['./resources/images/dj.png'] });
 		};
 	
@@ -77,19 +79,23 @@ exports.run = async (client, args, message, streamType, toStream) => {
 			const getMP3Duration = require('get-mp3-duration');
 	
 			//Crea el objeto de la cola
-			const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'file', message.member.id, {
+			const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'file', interaction.member.id, {
 				location: `./media/audios/${toStream}.mp3`,
 				title: toStream,
 				author: locale.newMp3Author,
 				length: getMP3Duration(buffer),
 				thumbnail: 'attachment://dj.png'
-			});
-	
-			//Avisa sobre la adición a la cola
-			showNewQueueItem(newTrack);
+			}, interaction);
 
-			//Almacena el estado de la búsqueda
-			resultFound = true;
+			//Si se añadió la pista
+			if (newTrack) {
+	
+				//Avisa sobre la adición a la cola
+				showNewQueueItem(newTrack);
+
+				//Almacena el estado de la búsqueda
+				resultFound = true;
+			};
 	
 		} else if (streamType === 'stream') {
 	
@@ -103,49 +109,77 @@ exports.run = async (client, args, message, streamType, toStream) => {
 					if (toStream.match(/^.*(list=)([^#\&\?]*).*/)) {
 	
 						//Si se trata de una URL de Playlist, la maneja directamente
-						resultFound = await require('./parsePlaylist').run(client, reproductionQueue, toStream, authorizedTracks, message.member);
+						resultFound = await require('./parsePlaylist').run(client, reproductionQueue, toStream, authorizedTracks, interaction.member, interaction);
 	
 					} else {
+
+						//Almacena los metadatos de la pista
+						let metadata = null;
+
+						try {
 	
-						//Busca los metadatos del vídeo de YT
-						const playdl = require('play-dl');
-						const fetchedUrl = await playdl.video_info(toStream);
-						const metadata = fetchedUrl.video_details;
-		
+							//Busca los metadatos del vídeo de YT
+							const playdl = require('play-dl');
+							const fetchedUrl = await playdl.video_info(toStream);
+							metadata = fetchedUrl.video_details;
+
+						} catch (error) { 
+
+							//Notifica si el error se debe a una restricción de edad por falta de cookies
+							if (error.toString().includes('Sign in to confirm your age')) return await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
+								.setColor(client.config.colors.warning)
+								.setDescription(`${client.customEmojis.orangeTick} ${locale.ageRestricted}.`)
+							]});
+
+							//Notifica si el error se debe a que no es una URL válida
+							if (error.toString().includes('This is not a YouTube Watch URL')) return await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
+								.setColor(client.config.colors.error)
+								.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.noResults, { searchInput: toStream })}.`)
+							]});
+
+							//Ejecuta el manejador de errores
+							return await client.functions.interactionErrorHandler(error, interaction);
+						};
+
 						//Comprueba si se han obtenido resultados
-						if (!metadata) return message.channel.send({ embeds: [ new client.MessageEmbed()
+						if (!metadata) return await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.noResults, { searchInput: args.join(' ') })}.`)]
-						});
+							.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.noResults, { searchInput: toStream })}.`)
+						]});
+
 						//Comprueba si el resultado es un directo o un vídeo privado
-						if (metadata.private) return message.channel.send({ embeds: [ new client.MessageEmbed()
+						if (metadata.private) return interaction.reply({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} ${locale.cantPlayPrivate}.`)]
-						});
+							.setDescription(`${client.customEmojis.redTick} ${locale.cantPlayPrivate}.`)
+						], ephemeral: true});
 
 						//Comprueba si el resultado supera la duración máxima establecida
-						if (musicConfig.maxTrackDuration > 0 && (metadata.durationInSec * 1000 > musicConfig.maxTrackDuration || metadata.durationInSec * 1000 < 0)) return message.channel.send({ embeds: [ new client.MessageEmbed()
+						if (musicConfig.maxTrackDuration > 0 && (metadata.durationInSec * 1000 > musicConfig.maxTrackDuration || metadata.durationInSec * 1000 < 0)) return interaction.reply({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededLength, { duration: client.functions.msToDHHMMSS(musicConfig.maxTrackDuration) })}.`)]
-						});
+							.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededLength, { duration: client.functions.msToDHHMMSS(musicConfig.maxTrackDuration) })}.`)
+						], ephemeral: true});
 		
 						//Crea el objeto de la cola
-						const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'stream', message.member.id, metadata);
+						const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'stream', interaction.member.id, metadata, interaction);
 
-						//Almacena el estado de la búsqueda
-						resultFound = true;
-	
-						//Avisa sobre la adición a la cola
-						showNewQueueItem(newTrack);
+						//Si se añadió la pista
+						if (newTrack) {
+
+							//Almacena el estado de la búsqueda
+							resultFound = true;
+
+							//Avisa sobre la adición a la cola
+							showNewQueueItem(newTrack);
+						};
 					};
 	
 				} else {
 	
 					//Devuelve un error si no se ha proporcionado una URL válida
-					return message.channel.send({ embeds: [ new client.MessageEmbed()
+					return interaction.reply({ embeds: [ new client.MessageEmbed()
 						.setColor(client.config.colors.error)
-						.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.onlyFromYouTube, { botUser: client.user })}.`)]
-					});
+						.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.onlyFromYouTube, { botUser: client.user })}.`)
+					], ephemeral: true});
 				};
 	
 			} else {
@@ -154,37 +188,41 @@ exports.run = async (client, args, message, streamType, toStream) => {
 				const playdl = require('play-dl');
 				
 				//Realiza la búsqueda
-				await playdl.search(args.join(' '), {limit: 10}).then(async results => {
+				await playdl.search(toStream, {limit: 10}).then(async results => {
 	
 					//Comprueba si se han obtenido resultados
-					if (!results || results.length === 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
+					if (!results || results.length === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
 						.setColor(client.config.colors.error)
-						.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.noResults, { searchInput: args.join(' ') })}.`)]
-					});
+						.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.noResults, { searchInput: toStream })}.`)
+					], ephemeral: true});
 	
 					//Si solo hay un resultado, no muestra menú
 					if (results.length == 1) {
 
 						//Comprueba si el resultado es un vídeo privado
-						if (results[0].private) return message.channel.send({ embeds: [ new client.MessageEmbed()
+						if (results[0].private) return interaction.reply({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} ${locale.cantPlayPrivate}.`)]
-						});
+							.setDescription(`${client.customEmojis.redTick} ${locale.cantPlayPrivate}.`)
+						], ephemeral: true});
 
 						//Comprueba si el resultado supera la duración máxima establecida
-						if (musicConfig.maxTrackDuration > 0 && (results[0].durationInSec * 1000 > musicConfig.maxTrackDuration || results[0].durationInSec * 1000 < 0)) return message.channel.send({ embeds: [ new client.MessageEmbed()
+						if (musicConfig.maxTrackDuration > 0 && (results[0].durationInSec * 1000 > musicConfig.maxTrackDuration || results[0].durationInSec * 1000 < 0)) return interaction.reply({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededLength, { duration: client.functions.msToDHHMMSS(musicConfig.maxTrackDuration) })}.`)]
-						});
+							.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededLength, { duration: client.functions.msToDHHMMSS(musicConfig.maxTrackDuration) })}.`)
+						], ephemeral: true});
 	
 						//Crea el objeto de la cola
-						const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'stream', message.member.id, results[0]);
+						const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'stream', interaction.member.id, results[0], interaction);
 
-						//Almacena el estado de la búsqueda
-						resultFound = true;
-	
-						//Avisa sobre la adición a la cola
-						showNewQueueItem(newTrack);
+						//Si se añadió la pista
+						if (newTrack) {
+
+							//Almacena el estado de la búsqueda
+							resultFound = true;
+		
+							//Avisa sobre la adición a la cola
+							showNewQueueItem(newTrack);
+						};
 	
 					} else {
 	
@@ -228,13 +266,13 @@ exports.run = async (client, args, message, streamType, toStream) => {
 						};
 
 						//Devuelve un error si no se encontraron resultados
-						if (Object.keys(asociatedPositions).length === 0) return message.channel.send({ embeds: [ new client.MessageEmbed()
+						if (Object.keys(asociatedPositions).length === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} ${locale.invalidResults}.`)]
-						});
+							.setDescription(`${client.customEmojis.redTick} ${locale.invalidResults}.`)
+						], ephemeral: true});
 	
 						//Se espera a que el miembro elija una pista de la lista
-						await message.channel.send({ embeds: [ new client.MessageEmbed()
+						await interactionChannel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(randomColor())
 							.setAuthor({ name: `${locale.selectionEmbed.author} 🎶`, iconURL: 'attachment://dj.png' })
 							.setFooter({ text: `${locale.selectionEmbed.footer}.` })
@@ -245,7 +283,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 							await msg.react('❌');
 
 							//Crea un filtro de reacciones
-							const reactionsFilter = (reaction, user) => reaction.emoji.name === '❌' && user.id === message.author.id;
+							const reactionsFilter = (reaction, user) => reaction.emoji.name === '❌' && user.id === interaction.member.id;
 
 							//Crea un colector de reacciones que encajen con el filtro
 							const reactionsCollector = await msg.createReactionCollector({ filter: reactionsFilter, max: 1, time: 60000 });
@@ -254,13 +292,13 @@ exports.run = async (client, args, message, streamType, toStream) => {
 							reactionsCollector.on('collect', () => msg.delete());
 							
 							//Crea un filtro de mensajes
-							const messagesFilter = msg => msg.author.id === message.member.id;
+							const messagesFilter = m => m.author.id === interaction.member.id;
 	
 							//Crea un colector de mensajes que encajen con el filtro
-							await msg.channel.awaitMessages({messagesFilter, max: 1, time: 60000}).then(async collected => {
+							await msg.channel.awaitMessages({filter: messagesFilter, max: 1, time: 60000}).then(async collected => {
 
 								//No ejecuta el resto del programa si el mensaje fue borrado mediante reacción
-								if (!message.channel.messages.cache.get(msg.id)) return;
+								if (!interactionChannel.messages.cache.get(msg.id)) return;
 	
 								let option = collected.first().content; //Almacena la opción elegida
 								setTimeout(() => collected.first().delete(), 2000); //Borra el mensaje de elección
@@ -272,7 +310,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 									msg.delete();	//Elimina el menú de resultados
 
 									//Envía un mensaje de error
-									return message.channel.send({ embeds: [ new client.MessageEmbed()
+									return interactionChannel.send({ embeds: [ new client.MessageEmbed()
 										.setColor(client.config.colors.error)
 										.setDescription(`${client.customEmojis.redTick} ${locale.didntChoose}.`)]
 									});
@@ -285,22 +323,26 @@ exports.run = async (client, args, message, streamType, toStream) => {
 								setTimeout(() => msg.delete(), 2000);
 	
 								//Maneja el resultado en función de si es una playlist o un vídeo
-								if (results[option].type === 'playlist') require('./parsePlaylist').run(reproductionQueue, results[option].url, authorizedTracks, message.member); //Maneja la playlist
+								if (results[option].type === 'playlist') require('./parsePlaylist').run(reproductionQueue, results[option].url, authorizedTracks, interaction.member, interaction); //Maneja la playlist
 								else if (results[option].type === 'video') {
 									
 									//Crea el objeto de la cola
-									const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'stream', message.member.id, results[option]);
+									const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'stream', interaction.member.id, results[option], interaction);
 
-									//Almacena el estado de la búsqueda
-									resultFound = true;
-	
-									//Avisa sobre la adición a la cola
-									showNewQueueItem(newTrack);
+									//Si se añadió la pista
+									if (newTrack) {
+
+										//Almacena el estado de la búsqueda
+										resultFound = true;
+		
+										//Avisa sobre la adición a la cola
+										showNewQueueItem(newTrack);
+									};
 	
 								} else {
 	
 									//Si es un tipo de resultado inesperado, lo maneja y lanza un error
-									return message.channel.send({ embeds: [ new client.MessageEmbed()
+									return interactionChannel.send({ embeds: [ new client.MessageEmbed()
 										.setColor(client.config.colors.error)
 										.setDescription(`${client.customEmojis.redTick} ${locale.cantPlay}.`)]
 									});
@@ -309,7 +351,7 @@ exports.run = async (client, args, message, streamType, toStream) => {
 
 								//Borra el mensaje si este no fue borrado previamente por una reacción de aborción
 								msg.delete().catch((error) => {
-									if (error.httpStatus !== 404) client.functions.commandErrorHandler(error, message, args.shift().toLowerCase(), args);
+									if (error.httpStatus !== 404) console.error(`${new Date().toLocaleString()} 》ERROR: `, error.stack);
 								});
 							});
 						});
@@ -323,13 +365,13 @@ exports.run = async (client, args, message, streamType, toStream) => {
 		
 	} catch (error) {
 
-		//Notifica si el error se debe a uns restricción de edad por falta de cookies
-		if (error.message.includes('Sign in to confirm your age')) return message.channel.send({ embeds: [ new client.MessageEmbed()
+		//Notifica si el error se debe a una restricción de edad por falta de cookies
+		if (error.message.includes('Sign in to confirm your age')) return client.reproductionQueues[interaction.guild.id].boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
             .setDescription(`${client.customEmojis.orangeTick} ${client.locale.utils.voice.fetchResource.ageRestricted}.`)]
         });
 
-		//Maneja el error
-        await client.functions.commandErrorHandler(error, message, args.shift().toLowerCase(), args);
+		//Ejecuta el manejador de errores
+        await client.functions.interactionErrorHandler(error, interaction);
     };
 };

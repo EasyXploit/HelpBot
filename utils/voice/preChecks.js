@@ -1,9 +1,9 @@
-exports.run = async (client, message, checks) => {
+exports.run = async (client, interaction, checks) => {
 
     try {
 
         //Almacena las traducciones
-        const locale = client.locale.utils.voice.preChecks;
+		const locale = client.locale.utils.voice.preChecks;
         
         //Variable para almacenar el estado de las comprobaciones
         let passingStatus = true;
@@ -15,16 +15,16 @@ exports.run = async (client, message, checks) => {
             const { getVoiceConnection } = require('@discordjs/voice');
 
             //Almacena la conexión de voz del bot
-            const connection = await getVoiceConnection(message.guild.id);
+            const connection = await getVoiceConnection(interaction.guild.id);
             
             //Comprueba si el bot tiene o no una conexión a un canal de voz
             if (!connection) {
 
                 //Devuelve un mensaje de error
-                await message.channel.send({ embeds: [ new client.MessageEmbed()
+                await interaction.reply({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${client.user} ${client.functions.localeParser(locale.botNotConnected, { botUser: client.user })}.`)]
-                });
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.botNotConnected, { botUser: client.user })}.`)
+                ], ephemeral: true});
 
                 //Devuelve el estado "falso"
                 return false;
@@ -38,16 +38,16 @@ exports.run = async (client, message, checks) => {
         async function userConnection() {
 
             //Almacena el canal de voz del miembro
-            const voiceChannel = message.member.voice.channel;
+            const voiceChannel = interaction.member.voice.channel;
 
             //Comprueba si el miembro está en un canal de voz
             if (!voiceChannel) {
 
                 //Devuelve un mensaje de error
-                await message.channel.send({ embeds: [new client.MessageEmbed()
+                await interaction.reply({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} ${locale.notConnected}.`)
-                ]});
+                ], ephemeral: true});
 
                 //Devuelve el estado "falso"
                 return false;
@@ -61,13 +61,13 @@ exports.run = async (client, message, checks) => {
         async function sameChannel() {
 
             //Comprueba si el miembro está en el mismo canal que el bot
-            if (message.guild.me.voice.channel.id !== message.member.voice.channel.id) {
+            if (interaction.guild.me.voice.channel.id !== interaction.member.voice.channel.id) {
 
                 //Devuelve un mensaje de error
-                await message.channel.send({ embeds: [new client.MessageEmbed()
+                await interaction.reply({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.notSameChannel, { botUser: client.user })}.`)]
-                });
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.notSameChannel, { botUser: client.user })}.`)
+                ], ephemeral: true});
 
                 //Devuelve el estado "falso"
                 return false;
@@ -81,16 +81,16 @@ exports.run = async (client, message, checks) => {
         async function hasQueue() {
 
             //Almacena la información de la cola de la guild
-            const reproductionQueue = client.reproductionQueues[message.guild.id];
+            const reproductionQueue = client.reproductionQueues[interaction.guild.id];
             
             //Comprueba si hay cola
             if (!reproductionQueue || reproductionQueue.tracks.length <= 0) {
 
                 //Devuelve un mensaje de error
-                await message.channel.send({ embeds: [ new client.MessageEmbed()
+                await interaction.reply({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${locale.inactive}.`)]
-                });
+                    .setDescription(`${client.customEmojis.redTick} ${locale.inactive}.`)
+                ], ephemeral: true});
 
                 //Devuelve el estado "falso"
                 return false;
@@ -107,19 +107,19 @@ exports.run = async (client, message, checks) => {
             const { getVoiceConnection } = require('@discordjs/voice');
 
             //Almacena la conexión de voz del bot
-            const connection = await getVoiceConnection(message.guild.id);
+            const connection = await getVoiceConnection(interaction.guild.id);
 
             //Comprueba si el bot está conectado
             if (connection) {
 
                 //Obtiene el nombre canal de voz
-                const voiceChannel = await client.functions.fetchChannel(message.guild, connection.joinConfig.channelId);
+                const voiceChannel = await client.functions.fetchChannel(connection.joinConfig.channelId);
 
                 //Devuelve un mensaje de error
-                await message.channel.send({ embeds: [new client.MessageEmbed()
+                await interaction.reply({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.alreadyConnected, { botUser: client.user, voiceChannel: voiceChannel })}.`)
-                ]});
+                ], ephemeral: true});
     
                 //Devuelve el estado "falso"
                 return false;
@@ -133,16 +133,16 @@ exports.run = async (client, message, checks) => {
         async function notAfk() {
 
             //Almacena el canal de voz del miembro
-            const voiceChannel = message.member.voice.channel;
+            const voiceChannel = interaction.member.voice.channel;
 
             //Comprueba si el canal no está configurado para AFK
-            if (voiceChannel.id === message.guild.afkChannel.id) {
+            if (voiceChannel.id === interaction.guild.afkChannel.id) {
                 
                 //Devuelve un mensaje de error
-                await message.channel.send({ embeds: [new client.MessageEmbed()
+                await interaction.reply({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.isAfk, { botUser: client.user })}.`)
-                ]});
+                ], ephemeral: true});
 
                 //Devuelve el estado "falso"
                 return false;
@@ -156,16 +156,16 @@ exports.run = async (client, message, checks) => {
         async function canSpeak() {
 
             //Almacena el canal de voz del miembro
-            const voiceChannel = message.member.voice.channel;
+            const voiceChannel = interaction.member.voice.channel;
 
             //Comprueba si el bot tiene permiso para hablar
             if (!voiceChannel.speakable) {
 
                 //Devuelve un mensaje de error
-                await message.channel.send({ embeds: [new client.MessageEmbed()
+                await interaction.reply({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantSpeak, { botUser: client.user, voiceChannel: voiceChannel })}.`)
-                ]});
+                ], ephemeral: true});
 
                 //Devuelve el estado "falso"
                 return false;
@@ -179,16 +179,16 @@ exports.run = async (client, message, checks) => {
         async function forbiddenChannel() {
 
             //Almacena el canal de voz del miembro
-            const voiceChannel = message.member.voice.channel;
+            const voiceChannel = interaction.member.voice.channel;
 
             //Comprueba si el bot tiene prohibido conectarse por config.
             if (client.config.music.forbiddenChannels.includes(voiceChannel.id)) {
 
                 //Devuelve un mensaje de error
-                await message.channel.send({ embeds: [new client.MessageEmbed()
+                await interaction.reply({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.forbiddenJoin, { botUser: client.user, voiceChannel: voiceChannel })}.`)
-                ]});
+                ], ephemeral: true});
     
                 //Devuelve el estado "falso"
                 return false;
@@ -202,16 +202,16 @@ exports.run = async (client, message, checks) => {
         async function canJoin() {
 
             //Almacena el canal de voz del miembro
-            const voiceChannel = message.member.voice.channel;
+            const voiceChannel = interaction.member.voice.channel;
 
             //Comprueba si el bot tiene permiso para conectarse
             if (!voiceChannel.joinable) {
 
                 //Devuelve un mensaje de error
-                await message.channel.send({ embeds: [new client.MessageEmbed()
+                await interaction.reply({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantJoin, { botUser: client.user, voiceChannel: voiceChannel })}.`)
-                ]})
+                ], ephemeral: true})
                 
                 //Devuelve el estado "falso"
                 return false;
@@ -225,16 +225,16 @@ exports.run = async (client, message, checks) => {
         async function fullChannel() {
 
             //Almacena el canal de voz del miembro
-            const voiceChannel = message.member.voice.channel;
+            const voiceChannel = interaction.member.voice.channel;
 
             //Comprueba si la sala está llena
-            if (voiceChannel.full  && (!message.guild.me.voice  || !message.guild.me.voice.channel)) {
+            if (voiceChannel.full  && (!interaction.guild.me.voice  || !interaction.guild.me.voice.channel)) {
 
                 //Devuelve un mensaje de error
-                await message.channel.send({ embeds: [new client.MessageEmbed()
+                await interaction.reply({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.fullChannel, { voiceChannel: voiceChannel })}.`)
-                ]});
+                ], ephemeral: true});
     
                 //Devuelve el estado "falso"
                 return false;
@@ -274,7 +274,7 @@ exports.run = async (client, message, checks) => {
 
     } catch (error) {
 
-        //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》${client.locale.utils.voice.preChecks.error}:`, error.stack);
+        //Ejecuta el manejador de errores
+        await client.functions.interactionErrorHandler(error, interaction);
     };
 };

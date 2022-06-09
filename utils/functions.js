@@ -7,7 +7,7 @@ exports.run = (client) => {
     const locale = client.locale.utils.functions;
 
     //Función para buscar miembros
-    client.functions.fetchMember = async (guild, member) => {
+    client.functions.fetchMember = async member => {
 
         try {
 
@@ -18,8 +18,8 @@ exports.run = (client) => {
             const matches = member.toString().match(/^<@!?(\d+)>$/);
 
             //Lo busca por ID o por mención (en función de la variable "matches")
-            if (matches) result = await guild.members.fetch(matches[1]);
-            else if (!isNaN(member)) result = await guild.members.fetch(member);
+            if (matches) result = await client.homeGuild.members.fetch(matches[1]);
+            else if (!isNaN(member)) result = await client.homeGuild.members.fetch(member);
 
             //Si hubo resultado (y era váido), lo devuelve
             if (result && typeof result !== 'undefined') return result;
@@ -32,7 +32,7 @@ exports.run = (client) => {
     };
 
     //Función para buscar usuarios
-    client.functions.fetchUser = async  (user) => {
+    client.functions.fetchUser = async user => {
 
         try {
 
@@ -57,7 +57,7 @@ exports.run = (client) => {
     };
 
     //Función para buscar roles
-    client.functions.fetchRole = async (guild, role) => {
+    client.functions.fetchRole = async role => {
 
         try {
 
@@ -68,8 +68,8 @@ exports.run = (client) => {
             const matches = role.toString().match(/^<@&?(\d+)>$/);
 
             //Lo busca por ID o por mención (en función de la variable "matches")
-            if (matches) result = await guild.roles.fetch(matches[1]);
-            else if (!isNaN(role)) result = await guild.roles.fetch(role);
+            if (matches) result = await client.homeGuild.roles.fetch(matches[1]);
+            else if (!isNaN(role)) result = await client.homeGuild.roles.fetch(role);
 
             //Si hubo resultado (y era váido), lo devuelve
             if (result && typeof result !== 'undefined') return result;
@@ -82,7 +82,7 @@ exports.run = (client) => {
     };
 
     //Función para buscar canales
-    client.functions.fetchChannel = async (guild, channel) => {
+    client.functions.fetchChannel = async channel => {
 
         try {
 
@@ -93,8 +93,8 @@ exports.run = (client) => {
             const matches = channel.toString().match(/^<#?(\d+)>$/);
 
             //Lo busca por ID o por mención (en función de la variable "matches")
-            if (matches) result = await guild.channels.fetch(matches[1]);
-            else if (!isNaN(channel)) result = await guild.channels.fetch(channel);
+            if (matches) result = await client.homeGuild.channels.fetch(matches[1]);
+            else if (!isNaN(channel)) result = await client.homeGuild.channels.fetch(channel);
 
             //Si hubo resultado (y era váido), lo devuelve
             if (result && typeof result !== 'undefined') return result;
@@ -118,21 +118,35 @@ exports.run = (client) => {
             if (channel) {
 
                 //Busca dicho canal en la guild
-                const fetchedChannel = await client.functions.fetchChannel(client.homeGuild, channel);
+                const fetchedChannel = await client.functions.fetchChannel(channel);
 
                 //Si hubo canal, busca dicho mensaje en el canal
                 if (fetchedChannel && !isNaN(message)) result = await fetchedChannel.messages.fetch(message);
 
             } else {
 
+                //Almacena los canales de la guild
+                const guildChannels = await client.homeGuild.channels.fetch();
+
                 //Itera entre todos los canales de la guild
-                for (const channel in client.homeGuild.channels) {
+                for (const channelId of guildChannels) {
 
-                    //Busca el mensaje en el canal de la iteración actual
-                    const fetchedMessage = await channel.messages.fetch(message);
+                    //Almacena el canal iterado
+                    const iteratedChannel = await guildChannels.get(channelId[0]);
 
-                    //Si encontró el mensaje, lo devuelve
-                    if (fetchedMessage) result = fetchedMessage;
+                    try {
+
+                        //Busca el mensaje en el canal de la iteración actual
+                        const fetchedMessage = await iteratedChannel.messages.fetch(message);
+
+                        //Si encontró el mensaje, lo devuelve
+                        if (fetchedMessage) return result = fetchedMessage;
+
+                    } catch (error) { 
+
+                        //Si no se encontró el mensaje en este canal, continua con el siguiente
+                        if (error.toString().includes('Unknown Message')) continue;
+                    };
                 };
             };
 
@@ -246,7 +260,7 @@ exports.run = (client) => {
             for (const memberId in client.db.mutes) {
 
                 //Busca y almacena el miembro
-                const member = await client.functions.fetchMember(guild, memberId);
+                const member = await client.functions.fetchMember(memberId);
 
                 //Añade el rol silenciado al miembro
                 await member.roles.add(mutedRole);
@@ -378,7 +392,7 @@ exports.run = (client) => {
                     for (const roleId of rewardedRoles) {
 
                         //Busca el rol en la guild
-                        const fetchedRole = await client.functions.fetchRole(client.homeGuild, roleId);
+                        const fetchedRole = await client.functions.fetchRole(roleId);
 
                         //Sube al array de nombre, el nombre del rol iterado
                         roleNames.push(fetchedRole.name);
@@ -595,6 +609,37 @@ exports.run = (client) => {
         if (result > 0) return result;
     };
 
+    //Función para eliminar claves indefinidas o nulas de un array de objetos
+    client.functions.isArrOfObjNil = async (array, lodash) => {
+
+        //Requiere "lodash" para comparar objetos
+        lodash ? lodash : require('lodash');
+
+        //Almacena un array para los objetos modificadoss
+        let cleanArray = [];
+
+        //Por cada uno de los objetos del array
+        for (let object of array) {
+
+            //Por cada una de las propiedades del objeto iterado
+            for (let property in object) {
+
+                //Si la propiedad un array y tienes valores
+                if (Array.isArray(object[property]) && object[property].length > 0) {
+                    
+                    //Ejecuta esta misma función de manera recursiva sobre dicho array
+                    object[property] = await client.functions.isArrOfObjNil(object[property], lodash);
+                }
+            };
+
+            //Elimina las claves nulas o indefinidas de la propiedad y la sube al array de objetos modificados
+            cleanArray.push(lodash.omitBy(object, lodash.isNil));
+        };
+
+        //Devuelve el nuevo array
+        return cleanArray;
+    };
+
     //Función para comprobar los nombres de usuario de los miembros
     client.functions.checkUsername = async member => {
 
@@ -676,7 +721,7 @@ exports.run = (client) => {
         } catch (error) {
 
             //Ignora si el miembro no permite que se le envíen MDs
-            if (error.toLocaleString().includes('Cannot send messages to this user')) return;
+            if (error.toString().includes('Cannot send messages to this user')) return;
 
         };
     };
@@ -692,20 +737,6 @@ exports.run = (client) => {
 
         //Devuelve el sID generado
         return nanoid();
-    };
-
-    //Función para manejar sintaxis incorrectas
-    client.functions.syntaxHandler = (channel, commandConfig) => {
-
-        //Almacena la traducción de los parámetros del comando
-        const translation = require(`../resources/locales/${client.config.main.language}.json`).commands[commandConfig.export.category][commandConfig.export.name];
-        
-        //Genera y envía un embed con la sintaxis correcta
-        return channel.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setTitle(`${client.customEmojis.redTick} ${locale.syntaxHandler.title}`)
-            .setDescription(`${locale.syntaxHandler.description}:\n\`${client.config.main.prefix}${commandConfig.export.name}${translation.parameters.length > 0 ? ` ${translation.parameters}` : ''}\``)
-        ]});
     };
 
     //Función para gestionar el envío de registros al canal de registro
@@ -813,40 +844,63 @@ exports.run = (client) => {
         };
     };
 
-    //Función para gestionar los errores en los comandos
-    client.functions.commandErrorHandler = async (error, message, command, args) => {
+    //Función para gestionar los errores en las interacciones
+    client.functions.interactionErrorHandler = async (error, interaction) => {
 
-        //Se comprueba si el error es provocado por la invocación de un comando no existente
-        if (error.toLocaleString().includes('Cannot find module') || error.toLocaleString().includes('Cannot send messages to this user')) return;
+        //Se comprueba si el error es provocado por la invocación de una interacción no existente, o por que no se pueden enviar MDs
+        if (error.toString().includes('Cannot find module') || error.toString().includes('Cannot send messages to this user')) return;
 
         //Se muestra el error en consola
-        console.error(`\n${new Date().toLocaleString()} 》${locale.commandErrorHandler.error}:`, error.stack);
-        
-        //Se comprueba si se han proporcionado argumentos
-        const arguments = args.length > 0 ? args.join(' ') : locale.commandErrorHandler.noArguments;
+        console.error(`\n${new Date().toLocaleString()} 》${locale.interactionErrorHandler.error}:`, error.stack);
 
         //Almacena el string del error, y lo recorta si es necesario
         const errorString = error.stack.length > 1014 ? `${error.stack.slice(0, 1014)} ...` : error.stack;
 
-        //Se indica al usuario que se ha notificado el error
-        await message.channel.send({ embeds: [ new client.MessageEmbed()
+        //Almacena los argumentos de la interacción
+        const args = JSON.stringify(interaction.options._hoistedOptions);
+
+        //Almacena el string de los argumentos, y lo recorta si es necesario
+        const argsString = args.length > 1014 ? `${args.slice(0, 1014)} ...` : args;
+
+        //Se almacena el nombre del comando (si procede)
+        const commandName = interaction.commandName ? interaction.commandName : locale.interactionErrorHandler.noCommandName;
+
+        //Se comprueba si se han proporcionado argumentos
+        const arguments = interaction.options._hoistedOptions[0] ? `\`\`\`${argsString}\`\`\`` : locale.interactionErrorHandler.noArguments;
+
+        //Genera un embed de notificación
+        const notificationEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setTitle(`${client.customEmojis.redTick} ${locale.commandErrorHandler.errorEmbed.title} ...`)
-            .setDescription(locale.commandErrorHandler.errorEmbed.description)
-        ]});
+            .setTitle(`${client.customEmojis.redTick} ${client.locale.interactionErrorHandler.errorEmbed.title} ...`)
+            .setDescription(client.locale.interactionErrorHandler.errorEmbed.description);
+
+        try {
+
+            //Responde a la interacción con el embed
+            await interaction.reply({ embeds: [notificationEmbed], ephemeral: true});
+
+        } catch (error) {
+
+            //Almacena el canal de texto de la interacción
+            const interactionChannel = await client.functions.fetchChannel(interaction.channelId);
+
+            //Envía el embed al canal de texto
+            interactionChannel.send({ embeds: [notificationEmbed]});
+        };
 
         //Se muestra el error en el canal de depuración¡
         await client.functions.debuggingManager('embed', new client.MessageEmbed()
             .setColor(client.config.colors.debugging)
-            .setTitle(`📋 ${locale.commandErrorHandler.debuggingEmbed.title}`)
-            .setDescription(locale.commandErrorHandler.debuggingEmbed.description)
-            .addField(locale.commandErrorHandler.debuggingEmbed.command, command, true)
-            .addField(locale.commandErrorHandler.debuggingEmbed.arguments, arguments, true)
-            .addField(locale.commandErrorHandler.debuggingEmbed.channel, `${message.channel}`, true)
-            .addField(locale.commandErrorHandler.debuggingEmbed.author, message.author.tag, true)
-            .addField(locale.commandErrorHandler.debuggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
-            .addField(locale.commandErrorHandler.debuggingEmbed.error, `\`\`\`${errorString}\`\`\``)
-            .setFooter({ text: locale.commandErrorHandler.debuggingEmbed.footer })
+            .setTitle(`📋 ${locale.interactionErrorHandler.debuggingEmbed.title}`)
+            .setDescription(locale.interactionErrorHandler.debuggingEmbed.description)
+            .addField(locale.interactionErrorHandler.debuggingEmbed.type, interaction.type, true)
+            .addField(locale.interactionErrorHandler.debuggingEmbed.command, commandName, true)
+            .addField(locale.interactionErrorHandler.debuggingEmbed.channel, `<@${interaction.channelId}>`, true)
+            .addField(locale.interactionErrorHandler.debuggingEmbed.author, interaction.member.user.tag, true)
+            .addField(locale.interactionErrorHandler.debuggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
+            .addField(locale.interactionErrorHandler.debuggingEmbed.arguments, arguments)
+            .addField(locale.interactionErrorHandler.debuggingEmbed.error, `\`\`\`${errorString}\`\`\``)
+            .setFooter({ text: locale.interactionErrorHandler.debuggingEmbed.footer })
         );
     };
 

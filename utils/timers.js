@@ -258,7 +258,7 @@ exports.run = async (client) => {
         const timerConfig = client.db.timers.messages[hash]; 
 
         //Busca el canal especificado en la config.
-        const channel = await client.functions.fetchChannel(client.homeGuild, timerConfig.channelId);
+        const channel = await client.functions.fetchChannel(timerConfig.channelId);
 
         //Omite la iteración si no encuentra el mensaje
         if (!channel) continue;

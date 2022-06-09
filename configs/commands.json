@@ -1,0 +1,188 @@
+{
+    "forceNameLocale": "",
+    "chatCommands": {
+        "ban": {
+            "enabled": true,
+            "reasonNotNeeded": [],
+            "botsAllowed": []
+        },
+        "dm": {
+            "enabled": true,
+            "anonymousMode": []
+        },
+        "clear": {
+            "enabled": true
+        },
+        "edit": {
+            "enabled": true
+        },
+        "forward": {
+            "enabled": true
+        },
+        "infractions": {
+            "enabled": true,
+            "canSeeAny": []
+        },
+        "invitation": {
+            "enabled": true
+        },
+        "join": {
+            "enabled": true
+        },
+        "kick": {
+            "enabled": true,
+            "reasonNotNeeded": [],
+            "botsAllowed": []
+        },
+        "leaderboard": {
+            "enabled": true
+        },
+        "leave": {
+            "enabled": true
+        },
+        "loop": {
+            "enabled": true
+        },
+        "loopqueue": {
+            "enabled": true
+        },
+        "move": {
+            "enabled": true
+        },
+        "mute": {
+            "enabled": true,
+            "reasonNotNeeded": [],
+            "botsAllowed": []
+        },
+        "nowplaying": {
+            "enabled": true
+        },
+        "pause": {
+            "enabled": true
+        },
+        "ping": {
+            "enabled": true
+        },
+        "play": {
+            "enabled": true
+        },
+        "playskip": {
+            "enabled": true
+        },
+        "poll": {
+            "enabled": true,
+            "canEndAny": []
+        },
+        "purge": {
+            "enabled": true
+        },
+        "queue": {
+            "enabled": true
+        },
+        "remove": {
+            "enabled": true
+        },
+        "replay": {
+            "enabled": true
+        },
+        "resume": {
+            "enabled": true
+        },
+        "rewind": {
+            "enabled": true
+        },
+        "rmwarn": {
+            "enabled": true,
+            "removeAny": [],
+            "reasonNotNeeded": []
+        },
+        "roleinfo": {
+            "enabled": true
+        },
+        "run": {
+            "enabled": true
+        },
+        "seek": {
+            "enabled": true
+        },
+        "send": {
+            "enabled": true
+        },
+        "serverinfo": {
+            "enabled": true
+        },
+        "shuffle": {
+            "enabled": true
+        },
+        "skip": {
+            "enabled": true
+        },
+        "slowmode": {
+            "enabled": true,
+            "unlimitedTime": [],
+            "maxRegularSeconds": 30,
+            "reasonNotNeeded": []
+        },
+        "softban": {
+            "enabled": true,
+            "reasonNotNeeded": [],
+            "botsAllowed": []
+        },
+        "sound": {
+            "enabled": true
+        },
+        "stats": {
+            "enabled": true
+        },
+        "tempban": {
+            "enabled": true,
+            "unlimitedTime": [],
+            "maxRegularTime": 86400000,
+            "reasonNotNeeded": [],
+            "botsAllowed": []
+        },
+        "tempmute": {
+            "enabled": true,
+            "unlimitedTime": [],
+            "maxRegularTime": 86400000,
+            "reasonNotNeeded": [],
+            "botsAllowed": []
+        },
+        "unban": {
+            "enabled": true,
+            "reasonNotNeeded": []
+        },
+        "unmute": {
+            "enabled": true,
+            "reasonNotNeeded": [],
+            "removeAny": []
+        },
+        "userinfo": {
+            "enabled": true,
+            "canSeeAny": []
+        },
+        "warn": {
+            "enabled": true,
+            "minimumTimeDifference": 15000,
+            "unlimitedFrequency": []
+        },
+        "xp": {
+            "enabled": true
+        }
+    },
+    "messageCommands": {
+        "test": {
+            "enabled": true
+        }
+    },
+    "userCommands": {
+        "test": {
+            "enabled": true
+        }
+    },
+    "ignored": {
+        "chatCommands": ["ayuda", "regla", "meme", "traducir", "tiempo", "avatar", "dado", "moneda", "bola8", "ppt", "pptls", "urban", "elige", "invitar", "reves", "staff", "plantilla"],
+        "messageCommands": ["Responder con IA"],
+        "userCommands": ["Invitar a canal VIP"]
+    }
+}

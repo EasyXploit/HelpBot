@@ -1,4 +1,4 @@
-exports.run = async (client, message, connection) => {
+exports.run = async (client, interaction, connection) => {
 
     try {
 
@@ -49,7 +49,7 @@ exports.run = async (client, message, connection) => {
                 else { //O abandona el canal y borra la cola
 
                     //Manda un mensaje de abandono
-                    message.channel.send({ content: `⏹ | ${locale.finishedReproduction}` });
+                    reproductionQueue.boundedTextChannel.send({ content: `⏹ | ${locale.finishedReproduction}` });
 
                     //Crea un contador para demorar la salida del canal y la destrucción de la cola
                     reproductionQueue.timeout = setTimeout(async () => {
@@ -58,7 +58,7 @@ exports.run = async (client, message, connection) => {
                         const { getVoiceConnection } = require('@discordjs/voice');
 
                         //Almacena la conexión de voz del bot (si tiene)
-                        const actualConnection = await getVoiceConnection(message.guild.id);
+                        const actualConnection = await getVoiceConnection(interaction.guild.id);
 
                         //Si la conexión no estaba destruida
                         if (actualConnection && actualConnection.state.status !== 'Destroyed') {
@@ -67,11 +67,11 @@ exports.run = async (client, message, connection) => {
                             actualConnection.destroy();
 
                             //Confirma la acción
-                            message.channel.send({ content: `⏏ | ${locale.channelLeave}` });
+                            reproductionQueue.boundedTextChannel.send({ content: `⏏ | ${locale.channelLeave}` });
                         };
 
                         //Borra la información de reproducción del server
-                        delete client.reproductionQueues[message.guild.id];
+                        delete client.reproductionQueues[interaction.guild.id];
 
                     }, client.config.music.maxIdleTime);
                 };
@@ -111,7 +111,7 @@ exports.run = async (client, message, connection) => {
                 } catch (error) {
 
                     //Notifica si el error se debe a uns restricción de edad por falta de cookies
-                    if (error.toLocaleString().includes('Sign in to confirm your age')) {
+                    if (error.toString().includes('Sign in to confirm your age')) {
 
                         //Elimina de la cola la pista actual
                         if (reproductionQueue.mode === 'shuffle') { //Si el modo aleatorio está activado
@@ -125,18 +125,12 @@ exports.run = async (client, message, connection) => {
                             reproductionQueue.tracks.shift();
                         };
 
-                        //Notifica el error al usuario
-                        reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
-                            .setColor(client.config.colors.warning)
-                            .setDescription(`${client.customEmojis.orangeTick} ${client.locale.utils.voice.fetchResource.ageRestricted}.`)]
-                        });
-
                         //Si queda algo en la cola
                         if (reproductionQueue.tracks[0]) return mediaPlayer(connection); //Vuelve a cargar la función de reproducción
                         else { //O abandona el canal y borra la cola
 
                             //Manda un mensaje de abandono
-                            message.channel.send({ content: `⏹ | ${locale.finishedReproduction}` });
+                            reproductionQueue.boundedTextChannel.send({ content: `⏹ | ${locale.finishedReproduction}` });
 
                             //Crea un contador para demorar la salida del canal y la destrucción de la cola
                             return reproductionQueue.timeout = setTimeout(async () => {
@@ -145,7 +139,7 @@ exports.run = async (client, message, connection) => {
                                 const { getVoiceConnection } = require('@discordjs/voice');
 
                                 //Almacena la conexión de voz del bot (si tiene)
-                                const actualConnection = await getVoiceConnection(message.guild.id);
+                                const actualConnection = await getVoiceConnection(interaction.guild.id);
 
                                 //Si la conexión no estaba destruida
                                 if (actualConnection && actualConnection.state.status !== 'Destroyed') {
@@ -154,11 +148,11 @@ exports.run = async (client, message, connection) => {
                                     actualConnection.destroy();
 
                                     //Confirma la acción
-                                    message.channel.send({ content: `⏏ | ${locale.channelLeave}` });
+                                    reproductionQueue.boundedTextChannel.send({ content: `⏏ | ${locale.channelLeave}` });
                                 };
 
                                 //Borra la información de reproducción del server
-                                delete client.reproductionQueues[message.guild.id];
+                                delete client.reproductionQueues[interaction.guild.id];
 
                             }, client.config.music.maxIdleTime);
                         };
@@ -211,12 +205,14 @@ exports.run = async (client, message, connection) => {
     } catch (error) {
 
         //Se comprueba si el error es provocado por una limitación de API
-        if (error.toLocaleString().includes('416') || error.toLocaleString().includes('429')) reproductionQueue.boundedTextChannel.send({ embeds: [new client.MessageEmbed()
+        if (error.toString().includes('416') || error.toString().includes('429')) client.reproductionQueues[interaction.guild.id].boundedTextChannel.send({ embeds: [new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} ${locale.apiRateLimit}.`)
+            .setDescription(`${client.customEmojis.redTick} ${client.locale.utils.voice.mediaPlayer.apiRateLimit}.`)
         ]});
 
-        //Devuelve un error por consola
+        //Ejecuta el manejador de errores
+        await client.functions.interactionErrorHandler(error, interaction);
+        
         console.error(`${new Date().toLocaleString()} 》${client.locale.utils.voice.mediaPlayer.error}:`, error.stack);
     };
 };

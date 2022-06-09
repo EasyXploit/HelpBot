@@ -8,7 +8,7 @@ exports.run = (client) => {
     setInterval(async () => {
 
         //Busca el rol silenciado (o lo crea si es necesario)
-        const role = await client.functions.fetchRole(client.homeGuild, client.config.dynamic.mutedRoleId) || await client.functions.checkMutedRole(client.homeGuild);
+        const role = await client.functions.fetchRole(client.config.dynamic.mutedRoleId) || await client.functions.checkMutedRole(client.homeGuild);
         
         //Para cada uno de los silencios temporales de la BD
         for (let idKey in client.db.mutes) {
@@ -23,7 +23,7 @@ exports.run = (client) => {
             if (Date.now() < endTime) continue;
             
             //Busca el miembro
-            const member = await client.functions.fetchMember(client.homeGuild, idKey);
+            const member = await client.functions.fetchMember(idKey);
 
             //Si el miembro estaba en la guild (y tenía el rol), se lo elimina
             if (member && member.roles.cache.has(role.id)) await member.roles.remove(role);
@@ -37,10 +37,14 @@ exports.run = (client) => {
                 //Si hubo un error, lo devuelve
                 if (err) throw err;
 
+                //Almacena el autor del embed para el loggingManager
+                let authorProperty = { name: client.functions.localeParser(locale.mutes.loggingEmbed.author, { memberTag: member ? member.user.tag : idKey }) }
+                if (member) authorProperty.iconURL = member.user.displayAvatarURL({dynamic: true});
+                
                 //Ejecuta el manejador de registro
                 await client.functions.loggingManager('embed', new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
-                    .setAuthor({ name: client.functions.localeParser(locale.mutes.loggingEmbed.author, { memberTag: member ? member.user.tag : idKey }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                    .setAuthor(authorProperty)
                     .addField(locale.mutes.loggingEmbed.member, member ? member.user.tag : `\`${idKey}\``, true)
                     .addField(locale.mutes.loggingEmbed.moderator, `${client.user}`, true)
                     .addField(locale.mutes.loggingEmbed.reason, locale.mutes.reason, true)
@@ -158,7 +162,7 @@ exports.run = (client) => {
             if (!storedPoll.expiration) continue;
 
             //Busca el canal de la encuesta
-            const channel = await client.functions.fetchChannel(client.homeGuild, storedPoll.channel);
+            const channel = await client.functions.fetchChannel(storedPoll.channel);
 
             //Busca el mensaje de la encuesta
             const poll = await client.functions.fetchMessage(storedPoll.message, channel);
@@ -284,7 +288,7 @@ exports.run = (client) => {
         for (let idKey in client.usersVoiceStates) {
 
             //Almacena el miembro
-            const member = await client.functions.fetchMember(client.homeGuild, idKey);
+            const member = await client.functions.fetchMember(idKey);
 
             //Comprueba si el miembro está silenciado, ensordecido o está solo con un bot
             if (!member || member.voice.mute || member.voice.deaf || member.voice.channel.members.filter(member => !member.user.bot).size === 1) return;
@@ -302,20 +306,29 @@ exports.run = (client) => {
     //Actualización de miembros totales en presencia
     setInterval(async () => {
 
-        //Si no se ha activado el conteo de miembros, ignora
-        if (!client.config.presence.membersCount) return;
+        try {
 
-        //Genera el nuevo string para la actividad
-        const name = `${client.functions.localeParser(locale.presence.name, { memberCount: await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}`;
+            //Si no se ha activado el conteo de miembros, ignora
+            if (!client.config.presence.membersCount) return;
 
-        //Actualiza la presencia del bot
-        await client.user.setPresence({
-            status: client.config.presence.status,
-            activities: [{
-                name: name,
-                type: client.config.presence.type
-            }]
-        })
+            //Genera el nuevo string para la actividad
+            const name = `${client.functions.localeParser(locale.presence.name, { memberCount: await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}`;
+
+            //Actualiza la presencia del bot
+            await client.user.setPresence({
+                status: client.config.presence.status,
+                activities: [{
+                    name: name,
+                    type: client.config.presence.type
+                }]
+            });
+
+        } catch (error) {
+
+            //Si no se pudo obtener los miembros por un error temporal, aborta
+            if (error.toString().includes('Members didn\'t arrive in time')) return;
+        };
+
     }, 60000);
 
     console.log(` - [OK] ${locale.configLoaded}.`);

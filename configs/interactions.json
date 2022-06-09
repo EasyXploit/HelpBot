@@ -1,7 +1,0 @@
-{
-    "ignored": {
-        "chatCommands": ["ayuda", "regla", "meme", "traducir", "tiempo", "avatar", "dado", "moneda", "bola8", "ppt", "pptls", "urban", "elige", "invitar", "reves", "staff", "plantilla"],
-        "messageCommands": ["Responder con IA"],
-        "userCommands": ["Invitar a canal VIP"]
-    }
-}

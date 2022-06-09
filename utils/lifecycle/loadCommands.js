@@ -1,0 +1,271 @@
+
+exports.run = async (client) => {
+
+    //Salta una línea en la consola
+    console.log('\n');
+
+    //Crea colecciones para almacenar los comandos
+    client.commands = { chatCommands: {}, messageCommands: {}, userCommands: {} };
+    Object.keys(client.commands).forEach(x => client.commands[x] = new client.Collection());
+
+    //Almacena los comandos registrados globalmente
+    const clientCommands = await client.application.commands.fetch();
+
+    //Almacena los comandos registrados en la homeGuild
+    const guildCommands = await client.homeGuild.commands.fetch();
+
+    //Almacena el nombre seleccionado para los comandos 
+    let localeForNames = client.locale;
+
+    //Si se ha seleccionado un locale diferente
+    if (client.config.commands.forceNameLocale.length > 0) {
+
+        //Almacena los nombres originales de los archivos
+        let localeFiles = client.fs.readdirSync('./resources/locales/');
+
+        //Almacena los nombres sin extensión
+        let availableLocales = [];
+        
+        //Para cada archivo, almacena su nombre sin extensión en el array "availableLocales"
+        for (let file = 0; file < localeFiles.length; file ++) availableLocales.push(localeFiles[file].replace('.json', ''));
+
+        //Si hay un locale con ese nombre
+        if (availableLocales.includes(client.config.commands.forceNameLocale)) {
+
+            //Reemplaza los nombres de los comandos por los de ese locale
+            localeForNames = require(`../../resources/locales/${client.config.commands.forceNameLocale}.json`);
+        };
+    };
+
+    //Carga de comandos - Lee el directorio de las categorías de comandos
+    for (const commandType of await client.fs.readdirSync('./commands/')) {
+
+        //Crea un objeto para registrar los comandos
+        const localCommands = {};
+
+        //Lee el directorio de las categorías de comandos
+        for (const commandType of await client.fs.readdirSync('./commands/')) {
+
+            //Para cada directorio de comandos (directorios por cada tipo), lee los comandos que contiene
+            for (const commandName of await client.fs.readdirSync(`./commands/${commandType}/`)) {
+
+                //Sube al objeto de comando, una relación entre el nombre localizado y el nombre de archivo
+                const commandLocalizedName = localeForNames.commands[commandType][commandName].appData.name;
+                localCommands[commandLocalizedName] = commandName;
+            };
+        };
+
+        //Almacena los nombres de los comandos ignorados
+        const ignoredCommands = client.config.commands.ignored;
+
+        //Crea una colección con todos los comandos remotos
+        const remoteCommands = clientCommands.concat(guildCommands);
+
+        //Para cada comando de cliente
+        for (const command of remoteCommands) {
+
+            //Comprueba si el tipo de comando coincide con la config. local, y no es un comando a ignorar
+            if (command[1].type === 'CHAT_INPUT' && (commandType !== 'chatCommands' || ignoredCommands.chatCommands.includes(command[1].name))) continue;
+            if (command[1].type === 'MESSAGE' && (commandType !== 'messageCommands' || ignoredCommands.messageCommands.includes(command[1].name))) continue;
+            if (command[1].type === 'USER' && (commandType !== 'userCommands' || ignoredCommands.userCommands.includes(command[1].name))) continue;
+
+            //Si el comando no existe localmente
+            if (!Object.keys(localCommands).includes(command[1].name)) {
+
+                //Si era de tipo guild
+                if (command[1].guildId) {
+
+                    //Borra el comando de la guild y lo notifica
+                    await client.homeGuild.commands.delete(command[1]);
+                    console.log(` - [UP] ${commandType}/${command[1].name} des-registrado en ${client.homeGuild.name}.`);
+
+                } else {
+
+                    //Borra el comando del cliente y lo notifica
+                    await client.application.commands.delete(command[1]);
+                    console.log(` - [UP] ${commandType}/${command[1].name} des-registrado en el cliente.`);
+                };
+
+            } else {
+
+                //Requiere el comando para obtener su información
+                const appType = await require(`../../commands/${commandType}/${localCommands[command[1].name]}/${localCommands[command[1].name]}.js`).config.type;
+
+                //Si es un comando de guild pero el tipo local ya no coincide
+                if (command[1].guildId && appType !== 'guild') {
+
+                    //Lo borra y lo notifica
+                    await client.homeGuild.commands.delete(command[1]);
+                    console.log(` - [UP] ${commandType}/${command[1].name} convertido al tipo "global".`);
+
+                //Si es un comando global pero el tipo local ya no coincide
+                } else if (!command[1].guildId && appType === 'guild') {
+
+                    //Lo borra y lo notifica
+                    await client.application.commands.delete(command[1]);
+                    console.log(` - [UP] ${commandType}/${command[1].name} convertido al tipo "guild".`);
+                };
+            };
+        };
+
+        //Para cada directorio de comandos (directorios por cada tipo), lee los comandos que contiene
+        for (const commandName of await client.fs.readdirSync(`./commands/${commandType}/`)) {
+
+            //Requiere el comando para obtener su información
+            const commandData = await require(`../../commands/${commandType}/${commandName}/${commandName}.js`);
+            let localCmd = commandData.config;
+
+            //Almacena las traducciones para ese comando
+            const appDataLocale = client.locale.commands[commandType][commandName].appData;
+
+            //Añade el nombre al comando
+            localCmd.appData.name = localeForNames.commands[commandType][commandName].appData.name;
+
+            //Si se trata de un comando de barra diagonal
+            if (commandType === 'chatCommands') {
+
+                //Añade la descripción al comando, y la recorta si procede                
+                localCmd.appData.description = appDataLocale.description.length > 100 ? `${appDataLocale.description.slice(0, 96)} ...` : appDataLocale.description;
+
+                //Por cada una de las opciones
+                if (localCmd.appData.options) for (const option of localCmd.appData.options) {
+
+                    //Almacena su traducción
+                    const optionLocale = appDataLocale.options[option.optionName];
+
+                    //Sobreescribe el campo de nombre y el de descripción
+                    option.name = optionLocale.name.toLowerCase();
+                    option.description = optionLocale.description;
+
+                    //Elimina el campo de "optionName" provisional
+                    delete option.optionName;
+
+                    //Por cada una de las opciones anidadas
+                    if (option.options) for (const nestedOption of option.options) {
+
+                        //Almacena la traducción de la opción
+                        const nestedOptionLocale = optionLocale.options[nestedOption.optionName];
+
+                        //Sobreescribe el campo de nombre y el de descripción
+                        nestedOption.name = nestedOptionLocale.name.toLowerCase();
+                        nestedOption.description = nestedOptionLocale.description;
+
+                        //Elimina el campo de "optionName" provisional
+                        delete nestedOption.optionName;
+                    };
+
+                    //Por cada una de las elecciones
+                    if (option.choices) for (const choice of option.choices) {
+
+                        //Almacena la traducción de la elección
+                        const choiceLocale = optionLocale.choices[choice.choiceName];
+
+                        //Sobreescribe el campo de nombre
+                        choice.name = choiceLocale;
+
+                        //Elimina el campo de "choiceName" provisional
+                        delete choice.choiceName;
+                    };
+                };
+            };
+
+            //Almacena la configuración del comando
+            const userConfig = client.config.commands[commandType][commandName];
+
+            //Omite si el comando no tiene fichero de configuración
+            if (!userConfig) {
+                console.log(` - [ERROR] ${commandType}/${commandName} sin config. en commands.json.`);
+                continue;
+            };
+
+            //Comprueba si hay conflictos con otros comandos que tengan el mismo nombre
+            for (const type of Object.keys(client.commands)) {
+                if (client.commands[type].get(localCmd.appData.name)) {
+                    console.warn(`Dos comandos o más comandos tienen el mismo nombre: ${localCmd.appData.name}.`);
+                    continue;
+                };
+            };
+
+            //Almacena el comando remoto
+            let remoteCmd = await (async () => {
+                switch(localCmd.type) {
+                    case 'global': return await clientCommands.find(remoteCmd => remoteCmd.name === localCmd.appData.name);
+                    case 'guild': return await guildCommands.find(remoteCmd => remoteCmd.name === localCmd.appData.name);
+                };
+            })();
+
+            //Comprueba si el comando está registrado o no
+            if (!remoteCmd) {
+
+                //Si no es un tipo válido
+                if (!['global', 'guild'].includes(localCmd.type)) {
+
+                    //Advierte y omite el comando
+                    console.log(` - [ERROR] ${commandType}/${commandName} no tiene un tipo válido.`);
+                    continue;
+                };
+
+                //Almacena el manager de comandos adecuado en función del tipo de comando
+                const commandsManager = localCmd.type === 'global' ? client.application.commands : client.homeGuild.commands
+
+                //Registra el comando en el manager
+                await commandsManager.create({
+                    name: localCmd.appData.name,
+                    description: localCmd.appData.description,
+                    type: localCmd.appData.type,
+                    options: localCmd.appData.options,
+                    defaultPermission: localCmd.defaultPermission
+                });
+
+                //Envía un mensaje de confirmación por consola
+                console.log(` - [UP] ${commandType}/${localCmd.appData.name} registrado en ${client.homeGuild.name}.`);
+
+            } else {
+
+                //Requiere "lodash" para comparar objetos
+                let lodash = require('lodash');
+
+                //Elimina las claves nulas o indefinidas de las opciones remotas
+                let remoteCmdOptions = await client.functions.isArrOfObjNil(remoteCmd.options, lodash);
+
+                //Si hay opciones locales, las almacena, sino crea un objeto vacío
+                const localCmdOptions = localCmd.appData.options ? localCmd.appData.options : [];
+
+                //Comprueba si los detalles son los mismos
+                if (remoteCmd.description !== (localCmd.appData.description || '') || remoteCmd.type !== localCmd.appData.type || !lodash.isEqual(remoteCmdOptions, localCmdOptions || [])) {
+
+                    //Si no lo son, registra el cambio
+                    await remoteCmd.edit({
+                        description: localCmd.appData.description,
+                        type: localCmd.appData.type,
+                        options: localCmd.appData.options
+                    });
+    
+                    //Envía un mensaje de confirmación por consola
+                    console.log(` - [UP] ${commandType}/${localCmd.appData.name} [parámetros] actualizados.`);
+                };
+
+                //Comprueba si el permiso por defecto almacenado es el mismo que el registrado
+                if (remoteCmd.defaultPermission !== localCmd.defaultPermission) {
+                    
+                    //Actualiza el permiso por defecto
+                    await remoteCmd.edit({
+                        defaultPermission: localCmd.defaultPermission
+                    });
+    
+                    //Envía un mensaje de confirmación por consola
+                    console.log(` - [UP] ${commandType}/${localCmd.appData.name} [permiso por defecto] actualizado.`);
+                };
+            };
+
+            //Añade el comando a la colección
+            await client.commands[commandType].set(localCmd.appData.name, commandData);
+
+            //Manda un mensaje de confirmación
+            console.log(` - [OK] ${commandType}/${localCmd.appData.name} cargado correctamente.`);
+        };
+    };
+
+    //Salta una línea en la consola
+    console.log('\n');
+};

@@ -119,7 +119,7 @@
                         },
                         "duration": {
                             "name": "duración",
-                            "description": "Escriba una duración con el formato: días\"S\" | minutos\"M\" | horas\"H\" | días\"D\""
+                            "description": "Escriba una duración con el formato: días\"D\" | minutos\"M\" | horas\"H\" | segundos\"S\""
                         }
                     }
                 },
@@ -989,7 +989,7 @@
                         },
                         "duration": {
                             "name": "duración",
-                            "description": "Escriba una duración con el formato: días\"S\" | minutos\"M\" | horas\"H\" | días\"D\""
+                            "description": "Escriba una duración con el formato: días\"D\" | minutos\"M\" | horas\"H\" | segundos\"S\""
                         },
                         "reason": {
                             "name": "razón",

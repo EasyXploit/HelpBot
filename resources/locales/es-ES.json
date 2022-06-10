@@ -1223,7 +1223,7 @@
                     "description": "Modifica la cantidad de puntos de experiencia de un miembro",
                     "options": {
                         "set": {
-                            "name": "set",
+                            "name": "ajustar",
                             "description": "Ajusta al valor elegido la cantidad de puntos de experiencia",
                             "options": {
                                 "user": {
@@ -1237,7 +1237,7 @@
                             }
                         },
                         "add": {
-                            "name": "add",
+                            "name": "añadir",
                             "description": "Añade a la cantidad actual de puntos de experiencia",
                             "options": {
                                 "user": {
@@ -1251,8 +1251,8 @@
                             }
                         },
                         "addrandom": {
-                            "name": "addrandom",
-                            "description": "Genera X veces los puntos de experiencia obtenido al escribir mensajes",
+                            "name": "añadir_aleatorio",
+                            "description": "Genera X veces los puntos de experiencia obtenidos al escribir mensajes",
                             "options": {
                                 "user": {
                                     "name": "usuario",
@@ -1265,7 +1265,7 @@
                             }
                         },
                         "remove": {
-                            "name": "remove",
+                            "name": "eliminar",
                             "description": "Resta a la cantidad actual de puntos de experiencia",
                             "options": {
                                 "user": {
@@ -1279,7 +1279,7 @@
                             }
                         },
                         "clear": {
-                            "name": "clear",
+                            "name": "vaciar",
                             "description": "Reestablece a 0 la cantidad de puntos de experiencia",
                             "options": {
                                 "user": {

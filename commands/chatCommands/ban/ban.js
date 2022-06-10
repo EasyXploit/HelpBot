@@ -55,9 +55,67 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setDescription(`${client.customEmojis.redTick} ${locale.alreadyBanned}`)
             ], ephemeral: true});
         };
+
+        //Almacena la duración provista
+        const durationOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.duration.name);
+        const providedDuration = durationOption ? durationOption.value : null;
+
+        //Almacena lo smilisegundos de la duración
+        let milliseconds;
+
+        //Si se ha proporcionado una duración para el baneo
+        if (providedDuration) {
+
+            //Comprueba la longitud del tiempo proporcionado
+            if (providedDuration.length < 2) return interaction.reply({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} ${locale.wrongMagnitudes}.`)
+            ], ephemeral: true});
+
+            //Calcula el tiempo estimado en milisegundos
+            milliseconds = await client.functions.magnitudesToMs(providedDuration);
+
+            //Comprueba si se ha proporcionado un tiempo válido
+            if (!milliseconds) return interaction.reply({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} ${locale.wrongMagnitudes}.`)
+            ], ephemeral: true});
+
+            //Almacena si el miembro puede banear
+            let authorized;
+
+            //Para cada ID de rol de la lista blanca
+            for (let index = 0; index < commandConfig.unlimitedTime.length; index++) {
+
+                //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
+                if (interaction.member.id === interaction.guild.ownerId || interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || interaction.member.roles.cache.find(role => role.id === commandConfig.unlimitedTime[index])) {
+                    authorized = true;
+                    break;
+                };
+            };
+
+            //Si no se permitió la ejecución, manda un mensaje de error
+            if (!authorized && milliseconds > commandConfig.maxRegularTime) return interaction.reply({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryError)
+                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededDuration, { time: client.functions.msToDHHMMSS(commandConfig.maxRegularTime) })}.`)
+            ], ephemeral: true});
+
+            //Registra el baneo en la base de datos
+            client.db.bans[user.id] = {
+                until: Date.now() + milliseconds
+            };
+
+            //Sobreescribe el fichero de la base de datos con los cambios
+            client.fs.writeFile('./databases/bans.json', JSON.stringify(client.db.bans, null, 4), async err => {
+
+                //Si hubo un error, lo lanza a la consola
+                if (err) throw err;
+            });
+        };
         
         //Almacena la razón
-        let reason = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : null;
+        const reasonOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.reason.name);
+        let reason = reasonOption ? reasonOption.value : null;
 
         //Capitaliza la razón
         if (reason) reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;
@@ -85,6 +143,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             ], ephemeral: true});
         };
 
+        //Almacena los días de mensajes borrados
+        const deletedDaysOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.days.name);
+        const deletedDays = deletedDaysOption ? deletedDaysOption.value : null;
+
+        //Almacena la expiración del baneo
+        const expiration = milliseconds ? Date.now() + milliseconds : null;
+
         //Si no hay caché de registros
         if (!client.loggingCache) client.loggingCache = {};
 
@@ -92,7 +157,9 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         client.loggingCache[user.id] = {
             action: 'ban',
             executor: interaction.member.id,
-            reason: reason || locale.undefinedReason
+            reason: reason || locale.undefinedReason,
+            deletedDays: deletedDays ? deletedDays.toString() : null,
+            expiration: expiration
         };
         
         //Envía una notificación al miembro
@@ -102,11 +169,18 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .setDescription(client.functions.localeParser(locale.privateEmbed.description, { user: user, guildName: interaction.guild.name }))
             .addField(locale.privateEmbed.moderator, interaction.user.tag, true)
             .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
-            .addField(locale.privateEmbed.expiration, locale.privateEmbed.noExpiration, true)
+            .addField(locale.privateEmbed.expiration, expiration ? `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>` : locale.privateEmbed.noExpiration, true)
+            .addField(locale.privateEmbed.deletedDays, deletedDays ? deletedDays.toString() : `\`${locale.privateEmbed.noDeletedDays}\``, true)
         ]});
 
+        //Almacena los parámetros para el baneo
+        const banParameters = { reason: reason || locale.undefinedReason };
+
+        //Si se ha proporcionado borrado de mensajes, almacena el parámetro
+        if (deletedDays) banParameters.days = deletedDays;
+
         //Banea al usuario
-        await interaction.guild.members.ban(user, { reason: reason || locale.undefinedReason });
+        await interaction.guild.members.ban(user, banParameters);
 
         //Genera una descripción para el embed de notificación
         const notificationEmbedDescription = reason ? client.functions.localeParser(locale.notificationEmbed.withReason, { userTag: user.tag, reason: reason }) : client.functions.localeParser(locale.notificationEmbed.withoutReason, { userTag: user.tag })
@@ -137,6 +211,18 @@ module.exports.config = {
             },
             {
                 optionName: 'reason',
+                type: 'STRING',
+                required: false
+            },
+            {
+                optionName: 'days',
+                type: 'INTEGER',
+                minValue: 1,
+                maxValue: 7,
+                required: false
+            },
+            {
+                optionName: 'duration',
                 type: 'STRING',
                 required: false
             }

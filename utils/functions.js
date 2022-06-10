@@ -871,8 +871,8 @@ exports.run = (client) => {
         //Genera un embed de notificación
         const notificationEmbed = new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setTitle(`${client.customEmojis.redTick} ${client.locale.interactionErrorHandler.errorEmbed.title} ...`)
-            .setDescription(client.locale.interactionErrorHandler.errorEmbed.description);
+            .setTitle(`${client.customEmojis.redTick} ${locale.interactionErrorHandler.notificationEmbed.title} ...`)
+            .setDescription(locale.interactionErrorHandler.notificationEmbed.description);
 
         try {
 

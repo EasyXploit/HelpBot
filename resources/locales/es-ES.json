@@ -103,7 +103,7 @@
             "ban": {
                 "appData": {
                     "name": "banear",
-                    "description": "Banea a un miembro",
+                    "description": "Prohibe a un miembro entrar al servidor",
                     "options": {
                         "user": {
                             "name": "usuario",
@@ -112,6 +112,14 @@
                         "reason": {
                             "name": "razón",
                             "description": "Aporta una razón para la acción"
+                        },
+                        "days": {
+                            "name": "días_a_borrar",
+                            "description": "Escribe una cantidad entre 1 y 7"
+                        },
+                        "duration": {
+                            "name": "duración",
+                            "description": "Escriba una duración con el formato: días\"S\" | minutos\"M\" | horas\"H\" | días\"D\""
                         }
                     }
                 },
@@ -119,6 +127,8 @@
                 "noBots": "No puedes banear a un bot",
                 "badHierarchy": "No puedes banear a un miembro con un rol igual o superior al tuyo",
                 "alreadyBanned": "Este usuario ya ha sido baneado",
+                "wrongMagnitudes": "Tienes que escribir una duración con el formato: días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"",
+                "exceededDuration": "Solo puedes banear un máximo de `{{time}}`",
                 "noReason": "Debes proporcionar una razón",
                 "undefinedReason": "Indefinida",
                 "privateEmbed": {
@@ -126,6 +136,8 @@
                     "description": "{{user}}, has sido baneado en {{guildName}}",
                     "moderator": "Moderador",
                     "reason": "Razón",
+                    "deletedDays": "Días de mensajes borrados",
+                    "noDeletedDays": "Ninguno",
                     "expiration": "Vencimiento",
                     "noExpiration": "No vence"
                 },
@@ -918,45 +930,6 @@
                     "description": "El modo lento ha sido activado con un retraso de `{{seconds}}s`"
                 }
             },
-            "softban": {
-                "appData": {
-                    "name": "baneosuave",
-                    "description": "Banea a un miembro, eliminando X días de mensajes suyos",
-                    "options": {
-                        "user": {
-                            "name": "usuario",
-                            "description": "Selecciona un usuario o escribe su ID"
-                        },
-                        "days": {
-                            "name": "días",
-                            "description": "Escribe una cantidad entre 1 y 7"
-                        },
-                        "reason": {
-                            "name": "razón",
-                            "description": "Aporta una razón para la acción"
-                        }
-                    }
-                },
-                "userNotFound": "Usuario no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID",
-                "noBots": "No puedes banear a un bot",
-                "badHierarchy": "No puedes banear a un miembro con un rol igual o superior al tuyo",
-                "alreadyBanned": "Este usuario ya ha sido baneado",
-                "noReason": "Debes proporcionar una razón",
-                "undefinedReason": "Indefinida",
-                "privateEmbed": {
-                    "author": "[BANEADO]",
-                    "description": "{{user}}, has sido baneado en {{guildName}}",
-                    "moderator": "Moderador",
-                    "reason": "Razón",
-                    "deletedDays": "Días de mensajes borrados",
-                    "expiration": "Vencimiento",
-                    "noExpiration": "No vence"
-                },
-                "notificationEmbed": {
-                    "withReason": "**{{userTag}}** ha sido baneado debido a __{{reason}}__, ¿alguien más?",
-                    "withoutReason": "**{{userTag}}** ha sido baneado, ¿alguien más?"
-                }
-            },
             "sound": {
                 "appData": {
                     "name": "sonido",
@@ -1003,48 +976,9 @@
                     "noNextRewards": "No puede ganar recompensas"
                 }
             },
-            "tempban": {
-                "appData": {
-                    "name": "baneotemp",
-                    "description": "Banea temporalmente a un miembro",
-                    "options": {
-                        "user": {
-                            "name": "usuario",
-                            "description": "Selecciona un usuario o escribe su ID"
-                        },
-                        "duration": {
-                            "name": "duración",
-                            "description": "Escriba una duración con el formato: días\"S\" | minutos\"M\" | horas\"H\" | días\"D\""
-                        },
-                        "reason": {
-                            "name": "razón",
-                            "description": "Aporta una razón para la acción"
-                        }
-                    }
-                },
-                "userNotFound": "Usuario no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID",
-                "noBots": "No puedes banear a un bot",
-                "badHierarchy": "No puedes banear a un miembro con un rol igual o superior al tuyo",
-                "alreadyBanned": "Este usuario ya ha sido baneado",
-                "wrongMagnitudes": "Tienes que escribir una duración con el formato: días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"",
-                "exceededDuration": "Solo puedes banear un máximo de `{{time}}`",
-                "noReason": "Debes proporcionar una razón",
-                "undefinedReason": "Indefinida",
-                "privateEmbed": {
-                    "author": "[BANEADO]",
-                    "description": "{{user}}, has sido baneado en {{guildName}}",
-                    "moderator": "Moderador",
-                    "reason": "Razón",
-                    "expiration": "Vencimiento"
-                },
-                "notificationEmbed": {
-                    "withReason": "**{{userTag}}** ha sido baneado debido a __{{reason}}__, ¿alguien más?",
-                    "withoutReason": "**{{userTag}}** ha sido baneado, ¿alguien más?"
-                }
-            },
             "tempmute": {
                 "appData": {
-                    "name": "silenciotem",
+                    "name": "silenciotemp",
                     "description": "Silencia temporalmente a un miembro de los canales de texto y voz",
                     "options": {
                         "user": {
@@ -1111,7 +1045,11 @@
                     "author": "{{userTag}} ha sido DESBANEADO",
                     "userId": "ID de usuario",
                     "moderator": "Moderador",
-                    "reason": "Razón"
+                    "reason": "Razón",
+                    "deletedDays": "Días de mensajes borrados",
+                    "noDeletedDays": "Ninguno",
+                    "expiration": "Vencimiento",
+                    "noExpiration": "No vence"
                 },
                 "notificationEmbed": {
                     "title": "Operación completada",
@@ -1535,7 +1473,7 @@
                 "error": "ERROR",
                 "noArguments": "Ninguno",
                 "noCommandName": "No aplicable",
-                "errorEmbed": {
+                "notificationEmbed": {
                     "title": "¡Vaya! Algo fue mal",
                     "description": "Lo hemos reportado a los responsables del bot"
                 },

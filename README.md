@@ -8,7 +8,7 @@
     <a href="https://github.com/EasyXploit/HelpBot/releases"><img src="https://img.shields.io/github/downloads/EasyXploit/HelpBot/total?color=%23FFC857&label=Downloads" alt="Downloads" /></a>
     <a href="https://github.com/EasyXploit/HelpBot/#license"><img src="https://img.shields.io/badge/License-MIT-FFC857" alt="License" /></a>
     <a href="https://github.com/EasyXploit/HelpBot/blob/master/package.json"><img src="https://img.shields.io/github/package-json/v/EasyXploit/HelpBot?color=FFC857&label=Version" alt="Version" /></a>
-    <img alt="Repo size" src="https://img.shields.io/github/repo-size/EasyXploit/HelpBot?label=Repo%20size">
+    <img alt="Repo size" src="https://img.shields.io/github/repo-size/EasyXploit/HelpBot?color=FFC857&llabel=Repo%20size">
 </a>
   </p>
 </div>

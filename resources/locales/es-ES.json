@@ -127,9 +127,11 @@
                 "noBots": "No puedes banear a un bot",
                 "badHierarchy": "No puedes banear a un miembro con un rol igual o superior al tuyo",
                 "alreadyBanned": "Este usuario ya ha sido baneado",
+                "cantPermaBan": "No tienes permiso para banear permanentemente",
                 "wrongMagnitudes": "Tienes que escribir una duración con el formato: días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"",
                 "exceededDuration": "Solo puedes banear un máximo de `{{time}}`",
                 "noReason": "Debes proporcionar una razón",
+                "cantSoftBan": "No tienes permiso para borrar mensajes al banear",
                 "undefinedReason": "Indefinida",
                 "privateEmbed": {
                     "author": "[BANEADO]",

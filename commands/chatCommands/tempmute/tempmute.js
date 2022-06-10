@@ -18,7 +18,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             let authorized;
 
             //Por cada uno de los roles que pueden silenciar bots
-            for (let index = 0; index < commandConfig.botsAllowed; index++) {
+            for (let index = 0; index < commandConfig.botsAllowed.length; index++) {
 
                 //Comprueba si el miembro ejecutor lo tiene
                 if (interaction.member.roles.cache.has(commandConfig.botsAllowed[index])) {
@@ -96,7 +96,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             let authorized;
 
             //Por cada uno de los roles que pueden omitir la razón
-            for (let index = 0; index < commandConfig.reasonNotNeeded; index++) {
+            for (let index = 0; index < commandConfig.reasonNotNeeded.length; index++) {
 
                 //Comprueba si el miembro ejecutor lo tiene
                 if (interaction.member.roles.cache.has(commandConfig.reasonNotNeeded[index])) {

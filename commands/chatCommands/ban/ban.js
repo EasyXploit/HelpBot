@@ -18,7 +18,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             let authorized;
 
             //Por cada uno de los roles que pueden banear bots
-            for (let index = 0; index < commandConfig.botsAllowed; index++) {
+            for (let index = 0; index < commandConfig.botsAllowed.length; index++) {
 
                 //Comprueba si el miembro ejecutor lo tiene
                 if (interaction.member.roles.cache.has(commandConfig.botsAllowed[index])) {
@@ -60,7 +60,30 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         const durationOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.duration.name);
         const providedDuration = durationOption ? durationOption.value : null;
 
-        //Almacena lo smilisegundos de la duración
+        //Si no se ha proporcionado una duración
+        if (!providedDuration) {
+
+            //Almacena si el miembro puede banear indefinidamente
+            let authorized;
+
+            //Para cada ID de rol de la lista blanca
+            for (let index = 0; index < commandConfig.unlimitedTime.length; index++) {
+
+                //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
+                if (interaction.member.id === interaction.guild.ownerId || interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || interaction.member.roles.cache.find(role => role.id === commandConfig.unlimitedTime[index])) {
+                    authorized = true;
+                    break;
+                };
+            };
+
+            //Si no se permitió la ejecución, manda un mensaje de error
+            if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryError)
+                .setDescription(`${client.customEmojis.redTick} ${locale.cantPermaBan}.`)
+            ], ephemeral: true});
+        };
+
+        //Almacena los milisegundos de la duración
         let milliseconds;
 
         //Si se ha proporcionado una duración para el baneo
@@ -99,18 +122,33 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededDuration, { time: client.functions.msToDHHMMSS(commandConfig.maxRegularTime) })}.`)
             ], ephemeral: true});
+        };
 
-            //Registra el baneo en la base de datos
-            client.db.bans[user.id] = {
-                until: Date.now() + milliseconds
+        //Almacena los días de mensajes borrados
+        const deletedDaysOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.days.name);
+        const deletedDays = deletedDaysOption ? deletedDaysOption.value : null;
+
+        //Si no se ha proporcionado una duración
+        if (deletedDays) {
+
+            //Almacena si el miembro puede banear indefinidamente
+            let authorized;
+
+            //Para cada ID de rol de la lista blanca
+            for (let index = 0; index < commandConfig.canSoftBan.length; index++) {
+
+                //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
+                if (interaction.member.id === interaction.guild.ownerId || interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || interaction.member.roles.cache.find(role => role.id === commandConfig.canSoftBan[index])) {
+                    authorized = true;
+                    break;
+                };
             };
 
-            //Sobreescribe el fichero de la base de datos con los cambios
-            client.fs.writeFile('./databases/bans.json', JSON.stringify(client.db.bans, null, 4), async err => {
-
-                //Si hubo un error, lo lanza a la consola
-                if (err) throw err;
-            });
+            //Si no se permitió la ejecución, manda un mensaje de error
+            if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryError)
+                .setDescription(`${client.customEmojis.redTick} ${locale.cantSoftBan}.`)
+            ], ephemeral: true});
         };
         
         //Almacena la razón
@@ -127,7 +165,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             let authorized;
 
             //Por cada uno de los roles que pueden omitir la razón
-            for (let index = 0; index < commandConfig.reasonNotNeeded; index++) {
+            for (let index = 0; index < commandConfig.reasonNotNeeded.length; index++) {
 
                 //Comprueba si el miembro ejecutor lo tiene
                 if (interaction.member.roles.cache.has(commandConfig.reasonNotNeeded[index])) {
@@ -142,10 +180,6 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}`)
             ], ephemeral: true});
         };
-
-        //Almacena los días de mensajes borrados
-        const deletedDaysOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.days.name);
-        const deletedDays = deletedDaysOption ? deletedDaysOption.value : null;
 
         //Almacena la expiración del baneo
         const expiration = milliseconds ? Date.now() + milliseconds : null;
@@ -172,6 +206,22 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .addField(locale.privateEmbed.expiration, expiration ? `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>` : locale.privateEmbed.noExpiration, true)
             .addField(locale.privateEmbed.deletedDays, deletedDays ? deletedDays.toString() : `\`${locale.privateEmbed.noDeletedDays}\``, true)
         ]});
+
+        //Si se proporcionó una duración
+        if (providedDuration) {
+
+            //Registra el baneo en la base de datos
+            client.db.bans[user.id] = {
+                until: Date.now() + milliseconds
+            };
+
+            //Sobreescribe el fichero de la base de datos con los cambios
+            client.fs.writeFile('./databases/bans.json', JSON.stringify(client.db.bans, null, 4), async err => {
+
+                //Si hubo un error, lo lanza a la consola
+                if (err) throw err;
+            });
+        };
 
         //Almacena los parámetros para el baneo
         const banParameters = { reason: reason || locale.undefinedReason };

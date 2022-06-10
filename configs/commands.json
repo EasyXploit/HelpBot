@@ -5,6 +5,7 @@
             "enabled": true,
             "reasonNotNeeded": [],
             "botsAllowed": [],
+            "canSoftBan": [],
             "unlimitedTime": [],
             "maxRegularTime": 86400000
         },

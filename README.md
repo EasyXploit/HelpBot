@@ -13,6 +13,10 @@
   </p>
 </div>
 
+> **NOTICE:**<br />
+This repository is <ins>currently under development</ins> and does not have a final stable version, so it is possible that there are bugs and I'm still making commits until the [final release](https://github.com/EasyXploit/HelpBot/releases).
+
+
 ## About
 [**HelpBot**](https://github.com/EasyXploit/HelpBot) is a [Discord](https://discord.com/) self-hosted bot designed to run on a [Node.js](https://nodejs.org) server, whose main functions are automated community moderation, music reproduction, leveling, and much more!<br /><br />
 This project was born out of curiosity, as a way to give form to the knowledge about [JavaScipt](https://developer.mozilla.org/en-US/docs/Web/JavaScript) that I acquired during a Professional Formation course that I was doing, but that over time has made me discover that I am passionate about programming.<br /><br />

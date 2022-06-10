@@ -969,8 +969,7 @@
                     }
                 },
                 "soundListEmbed": {
-                    "title": "Lista de audios",
-                    "footer": "Para escuchar un audio, escribe: {{prefix}}sound <nombre del audio>"
+                    "title": "Lista de audios"
                 },
                 "alreadyPlaying": "El reproductor se encuentra en ejecución en otro canal",
                 "doesntExist": "El audio **{{recordName}}** no existe",
@@ -1341,7 +1340,7 @@
             },
             "newGuild": {
                 "title": "¡{{botUsername}} añadido correctamente!",
-                "description": "Usa los ficheros de configuración para ajustarlo al bot a tu gusto.\nUsa el comando `{{prefix}}help` para ver los comandos.\nRecuerda que el bot solo podrá moderar a aquellas personas que tengan un rol por debajo del rol creado por {{botUser}}.\nSi necesitas ayuda, puedes [consultar la wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)",
+                "description": "Usa los ficheros de configuración para ajustarlo al bot a tu gusto.\nRecuerda que el bot solo podrá moderar a aquellas personas que tengan un rol por debajo del rol creado por {{botUser}}.\nSi necesitas ayuda, puedes [consultar la wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)",
                 "error": "ERROR"
             },
             "systemLoad": {

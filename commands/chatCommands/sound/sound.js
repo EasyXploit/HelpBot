@@ -32,7 +32,6 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setColor(client.config.colors.primary)
                 .setTitle(`🎙 ${locale.soundListEmbed.title}`)
                 .setDescription(`\`\`\`${soundNames.join('    ')}\`\`\``)
-                .setFooter({ text: client.functions.localeParser(locale.soundListEmbed.footer, { prefix: client.config.main.prefix }) })
             ]});
 
         } else { //Si se desea reproducir una grabación

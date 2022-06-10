@@ -19,7 +19,7 @@ exports.run = async (client, guild) => {
         return await guild.members.fetch(guild.ownerId).then(async member => await member.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.correct)
             .setTitle(`${client.customEmojis.greenTick} ${client.functions.localeParser(client.locale.utils.lifecycle.newGuild.title, { botUsername: client.user.username })}`)
-            .setDescription(`${client.functions.localeParser(client.locale.utils.lifecycle.newGuild.description, { prefix: client.config.main.prefix, botUser: client.user })}.`)]
+            .setDescription(`${client.functions.localeParser(client.locale.utils.lifecycle.newGuild.description, { botUser: client.user })}.`)]
         }));
 
     } catch (error) {

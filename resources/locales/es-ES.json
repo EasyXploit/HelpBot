@@ -175,9 +175,9 @@
                 "embedFrom": "Mensaje de",
                 "unauthorized": "{{interactionAuthor}}, no dispones de privilegios para realizar esta operación",
                 "bodyModal": {
-                    "title": "Send formatted message",
-                    "fieldTitle": "Message body",
-                    "fieldPlaceholder": "Write a body for the message"
+                    "title": "Enviar mensaje formateado",
+                    "fieldTitle": "Cuerpo del mensaje",
+                    "fieldPlaceholder": "Escribe un cuerpo para el mensaje"
                 },
                 "loggingEmbed": {
                     "title": "Registro - [MENSAJERÍA]",

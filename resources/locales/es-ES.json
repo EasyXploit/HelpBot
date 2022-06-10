@@ -316,7 +316,7 @@
             },
             "leaderboard": {
                 "appData": {
-                    "name": "clasificacion",
+                    "name": "Tabla de clasificación",
                     "description": "Muestra la tabla de clasificación de EXP de la comunidad",
                     "options": {
                         "page": {

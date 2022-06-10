@@ -3,7 +3,7 @@ exports.run = async (client) => {
     //Traducciones de los timers
     const locale = client.locale.utils.timers;
 
-    //Aborta si los timersa están deshabilitados
+    //Aborta si los timers están deshabilitados
     if (!client.config.main.timers) return;
 
     //Aborta si los timers no son un array

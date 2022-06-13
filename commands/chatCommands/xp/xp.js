@@ -41,13 +41,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         const memberStats = client.db.stats[memberId];
 
         //Comprueba si se le puede restar esa cantidad al miembro
-        if (subcommand === 'remove' && memberStats.totalXP < providedValue) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (subcommand === locale.appData.options.remove.name && memberStats.totalXP < providedValue) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidQuantity}.`)
         ], ephemeral: true});
 
         //Comprueba si se le puede quitar el XP al miembro
-        if (subcommand === 'clear' && memberStats.totalXP === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (subcommand === locale.appData.options.clear.name && memberStats.totalXP === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} ${locale.hasNoXp}.`)
         ], ephemeral: true});  
@@ -73,31 +73,31 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         switch (subcommand) {
 
             //Si hay que fijar la cantidad de XP
-            case 'set':
+            case locale.appData.options.set.name:
 
                 //Almacena el nuevo XP
-                memberStats.totalXP = providedValue;
+                memberStats.totalXP = parseInt(providedValue);
 
                 //Almacena el nuevo valor de XP
-                newValue = providedValue;
+                newValue = parseInt(providedValue);
 
                 //Para el switch
                 break;
 
             //Si hay que añadir XP a la cantidad actual
-            case 'add':
+            case locale.appData.options.add.name:
 
                 //Almacena el nuevo XP
-                memberStats.totalXP = oldValue + providedValue;
+                memberStats.totalXP = parseInt(oldValue) + parseInt(providedValue);
 
                 //Almacena el nuevo valor de XP
-                newValue = oldValue + providedValue;
+                newValue = parseInt(oldValue) + parseInt(providedValue);
 
                 //Para el switch
                 break;
 
             //Si hay que añadir XP aleatorio a la cantidad actual
-            case 'addrandom':
+            case locale.appData.options.addrandom.name:
 
                 //Almacena el XP a añadir
                 let generatedXp = 0;
@@ -110,28 +110,28 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 };
 
                 //Almacena el nuevo XP
-                memberStats.totalXP = oldValue + generatedXp;
+                memberStats.totalXP = parseInt(oldValue) + parseInt(generatedXp);
 
                 //Almacena el nuevo valor de XP
-                newValue = oldValue + generatedXp;
+                newValue = parseInt(oldValue) + parseInt(generatedXp);
 
                 //Para el switch
                 break;
 
             //Si hay que quitar XP a la cantidad actual
-            case 'remove':
+            case locale.appData.options.remove.name:
 
                 //Almacena el nuevo XP
-                memberStats.totalXP = oldValue - providedValue;
+                memberStats.totalXP = parseInt(oldValue) - parseInt(providedValue);
 
                 //Almacena el nuevo valor de XP
-                newValue = oldValue - providedValue;
+                newValue = parseInt(oldValue) - parseInt(providedValue);
 
                 //Para el switch
                 break;
 
             //Si hay que vaciar todo el XP
-            case 'clear':
+            case locale.appData.options.clear.name:
 
                 //Actualiza el total de XP del miembro
                 memberStats.totalXP = 0;
@@ -144,10 +144,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         };
 
         //Si el nuevo valor de XP es superior al antiguo
-        if (newValue > oldValue) { 
+        if (newValue > oldValue) {
 
             //Almacena el XP a incrementar
-            let xpCount = newValue;
+            let xpCount = parseInt(newValue);
 
             //Almacena el XP necesario para pasar al siguiente nivel
             let xpToNextLevel = await client.functions.xpToLevel(newLevel + 1);

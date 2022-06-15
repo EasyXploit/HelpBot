@@ -80,6 +80,10 @@
                 "registerDate": "Fecha de registro"
             }
         },
+        "interactionCreate": {
+            "disabledCommand": "El comando `{{commandName}}` ha sido deshabilitado",
+            "error": "ERROR"
+        },
         "messageCreate": {
             "filteredDm": "vía MD"
         },
@@ -1311,6 +1315,20 @@
     },
     "utils": {
         "lifecycle": {
+            "loadCommands": {
+                "unregisteredFromGuild": "Comando {{command}} des-registrado en {{guildName}}",
+                "unregisteredFromGlobal": "Comando {{command}} des-registrado globalmente",
+                "convertedToGlobal": "Comando {{command}} convertido al tipo \"global\"",
+                "convertedToGuild": "Comando {{command}} convertido al tipo \"guild\"",
+                "noConfigError": "El comando {{command}} no tiene configuración en commands.json",
+                "sameCommandNamesError": "Dos comandos o más comandos tienen el mismo nombre",
+                "invalidTypeError": "El comando {{command}} no tiene un tipo válido",
+                "registeredOnGlobal": "Comando {{command}} registrado globalmente",
+                "registeredOnGuild": "Comando {{command}} registrado en {{guildName}}",
+                "parametersUpdated": "El comando {{command}} ha actualizado sus parámetros",
+                "defaultPermUpdated": "El comando {{command}} ha actualizado su permiso por defecto",
+                "loadedCorrectly": "Comando {{command}} cargado correctamente"
+            },
             "loadEmojis": {
                 "configLoaded": "Carga de emojis personalizados completada",
                 "maxExceeded": "No se pueden cargar más de 50 emojis",

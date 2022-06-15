@@ -26,7 +26,7 @@ exports.run = async (interaction, client, locale) => {
             //Aborta si el comando está deshabilitado
             if (!commandConfig.enabled) return interaction.reply({embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.unavailable)
-                .setDescription(`❕ El comando \`/${interaction.commandName}\` ha sido deshabilitado.`)
+                .setDescription(`${client.customEmojis.grayTick} ${client.functions.localeParser(locale.disabledCommand, { commandName: interaction.commandName })}.`)
             ], ephemeral: true});
 
             //Ejecuta el comando
@@ -47,6 +47,6 @@ exports.run = async (interaction, client, locale) => {
     } catch (error) {
 
         //Devuelve un error en la consola
-        console.error(`${new Date().toLocaleString()} 》ERROR: ${error.stack}`);
+        console.error(`${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
     };
 };

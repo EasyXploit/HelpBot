@@ -935,11 +935,49 @@
             "sound": {
                 "appData": {
                     "name": "sonido",
-                    "description": "Reproduce un archivo .mp3 de la carpeta media/audios` o muestra una lista de ellos",
+                    "description": "Reproduce un archivo .mp3 local, sube uno o muestra una lista de ellos",
                     "options": {
-                        "selection": {
-                            "name": "selección",
-                            "description": "Introduce el nombre de una pista, o la palabra \"list\" para ver la lista"
+                        "list": {
+                            "name": "lista",
+                            "description": "Muestra la lista de audios almacenados en el bot"
+                        },
+                        "play": {
+                            "name": "reproducir",
+                            "description": "Reproduce un audio almacenado",
+                            "options": {
+                                "selection": {
+                                    "name": "selección",
+                                    "description": "Introduce el nombre del audio a reproducir"
+                                }
+                            }
+                        },
+                        "random": {
+                            "name": "aleatorio",
+                            "description": "Reproduce un audio al azar"
+                        },
+                        "upload": {
+                            "name": "subir",
+                            "description": "Sube un fichero .mp3 al directorio de audios",
+                            "options": {
+                                "attachment": {
+                                    "name": "adjunto",
+                                    "description": "Carga un fichero .mp3"
+                                },
+                                "name": {
+                                    "name": "nombre",
+                                    "description": "Elige un nombre para el audio"
+                                }
+                            }
+                        },
+                        "remove": {
+                            "name": "eliminar",
+                            "description": "Elimina un audio almacenado",
+                            "options": {
+                                "selection": {
+                                    "name": "selección",
+                                    "description": "Introduce el nombre del audio a eliminar"
+                                }
+                            }
                         }
                     }
                 },
@@ -948,7 +986,7 @@
                 },
                 "alreadyPlaying": "El reproductor se encuentra en ejecución en otro canal",
                 "doesntExist": "El audio **{{recordName}}** no existe",
-                "loadingFile": "Cargando el fichero `{{fileName}}` ...",
+                "loadingFile": "Cargando el audio `{{fileName}}` ...",
                 "bounded": "Unido a {{voiceChannel}} y vinculado a {{textChannel}}"
             },
             "stats": {

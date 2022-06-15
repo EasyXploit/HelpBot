@@ -935,11 +935,49 @@
       "sound": {
         "appData": {
           "name": "sound",
-          "description": "Plays a .mp3 file from the `media/audios` folder or shows a list of them",
+          "description": "Plays a local .mp3 file, uploads one or shows a list of them",
           "options": {
-            "selection": {
-              "name": "selection",
-              "description": "Introduce the name of a track, or the word \"list\" to see the list"
+            "list": {
+              "name": "list",
+              "description": "Shows a list of audios stored in the bot"
+            },
+            "play": {
+              "name": "play",
+              "description": "Play a stored audio",
+              "options": {
+                "selection": {
+                  "name": "selection",
+                  "description": "Introduce the name of an audio to be played"
+                }
+              }
+            },
+            "random": {
+              "name": "random",
+              "description": "Plays a random audio"
+            },
+            "upload": {
+              "name": "upload",
+              "description": "Upload a .mp3 file to the audio directory",
+              "options": {
+                "attachment": {
+                  "name": "adjunto",
+                  "description": "Upload a .mp3 file"
+                },
+                "name": {
+                  "name": "name",
+                  "description": "Choose a name for the audio"
+                }
+              }
+            },
+            "remove": {
+              "name": "remove",
+              "description": "Removes a locally stored audio",
+              "options": {
+                "selection": {
+                  "name": "selection",
+                  "description": "Introduce the name of an audio to be deleted"
+                }
+              }
             }
           }
         },
@@ -948,7 +986,7 @@
         },
         "alreadyPlaying": "The player is running on another channel",
         "doesntExist": "The audio **{{recordName}}** does not exist",
-        "loadingFile": "Loading the file `{{fileName}}` ...",
+        "loadingFile": "Loading the `{{fileName}}` audio ...",
         "bounded": "Joined {{voiceChannel}} and bound to {{textChannel}}"
       },
       "stats": {

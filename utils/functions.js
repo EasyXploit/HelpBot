@@ -502,6 +502,35 @@ exports.run = (client) => {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
+    //Función para aleatorizar un array y obtener n items
+    client.functions.getMultipleRandom = async (array, quantity) => {
+
+        //Aleatoriza el array
+        const shuffledArray = [...array].sort(() => 0.5 - Math.random());
+        
+        //Devuelve la cantidad elegida de items
+        return shuffledArray.slice(0, quantity);
+    };
+
+    //Función para formatear bytes en unidades más grandes
+    client.functions.formatBytes = async (bytes, decimals = 2) => {
+
+        //Respuesta por defecto
+        if (bytes === 0) return '0 Bytes';
+
+        //Almacena los decimales
+        const fixedDecimals = decimals < 0 ? 0 : decimals;
+
+        //Almacena las unidades de medida
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    
+        //Calcula el el tipo de unidad a emplear
+        const choosenUnit = Math.floor(Math.log(bytes) / Math.log(1024));
+
+        //Devuelve el resultado formateado
+        return `${parseFloat((bytes / Math.pow(1024, choosenUnit)).toFixed(fixedDecimals))} ${sizes[choosenUnit]}`;
+    };
+
     //Función para convertir de MS a HH:MM:SS
     client.functions.msToDHHMMSS = (ms) => {
 

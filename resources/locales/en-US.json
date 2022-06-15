@@ -80,6 +80,10 @@
         "registerDate": "Register date"
       }
     },
+    "interactionCreate": {
+      "disabledCommand": "The command `{{commandName}}` has been disabled",
+      "error": "ERROR"
+    },
     "messageCreate": {
       "filteredDm": "via DM"
     },
@@ -1311,6 +1315,20 @@
   },
   "utils": {
     "lifecycle": {
+      "loadCommands": {
+        "unregisteredFromGuild": "Command {{command}} un-registered at {{guildName}}",
+        "unregisteredFromGlobal": "Command {{command}} un-registered globally",
+        "convertedToGlobal": "Command {{command}} converted to \"global\" type",
+        "convertedToGuild": "Command {{command}} converted to \"guild\" type",
+        "noConfigError": "Command {{command}} has no configuration in commands.json",
+        "sameCommandNamesError": "Two or more commands have the same name",
+        "invalidTypeError": "The command {{command}} does not have a valid type",
+        "registeredOnGlobal": "Command {{command}} globally registered",
+        "registeredOnGuild": "Command {{command}} registered in {{guildName}}",
+        "parametersUpdated": "The command {{command}} has updated its parameters",
+        "defaultPermUpdated": "The command {{command}} has updated its default permission",
+        "loadedCorrectly": "Command {{command}} loaded successfully"
+      },
       "loadEmojis": {
         "configLoaded": "Custom emojis loading completed",
         "maxExceeded": "No more than 50 emojis can be loaded",

@@ -290,8 +290,11 @@ exports.run = (client) => {
             //Almacena el miembro
             const member = await client.functions.fetchMember(idKey);
 
-            //Comprueba si el miembro está silenciado, ensordecido o está solo con un bot
-            if (!member || member.voice.mute || member.voice.deaf || member.voice?.channel.members.filter(member => !member.user.bot).size === 1) return;
+            //Elimina el miembro de los etados de voz si ya no se encuentra voz
+            if (!member?.voice) delete client.usersVoiceStates[idKey];
+
+            //Comprueba si el miembro está silenciado, ensordecido o solo con un bot
+            if (member.voice.mute || member.voice.deaf || member.voice.channel.members.filter(member => !member.user.bot).size === 1) return;
 
             //Añade XP al miembro
             await client.functions.addXP(member, 'voice');

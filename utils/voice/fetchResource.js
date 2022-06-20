@@ -64,7 +64,7 @@ exports.run = async (client, interaction, streamType, toStream) => {
 				.setColor(randomColor())
 				.setThumbnail(trackItem.meta.thumbnail)
 				.setAuthor({ name: `${locale.newItemEmbed.authorTitle} 🎶`, iconURL: 'attachment://dj.png' })
-				.setDescription(`[${trackItem.meta.title}](${trackItem.meta.location})\n\n● **${locale.newItemEmbed.author}:** \`${trackItem.meta.author}\`\n● **${locale.newItemEmbed.duration}:** \`${client.functions.msToDHHMMSS(trackItem.meta.length)}\``)
+				.setDescription(`[${trackItem.meta.title}](${trackItem.meta.location})\n\n● **${locale.newItemEmbed.author}:** \`${trackItem.meta.author}\`\n● **${locale.newItemEmbed.duration}:** \`${client.functions.msToTime(trackItem.meta.length)}\``)
 				.setFooter({ text: await client.functions.getMusicFooter(interaction.guild) })
 			], files: ['./resources/images/dj.png'] });
 		};
@@ -156,7 +156,7 @@ exports.run = async (client, interaction, streamType, toStream) => {
 						//Comprueba si el resultado supera la duración máxima establecida
 						if (musicConfig.maxTrackDuration > 0 && (metadata.durationInSec * 1000 > musicConfig.maxTrackDuration || metadata.durationInSec * 1000 < 0)) return interaction.reply({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededLength, { duration: client.functions.msToDHHMMSS(musicConfig.maxTrackDuration) })}.`)
+							.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededLength, { duration: client.functions.msToTime(musicConfig.maxTrackDuration) })}.`)
 						], ephemeral: true});
 		
 						//Crea el objeto de la cola
@@ -208,7 +208,7 @@ exports.run = async (client, interaction, streamType, toStream) => {
 						//Comprueba si el resultado supera la duración máxima establecida
 						if (musicConfig.maxTrackDuration > 0 && (results[0].durationInSec * 1000 > musicConfig.maxTrackDuration || results[0].durationInSec * 1000 < 0)) return interaction.reply({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededLength, { duration: client.functions.msToDHHMMSS(musicConfig.maxTrackDuration) })}.`)
+							.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededLength, { duration: client.functions.msToTime(musicConfig.maxTrackDuration) })}.`)
 						], ephemeral: true});
 	
 						//Crea el objeto de la cola

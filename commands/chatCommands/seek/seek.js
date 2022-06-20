@@ -43,7 +43,7 @@ exports.run = async (client, interaction, locale, commandConfig, inheritedMoment
         //Comprueba si se ha excedido el tiempo máximo
         if (seekTo * 1000 > queueItem.meta.length - 1000) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantForward, { time: client.functions.msToDHHMMSS(queueItem.meta.length - 1000) })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantForward, { time: client.functions.msToTime(queueItem.meta.length - 1000) })}.`)
         ], ephemeral: true});
 
         //Comprueba si es necesaria una votación
@@ -65,7 +65,7 @@ exports.run = async (client, interaction, locale, commandConfig, inheritedMoment
             connection._state.subscription.player.stop();
 
             //Envía un mensaje de confirmación
-            interaction.reply({ content: `📍 | ${client.functions.localeParser(locale.seeked, { time: client.functions.msToDHHMMSS(seekTo * 1000) })}` });
+            interaction.reply({ content: `📍 | ${client.functions.localeParser(locale.seeked, { time: client.functions.msToTime(seekTo * 1000) })}` });
         };
 
     } catch (error) {

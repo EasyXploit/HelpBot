@@ -403,8 +403,8 @@ exports.run = (client) => {
                 };
 
                 //Manda el mensaje de subida de nivel, si se ha configurado
-                if (mode === 'message' && client.config.xp.notifylevelUpOnChat) channel.send({ embeds: [levelUpEmbed] });
-                if (mode === 'voice' && client.config.xp.notifylevelUpOnVoice) member.send({ embeds: [levelUpEmbed] });
+                if (mode === 'message' && client.config.xp.notifylevelUpOnChat && memberStats.notifications.public) channel.send({ embeds: [levelUpEmbed] });
+                if (mode === 'voice' && client.config.xp.notifylevelUpOnVoice && memberStats.notifications.private) member.send({ embeds: [levelUpEmbed] });
             };
 
             //Guarda las nuevas estadísticas del miembro en la base de datos
@@ -531,11 +531,19 @@ exports.run = (client) => {
         return `${parseFloat((bytes / Math.pow(1024, choosenUnit)).toFixed(fixedDecimals))} ${sizes[choosenUnit]}`;
     };
 
-    //Función para convertir de MS a HH:MM:SS
-    client.functions.msToDHHMMSS = (ms) => {
+    //Función para convertir de MS a tiempo formateado
+    client.functions.msToTime = (ms) => {
 
-        //Convierte a segundos
+        //Convierte los MS a segundos
         let seconds = parseInt(ms / 1000);
+
+        //Extrae los años
+        const years = parseInt(seconds / 31556926);
+        seconds = seconds % 31556926;
+
+        //Extrae los meses
+        const months = parseInt(seconds / 2629743);
+        seconds = seconds % 2629743;
 
         //Extrae los dias
         const days = parseInt(seconds / 86400);
@@ -557,7 +565,7 @@ exports.run = (client) => {
         const secondsStr = ('00' + seconds).slice(-2);
 
         //Devuelve el resultado
-        return `${days > 0 ? `${days}d ` : ''}${hoursStr}:${minutesStr}:${secondsStr}`;
+        return `${years > 0 ? `${years} ${locale.msToTime.years}, ` : ''}${months > 0 ? `${months} ${locale.msToTime.months}, ` : ''}${days > 0 ? `${days} ${locale.msToTime.days}, ` : ''}${hoursStr}:${minutesStr}:${secondsStr}`;
     };
 
     //Función para convertir de HH:MM:SS a MS

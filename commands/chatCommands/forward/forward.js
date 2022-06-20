@@ -44,7 +44,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (reproductionQueue.tracks[0].meta.seekTo) actualProgress = actualProgress + (reproductionQueue.tracks[0].meta.seekTo * 1000);
 
         //Almacena el objetivo de avance
-        const forwardTo = await client.functions.msToDHHMMSS(actualProgress + forwardMs);
+        const forwardTo = await client.functions.msToTime(actualProgress + forwardMs);
 
         //Ejecuta el comando "seek"
         await require('../seek/seek.js').run(client, interaction, client.locale.commands.chatCommands.seek, forwardTo);

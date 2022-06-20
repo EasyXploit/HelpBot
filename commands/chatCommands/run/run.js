@@ -43,7 +43,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 ], ephemeral: true});
 
                 //Busca el miembro en la guild
-                const targetGoodybeMember = await client.functions.fetchMember(interaction.options._hoistedOptions[1]);
+                const targetGoodybeMember = await client.functions.fetchMember(interaction.options._hoistedOptions[1].value);
 
                 //Devuelve un error si no se ha proporcionado un miembro válido
                 if (!targetGoodybeMember) return interaction.reply({ embeds: [ new client.MessageEmbed()

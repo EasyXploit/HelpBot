@@ -40,7 +40,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         const randomColor = require('randomcolor');
 
         //Almacena el progreso formateado
-        const formatteProgress = reproductionQueue.tracks[0].meta.length !== 0 ? `${progressBar.join('')} ${percentage}%\n\`${client.functions.msToDHHMMSS(progress)} / ${client.functions.msToDHHMMSS(total)}\`.` : `${locale.isLive} (${locale.elapsed}: \`${client.functions.msToDHHMMSS(progress)}\`).`;
+        const formatteProgress = reproductionQueue.tracks[0].meta.length !== 0 ? `${progressBar.join('')} ${percentage}%\n\`${client.functions.msToTime(progress)} / ${client.functions.msToTime(total)}\`.` : `${locale.isLive} (${locale.elapsed}: \`${client.functions.msToTime(progress)}\`).`;
 
         //Envía el mensaje con el resultado
         interaction.reply({ embeds: [ new client.MessageEmbed()

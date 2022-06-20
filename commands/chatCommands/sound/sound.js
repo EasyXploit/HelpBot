@@ -111,7 +111,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                         //Devuelve un error al usuario
                         return interaction.editReply({ embeds: [ new client.MessageEmbed()
                             .setColor(client.config.colors.error)
-                            .setDescription(`${client.customEmojis.redTick} La duración máxima permitida es \`${await client.functions.msToDHHMMSS(commandConfig.maxDuration)}\`.`)
+                            .setDescription(`${client.customEmojis.redTick} La duración máxima permitida es \`${await client.functions.msToTime(commandConfig.maxDuration)}\`.`)
                         ]});
                     };
 

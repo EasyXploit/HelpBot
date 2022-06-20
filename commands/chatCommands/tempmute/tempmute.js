@@ -80,7 +80,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Si no se permitió la ejecución, manda un mensaje de error
         if (!authorized && milliseconds > commandConfig.maxRegularTime) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededDuration, { time: client.functions.msToDHHMMSS(commandConfig.maxRegularTime) })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededDuration, { time: client.functions.msToTime(commandConfig.maxRegularTime) })}.`)
         ], ephemeral: true});
 
         //Almacena la razón

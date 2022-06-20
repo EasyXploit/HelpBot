@@ -53,7 +53,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         ], ephemeral: true});
 
         //Almacena el objetivo de avance (en HH:MM:SS)
-        const rewindTo = await client.functions.msToDHHMMSS(rewindToMs);
+        const rewindTo = await client.functions.msToTime(rewindToMs);
 
         //Ejecuta el comando "seek"
         await require('../seek/seek.js').run(client, interaction, client.locale.commands.chatCommands.seek, rewindTo);

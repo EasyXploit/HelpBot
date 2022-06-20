@@ -70,14 +70,14 @@ exports.run = async (member, client, locale) => {
             //Si no encontró un baneo en el primer resultado, o han pasado más de 5 segundos desde el último baneo
             if (!banLog || Date.now() > (banLog.createdTimestamp + 5000)) {
                 
-                //Envía un registro al canal de bienvenidas/despedidas (por que no se traó ni de una expulsión ni de un baneo)
+                //Envía un registro al canal de bienvenidas/despedidas (por que no se trató ni de una expulsión ni de un baneo)
                 await client.channels.cache.get(client.config.main.joinsAndLeavesChannel).send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
-                    .setAuthor({ name: locale.welcomeEmbed.author, iconURL: 'attachment://out.png' })
-                    .setDescription(client.functions.localeParser(locale.welcomeEmbed.description, { memberTag: member.user.tag }))
-                    .addField(`🆔 ${locale.welcomeEmbed.memberId}`, member.user.id, true)     
-                    .addField(`📝 ${locale.welcomeEmbed.registerDate}`, `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
+                    .setAuthor({ name: locale.goodbyeEmbed.author, iconURL: 'attachment://out.png' })
+                    .setDescription(client.functions.localeParser(locale.goodbyeEmbed.description, { memberTag: member.user.tag }))
+                    .addField(`🆔 ${locale.goodbyeEmbed.memberId}`, member.user.id, true)     
+                    .addField(`📆 ${locale.goodbyeEmbed.antiquity}`, `\`${client.functions.msToTime(Date.now() - member.joinedTimestamp)}\``, true)
                 ], files: ['./resources/images/out.png'] });
             };
         };

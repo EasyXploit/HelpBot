@@ -180,7 +180,7 @@ exports.run = async (client, interaction, connection) => {
             //Calcula cual es el título de la siguiente pista, si es que hay
             if (reproductionQueue.tracks[1]) {
                 if (reproductionQueue.mode === 'shuffle') upNext = locale.random; //Caso aleatorio
-                else if (reproductionQueue.mode === 'loop') upNext = `[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})`; //Caso loop
+                else if (reproductionQueue.mode === 'loopsingle') upNext = `[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})`; //Caso loopsingle
                 else upNext = `[${reproductionQueue.tracks[1].meta.title}](${reproductionQueue.tracks[1].meta.location})`; //Caso normal / loopqueue
             };
 

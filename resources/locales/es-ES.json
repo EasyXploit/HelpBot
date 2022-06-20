@@ -359,18 +359,28 @@
             "loop": {
                 "appData": {
                     "name": "bucle",
-                    "description": "Activa el modo bucle para la pista actual"
+                    "description": "Activa el modo bucle para la pista o la cola actual",
+                    "options": {
+                        "mode": {
+                            "name": "modo",
+                            "description": "Selecciona el modo del bucle",
+                            "choices": {
+                                "single": "La pista actual",
+                                "queue": "Toda la cola",
+                                "disabled": "Deshabilitar"
+                            }
+                        }
+                    }
                 },
-                "enabled": "He activado el modo bucle en la pista actual",
-                "disabled": "He desactivado el modo bucle en la pista actual"
-            },
-            "loopqueue": {
-                "appData": {
-                    "name": "buclecola",
-                    "description": "Activa el modo bucle para la cola de reproducción"
+                "notEnabled": "El modo bucle no está activado",
+                "loopsingle": {
+                    "enabled": "He activado el modo bucle en la pista actual",
+                    "disabled": "He desactivado el modo bucle en la pista actual"
                 },
-                "enabled": "He activado el modo bucle en la cola",
-                "disabled": "He desactivado el modo bucle en la cola"
+                "loopqueue": {
+                    "enabled": "He activado el modo bucle en la cola",
+                    "disabled": "He desactivado el modo bucle en la cola"
+                }
             },
             "move": {
                 "appData": {

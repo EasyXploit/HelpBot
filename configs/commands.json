@@ -46,9 +46,6 @@
         "loop": {
             "enabled": true
         },
-        "loopqueue": {
-            "enabled": true
-        },
         "move": {
             "enabled": true
         },

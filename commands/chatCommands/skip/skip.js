@@ -50,8 +50,8 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                     .setDescription(`${client.customEmojis.redTick} ${locale.cantSkipOnRandom}.`)
                 ], ephemeral: true});
 
-                //Comprueba si está activado el modo loop
-                if (reproductionQueue.mode === 'loop' || reproductionQueue.mode === 'loopqueue') return interaction.reply({ embeds: [ new client.MessageEmbed()
+                //Comprueba si está activado el modo bucle
+                if (reproductionQueue.mode === 'loopsingle' || reproductionQueue.mode === 'loopqueue') return interaction.reply({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
                     .setDescription(`${client.customEmojis.redTick} ${cantMultipleOnLoop}.`)
                 ], ephemeral: true});

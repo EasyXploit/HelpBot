@@ -359,18 +359,28 @@
       "loop": {
         "appData": {
           "name": "loop",
-          "description": "Enables loop mode for the current track"
+          "description": "Enables loop mode for the current track or queue",
+          "options": {
+              "mode": {
+                  "name": "mode",
+                  "description": "Select a mode for the loop",
+                  "choices": {
+                      "single": "The single track",
+                      "queue": "All the queue",
+                      "disabled": "Disable"
+                  }
+              }
+          }
         },
-        "enabled": "I have enabled the loop mode on the current track",
-        "disabled": "I have disabled the loop mode on the current track"
-      },
-      "loopqueue": {
-        "appData": {
-          "name": "loopqueue",
-          "description": "Enables the loop mode for the reproduction queue"
+        "notEnabled": "The loop mode isn't enabled",
+        "loopsingle": {
+          "enabled": "I have enabled the loop mode on the current track",
+          "disabled": "I have disabled the loop mode on the current track"
         },
-        "enabled": "I have enabled the loop mode on the queue",
-        "disabled": "I have disabled the loop mode on the queue"
+        "loopqueue": {
+          "enabled": "I have enabled the loop mode on the queue",
+          "disabled": "I have disabled the loop mode on the queue"
+        }
       },
       "move": {
         "appData": {

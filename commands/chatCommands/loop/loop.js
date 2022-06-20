@@ -4,28 +4,48 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Comprueba los requisitos previos para el comando
         if (!await require('../../../utils/voice/preChecks.js').run(client, interaction, ['bot-connected', 'same-channel', 'has-queue'])) return;
+
+        //Almacena la selección del usuario
+        const selection = interaction.options._hoistedOptions[0].value;
         
         //Comprueba si es necesaria una votación
-        if (await require('../../../utils/voice/testQueuePerms.js').run(client, interaction, 'loop')) {
+        if (await require('../../../utils/voice/testQueuePerms.js').run(client, interaction, selection)) {
 
             //Almacena la información de la cola de la guild
             const reproductionQueue = client.reproductionQueues[interaction.guild.id];
 
-            if (reproductionQueue.mode !== 'loop') {
+            //Si se desea deshabilitar el modo bucle
+            if (selection === 'disabled') {
 
-                //Activa el modo Loop
-                reproductionQueue.mode = 'loop';
+                //Comprueba si el modo estaba activado
+                if (!['loopsingle', 'loopqueue'].includes(reproductionQueue.mode)) {
+
+                    //Devuelve un error si no estab activado
+                    return interaction.reply({ content: `${client.customEmojis.redTick} | ${locale.notEnabled}`, ephemeral: true });
+                };
     
                 //Manda un mensaje de confirmación
-                interaction.reply({ content: `🔂 | ${locale.enabled}` });
+                interaction.reply({ content: `▶ | ${locale[reproductionQueue.mode].disabled}` });
 
-            } else if (reproductionQueue.mode === 'loop') {
+                //Desactiva el modo bucle
+                return reproductionQueue.mode = false;
+            };
 
-                //Desactiva el modo Loop
+            if (reproductionQueue.mode !== selection) {
+
+                //Activa el modo bucle
+                reproductionQueue.mode = selection;
+    
+                //Manda un mensaje de confirmación
+                interaction.reply({ content: `🔂 | ${locale[selection].enabled}` });
+
+            } else if (reproductionQueue.mode === selection) {
+
+                //Desactiva el modo bucle
                 reproductionQueue.mode = false;
     
                 //Manda un mensaje de confirmación
-                interaction.reply({ content: `▶ | ${locale.disabled}` });
+                interaction.reply({ content: `▶ | ${locale[selection].disabled}` });
             };
         };
         
@@ -40,6 +60,27 @@ module.exports.config = {
     type: 'guild',
     defaultPermission: true,
     appData: {
-        type: 'CHAT_INPUT'
+        type: 'CHAT_INPUT',
+        options: [
+            {
+                optionName: 'mode',
+                type: 'STRING',
+                required: true,
+                choices: [
+                    {
+                        choiceName: 'single',
+                        value: 'loopsingle'
+                    },
+                    {
+                        choiceName: 'queue',
+                        value: 'loopqueue'
+                    },
+                    {
+                        choiceName: 'disabled',
+                        value: 'disabled'
+                    }
+                ]
+            }
+        ]
     }
 };

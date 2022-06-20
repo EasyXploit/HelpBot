@@ -969,7 +969,7 @@ exports.run = (client) => {
             //Changes the footer to add the symbol of the mode
 			switch (reproductionQueue.mode) {
 				case 'shuffle':     footer += '🔀'; break;
-				case 'loop':        footer += '🔂'; break;
+				case 'loopsingle':        footer += '🔂'; break;
 				case 'loopqueue':   footer += '🔁'; break;
 			};
 		};

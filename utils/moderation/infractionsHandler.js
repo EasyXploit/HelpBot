@@ -144,14 +144,22 @@ exports.run = async (client, member, reason, action, moderator, message, interac
         //Capitaliza la razón de la advertencia
         const warnReason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;
 
-        //Envía un mensaje de advertencia al miembro por MD
-        await member.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.warning)
-            .setAuthor({ name: locale.warn.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
-            .setDescription(client.functions.localeParser(locale.warn.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
-            .addField(locale.warn.privateEmbed.moderator, moderator.tag, true)
-            .addField(locale.warn.privateEmbed.reason, warnReason, true)
-        ]});
+        try {
+
+            //Envía un mensaje de advertencia al miembro por MD
+            await member.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.warning)
+                .setAuthor({ name: locale.warn.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
+                .setDescription(client.functions.localeParser(locale.warn.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
+                .addField(locale.warn.privateEmbed.moderator, moderator.tag, true)
+                .addField(locale.warn.privateEmbed.reason, warnReason, true)
+            ]});
+
+        } catch (error) {
+
+            //Maneja si un miembro no admite mensajes directos del bot (por la razón que sea)
+            if (error.toString().includes('Cannot send messages to this user')) null;
+        };
 
         //Si se trata de un canal que no es de DM
         if (channel.type !== 'DM') {

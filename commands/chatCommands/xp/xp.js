@@ -215,6 +215,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .addField(locale.loggingEmbed.oldValue, oldValue.toString(), true)
                 .addField(locale.loggingEmbed.newValue, newValue.toString(), true));
 
+            //Notifica la acción en el canal de invocación
+            await interaction.reply({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryCorrect)
+                .setDescription(`${client.customEmojis.greenTick} ${client.functions.localeParser(locale.notificationEmbed, { memberTag: member.user.tag })}.`)
+            ]});
+
             //Envía una notificación al miembro
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.correct)
@@ -223,12 +229,6 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .addField(locale.privateEmbed.moderator, interaction.user.tag, true)
                 .addField(locale.privateEmbed.oldValue, oldValue.toString(), true)
                 .addField(locale.privateEmbed.newValue, newValue.toString(), true)
-            ]});
-
-            //Notifica la acción en el canal de invocación
-            await interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryCorrect)
-                .setDescription(`${client.customEmojis.greenTick} ${client.functions.localeParser(locale.notificationEmbed, { memberTag: member.user.tag })}.`)
             ]});
         });
         

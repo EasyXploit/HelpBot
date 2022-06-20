@@ -195,17 +195,6 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             deletedDays: deletedDays ? deletedDays.toString() : null,
             expiration: expiration
         };
-        
-        //Envía una notificación al miembro
-        if (member) await user.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-            .setDescription(client.functions.localeParser(locale.privateEmbed.description, { user: user, guildName: interaction.guild.name }))
-            .addField(locale.privateEmbed.moderator, interaction.user.tag, true)
-            .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
-            .addField(locale.privateEmbed.expiration, expiration ? `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>` : locale.privateEmbed.noExpiration, true)
-            .addField(locale.privateEmbed.deletedDays, deletedDays ? deletedDays.toString() : `\`${locale.privateEmbed.noDeletedDays}\``, true)
-        ]});
 
         //Si se proporcionó una duración
         if (providedDuration) {
@@ -239,6 +228,17 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         await interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
             .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
+        ]});
+        
+        //Envía una notificación al miembro
+        if (member) await user.send({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
+            .setDescription(client.functions.localeParser(locale.privateEmbed.description, { user: user, guildName: interaction.guild.name }))
+            .addField(locale.privateEmbed.moderator, interaction.user.tag, true)
+            .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
+            .addField(locale.privateEmbed.expiration, expiration ? `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>` : locale.privateEmbed.noExpiration, true)
+            .addField(locale.privateEmbed.deletedDays, deletedDays ? deletedDays.toString() : `\`${locale.privateEmbed.noDeletedDays}\``, true)
         ]});
         
     } catch (error) {

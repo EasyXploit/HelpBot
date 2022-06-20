@@ -142,6 +142,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .addField(locale.loggingEmbed.reason, reason || locale.undefinedReason, true)
         );
 
+        //Notifica la acción en el canal de invocación
+        await interaction.reply({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.secondaryCorrect)
+            .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbed.title}`)
+            .setDescription(client.functions.localeParser(locale.notificationEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)` }))
+        ]});
+
         //Envía una notificación al miembro
         if (member) await member.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.correct)
@@ -149,13 +156,6 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .setDescription(client.functions.localeParser(locale.privateEmbed.description, { member: member, guildName: interaction.guild.name }))
             .addField(locale.privateEmbed.moderator, interaction.user.tag, true)
             .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
-        ]});
-
-        //Notifica la acción en el canal de invocación
-        await interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryCorrect)
-            .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbed.title}`)
-            .setDescription(client.functions.localeParser(locale.notificationEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)` }))
         ]});
         
     } catch (error) {

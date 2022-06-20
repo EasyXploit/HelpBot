@@ -100,6 +100,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .addField(locale.loggingEmbedAll.reason, reason || locale.undefinedReason, true)
                 .addField(locale.loggingEmbedAll.memberId, memberId.toString(), true);
 
+            //Genera una notificación de la acción para el canal de invocación
+            successEmbed = new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryCorrect)
+                .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbedAll.title}`)
+                .setDescription(client.functions.localeParser(locale.notificationEmbedAll.description, { member: member ? member.user.tag : `${memberId} (ID)` }));
+
             //Si se encontró al miembro, añade su tag al registro
             member ? loggingEmbed.addField(locale.loggingEmbedAll.member, member.user.tag, true) : null;
 
@@ -110,12 +116,6 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setDescription(client.functions.localeParser(locale.privateEmbedAll.description, { member: member }))
                 .addField(locale.privateEmbedAll.moderator, interaction.user.tag, true)
                 .addField(locale.privateEmbedAll.reason, reason || locale.undefinedReason, true);
-
-            //Genera una notificación de la acción para el canal de invocación
-            successEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryCorrect)
-                .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbedAll.title}`)
-                .setDescription(client.functions.localeParser(locale.notificationEmbedAll.description, { member: member ? member.user.tag : `${memberId} (ID)` }));
 
             //Elimina la entrada de la base de datos
             delete client.db.warns[memberId];
@@ -146,6 +146,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .addField(locale.loggingEmbedSingle.reason, reason || locale.undefinedReason, true)
                 .addField(locale.loggingEmbedSingle.memberId, memberId.toString(), true);
 
+            //Genera una notificación de la acción para el canal de invocación
+            successEmbed = new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryCorrect)
+                .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbedSingle.title}`)
+                .setDescription(client.functions.localeParser(locale.notificationEmbedSingle.description, { warnId: warnId, member: member ? member.user.tag : `${memberId} (ID)` }));
+
             //Si se encontró al miembro, añade su tag al registro
             member ? loggingEmbed.addField(locale.loggingEmbedSingle.member, member.user.tag, true) : null;
 
@@ -158,12 +164,6 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .addField(locale.privateEmbedSingle.warnId, warnId, true)
                 .addField(locale.privateEmbedSingle.warn, client.db.warns[memberId][warnId].reason, true)
                 .addField(locale.privateEmbedSingle.reason, reason || locale.undefinedReason, true);
-
-            //Genera una notificación de la acción para el canal de invocación
-            successEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryCorrect)
-                .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbedSingle.title}`)
-                .setDescription(client.functions.localeParser(locale.notificationEmbedSingle.description, { warnId: warnId, member: member ? member.user.tag : `${memberId} (ID)` }));
 
             //Resta el warn indicado
             delete client.db.warns[memberId][warnId];
@@ -181,11 +181,11 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Envía un registro al canal de registros
             await client.functions.loggingManager('embed', loggingEmbed);
 
-            //Envía un mensaje de confirmación al miembro
-            if (member) await member.send({ embeds: [toDMEmbed] });
-
             //Envía una notificación de la acción en el canal de invocación
             await interaction.reply({ embeds: [successEmbed] });
+
+            //Envía un mensaje de confirmación al miembro
+            if (member) await member.send({ embeds: [toDMEmbed] });
         });
         
     } catch (error) {

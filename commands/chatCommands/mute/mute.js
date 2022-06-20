@@ -106,6 +106,15 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .addField(locale.loggingEmbed.expiration, locale.loggingEmbed.noExpiration, true)
             );
 
+            //Genera una descripción para el embed de notificación
+            const notificationEmbedDescription = reason ? client.functions.localeParser(locale.notificationEmbed.withReason, { memberTag: member.user.tag, reason: reason }) : client.functions.localeParser(locale.notificationEmbed.withoutReason, { memberTag: member.user.tag })
+
+            //Notifica la acción en el canal de invocación
+            await interaction.reply({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.warning)
+                .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
+            ]});
+
             //Envía una notificación al miembro
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
@@ -114,15 +123,6 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .addField(locale.privateEmbed.moderator, interaction.user.tag, true)
                 .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
                 .addField(locale.privateEmbed.expiration, locale.privateEmbed.noExpiration, true)
-            ]});
-
-            //Genera una descripción para el embed de notificación
-            const notificationEmbedDescription = reason ? client.functions.localeParser(locale.notificationEmbed.withReason, { memberTag: member.user.tag, reason: reason }) : client.functions.localeParser(locale.notificationEmbed.withoutReason, { memberTag: member.user.tag })
-
-            //Notifica la acción en el canal de invocación
-            await interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.warning)
-                .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
             ]});
         });
         

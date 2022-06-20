@@ -291,7 +291,14 @@ exports.run = (client) => {
             const member = await client.functions.fetchMember(idKey);
 
             //Elimina el miembro de los etados de voz si ya no se encuentra voz
-            if (!member || !member.voice.channelId) delete client.usersVoiceStates[idKey];
+            if (!member || !member.voice.channelId) {
+
+                //Elimina la entrada de los estados de voz
+                delete client.usersVoiceStates[idKey];
+
+                //Omite la iteración
+                continue;
+            };
 
             //Comprueba si el miembro está silenciado, ensordecido o solo con un bot
             if (member.voice.mute || member.voice.deaf || member.voice.channel.members.filter(member => !member.user.bot).size === 1) return;

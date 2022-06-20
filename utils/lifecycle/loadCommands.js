@@ -41,19 +41,19 @@ exports.run = async (client) => {
     };
 
     //Carga de comandos - Lee el directorio de las categorías de comandos
-    for (const commandType of await client.fs.readdirSync('./commands/')) {
+    for (const commandType of await client.fs.readdirSync('./handlers/commands/')) {
 
         //Crea un objeto para registrar los comandos
         const localCommands = {};
 
         //Lee el directorio de las categorías de comandos
-        for (const commandType of await client.fs.readdirSync('./commands/')) {
+        for (const commandType of await client.fs.readdirSync('./handlers/commands/')) {
 
             //Para cada directorio de comandos (directorios por cada tipo), lee los comandos que contiene
-            for (const commandName of await client.fs.readdirSync(`./commands/${commandType}/`)) {
+            for (const commandName of await client.fs.readdirSync(`./handlers/commands/${commandType}/`)) {
 
                 //Sube al objeto de comando, una relación entre el nombre localizado y el nombre de archivo
-                const commandLocalizedName = localeForNames.commands[commandType][commandName].appData.name;
+                const commandLocalizedName = localeForNames.handlers.commands[commandType][commandName].appData.name;
                 localCommands[commandLocalizedName] = commandName;
             };
         };
@@ -92,7 +92,7 @@ exports.run = async (client) => {
             } else {
 
                 //Requiere el comando para obtener su información
-                const appType = await require(`../../commands/${commandType}/${localCommands[command[1].name]}/${localCommands[command[1].name]}.js`).config.type;
+                const appType = await require(`../../handlers/commands/${commandType}/${localCommands[command[1].name]}/${localCommands[command[1].name]}.js`).config.type;
 
                 //Si es un comando de guild pero el tipo local ya no coincide
                 if (command[1].guildId && appType !== 'guild') {
@@ -112,17 +112,17 @@ exports.run = async (client) => {
         };
 
         //Para cada directorio de comandos (directorios por cada tipo), lee los comandos que contiene
-        for (const commandName of await client.fs.readdirSync(`./commands/${commandType}/`)) {
+        for (const commandName of await client.fs.readdirSync(`./handlers/commands/${commandType}/`)) {
 
             //Requiere el comando para obtener su información
-            const commandData = await require(`../../commands/${commandType}/${commandName}/${commandName}.js`);
+            const commandData = await require(`../../handlers/commands/${commandType}/${commandName}/${commandName}.js`);
             let localCmd = commandData.config;
 
             //Almacena las traducciones para ese comando
-            const appDataLocale = client.locale.commands[commandType][commandName].appData;
+            const appDataLocale = client.locale.handlers.commands[commandType][commandName].appData;
 
             //Añade el nombre al comando
-            localCmd.appData.name = localeForNames.commands[commandType][commandName].appData.name;
+            localCmd.appData.name = localeForNames.handlers.commands[commandType][commandName].appData.name;
 
             //Si se trata de un comando de barra diagonal
             if (commandType === 'chatCommands') {

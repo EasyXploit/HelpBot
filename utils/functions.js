@@ -382,19 +382,6 @@ exports.run = (client) => {
                     .setAuthor({ name: locale.addXP.levelUpEmbed.author, iconURL: member.user.displayAvatarURL({dynamic: true}) })
                     .setDescription(`${client.functions.localeParser(locale.addXP.levelUpEmbed.description, { member: member, memberLevel: memberStats.level })}.`);
 
-                //Genera una fila de botones
-                const buttonsRow = new client.MessageActionRow();
-                
-                //Añade un botón a la filla, si se trata del modo voz
-                if (mode === 'voice') buttonsRow.addComponents(
-
-                    //Genera un botón para activar o desactivar las notificaciones
-                    new client.MessageButton()
-                        .setLabel(locale.addXP.levelUpEmbed.disablePrivateNotification)
-                        .setStyle('SECONDARY')
-                        .setCustomId('updateNotifications')
-                );
-
                 //Si se recompensó al miembro con roles
                 if (rewardedRoles) {
 
@@ -417,7 +404,7 @@ exports.run = (client) => {
 
                 //Manda el mensaje de subida de nivel, si se ha configurado
                 if (mode === 'message' && client.config.xp.notifylevelUpOnChat && memberStats.notifications.public) channel.send({ embeds: [levelUpEmbed] });
-                if (mode === 'voice' && client.config.xp.notifylevelUpOnVoice && memberStats.notifications.private) member.send({ embeds: [levelUpEmbed], components: [buttonsRow] });
+                if (mode === 'voice' && client.config.xp.notifylevelUpOnVoice && memberStats.notifications.private) member.send({ embeds: [levelUpEmbed] });
             };
 
             //Guarda las nuevas estadísticas del miembro en la base de datos

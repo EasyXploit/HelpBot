@@ -102,1266 +102,1223 @@
             "warnMessage": "AVISO"
         }
     },
-    "handlers": {
-        "commands": {
-            "chatCommands": {
-                "ban": {
-                    "appData": {
-                        "name": "banear",
-                        "description": "Prohibe a un miembro entrar al servidor",
-                        "options": {
-                            "user": {
-                                "name": "usuario",
-                                "description": "Selecciona un usuario o introduce su ID"
-                            },
-                            "reason": {
-                                "name": "razón",
-                                "description": "Aporta una razón para la acción"
-                            },
-                            "days": {
-                                "name": "días_a_borrar",
-                                "description": "Escribe una cantidad entre 1 y 7"
-                            },
-                            "duration": {
-                                "name": "duración",
-                                "description": "Escriba una duración con el formato: días\"D\" | minutos\"M\" | horas\"H\" | segundos\"S\""
-                            }
+    "commands": {
+        "chatCommands": {
+            "ban": {
+                "appData": {
+                    "name": "banear",
+                    "description": "Prohibe a un miembro entrar al servidor",
+                    "options": {
+                        "user": {
+                            "name": "usuario",
+                            "description": "Selecciona un usuario o introduce su ID"
+                        },
+                        "reason": {
+                            "name": "razón",
+                            "description": "Aporta una razón para la acción"
+                        },
+                        "days": {
+                            "name": "días_a_borrar",
+                            "description": "Escribe una cantidad entre 1 y 7"
+                        },
+                        "duration": {
+                            "name": "duración",
+                            "description": "Escriba una duración con el formato: días\"D\" | minutos\"M\" | horas\"H\" | segundos\"S\""
                         }
-                    },
-                    "userNotFound": "Usuario no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID",
-                    "noBots": "No puedes banear a un bot",
-                    "badHierarchy": "No puedes banear a un miembro con un rol igual o superior al tuyo",
-                    "alreadyBanned": "Este usuario ya ha sido baneado",
-                    "cantPermaBan": "No tienes permiso para banear permanentemente",
-                    "wrongMagnitudes": "Tienes que escribir una duración con el formato: días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"",
-                    "exceededDuration": "Solo puedes banear un máximo de `{{time}}`",
-                    "noReason": "Debes proporcionar una razón",
-                    "cantSoftBan": "No tienes permiso para borrar mensajes al banear",
-                    "undefinedReason": "Indefinida",
-                    "privateEmbed": {
-                        "author": "[BANEADO]",
-                        "description": "{{user}}, has sido baneado en {{guildName}}",
-                        "moderator": "Moderador",
-                        "reason": "Razón",
-                        "deletedDays": "Días de mensajes borrados",
-                        "noDeletedDays": "Ninguno",
-                        "expiration": "Vencimiento",
-                        "noExpiration": "No vence"
-                    },
-                    "notificationEmbed": {
-                        "withReason": "**{{userTag}}** ha sido baneado debido a __{{reason}}__, ¿alguien más?",
-                        "withoutReason": "**{{userTag}}** ha sido baneado, ¿alguien más?"
                     }
                 },
-                "clear": {
-                    "appData": {
-                        "name": "vaciar",
-                        "description": "Vacía la cola de reproducción"
-                    },
-                    "noQueue": "No hay elementos en la cola",
-                    "queueDeleted": "Cola eliminada"
+                "userNotFound": "Usuario no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID",
+                "noBots": "No puedes banear a un bot",
+                "badHierarchy": "No puedes banear a un miembro con un rol igual o superior al tuyo",
+                "alreadyBanned": "Este usuario ya ha sido baneado",
+                "cantPermaBan": "No tienes permiso para banear permanentemente",
+                "wrongMagnitudes": "Tienes que escribir una duración con el formato: días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"",
+                "exceededDuration": "Solo puedes banear un máximo de `{{time}}`",
+                "noReason": "Debes proporcionar una razón",
+                "cantSoftBan": "No tienes permiso para borrar mensajes al banear",
+                "undefinedReason": "Indefinida",
+                "privateEmbed": {
+                    "author": "[BANEADO]",
+                    "description": "{{user}}, has sido baneado en {{guildName}}",
+                    "moderator": "Moderador",
+                    "reason": "Razón",
+                    "deletedDays": "Días de mensajes borrados",
+                    "noDeletedDays": "Ninguno",
+                    "expiration": "Vencimiento",
+                    "noExpiration": "No vence"
                 },
-                "dm": {
-                    "appData": {
-                        "name": "md",
-                        "description": "El bot enviará un mensaje privado al miembro",
-                        "options": {
-                            "user": {
-                                "name": "usuario",
-                                "description": "Selecciona un usuario o escribe su ID"
-                            },
-                            "mode": {
-                                "name": "modo",
-                                "description": "Indica el modo de envío",
-                                "choices": {
-                                    "author": "Autor",
-                                    "anonymous": "Anónimo"
-                                }
-                            },
-                            "type": {
-                                "name": "tipo",
-                                "description": "Especifica el tipo de mensaje",
-                                "choices": {
-                                    "embed": "Incrustado",
-                                    "normal": "Normal"
-                                }
+                "notificationEmbed": {
+                    "withReason": "**{{userTag}}** ha sido baneado debido a __{{reason}}__, ¿alguien más?",
+                    "withoutReason": "**{{userTag}}** ha sido baneado, ¿alguien más?"
+                }
+            },
+            "clear": {
+                "appData": {
+                    "name": "vaciar",
+                    "description": "Vacía la cola de reproducción"
+                },
+                "noQueue": "No hay elementos en la cola",
+                "queueDeleted": "Cola eliminada"
+            },
+            "dm": {
+                "appData": {
+                    "name": "md",
+                    "description": "El bot enviará un mensaje privado al miembro",
+                    "options": {
+                        "user": {
+                            "name": "usuario",
+                            "description": "Selecciona un usuario o escribe su ID"
+                        },
+                        "mode": {
+                            "name": "modo",
+                            "description": "Indica el modo de envío",
+                            "choices": {
+                                "author": "Autor",
+                                "anonymous": "Anónimo"
+                            }
+                        },
+                        "type": {
+                            "name": "tipo",
+                            "description": "Especifica el tipo de mensaje",
+                            "choices": {
+                                "embed": "Incrustado",
+                                "normal": "Normal"
                             }
                         }
-                    },
-                    "unknownMember": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
-                    "noBots": "No puedes entablar una conversación con un bot",
-                    "normalFrom": "Mensaje de {{authorTag}}",
-                    "embedFrom": "Mensaje de",
-                    "unauthorized": "{{interactionAuthor}}, no dispones de privilegios para realizar esta operación",
-                    "bodyModal": {
-                        "title": "Enviar mensaje formateado",
-                        "fieldTitle": "Cuerpo del mensaje",
-                        "fieldPlaceholder": "Escribe un cuerpo para el mensaje"
-                    },
-                    "loggingEmbed": {
-                        "title": "Registro - [MENSAJERÍA]",
-                        "description": "{{authorTag}} envió un mensaje privado a {{memberTag}} a través de {{botUser}}",
-                        "date": "Fecha",
-                        "mode": "Modo",
-                        "type": "Tipo",
-                        "content": "Contenido"
-                    },
-                    "notificationEmbed": "¡Mensaje enviado!",
-                    "cantReceiveDms": "Este miembro no acepta mensajes directos de {{botUser}}"
-                },
-                "edit": {
-                    "appData": {
-                        "name": "editar",
-                        "description": "Edita un mensaje enviado previamente por el bot",
-                        "options": {
-                            "channel": {
-                                "name": "canal",
-                                "description": "Selecciona el canal del mensaje a editar"
-                            },
-                            "id": {
-                                "name": "id",
-                                "description": "Introduce el ID del mensaje a editar"
-                            },
-                            "content": {
-                                "name": "contenido",
-                                "description": "Escribe el nuevo contenido del mensaje"
-                            }
-                        }
-                    },
-                    "noChannel": "El canal con ID `{{id}}` no existe",
-                    "msgNotFound": "El mensaje con ID `{{msgId}}` no existe",
-                    "cantEdit": "No puedo editar un mensaje que no he enviado",
-                    "bodyModal": {
-                        "title": "Edición de mensaje formateado",
-                        "fieldTitle": "Cuerpo del mensaje",
-                        "fieldPlaceholder": "Escribe un nuevo cuerpo para el mensaje"
-                    },
-                    "correctEmbed": {
-                        "title": "Operación completada",
-                        "description": "El mensaje ha sido modificado correctamente"
                     }
                 },
-                "forward": {
-                    "appData": {
-                        "name": "avanzar",
-                        "description": "Avanza el momento de una pista en una cantidad de tiempo especificada",
-                        "options": {
-                            "magnitudes": {
-                                "name": "momento",
-                                "description": "Introduce un momento con el formato HH:MM:SS"
-                            }
-                        }
-                    },
-                    "invalidMomentFormat": "El formato de momento introducido es inválido. Usa: `HH:MM:SS`",
-                    "cantAdjustLive": "No puedes ajustar el momento de una transmisión en directo"
+                "unknownMember": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
+                "noBots": "No puedes entablar una conversación con un bot",
+                "normalFrom": "Mensaje de {{authorTag}}",
+                "embedFrom": "Mensaje de",
+                "unauthorized": "{{interactionAuthor}}, no dispones de privilegios para realizar esta operación",
+                "bodyModal": {
+                    "title": "Enviar mensaje formateado",
+                    "fieldTitle": "Cuerpo del mensaje",
+                    "fieldPlaceholder": "Escribe un cuerpo para el mensaje"
                 },
-                "infractions": {
-                    "appData": {
-                        "name": "infracciones",
-                        "description": "Muestra una lista con las infracciones de un miembro y sus respectivos ID",
-                        "options": {
-                            "user": {
-                                "name": "usuario",
-                                "description": "Selecciona un usuario o escribe su ID"
+                "loggingEmbed": {
+                    "title": "Registro - [MENSAJERÍA]",
+                    "description": "{{authorTag}} envió un mensaje privado a {{memberTag}} a través de {{botUser}}",
+                    "date": "Fecha",
+                    "mode": "Modo",
+                    "type": "Tipo",
+                    "content": "Contenido"
+                },
+                "notificationEmbed": "¡Mensaje enviado!",
+                "cantReceiveDms": "Este miembro no acepta mensajes directos de {{botUser}}"
+            },
+            "edit": {
+                "appData": {
+                    "name": "editar",
+                    "description": "Edita un mensaje enviado previamente por el bot",
+                    "options": {
+                        "channel": {
+                            "name": "canal",
+                            "description": "Selecciona el canal del mensaje a editar"
+                        },
+                        "id": {
+                            "name": "id",
+                            "description": "Introduce el ID del mensaje a editar"
+                        },
+                        "content": {
+                            "name": "contenido",
+                            "description": "Escribe el nuevo contenido del mensaje"
+                        }
+                    }
+                },
+                "noChannel": "El canal con ID `{{id}}` no existe",
+                "msgNotFound": "El mensaje con ID `{{msgId}}` no existe",
+                "cantEdit": "No puedo editar un mensaje que no he enviado",
+                "bodyModal": {
+                    "title": "Edición de mensaje formateado",
+                    "fieldTitle": "Cuerpo del mensaje",
+                    "fieldPlaceholder": "Escribe un nuevo cuerpo para el mensaje"
+                },
+                "correctEmbed": {
+                    "title": "Operación completada",
+                    "description": "El mensaje ha sido modificado correctamente"
+                }
+            },
+            "forward": {
+                "appData": {
+                    "name": "avanzar",
+                    "description": "Avanza el momento de una pista en una cantidad de tiempo especificada",
+                    "options": {
+                        "magnitudes": {
+                            "name": "momento",
+                            "description": "Introduce un momento con el formato HH:MM:SS"
+                        }
+                    }
+                },
+                "invalidMomentFormat": "El formato de momento introducido es inválido. Usa: `HH:MM:SS`",
+                "cantAdjustLive": "No puedes ajustar el momento de una transmisión en directo"
+            },
+            "infractions": {
+                "appData": {
+                    "name": "infracciones",
+                    "description": "Muestra una lista con las infracciones de un miembro y sus respectivos ID",
+                    "options": {
+                        "user": {
+                            "name": "usuario",
+                            "description": "Selecciona un usuario o escribe su ID"
+                        }
+                    }
+                },
+                "nonPrivileged": "{{interactionAuthor}}, no dispones de privilegios para realizar esta operación",
+                "noBots": "No puedes obtener información de un bot",
+                "unknownModerator": "Moderador desconocido",
+                "mutedUntil": "Silenciado hasta",
+                "mutedUndefinetly": "Silenciado indefinidamente",
+                "noMute": "Ninguna",
+                "infractionsEmbed": {
+                    "title": "Infracciones",
+                    "description": "Mostrando las infracciones del miembro **{{member}}**.\nSanción actual: {{sanction}}",
+                    "last24h": "Últimas 24h",
+                    "last7d": "Últimos 7 días",
+                    "total": "Total",
+                    "list": "Listado de infracciones",
+                    "noList": "Ninguna",
+                    "page": "Página {{actualPage}} de {{totalPages}}"
+                }
+            },
+            "invitation": {
+                "appData": {
+                    "name": "invitacion",
+                    "description": "Genera o recupera un enlace de invitación permanente en el canal de reglas, o en el primer canal de texto que lo permita"
+                },
+                "inviteReason": "Rutina de {{botTag}}",
+                "embed": {
+                    "author": "Invitación permanente",
+                    "footer": "Este enlace nunca caduca y tiene usos ilimitados"
+                }
+            },
+            "join": {
+                "appData": {
+                    "name": "unir",
+                    "description": "Conecta al bot a tu canal de voz"
+                },
+                "bounded": "Unido a {{voiceChannel}} y vinculado a {{textChannel}}",
+                "leftChannel": "He abandonado el canal"
+            },
+            "kick": {
+                "appData": {
+                    "name": "expulsar",
+                    "description": "Expulsa a un miembro",
+                    "options": {
+                        "user": {
+                            "name": "usuario",
+                            "description": "Selecciona un usuario o escribe su ID"
+                        },
+                        "reason": {
+                            "name": "razón",
+                            "description": "Aporta una razón para la acción"
+                        }
+                    }
+                },
+                "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
+                "noBots": "No puedes expulsar a un bot",
+                "badHierarchy": "No puedes expulsar a un miembro con un rol igual o superior al tuyo",
+                "noReason": "Debes proporcionar una razón",
+                "undefinedReason": "Indefinida",
+                "privateEmbed": {
+                    "author": "[EXPULSADO]",
+                    "description": "{{member}}, has sido expulsado de {{guildName}}",
+                    "moderator": "Moderador",
+                    "reason": "Razón"
+                },
+                "notificationEmbed": {
+                    "withReason": "**{{memberTag}}** ha sido expulsado debido a __{{reason}}__, ¿alguien más?",
+                    "withoutReason": "**{{memberTag}}** ha sido expulsado, ¿alguien más?"
+                }
+            },
+            "leaderboard": {
+                "appData": {
+                    "name": "clasificacion",
+                    "description": "Muestra la tabla de clasificación de EXP de la comunidad",
+                    "options": {
+                        "page": {
+                            "name": "página",
+                            "description": "Introduce el nº de página a consultar"
+                        }
+                    }
+                },
+                "unknownMember": "Desconocido",
+                "embed": {
+                    "title": "Tabla de clasificación",
+                    "footer": "Página {{position}} de {{totalPages}}"
+                }
+            },
+            "leave": {
+                "appData": {
+                    "name": "abandonar",
+                    "description": "Hace que el bot abandone el canal de voz"
+                },
+                "leftChannel": "He abandonado el canal"
+            },
+            "loop": {
+                "appData": {
+                    "name": "bucle",
+                    "description": "Activa el modo bucle para la pista o la cola actual",
+                    "options": {
+                        "mode": {
+                            "name": "modo",
+                            "description": "Selecciona el modo del bucle",
+                            "choices": {
+                                "single": "La pista actual",
+                                "queue": "Toda la cola",
+                                "disabled": "Deshabilitar"
                             }
                         }
-                    },
-                    "nonPrivileged": "{{interactionAuthor}}, no dispones de privilegios para realizar esta operación",
-                    "noBots": "No puedes obtener información de un bot",
-                    "unknownModerator": "Moderador desconocido",
+                    }
+                },
+                "notEnabled": "El modo bucle no está activado",
+                "loopsingle": {
+                    "enabled": "He activado el modo bucle en la pista actual",
+                    "disabled": "He desactivado el modo bucle en la pista actual"
+                },
+                "loopqueue": {
+                    "enabled": "He activado el modo bucle en la cola",
+                    "disabled": "He desactivado el modo bucle en la cola"
+                }
+            },
+            "move": {
+                "appData": {
+                    "name": "mover",
+                    "description": "Modifica la posición de una pista en la cola",
+                    "options": {
+                        "origin": {
+                            "name": "origen",
+                            "description": "Escoge la posición de la pista a mover"
+                        },
+                        "destination": {
+                            "name": "destino",
+                            "description": "Escoge la nueva posición de la pista"
+                        }
+                    }
+                },
+                "notInteger": "Debes proporcionar un número entero",
+                "tooHigh": "Valor demasiado grande",
+                "belowOne": "Quieres jugar sucio eh ...",
+                "movedTrack": "He reubicado la pista en la cola"
+            },
+            "mute": {
+                "appData": {
+                    "name": "silenciar",
+                    "description": "Silencia a un miembro de los canales de texto y voz",
+                    "options": {
+                        "user": {
+                            "name": "usuario",
+                            "description": "Selecciona un usuario o escribe su ID"
+                        },
+                        "reason": {
+                            "name": "razón",
+                            "description": "Aporta una razón para la acción"
+                        }
+                    }
+                },
+                "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
+                "noBots": "No puedes silenciar a un bot",
+                "badHierarchy": "No puedes silenciar a un miembro con un rol igual o superior al tuyo",
+                "alreadySilenced": "Este miembro ya esta silenciado",
+                "noReason": "Debes proporcionar una razón",
+                "undefinedReason": "Indefinida",
+                "loggingEmbed": {
+                    "author": "{{memberTag}} ha sido SILENCIADO",
+                    "memberId": "ID del miembro",
+                    "moderator": "Moderador",
+                    "reason": "Razón",
+                    "expiration": "Vencimiento",
+                    "noExpiration": "No vence"
+                },
+                "privateEmbed": {
+                    "author": "[SILENCIADO]",
+                    "description": "{{member}}, has sido silenciado en {{guildName}",
+                    "moderator": "Moderador",
+                    "reason": "Razón",
+                    "expiration": "Vencimiento",
+                    "noExpiration": "No vence"
+                },
+                "notificationEmbed": {
+                    "withReason": "**{{memberTag}}** ha sido silenciado debido a __{{reason}}__, ¿alguien más?",
+                    "withoutReason": "**{{memberTag}}** ha sido silenciado, ¿alguien más?"
+                }
+            },
+            "nowplaying": {
+                "appData": {
+                    "name": "reproduciendo",
+                    "description": "Muestra información sobre la pista actual"
+                },
+                "rightNow": "Ahora mismo",
+                "isLive": "Vídeo en directo",
+                "elapsed": "transcurrido"
+            },
+            "pause": {
+                "appData": {
+                    "name": "pausa",
+                    "description": "Pausa la cola de reproducción"
+                },
+                "alreadyPaused": "El bot ya está pausado",
+                "abandonOnIdle": "He abandonado el canal y borrado la cola",
+                "paused": "Cola pausada"
+            },
+            "ping": {
+                "appData": {
+                    "name": "ping",
+                    "description": "Proporciona información sobre el estado del bot"
+                },
+                "botResponseTime": "Tiempo de respuesta del bot",
+                "websocketResponseTime": "Tiempo de respuesta del Websocket"
+            },
+            "play": {
+                "appData": {
+                    "name": "reproducir",
+                    "description": "Busca una pista o lista de reproducción por nombre o URL de YouTube. Si no proporcionas parámetros, reanuda la cola",
+                    "options": {
+                        "search": {
+                            "name": "búsqueda",
+                            "description": "Introduce una URL de YouTube o un término de búsqueda"
+                        }
+                    }
+                },
+                "notPaused": "El bot no está pausado",
+                "resumed": "Cola reanudada",
+                "unavailable": "El reproductor se encuentra en ejecución en otro canal",
+                "searching": "Buscando `{{serachTerm}}`",
+                "bounded": "Unido a {{voiceChannel}} y vinculado a {{textChannel}}"
+            },
+            "playskip": {
+                "appData": {
+                    "name": "reproducirsaltar",
+                    "description": "Busca una pista o lista de reproducción por nombre o URL de YouTube y omite la pista actual",
+                    "options": {
+                        "search": {
+                            "name": "búsqueda",
+                            "description": "Introduce una URL de YouTube o un término de búsqueda"
+                        }
+                    }
+                },
+                "searching": "Buscando `{{serachTerm}}`",
+                "skipped": "Pista omitida"
+            },
+            "poll": {
+                "appData": {
+                    "name": "encuesta",
+                    "description": "Inicia un asistente interactivo para crear una encuesta o finaliza una en curso",
+                    "options": {
+                        "end": {
+                            "name": "finalizar_id",
+                            "description": "Introduce el ID de la encuesta a finalizar"
+                        }
+                    }
+                },
+                "unknownPoll": "La encuesta con ID {{id}} no existe",
+                "deletedPoll": "La encuesta con ID {{id}} ya no existe, por lo que se ha eliminado de la base de datos",
+                "onlyYours": "Solo puedes finalizar tus propias encuestas",
+                "endedPollEmbed": {
+                    "title": "Operación completada",
+                    "description": "La encuesta \"__{{poll}}__\" finalizará en breve en el canal {{pollChannel}}"
+                },
+                "startingAssistant": "Comenzando el asistente interactivo",
+                "titleEmbed": {
+                    "title": "Título",
+                    "description": "Proporciona un título para la encuesta"
+                },
+                "durationEmbed": {
+                    "title": "Duración",
+                    "description": "Proporciona una duración. Por ejemplo: `1d 2h 3m 4s`.\nIntroduce `-` para que no tenga fin"
+                },
+                "invalidDuration": "Debes proporcionar una unidad de medida de tiempo. Por ejemplo: `5d 10h 2m`",
+                "firstFieldEmbed": {
+                    "title": "Campos",
+                    "description": "Proporciona un nuevo campo (máximo 10)"
+                },
+                "newFieldEmbed": {
+                    "title": "Campos",
+                    "description": "Proporciona un nuevo campo (quedan {{remaining}})",
+                    "endAssistant": "Escribe `end` para finalizar el asistente"
+                },
+                "pollEmbed": {
+                    "author": "Encuesta disponible",
+                    "duration": "Duración"
+                },
+                "loggingEmbed": {
+                    "author": "{{memberTag}} ha iniciado una ENCUESTA",
+                    "title": "Título",
+                    "channel": "Canal",
+                    "expiration": "Vencimiento",
+                    "noExpiration": "No vence"
+                }
+            },
+            "purge": {
+                "appData": {
+                    "name": "purgar",
+                    "description": "Elimina una cierta cantidad de mensajes en un canal (siempre que tenga menos de 14 días de antiguedad)",
+                    "options": {
+                        "quantity": {
+                            "name": "cantidad",
+                            "description": "Introduce la cantidad de mensajes a borrar (1-99)"
+                        },
+                        "channel": {
+                            "name": "canal",
+                            "description": "Selecciona el canal a purgar"
+                        }
+                    }
+                },
+                "quantityNotProvided": "Debes proporcionar la cantidad de mensajes a eliminar",
+                "wrongQuantity": "Debes proporcionar una cantidad numérica igual o superior a 1, e inferior a 100",
+                "invalidChannel": "El canal de texto proporcionado no es válido",
+                "noPermission": "No tienes permiso para administrar mensajes en {{channel}}",
+                "noMessages": "No se pudo encontrar ningún mensaje en {{channel}}",
+                "expiredMessages": "Solo se pueden borar mensajes con una antigüedad inferior a `14 días`",
+                "successEmbed": {
+                    "title": "Operación completada",
+                    "description": "Mensajes eliminados",
+                    "willBeDeleted": "Este mensaje será eliminado {{inSeconds}}",
+                    "footer": "Se omitieron {{omittedCount}} mensajes"
+                },
+                "loggingEmbed": {
+                    "title": "Registro - [PURGA DE MENSAJES]",
+                    "description": "{{authorTag}} eliminó {{deletedCount}} mensajes del canal {{channel}}"
+                }
+            },
+            "queue": {
+                "appData": {
+                    "name": "cola",
+                    "description": "Muestra las pistas que están en la cola",
+                    "options": {
+                        "page": {
+                            "name": "página",
+                            "description": "Introduce un número de página"
+                        }
+                    }
+                },
+                "showingQueue": "Mostrando la cola actual",
+                "queueEmbed": {
+                    "isLive": "Directo",
+                    "author": "Cola de reproducción",
+                    "duration": "Duración",
+                    "requestedBy": "Solicitada por",
+                    "upNext": "A continuación"
+                }
+            },
+            "remove": {
+                "appData": {
+                    "name": "eliminar",
+                    "description": "Elimina una pista de la cola de reproducción (inttroduce \"all\" para eliminar todas)",
+                    "options": {
+                        "position": {
+                            "name": "posición",
+                            "description": "Introduce la posición de la pista"
+                        }
+                    }
+                },
+                "allDeleted": "He eliminado todas las pistas de la cola",
+                "nonInt": "Debes proporcionar un número entero",
+                "belowOne": "Quieres jugar sucio eh ...",
+                "doesntExist": "La pista Nº`{{number}}` no está añadida a la cola",
+                "deletedTrack": "Pista eliminada"
+            },
+            "replay": {
+                "appData": {
+                    "name": "repetir",
+                    "description": "Reproduce la pista actual desde el principio"
+                },
+                "willReplay": "La pista se volverá a reproducir"
+            },
+            "resume": {
+                "appData": {
+                    "name": "reanudar",
+                    "description": "Reanuda la cola de reproducción"
+                },
+                "notPaused": "El bot no está pausado",
+                "resumed": "Cola reanudada"
+            },
+            "rewind": {
+                "appData": {
+                    "name": "rebobinar",
+                    "description": "Retrocede el momento de una pista una cierta cantidad de tiempo",
+                    "options": {
+                        "magnitudes": {
+                            "name": "momento",
+                            "description": "Introduce un momento con el formato HH:MM:SS"
+                        }
+                    }
+                },
+                "invalidMomentFormat": "El formato de momento introducido es inválido. Usa: `HH:MM:SS`",
+                "cantAdjustLive": "No puedes ajustar el momento de una transmisión en directo",
+                "cantRweindMore": "No puedes especificar un momento anterior al `00:00:00`"
+            },
+            "rmwarn": {
+                "appData": {
+                    "name": "eliminaradv",
+                    "description": "Para eliminar una advertencia (o todas) a un miembro",
+                    "options": {
+                        "user": {
+                            "name": "usuario",
+                            "description": "Selecciona un usuario o escribe su ID"
+                        },
+                        "id": {
+                            "name": "id",
+                            "description": "Escribe el ID de la advertencia o \"all\" para eliminar todas"
+                        },
+                        "reason": {
+                            "name": "razón",
+                            "description": "Aporta una razón para la acción"
+                        }
+                    }
+                },
+                "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
+                "noBots": "Los bots no pueden ser advertidos",
+                "noReason": "Debes proporcionar una razón",
+                "badHierarchy": "No puedes quitar una advertencia a un miembro con un rol igual o superior al tuyo",
+                "noWarns": "Este miembro no tiene advertencias",
+                "cantRemoveAny": "No puedes eliminar advertencias que no has realizado",
+                "undefinedReason": "Indefinida",
+                "loggingEmbedAll": {
+                    "title": "Registro - [INFRACCIONES]",
+                    "description": "Se han retirado todas las advertencias de un miembro",
+                    "date": "Fecha",
+                    "moderator": "Moderador",
+                    "reason": "Razón",
+                    "memberId": "ID del miembro",
+                    "member": "Miembro"
+                },
+                "privateEmbedAll": {
+                    "author": "[DES-ADVERTIDO]",
+                    "description": "{{member}}, se te han retirado todas la advertencias",
+                    "moderator": "Moderador",
+                    "reason": "Razón"
+                },
+                "notificationEmbedAll": {
+                    "title": "Operación completada",
+                    "description": "Se han retirado todas las advertencias al miembro **{{member}}**"
+                },
+                "warnNotFound": "No existe la advertencia con ID **{{warnId}}**",
+                "loggingEmbedSingle": {
+                    "title": "Registro - [INFRACCIONES]",
+                    "description": "Se ha retirado una advertencia de un miembro",
+                    "date": "Fecha",
+                    "moderator": "Moderador",
+                    "warnId": "ID de advertencia",
+                    "warn": "Advertencia",
+                    "reason": "Razón",
+                    "memberId": "ID del miembro",
+                    "member": "Miembro"
+                },
+                "privateEmbedSingle": {
+                    "author": "[DES-ADVERTIDO]",
+                    "description": "{{member}}, se te ha retirado la advertencia con ID `{{warnId}}`",
+                    "moderator": "Moderador",
+                    "warnId": "ID de advertencia",
+                    "warn": "Advertencia",
+                    "reason": "Razón"
+                },
+                "notificationEmbedSingle": {
+                    "title": "Operación completada",
+                    "description": "Se ha retirado la advertencia con ID `{{warnId}}` al miembro **{{member}}**"
+                }
+            },
+            "roleinfo": {
+                "appData": {
+                    "name": "inforol",
+                    "description": "Muestra información sobre un rol",
+                    "options": {
+                        "role": {
+                            "name": "rol",
+                            "description": "Selecciona uno de los roles"
+                        }
+                    }
+                },
+                "roleNotFound": "El rol **{{role}}** no existe",
+                "resultEmbed": {
+                    "title": "Información de rol",
+                    "description": "Mostrando información acerca del rol {{role}}",
+                    "roleName": "Nombre del rol",
+                    "roleId": "ID del rol",
+                    "roleMembers": "Miembros con el rol",
+                    "mentionable": "Mencionable",
+                    "isMentionable": "Si",
+                    "isntMntionable": "No",
+                    "hoisted": "Se muestra",
+                    "isHoisted": "Visible",
+                    "isntHoisted": "Oculto",
+                    "color": "Color",
+                    "creationDate": "Fecha de creación",
+                    "integration": "Integración",
+                    "isIntegration": "Si",
+                    "isntIntegration": "No"
+                }
+            },
+            "run": {
+                "appData": {
+                    "name": "ejecutar",
+                    "description": "Ejecuta uno de los scripts preprogramados",
+                    "options": {
+                        "script": {
+                            "name": "script",
+                            "description": "Escribe el nombre del script"
+                        },
+                        "parameters": {
+                            "name": "parámetros",
+                            "description": "Introduce los parámetros del script"
+                        }
+                    }
+                },
+                "welcome": {
+                    "memberNotProvided": "No has proporcionado un miembro",
+                    "invalidMember": "No has proporcionado un miembro válido",
+                    "done": "¡Listo!"
+                },
+                "goodbye": {
+                    "memberNotProvided": "No has proporcionado un miembro",
+                    "invalidMember": "No has proporcionado un miembro válido",
+                    "done": "¡Listo!"
+                },
+                "invalidCommand": "No has especificado un comando válido"
+            },
+            "seek": {
+                "appData": {
+                    "name": "buscar",
+                    "description": "Cambia el tiempo de la pista a una marca de tiempo específica",
+                    "options": {
+                        "magnitudes": {
+                            "name": "momento",
+                            "description": "Introduce un momento con el formato HH:MM:SS"
+                        }
+                    }
+                },
+                "invalidMomentFormat": "El formato de momento introducido es inválido. Usa: `HH:MM:SS`",
+                "cantAdjustLive": "No puedes ajustar el momento de una transmisión en directo",
+                "cantAdjustFiles": "No se puede modificar el punto de reproducción de archvios locales",
+                "cantForward": "No se puede avanzar más allá de `{{time}}`",
+                "seeked": "Situado en el momento `{{time}}`"
+            },
+            "send": {
+                "appData": {
+                    "name": "enviar",
+                    "description": "El bot enviará un mensaje al canal de texto actual",
+                    "options": {
+                        "type": {
+                            "name": "tipo",
+                            "description": "Especifica el tipo de mensaje",
+                            "choices": {
+                                "embed": "Incrustado",
+                                "normal": "Normal"
+                            }
+                        },
+                        "channel": {
+                            "name": "canal",
+                            "description": "Selecciona el canal al que se enviará el mensaje"
+                        }
+                    }
+                },
+                "invalidChannel": "El canal proporcionado no es válido",
+                "noPermission": "No tienes permiso para enviar mensajes en {{channel}}",
+                "bodyModal": {
+                    "title": "Envío de mensaje formateado",
+                    "fieldTitle": "Cuerpo del mensaje",
+                    "fieldPlaceholder": "Escribe un cuerpo para el mensaje"
+                },
+                "correct": "Hecho!"
+            },
+            "serverinfo": {
+                "appData": {
+                    "name": "infoservidor",
+                    "description": "Muestra información sobre el servidor"
+                },
+                "guildTiers": {
+                    "NONE": "Nivel 0",
+                    "TIER_1": "Nivel 1",
+                    "TIER_2": "Nivel 2",
+                    "TIER_3": "Nivel 3"
+                },
+                "guildNsfwLevel": {
+                    "DISABLED": "Deshabilitado",
+                    "MEMBERS_WITHOUT_ROLES": "Supervisando a miembros sin rol",
+                    "ALL_MEMBERS": "Supervisando a todo el mundo"
+                },
+                "guildverificationLevel": {
+                    "NONE": "Deshabilitado",
+                    "LOW": "Bajo",
+                    "MEDIUM": "Medio",
+                    "HIGH": "Alto",
+                    "VERY_HIGH": "Muy alto"
+                },
+                "embed": {
+                    "author": "Información sobre {{guildName}}",
+                    "name": "Nombre",
+                    "id": "ID del servidor",
+                    "region": "Región",
+                    "creationDate": "Fecha de creación",
+                    "owner": "Propietario",
+                    "nsfwFilter": "Filtro NSFW",
+                    "tier": "Nivel de mejora",
+                    "boostsCount": "({{boostsCount}} mejoras)",
+                    "verification": "Nivel de verificación",
+                    "invitations": "Invitaciones",
+                    "totalInvites": "{{totalInvites}} invitaciones en total",
+                    "roles": "Roles",
+                    "totalRoles": "{{totalRoles}} roles en total",
+                    "stickersAndEmojis": "Stickers y Emojis",
+                    "totalEmojis": "{{totalEmojis}} emojis",
+                    "totalStickers": "{{totalStickers}} stickers",
+                    "members": "Miembros",
+                    "totalMembers": "{{totalMembers}} miembros",
+                    "totalHumans": "{{totalHumans}} humanos",
+                    "totalBots": "{{totalBots}} bots",
+                    "bans": "Baneos",
+                    "bannedUsers": "{{bannedUsers}} usuarios baneados",
+                    "afk": "Tiempo para AFK",
+                    "afkTime": "{{afkTime}} minutos",
+                    "channels": "Canales",
+                    "totalCategories": "{{totalCategories}} categorías",
+                    "totalTextChannels": "{{totalTextChannels}} canales de texto",
+                    "totalVoiceChannels": "{{totalVoiceChannels}} canales de voz"
+                }
+            },
+            "shuffle": {
+                "appData": {
+                    "name": "aleatorio",
+                    "description": "Activa el modo aleatorio en la cola de reproducción"
+                },
+                "enabled": "He activado el modo aleatorio",
+                "disabled": "He desactivado el modo aleatorio"
+            },
+            "skip": {
+                "appData": {
+                    "name": "saltar",
+                    "description": "Salta la pista actual o una cantidad especificada",
+                    "options": {
+                        "quantity": {
+                            "name": "cantidad",
+                            "description": "Introduce una cantidad de pistas a saltar"
+                        }
+                    }
+                },
+                "skipped": "Pista/s omitida/s",
+                "cantSkipOnRandom": "No puedes omitir más de una pista con el modo aleatorio activado",
+                "cantMultipleOnLoop": "No puedes omitir más de una pista con el modo loop activado",
+                "notInteger": "Debes proporcionar un número entero",
+                "belowOne": "Quieres jugar sucio eh ...",
+                "cantSkipThis": "Solo puedes hacer skip de `{{quantity}}` pistas"
+            },
+            "slowmode": {
+                "appData": {
+                    "name": "modolento",
+                    "description": "Activa el modo lento en un canal de texto",
+                    "options": {
+                        "seconds": {
+                            "name": "segundos",
+                            "description": "Escribe una cantidad entre 0 y 21600 (0 para desactivar)"
+                        },
+                        "reason": {
+                            "name": "razón",
+                            "description": "Aporta una razón para la acción"
+                        }
+                    }
+                },
+                "notEnabled": "El modo lento no está activado",
+                "disabledLoggingEmbed": {
+                    "title": "Registro - [MODO LENTO]",
+                    "description": "Se ha des-habilitado el modo lento",
+                    "moderator": "Moderador",
+                    "channel": "Canal"
+                },
+                "disabledNotificationEmbed": {
+                    "title": "Operación completada",
+                    "description": "El modo lento ha sido desactivado"
+                },
+                "maximumConfiguredLengthError": "Solo puedes activar el modo lento para un máximo de `{{max}}s`",
+                "noReason": "Debes proporcionar una razón",
+                "undefinedReason": "Indefinida",
+                "enabledLoggingEmbed": {
+                    "title": "Registro - [MODO LENTO]",
+                    "description": "Se ha habilitado el modo lento",
+                    "moderator": "Moderador",
+                    "delay": "Retraso",
+                    "delayed": "{{seconds}} segundos",
+                    "channel": "Canal",
+                    "reason": "Razón"
+                },
+                "enabledNotificationEmbed": {
+                    "title": "Operación completada",
+                    "description": "El modo lento ha sido activado con un retraso de `{{seconds}}s`"
+                }
+            },
+            "sound": {
+                "appData": {
+                    "name": "sonido",
+                    "description": "Reproduce un archivo .mp3 local, sube uno o muestra una lista de ellos",
+                    "options": {
+                        "list": {
+                            "name": "lista",
+                            "description": "Muestra la lista de audios almacenados en el bot"
+                        },
+                        "play": {
+                            "name": "reproducir",
+                            "description": "Reproduce un audio almacenado",
+                            "options": {
+                                "selection": {
+                                    "name": "selección",
+                                    "description": "Introduce el nombre del audio a reproducir"
+                                }
+                            }
+                        },
+                        "random": {
+                            "name": "aleatorio",
+                            "description": "Reproduce un audio al azar"
+                        },
+                        "upload": {
+                            "name": "subir",
+                            "description": "Sube un fichero .mp3 al directorio de audios",
+                            "options": {
+                                "attachment": {
+                                    "name": "adjunto",
+                                    "description": "Carga un fichero .mp3"
+                                },
+                                "name": {
+                                    "name": "nombre",
+                                    "description": "Elige un nombre para el audio"
+                                }
+                            }
+                        },
+                        "remove": {
+                            "name": "eliminar",
+                            "description": "Elimina un audio almacenado",
+                            "options": {
+                                "selection": {
+                                    "name": "selección",
+                                    "description": "Introduce el nombre del audio a eliminar"
+                                }
+                            }
+                        }
+                    }
+                },
+                "soundListEmbed": {
+                    "title": "Lista de audios"
+                },
+                "alreadyPlaying": "El reproductor se encuentra en ejecución en otro canal",
+                "doesntExist": "El audio **{{recordName}}** no existe",
+                "loadingFile": "Cargando el audio `{{fileName}}` ...",
+                "bounded": "Unido a {{voiceChannel}} y vinculado a {{textChannel}}"
+            },
+            "stats": {
+                "appData": {
+                    "name": "estadisticas",
+                    "description": "Muestra tus estadísticas de EXP o las de otro miembro",
+                    "options": {
+                        "user": {
+                            "name": "usuario",
+                            "description": "Selecciona un usuario o introduce su ID"
+                        }
+                    }
+                },
+                "unknownMember": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
+                "noXp": "{{member}} no tiene puntos de experiencia",
+                "defaultReward": "Ninguna",
+                "statsEmbed": {
+                    "title": "Estadísticas",
+                    "description": "Mostrando las estadísticas del miembro **{{memberTag}}**",
+                    "actualLevel": "Nivel actual",
+                    "totalXp": "EXP total",
+                    "xpToNextLevel": "EXP para el siguiente nivel",
+                    "noXpToNextLevel": "No puede subir de nivel",
+                    "voiceTime": "Tiempo de voz aprox.",
+                    "noVoiceTime": "No se contabiliza",
+                    "nextRewards": "Siguientes recompensas",
+                    "noNextRewards": "No puede ganar recompensas"
+                }
+            },
+            "tempmute": {
+                "appData": {
+                    "name": "silenciotemp",
+                    "description": "Silencia temporalmente a un miembro de los canales de texto y voz",
+                    "options": {
+                        "user": {
+                            "name": "usuario",
+                            "description": "Selecciona un usuario o escribe su ID"
+                        },
+                        "duration": {
+                            "name": "duración",
+                            "description": "Escriba una duración con el formato: días\"D\" | minutos\"M\" | horas\"H\" | segundos\"S\""
+                        },
+                        "reason": {
+                            "name": "razón",
+                            "description": "Aporta una razón para la acción"
+                        }
+                    }
+                },
+                "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
+                "noBots": "No puedes banear a un bot",
+                "badHierarchy": "No puedes silenciar a un miembro con un rol igual o superior al tuyo",
+                "alreadySilenced": "Este miembro ya esta silenciado",
+                "wrongMagnitudes": "Tienes que escribir una duración con el formato: días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"",
+                "exceededDuration": "Solo puedes silenciar un máximo de `{{time}}`",
+                "noReason": "Debes proporcionar una razón",
+                "undefinedReason": "Indefinida",
+                "loggingEmbed": {
+                    "author": "{{memberTag}} ha sido SILENCIADO",
+                    "memberId": "ID del miembro",
+                    "moderator": "Moderador",
+                    "reason": "Razón",
+                    "expiration": "Vencimiento"
+                },
+                "privateEmbed": {
+                    "author": "[SILENCIADO]",
+                    "description": "{{member}}, has sido silenciado en {{guildName}",
+                    "moderator": "Moderador",
+                    "reason": "Razón",
+                    "expiration": "Vencimiento"
+                },
+                "notificationEmbed": {
+                    "withReason": "**{{memberTag}}** ha sido silenciado debido a __{{reason}}__, ¿alguien más?",
+                    "withoutReason": "**{{memberTag}}** ha sido silenciado, ¿alguien más?"
+                }
+            },
+            "unban": {
+                "appData": {
+                    "name": "desbanear",
+                    "description": "Desbanea a un miembro",
+                    "options": {
+                        "user": {
+                            "name": "usuario",
+                            "description": "Selecciona un usuario o escribe su ID"
+                        },
+                        "reason": {
+                            "name": "razón",
+                            "description": "Aporta una razón para la acción"
+                        }
+                    }
+                },
+                "userNotFound": "Usuario no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID",
+                "noReason": "Debes proporcionar una razón",
+                "notBanned": "Este usuario no había sido baneado",
+                "undefinedReason": "Indefinida",
+                "loggingEmbed": {
+                    "author": "{{userTag}} ha sido DESBANEADO",
+                    "userId": "ID de usuario",
+                    "moderator": "Moderador",
+                    "reason": "Razón",
+                    "deletedDays": "Días de mensajes borrados",
+                    "noDeletedDays": "Ninguno",
+                    "expiration": "Vencimiento",
+                    "noExpiration": "No vence"
+                },
+                "notificationEmbed": {
+                    "title": "Operación completada",
+                    "description": "El miembro **{{userTag}}** ha sido desbaneado"
+                }
+            },
+            "unmute": {
+                "appData": {
+                    "name": "dessilenciar",
+                    "description": "Dessilencia a un miembro",
+                    "options": {
+                        "user": {
+                            "name": "usuario",
+                            "description": "Selecciona un usuario o escribe su ID"
+                        },
+                        "reason": {
+                            "name": "razón",
+                            "description": "Aporta una razón para la acción"
+                        }
+                    }
+                },
+                "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
+                "noReason": "Debes proporcionar una razón",
+                "notSilenced": "Este miembro no esta silenciado",
+                "badHierarchy": "{{interactionAuthor}}, no puedes des-silenciar a alguien con un rol igual o superior al tuyo",
+                "cantRemoveAny": "{{interactionAuthor}}, no puedes des-silenciar a alguien que no has silenciado tú",
+                "undefinedReason": "Indefinida",
+                "loggingEmbed": {
+                    "author": "{{userTag}} ha sido DES-SILENCIADO",
+                    "unknownAuthor": "Un miembro",
+                    "memberId": "ID del miembro",
+                    "moderator": "Moderador",
+                    "reason": "Razón"
+                },
+                "privateEmbed": {
+                    "author": "[DES-SILENCIADO]",
+                    "description": "{{member}}, has sido des-silenciado en {{guildName}",
+                    "moderator": "Moderador",
+                    "reason": "Razón"
+                },
+                "notificationEmbed": {
+                    "title": "Operación completada",
+                    "description": "El miembro **{{member}}** ha sido des-silenciado"
+                }
+            },
+            "userinfo": {
+                "appData": {
+                    "name": "infousuario",
+                    "description": "Muestra información sobre ti o cualquier otro miembro",
+                    "options": {
+                        "user": {
+                            "name": "usuario",
+                            "description": "Selecciona un usuario o introduce su ID"
+                        }
+                    }
+                },
+                "invalidMember": "No has proporcionado un miembro válido",
+                "cantSeeAny": "No dispones de privilegios para ver la información de otros miembros",
+                "memberType": {
+                    "owner": "Propietario",
+                    "administrator": "Administrador",
+                    "moderator": "Moderador",
+                    "regular": "Miembro regular"
+                },
+                "embed": {
                     "mutedUntil": "Silenciado hasta",
-                    "mutedUndefinetly": "Silenciado indefinidamente",
-                    "noMute": "Ninguna",
-                    "infractionsEmbed": {
-                        "title": "Infracciones",
-                        "description": "Mostrando las infracciones del miembro **{{member}}**.\nSanción actual: {{sanction}}",
-                        "last24h": "Últimas 24h",
-                        "last7d": "Últimos 7 días",
-                        "total": "Total",
-                        "list": "Listado de infracciones",
-                        "noList": "Ninguna",
-                        "page": "Página {{actualPage}} de {{totalPages}}"
-                    }
-                },
-                "invitation": {
-                    "appData": {
-                        "name": "invitacion",
-                        "description": "Genera o recupera un enlace de invitación permanente en el canal de reglas, o en el primer canal de texto que lo permita"
-                    },
-                    "inviteReason": "Rutina de {{botTag}}",
-                    "embed": {
-                        "author": "Invitación permanente",
-                        "footer": "Este enlace nunca caduca y tiene usos ilimitados"
-                    }
-                },
-                "join": {
-                    "appData": {
-                        "name": "unir",
-                        "description": "Conecta al bot a tu canal de voz"
-                    },
-                    "bounded": "Unido a {{voiceChannel}} y vinculado a {{textChannel}}",
-                    "leftChannel": "He abandonado el canal"
-                },
-                "kick": {
-                    "appData": {
-                        "name": "expulsar",
-                        "description": "Expulsa a un miembro",
-                        "options": {
-                            "user": {
-                                "name": "usuario",
-                                "description": "Selecciona un usuario o escribe su ID"
-                            },
-                            "reason": {
-                                "name": "razón",
-                                "description": "Aporta una razón para la acción"
-                            }
-                        }
-                    },
-                    "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
-                    "noBots": "No puedes expulsar a un bot",
-                    "badHierarchy": "No puedes expulsar a un miembro con un rol igual o superior al tuyo",
-                    "noReason": "Debes proporcionar una razón",
-                    "undefinedReason": "Indefinida",
-                    "privateEmbed": {
-                        "author": "[EXPULSADO]",
-                        "description": "{{member}}, has sido expulsado de {{guildName}}",
-                        "moderator": "Moderador",
-                        "reason": "Razón"
-                    },
-                    "notificationEmbed": {
-                        "withReason": "**{{memberTag}}** ha sido expulsado debido a __{{reason}}__, ¿alguien más?",
-                        "withoutReason": "**{{memberTag}}** ha sido expulsado, ¿alguien más?"
-                    }
-                },
-                "leaderboard": {
-                    "appData": {
-                        "name": "clasificacion",
-                        "description": "Muestra la tabla de clasificación de EXP de la comunidad",
-                        "options": {
-                            "page": {
-                                "name": "página",
-                                "description": "Introduce el nº de página a consultar"
-                            }
-                        }
-                    },
-                    "unknownMember": "Desconocido",
-                    "embed": {
-                        "title": "Tabla de clasificación",
-                        "footer": "Página {{position}} de {{totalPages}}"
-                    }
-                },
-                "leave": {
-                    "appData": {
-                        "name": "abandonar",
-                        "description": "Hace que el bot abandone el canal de voz"
-                    },
-                    "leftChannel": "He abandonado el canal"
-                },
-                "loop": {
-                    "appData": {
-                        "name": "bucle",
-                        "description": "Activa el modo bucle para la pista o la cola actual",
-                        "options": {
-                            "mode": {
-                                "name": "modo",
-                                "description": "Selecciona el modo del bucle",
-                                "choices": {
-                                    "single": "La pista actual",
-                                    "queue": "Toda la cola",
-                                    "disabled": "Deshabilitar"
-                                }
-                            }
-                        }
-                    },
-                    "notEnabled": "El modo bucle no está activado",
-                    "loopsingle": {
-                        "enabled": "He activado el modo bucle en la pista actual",
-                        "disabled": "He desactivado el modo bucle en la pista actual"
-                    },
-                    "loopqueue": {
-                        "enabled": "He activado el modo bucle en la cola",
-                        "disabled": "He desactivado el modo bucle en la cola"
-                    }
-                },
-                "move": {
-                    "appData": {
-                        "name": "mover",
-                        "description": "Modifica la posición de una pista en la cola",
-                        "options": {
-                            "origin": {
-                                "name": "origen",
-                                "description": "Escoge la posición de la pista a mover"
-                            },
-                            "destination": {
-                                "name": "destino",
-                                "description": "Escoge la nueva posición de la pista"
-                            }
-                        }
-                    },
-                    "notInteger": "Debes proporcionar un número entero",
-                    "tooHigh": "Valor demasiado grande",
-                    "belowOne": "Quieres jugar sucio eh ...",
-                    "movedTrack": "He reubicado la pista en la cola"
-                },
-                "mute": {
-                    "appData": {
-                        "name": "silenciar",
-                        "description": "Silencia a un miembro de los canales de texto y voz",
-                        "options": {
-                            "user": {
-                                "name": "usuario",
-                                "description": "Selecciona un usuario o escribe su ID"
-                            },
-                            "reason": {
-                                "name": "razón",
-                                "description": "Aporta una razón para la acción"
-                            }
-                        }
-                    },
-                    "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
-                    "noBots": "No puedes silenciar a un bot",
-                    "badHierarchy": "No puedes silenciar a un miembro con un rol igual o superior al tuyo",
-                    "alreadySilenced": "Este miembro ya esta silenciado",
-                    "noReason": "Debes proporcionar una razón",
-                    "undefinedReason": "Indefinida",
-                    "loggingEmbed": {
-                        "author": "{{memberTag}} ha sido SILENCIADO",
-                        "memberId": "ID del miembro",
-                        "moderator": "Moderador",
-                        "reason": "Razón",
-                        "expiration": "Vencimiento",
-                        "noExpiration": "No vence"
-                    },
-                    "privateEmbed": {
-                        "author": "[SILENCIADO]",
-                        "description": "{{member}}, has sido silenciado en {{guildName}",
-                        "moderator": "Moderador",
-                        "reason": "Razón",
-                        "expiration": "Vencimiento",
-                        "noExpiration": "No vence"
-                    },
-                    "notificationEmbed": {
-                        "withReason": "**{{memberTag}}** ha sido silenciado debido a __{{reason}}__, ¿alguien más?",
-                        "withoutReason": "**{{memberTag}}** ha sido silenciado, ¿alguien más?"
-                    }
-                },
-                "notifications": {
-                    "appData": {
-                        "name": "notificaciones",
-                        "description": "Ajusta las notificaciones de subida de nivel por EXP del bot",
-                        "options": {
-                            "modality": {
-                                "name": "modalidad",
-                                "description": "Selecciona la modalidad de notificaciones a modifcar",
-                                "choices": {
-                                    "public": "Subida de nivel por mensajes",
-                                    "private": "Subida de nivel por tiempo de voz"
-                                }
-                            },
-                            "status": {
-                                "name": "estatus",
-                                "description": "Selecciona el estado de activación de estas notificaciones",
-                                "choices": {
-                                    "enabled": "Activadas",
-                                    "disabled": "Desactivadas"
-                                }
-                            }
-                        }
-                    },
-                    "cantGainXp": "No puedes ganar EXP, por lo que no recibirás notificaciones",
-                    "alreadyEnabled": "Esta notificación ya se encuentra habilitada",
-                    "alreadyDisabled": "Esta notificación ya se encuentra deshabilitada",
-                    "publicEnabled": "Ahora recibirás notificaciones por subida de nivel por mensajes de texto",
-                    "publicDisabled": "Y no recibirás más notificaciones por subida de nivel por mensajes de texto",
-                    "privateEnabled": "Ahora recibirás notificaciones por subida de nivel por tiempo de voz",
-                    "privateDisabled": "Y no recibirás más notificaciones por subida de nivel por tiempo de voz"
-                },
-                "nowplaying": {
-                    "appData": {
-                        "name": "reproduciendo",
-                        "description": "Muestra información sobre la pista actual"
-                    },
-                    "rightNow": "Ahora mismo",
-                    "isLive": "Vídeo en directo",
-                    "elapsed": "transcurrido"
-                },
-                "pause": {
-                    "appData": {
-                        "name": "pausa",
-                        "description": "Pausa la cola de reproducción"
-                    },
-                    "alreadyPaused": "El bot ya está pausado",
-                    "abandonOnIdle": "He abandonado el canal y borrado la cola",
-                    "paused": "Cola pausada"
-                },
-                "ping": {
-                    "appData": {
-                        "name": "ping",
-                        "description": "Proporciona información sobre el estado del bot"
-                    },
-                    "botResponseTime": "Tiempo de respuesta del bot",
-                    "websocketResponseTime": "Tiempo de respuesta del Websocket"
-                },
-                "play": {
-                    "appData": {
-                        "name": "reproducir",
-                        "description": "Busca una pista o lista de reproducción por nombre o URL de YouTube. Si no proporcionas parámetros, reanuda la cola",
-                        "options": {
-                            "search": {
-                                "name": "búsqueda",
-                                "description": "Introduce una URL de YouTube o un término de búsqueda"
-                            }
-                        }
-                    },
-                    "notPaused": "El bot no está pausado",
-                    "resumed": "Cola reanudada",
-                    "unavailable": "El reproductor se encuentra en ejecución en otro canal",
-                    "searching": "Buscando `{{serachTerm}}`",
-                    "bounded": "Unido a {{voiceChannel}} y vinculado a {{textChannel}}"
-                },
-                "playskip": {
-                    "appData": {
-                        "name": "reproducirsaltar",
-                        "description": "Busca una pista o lista de reproducción por nombre o URL de YouTube y omite la pista actual",
-                        "options": {
-                            "search": {
-                                "name": "búsqueda",
-                                "description": "Introduce una URL de YouTube o un término de búsqueda"
-                            }
-                        }
-                    },
-                    "searching": "Buscando `{{serachTerm}}`",
-                    "skipped": "Pista omitida"
-                },
-                "poll": {
-                    "appData": {
-                        "name": "encuesta",
-                        "description": "Inicia un asistente interactivo para crear una encuesta o finaliza una en curso",
-                        "options": {
-                            "end": {
-                                "name": "finalizar_id",
-                                "description": "Introduce el ID de la encuesta a finalizar"
-                            }
-                        }
-                    },
-                    "unknownPoll": "La encuesta con ID {{id}} no existe",
-                    "deletedPoll": "La encuesta con ID {{id}} ya no existe, por lo que se ha eliminado de la base de datos",
-                    "onlyYours": "Solo puedes finalizar tus propias encuestas",
-                    "endedPollEmbed": {
-                        "title": "Operación completada",
-                        "description": "La encuesta \"__{{poll}}__\" finalizará en breve en el canal {{pollChannel}}"
-                    },
-                    "startingAssistant": "Comenzando el asistente interactivo",
-                    "titleEmbed": {
-                        "title": "Título",
-                        "description": "Proporciona un título para la encuesta"
-                    },
-                    "durationEmbed": {
-                        "title": "Duración",
-                        "description": "Proporciona una duración. Por ejemplo: `1d 2h 3m 4s`.\nIntroduce `-` para que no tenga fin"
-                    },
-                    "invalidDuration": "Debes proporcionar una unidad de medida de tiempo. Por ejemplo: `5d 10h 2m`",
-                    "firstFieldEmbed": {
-                        "title": "Campos",
-                        "description": "Proporciona un nuevo campo (máximo 10)"
-                    },
-                    "newFieldEmbed": {
-                        "title": "Campos",
-                        "description": "Proporciona un nuevo campo (quedan {{remaining}})",
-                        "endAssistant": "Escribe `end` para finalizar el asistente"
-                    },
-                    "pollEmbed": {
-                        "author": "Encuesta disponible",
-                        "duration": "Duración"
-                    },
-                    "loggingEmbed": {
-                        "author": "{{memberTag}} ha iniciado una ENCUESTA",
-                        "title": "Título",
-                        "channel": "Canal",
-                        "expiration": "Vencimiento",
-                        "noExpiration": "No vence"
-                    }
-                },
-                "purge": {
-                    "appData": {
-                        "name": "purgar",
-                        "description": "Elimina una cierta cantidad de mensajes en un canal (siempre que tenga menos de 14 días de antiguedad)",
-                        "options": {
-                            "quantity": {
-                                "name": "cantidad",
-                                "description": "Introduce la cantidad de mensajes a borrar (1-99)"
-                            },
-                            "channel": {
-                                "name": "canal",
-                                "description": "Selecciona el canal a purgar"
-                            }
-                        }
-                    },
-                    "quantityNotProvided": "Debes proporcionar la cantidad de mensajes a eliminar",
-                    "wrongQuantity": "Debes proporcionar una cantidad numérica igual o superior a 1, e inferior a 100",
-                    "invalidChannel": "El canal de texto proporcionado no es válido",
-                    "noPermission": "No tienes permiso para administrar mensajes en {{channel}}",
-                    "noMessages": "No se pudo encontrar ningún mensaje en {{channel}}",
-                    "expiredMessages": "Solo se pueden borar mensajes con una antigüedad inferior a `14 días`",
-                    "successEmbed": {
-                        "title": "Operación completada",
-                        "description": "Mensajes eliminados",
-                        "willBeDeleted": "Este mensaje será eliminado {{inSeconds}}",
-                        "footer": "Se omitieron {{omittedCount}} mensajes"
-                    },
-                    "loggingEmbed": {
-                        "title": "Registro - [PURGA DE MENSAJES]",
-                        "description": "{{authorTag}} eliminó {{deletedCount}} mensajes del canal {{channel}}"
-                    }
-                },
-                "queue": {
-                    "appData": {
-                        "name": "cola",
-                        "description": "Muestra las pistas que están en la cola",
-                        "options": {
-                            "page": {
-                                "name": "página",
-                                "description": "Introduce un número de página"
-                            }
-                        }
-                    },
-                    "showingQueue": "Mostrando la cola actual",
-                    "queueEmbed": {
-                        "isLive": "Directo",
-                        "author": "Cola de reproducción",
-                        "duration": "Duración",
-                        "requestedBy": "Solicitada por",
-                        "upNext": "A continuación"
-                    }
-                },
-                "remove": {
-                    "appData": {
-                        "name": "eliminar",
-                        "description": "Elimina una pista de la cola de reproducción (inttroduce \"all\" para eliminar todas)",
-                        "options": {
-                            "position": {
-                                "name": "posición",
-                                "description": "Introduce la posición de la pista"
-                            }
-                        }
-                    },
-                    "allDeleted": "He eliminado todas las pistas de la cola",
-                    "nonInt": "Debes proporcionar un número entero",
-                    "belowOne": "Quieres jugar sucio eh ...",
-                    "doesntExist": "La pista Nº`{{number}}` no está añadida a la cola",
-                    "deletedTrack": "Pista eliminada"
-                },
-                "replay": {
-                    "appData": {
-                        "name": "repetir",
-                        "description": "Reproduce la pista actual desde el principio"
-                    },
-                    "willReplay": "La pista se volverá a reproducir"
-                },
-                "resume": {
-                    "appData": {
-                        "name": "reanudar",
-                        "description": "Reanuda la cola de reproducción"
-                    },
-                    "notPaused": "El bot no está pausado",
-                    "resumed": "Cola reanudada"
-                },
-                "rewind": {
-                    "appData": {
-                        "name": "rebobinar",
-                        "description": "Retrocede el momento de una pista una cierta cantidad de tiempo",
-                        "options": {
-                            "magnitudes": {
-                                "name": "momento",
-                                "description": "Introduce un momento con el formato HH:MM:SS"
-                            }
-                        }
-                    },
-                    "invalidMomentFormat": "El formato de momento introducido es inválido. Usa: `HH:MM:SS`",
-                    "cantAdjustLive": "No puedes ajustar el momento de una transmisión en directo",
-                    "cantRweindMore": "No puedes especificar un momento anterior al `00:00:00`"
-                },
-                "rmwarn": {
-                    "appData": {
-                        "name": "eliminaradv",
-                        "description": "Para eliminar una advertencia (o todas) a un miembro",
-                        "options": {
-                            "user": {
-                                "name": "usuario",
-                                "description": "Selecciona un usuario o escribe su ID"
-                            },
-                            "id": {
-                                "name": "id",
-                                "description": "Escribe el ID de la advertencia o \"all\" para eliminar todas"
-                            },
-                            "reason": {
-                                "name": "razón",
-                                "description": "Aporta una razón para la acción"
-                            }
-                        }
-                    },
-                    "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
-                    "noBots": "Los bots no pueden ser advertidos",
-                    "noReason": "Debes proporcionar una razón",
-                    "badHierarchy": "No puedes quitar una advertencia a un miembro con un rol igual o superior al tuyo",
-                    "noWarns": "Este miembro no tiene advertencias",
-                    "cantRemoveAny": "No puedes eliminar advertencias que no has realizado",
-                    "undefinedReason": "Indefinida",
-                    "loggingEmbedAll": {
-                        "title": "Registro - [INFRACCIONES]",
-                        "description": "Se han retirado todas las advertencias de un miembro",
-                        "date": "Fecha",
-                        "moderator": "Moderador",
-                        "reason": "Razón",
-                        "memberId": "ID del miembro",
-                        "member": "Miembro"
-                    },
-                    "privateEmbedAll": {
-                        "author": "[DES-ADVERTIDO]",
-                        "description": "{{member}}, se te han retirado todas la advertencias",
-                        "moderator": "Moderador",
-                        "reason": "Razón"
-                    },
-                    "notificationEmbedAll": {
-                        "title": "Operación completada",
-                        "description": "Se han retirado todas las advertencias al miembro **{{member}}**"
-                    },
-                    "warnNotFound": "No existe la advertencia con ID **{{warnId}}**",
-                    "loggingEmbedSingle": {
-                        "title": "Registro - [INFRACCIONES]",
-                        "description": "Se ha retirado una advertencia de un miembro",
-                        "date": "Fecha",
-                        "moderator": "Moderador",
-                        "warnId": "ID de advertencia",
-                        "warn": "Advertencia",
-                        "reason": "Razón",
-                        "memberId": "ID del miembro",
-                        "member": "Miembro"
-                    },
-                    "privateEmbedSingle": {
-                        "author": "[DES-ADVERTIDO]",
-                        "description": "{{member}}, se te ha retirado la advertencia con ID `{{warnId}}`",
-                        "moderator": "Moderador",
-                        "warnId": "ID de advertencia",
-                        "warn": "Advertencia",
-                        "reason": "Razón"
-                    },
-                    "notificationEmbedSingle": {
-                        "title": "Operación completada",
-                        "description": "Se ha retirado la advertencia con ID `{{warnId}}` al miembro **{{member}}**"
-                    }
-                },
-                "roleinfo": {
-                    "appData": {
-                        "name": "inforol",
-                        "description": "Muestra información sobre un rol",
-                        "options": {
-                            "role": {
-                                "name": "rol",
-                                "description": "Selecciona uno de los roles"
-                            }
-                        }
-                    },
-                    "roleNotFound": "El rol **{{role}}** no existe",
-                    "resultEmbed": {
-                        "title": "Información de rol",
-                        "description": "Mostrando información acerca del rol {{role}}",
-                        "roleName": "Nombre del rol",
-                        "roleId": "ID del rol",
-                        "roleMembers": "Miembros con el rol",
-                        "mentionable": "Mencionable",
-                        "isMentionable": "Si",
-                        "isntMntionable": "No",
-                        "hoisted": "Se muestra",
-                        "isHoisted": "Visible",
-                        "isntHoisted": "Oculto",
-                        "color": "Color",
-                        "creationDate": "Fecha de creación",
-                        "integration": "Integración",
-                        "isIntegration": "Si",
-                        "isntIntegration": "No"
-                    }
-                },
-                "run": {
-                    "appData": {
-                        "name": "ejecutar",
-                        "description": "Ejecuta uno de los scripts preprogramados",
-                        "options": {
-                            "script": {
-                                "name": "script",
-                                "description": "Escribe el nombre del script"
-                            },
-                            "parameters": {
-                                "name": "parámetros",
-                                "description": "Introduce los parámetros del script"
-                            }
-                        }
-                    },
-                    "welcome": {
-                        "memberNotProvided": "No has proporcionado un miembro",
-                        "invalidMember": "No has proporcionado un miembro válido",
-                        "done": "¡Listo!"
-                    },
-                    "goodbye": {
-                        "memberNotProvided": "No has proporcionado un miembro",
-                        "invalidMember": "No has proporcionado un miembro válido",
-                        "done": "¡Listo!"
-                    },
-                    "invalidCommand": "No has especificado un comando válido"
-                },
-                "seek": {
-                    "appData": {
-                        "name": "buscar",
-                        "description": "Cambia el tiempo de la pista a una marca de tiempo específica",
-                        "options": {
-                            "magnitudes": {
-                                "name": "momento",
-                                "description": "Introduce un momento con el formato HH:MM:SS"
-                            }
-                        }
-                    },
-                    "invalidMomentFormat": "El formato de momento introducido es inválido. Usa: `HH:MM:SS`",
-                    "cantAdjustLive": "No puedes ajustar el momento de una transmisión en directo",
-                    "cantAdjustFiles": "No se puede modificar el punto de reproducción de archvios locales",
-                    "cantForward": "No se puede avanzar más allá de `{{time}}`",
-                    "seeked": "Situado en el momento `{{time}}`"
-                },
-                "send": {
-                    "appData": {
-                        "name": "enviar",
-                        "description": "El bot enviará un mensaje al canal de texto actual",
-                        "options": {
-                            "type": {
-                                "name": "tipo",
-                                "description": "Especifica el tipo de mensaje",
-                                "choices": {
-                                    "embed": "Incrustado",
-                                    "normal": "Normal"
-                                }
-                            },
-                            "channel": {
-                                "name": "canal",
-                                "description": "Selecciona el canal al que se enviará el mensaje"
-                            }
-                        }
-                    },
-                    "invalidChannel": "El canal proporcionado no es válido",
-                    "noPermission": "No tienes permiso para enviar mensajes en {{channel}}",
-                    "bodyModal": {
-                        "title": "Envío de mensaje formateado",
-                        "fieldTitle": "Cuerpo del mensaje",
-                        "fieldPlaceholder": "Escribe un cuerpo para el mensaje"
-                    },
-                    "correct": "Hecho!"
-                },
-                "serverinfo": {
-                    "appData": {
-                        "name": "infoservidor",
-                        "description": "Muestra información sobre el servidor"
-                    },
-                    "guildTiers": {
-                        "NONE": "Nivel 0",
-                        "TIER_1": "Nivel 1",
-                        "TIER_2": "Nivel 2",
-                        "TIER_3": "Nivel 3"
-                    },
-                    "guildNsfwLevel": {
-                        "DISABLED": "Deshabilitado",
-                        "MEMBERS_WITHOUT_ROLES": "Supervisando a miembros sin rol",
-                        "ALL_MEMBERS": "Supervisando a todo el mundo"
-                    },
-                    "guildverificationLevel": {
-                        "NONE": "Deshabilitado",
-                        "LOW": "Bajo",
-                        "MEDIUM": "Medio",
-                        "HIGH": "Alto",
-                        "VERY_HIGH": "Muy alto"
-                    },
-                    "embed": {
-                        "author": "Información sobre {{guildName}}",
-                        "name": "Nombre",
-                        "id": "ID del servidor",
-                        "region": "Región",
-                        "creationDate": "Fecha de creación",
-                        "owner": "Propietario",
-                        "nsfwFilter": "Filtro NSFW",
-                        "tier": "Nivel de mejora",
-                        "boostsCount": "({{boostsCount}} mejoras)",
-                        "verification": "Nivel de verificación",
-                        "invitations": "Invitaciones",
-                        "totalInvites": "{{totalInvites}} invitaciones en total",
-                        "roles": "Roles",
-                        "totalRoles": "{{totalRoles}} roles en total",
-                        "stickersAndEmojis": "Stickers y Emojis",
-                        "totalEmojis": "{{totalEmojis}} emojis",
-                        "totalStickers": "{{totalStickers}} stickers",
-                        "members": "Miembros",
-                        "totalMembers": "{{totalMembers}} miembros",
-                        "totalHumans": "{{totalHumans}} humanos",
-                        "totalBots": "{{totalBots}} bots",
-                        "bans": "Baneos",
-                        "bannedUsers": "{{bannedUsers}} usuarios baneados",
-                        "afk": "Tiempo para AFK",
-                        "afkTime": "{{afkTime}} minutos",
-                        "channels": "Canales",
-                        "totalCategories": "{{totalCategories}} categorías",
-                        "totalTextChannels": "{{totalTextChannels}} canales de texto",
-                        "totalVoiceChannels": "{{totalVoiceChannels}} canales de voz"
-                    }
-                },
-                "shuffle": {
-                    "appData": {
-                        "name": "aleatorio",
-                        "description": "Activa el modo aleatorio en la cola de reproducción"
-                    },
-                    "enabled": "He activado el modo aleatorio",
-                    "disabled": "He desactivado el modo aleatorio"
-                },
-                "skip": {
-                    "appData": {
-                        "name": "saltar",
-                        "description": "Salta la pista actual o una cantidad especificada",
-                        "options": {
-                            "quantity": {
-                                "name": "cantidad",
-                                "description": "Introduce una cantidad de pistas a saltar"
-                            }
-                        }
-                    },
-                    "skipped": "Pista/s omitida/s",
-                    "cantSkipOnRandom": "No puedes omitir más de una pista con el modo aleatorio activado",
-                    "cantMultipleOnLoop": "No puedes omitir más de una pista con el modo loop activado",
-                    "notInteger": "Debes proporcionar un número entero",
-                    "belowOne": "Quieres jugar sucio eh ...",
-                    "cantSkipThis": "Solo puedes hacer skip de `{{quantity}}` pistas"
-                },
-                "slowmode": {
-                    "appData": {
-                        "name": "modolento",
-                        "description": "Activa el modo lento en un canal de texto",
-                        "options": {
-                            "seconds": {
-                                "name": "segundos",
-                                "description": "Escribe una cantidad entre 0 y 21600 (0 para desactivar)"
-                            },
-                            "reason": {
-                                "name": "razón",
-                                "description": "Aporta una razón para la acción"
-                            }
-                        }
-                    },
-                    "notEnabled": "El modo lento no está activado",
-                    "disabledLoggingEmbed": {
-                        "title": "Registro - [MODO LENTO]",
-                        "description": "Se ha des-habilitado el modo lento",
-                        "moderator": "Moderador",
-                        "channel": "Canal"
-                    },
-                    "disabledNotificationEmbed": {
-                        "title": "Operación completada",
-                        "description": "El modo lento ha sido desactivado"
-                    },
-                    "maximumConfiguredLengthError": "Solo puedes activar el modo lento para un máximo de `{{max}}s`",
-                    "noReason": "Debes proporcionar una razón",
-                    "undefinedReason": "Indefinida",
-                    "enabledLoggingEmbed": {
-                        "title": "Registro - [MODO LENTO]",
-                        "description": "Se ha habilitado el modo lento",
-                        "moderator": "Moderador",
-                        "delay": "Retraso",
-                        "delayed": "{{seconds}} segundos",
-                        "channel": "Canal",
-                        "reason": "Razón"
-                    },
-                    "enabledNotificationEmbed": {
-                        "title": "Operación completada",
-                        "description": "El modo lento ha sido activado con un retraso de `{{seconds}}s`"
-                    }
-                },
-                "sound": {
-                    "appData": {
-                        "name": "sonido",
-                        "description": "Reproduce un archivo .mp3 local, sube uno o muestra una lista de ellos",
-                        "options": {
-                            "list": {
-                                "name": "lista",
-                                "description": "Muestra la lista de audios almacenados en el bot"
-                            },
-                            "play": {
-                                "name": "reproducir",
-                                "description": "Reproduce un audio almacenado",
-                                "options": {
-                                    "selection": {
-                                        "name": "selección",
-                                        "description": "Introduce el nombre del audio a reproducir"
-                                    }
-                                }
-                            },
-                            "random": {
-                                "name": "aleatorio",
-                                "description": "Reproduce un audio al azar"
-                            },
-                            "upload": {
-                                "name": "subir",
-                                "description": "Sube un fichero .mp3 al directorio de audios",
-                                "options": {
-                                    "attachment": {
-                                        "name": "adjunto",
-                                        "description": "Carga un fichero .mp3"
-                                    },
-                                    "name": {
-                                        "name": "nombre",
-                                        "description": "Elige un nombre para el audio"
-                                    }
-                                }
-                            },
-                            "remove": {
-                                "name": "eliminar",
-                                "description": "Elimina un audio almacenado",
-                                "options": {
-                                    "selection": {
-                                        "name": "selección",
-                                        "description": "Introduce el nombre del audio a eliminar"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "soundListEmbed": {
-                        "title": "Lista de audios"
-                    },
-                    "alreadyPlaying": "El reproductor se encuentra en ejecución en otro canal",
-                    "doesntExist": "El audio **{{recordName}}** no existe",
-                    "loadingFile": "Cargando el audio `{{fileName}}` ...",
-                    "bounded": "Unido a {{voiceChannel}} y vinculado a {{textChannel}}"
-                },
-                "stats": {
-                    "appData": {
-                        "name": "estadisticas",
-                        "description": "Muestra tus estadísticas de EXP o las de otro miembro",
-                        "options": {
-                            "user": {
-                                "name": "usuario",
-                                "description": "Selecciona un usuario o introduce su ID"
-                            }
-                        }
-                    },
-                    "unknownMember": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
-                    "noXp": "{{member}} no tiene puntos de experiencia",
-                    "defaultReward": "Ninguna",
-                    "statsEmbed": {
-                        "title": "Estadísticas",
-                        "description": "Mostrando las estadísticas del miembro **{{memberTag}}**",
-                        "actualLevel": "Nivel actual",
-                        "totalXp": "EXP total",
-                        "xpToNextLevel": "EXP para el siguiente nivel",
-                        "noXpToNextLevel": "No puede subir de nivel",
-                        "voiceTime": "Tiempo de voz aprox.",
-                        "noVoiceTime": "No se contabiliza",
-                        "nextRewards": "Siguientes recompensas",
-                        "noNextRewards": "No puede ganar recompensas"
-                    }
-                },
-                "tempmute": {
-                    "appData": {
-                        "name": "silenciotemp",
-                        "description": "Silencia temporalmente a un miembro de los canales de texto y voz",
-                        "options": {
-                            "user": {
-                                "name": "usuario",
-                                "description": "Selecciona un usuario o escribe su ID"
-                            },
-                            "duration": {
-                                "name": "duración",
-                                "description": "Escriba una duración con el formato: días\"D\" | minutos\"M\" | horas\"H\" | segundos\"S\""
-                            },
-                            "reason": {
-                                "name": "razón",
-                                "description": "Aporta una razón para la acción"
-                            }
-                        }
-                    },
-                    "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
-                    "noBots": "No puedes banear a un bot",
-                    "badHierarchy": "No puedes silenciar a un miembro con un rol igual o superior al tuyo",
-                    "alreadySilenced": "Este miembro ya esta silenciado",
-                    "wrongMagnitudes": "Tienes que escribir una duración con el formato: días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"",
-                    "exceededDuration": "Solo puedes silenciar un máximo de `{{time}}`",
-                    "noReason": "Debes proporcionar una razón",
-                    "undefinedReason": "Indefinida",
-                    "loggingEmbed": {
-                        "author": "{{memberTag}} ha sido SILENCIADO",
-                        "memberId": "ID del miembro",
-                        "moderator": "Moderador",
-                        "reason": "Razón",
-                        "expiration": "Vencimiento"
-                    },
-                    "privateEmbed": {
-                        "author": "[SILENCIADO]",
-                        "description": "{{member}}, has sido silenciado en {{guildName}",
-                        "moderator": "Moderador",
-                        "reason": "Razón",
-                        "expiration": "Vencimiento"
-                    },
-                    "notificationEmbed": {
-                        "withReason": "**{{memberTag}}** ha sido silenciado debido a __{{reason}}__, ¿alguien más?",
-                        "withoutReason": "**{{memberTag}}** ha sido silenciado, ¿alguien más?"
-                    }
-                },
-                "unban": {
-                    "appData": {
-                        "name": "desbanear",
-                        "description": "Desbanea a un miembro",
-                        "options": {
-                            "user": {
-                                "name": "usuario",
-                                "description": "Selecciona un usuario o escribe su ID"
-                            },
-                            "reason": {
-                                "name": "razón",
-                                "description": "Aporta una razón para la acción"
-                            }
-                        }
-                    },
-                    "userNotFound": "Usuario no encontrado. Debes mencionar a un miembro o escribir su ID.\nSi el usuario no está en el servidor, has de especificar su ID",
-                    "noReason": "Debes proporcionar una razón",
-                    "notBanned": "Este usuario no había sido baneado",
-                    "undefinedReason": "Indefinida",
-                    "loggingEmbed": {
-                        "author": "{{userTag}} ha sido DESBANEADO",
-                        "userId": "ID de usuario",
-                        "moderator": "Moderador",
-                        "reason": "Razón",
-                        "deletedDays": "Días de mensajes borrados",
-                        "noDeletedDays": "Ninguno",
-                        "expiration": "Vencimiento",
-                        "noExpiration": "No vence"
-                    },
-                    "notificationEmbed": {
-                        "title": "Operación completada",
-                        "description": "El miembro **{{userTag}}** ha sido desbaneado"
-                    }
-                },
-                "unmute": {
-                    "appData": {
-                        "name": "dessilenciar",
-                        "description": "Dessilencia a un miembro",
-                        "options": {
-                            "user": {
-                                "name": "usuario",
-                                "description": "Selecciona un usuario o escribe su ID"
-                            },
-                            "reason": {
-                                "name": "razón",
-                                "description": "Aporta una razón para la acción"
-                            }
-                        }
-                    },
-                    "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
-                    "noReason": "Debes proporcionar una razón",
-                    "notSilenced": "Este miembro no esta silenciado",
-                    "badHierarchy": "{{interactionAuthor}}, no puedes des-silenciar a alguien con un rol igual o superior al tuyo",
-                    "cantRemoveAny": "{{interactionAuthor}}, no puedes des-silenciar a alguien que no has silenciado tú",
-                    "undefinedReason": "Indefinida",
-                    "loggingEmbed": {
-                        "author": "{{userTag}} ha sido DES-SILENCIADO",
-                        "unknownAuthor": "Un miembro",
-                        "memberId": "ID del miembro",
-                        "moderator": "Moderador",
-                        "reason": "Razón"
-                    },
-                    "privateEmbed": {
-                        "author": "[DES-SILENCIADO]",
-                        "description": "{{member}}, has sido des-silenciado en {{guildName}",
-                        "moderator": "Moderador",
-                        "reason": "Razón"
-                    },
-                    "notificationEmbed": {
-                        "title": "Operación completada",
-                        "description": "El miembro **{{member}}** ha sido des-silenciado"
-                    }
-                },
-                "userinfo": {
-                    "appData": {
-                        "name": "infousuario",
-                        "description": "Muestra información sobre ti o cualquier otro miembro",
-                        "options": {
-                            "user": {
-                                "name": "usuario",
-                                "description": "Selecciona un usuario o introduce su ID"
-                            }
-                        }
-                    },
-                    "invalidMember": "No has proporcionado un miembro válido",
-                    "cantSeeAny": "No dispones de privilegios para ver la información de otros miembros",
-                    "memberType": {
-                        "owner": "Propietario",
-                        "administrator": "Administrador",
-                        "moderator": "Moderador",
-                        "regular": "Miembro regular"
-                    },
-                    "embed": {
-                        "mutedUntil": "Silenciado hasta",
-                        "undefinedMute": "Silenciado indefinidamente",
-                        "title": "Información sobre {{memberDisplayName}}",
-                        "description": "Mostrando información acerca de **{{memberTag}}**",
-                        "memberId": "ID del miembro",
-                        "registerDate": "Fecha de registro",
-                        "joinDate": "Unido al servidor",
-                        "status": "Estatus",
-                        "nitroBooster": "Nitro Booster",
-                        "isBooster": "Desde {{time}}",
-                        "isntBooster": "No",
-                        "highestRole": "Rol más alto",
-                        "infractions": "Infracciones",
-                        "verification": "Verificación",
-                        "isVerified": "Verificado",
-                        "isntVerified": "Verificación pendiente",
-                        "actualSanction": "Sanción actual",
-                        "noSanction": "Ninguna"
-                    }
-                },
-                "warn": {
-                    "appData": {
-                        "name": "advertir",
-                        "description": "Agrega una advertencia a un miembro",
-                        "options": {
-                            "user": {
-                                "name": "usuario",
-                                "description": "Selecciona un usuario o escribe su ID"
-                            },
-                            "reason": {
-                                "name": "razón",
-                                "description": "Aporta una razón para la advertencia"
-                            }
-                        }
-                    },
-                    "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
-                    "noBots": "No puedes advertir a un bot",
-                    "badHierarchy": "No puedes advertir a un miembro con un rol igual o superior al tuyo",
-                    "cooldown": "Tienes que esperar antes de poder poner una nueva advertencia a {{member}}"
-                },
-                "xp": {
-                    "appData": {
-                        "name": "exp",
-                        "description": "Modifica la cantidad de puntos de experiencia de un miembro",
-                        "options": {
-                            "set": {
-                                "name": "ajustar",
-                                "description": "Ajusta al valor elegido la cantidad de puntos de experiencia",
-                                "options": {
-                                    "user": {
-                                        "name": "usuario",
-                                        "description": "Selecciona un usuario o escribe su ID"
-                                    },
-                                    "quantity": {
-                                        "name": "cantidad",
-                                        "description": "Introduce una cantidad de puntos de experiencia"
-                                    }
-                                }
-                            },
-                            "add": {
-                                "name": "añadir",
-                                "description": "Añade a la cantidad actual de puntos de experiencia",
-                                "options": {
-                                    "user": {
-                                        "name": "usuario",
-                                        "description": "Selecciona un usuario o escribe su ID"
-                                    },
-                                    "quantity": {
-                                        "name": "cantidad",
-                                        "description": "Introduce una cantidad de puntos de experiencia"
-                                    }
-                                }
-                            },
-                            "addrandom": {
-                                "name": "añadir_aleatorio",
-                                "description": "Genera X veces los puntos de experiencia obtenidos al escribir mensajes",
-                                "options": {
-                                    "user": {
-                                        "name": "usuario",
-                                        "description": "Selecciona un usuario o escribe su ID"
-                                    },
-                                    "times": {
-                                        "name": "veces",
-                                        "description": "Introduce la cantidad de veces que se generarán puntos de experiencia"
-                                    }
-                                }
-                            },
-                            "remove": {
-                                "name": "eliminar",
-                                "description": "Resta a la cantidad actual de puntos de experiencia",
-                                "options": {
-                                    "user": {
-                                        "name": "usuario",
-                                        "description": "Selecciona un usuario o escribe su ID"
-                                    },
-                                    "quantity": {
-                                        "name": "cantidad",
-                                        "description": "Introduce una cantidad de puntos de experiencia"
-                                    }
-                                }
-                            },
-                            "clear": {
-                                "name": "vaciar",
-                                "description": "Reestablece a 0 la cantidad de puntos de experiencia",
-                                "options": {
-                                    "user": {
-                                        "name": "usuario",
-                                        "description": "Selecciona un usuario o escribe su ID"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "invalidMember": "No has proporcionado un miembro válido",
-                    "noBots": "Los bots no pueden ganar puntos de puntos de experiencia",
-                    "invalidQuantity": "Debes proporcionar una cantidad válida",
-                    "hasNoXp": "Este miembro no tiene puntos de experiencia",
-                    "unauthorizedModify": "No puedes modificar los puntos de experiencia de un miembro con un rol igual o superior al tuyo",
-                    "loggingEmbed": {
-                        "title": "Registro - [SISTEMA DE EXP]",
-                        "description": "Se ha modificado la cantidad de puntos de experiencia de **{{memberTag}}**",
-                        "date": "Fecha",
-                        "moderator": "Moderador",
-                        "memberId": "ID del miembro",
-                        "oldValue": "Valor anterior",
-                        "newValue": "Nuevo valor"
-                    },
-                    "privateEmbed": {
-                        "author": "[EXP MODIFICADA]",
-                        "description": "{{member}}, tu cantidad de EXP ha sido modificada",
-                        "moderator": "Moderador",
-                        "oldValue": "Valor anterior",
-                        "newValue": "Nuevo valor"
-                    },
-                    "notificationEmbed": "Se ha modificado la cantidad de puntos de experiencia del miembro **{{memberTag}}**"
+                    "undefinedMute": "Silenciado indefinidamente",
+                    "title": "Información sobre {{memberDisplayName}}",
+                    "description": "Mostrando información acerca de **{{memberTag}}**",
+                    "memberId": "ID del miembro",
+                    "registerDate": "Fecha de registro",
+                    "joinDate": "Unido al servidor",
+                    "status": "Estatus",
+                    "nitroBooster": "Nitro Booster",
+                    "isBooster": "Desde {{time}}",
+                    "isntBooster": "No",
+                    "highestRole": "Rol más alto",
+                    "infractions": "Infracciones",
+                    "verification": "Verificación",
+                    "isVerified": "Verificado",
+                    "isntVerified": "Verificación pendiente",
+                    "actualSanction": "Sanción actual",
+                    "noSanction": "Ninguna"
                 }
             },
-            "messageCommands": {
-                "test": {
-                    "appData": {
-                        "name": "Comando de mensaje de prueba",
-                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+            "warn": {
+                "appData": {
+                    "name": "advertir",
+                    "description": "Agrega una advertencia a un miembro",
+                    "options": {
+                        "user": {
+                            "name": "usuario",
+                            "description": "Selecciona un usuario o escribe su ID"
+                        },
+                        "reason": {
+                            "name": "razón",
+                            "description": "Aporta una razón para la advertencia"
+                        }
                     }
-                }
+                },
+                "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
+                "noBots": "No puedes advertir a un bot",
+                "badHierarchy": "No puedes advertir a un miembro con un rol igual o superior al tuyo",
+                "cooldown": "Tienes que esperar antes de poder poner una nueva advertencia a {{member}}"
             },
-            "userCommands": {
-                "test": {
-                    "appData": {
-                        "name": "Comando de usuario de prueba",
-                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+            "xp": {
+                "appData": {
+                    "name": "exp",
+                    "description": "Modifica la cantidad de puntos de experiencia de un miembro",
+                    "options": {
+                        "set": {
+                            "name": "ajustar",
+                            "description": "Ajusta al valor elegido la cantidad de puntos de experiencia",
+                            "options": {
+                                "user": {
+                                    "name": "usuario",
+                                    "description": "Selecciona un usuario o escribe su ID"
+                                },
+                                "quantity": {
+                                    "name": "cantidad",
+                                    "description": "Introduce una cantidad de puntos de experiencia"
+                                }
+                            }
+                        },
+                        "add": {
+                            "name": "añadir",
+                            "description": "Añade a la cantidad actual de puntos de experiencia",
+                            "options": {
+                                "user": {
+                                    "name": "usuario",
+                                    "description": "Selecciona un usuario o escribe su ID"
+                                },
+                                "quantity": {
+                                    "name": "cantidad",
+                                    "description": "Introduce una cantidad de puntos de experiencia"
+                                }
+                            }
+                        },
+                        "addrandom": {
+                            "name": "añadir_aleatorio",
+                            "description": "Genera X veces los puntos de experiencia obtenidos al escribir mensajes",
+                            "options": {
+                                "user": {
+                                    "name": "usuario",
+                                    "description": "Selecciona un usuario o escribe su ID"
+                                },
+                                "times": {
+                                    "name": "veces",
+                                    "description": "Introduce la cantidad de veces que se generarán puntos de experiencia"
+                                }
+                            }
+                        },
+                        "remove": {
+                            "name": "eliminar",
+                            "description": "Resta a la cantidad actual de puntos de experiencia",
+                            "options": {
+                                "user": {
+                                    "name": "usuario",
+                                    "description": "Selecciona un usuario o escribe su ID"
+                                },
+                                "quantity": {
+                                    "name": "cantidad",
+                                    "description": "Introduce una cantidad de puntos de experiencia"
+                                }
+                            }
+                        },
+                        "clear": {
+                            "name": "vaciar",
+                            "description": "Reestablece a 0 la cantidad de puntos de experiencia",
+                            "options": {
+                                "user": {
+                                    "name": "usuario",
+                                    "description": "Selecciona un usuario o escribe su ID"
+                                }
+                            }
+                        }
                     }
+                },
+                "invalidMember": "No has proporcionado un miembro válido",
+                "noBots": "Los bots no pueden ganar puntos de puntos de experiencia",
+                "invalidQuantity": "Debes proporcionar una cantidad válida",
+                "hasNoXp": "Este miembro no tiene puntos de experiencia",
+                "unauthorizedModify": "No puedes modificar los puntos de experiencia de un miembro con un rol igual o superior al tuyo",
+                "loggingEmbed": {
+                    "title": "Registro - [SISTEMA DE EXP]",
+                    "description": "Se ha modificado la cantidad de puntos de experiencia de **{{memberTag}}**",
+                    "date": "Fecha",
+                    "moderator": "Moderador",
+                    "memberId": "ID del miembro",
+                    "oldValue": "Valor anterior",
+                    "newValue": "Nuevo valor"
+                },
+                "privateEmbed": {
+                    "author": "[EXP MODIFICADA]",
+                    "description": "{{member}}, tu cantidad de EXP ha sido modificada",
+                    "moderator": "Moderador",
+                    "oldValue": "Valor anterior",
+                    "newValue": "Nuevo valor"
+                },
+                "notificationEmbed": "Se ha modificado la cantidad de puntos de experiencia del miembro **{{memberTag}}**"
+            }
+        },
+        "messageCommands": {
+            "test": {
+                "appData": {
+                    "name": "Comando de mensaje de prueba",
+                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
                 }
             }
         },
-        "buttons": {
-            "updateNotifications": {
-                "cantGainXp": "No puedes ganar EXP, por lo que no recibirás notificaciones",
-                "alreadyApplied": "Esta configuración ya estaba aplicada. No se realizarán cambios",
-                "newButon": {
-                    "disable": "Desactivar notificaciones",
-                    "enable": "Reactivar notificaciones"
+        "userCommands": {
+            "test": {
+                "appData": {
+                    "name": "Comando de usuario de prueba",
+                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
                 }
             }
         }
@@ -1548,14 +1505,8 @@
                 "levelUpEmbed": {
                     "author": "¡Subiste de nivel!",
                     "description": "Enhorabuena {{member}}, has subido al nivel **{{memberLevel}}**",
-                    "rewards": "Recompensas obtenidas",
-                    "disablePrivateNotification": "Desactivar notificaciones"
+                    "rewards": "Recompensas obtenidas"
                 }
-            },
-            "msToTime": {
-                "years": "años",
-                "months": "meses",
-                "days": "días"
             },
             "checkUsername": {
                 "kickReason": "El nombre de usuario contenía una palabra prohibida",

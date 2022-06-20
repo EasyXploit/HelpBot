@@ -537,13 +537,16 @@ exports.run = (client) => {
         //Convierte los MS a segundos
         let seconds = parseInt(ms / 1000);
 
+        console.log(seconds);
+        console.log(Math.floor(seconds / 31536000));
+
         //Extrae los años
-        const years = parseInt(seconds / 31556926);
-        seconds = seconds % 31556926;
+        const years = parseInt(Math.floor(seconds / 31536000));
+        seconds = seconds % 31536000;
 
         //Extrae los meses
-        const months = parseInt(seconds / 2629743);
-        seconds = seconds % 2629743;
+        const months = parseInt(Math.floor(seconds / 2629800));
+        seconds = seconds % 2629800;
 
         //Extrae los dias
         const days = parseInt(seconds / 86400);

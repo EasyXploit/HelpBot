@@ -73,11 +73,11 @@
                 "reason": "Razón",
                 "undefinedReason": "Indefinida"
             },
-            "welcomeEmbed": {
+            "goodbyeEmbed": {
                 "author": "Un miembro abandonó",
                 "description": "{{memberTag}} abandonó el servidor",
                 "memberId": "ID del miembro",
-                "registerDate": "Fecha de registro"
+                "antiquity": "Antigüedad"
             }
         },
         "interactionCreate": {

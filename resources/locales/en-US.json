@@ -73,11 +73,11 @@
         "reason": "Reason",
         "undefinedReason": "Undefined"
       },
-      "welcomeEmbed": {
+      "goodbyeEmbed": {
         "author": "A member left",
         "description": "{{memberTag}} left the server",
         "memberId": "Member ID",
-        "registerDate": "Register date"
+        "antiquity": "Antiquity"
       }
     },
     "interactionCreate": {

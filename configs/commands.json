@@ -54,6 +54,9 @@
             "reasonNotNeeded": [],
             "botsAllowed": []
         },
+        "notifications": {
+            "enabled": true
+        },
         "nowplaying": {
             "enabled": true
         },

@@ -30,7 +30,7 @@ exports.run = async (interaction, client, locale) => {
             ], ephemeral: true});
 
             //Ejecuta el comando
-            command.run(client, interaction, commandConfig, client.locale.commands.chatCommands[interaction.commandName]);
+            command.run(client, interaction, commandConfig, client.locale.handlers.commands.chatCommands[interaction.commandName]);
         };
 
         //Si la interacción era de autocompletado
@@ -41,7 +41,25 @@ exports.run = async (interaction, client, locale) => {
             if (!command || !command.autocomplete) return; //Aborta si no lo encuentra
 
             //Ejecuta el método de autocompletado
-            command.autocomplete(client, interaction, command, client.locale.commands.chatCommands[interaction.commandName]);
+            command.autocomplete(client, interaction, command, client.locale.handlers.commands.chatCommands[interaction.commandName]);
+        };
+
+        //Si la interacción era un botón
+        if (interaction.isButton()) {
+
+            try {
+
+                //Carga el archivo correspondiente para manejar el botón
+                const handlerFile = require(`../handlers/buttons/${interaction.customId}.js`);
+
+                //Ejecuta el manejador de la interacción
+                handlerFile.run(client, interaction);
+
+            } catch (error) {
+
+                //Si no se encontró el archivo, ignora
+                if (error.toString().includes('Cannot find module')) return;
+            };
         };
 
     } catch (error) {

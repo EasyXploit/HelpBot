@@ -1,0 +1,933 @@
+{
+  "index": {
+    "startingClient": "Pornind clientul",
+    "clientStarted": "¡Client pornit corect!",
+    "unhandledRejection": {
+      "consoleMsg": "EROARE: Promisiune reprinsă nu folosită",
+      "debuggingEmbed": {
+        "title": "Depurare",
+        "description": "O promisiune reprinsă nu a fost folosită",
+        "date": "Dată",
+        "error": "Eroare",
+        "footer": "Verifică consola pentru a obține mai multe detalii"
+      }
+    },
+    "uncompleteEventsLoad": "EROARE: Nu s-a putut completa încarcarea eventelor",
+    "eventLoaded": "Event",
+    "loggingIn": "Logare",
+    "loggedIn": "¡Logare cu succes!"
+  },
+  "events": {
+    "channelDelete": {
+      "missingDebuggingChannel": "AVERTISMENT: Canalul de depanare nu mai există sau nu mai poate fi accesat.\nA fost șters din configurație și a fost descărcat din memorie",
+      "missingLoggingChannel": "AVERTISMENT: Canalul de jurnal nu mai există sau este inaccesibil.\nA fost șters din configurație și descărcat din memorie"
+    },
+    "error": {
+      "econnresetError": "EROARE: conexiunea a fost închisă în mod neașteptat",
+      "otherError": "EROARE"
+    },
+    "guildBanAdd": {
+      "botLoggingEmbed": {
+        "title": "Registu - [BOTS]",
+        "description": "Botul **BOT** {{userTag}} a fost interzis de pe server"
+      },
+      "loggingEmbed": {
+        "author": "{{userTag}} a fost interzis",
+        "memberId": "ID al membrului",
+        "moderator": "Moderator",
+        "unknownModerator": "Necunoscut",
+        "reason": "Motiv",
+        "undefinedReason": "Nedefinită",
+        "expiration": "Expirare",
+        "noExpiration": "Fără dată de expirare",
+        "deletedDays": "Zile de mesaje șterse",
+        "noDeletedDays": "Nici una"
+      }
+    },
+    "guildCreate": {
+      "newGuild": "{{botUsername}} s-a alăturat breaslei \"{{guildName}}\"",
+      "justOneGuild": "AVERTISMENT: {{botUsername}} nu este proiectat să funcționeze pe mai mult de un server",
+      "error": "EROARE:"
+    },
+    "guildDelete": {
+      "abandonedGuild": "AVERTISMENT: {{botUsername}} a părăsit breasla \"{{guildName}}\"",
+      "shouldReboot": "AVERTISMENT: Pentru a continua, trebuie să reporniți botul",
+      "error": "EROARE"
+    },
+    "guildMemberAdd": {
+      "botLoggingEmbed": {
+        "title": "Registru - [BOTS]",
+        "description": "Botul **BOT** {{memberTag}} a fost adăugat la server"
+      }
+    },
+    "guildMemberRemove": {
+      "botLoggingEmbed": {
+        "title": "Registru - [BOTS]",
+        "description": "Botul **BOT** {{memberTag}} a fost dat afară de pe server"
+      },
+      "loggingEmbed": {
+        "author": "{{memberTag}} a fost EXPULZAT",
+        "memberId": "ID al membrului",
+        "moderator": "Moderator",
+        "unknownModerator": "Necunoscut",
+        "reason": "Motiv",
+        "undefinedReason": "Nedefinită"
+      },
+      "goodbyeEmbed": {
+        "author": "Un membru a plecat",
+        "memberId": "ID al membrului"
+      }
+    },
+    "interactionCreate": {
+      "error": "EROARE"
+    },
+    "messageCreate": {
+      "filteredDm": "prin DM"
+    },
+    "ready": {
+      "justOneGuild": "ADVERTISMENT: Botul nu este proiectat să funcționeze în mai mult de o breaslă (server).\nExpulzați botul din toate celelalte bresle și reporniți-l",
+      "waitingGuild": "ADVERTISMENT: Se așteaptă ca botul să se alăture unei bresle",
+      "error": "EROARE"
+    },
+    "shardError": {
+      "errorMessage": "EROARE: O conexiune la websocket a întâmpinat o eroare"
+    },
+    "voiceStateUpdate": {
+      "leftWhenIdle": "Am părăsit canalul și am șters coada"
+    },
+    "warn": {
+      "warnMessage": "ADVERTISMENT"
+    }
+  },
+  "handlers": {
+    "commands": {
+      "chatCommands": {
+        "ban": {
+          "appData": {
+            "options": {
+              "user": {
+                "name": "utilizator"
+              },
+              "reason": {
+                "name": "motiv"
+              },
+              "days": {
+              },
+              "duration": {
+                "name": "durată"
+              }
+            }
+          },
+          "userNotFound": "Utilizator nu a fost găsit. Trebuie să menționați un membru sau să-i scrieți ID-ul.\nDacă utilizatorul nu se află pe server, trebuie să specificați ID-ul lui",
+          "noBots": "Nu poți interzice un bot",
+          "badHierarchy": "Nu poți interzice un membru cu un rol egal sau mai mare decât al tău",
+          "alreadyBanned": "Acest utilizator a fost deja interzis",
+          "noReason": "Trebuie să oferiți un motiv",
+          "undefinedReason": "Nedefinită",
+          "privateEmbed": {
+            "author": "[INTERZIS]",
+            "description": "{{user}}, ai fost interzis in {{guildName}}",
+            "moderator": "Moderator",
+            "reason": "Motiv",
+            "expiration": "Expirare",
+            "noExpiration": "Fără dată de expirare"
+          },
+          "notificationEmbed": {
+            "withReason": "**{{userTag}}** a fost exclus din cauza __{{motiv}}__, altcineva?",
+            "withoutReason": "**{{userTag}}** a fost interzis, altcineva?"
+          }
+        },
+        "clear": {
+          "appData": {
+          }
+        },
+        "dm": {
+          "appData": {
+            "options": {
+              "user": {
+                "name": "utilizator"
+              },
+              "mode": {
+                "choices": {
+                }
+              },
+              "type": {
+                "choices": {
+                }
+              }
+            }
+          },
+          "bodyModal": {
+          },
+          "loggingEmbed": {
+            "date": "Data"
+          }
+        },
+        "edit": {
+          "appData": {
+            "options": {
+              "channel": {
+              },
+              "id": {
+              },
+              "content": {
+              }
+            }
+          },
+          "bodyModal": {
+          },
+          "correctEmbed": {
+          }
+        },
+        "forward": {
+          "appData": {
+            "options": {
+              "magnitudes": {
+              }
+            }
+          }
+        },
+        "infractions": {
+          "appData": {
+            "options": {
+              "user": {
+                "name": "utilizator"
+              }
+            }
+          },
+          "infractionsEmbed": {
+          }
+        },
+        "invitation": {
+          "appData": {
+          },
+          "embed": {
+          }
+        },
+        "join": {
+          "appData": {
+          }
+        },
+        "kick": {
+          "appData": {
+            "options": {
+              "user": {
+                "name": "utilizator"
+              },
+              "reason": {
+                "name": "motiv"
+              }
+            }
+          },
+          "privateEmbed": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          },
+          "notificationEmbed": {
+          }
+        },
+        "leaderboard": {
+          "appData": {
+            "description": "Afișează clasamentul comunității de EXP",
+            "options": {
+              "page": {
+              }
+            }
+          },
+          "unknownMember": "Necunoscut",
+          "embed": {
+            "title": "Tablă de clasament",
+            "footer": "Pagina {{poziție}} din {{totalPages}}"
+          }
+        },
+        "leave": {
+          "appData": {
+          }
+        },
+        "loop": {
+          "appData": {
+            "options": {
+              "mode": {
+                "choices": {
+                }
+              }
+            }
+          },
+          "loopsingle": {
+          },
+          "loopqueue": {
+          }
+        },
+        "move": {
+          "appData": {
+            "options": {
+              "origin": {
+              },
+              "destination": {
+              }
+            }
+          }
+        },
+        "mute": {
+          "appData": {
+            "options": {
+              "user": {
+                "name": "utilizator"
+              },
+              "reason": {
+                "name": "motiv"
+              }
+            }
+          },
+          "loggingEmbed": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          },
+          "privateEmbed": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          },
+          "notificationEmbed": {
+          }
+        },
+        "notifications": {
+          "appData": {
+            "options": {
+              "modality": {
+                "choices": {
+                }
+              },
+              "status": {
+                "choices": {
+                }
+              }
+            }
+          }
+        },
+        "nowplaying": {
+          "appData": {
+          }
+        },
+        "pause": {
+          "appData": {
+          }
+        },
+        "ping": {
+          "appData": {
+            "name": "ping"
+          }
+        },
+        "play": {
+          "appData": {
+            "options": {
+              "search": {
+              }
+            }
+          }
+        },
+        "playskip": {
+          "appData": {
+            "options": {
+              "search": {
+              }
+            }
+          }
+        },
+        "poll": {
+          "appData": {
+            "options": {
+              "end": {
+              }
+            }
+          },
+          "endedPollEmbed": {
+          },
+          "titleEmbed": {
+          },
+          "durationEmbed": {
+          },
+          "firstFieldEmbed": {
+          },
+          "newFieldEmbed": {
+          },
+          "pollEmbed": {
+          },
+          "loggingEmbed": {
+          }
+        },
+        "purge": {
+          "appData": {
+            "options": {
+              "quantity": {
+              },
+              "channel": {
+              }
+            }
+          },
+          "successEmbed": {
+          },
+          "loggingEmbed": {
+          }
+        },
+        "queue": {
+          "appData": {
+            "options": {
+              "page": {
+              }
+            }
+          },
+          "queueEmbed": {
+            "duration": "Durată"
+          }
+        },
+        "remove": {
+          "appData": {
+            "options": {
+              "position": {
+              }
+            }
+          }
+        },
+        "replay": {
+          "appData": {
+          }
+        },
+        "resume": {
+          "appData": {
+          }
+        },
+        "rewind": {
+          "appData": {
+            "options": {
+              "magnitudes": {
+              }
+            }
+          }
+        },
+        "rmwarn": {
+          "appData": {
+            "options": {
+              "user": {
+                "name": "utilizator"
+              },
+              "id": {
+              },
+              "reason": {
+                "name": "motiv"
+              }
+            }
+          },
+          "loggingEmbedAll": {
+            "date": "Data",
+            "moderator": "Moderator",
+            "reason": "Motiv",
+            "member": "Membru"
+          },
+          "privateEmbedAll": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          },
+          "notificationEmbedAll": {
+          },
+          "loggingEmbedSingle": {
+            "date": "Data",
+            "moderator": "Moderator",
+            "reason": "Motiv",
+            "member": "Membru"
+          },
+          "privateEmbedSingle": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          },
+          "notificationEmbedSingle": {
+          }
+        },
+        "roleinfo": {
+          "appData": {
+            "options": {
+              "role": {
+              }
+            }
+          },
+          "resultEmbed": {
+            "isMentionable": "Da",
+            "isntMntionable": "Nu",
+            "isIntegration": "Da",
+            "isntIntegration": "Nu"
+          }
+        },
+        "run": {
+          "appData": {
+            "options": {
+              "script": {
+              },
+              "parameters": {
+              }
+            }
+          },
+          "welcome": {
+          },
+          "goodbye": {
+          }
+        },
+        "seek": {
+          "appData": {
+            "options": {
+              "magnitudes": {
+              }
+            }
+          }
+        },
+        "send": {
+          "appData": {
+            "options": {
+              "type": {
+                "choices": {
+                }
+              },
+              "channel": {
+              }
+            }
+          },
+          "bodyModal": {
+          }
+        },
+        "serverinfo": {
+          "appData": {
+          },
+          "guildTiers": {
+          },
+          "guildNsfwLevel": {
+          },
+          "guildverificationLevel": {
+          },
+          "embed": {
+          }
+        },
+        "shuffle": {
+          "appData": {
+          }
+        },
+        "skip": {
+          "appData": {
+            "options": {
+              "quantity": {
+              }
+            }
+          }
+        },
+        "slowmode": {
+          "appData": {
+            "options": {
+              "seconds": {
+              },
+              "reason": {
+                "name": "motiv"
+              }
+            }
+          },
+          "disabledLoggingEmbed": {
+            "moderator": "Moderator"
+          },
+          "disabledNotificationEmbed": {
+          },
+          "enabledLoggingEmbed": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          },
+          "enabledNotificationEmbed": {
+          }
+        },
+        "sound": {
+          "appData": {
+            "options": {
+              "list": {
+              },
+              "play": {
+                "options": {
+                  "selection": {
+                  }
+                }
+              },
+              "random": {
+              },
+              "upload": {
+                "options": {
+                  "attachment": {
+                  },
+                  "name": {
+                  }
+                }
+              },
+              "remove": {
+                "options": {
+                  "selection": {
+                  }
+                }
+              }
+            }
+          },
+          "soundListEmbed": {
+          }
+        },
+        "stats": {
+          "appData": {
+            "description": "Arată-ți statisticile de EXP sau ale altui membru",
+            "options": {
+              "user": {
+                "name": "utilizator"
+              }
+            }
+          },
+          "unknownMember": "Membru nu a fost găsit. Trebuie să menționezi un membru sau să-i scrii IDul",
+          "noXp": "{{member}} nu are puncte EXP",
+          "defaultReward": "Nici una",
+          "statsEmbed": {
+            "title": "Statistici",
+            "description": "Se afișează statisticile membrilor **{{memberTag}}**",
+            "xpToNextLevel": "EXP pentru nivelul următor",
+            "noXpToNextLevel": "Nu puteți crește nivelul",
+            "voiceTime": "Timp de voce aprox.",
+            "noVoiceTime": "Nu se numără",
+            "nextRewards": "Următoarele recompense",
+            "noNextRewards": "Nu puteți câștiga recompense"
+          }
+        },
+        "tempmute": {
+          "appData": {
+            "options": {
+              "user": {
+                "name": "utilizator"
+              },
+              "duration": {
+              },
+              "reason": {
+                "name": "motiv"
+              }
+            }
+          },
+          "loggingEmbed": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          },
+          "privateEmbed": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          },
+          "notificationEmbed": {
+          }
+        },
+        "unban": {
+          "appData": {
+            "options": {
+              "user": {
+                "name": "utilizator"
+              },
+              "reason": {
+                "name": "motiv"
+              }
+            }
+          },
+          "loggingEmbed": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          },
+          "notificationEmbed": {
+          }
+        },
+        "unmute": {
+          "appData": {
+            "options": {
+              "user": {
+                "name": "utilizator"
+              },
+              "reason": {
+                "name": "motiv"
+              }
+            }
+          },
+          "loggingEmbed": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          },
+          "privateEmbed": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          },
+          "notificationEmbed": {
+          }
+        },
+        "userinfo": {
+          "appData": {
+            "options": {
+              "user": {
+                "name": "utilizator"
+              }
+            }
+          },
+          "memberType": {
+            "moderator": "Moderator"
+          },
+          "embed": {
+            "isntBooster": "Nu"
+          }
+        },
+        "warn": {
+          "appData": {
+            "options": {
+              "user": {
+                "name": "utilizator"
+              },
+              "reason": {
+                "name": "motiv"
+              }
+            }
+          }
+        },
+        "xp": {
+          "appData": {
+            "description": "Modificați suma de EXP a unui membru",
+            "options": {
+              "set": {
+                "options": {
+                  "user": {
+                    "name": "utilizator"
+                  },
+                  "quantity": {
+                  }
+                }
+              },
+              "add": {
+                "options": {
+                  "user": {
+                    "name": "utilizator"
+                  },
+                  "quantity": {
+                  }
+                }
+              },
+              "addrandom": {
+                "options": {
+                  "user": {
+                    "name": "utilizator"
+                  },
+                  "times": {
+                  }
+                }
+              },
+              "remove": {
+                "options": {
+                  "user": {
+                    "name": "utilizator"
+                  },
+                  "quantity": {
+                  }
+                }
+              },
+              "clear": {
+                "options": {
+                  "user": {
+                    "name": "utilizator"
+                  }
+                }
+              }
+            }
+          },
+          "invalidMember": "Nu ați furnizat un membru valid",
+          "noBots": "Boții nu pot câștiga EXP",
+          "invalidQuantity": "Trebuie să furnizați o sumă validă",
+          "hasNoXp": "Acest membru nu are EXP",
+          "unauthorizedModify": "Nu poți modifica EXP-ul unui membru cu un rol egal sau mai mare decât al tău",
+          "loggingEmbed": {
+            "title": "Registru - [SISTEM XP]",
+            "description": "S-a schimbat cantitatea de EXP pentru **{{memberTag}}**",
+            "date": "Data",
+            "moderator": "Moderator",
+            "memberId": "ID de membru",
+            "oldValue": "Valoarea anterioară",
+            "newValue": "Noua valoare"
+          },
+          "privateEmbed": {
+            "author": "[EXP MODIFICAT]",
+            "description": "{{member}}, cantitatea ta de EXP a fost schimbată",
+            "moderator": "Moderator",
+            "oldValue": "Valoarea anterioară",
+            "newValue": "Noua valoare"
+          },
+          "notificationEmbed": "S-a modificat cantitatea de EXP al membrului **{{memberTag}}**"
+        }
+      },
+      "messageCommands": {
+        "test": {
+          "appData": {
+          }
+        }
+      },
+      "userCommands": {
+        "test": {
+          "appData": {
+          }
+        }
+      }
+    },
+    "buttons": {
+      "updateNotifications": {
+        "newButon": {
+        }
+      }
+    }
+  },
+  "utils": {
+    "lifecycle": {
+      "loadCommands": {
+      },
+      "loadEmojis": {
+        "error": "EROARE"
+      },
+      "newGuild": {
+        "error": "EROARE"
+      },
+      "systemLoad": {
+        "error": "EROARE"
+      }
+    },
+    "moderation": {
+      "infractionsHandler": {
+        "muteFunction": {
+          "loggingEmbed": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          },
+          "privateEmbed": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          }
+        },
+        "kickFunction": {
+          "privateEmbed": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          }
+        },
+        "banFunction": {
+          "privateEmbed": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          }
+        },
+        "warn": {
+          "privateEmbed": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          },
+          "loggingEmbed": {
+            "moderator": "Moderator",
+            "reason": "Motiv"
+          }
+        },
+        "error": "EROARE"
+      }
+    },
+    "voice": {
+      "addTrack": {
+      },
+      "fetchResource": {
+        "newItemEmbed": {
+        },
+        "selectionEmbed": {
+        }
+      },
+      "mediaPlayer": {
+        "error": "EROARE",
+        "playingEmbed": {
+          "duration": "Durată"
+        }
+      },
+      "parsePlaylist": {
+        "addedPlaylistEmbed": {
+        }
+      },
+      "preChecks": {
+      },
+      "testQueuePerms": {
+      }
+    },
+    "functions": {
+      "checkMutedRole": {
+      },
+      "addXP": {
+        "levelUpEmbed": {
+        }
+      },
+      "msToTime": {
+      },
+      "checkUsername": {
+        "privateEmbed": {
+          "moderator": "Moderator",
+          "reasonTitle": "Motiv"
+        }
+      },
+      "manageNewMember": {
+      },
+      "loggingManager": {
+      },
+      "debuggingManager": {
+      },
+      "interactionErrorHandler": {
+        "error": "EROARE",
+        "notificationEmbed": {
+        },
+        "debuggingEmbed": {
+          "date": "Data",
+          "error": "Eroare"
+        }
+      },
+      "eventErrorHandler": {
+        "error": "EROARE",
+        "debuggingEmbed": {
+          "date": "Data",
+          "error": "Eroare"
+        }
+      },
+      "getMusicFooter": {
+      }
+    },
+    "intervals": {
+      "mutes": {
+        "loggingEmbed": {
+          "member": "Membru",
+          "moderator": "Moderator",
+          "reason": "Motiv"
+        },
+        "privateEmbed": {
+          "moderator": "Moderator",
+          "reason": "Motiv"
+        }
+      },
+      "bans": {
+        "loggingEmbed": {
+          "user": "Utilizator",
+          "moderator": "Moderator",
+          "reason": "Motiv"
+        },
+        "error": "EROARE"
+      },
+      "ping": {
+      },
+      "polls": {
+        "finishedEmbed": {
+        },
+        "loggingEmbed": {
+        },
+        "progressEmbed": {
+        }
+      },
+      "presence": {
+      }
+    },
+    "splashLogo": {
+    },
+    "timers": {
+    }
+  }
+}

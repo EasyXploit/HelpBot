@@ -53,7 +53,7 @@ exports.run = async (client) => {
             for (const commandName of await client.fs.readdirSync(`./handlers/commands/${commandType}/`)) {
 
                 //Sube al objeto de comando, una relación entre el nombre localizado y el nombre de archivo
-                const commandLocalizedName = localeForNames.handlers.commands[commandType][commandName].appData.name;
+                const commandLocalizedName = commandType === 'chatCommands' ? localeForNames.handlers.commands[commandType][commandName].appData.name : client.locale.handlers.commands[commandType][commandName].appData.name;
                 localCommands[commandLocalizedName] = commandName;
             };
         };
@@ -122,7 +122,7 @@ exports.run = async (client) => {
             const appDataLocale = client.locale.handlers.commands[commandType][commandName].appData;
 
             //Añade el nombre al comando
-            localCmd.appData.name = localeForNames.handlers.commands[commandType][commandName].appData.name;
+            localCmd.appData.name = commandType === 'chatCommands' ? localeForNames.handlers.commands[commandType][commandName].appData.name : client.locale.handlers.commands[commandType][commandName].appData.name;
 
             //Si se trata de un comando de barra diagonal
             if (commandType === 'chatCommands') {
@@ -266,6 +266,12 @@ exports.run = async (client) => {
                     console.log(` - [UP] ${client.functions.localeParser(locale.defaultPermUpdated, { command: `[${commandType}/${localCmd.appData.name}]` })}.`);
                 };
             };
+
+            //Almacena la config. de usuario del comando en los datos del comando
+            commandData.userConfig = userConfig;
+
+            //Almacena el nombre del archivo del comando en los datos del comando
+            commandData.fileName = commandName;
 
             //Añade el comando a la colección
             await client.commands[commandType].set(localCmd.appData.name, commandData);

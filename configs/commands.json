@@ -165,8 +165,10 @@
         }
     },
     "messageCommands": {
-        "test": {
-            "enabled": true
+        "removeAndWarn": {
+            "enabled": true,
+            "minimumTimeDifference": 15000,
+            "unlimitedFrequency": []
         }
     },
     "userCommands": {

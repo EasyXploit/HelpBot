@@ -20,17 +20,14 @@ exports.run = async (interaction, client, locale) => {
             const command = client.commands[commandType].get(interaction.commandName);
             if (!command) return; //Aborta si no lo encuentra
 
-            //Almacena la configuración del comando
-            let commandConfig = client.config.commands[commandType][command.config.appData.name];
-
             //Aborta si el comando está deshabilitado
-            if (!commandConfig.enabled) return interaction.reply({embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.unavailable)
+            if (!command.userConfig.enabled) return interaction.reply({embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.information)
                 .setDescription(`${client.customEmojis.grayTick} ${client.functions.localeParser(locale.disabledCommand, { commandName: interaction.commandName })}.`)
             ], ephemeral: true});
-
+            
             //Ejecuta el comando
-            command.run(client, interaction, commandConfig, client.locale.handlers.commands.chatCommands[interaction.commandName]);
+            command.run(client, interaction, command.userConfig, client.locale.handlers.commands[commandType][command.fileName]);
         };
 
         //Si la interacción era de autocompletado
@@ -41,7 +38,7 @@ exports.run = async (interaction, client, locale) => {
             if (!command || !command.autocomplete) return; //Aborta si no lo encuentra
 
             //Ejecuta el método de autocompletado
-            command.autocomplete(client, interaction, command, client.locale.handlers.commands.chatCommands[interaction.commandName]);
+            command.autocomplete(client, interaction, command, client.locale.handlers.commands.chatCommands[command.fileName]);
         };
 
         //Si la interacción era un botón

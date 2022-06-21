@@ -1339,18 +1339,27 @@
                 }
             },
             "messageCommands": {
-                "test": {
+                "removeAndWarn": {
                     "appData": {
-                        "name": "Test message command",
-                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-                    }
+                        "name": "Remove and warn"
+                    },
+                    "cantDeleteMessages": "You do not have permission to delete messages in this channel",
+                    "memberNotFound": "The member is no longer on the server",
+                    "noBots": "You can't warn a bot",
+                    "badHierarchy": "You cannot warn a member with a role equal to or higher than yours",
+                    "cooldown": "You have to wait before you can put a new warning on {{member}}",
+                    "bodyModal": {
+                        "title": "Warn and delete a message",
+                        "fieldTitle": "Reason for the warning",
+                        "fieldPlaceholder": "Write a reason for the warning"
+                    },
+                    "correct": "The member has been warned"
                 }
             },
             "userCommands": {
                 "test": {
                     "appData": {
-                        "name": "Test user command",
-                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+                        "name": "Test user command"
                     }
                 }
             }

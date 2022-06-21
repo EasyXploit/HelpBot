@@ -1339,18 +1339,27 @@
                 }
             },
             "messageCommands": {
-                "test": {
+                "removeAndWarn": {
                     "appData": {
-                        "name": "Comando de mensaje de prueba",
-                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-                    }
+                        "name": "Eliminar y advertir"
+                    },
+                    "cantDeleteMessages": "No tienes permiso para eliminar mensajes en este canal",
+                    "memberNotFound": "El miembro ya no se encuentra en el servidor",
+                    "noBots": "No puedes advertir a un bot",
+                    "badHierarchy": "No puedes advertir a un miembro con un rol igual o superior al tuyo",
+                    "cooldown": "Tienes que esperar antes de poder poner una nueva advertencia a {{member}}",
+                    "bodyModal": {
+                        "title": "Advertir y borrar un mensaje",
+                        "fieldTitle": "Razón de la advertencia",
+                        "fieldPlaceholder": "Escribe una razón para la advertencia"
+                    },
+                    "correct": "El miembro ha sido advertido"
                 }
             },
             "userCommands": {
                 "test": {
                     "appData": {
-                        "name": "Comando de usuario de prueba",
-                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+                        "name": "Comando de usuario de prueba"
                     }
                 }
             }

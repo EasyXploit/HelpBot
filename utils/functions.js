@@ -674,7 +674,7 @@ exports.run = (client) => {
             //Por cada una de las propiedades del objeto iterado
             for (let property in object) {
 
-                //Si la propiedad un array y tienes valores
+                //Si la propiedad es un array y tienes valores
                 if (Array.isArray(object[property]) && object[property].length > 0) {
                     
                     //Ejecuta esta misma función de manera recursiva sobre dicho array

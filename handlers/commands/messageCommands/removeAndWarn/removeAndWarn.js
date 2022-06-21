@@ -2,14 +2,6 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
     try {
 
-        //ADVERTENCIA PROVISIONAL
-        if (interaction.member.id !== interaction.guild.ownerId) return interaction.reply({embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.information)
-            .setDescription(`${client.customEmojis.grayTick} Este comando aún no está disponible.`)
-        ], ephemeral: true});
-
-        //---------------------------------
-
         //Carga los permisos del miembro en el canal
         const executorPermissions = interaction.channel.permissionsFor(interaction.user);
 

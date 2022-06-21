@@ -92,9 +92,6 @@
             "waitingGuild": "WARNING: Waiting for the bot to join a guild",
             "error": "ERROR"
         },
-        "shardError": {
-            "errorMessage": "ERROR: A connection to the websocket encountered an error"
-        },
         "voiceStateUpdate": {
             "leftWhenIdle": "I have left the channel and deleted the queue"
         },

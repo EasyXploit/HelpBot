@@ -92,9 +92,6 @@
             "waitingGuild": "AVISO: Esperando a que el bot se una a una guild",
             "error": "ERROR"
         },
-        "shardError": {
-            "errorMessage": "ERROR: Una conexión al websocket encontró un error"
-        },
         "voiceStateUpdate": {
             "leftWhenIdle": "He abandonado el canal y borrado la cola"
         },

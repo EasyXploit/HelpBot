@@ -7,5 +7,6 @@
     "userQueueLimit": 50,
     "maxTrackDuration": 0,
     "maxIdleTime": 60000,
-    "maxPausedTime": 120000
+    "maxPausedTime": 120000,
+    "maxLocalAudiosFolderSize": 524288000
 }

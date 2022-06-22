@@ -69,21 +69,24 @@ exports.run = async (client, interaction, streamType, toStream) => {
 			], files: ['./resources/images/dj.png'] });
 		};
 	
-		//Comprueba si se quiere reproducir un .mp3 o un streaming de internet
-		if (streamType === 'file') {
-	
-			//Precarga el fichero MP3
-			const buffer = client.fs.readFileSync(`./media/audios/${toStream}.mp3`);
+		//Comprueba si se quiere reproducir un audio local o un streaming de internet
+		if (['mp3', 'ogg'].includes(streamType)) {
 	
 			//Herramienta para obtener la duración de la pista
-			const getMP3Duration = require('get-mp3-duration');
+			const { getAudioDurationInSeconds } = require('get-audio-duration');
+
+			//Almacena la duración de la pista
+			const duration = await getAudioDurationInSeconds(`./media/audios/${toStream}.${streamType}`) * 1000;
+
+			//Busca el miembro autor del audio en la guild
+			const audioAuthor = await client.functions.fetchMember(client.db.audios[toStream].ownerId) || `\`${locale.unknownAudioAuthor}\``;
 	
 			//Crea el objeto de la cola
-			const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'file', interaction.member.id, {
-				location: `./media/audios/${toStream}.mp3`,
+			const newTrack = await require('./addTrack').run(client, reproductionQueue, false, streamType, interaction.member.id, {
+				location: `./media/audios/${toStream}.${streamType}`,
 				title: toStream,
-				author: locale.newMp3Author,
-				length: getMP3Duration(buffer),
+				author: audioAuthor,
+				length: duration,
 				thumbnail: 'attachment://dj.png'
 			}, interaction);
 

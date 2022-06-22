@@ -978,7 +978,7 @@
                 "sound": {
                     "appData": {
                         "name": "sound",
-                        "description": "Plays a local .mp3 file, uploads one or shows a list of them",
+                        "description": "Plays a local audio file, uploads one or shows a list of them",
                         "options": {
                             "list": {
                                 "name": "list",
@@ -1000,15 +1000,19 @@
                             },
                             "upload": {
                                 "name": "upload",
-                                "description": "Upload a .mp3 file to the audio directory",
+                                "description": "Upload a .mp3 or .ogg file to the audio directory",
                                 "options": {
                                     "attachment": {
                                         "name": "adjunto",
-                                        "description": "Upload a .mp3 file"
+                                        "description": "Upload a .mp3 or .ogg file"
                                     },
                                     "name": {
                                         "name": "name",
                                         "description": "Choose a name for the audio"
+                                    },
+                                    "owner": {
+                                        "name": "owner",
+                                        "description": "Choose the member who will own the audio"
                                     }
                                 }
                             },
@@ -1026,6 +1030,28 @@
                     },
                     "soundListEmbed": {
                         "title": "List of audios"
+                    },
+                    "cantUpload": "You don't have permission to upload audio",
+                    "wrongFormat": "The file must have the extension `.mp3` or `.ogg`",
+                    "maxDirectorySizeReached": "The global maximum allowed space of {{maxDirectorySize}} has been reached",
+                    "alreadyExists": "An audio with the name {{audioName}} already exists",
+                    "maxFileSize": "The maximum file size is {{maxFileSize}}",
+                    "uploadLoggingEmbed": {
+                        "title": "Log - [ADDED AUDIO]",
+                        "description": "Added new audio to local directory",
+                        "uploader": "Uploaded by",
+                        "owner": "Owner",
+                        "audioName": "Audio name"
+                    },
+                    "uploaded": "Audio {{audioName}} has been successfully stored",
+                    "cantDeleteAny": "You don't have permission to delete audios that are not your property",
+                    "deleteLoggingEmbed": {
+                        "title": "Log - [AUDIO REMOVED]",
+                        "description": "A locally stored audio has been deleted",
+                        "executor": "Executor",
+                        "owner": "Owner",
+                        "unknownOwner": "Unknown",
+                        "audioName": "Audio name"
                     },
                     "alreadyPlaying": "The player is running on another channel",
                     "doesntExist": "The audio **{{recordName}}** does not exist",
@@ -1487,7 +1513,7 @@
                     "author": "Author",
                     "duration": "Duration"
                 },
-                "newMp3Author": "Local file",
+                "unknownAudioAuthor": "Unknown",
                 "noResults": "No results found matching `{{searchInput}}`",
                 "cantPlayPrivate": "Cannot play private videos",
                 "exceededLength": "Cannot play tracks longer than `{{duration}}`",
@@ -1510,6 +1536,7 @@
                 "random": "Random",
                 "playingEmbed": {
                     "authorTitle": "Now playing",
+                    "localAudio": "Local audio",
                     "author": "Author",
                     "duration": "Duration",
                     "requestedBy": "Requested by",

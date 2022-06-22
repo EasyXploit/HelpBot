@@ -978,7 +978,7 @@
                 "sound": {
                     "appData": {
                         "name": "sonido",
-                        "description": "Reproduce un archivo .mp3 local, sube uno o muestra una lista de ellos",
+                        "description": "Reproduce un archivo de audio local, sube uno o muestra una lista de ellos",
                         "options": {
                             "list": {
                                 "name": "lista",
@@ -1000,15 +1000,19 @@
                             },
                             "upload": {
                                 "name": "subir",
-                                "description": "Sube un fichero .mp3 al directorio de audios",
+                                "description": "Sube un fichero .mp3 o .ogg al directorio de audios",
                                 "options": {
                                     "attachment": {
                                         "name": "adjunto",
-                                        "description": "Carga un fichero .mp3"
+                                        "description": "Carga un fichero .mp3 o .ogg"
                                     },
                                     "name": {
                                         "name": "nombre",
                                         "description": "Elige un nombre para el audio"
+                                    },
+                                    "owner": {
+                                        "name": "dueño",
+                                        "description": "Elige el miembro que será propietario del audio"
                                     }
                                 }
                             },
@@ -1026,6 +1030,28 @@
                     },
                     "soundListEmbed": {
                         "title": "Lista de audios"
+                    },
+                    "cantUpload": "No tienes permiso para subir audios",
+                    "wrongFormat": "El fichero debe tener extensión `.mp3` o `.ogg`",
+                    "maxDirectorySizeReached": "Se ha alcanzado el espacio máximo global permitdo de {{maxDirectorySize}}",
+                    "alreadyExists": "Ya existe un audio con el nombre {{audioName}}",
+                    "maxFileSize": "El tamaño máximo de archivo es de {{maxFileSize}}",
+                    "uploadLoggingEmbed": {
+                        "title": "Registro - [AUDIO AÑADIDO]",
+                        "description": "Se ha añadido un nuevo audio al directorio local",
+                        "uploader": "Subido por",
+                        "owner": "Propietario",
+                        "unknownOwner": "Desconocido",
+                        "audioName": "Nombre del audio"
+                    },
+                    "uploaded": "El audio {{audioName}} ha sido almacenado correctamente",
+                    "cantDeleteAny": "No tienes permiso para eliminar audios que no son de tu propiedad",
+                    "deleteLoggingEmbed": {
+                        "title": "Registro - [AUDIO ELIMINADO]",
+                        "description": "Se ha eliminado un audio almacenado localmente",
+                        "executor": "Ejecutor",
+                        "owner": "Propietario",
+                        "audioName": "Nombre del audio"
                     },
                     "alreadyPlaying": "El reproductor se encuentra en ejecución en otro canal",
                     "doesntExist": "El audio **{{recordName}}** no existe",
@@ -1487,7 +1513,7 @@
                     "author": "Autor",
                     "duration": "Duración"
                 },
-                "newMp3Author": "Archivo local",
+                "unknownAudioAuthor": "Desconocido",
                 "noResults": "No se ha encontrado ningún resultado que coincida con `{{searchInput}}`",
                 "cantPlayPrivate": "No se pueden reproducir vídeos privados",
                 "exceededLength": "No se pueden reproducir pistas de más de `{{duration}}`",
@@ -1510,6 +1536,7 @@
                 "random": "Aleatorio",
                 "playingEmbed": {
                     "authorTitle": "Reproduciendo",
+                    "localAudio": "Audio local",
                     "author": "Autor",
                     "duration": "Duración",
                     "requestedBy": "Solicitado por",

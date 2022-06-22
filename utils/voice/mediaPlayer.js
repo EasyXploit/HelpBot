@@ -159,10 +159,13 @@ exports.run = async (client, interaction, connection) => {
                     };
                 };
 
-            } else if (reproductionQueue.tracks[toPlay].type === 'file') { //Si es un archivo local
+            } else if (['mp3', 'ogg'].includes(reproductionQueue.tracks[toPlay].type)) { //Si es un archivo local
+
+                //Almacena el formato del audio elegido
+                const fileFormat = client.db.audios[reproductionQueue.tracks[toPlay].meta.title].format;
 
                 //Crea el recurso a partir de un medio local
-                let resource = createAudioResource(client.fs.createReadStream(`media/audios/${reproductionQueue.tracks[toPlay].meta.title}.mp3`));
+                let resource = createAudioResource(client.fs.createReadStream(`media/audios/${reproductionQueue.tracks[toPlay].meta.title}.${fileFormat}`));
 
                 //Reproduce el recurso en el player
                 await player.play(resource);
@@ -192,7 +195,7 @@ exports.run = async (client, interaction, connection) => {
                 .setColor(randomColor())
                 .setThumbnail(info.meta.thumbnail)
                 .setAuthor({name: `${locale.playingEmbed.authorTitle} 🎶`, iconURL: 'attachment://dj.png'})
-                .setDescription(`${info.meta.location.startsWith('http') ? `[${info.meta.title}](${info.meta.location})` : info.meta.title}\n\n● **${locale.playingEmbed.author}:** \`${info.meta.author}\`\n● **${locale.playingEmbed.duration}:** \`${client.functions.msToTime(info.meta.length)}\``)
+                .setDescription(`${info.meta.location.startsWith('http') ? `[${info.meta.title}](${info.meta.location})` : `${locale.playingEmbed.localAudio}: \`${info.meta.title}\``}\n\n● **${locale.playingEmbed.author}:** ${info.meta.author}\n● **${locale.playingEmbed.duration}:** \`${client.functions.msToTime(info.meta.length)}\``)
                 .addField(`${locale.playingEmbed.requestedBy}:`, `<@${reproductionQueue.tracks[toPlay].requesterId}>`, true)
                 .addField(`${locale.playingEmbed.upNext}:`, upNext, true)
                 .setFooter({text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild) })

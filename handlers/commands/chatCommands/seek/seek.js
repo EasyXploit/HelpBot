@@ -35,7 +35,7 @@ exports.run = async (client, interaction, locale, commandConfig, inheritedMoment
         const queueItem = reproductionQueue.tracks[0];
 
         //Comprueba si se quiere modificar la reproducción de un fichero local.
-        if (queueItem.type === 'file') return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (['mp3', 'ogg'].includes(queueItem.type)) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantAdjustFiles}.`)
         ], ephemeral: true});

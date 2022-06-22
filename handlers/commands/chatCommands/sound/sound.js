@@ -8,7 +8,7 @@ let fileNames = fs.readdirSync('./media/audios/');
 let soundList = [];
 
 //Para cada archivo, almacena su nombre sin extensión en el array "soundList"
-for (let file = 0; file < fileNames.length; file ++) soundList.push(fileNames[file].replace('.mp3', ''));
+for (let file = 0; file < fileNames.length; file ++) soundList.push(fileNames[file].replace('.mp3', '').replace('.ogg', ''));
 
 //Exporta la función para ser ejecutada
 exports.run = async (client, interaction, commandConfig, locale) => {
@@ -28,17 +28,56 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Si se desea subir un nuevo audio
         } else if (interaction.options._subcommand === locale.appData.options.upload.name) {
 
+            //Almacena si el miembro puede subir audios, en función de si tiene permisos o no
+            let authorized = interaction.member.id === interaction.guild.ownerId || interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole);
+
+            //Para cada ID de rol de la lista blanca
+            if (!authorized) for (let index = 0; index < commandConfig.canUpload.length; index++) {
+
+                //Si uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
+                if (interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || interaction.member.roles.cache.find(role => role.id === commandConfig.canUpload[index])) {
+                    authorized = true;
+                    break;
+                };
+            };
+
+            //Si no se permitió la ejecución, manda un mensaje de error
+            if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryError)
+                .setDescription(`${client.customEmojis.redTick} ${locale.cantUpload}.`)
+            ], ephemeral: true});
+
             //Almacena la URL del fichero adjunto
             const url = interaction.options._hoistedOptions[0].attachment.url;
 
-            //Si el fichero no tiene extensión .mp3, devuelve un error
-            if (!url.endsWith('.mp3')) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            //Si el fichero no tiene extensión .mp3 o .ogg, devuelve un error
+            if (!url.endsWith('.mp3') && !url.endsWith('.ogg')) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} El fichero debe tener extensión \`.mp3\`.`)
+                .setDescription(`${client.customEmojis.redTick} ${wrongFormat}.`)
             ], ephemeral: true});
 
-            //Almacena el nombre que tendrá el fichero del audio
-            let fileName = interaction.options._hoistedOptions[1] ? `${interaction.options._hoistedOptions[1].value}.mp3` : url.split('/').pop();
+            //Almacena el nombre que tendrá el fichero de audio
+            const fileNameOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.upload.options.name.name);
+            let fileName = fileNameOption ? `${fileNameOption.value}.${url.split('.').pop()}` : url.split('/').pop();
+
+            //Requiere dependencias neecsarias para calcular el tamaño del directorio de auidos
+            const { readdir, stat } = require('fs/promises');
+
+            //Almacena los audios del directorio de auidos
+            const files = await readdir( './media/audios');
+
+            //Obtiene la info. de cada uno de los archivos
+            const stats = files.map(file => stat(`./media/audios/${file}`));
+
+            //Calcula el peso total del directorio en función del peso de todos los archivos
+            const folderSize = (await Promise.all(stats) ).reduce((accumulator, { size }) => accumulator + size, 0);
+
+            //Devuelve un error si se ha superado el tamaño máximo del directorio de audios
+            if (folderSize > client.config.music.maxLocalAudiosFolderSize) return interaction.reply({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.maxDirectorySizeReached, { maxDirectorySize: `\`${await client.functions.formatBytes(client.config.music.maxLocalAudiosFolderSize)}\`` })}.`)
+                
+            ]});
 
             //Almacena el nombre que tendrá el audio
             let audioName = fileName.split('.').shift();
@@ -50,13 +89,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 audioName = audioName.slice(0, 20);
 
                 //Regenera el nombre del fichero
-                fileName = `${audioName}.mp3`
+                fileName = `${audioName}.${url.split('.').pop()}`
             };
 
             //Comprueba si ya existía un audio con ese nombre
             if (soundList.includes(audioName)) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} Ya existe un audio con el nombre \`${audioName}\`.`)
+                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.alreadyExists, { audioName: `\`${audioName}\`` })}.`)
             ], ephemeral: true});
 
             //Pospone la respuesta del bot
@@ -74,7 +113,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 //Devuelve un error si se ha superado el tamaño máximo de archivo
                 if (fileSize > commandConfig.maxFileSize) return interaction.editReply({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} El tamaño máximo de archivo es de \`${await client.functions.formatBytes(commandConfig.maxFileSize)}\`.`)
+                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.maxFileSize, { maxFileSize: `\`${await client.functions.formatBytes(commandConfig.maxFileSize)}\`` })}.`)
                 ]});
 
                 //Crea un nuevo archivo local
@@ -89,63 +128,61 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                     //Cierra el archivo
                     file.close();
 
-                    //Carga el módulo para hacer obtener la duración del fichero
-                    const getMP3Duration = require('get-mp3-duration');
-
-                    //Carga el fichero para comrpobar su duración
-			        const fileBuffer = await client.fs.readFileSync(`./media/audios/${fileName}`);
-
-                    //Almacena la duración del fichero
-                    let duration = await getMP3Duration(fileBuffer);
-
-                    //Si la duración excede el máximo permitido
-                    if (duration > commandConfig.maxDuration) {
-
-                        //Borra el fichero del audio
-                        await client.fs.unlink(`./media/audios/${fileName}`, (error) => {
-
-                            //Si hubo un error, lo devuelve
-                            if (error) throw error;
-                        });
-
-                        //Devuelve un error al usuario
-                        return interaction.editReply({ embeds: [ new client.MessageEmbed()
-                            .setColor(client.config.colors.error)
-                            .setDescription(`${client.customEmojis.redTick} La duración máxima permitida es \`${await client.functions.msToTime(commandConfig.maxDuration)}\`.`)
-                        ]});
-                    };
-
                     //Actualiza la lista de audios
                     this.config.soundList.push(audioName);
 
-                    //Envía un registro al canal de registro
-                    await client.functions.loggingManager('embed', new client.MessageEmbed()
-                        .setColor(client.config.colors.logging)
-                        .setTitle(`📑 Registro - [AUDIO AÑADIDO]`)
-                        .setDescription(`Se ha añadido un nuevo audio al directorio local`)
-                        .addField('Miembro', interaction.user.tag, true)
-                        .addField('Nombre', audioName, true)
-                    );
+                    //Almacena el propietario del fichero de audio
+                    const fileOwnerOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.upload.options.owner.name);
+                    let fileOwner = fileOwnerOption ? fileOwnerOption.value : interaction.member.id;
 
-                    //Responde a la interacción con una confirmación
-                    await interaction.editReply({ embeds: [ new client.MessageEmbed()
-                        .setColor(client.config.colors.correct)
-                        .setDescription(`${client.customEmojis.greenTick} El audio \`${audioName}\` ha sido almacenado correctamente.`)
-                    ]});
+                    //Sube el audio a la base de datos
+                    client.db.audios[audioName] = {
+                        format: fileName.split('.').pop(),
+                        ownerId: fileOwner
+                    };
+
+                    //Sobreescribe el fichero de la base de datos con los cambios
+                    client.fs.writeFile('./databases/audios.json', JSON.stringify(client.db.audios, null, 4), async err => {
+
+                        //Si hubo un error, lo lanza a la consola
+                        if (err) throw err;
+
+                        //Almacena el miembro propietario del audio
+                        const ownerMember = await client.functions.fetchMember(fileOwner);
+
+                        //Envía un registro al canal de registro
+                        await client.functions.loggingManager('embed', new client.MessageEmbed()
+                            .setColor(client.config.colors.logging)
+                            .setTitle(`📑 ${locale.uploadLoggingEmbed.title}`)
+                            .setDescription(locale.uploadLoggingEmbed.description)
+                            .addField(locale.uploadLoggingEmbed.uploader, interaction.user.tag, true)
+                            .addField(locale.uploadLoggingEmbed.owner, ownerMember.user.tag, true)
+                            .addField(locale.uploadLoggingEmbed.audioName, `\`${audioName}\``, true)
+                        );
+
+                        //Responde a la interacción con una confirmación
+                        await interaction.editReply({ embeds: [ new client.MessageEmbed()
+                            .setColor(client.config.colors.correct)
+                            .setDescription(`${client.customEmojis.greenTick} ${client.functions.localeParser(locale.uploaded, { audioName: `\`${audioName}\`` })}.`)
+                        ]});
+                    });
                 });
             });
 
         //Si se desea eliminar un audio existente
         } else if (interaction.options._subcommand === locale.appData.options.remove.name) {
 
-            //Almacena si el miembro puede eliminar audios, en función de si tiene permisos o no
-            let authorized = interaction.member.id === interaction.guild.ownerId || interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole);
+            //Almacena la selección del usuario
+            const audioName = interaction.options._hoistedOptions[0].value;
+
+            //Almacena si el miembro puede eliminar cualquier audio, en función de si tiene permisos o no
+            let authorized = interaction.member.id === interaction.guild.ownerId || interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || client.db.audios[audioName].ownerId === interaction.member.id;
 
             //Para cada ID de rol de la lista blanca
-            if (!authorized) for (let index = 0; index < commandConfig.canRemove.length; index++) {
+            if (!authorized) for (let index = 0; index < commandConfig.canRemoveAny.length; index++) {
 
                 //Si uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                if (interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || interaction.member.roles.cache.find(role => role.id === commandConfig.canRemove[index])) {
+                if (interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || interaction.member.roles.cache.find(role => role.id === commandConfig.canRemoveAny[index])) {
                     authorized = true;
                     break;
                 };
@@ -154,36 +191,50 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} No tienes permiso para eliminar audios.`)
+                .setDescription(`${client.customEmojis.redTick} ${locale.cantDeleteAny}.`)
             ], ephemeral: true});
 
-            //Almacena la selección del usuario
-            const audioName = interaction.options._hoistedOptions[0].value;
+            //Almacena el formato del audio elegido
+            const fileFormat = client.db.audios[audioName].format;
 
             //Borra el fichero del audio
-            await client.fs.unlink(`./media/audios/${audioName}.mp3`, (error) => {
+            await client.fs.unlink(`./media/audios/${audioName}.${fileFormat}`, (error) => {
 
                 //Si hubo un error, lo devuelve
                 if (error) throw error;
             });
 
+            //Almacena el miembro propietario del audio
+            const ownerMember = await client.functions.fetchMember(client.db.audios[audioName].ownerId);
+
             //Elimina la entrada de la lista
             this.config.soundList.splice(this.config.soundList.indexOf(audioName), 1);
 
-            //Envía un registro al canal de registro
-            await client.functions.loggingManager('embed', new client.MessageEmbed()
-                .setColor(client.config.colors.logging)
-                .setTitle(`📑 Registro - [AUDIO ELIMINADO]`)
-                .setDescription(`Se ha eliminado un audio almacenado localmente`)
-                .addField('Miembro', interaction.user.tag, true)
-                .addField('Nombre', audioName, true)
-            );
+            //Elimina el audio de la base de datos
+            delete client.db.audios[audioName];
 
-            //Responde a la interacción con una confirmación
-            await interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.correct)
-                .setDescription(`${client.customEmojis.greenTick} El audio \`${audioName}\` ha sido eliminado correctamente.`)
-            ]});
+            //Sobreescribe el fichero de la base de datos con los cambios
+            client.fs.writeFile('./databases/audios.json', JSON.stringify(client.db.audios, null, 4), async err => {
+
+                //Si hubo un error, lo lanza a la consola
+                if (err) throw err;
+
+                //Envía un registro al canal de registro
+                await client.functions.loggingManager('embed', new client.MessageEmbed()
+                    .setColor(client.config.colors.logging)
+                    .setTitle(`📑 ${locale.deleteLoggingEmbed.title}`)
+                    .setDescription(locale.deleteLoggingEmbed.description)
+                    .addField(locale.deleteLoggingEmbed.executor, interaction.user.tag, true)
+                    .addField(locale.deleteLoggingEmbed.owner, ownerMember ? ownerMember.user.tag : locale.deleteLoggingEmbed.unknownOwner, true)
+                    .addField(locale.deleteLoggingEmbed.audioName, `\`${audioName}\``, true)
+                );
+
+                //Responde a la interacción con una confirmación
+                await interaction.reply({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.correct)
+                    .setDescription(`${client.customEmojis.greenTick} El audio \`${audioName}\` ha sido eliminado correctamente.`)
+                ]});
+            });
         
         } else { //Si se desea reproducir una grabación
 
@@ -208,8 +259,11 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.doesntExist, { recordName: selection })}.`)
             ], ephemeral: true});
 
+            //Almacena el formato del audio elegido
+            const fileFormat = client.db.audios[selection].format;
+
             //Crea el objeto de la cola y almacena si se ha logrado crear o no
-            await require('../../../../utils/voice/fetchResource.js').run(client, interaction, 'file', selection);
+            await require('../../../../utils/voice/fetchResource.js').run(client, interaction, fileFormat, selection);
 
             //Almacena librerías necesarios para manejar conexiones de voz
             const { getVoiceConnection, joinVoiceChannel } = require('@discordjs/voice');
@@ -337,10 +391,14 @@ module.exports.config = {
                         type: 'ATTACHMENT',
                         required: true
                     },
-                    
                     {
                         optionName: 'name',
                         type: 'STRING',
+                        required: false
+                    },
+                    {
+                        optionName: 'owner',
+                        type: 'USER',
                         required: false
                     }
                 ]

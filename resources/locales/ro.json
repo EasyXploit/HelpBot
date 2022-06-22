@@ -75,7 +75,8 @@
       },
       "goodbyeEmbed": {
         "author": "Un membru a plecat",
-        "memberId": "ID al membrului"
+        "memberId": "ID al membrului",
+        "antiquity": "Antiquitate"
       }
     },
     "interactionCreate": {
@@ -88,9 +89,6 @@
       "justOneGuild": "ADVERTISMENT: Botul nu este proiectat să funcționeze în mai mult de o breaslă (server).\nExpulzați botul din toate celelalte bresle și reporniți-l",
       "waitingGuild": "ADVERTISMENT: Se așteaptă ca botul să se alăture unei bresle",
       "error": "EROARE"
-    },
-    "shardError": {
-      "errorMessage": "EROARE: O conexiune la websocket a întâmpinat o eroare"
     },
     "voiceStateUpdate": {
       "leftWhenIdle": "Am părăsit canalul și am șters coada"
@@ -556,6 +554,8 @@
                   "attachment": {
                   },
                   "name": {
+                  },
+                  "owner": {
                   }
                 }
               },
@@ -568,6 +568,10 @@
             }
           },
           "soundListEmbed": {
+          },
+          "uploadLoggingEmbed": {
+          },
+          "deleteLoggingEmbed": {
           }
         },
         "stats": {
@@ -758,8 +762,10 @@
         }
       },
       "messageCommands": {
-        "test": {
+        "removeAndWarn": {
           "appData": {
+          },
+          "bodyModal": {
           }
         }
       },

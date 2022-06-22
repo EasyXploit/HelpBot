@@ -978,7 +978,7 @@
                 "sound": {
                     "appData": {
                         "name": "sonido",
-                        "description": "Reproduce un archivo de audio local, sube uno o muestra una lista de ellos",
+                        "description": "Reproduce un archivo de audio local, sube o elimina uno, o muestra una lista de ellos",
                         "options": {
                             "list": {
                                 "name": "lista",

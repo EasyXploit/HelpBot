@@ -978,7 +978,7 @@
                 "sound": {
                     "appData": {
                         "name": "sound",
-                        "description": "Plays a local audio file, uploads one or shows a list of them",
+                        "description": "Plays a local audio file, uploads or deletes one, or shows a list of them",
                         "options": {
                             "list": {
                                 "name": "list",

@@ -33,7 +33,11 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 actualXP: 0,
                 level: 0,
                 lastMessage: 0,
-                aproxVoiceTime: 0
+                aproxVoiceTime: 0,
+                notifications: {
+                    public: true,
+                    private: true
+                }
             };
         };
 

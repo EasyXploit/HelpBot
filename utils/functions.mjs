@@ -1,4 +1,9 @@
-exports.run = (client) => {
+//Importa createRequire para usar ES6 y CommonJS simultánemante
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+//Función general para cargar las funciones en el cliente
+export function loadFunctions(client) {
     
     //Crea un objeto para almacenar todas las funciones
     client.functions = {};
@@ -15,7 +20,7 @@ exports.run = (client) => {
             let result;
 
             //Comprueba si el parámetro coincide con el formato de mención de miembro
-            const matches = member.toString().match(/^<@!?(\d+)>$/);
+            const matches = member.toString().match(new RegExp(/^<@!?(\d+)>$/));
 
             //Lo busca por ID o por mención (en función de la variable "matches")
             if (matches) result = await client.homeGuild.members.fetch(matches[1]);
@@ -40,7 +45,7 @@ exports.run = (client) => {
             let result;
 
             //Comprueba si el parámetro coincide con el formato de mención de usuario
-            const matches = user.toString().match(/^<@!?(\d+)>$/);
+            const matches = user.toString().match(new RegExp(/^<@!?(\d+)>$/));
 
             //Lo busca por ID o por mención (en función de la variable "matches")
             if (matches) result = await client.users.fetch(matches[1]);
@@ -65,7 +70,7 @@ exports.run = (client) => {
             let result;
 
             //Comprueba si el parámetro coincide con el formato de mención de rol
-            const matches = role.toString().match(/^<@&?(\d+)>$/);
+            const matches = role.toString().match(new RegExp(/^<@&?(\d+)>$/));
 
             //Lo busca por ID o por mención (en función de la variable "matches")
             if (matches) result = await client.homeGuild.roles.fetch(matches[1]);
@@ -90,7 +95,7 @@ exports.run = (client) => {
             let result;
 
             //Comprueba si el parámetro coincide con el formato de mención de canal
-            const matches = channel.toString().match(/^<#?(\d+)>$/);
+            const matches = channel.toString().match(new RegExp(/^<#?(\d+)>$/));
 
             //Lo busca por ID o por mención (en función de la variable "matches")
             if (matches) result = await client.homeGuild.channels.fetch(matches[1]);
@@ -164,7 +169,7 @@ exports.run = (client) => {
     client.functions.localeParser = (expression, valuesObject) => {
 
         //Almacena el texto, con los comodines de la expresión reemplazados
-        const text = expression.replace(/{{\s?([^{}\s]*)\s?}}/g, (substring, value, index) => {
+        const text = expression.replace(new RegExp(/{{\s?([^{}\s]*)\s?}}/g), (substring, value, index) => {
 
             //Almacena el valor reemplazado
             value = valuesObject[value];
@@ -592,7 +597,7 @@ exports.run = (client) => {
         const splittedTime = HHMMSS.split(':');
 
         //Añade los campos restantes
-        while (splittedTime.length !== 3) splittedTime.splice(0, 0, 00);
+        while (splittedTime.length !== 3) splittedTime.splice(0, 0, parseInt('00'));
 
         //Transforma la cadena a segundos.
         const seconds = ( + splittedTime[0] ) * 60 * 60 + ( + splittedTime[1] ) * 60 + ( + splittedTime[2] ); 
@@ -781,10 +786,10 @@ exports.run = (client) => {
     };
 
     //Función para generar sIDs
-    client.functions.sidGenerator = length => {
+    client.functions.sidGenerator = async length => {
         
         //Requiere el generador de IDs con un alfabeto personalizado
-        const { customAlphabet } = require('nanoid');
+        const { customAlphabet } = await import('nanoid');
 
         //Asigna el alfabeto y la longitud del ID
         const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', length || 10);
@@ -919,8 +924,8 @@ exports.run = (client) => {
         //Se almacena el nombre del comando (si procede)
         const commandName = interaction.commandName ? interaction.commandName : locale.interactionErrorHandler.noCommandName;
 
-        //Se comprueba si se han proporcionado argumentos
-        const arguments = interaction.options._hoistedOptions[0] ? `\`\`\`${argsString}\`\`\`` : locale.interactionErrorHandler.noArguments;
+        //Se comprueba si se han proporcionado parámetros
+        const parameters = interaction.options._hoistedOptions[0] ? `\`\`\`${argsString}\`\`\`` : locale.interactionErrorHandler.noArguments;
 
         //Genera un embed de notificación
         const notificationEmbed = new client.MessageEmbed()
@@ -952,7 +957,7 @@ exports.run = (client) => {
             .addField(locale.interactionErrorHandler.debuggingEmbed.channel, `<@${interaction.channelId}>`, true)
             .addField(locale.interactionErrorHandler.debuggingEmbed.author, interaction.member.user.tag, true)
             .addField(locale.interactionErrorHandler.debuggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
-            .addField(locale.interactionErrorHandler.debuggingEmbed.arguments, arguments)
+            .addField(locale.interactionErrorHandler.debuggingEmbed.noParameters, parameters)
             .addField(locale.interactionErrorHandler.debuggingEmbed.error, `\`\`\`${errorString}\`\`\``)
             .setFooter({ text: locale.interactionErrorHandler.debuggingEmbed.footer })
         );

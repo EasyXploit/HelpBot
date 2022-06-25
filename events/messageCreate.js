@@ -55,5 +55,5 @@ exports.run = async (message, client, locale) => {
     };
 
     //Aumenta la cantidad de XP del miembro (si procede)
-    if (client.config.xp.rewardMessages && !client.config.xp.nonXPChannels.includes(message.channel.id)) await client.functions.addXP(message.member, 'message', message.channel);
+    if (message.channel.type !== 'DM' && client.config.xp.rewardMessages && !client.config.xp.nonXPChannels.includes(message.channel.id)) await client.functions.addXP(message.member, 'message', message.channel);
 };

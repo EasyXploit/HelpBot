@@ -234,7 +234,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                     };
 
                     //Almacena un nuevo ID para la encuesta
-                    const pollId = client.functions.sidGenerator();
+                    const pollId = await client.functions.sidGenerator();
                     
                     //Envía la encuesta generada al canal de invocación
                     interactionChannel.send({ embeds: [ new client.MessageEmbed()

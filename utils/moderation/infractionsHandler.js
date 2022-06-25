@@ -193,7 +193,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             if (!client.db.warns[member.id]) client.db.warns[member.id] = {};
 
             //Genera un ID para la infracción
-            const warnID = client.functions.sidGenerator();
+            const warnID = await client.functions.sidGenerator();
             
             //Graba la infracción en la base de datos
             client.db.warns[member.id][warnID] = {

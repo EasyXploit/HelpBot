@@ -58,7 +58,8 @@ exports.run = async (client, locale) => {
             console.log(`\n - [OK] ${locale.guildConfigLoaded}.`);
 
             //Carga las funciones globales
-            require('../functions.js').run(client);
+            const functions = await import('../functions.mjs');
+            functions.loadFunctions(client);
 
             //Carga los customEmojis en el cliente
             await require('./loadEmojis.js').run(client);

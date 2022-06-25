@@ -1,4 +1,4 @@
-exports.run = async (client, interaction, locale, commandConfig, inheritedMoment) => {
+exports.run = async (client, interaction, commandConfig, locale, inheritedMoment) => {
 
     try {
 

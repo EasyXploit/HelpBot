@@ -33,7 +33,7 @@
                 "ban": {
                     "appData": {
                         "name": "banear",
-                        "description": "Prohibe a un miembro entrar al servidor",
+                        "description": "Prohíbe a un miembro entrar al servidor",
                         "options": {
                             "user": {
                                 "name": "usuario",

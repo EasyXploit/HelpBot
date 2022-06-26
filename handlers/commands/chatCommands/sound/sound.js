@@ -60,7 +60,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             const fileNameOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.upload.options.name.name);
             let fileName = fileNameOption ? `${fileNameOption.value}.${url.split('.').pop()}` : url.split('/').pop();
 
-            //Requiere dependencias neecsarias para calcular el tamaño del directorio de auidos
+            //Requiere dependencias necesarias para calcular el tamaño del directorio de audios
             const { readdir, stat } = require('fs/promises');
 
             //Almacena los audios del directorio de auidos
@@ -70,7 +70,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             const stats = files.map(file => stat(`./storage/audios/${file}`));
 
             //Calcula el peso total del directorio en función del peso de todos los archivos
-            const folderSize = (await Promise.all(stats) ).reduce((accumulator, { size }) => accumulator + size, 0);
+            const folderSize = (await Promise.all(stats)).reduce((accumulator, { size }) => accumulator + size, 0);
 
             //Devuelve un error si se ha superado el tamaño máximo del directorio de audios
             if (folderSize > client.config.music.maxLocalAudiosFolderSize) return interaction.reply({ embeds: [ new client.MessageEmbed()

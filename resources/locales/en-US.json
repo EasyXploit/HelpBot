@@ -33,7 +33,7 @@
                 "ban": {
                     "appData": {
                         "name": "ban",
-                        "description": "Bans a member",
+                        "description": "Bans a member from the server",
                         "options": {
                             "user": {
                                 "name": "user",

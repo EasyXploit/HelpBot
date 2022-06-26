@@ -85,7 +85,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         };
 
         //Sobreescribe el fichero de la base de datos con los cambios
-        client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
+        client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
 
             //Si hubo un error, lo lanza a la consola
             if (err) throw err;

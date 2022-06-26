@@ -32,7 +32,7 @@ exports.run = (client) => {
             delete client.db.mutes[idKey];
 
             //Graba la nueva base de datos
-            client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
+            client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
 
                 //Si hubo un error, lo devuelve
                 if (err) throw err;
@@ -82,7 +82,7 @@ exports.run = (client) => {
             delete client.db.bans[idKey];
 
             //Vuelve a grabar la base de datos
-            client.fs.writeFile('./databases/bans.json', JSON.stringify(client.db.bans, null, 4), async err => {
+            client.fs.writeFile('./storage/databases/bans.json', JSON.stringify(client.db.bans, null, 4), async err => {
 
                 //Si se genera un error, lo lanza
                 if (err) throw err;
@@ -174,7 +174,7 @@ exports.run = (client) => {
                 delete client.db.polls[idKey];
 
                 //Actualiza el fichero de la BD
-                return client.fs.writeFile('./databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
+                return client.fs.writeFile('./storage/databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
 
                     //Si encuentra un error, lo lanza por consola
                     if (err) throw err;
@@ -247,7 +247,7 @@ exports.run = (client) => {
                 delete client.db.polls[idKey];
 
                 //Actualiza el fichero de la BD
-                client.fs.writeFile('./databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
+                client.fs.writeFile('./storage/databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
 
                     //Si encuentra un error, lo lanza por consola
                     if (err) throw err;

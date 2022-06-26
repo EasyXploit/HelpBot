@@ -59,7 +59,7 @@ client.fs = require('fs');
 
 //Carga los archivos de configuración, bases de datos y locales
 const configFiles = client.fs.readdirSync('./configs/', { withFileTypes: true });
-const databaseFiles = client.fs.readdirSync('./databases/', { withFileTypes: true });
+const databaseFiles = client.fs.readdirSync('./storage/databases/', { withFileTypes: true });
 
 //Por cada uno de los archivos de config.
 configFiles.forEach(async file => {
@@ -72,7 +72,7 @@ configFiles.forEach(async file => {
 databaseFiles.forEach(async file => {
 
     //Almacena la base de datos en memoria
-    client.db[file.name.replace('.json', '')] = JSON.parse(client.fs.readFileSync(`./databases/${file.name}`));
+    client.db[file.name.replace('.json', '')] = JSON.parse(client.fs.readFileSync(`./storage/databases/${file.name}`));
 });
 
 //MANEJADOR DE EVENTOS

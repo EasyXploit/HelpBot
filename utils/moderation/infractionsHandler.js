@@ -31,7 +31,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             };
 
             //Sobreescribe el fichero de BD
-            client.fs.writeFile('./databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
+            client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
 
                 //Si hubo algún error, lo lanza por consola
                 if (err) throw err;
@@ -101,7 +101,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 };
         
                 //Sobreescribe el fichero de BD
-                client.fs.writeFile('./databases/bans.json', JSON.stringify(client.db.bans, null, 4), async err => {
+                client.fs.writeFile('./storage/databases/bans.json', JSON.stringify(client.db.bans, null, 4), async err => {
 
                     //Si hubo algún error, lo lanza por consola
                     if (err) throw err;
@@ -203,7 +203,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             };
 
             //Sobreescribe la base de datos con los nuevos datos
-            client.fs.writeFile('./databases/warns.json', JSON.stringify(client.db.warns, null, 4), async err => {
+            client.fs.writeFile('./storage/databases/warns.json', JSON.stringify(client.db.warns, null, 4), async err => {
 
                 //Si ocurrió un error, lo lanza a la consola
                 if (err) throw err;

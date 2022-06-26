@@ -43,7 +43,7 @@ exports.run = async (client, interaction) => {
         };
 
         //Sobreescribe el fichero de la base de datos con los cambios
-        client.fs.writeFile('./databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
+        client.fs.writeFile('./storage/databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
 
             //Si hubo un error, lo lanza a la consola
             if (err) throw err;

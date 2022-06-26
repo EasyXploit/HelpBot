@@ -60,7 +60,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             pollData.expiration = Date.now();
 
             //Sobreescribe el fichero de la base de datos con los cambios
-            client.fs.writeFile('./databases/polls.json', JSON.stringify(client.db.polls), async err => {
+            client.fs.writeFile('./storage/databases/polls.json', JSON.stringify(client.db.polls), async err => {
 
                 //Si hubo un error, lo lanza a la consola
                 if (err) throw err;
@@ -281,7 +281,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                         if (duration !== 0) client.db.polls[pollId].expiration = Date.now() + duration;
                 
                         //Sobreescribe el fichero de la base de datos con los cambios
-                        client.fs.writeFile('./databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
+                        client.fs.writeFile('./storage/databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
 
                             //Si hubo un error, lo lanza a la consola
                             if (err) throw err;

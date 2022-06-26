@@ -430,7 +430,7 @@ export function loadFunctions(client) {
             };
 
             //Guarda las nuevas estadísticas del miembro en la base de datos
-            client.fs.writeFile('./databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
+            client.fs.writeFile('./storage/databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
                 if (err) throw err;
             });
         };

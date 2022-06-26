@@ -165,7 +165,7 @@ exports.run = async (client, interaction, connection) => {
                 const fileFormat = client.db.audios[reproductionQueue.tracks[toPlay].meta.title].format;
 
                 //Crea el recurso a partir de un medio local
-                let resource = createAudioResource(client.fs.createReadStream(`media/audios/${reproductionQueue.tracks[toPlay].meta.title}.${fileFormat}`));
+                let resource = createAudioResource(client.fs.createReadStream(`storage/audios/${reproductionQueue.tracks[toPlay].meta.title}.${fileFormat}`));
 
                 //Reproduce el recurso en el player
                 await player.play(resource);

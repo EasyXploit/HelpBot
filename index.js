@@ -77,7 +77,7 @@ databaseFiles.forEach(async file => {
 
 //MANEJADOR DE EVENTOS
 //Lee el directorio de los eventos
-client.fs.readdir('./events/', async (err, files) => {
+client.fs.readdir('./handlers/events/', async (err, files) => {
 
     //Si se genera un error, aborta la carga del resto de eventos
     if (err) return console.error(`${new Date().toLocaleString()} 》${locale.index.uncompleteEventsLoad}.`, error.stack);
@@ -85,11 +85,11 @@ client.fs.readdir('./events/', async (err, files) => {
     //Precarga cada uno de los eventos
     files.forEach(file => {
 
-        const eventFunction = require(`./events/${file}`);  //Almacena la función del evento
+        const eventFunction = require(`./handlers/events/${file}`);  //Almacena la función del evento
         const eventName = file.split('.')[0];               //Almacena el nombre del evento
 
         //Añade un listener para el evento en cuestión (usando spread syntax)
-        client.on(eventName, (...arguments) => eventFunction.run(...arguments, client, locale.events[eventName]));
+        client.on(eventName, (...arguments) => eventFunction.run(...arguments, client, locale.handlers.events[eventName]));
 
         //Notifica la carga en la consola
         console.log(` - [OK] ${locale.index.eventLoaded}: [${eventName}]`);

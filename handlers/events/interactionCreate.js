@@ -47,7 +47,7 @@ exports.run = async (interaction, client, locale) => {
             try {
 
                 //Carga el archivo correspondiente para manejar el botón
-                const handlerFile = require(`../handlers/buttons/${interaction.customId}.js`);
+                const handlerFile = require(`../buttons/${interaction.customId}.js`);
 
                 //Ejecuta el manejador de la interacción
                 handlerFile.run(client, interaction);

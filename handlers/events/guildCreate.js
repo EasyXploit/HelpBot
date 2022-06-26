@@ -12,7 +12,7 @@ exports.run = async (guild, client, locale) => {
         if (cachedGuilds.size === 1) {
 
             //Almacena la nueva configuración de la guild
-            await require('../utils/lifecycle/newGuild.js').run(client, cachedGuilds.first());
+            await require('../../utils/lifecycle/newGuild.js').run(client, cachedGuilds.first());
 
             //Notifica por consola que el bot se ha unido a la guild
             console.log(`${new Date().toLocaleString()} 》${client.functions.localeParser(locale.newGuild, { botUsername: client.user.username, guildName: guild.name })}.`);

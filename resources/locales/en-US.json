@@ -17,89 +17,17 @@
         "loggingIn": "Logging in",
         "loggedIn": "Logged in successfully!"
     },
-    "events": {
-        "channelDelete": {
-            "missingDebuggingChannel": "WARNING: The debugging channel no longer exists or is inaccessible.\n It has been cleared from the configuration and unloaded from memory",
-            "missingLoggingChannel": "WARNING: The logging channel no longer exists or is inaccessible.\n It has been cleared from the configuration and unloaded from memory"
-        },
-        "error": {
-            "econnresetError": "ERROR: The connection was closed unexpectedly",
-            "otherError": "ERROR"
-        },
-        "guildBanAdd": {
-            "botLoggingEmbed": {
-                "title": "Logging - [BOTS]",
-                "description": "The **BOT** {{userTag}} was banned from the server"
-            },
-            "loggingEmbed": {
-                "author": "{{userTag}} has been BANNED",
-                "memberId": "Member ID",
-                "moderator": "Moderator",
-                "unknownModerator": "Unknown",
-                "reason": "Reason",
-                "undefinedReason": "Undefined",
-                "expiration": "Expiration",
-                "noExpiration": "Does not expire",
-                "deletedDays": "Days of deleted messages",
-                "noDeletedDays": "None"
-            }
-        },
-        "guildCreate": {
-            "newGuild": "{{botUsername}} has joined the guild \"{{guildName}}\"",
-            "justOneGuild": "WARNING: {{botUsername}} is not designed to run on more than one guild",
-            "error": "ERROR:"
-        },
-        "guildDelete": {
-            "abandonedGuild": "NOTICE: {{botUsername}} has abandoned the guild \"{{guildName}}\"",
-            "shouldReboot": "NOTICE: To continue, you must restart the bot",
-            "error": "ERROR"
-        },
-        "guildMemberAdd": {
-            "botLoggingEmbed": {
-                "title": "Logging - [BOTS]",
-                "description": "The **BOT** {{memberTag}} was added to the server"
-            }
-        },
-        "guildMemberRemove": {
-            "botLoggingEmbed": {
-                "title": "Logging - [BOTS]",
-                "description": "The **BOT** {{memberTag}} was kicked from the server"
-            },
-            "loggingEmbed": {
-                "author": "{{memberTag}} has been KICKED",
-                "memberId": "Member ID",
-                "moderator": "Moderator",
-                "unknownModerator": "Unknown",
-                "reason": "Reason",
-                "undefinedReason": "Undefined"
-            },
-            "goodbyeEmbed": {
-                "author": "A member left",
-                "description": "{{memberTag}} left the server",
-                "memberId": "Member ID",
-                "antiquity": "Antiquity"
-            }
-        },
-        "interactionCreate": {
-            "disabledCommand": "The command `{{commandName}}` has been disabled",
-            "error": "ERROR"
-        },
-        "messageCreate": {
-            "filteredDm": "via DM"
-        },
-        "ready": {
-            "justOneGuild": "WARNING: The bot is not designed to work on more than one guild (server).\nPlease kick the bot from all other guilds and restart the bot",
-            "waitingGuild": "WARNING: Waiting for the bot to join a guild",
-            "error": "ERROR"
-        },
-        "voiceStateUpdate": {
-            "leftWhenIdle": "I have left the channel and deleted the queue"
-        },
-        "warn": {
-            "warnMessage": "WARNING"
-        }
-    },
     "handlers": {
+        "buttons": {
+            "updateNotifications": {
+                "cantGainXp": "You cannot earn EXP, so you will not receive notifications",
+                "alreadyApplied": "This setting was already applied. No changes will be made",
+                "newButon": {
+                    "disable": "Turn off notifications",
+                    "enable": "Reactivate notifications"
+                }
+            }
+        },
         "commands": {
             "chatCommands": {
                 "ban": {
@@ -1387,14 +1315,86 @@
                 }
             }
         },
-        "buttons": {
-            "updateNotifications": {
-                "cantGainXp": "You cannot earn EXP, so you will not receive notifications",
-                "alreadyApplied": "This setting was already applied. No changes will be made",
-                "newButon": {
-                    "disable": "Turn off notifications",
-                    "enable": "Reactivate notifications"
+        "events": {
+            "channelDelete": {
+                "missingDebuggingChannel": "WARNING: The debugging channel no longer exists or is inaccessible.\n It has been cleared from the configuration and unloaded from memory",
+                "missingLoggingChannel": "WARNING: The logging channel no longer exists or is inaccessible.\n It has been cleared from the configuration and unloaded from memory"
+            },
+            "error": {
+                "econnresetError": "ERROR: The connection was closed unexpectedly",
+                "otherError": "ERROR"
+            },
+            "guildBanAdd": {
+                "botLoggingEmbed": {
+                    "title": "Logging - [BOTS]",
+                    "description": "The **BOT** {{userTag}} was banned from the server"
+                },
+                "loggingEmbed": {
+                    "author": "{{userTag}} has been BANNED",
+                    "memberId": "Member ID",
+                    "moderator": "Moderator",
+                    "unknownModerator": "Unknown",
+                    "reason": "Reason",
+                    "undefinedReason": "Undefined",
+                    "expiration": "Expiration",
+                    "noExpiration": "Does not expire",
+                    "deletedDays": "Days of deleted messages",
+                    "noDeletedDays": "None"
                 }
+            },
+            "guildCreate": {
+                "newGuild": "{{botUsername}} has joined the guild \"{{guildName}}\"",
+                "justOneGuild": "WARNING: {{botUsername}} is not designed to run on more than one guild",
+                "error": "ERROR:"
+            },
+            "guildDelete": {
+                "abandonedGuild": "NOTICE: {{botUsername}} has abandoned the guild \"{{guildName}}\"",
+                "shouldReboot": "NOTICE: To continue, you must restart the bot",
+                "error": "ERROR"
+            },
+            "guildMemberAdd": {
+                "botLoggingEmbed": {
+                    "title": "Logging - [BOTS]",
+                    "description": "The **BOT** {{memberTag}} was added to the server"
+                }
+            },
+            "guildMemberRemove": {
+                "botLoggingEmbed": {
+                    "title": "Logging - [BOTS]",
+                    "description": "The **BOT** {{memberTag}} was kicked from the server"
+                },
+                "loggingEmbed": {
+                    "author": "{{memberTag}} has been KICKED",
+                    "memberId": "Member ID",
+                    "moderator": "Moderator",
+                    "unknownModerator": "Unknown",
+                    "reason": "Reason",
+                    "undefinedReason": "Undefined"
+                },
+                "goodbyeEmbed": {
+                    "author": "A member left",
+                    "description": "{{memberTag}} left the server",
+                    "memberId": "Member ID",
+                    "antiquity": "Antiquity"
+                }
+            },
+            "interactionCreate": {
+                "disabledCommand": "The command `{{commandName}}` has been disabled",
+                "error": "ERROR"
+            },
+            "messageCreate": {
+                "filteredDm": "via DM"
+            },
+            "ready": {
+                "justOneGuild": "WARNING: The bot is not designed to work on more than one guild (server).\nPlease kick the bot from all other guilds and restart the bot",
+                "waitingGuild": "WARNING: Waiting for the bot to join a guild",
+                "error": "ERROR"
+            },
+            "voiceStateUpdate": {
+                "leftWhenIdle": "I have left the channel and deleted the queue"
+            },
+            "warn": {
+                "warnMessage": "WARNING"
             }
         }
     },

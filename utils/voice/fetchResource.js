@@ -76,14 +76,14 @@ exports.run = async (client, interaction, streamType, toStream) => {
 			const { getAudioDurationInSeconds } = require('get-audio-duration');
 
 			//Almacena la duración de la pista
-			const duration = await getAudioDurationInSeconds(`./media/audios/${toStream}.${streamType}`) * 1000;
+			const duration = await getAudioDurationInSeconds(`./storage/audios/${toStream}.${streamType}`) * 1000;
 
 			//Busca el miembro autor del audio en la guild
 			const audioAuthor = await client.functions.fetchMember(client.db.audios[toStream].ownerId) || `\`${locale.unknownAudioAuthor}\``;
 	
 			//Crea el objeto de la cola
 			const newTrack = await require('./addTrack').run(client, reproductionQueue, false, streamType, interaction.member.id, {
-				location: `./media/audios/${toStream}.${streamType}`,
+				location: `./storage/audios/${toStream}.${streamType}`,
 				title: toStream,
 				author: audioAuthor,
 				length: duration,

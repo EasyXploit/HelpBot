@@ -2,7 +2,7 @@
 const fs = require('fs');
 
 //Almacena los nombres originales de los archivos
-let fileNames = fs.readdirSync('./media/audios/');
+let fileNames = fs.readdirSync('./storage/audios/');
 
 //Almacena los nombres sin extensión
 let soundList = [];
@@ -64,10 +64,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             const { readdir, stat } = require('fs/promises');
 
             //Almacena los audios del directorio de auidos
-            const files = await readdir( './media/audios');
+            const files = await readdir( './storage/audios');
 
             //Obtiene la info. de cada uno de los archivos
-            const stats = files.map(file => stat(`./media/audios/${file}`));
+            const stats = files.map(file => stat(`./storage/audios/${file}`));
 
             //Calcula el peso total del directorio en función del peso de todos los archivos
             const folderSize = (await Promise.all(stats) ).reduce((accumulator, { size }) => accumulator + size, 0);
@@ -117,7 +117,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 ]});
 
                 //Crea un nuevo archivo local
-                const file = client.fs.createWriteStream(`./media/audios/${fileName}`);
+                const file = client.fs.createWriteStream(`./storage/audios/${fileName}`);
 
                 //Redirige el contenido del fichero remoto al nuevo fichero local
                 response.pipe(file);
@@ -198,7 +198,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             const fileFormat = client.db.audios[audioName].format;
 
             //Borra el fichero del audio
-            await client.fs.unlink(`./media/audios/${audioName}.${fileFormat}`, (error) => {
+            await client.fs.unlink(`./storage/audios/${audioName}.${fileFormat}`, (error) => {
 
                 //Si hubo un error, lo devuelve
                 if (error) throw error;

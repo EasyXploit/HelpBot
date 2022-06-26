@@ -17,87 +17,13 @@
     "loggingIn": "Logare",
     "loggedIn": "¡Logare cu succes!"
   },
-  "events": {
-    "channelDelete": {
-      "missingDebuggingChannel": "AVERTISMENT: Canalul de depanare nu mai există sau nu mai poate fi accesat.\nA fost șters din configurație și a fost descărcat din memorie",
-      "missingLoggingChannel": "AVERTISMENT: Canalul de jurnal nu mai există sau este inaccesibil.\nA fost șters din configurație și descărcat din memorie"
-    },
-    "error": {
-      "econnresetError": "EROARE: conexiunea a fost închisă în mod neașteptat",
-      "otherError": "EROARE"
-    },
-    "guildBanAdd": {
-      "botLoggingEmbed": {
-        "title": "Registu - [BOTS]",
-        "description": "Botul **BOT** {{userTag}} a fost interzis de pe server"
-      },
-      "loggingEmbed": {
-        "author": "{{userTag}} a fost interzis",
-        "memberId": "ID al membrului",
-        "moderator": "Moderator",
-        "unknownModerator": "Necunoscut",
-        "reason": "Motiv",
-        "undefinedReason": "Nedefinită",
-        "expiration": "Expirare",
-        "noExpiration": "Fără dată de expirare",
-        "deletedDays": "Zile de mesaje șterse",
-        "noDeletedDays": "Nici una"
-      }
-    },
-    "guildCreate": {
-      "newGuild": "{{botUsername}} s-a alăturat breaslei \"{{guildName}}\"",
-      "justOneGuild": "AVERTISMENT: {{botUsername}} nu este proiectat să funcționeze pe mai mult de un server",
-      "error": "EROARE:"
-    },
-    "guildDelete": {
-      "abandonedGuild": "AVERTISMENT: {{botUsername}} a părăsit breasla \"{{guildName}}\"",
-      "shouldReboot": "AVERTISMENT: Pentru a continua, trebuie să reporniți botul",
-      "error": "EROARE"
-    },
-    "guildMemberAdd": {
-      "botLoggingEmbed": {
-        "title": "Registru - [BOTS]",
-        "description": "Botul **BOT** {{memberTag}} a fost adăugat la server"
-      }
-    },
-    "guildMemberRemove": {
-      "botLoggingEmbed": {
-        "title": "Registru - [BOTS]",
-        "description": "Botul **BOT** {{memberTag}} a fost dat afară de pe server"
-      },
-      "loggingEmbed": {
-        "author": "{{memberTag}} a fost EXPULZAT",
-        "memberId": "ID al membrului",
-        "moderator": "Moderator",
-        "unknownModerator": "Necunoscut",
-        "reason": "Motiv",
-        "undefinedReason": "Nedefinită"
-      },
-      "goodbyeEmbed": {
-        "author": "Un membru a plecat",
-        "memberId": "ID al membrului",
-        "antiquity": "Antiquitate"
-      }
-    },
-    "interactionCreate": {
-      "error": "EROARE"
-    },
-    "messageCreate": {
-      "filteredDm": "prin DM"
-    },
-    "ready": {
-      "justOneGuild": "ADVERTISMENT: Botul nu este proiectat să funcționeze în mai mult de o breaslă (server).\nExpulzați botul din toate celelalte bresle și reporniți-l",
-      "waitingGuild": "ADVERTISMENT: Se așteaptă ca botul să se alăture unei bresle",
-      "error": "EROARE"
-    },
-    "voiceStateUpdate": {
-      "leftWhenIdle": "Am părăsit canalul și am șters coada"
-    },
-    "warn": {
-      "warnMessage": "ADVERTISMENT"
-    }
-  },
   "handlers": {
+    "buttons": {
+      "updateNotifications": {
+        "newButon": {
+        }
+      }
+    },
     "commands": {
       "chatCommands": {
         "ban": {
@@ -776,10 +702,84 @@
         }
       }
     },
-    "buttons": {
-      "updateNotifications": {
-        "newButon": {
+    "events": {
+      "channelDelete": {
+        "missingDebuggingChannel": "AVERTISMENT: Canalul de depanare nu mai există sau nu mai poate fi accesat.\nA fost șters din configurație și a fost descărcat din memorie",
+        "missingLoggingChannel": "AVERTISMENT: Canalul de jurnal nu mai există sau este inaccesibil.\nA fost șters din configurație și descărcat din memorie"
+      },
+      "error": {
+        "econnresetError": "EROARE: conexiunea a fost închisă în mod neașteptat",
+        "otherError": "EROARE"
+      },
+      "guildBanAdd": {
+        "botLoggingEmbed": {
+          "title": "Registu - [BOTS]",
+          "description": "Botul **BOT** {{userTag}} a fost interzis de pe server"
+        },
+        "loggingEmbed": {
+          "author": "{{userTag}} a fost interzis",
+          "memberId": "ID al membrului",
+          "moderator": "Moderator",
+          "unknownModerator": "Necunoscut",
+          "reason": "Motiv",
+          "undefinedReason": "Nedefinită",
+          "expiration": "Expirare",
+          "noExpiration": "Fără dată de expirare",
+          "deletedDays": "Zile de mesaje șterse",
+          "noDeletedDays": "Nici una"
         }
+      },
+      "guildCreate": {
+        "newGuild": "{{botUsername}} s-a alăturat breaslei \"{{guildName}}\"",
+        "justOneGuild": "AVERTISMENT: {{botUsername}} nu este proiectat să funcționeze pe mai mult de un server",
+        "error": "EROARE:"
+      },
+      "guildDelete": {
+        "abandonedGuild": "AVERTISMENT: {{botUsername}} a părăsit breasla \"{{guildName}}\"",
+        "shouldReboot": "AVERTISMENT: Pentru a continua, trebuie să reporniți botul",
+        "error": "EROARE"
+      },
+      "guildMemberAdd": {
+        "botLoggingEmbed": {
+          "title": "Registru - [BOTS]",
+          "description": "Botul **BOT** {{memberTag}} a fost adăugat la server"
+        }
+      },
+      "guildMemberRemove": {
+        "botLoggingEmbed": {
+          "title": "Registru - [BOTS]",
+          "description": "Botul **BOT** {{memberTag}} a fost dat afară de pe server"
+        },
+        "loggingEmbed": {
+          "author": "{{memberTag}} a fost EXPULZAT",
+          "memberId": "ID al membrului",
+          "moderator": "Moderator",
+          "unknownModerator": "Necunoscut",
+          "reason": "Motiv",
+          "undefinedReason": "Nedefinită"
+        },
+        "goodbyeEmbed": {
+          "author": "Un membru a plecat",
+          "memberId": "ID al membrului",
+          "antiquity": "Antiquitate"
+        }
+      },
+      "interactionCreate": {
+        "error": "EROARE"
+      },
+      "messageCreate": {
+        "filteredDm": "prin DM"
+      },
+      "ready": {
+        "justOneGuild": "ADVERTISMENT: Botul nu este proiectat să funcționeze în mai mult de o breaslă (server).\nExpulzați botul din toate celelalte bresle și reporniți-l",
+        "waitingGuild": "ADVERTISMENT: Se așteaptă ca botul să se alăture unei bresle",
+        "error": "EROARE"
+      },
+      "voiceStateUpdate": {
+        "leftWhenIdle": "Am părăsit canalul și am șters coada"
+      },
+      "warn": {
+        "warnMessage": "ADVERTISMENT"
       }
     }
   },

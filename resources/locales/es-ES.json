@@ -969,7 +969,6 @@
                         "description": "Se ha añadido un nuevo audio al directorio local",
                         "uploader": "Subido por",
                         "owner": "Propietario",
-                        "unknownOwner": "Desconocido",
                         "audioName": "Nombre del audio"
                     },
                     "uploaded": "El audio {{audioName}} ha sido almacenado correctamente",
@@ -979,6 +978,7 @@
                         "description": "Se ha eliminado un audio almacenado localmente",
                         "executor": "Ejecutor",
                         "owner": "Propietario",
+                        "unknownOwner": "Desconocido",
                         "audioName": "Nombre del audio"
                     },
                     "alreadyPlaying": "El reproductor se encuentra en ejecución en otro canal",
@@ -1693,7 +1693,7 @@
             "configLoaded": "Cargado correctamente",
             "configNotLoaded": "No se pudo cargar",
             "guildConfigLoaded": "Carga de configuración de la guild completada",
-            "functionLoaded": "Carga de funciones globales completada",
+            "functionsLoaded": "Carga de funciones globales completada",
             "presenceLoaded": "Carga de presencia completada",
             "voiceStatesLoaded": "Carga de estados de voz completada",
             "loadedCorrectly": "{{botUsername}} iniciado correctamente",

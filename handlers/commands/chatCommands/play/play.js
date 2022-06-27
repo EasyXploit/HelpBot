@@ -9,7 +9,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (!argument) { //En este caso, "play" funcionará como "resume"
 
             //Comprueba los requisitos previos para el comando
-            if (!await require('../../../../utils/voice/preChecks.js').run(client, interaction, ['bot-connected', 'same-channel', 'can-speak'])) return;
+            if (!await client.functions.reproduction.preChecks.run(client, interaction, ['bot-connected', 'same-channel', 'can-speak'])) return;
 
             //Método para obtener conexiones de voz
             const { getVoiceConnection } = require('@discordjs/voice');
@@ -27,7 +27,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             ], ephemeral: true});
 
             //Comprueba si es necesaria una votación
-            if (await require('../../../../utils/voice/testQueuePerms.js').run(client, interaction, 'pause')) {
+            if (await client.functions.reproduction.testQueuePerms.run(client, interaction, 'pause')) {
 
                 //Almacena la información de reproducción de la guild
                 const reproductionQueue = client.reproductionQueues[connection.joinConfig.guildId];
@@ -52,7 +52,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         } else { //En este caso, "play" funcionará como "join" y reproducirá/añadirá a la cola
 
             //Comprueba los requisitos previos para el comando
-            if (!await require('../../../../utils/voice/preChecks.js').run(client, interaction, ['user-connection', 'forbidden-channel', 'can-speak', 'not-afk', 'can-join', 'full-channel'])) return;
+            if (!await client.functions.reproduction.preChecks.run(client, interaction, ['user-connection', 'forbidden-channel', 'can-speak', 'not-afk', 'can-join', 'full-channel'])) return;
 
             //Almacena la información de la cola de la guild
             const reproductionQueue = client.reproductionQueues[interaction.guild.id];
@@ -64,10 +64,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             ], ephemeral: true});
 
             //Envía un mensaje de confirmación de la búsqueda
-            interaction.reply({ content: `🔎 | ${client.functions.localeParser(locale.searching, { serachTerm: argument })} ...` });
+            interaction.reply({ content: `🔎 | ${await client.functions.utilities.parseLocale.run(locale.searching, { serachTerm: argument })} ...` });
 
             //Crea el objeto de la cola y almacena si se ha logrado crear o no
-            const resultFound = await require('../../../../utils/voice/fetchResource.js').run(client, interaction, 'stream', argument);
+            const resultFound = await client.functions.reproduction.fetchResource.run(client, interaction, 'stream', argument);
 
             //No continua si no se ha conseguido crear
             if (resultFound !== true) return;
@@ -82,7 +82,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             const { VoiceConnectionStatus, entersState } = require('@discordjs/voice');
 
             //Si ya había conexión y el reproductor estaba a la espera, solo ejecuta el mediaPlayer
-            if (connection && connection._state.subscription && connection._state.subscription.player.state.status === 'idle') return require('../../../../utils/voice/mediaPlayer.js').run(client, interaction, connection);
+            if (connection && connection._state.subscription && connection._state.subscription.player.state.status === 'idle') return await client.functions.reproduction.mediaPlayer.run(client, interaction, connection);
 
             //Omite si ya hay reproducción en curso
             if (connection && connection._state.subscription && connection._state.subscription.player.state.status === 'playing') return;
@@ -98,10 +98,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             });
 
             //Almacena el canal de texto de la interacción
-            const interactionChannel = await client.functions.fetchChannel(interaction.channelId);
+            const interactionChannel = await client.functions.utilities.fetch.run(client, 'channel', interaction.channelId);
 
             //Manda un mensaje de confirmación
-            interactionChannel.send({ content: `📥 | ${client.functions.localeParser(locale.bounded, { voiceChannel: voiceChannel, textChannel: interactionChannel })}.` });
+            interactionChannel.send({ content: `📥 | ${await client.functions.utilities.parseLocale.run(locale.bounded, { voiceChannel: voiceChannel, textChannel: interactionChannel })}.` });
 
             //Si la conexión desaparece
             connection.on(VoiceConnectionStatus.Disconnected, async () => {
@@ -125,13 +125,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             await entersState(connection, VoiceConnectionStatus.Ready, 5_000);
 
             //Ejecuta el reproductor de medios
-            require('../../../../utils/voice/mediaPlayer.js').run(client, interaction, connection);
+            await client.functions.reproduction.mediaPlayer.run(client, interaction, connection);
         };
 
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

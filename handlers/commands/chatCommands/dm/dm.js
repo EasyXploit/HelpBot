@@ -3,7 +3,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     try {
         
         //Busca y almacena el miembro
-        const member = await client.functions.fetchMember(interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se encontró al miembro
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -40,12 +40,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.unauthorized, { interactionAuthor: interaction.user })}.`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.unauthorized, { interactionAuthor: interaction.user })}.`)
             ], ephemeral: true});
         };
 
         //Almacena un string de autoría (por si fuese necesario)
-        const authoryString = `**${client.functions.localeParser(locale.normalFrom, { authorTag: interaction.user.tag })}:**\n`;
+        const authoryString = `**${await client.functions.utilities.parseLocale.run(locale.normalFrom, { authorTag: interaction.user.tag })}:**\n`;
 
         //Almacena la longitud máxima del campo del modal
         const fieldLength = type === 'embed' ? 4000 : type === 'normal' && mode === 'author'? 2000 - authoryString.length : 2000;
@@ -142,10 +142,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         };
 
         //Envía un registro al canal de registro
-        await client.functions.loggingManager('embed', new client.MessageEmbed()
+        await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
             .setColor(client.config.colors.logging)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
-            .setDescription(client.functions.localeParser(locale.loggingEmbed.description, { authorTag: interaction.user.tag, memberTag: member.user.tag, botUser: client.user }))
+            .setDescription(await client.functions.utilities.parseLocale.run(locale.loggingEmbed.description, { authorTag: interaction.user.tag, memberTag: member.user.tag, botUser: client.user }))
             .addField(locale.loggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
             .addField(locale.loggingEmbed.mode, mode, true)
             .addField(locale.loggingEmbed.type, type, true)
@@ -157,11 +157,11 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Maneja si un miembro no admite mensajes directos del bot (por la razón que sea)
         if (error.toString().includes('Cannot send messages to this user')) return await interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantReceiveDms, { botUser: client.user })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.cantReceiveDms, { botUser: client.user })}.`)
         ], ephemeral: true});
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

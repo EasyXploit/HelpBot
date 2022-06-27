@@ -1,3 +1,4 @@
+//Función para obtener una pista de audio
 exports.run = async (client, interaction, streamType, toStream) => {
 
 	try {
@@ -6,7 +7,7 @@ exports.run = async (client, interaction, streamType, toStream) => {
 		const randomColor = require('randomcolor');
 
 		//Almacena las traducciones
-		const locale = client.locale.utils.voice.fetchResource;
+		const locale = client.locale.functions.reproduction.fetchResource;
 		
 		//Comprueba si debe crear el objeto global de colas
 		if (!client.reproductionQueues[interaction.guild.id]) client.reproductionQueues[interaction.guild.id] = { boundedTextChannel: null, timeout: null, votes: {}, mode: false, tracks: [] };
@@ -15,7 +16,7 @@ exports.run = async (client, interaction, streamType, toStream) => {
 		const reproductionQueue = client.reproductionQueues[interaction.guild.id];
 
 		 //Almacena el canal de texto de la interacción
-		 const interactionChannel = await client.functions.fetchChannel(interaction.channelId);
+		 const interactionChannel = await client.functions.utilities.fetch.run(client, 'channel', interaction.channelId);
 	
 		//Almacena el canal del mensaje para vincular los mensajes de reproducción
 		reproductionQueue.boundedTextChannel = interactionChannel;
@@ -64,8 +65,8 @@ exports.run = async (client, interaction, streamType, toStream) => {
 				.setColor(randomColor())
 				.setThumbnail(trackItem.meta.thumbnail)
 				.setAuthor({ name: `${locale.newItemEmbed.authorTitle} 🎶`, iconURL: 'attachment://dj.png' })
-				.setDescription(`[${trackItem.meta.title}](${trackItem.meta.location})\n\n● **${locale.newItemEmbed.author}:** \`${trackItem.meta.author}\`\n● **${locale.newItemEmbed.duration}:** \`${client.functions.msToTime(trackItem.meta.length)}\``)
-				.setFooter({ text: await client.functions.getMusicFooter(interaction.guild) })
+				.setDescription(`[${trackItem.meta.title}](${trackItem.meta.location})\n\n● **${locale.newItemEmbed.author}:** \`${trackItem.meta.author}\`\n● **${locale.newItemEmbed.duration}:** \`${await client.functions.utilities.msToTime.run(client, trackItem.meta.length)}\``)
+				.setFooter({ text: await client.functions.reproduction.getFooter.run(clientinteraction.guild) })
 			], files: ['./resources/images/dj.png'] });
 		};
 	
@@ -79,10 +80,10 @@ exports.run = async (client, interaction, streamType, toStream) => {
 			const duration = await getAudioDurationInSeconds(`./storage/audios/${toStream}.${streamType}`) * 1000;
 
 			//Busca el miembro autor del audio en la guild
-			const audioAuthor = await client.functions.fetchMember(client.db.audios[toStream].ownerId) || `\`${locale.unknownAudioAuthor}\``;
+			const audioAuthor = await client.functions.utilities.fetch.run(client, 'member', client.db.audios[toStream].ownerId) || `\`${locale.unknownAudioAuthor}\``;
 	
 			//Crea el objeto de la cola
-			const newTrack = await require('./addTrack').run(client, reproductionQueue, false, streamType, interaction.member.id, {
+			const newTrack = await client.functions.reproduction.addTrack.run(client, reproductionQueue, false, streamType, interaction.member.id, {
 				location: `./storage/audios/${toStream}.${streamType}`,
 				title: toStream,
 				author: audioAuthor,
@@ -112,7 +113,7 @@ exports.run = async (client, interaction, streamType, toStream) => {
 					if (toStream.match(/^.*(list=)([^#\&\?]*).*/)) {
 	
 						//Si se trata de una URL de Playlist, la maneja directamente
-						resultFound = await require('./parsePlaylist').run(client, reproductionQueue, toStream, authorizedTracks, interaction.member, interaction);
+						resultFound = await client.functions.reproduction.parsePlaylist.run(client, reproductionQueue, toStream, authorizedTracks, interaction.member, interaction);
 	
 					} else {
 
@@ -137,17 +138,17 @@ exports.run = async (client, interaction, streamType, toStream) => {
 							//Notifica si el error se debe a que no es una URL válida
 							if (error.toString().includes('This is not a YouTube Watch URL')) return await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
 								.setColor(client.config.colors.error)
-								.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.noResults, { searchInput: toStream })}.`)
+								.setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.noResults, { searchInput: toStream })}.`)
 							]});
 
 							//Ejecuta el manejador de errores
-							return await client.functions.interactionErrorHandler(error, interaction);
+							return await client.functions.managers.interactionError.run(client, error, interaction);
 						};
 
 						//Comprueba si se han obtenido resultados
 						if (!metadata) return await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.noResults, { searchInput: toStream })}.`)
+							.setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.noResults, { searchInput: toStream })}.`)
 						]});
 
 						//Comprueba si el resultado es un directo o un vídeo privado
@@ -159,11 +160,11 @@ exports.run = async (client, interaction, streamType, toStream) => {
 						//Comprueba si el resultado supera la duración máxima establecida
 						if (musicConfig.maxTrackDuration > 0 && (metadata.durationInSec * 1000 > musicConfig.maxTrackDuration || metadata.durationInSec * 1000 < 0)) return interaction.reply({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededLength, { duration: client.functions.msToTime(musicConfig.maxTrackDuration) })}.`)
+							.setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.exceededLength, { duration: await client.functions.utilities.msToTime.run(client, musicConfig.maxTrackDuration) })}.`)
 						], ephemeral: true});
 		
 						//Crea el objeto de la cola
-						const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'stream', interaction.member.id, metadata, interaction);
+						const newTrack = await client.functions.reproduction.addTrack.run(client, reproductionQueue, false, 'stream', interaction.member.id, metadata, interaction);
 
 						//Si se añadió la pista
 						if (newTrack) {
@@ -181,7 +182,7 @@ exports.run = async (client, interaction, streamType, toStream) => {
 					//Devuelve un error si no se ha proporcionado una URL válida
 					return interaction.reply({ embeds: [ new client.MessageEmbed()
 						.setColor(client.config.colors.error)
-						.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.onlyFromYouTube, { botUser: client.user })}.`)
+						.setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.onlyFromYouTube, { botUser: client.user })}.`)
 					], ephemeral: true});
 				};
 	
@@ -196,7 +197,7 @@ exports.run = async (client, interaction, streamType, toStream) => {
 					//Comprueba si se han obtenido resultados
 					if (!results || results.length === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
 						.setColor(client.config.colors.error)
-						.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.noResults, { searchInput: toStream })}.`)
+						.setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.noResults, { searchInput: toStream })}.`)
 					], ephemeral: true});
 	
 					//Si solo hay un resultado, no muestra menú
@@ -211,11 +212,11 @@ exports.run = async (client, interaction, streamType, toStream) => {
 						//Comprueba si el resultado supera la duración máxima establecida
 						if (musicConfig.maxTrackDuration > 0 && (results[0].durationInSec * 1000 > musicConfig.maxTrackDuration || results[0].durationInSec * 1000 < 0)) return interaction.reply({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededLength, { duration: client.functions.msToTime(musicConfig.maxTrackDuration) })}.`)
+							.setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.exceededLength, { duration: await client.functions.utilities.msToTime.run(client, musicConfig.maxTrackDuration) })}.`)
 						], ephemeral: true});
 	
 						//Crea el objeto de la cola
-						const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'stream', interaction.member.id, results[0], interaction);
+						const newTrack = await client.functions.reproduction.addTrack.run(client, reproductionQueue, false, 'stream', interaction.member.id, results[0], interaction);
 
 						//Si se añadió la pista
 						if (newTrack) {
@@ -326,11 +327,11 @@ exports.run = async (client, interaction, streamType, toStream) => {
 								setTimeout(() => msg.delete(), 2000);
 	
 								//Maneja el resultado en función de si es una playlist o un vídeo
-								if (results[option].type === 'playlist') require('./parsePlaylist').run(reproductionQueue, results[option].url, authorizedTracks, interaction.member, interaction); //Maneja la playlist
+								if (results[option].type === 'playlist') await client.functions.reproduction.parsePlaylist.run(reproductionQueue, results[option].url, authorizedTracks, interaction.member, interaction); //Maneja la playlist
 								else if (results[option].type === 'video') {
 									
 									//Crea el objeto de la cola
-									const newTrack = await require('./addTrack').run(client, reproductionQueue, false, 'stream', interaction.member.id, results[option], interaction);
+									const newTrack = await client.functions.reproduction.addTrack.run(client, reproductionQueue, false, 'stream', interaction.member.id, results[option], interaction);
 
 									//Si se añadió la pista
 									if (newTrack) {
@@ -371,10 +372,10 @@ exports.run = async (client, interaction, streamType, toStream) => {
 		//Notifica si el error se debe a una restricción de edad por falta de cookies
 		if (error.message.includes('Sign in to confirm your age')) return client.reproductionQueues[interaction.guild.id].boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} ${client.locale.utils.voice.fetchResource.ageRestricted}.`)]
+            .setDescription(`${client.customEmojis.orangeTick} ${client.locale.functions.reproduction.fetchResource.ageRestricted}.`)]
         });
 
 		//Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };

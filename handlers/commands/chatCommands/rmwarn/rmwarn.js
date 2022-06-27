@@ -3,7 +3,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     try {
 
         //Busca al miembro proporcionado
-        const member = await client.functions.fetchMember(interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0].value);
 
         //Almacena el ID del miembro
         const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
@@ -104,7 +104,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             successEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbedAll.title}`)
-                .setDescription(client.functions.localeParser(locale.notificationEmbedAll.description, { member: member ? member.user.tag : `${memberId} (ID)` }));
+                .setDescription(await client.functions.utilities.parseLocale.run(locale.notificationEmbedAll.description, { member: member ? member.user.tag : `${memberId} (ID)` }));
 
             //Si se encontró al miembro, añade su tag al registro
             member ? loggingEmbed.addField(locale.loggingEmbedAll.member, member.user.tag, true) : null;
@@ -113,7 +113,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (member) toDMEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.correct)
                 .setAuthor({ name: locale.privateEmbedAll.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-                .setDescription(client.functions.localeParser(locale.privateEmbedAll.description, { member: member }))
+                .setDescription(await client.functions.utilities.parseLocale.run(locale.privateEmbedAll.description, { member: member }))
                 .addField(locale.privateEmbedAll.moderator, interaction.user.tag, true)
                 .addField(locale.privateEmbedAll.reason, reason || locale.undefinedReason, true);
 
@@ -125,7 +125,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Comprueba si la advertencia existe en la BD
             if (!client.db.warns[memberId][warnId]) return interaction.reply({ embeds: [new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.warnNotFound, { warnId: warnId })}`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.warnNotFound, { warnId: warnId })}`)
             ], ephemeral: true});
 
             //Comprueba si puede borrar esta advertencia
@@ -150,7 +150,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             successEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbedSingle.title}`)
-                .setDescription(client.functions.localeParser(locale.notificationEmbedSingle.description, { warnId: warnId, member: member ? member.user.tag : `${memberId} (ID)` }));
+                .setDescription(await client.functions.utilities.parseLocale.run(locale.notificationEmbedSingle.description, { warnId: warnId, member: member ? member.user.tag : `${memberId} (ID)` }));
 
             //Si se encontró al miembro, añade su tag al registro
             member ? loggingEmbed.addField(locale.loggingEmbedSingle.member, member.user.tag, true) : null;
@@ -159,7 +159,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (member) toDMEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.correct)
                 .setAuthor({ name: locale.privateEmbedSingle.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-                .setDescription(client.functions.localeParser(locale.privateEmbedSingle.description, { member: member, warnId: warnId }))
+                .setDescription(await client.functions.utilities.parseLocale.run(locale.privateEmbedSingle.description, { member: member, warnId: warnId }))
                 .addField(locale.privateEmbedSingle.moderator, interaction.user.tag, true)
                 .addField(locale.privateEmbedSingle.warnId, warnId, true)
                 .addField(locale.privateEmbedSingle.warn, client.db.warns[memberId][warnId].reason, true)
@@ -179,7 +179,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (err) throw err;
 
             //Envía un registro al canal de registros
-            await client.functions.loggingManager('embed', loggingEmbed);
+            await client.functions.managers.logging.run(client, 'embed', loggingEmbed);
 
             //Envía una notificación de la acción en el canal de invocación
             await interaction.reply({ embeds: [successEmbed] });
@@ -191,7 +191,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

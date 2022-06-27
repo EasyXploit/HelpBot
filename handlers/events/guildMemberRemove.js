@@ -27,7 +27,7 @@ exports.run = async (member, client, locale) => {
                 return await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
-                    .setDescription(client.functions.localeParser(locale.botLoggingEmbed.description, { memberTag: member.user.tag }))
+                    .setDescription(await client.functions.utilities.parseLocale.run(locale.botLoggingEmbed.description, { memberTag: member.user.tag }))
                 ]});
             };
 
@@ -50,7 +50,7 @@ exports.run = async (member, client, locale) => {
             //Envía un registro al canal de registros
             await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setAuthor({ name: client.functions.localeParser(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                 .addField(locale.loggingEmbed.memberId, member.id, true)
                 .addField(locale.loggingEmbed.moderator, executor ? executor.tag : locale.loggingEmbed.unknownModerator, true)
                 .addField(locale.loggingEmbed.reason, reason ? reason : locale.loggingEmbed.undefinedReason, true)
@@ -75,9 +75,9 @@ exports.run = async (member, client, locale) => {
                     .setColor(client.config.colors.warning)
                     .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
                     .setAuthor({ name: locale.goodbyeEmbed.author, iconURL: 'attachment://out.png' })
-                    .setDescription(client.functions.localeParser(locale.goodbyeEmbed.description, { memberTag: member.user.tag }))
+                    .setDescription(await client.functions.utilities.parseLocale.run(locale.goodbyeEmbed.description, { memberTag: member.user.tag }))
                     .addField(`🆔 ${locale.goodbyeEmbed.memberId}`, member.user.id, true)     
-                    .addField(`📆 ${locale.goodbyeEmbed.antiquity}`, `\`${client.functions.msToTime(Date.now() - member.joinedTimestamp)}\``, true)
+                    .addField(`📆 ${locale.goodbyeEmbed.antiquity}`, `\`${await client.functions.utilities.msToTime.run(client, Date.now() - member.joinedTimestamp)}\``, true)
                 ], files: ['./resources/images/out.png'] });
             };
         };
@@ -102,6 +102,6 @@ exports.run = async (member, client, locale) => {
         if (member.user.id === client.user.id) return;
 
         //Ejecuta el manejador de errores
-        await client.functions.eventErrorHandler(error, 'guildMemberRemove');
+        await client.functions.managers.eventError.run(client, error, 'guildMemberRemove');
     };
 };

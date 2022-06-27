@@ -6,7 +6,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         const subcommand = interaction.options._subcommand;
 
         //Almacena el miembro proporcionado
-        const member = await client.functions.fetchMember(interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0].value);
 
         //Comprueba si se ha proporcionado un miembro válido
         if (!member && !client.db.stats[interaction.options._hoistedOptions[0].value]) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -110,7 +110,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 for (max = providedValue; max != 0; max--) {
 
                     //Genera XP aleatorio y actualiza la variable del total
-                    generatedXp += await client.functions.randomIntBetween(client.config.xp.minimumXpReward, client.config.xp.maximumXpReward);
+                    generatedXp += await client.functions.utilities.randomIntBetween.run(client.config.xp.minimumXpReward, client.config.xp.maximumXpReward);
                 };
 
                 //Almacena el nuevo XP
@@ -154,7 +154,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             let xpCount = parseInt(newValue);
 
             //Almacena el XP necesario para pasar al siguiente nivel
-            let xpToNextLevel = await client.functions.xpToLevel(newLevel + 1);
+            let xpToNextLevel = await client.functions.leveling.getXpToLevel.run(client, newLevel + 1);
 
             //Mientras que el XP actual sea mayor o igual que el necesario para subir al siguiente nivel
             while (newValue >= xpToNextLevel) {
@@ -163,7 +163,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 newLevel++;
 
                 //Actualiza el XP necesario para subir de nivel
-                xpToNextLevel = await client.functions.xpToLevel(newLevel + 1);
+                xpToNextLevel = await client.functions.leveling.getXpToLevel.run(client, newLevel + 1);
 
                 //Mientras que el conteo de XP sea mayor o igual que el necesario para el siguiente nivel, le resta este último
                 if (xpCount >= xpToNextLevel) xpCount -= xpToNextLevel;
@@ -178,7 +178,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             for (let index = 0; ; index++) {
 
                 //Por cada uno de los niveles, comprueba si el XP requerido supera el asignado al miembro
-                if (await client.functions.xpToLevel(index + 1) > newValue) {
+                if (await client.functions.leveling.getXpToLevel.run(client, index + 1) > newValue) {
 
                     //Almacena el nuevo nivel del miembro
                     newLevel = index;
@@ -189,7 +189,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             };
 
             //Actualiza el XP actual, en función de si ha subido de nivel o no
-            memberStats.actualXP = newLevel > 0 ? newValue - await client.functions.xpToLevel(newLevel + 1) : newValue;
+            memberStats.actualXP = newLevel > 0 ? newValue - await client.functions.leveling.getXpToLevel.run(client, newLevel + 1) : newValue;
         };
 
         //Si el nivel ha sido modificado
@@ -199,7 +199,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             memberStats.level = newLevel;
 
             //Asigna las recompensas del nivel al miembro (y elimina las que no le corresponde)
-            await client.functions.assignRewards(member, newLevel, true);
+            await client.functions.leveling.assignRewards.run(client, member, newLevel, true);
         };
 
         //Sobreescribe el fichero de la base de datos con los cambios
@@ -209,10 +209,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (err) throw err;
 
             //Envía un mensaje al canal de registros
-            await client.functions.loggingManager('embed',  new client.MessageEmbed()
+            await client.functions.managers.logging.run(client, 'embed',  new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle(`📑 ${locale.loggingEmbed.title}`)
-                .setDescription(`${client.functions.localeParser(locale.loggingEmbed.description, { memberTag: member.user.tag })}.`)
+                .setDescription(`${await client.functions.utilities.parseLocale.run(locale.loggingEmbed.description, { memberTag: member.user.tag })}.`)
                 .addField(locale.loggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
                 .addField(locale.loggingEmbed.moderator, interaction.user.tag, true)
                 .addField(locale.loggingEmbed.memberId, memberId.toString(), true)
@@ -222,14 +222,14 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Notifica la acción en el canal de invocación
             await interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
-                .setDescription(`${client.customEmojis.greenTick} ${client.functions.localeParser(locale.notificationEmbed, { memberTag: member.user.tag })}.`)
+                .setDescription(`${client.customEmojis.greenTick} ${await client.functions.utilities.parseLocale.run(locale.notificationEmbed, { memberTag: member.user.tag })}.`)
             ]});
 
             //Envía una notificación al miembro
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.correct)
                 .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-                .setDescription(`${client.functions.localeParser(locale.privateEmbed.description, { member: member })}.`)
+                .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.description, { member: member })}.`)
                 .addField(locale.privateEmbed.moderator, interaction.user.tag, true)
                 .addField(locale.privateEmbed.oldValue, oldValue.toString(), true)
                 .addField(locale.privateEmbed.newValue, newValue.toString(), true)
@@ -239,7 +239,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

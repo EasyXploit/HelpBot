@@ -2,7 +2,7 @@
 const locale = require(`./resources/locales/${require('./configs/main.json').locale}.json`);
 
 //Muestra el logo de arranque en la consola
-require('./utils/splashLogo.js').run(locale.utils.splashLogo);
+require('./lifecycle/splashLogo.js').run(locale.lifecycle.splashLogo);
 
 //CARGA DE CLIENTE
 //Carga una nueva instancia de cliente en Discord
@@ -40,7 +40,7 @@ process.on('unhandledRejection', error => {
         const errorString = error.stack.length > 1014 ? `${error.stack.slice(0, 1014)} ...` : error.stack;
 
         //Ejecuta el manejador de depuración
-        if (client.functions) client.functions.debuggingManager('embed', new client.MessageEmbed()
+        if (client.functions) client.functions.managers.debugging.run(client, 'embed', new client.MessageEmbed()
             .setColor(client.config.colors.debugging)
             .setTitle(`📋 ${locale.index.unhandledRejection.debuggingEmbed.title}`)
             .setDescription(locale.index.unhandledRejection.debuggingEmbed.description)

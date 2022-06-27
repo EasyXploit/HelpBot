@@ -6,7 +6,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         const argument = interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : null;
 
         //Comprueba los requisitos previos para el comando
-        if (!await require('../../../../utils/voice/preChecks.js').run(client, interaction, ['bot-connected',  'same-channel',  'has-queue'])) return;
+        if (!await client.functions.reproduction.preChecks.run(client, interaction, ['bot-connected',  'same-channel',  'has-queue'])) return;
 
         //Almacena la información de la cola de la guild
         const reproductionQueue = client.reproductionQueues[interaction.guild.id];
@@ -14,7 +14,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (argument === 'all') {
 
             //Comprueba si es necesaria una votación
-            if (await require('../../../../utils/voice/testQueuePerms.js').run(client, interaction, 'remove-all')) {
+            if (await client.functions.reproduction.testQueuePerms.run(client, interaction, 'remove-all')) {
 
                 //Elimina el elemento de la cola
                 await reproductionQueue.tracks.splice(1);
@@ -40,11 +40,11 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Comprueba si el valor introducido es válido
             if (argument >= (reproductionQueue.tracks.length)) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.doesntExist, { number: argument })}.`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.doesntExist, { number: argument })}.`)
             ], ephemeral: true});
 
             //Comprueba si es necesaria una votación
-            if (await require('../../../../utils/voice/testQueuePerms.js').run(client, interaction, 'remove', argument)) {
+            if (await client.functions.reproduction.testQueuePerms.run(client, interaction, 'remove', argument)) {
 
                 //Elimina el elemento de la cola
                 await reproductionQueue.tracks.splice(argument, 1);
@@ -57,7 +57,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

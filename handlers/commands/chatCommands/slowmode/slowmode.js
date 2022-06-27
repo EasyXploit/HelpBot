@@ -3,7 +3,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     try {
 
         //Almacena el canal de texto de la interacción
-        const interactionChannel = await client.functions.fetchChannel(interaction.channelId);
+        const interactionChannel = await client.functions.utilities.fetch.run(client, 'channel', interaction.channelId);
 
         //Almacena los segundos proporcionados
         const argument = interaction.options._hoistedOptions[0].value;
@@ -21,7 +21,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             await interactionChannel.setRateLimitPerUser(0);
 
             //Envía un mensaje al canal de registros
-            await client.functions.loggingManager('embed', new client.MessageEmbed()
+            await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle(`📑 ${locale.disabledLoggingEmbed.title}`)
                 .setDescription(locale.disabledLoggingEmbed.description)
@@ -61,7 +61,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Comprueba si los segundos excedieron el máximo configurado
             if (!checkIfCanUseUnlimitedTime() && argument > commandConfig.maxRegularSeconds) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.privateEmbedSingle.description, { max: commandConfig.maxRegularSeconds })}`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.privateEmbedSingle.description, { max: commandConfig.maxRegularSeconds })}`)
             ], ephemeral: true});
 
             //Almacena la razón
@@ -97,12 +97,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             await interactionChannel.setRateLimitPerUser(argument, reason || locale.undefinedReason);
 
             //Envía un mensaje al canal de registros
-            await client.functions.loggingManager('embed', new client.MessageEmbed()
+            await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle(`📑 ${locale.enabledLoggingEmbed.title}`)
                 .setDescription(locale.enabledLoggingEmbed.description)
                 .addField(locale.enabledLoggingEmbed.moderator, interaction.user.tag, true)
-                .addField(locale.enabledLoggingEmbed.delay, client.functions.localeParser(locale.enabledLoggingEmbed.delayed, { seconds: argument }), true)
+                .addField(locale.enabledLoggingEmbed.delay, await client.functions.utilities.parseLocale.run(locale.enabledLoggingEmbed.delayed, { seconds: argument }), true)
                 .addField(locale.enabledLoggingEmbed.channel, `${interactionChannel}`, true)
                 .addField(locale.enabledLoggingEmbed.reason, reason || locale.undefinedReason, true)
             );
@@ -111,14 +111,14 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             await interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.enabledNotificationEmbed.title}`)
-                .setDescription(client.functions.localeParser(locale.enabledNotificationEmbed.description, { seconds: argument }))
+                .setDescription(await client.functions.utilities.parseLocale.run(locale.enabledNotificationEmbed.description, { seconds: argument }))
             ], ephemeral: true});
         };
         
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

@@ -54,7 +54,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 if (!entry) break;
 
                 //Busca el miembro en la guild
-                const member = await client.functions.fetchMember(entry.memberId) || locale.unknownMember;
+                const member = await client.functions.utilities.fetch.run(client, 'member', entry.memberId) || locale.unknownMember;
 
                 //Actualiza la tabla con una entrada formateada
                 board += `\n**#${index + 1}** • \`${entry.totalXP} xp\` • \`lvl ${entry.lvl}\` • ${member}`;
@@ -73,7 +73,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setColor(client.config.colors.primary)
                 .setTitle(`:trophy: ${locale.embed.title}`)
                 .setDescription(await loadBoard(10 * position - 9, 10 * position))
-                .setFooter({ text: client.functions.localeParser(locale.embed.footer, { position: position, totalPages: pages }), iconURL: client.homeGuild.iconURL({dynamic: true}) });
+                .setFooter({ text: await client.functions.utilities.parseLocale.run(locale.embed.footer, { position: position, totalPages: pages }), iconURL: client.homeGuild.iconURL({dynamic: true}) });
 
             //Envía o actualiza la tabla de clasificación
             if (embed) await embed.edit({ embeds: [leaderboard] }).then(async embed => {awaitReactions(embed)});
@@ -135,7 +135,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

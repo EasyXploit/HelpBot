@@ -1,3 +1,4 @@
+//Función para añadir pistas a la cola de reproducción
 exports.run = async (client, reproductionQueue, silentMode, contentType, requesterId, metadata, interaction) => {
 
     try {
@@ -65,7 +66,7 @@ exports.run = async (client, reproductionQueue, silentMode, contentType, request
             //Devuelve un error si así se desea
             if (!silentMode) await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
-                .setDescription(`${client.customEmojis.orangeTick} ${client.locale.utils.voice.addTrack.actuallyOnQueue}.`)]
+                .setDescription(`${client.customEmojis.orangeTick} ${client.locale.functions.reproduction.addTrack.actuallyOnQueue}.`)]
             });
 
         } else {
@@ -78,6 +79,6 @@ exports.run = async (client, reproductionQueue, silentMode, contentType, request
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };

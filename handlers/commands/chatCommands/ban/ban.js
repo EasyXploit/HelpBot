@@ -3,7 +3,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     try {
         
         //Busca al usuario proporcionado
-        const user = await client.functions.fetchUser(interaction.options._hoistedOptions[0].value);
+        const user = await client.functions.utilities.fetch.run(client, 'user', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se ha encontrado al usuario
         if (!user) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -35,7 +35,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         };
 
         //Busca al miembro proporcionado
-        const member = await client.functions.fetchMember(user.id);
+        const member = await client.functions.utilities.fetch.run(client, 'member', user.id);
 
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
         if (member && ((interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) || !member.bannable)) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -96,7 +96,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             ], ephemeral: true});
 
             //Calcula el tiempo estimado en milisegundos
-            milliseconds = await client.functions.magnitudesToMs(providedDuration);
+            milliseconds = await client.functions.utilities.magnitudesToMs.run(providedDuration);
 
             //Comprueba si se ha proporcionado un tiempo válido
             if (!milliseconds) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -120,7 +120,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized && milliseconds > commandConfig.maxRegularTime) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededDuration, { time: client.functions.msToTime(commandConfig.maxRegularTime) })}.`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.exceededDuration, { time: await client.functions.utilities.msToTime.run(client, commandConfig.maxRegularTime) })}.`)
             ], ephemeral: true});
         };
 
@@ -222,7 +222,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         await interaction.guild.members.ban(user, banParameters);
 
         //Genera una descripción para el embed de notificación
-        const notificationEmbedDescription = reason ? client.functions.localeParser(locale.notificationEmbed.withReason, { userTag: user.tag, reason: reason }) : client.functions.localeParser(locale.notificationEmbed.withoutReason, { userTag: user.tag })
+        const notificationEmbedDescription = reason ? await client.functions.utilities.parseLocale.run(locale.notificationEmbed.withReason, { userTag: user.tag, reason: reason }) : await client.functions.utilities.parseLocale.run(locale.notificationEmbed.withoutReason, { userTag: user.tag })
 
         //Envía una confirmación como respuesta a la interacción
         await interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -234,7 +234,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (member) await user.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-            .setDescription(client.functions.localeParser(locale.privateEmbed.description, { user: user, guildName: interaction.guild.name }))
+            .setDescription(await client.functions.utilities.parseLocale.run(locale.privateEmbed.description, { user: user, guildName: interaction.guild.name }))
             .addField(locale.privateEmbed.moderator, interaction.user.tag, true)
             .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
             .addField(locale.privateEmbed.expiration, expiration ? `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>` : locale.privateEmbed.noExpiration, true)
@@ -244,7 +244,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

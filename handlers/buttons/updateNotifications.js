@@ -6,7 +6,7 @@ exports.run = async (client, interaction) => {
         const locale = client.locale.handlers.buttons.updateNotifications;
 
         //Almacena el miembro de la interacción
-        const member = await client.functions.fetchMember(interaction.user.id);
+        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.user.id);
 
         //Almacena si el miembro puede ganar EXP
         let notAuthorized;
@@ -65,6 +65,6 @@ exports.run = async (client, interaction) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };

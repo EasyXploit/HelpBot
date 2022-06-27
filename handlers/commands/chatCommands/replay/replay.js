@@ -3,10 +3,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     try {
 
         //Comprueba los requisitos previos para el comando
-        if (!await require('../../../../utils/voice/preChecks.js').run(client, interaction, ['bot-connected',  'same-channel',  'has-queue',  'can-speak'])) return;
+        if (!await client.functions.reproduction.preChecks.run(client, interaction, ['bot-connected',  'same-channel',  'has-queue',  'can-speak'])) return;
         
         //Comprueba si es necesaria una votación
-        if (await require('../../../../utils/voice/testQueuePerms.js').run(client, interaction, 'replay')) {
+        if (await client.functions.reproduction.testQueuePerms.run(client, interaction, 'replay')) {
 
             //Almacena la información de la cola de la guild
             const reproductionQueue = client.reproductionQueues[interaction.guild.id];
@@ -30,7 +30,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

@@ -3,7 +3,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     try {
 
         //Comprueba los requisitos previos para el comando
-        if (!await require('../../../../utils/voice/preChecks.js').run(client, interaction, ['bot-disconnected', 'user-connection', 'forbidden-channel', 'can-speak', 'not-afk', 'can-join', 'full-channel'])) return;
+        if (!await client.functions.reproduction.preChecks.run(client, interaction, ['bot-disconnected', 'user-connection', 'forbidden-channel', 'can-speak', 'not-afk', 'can-join', 'full-channel'])) return;
 
         //Almacena el canal de voz del miembro
         const voiceChannel = interaction.member.voice.channel;
@@ -25,10 +25,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 		const reproductionQueue = client.reproductionQueues[interaction.guild.id];
 	
 		//Almacena el canal del mensaje para vincular los mensajes de reproducción
-		reproductionQueue.boundedTextChannel = await client.functions.fetchChannel(interaction.channelId);
+		reproductionQueue.boundedTextChannel = await client.functions.utilities.fetch.run(client, 'channel', interaction.channelId);
 
         //Manda un mensaje de confirmación
-        interaction.reply({ content: `📥 | ${client.functions.localeParser(locale.bounded, { voiceChannel: voiceChannel, textChannel: reproductionQueue.boundedTextChannel })}.` });
+        interaction.reply({ content: `📥 | ${await client.functions.utilities.parseLocale.run(locale.bounded, { voiceChannel: voiceChannel, textChannel: reproductionQueue.boundedTextChannel })}.` });
 
         //Si la conexión desaparece
         connection.on(VoiceConnectionStatus.Disconnected, async () => {
@@ -65,7 +65,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

@@ -3,7 +3,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     try {
 
         //Busca el miembro en cuestión
-        const member = interaction.options._hoistedOptions[0] ? await client.functions.fetchMember(interaction.options._hoistedOptions[0].value || interaction.member.id): null;
+        const member = interaction.options._hoistedOptions[0] ? await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0].value || interaction.member.id): null;
 
         //Almacena el ID del miembro
         const memberId = member ? interaction.options._hoistedOptions[0].value : interaction.member.id;
@@ -27,7 +27,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.nonPrivileged, { interactionAuthor: interaction.member })}.`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.nonPrivileged, { interactionAuthor: interaction.member })}.`)
             ], ephemeral: true});
         };
 
@@ -53,7 +53,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 let warn = Object.values(memberWarns[index])[0];
 
                 //Busca y almacena el moderador que aplicó la sanción
-                const moderator = await client.functions.fetchMember(warn.moderator) || locale.unknownModerator;
+                const moderator = await client.functions.utilities.fetch.run(client, 'member', warn.moderator) || locale.unknownModerator;
 
                 //Añade una nueva fila con los detalles de la advertencia
                 board += `\`${Object.keys(memberWarns[index])[0]}\` • ${moderator} • <t:${Math.round(new Date(parseInt(warn.timestamp)) / 1000)}>\n${warn.reason}\n\n`;
@@ -77,12 +77,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             let infractionsEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
                 .setTitle(`⚠ ${locale.infractionsEmbed.title}`)
-                .setDescription(`${client.functions.localeParser(locale.infractionsEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)`, sanction: sanction || `\`${locale.noMute}\`` })}.`)
+                .setDescription(`${await client.functions.utilities.parseLocale.run(locale.infractionsEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)`, sanction: sanction || `\`${locale.noMute}\`` })}.`)
                 .addField(locale.infractionsEmbed.last24h, onDay.toString(), true)
                 .addField(locale.infractionsEmbed.last7d, onWeek.toString(), true)
                 .addField(locale.infractionsEmbed.total, total.toString(), true)
                 .addField(locale.infractionsEmbed.list, total > 0 ? await loadWarns(10 * actualPage - 9, 10 * actualPage) : locale.infractionsEmbed.noList)
-                .setFooter({ text: client.functions.localeParser(locale.infractionsEmbed.page, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.homeGuild.iconURL({dynamic: true}) });
+                .setFooter({ text: await client.functions.utilities.parseLocale.run(locale.infractionsEmbed.page, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.homeGuild.iconURL({dynamic: true}) });
 
             //Si se encontró el miembro, muestra su avatar en el embed
             if (member) infractionsEmbed.setThumbnail(member.user.displayAvatarURL({dynamic: true}));
@@ -186,7 +186,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

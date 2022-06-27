@@ -1398,46 +1398,76 @@
             }
         }
     },
-    "utils": {
-        "lifecycle": {
-            "loadCommands": {
-                "unregisteredFromGuild": "Comando {{command}} des-registrado en {{guildName}}",
-                "unregisteredFromGlobal": "Comando {{command}} des-registrado globalmente",
-                "convertedToGlobal": "Comando {{command}} convertido al tipo \"global\"",
-                "convertedToGuild": "Comando {{command}} convertido al tipo \"guild\"",
-                "noConfigError": "El comando {{command}} no tiene configuración en commands.json",
-                "sameCommandNamesError": "Dos comandos o más comandos tienen el mismo nombre",
-                "invalidTypeError": "El comando {{command}} no tiene un tipo válido",
-                "registeredOnGlobal": "Comando {{command}} registrado globalmente",
-                "registeredOnGuild": "Comando {{command}} registrado en {{guildName}}",
-                "parametersUpdated": "El comando {{command}} ha actualizado sus parámetros",
-                "defaultPermUpdated": "El comando {{command}} ha actualizado su permiso por defecto",
-                "loadedCorrectly": "Comando {{command}} cargado correctamente"
+    "functions": {
+        "leveling": {
+            "addExperience": {
+                "levelUpEmbed": {
+                    "author": "¡Subiste de nivel!",
+                    "description": "Enhorabuena {{member}}, has subido al nivel **{{memberLevel}}**",
+                    "rewards": "Recompensas obtenidas",
+                    "disablePrivateNotification": "Desactivar notificaciones"
+                }
+            }
+        },
+        "managers": {
+            "debugging": {
+                "cannotSend": "ERROR: No se pueden enviar mensajes al canal de depuración.\n{{botUsername}} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos",
+                "cannotAccess": "ERROR: No se puede tener acceso al canal de depuración.\n Se ha borrado de la configuración y se ha descargado de la memoria",
+                "error": "ERROR: Error durante la ejecución del debugging"
             },
-            "loadEmojis": {
-                "configLoaded": "Carga de emojis personalizados completada",
-                "maxExceeded": "No se pueden cargar más de 50 emojis",
-                "error": "ERROR"
+            "eventError": {
+                "error": "ERROR",
+                "debuggingEmbed": {
+                    "title": "Depuración",
+                    "description": "Se declaró un error durante la ejecución de un evento",
+                    "event": "Evento",
+                    "date": "Fecha",
+                    "error": "Error",
+                    "footer": "Revisa la consola para obtener más detalles"
+                }
             },
-            "newGuild": {
-                "title": "¡{{botUsername}} añadido correctamente!",
-                "description": "Usa los ficheros de configuración para ajustarlo al bot a tu gusto.\nRecuerda que el bot solo podrá moderar a aquellas personas que tengan un rol por debajo del rol creado por {{botUser}}.\nSi necesitas ayuda, puedes [consultar la wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)",
-                "error": "ERROR"
+            "interactionError": {
+                "error": "ERROR",
+                "noParameters": "Ninguno",
+                "noCommandName": "No aplicable",
+                "notificationEmbed": {
+                    "title": "¡Vaya! Algo fue mal",
+                    "description": "Lo hemos reportado a los responsables del bot"
+                },
+                "debuggingEmbed": {
+                    "title": "Depuración",
+                    "description": "Se declaró un error durante la ejecución de una interacción",
+                    "type": "Tipo",
+                    "command": "Comando",
+                    "arguments": "Argumentos",
+                    "channel": "Canal",
+                    "author": "Autor",
+                    "date": "Fecha",
+                    "error": "Error",
+                    "footer": "Revisa la consola para obtener más detalles"
+                }
             },
-            "systemLoad": {
-                "loadingSystem": "Cargando el sistema",
-                "configLoaded": "Cargado correctamente",
-                "configNotLoaded": "No se pudo cargar",
-                "guildConfigLoaded": "Carga de configuración de la guild completada",
-                "presenceLoaded": "Carga de presencia completada",
-                "voiceStatesLoaded": "Carga de estados de voz completada",
-                "loadedCorrectly": "{{botUsername}} iniciado correctamente",
-                "loadMention": "{{botUsername}} iniciado correctamente",
-                "error": "ERROR"
+            "logging": {
+                "cannotSend": "ERROR: No se pueden enviar mensajes al canal de registro.\n{{botUsername}} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos",
+                "cannotAccess": "ERROR: No se puede tener acceso al canal de registro.\n Se ha borrado de la configuración y se ha descargado de la memoria",
+                "error": "ERROR: Error durante la ejecución del logging"
+            },
+            "newMember": {
+                "author": "Nuevo miembro",
+                "description": "{{memberTag}} se unió al servidor",
+                "memberId": "ID del miembro",
+                "registerDate": "Fecha de registro",
+                "actualSanction": "Sanción actual",
+                "limitedSanction": "Silenciado hasta",
+                "unlimitedSantion": "Silenciado indefinidamente"
             }
         },
         "moderation": {
-            "infractionsHandler": {
+            "checkMutedRole": {
+                "replacing": "Será reemplazado por uno nuevo",
+                "reason": "Rol para gestionar miembros silenciados"
+            },
+            "manageWarn": {
                 "muteFunction": {
                     "loggingEmbed": {
                         "author": "{{memberTag}} ha sido SILENCIADO",
@@ -1499,9 +1529,19 @@
                     }
                 },
                 "error": "ERROR"
+            },
+            "checkUsername": {
+                "kickReason": "El nombre de usuario contenía una palabra prohibida",
+                "privateEmbed": {
+                    "author": "[EXPULSADO]",
+                    "description": "{{member}}, has sido expulsado de {{guildName}}",
+                    "moderator": "Moderador",
+                    "reasonTitle": "Razón",
+                    "reasonDescription": "Tu nombre de usuario contiene una palabra prohibida en la comunidad"
+                }
             }
         },
-        "voice": {
+        "reproduction": {
             "addTrack": {
                 "actuallyOnQueue": "Esta pista ya está en la cola"
             },
@@ -1526,6 +1566,9 @@
                 "didntChoose": "Debes escoger una pista de la lista",
                 "cantPlay": "No se puede reproducir este resultado",
                 "ageRestricted": "No puedes reproducir vídeos con restricción de edad"
+            },
+            "getFooter": {
+                "mode": "Modo"
             },
             "mediaPlayer": {
                 "finishedReproduction": "Reproducción finalizada",
@@ -1572,91 +1615,16 @@
                 "neededVotes": "Votos necesarios: `{{actualVotes}}` de `{{requiredVotes}}`"
             }
         },
-        "functions": {
-            "checkMutedRole": {
-                "replacing": "Será reemplazado por uno nuevo",
-                "reason": "Rol para gestionar miembros silenciados"
-            },
-            "addXP": {
-                "levelUpEmbed": {
-                    "author": "¡Subiste de nivel!",
-                    "description": "Enhorabuena {{member}}, has subido al nivel **{{memberLevel}}**",
-                    "rewards": "Recompensas obtenidas",
-                    "disablePrivateNotification": "Desactivar notificaciones"
-                }
-            },
+        "utilities": {
             "msToTime": {
                 "years": "años",
                 "months": "meses",
                 "days": "días"
-            },
-            "checkUsername": {
-                "kickReason": "El nombre de usuario contenía una palabra prohibida",
-                "privateEmbed": {
-                    "author": "[EXPULSADO]",
-                    "description": "{{member}}, has sido expulsado de {{guildName}}",
-                    "moderator": "Moderador",
-                    "reasonTitle": "Razón",
-                    "reasonDescription": "Tu nombre de usuario contiene una palabra prohibida en la comunidad"
-                }
-            },
-            "manageNewMember": {
-                "author": "Nuevo miembro",
-                "description": "{{memberTag}} se unió al servidor",
-                "memberId": "ID del miembro",
-                "registerDate": "Fecha de registro",
-                "actualSanction": "Sanción actual",
-                "limitedSanction": "Silenciado hasta",
-                "unlimitedSantion": "Silenciado indefinidamente"
-            },
-            "loggingManager": {
-                "cannotSend": "ERROR: No se pueden enviar mensajes al canal de registro.\n{{botUsername}} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos",
-                "cannotAccess": "ERROR: No se puede tener acceso al canal de registro.\n Se ha borrado de la configuración y se ha descargado de la memoria",
-                "error": "ERROR: Error durante la ejecución del loggingManager"
-            },
-            "debuggingManager": {
-                "cannotSend": "ERROR: No se pueden enviar mensajes al canal de depuración.\n{{botUsername}} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos",
-                "cannotAccess": "ERROR: No se puede tener acceso al canal de depuración.\n Se ha borrado de la configuración y se ha descargado de la memoria",
-                "error": "ERROR: Error durante la ejecución del debuggingManager"
-            },
-            "interactionErrorHandler": {
-                "error": "ERROR",
-                "noParameters": "Ninguno",
-                "noCommandName": "No aplicable",
-                "notificationEmbed": {
-                    "title": "¡Vaya! Algo fue mal",
-                    "description": "Lo hemos reportado a los responsables del bot"
-                },
-                "debuggingEmbed": {
-                    "title": "Depuración",
-                    "description": "Se declaró un error durante la ejecución de una interacción",
-                    "type": "Tipo",
-                    "command": "Comando",
-                    "arguments": "Argumentos",
-                    "channel": "Canal",
-                    "author": "Autor",
-                    "date": "Fecha",
-                    "error": "Error",
-                    "footer": "Revisa la consola para obtener más detalles"
-                }
-            },
-            "eventErrorHandler": {
-                "error": "ERROR",
-                "debuggingEmbed": {
-                    "title": "Depuración",
-                    "description": "Se declaró un error durante la ejecución de un evento",
-                    "event": "Evento",
-                    "date": "Fecha",
-                    "error": "Error",
-                    "footer": "Revisa la consola para obtener más detalles"
-                }
-            },
-            "getMusicFooter": {
-                "mode": "Modo"
-            },
-            "functionLoaded": "Carga de funciones globales completada"
-        },
-        "intervals": {
+            }
+        }
+    },
+    "lifecycle": {
+        "loadIntervals": {
             "mutes": {
                 "loggingEmbed": {
                     "author": "{{memberTag}} ha sido DES-SILENCIADO",
@@ -1706,12 +1674,48 @@
             },
             "configLoaded": "Carga de intervalos completada"
         },
+        "loadCommands": {
+            "unregisteredFromGuild": "Comando {{command}} des-registrado en {{guildName}}",
+            "unregisteredFromGlobal": "Comando {{command}} des-registrado globalmente",
+            "convertedToGlobal": "Comando {{command}} convertido al tipo \"global\"",
+            "convertedToGuild": "Comando {{command}} convertido al tipo \"guild\"",
+            "noConfigError": "El comando {{command}} no tiene configuración en commands.json",
+            "sameCommandNamesError": "Dos comandos o más comandos tienen el mismo nombre",
+            "invalidTypeError": "El comando {{command}} no tiene un tipo válido",
+            "registeredOnGlobal": "Comando {{command}} registrado globalmente",
+            "registeredOnGuild": "Comando {{command}} registrado en {{guildName}}",
+            "parametersUpdated": "El comando {{command}} ha actualizado sus parámetros",
+            "defaultPermUpdated": "El comando {{command}} ha actualizado su permiso por defecto",
+            "loadedCorrectly": "Comando {{command}} cargado correctamente"
+        },
+        "loadSystem": {
+            "loadingSystem": "Cargando el sistema",
+            "configLoaded": "Cargado correctamente",
+            "configNotLoaded": "No se pudo cargar",
+            "guildConfigLoaded": "Carga de configuración de la guild completada",
+            "functionLoaded": "Carga de funciones globales completada",
+            "presenceLoaded": "Carga de presencia completada",
+            "voiceStatesLoaded": "Carga de estados de voz completada",
+            "loadedCorrectly": "{{botUsername}} iniciado correctamente",
+            "loadMention": "{{botUsername}} iniciado correctamente",
+            "error": "ERROR"
+        },
+        "loadTimers": {
+            "configLoaded": "Carga de temporizadores completada"
+        },
+        "loadEmojis": {
+            "configLoaded": "Carga de emojis personalizados completada",
+            "maxExceeded": "No se pueden cargar más de 50 emojis",
+            "error": "ERROR"
+        },
+        "newGuild": {
+            "title": "¡{{botUsername}} añadido correctamente!",
+            "description": "Usa los ficheros de configuración para ajustarlo al bot a tu gusto.\nRecuerda que el bot solo podrá moderar a aquellas personas que tengan un rol por debajo del rol creado por {{botUser}}.\nSi necesitas ayuda, puedes [consultar la wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)",
+            "error": "ERROR"
+        },
         "splashLogo": {
             "description": "Soy un bot diseñado para moderación de comunidades automatizada, reproducción de música, gestión de niveles ¡y mucho más!",
             "divider": "Iniciando aplicación"
-        },
-        "timers": {
-            "configLoaded": "Carga de temporizadores completada"
         }
     }
 }

@@ -75,7 +75,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Devuelve un error si se ha superado el tamaño máximo del directorio de audios
             if (folderSize > client.config.music.maxLocalAudiosFolderSize) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.maxDirectorySizeReached, { maxDirectorySize: `\`${await client.functions.formatBytes(client.config.music.maxLocalAudiosFolderSize)}\`` })}.`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.maxDirectorySizeReached, { maxDirectorySize: `\`${await client.functions.utilities.formatBytes.run(client.config.music.maxLocalAudiosFolderSize)}\`` })}.`)
                 
             ]});
 
@@ -95,7 +95,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Comprueba si ya existía un audio con ese nombre
             if (soundList.includes(audioName)) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.alreadyExists, { audioName: `\`${audioName}\`` })}.`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.alreadyExists, { audioName: `\`${audioName}\`` })}.`)
             ], ephemeral: true});
 
             //Pospone la respuesta del bot
@@ -113,7 +113,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 //Devuelve un error si se ha superado el tamaño máximo de archivo
                 if (fileSize > commandConfig.maxFileSize) return interaction.editReply({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.maxFileSize, { maxFileSize: `\`${await client.functions.formatBytes(commandConfig.maxFileSize)}\`` })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.maxFileSize, { maxFileSize: `\`${await client.functions.utilities.formatBytes.run(commandConfig.maxFileSize)}\`` })}.`)
                 ]});
 
                 //Crea un nuevo archivo local
@@ -148,10 +148,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                         if (err) throw err;
 
                         //Almacena el miembro propietario del audio
-                        const ownerMember = await client.functions.fetchMember(fileOwner);
+                        const ownerMember = await client.functions.utilities.fetch.run(client, 'member', fileOwner);
 
                         //Envía un registro al canal de registro
-                        await client.functions.loggingManager('embed', new client.MessageEmbed()
+                        await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                             .setColor(client.config.colors.logging)
                             .setTitle(`📑 ${locale.uploadLoggingEmbed.title}`)
                             .setDescription(locale.uploadLoggingEmbed.description)
@@ -163,7 +163,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                         //Responde a la interacción con una confirmación
                         await interaction.editReply({ embeds: [ new client.MessageEmbed()
                             .setColor(client.config.colors.correct)
-                            .setDescription(`${client.customEmojis.greenTick} ${client.functions.localeParser(locale.uploaded, { audioName: `\`${audioName}\`` })}.`)
+                            .setDescription(`${client.customEmojis.greenTick} ${await client.functions.utilities.parseLocale.run(locale.uploaded, { audioName: `\`${audioName}\`` })}.`)
                         ]});
                     });
                 });
@@ -205,7 +205,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             });
 
             //Almacena el miembro propietario del audio
-            const ownerMember = await client.functions.fetchMember(client.db.audios[audioName].ownerId);
+            const ownerMember = await client.functions.utilities.fetch.run(client, 'member', client.db.audios[audioName].ownerId);
 
             //Elimina la entrada de la lista
             this.config.soundList.splice(this.config.soundList.indexOf(audioName), 1);
@@ -220,7 +220,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 if (err) throw err;
 
                 //Envía un registro al canal de registro
-                await client.functions.loggingManager('embed', new client.MessageEmbed()
+                await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                     .setColor(client.config.colors.logging)
                     .setTitle(`📑 ${locale.deleteLoggingEmbed.title}`)
                     .setDescription(locale.deleteLoggingEmbed.description)
@@ -242,7 +242,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             const selection = interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : soundList[Math.floor(Math.random() * soundList.length)];
 
             //Comprueba los requisitos previos para el comando
-            if (!await require('../../../../utils/voice/preChecks.js').run(client, interaction, ['user-connection',  'forbidden-channel',  'can-speak', 'not-afk',  'can-join',  'full-channel'])) return;
+            if (!await client.functions.reproduction.preChecks.run(client, interaction, ['user-connection',  'forbidden-channel',  'can-speak', 'not-afk',  'can-join',  'full-channel'])) return;
 
             //Almacena la información de la cola de la guild
             const reproductionQueue = client.reproductionQueues[interaction.guild.id];
@@ -256,14 +256,14 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Si la grabación no existe, devuelve un error
             if (!soundList.includes(selection)) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.doesntExist, { recordName: selection })}.`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.doesntExist, { recordName: selection })}.`)
             ], ephemeral: true});
 
             //Almacena el formato del audio elegido
             const fileFormat = client.db.audios[selection].format;
 
             //Crea el objeto de la cola y almacena si se ha logrado crear o no
-            await require('../../../../utils/voice/fetchResource.js').run(client, interaction, fileFormat, selection);
+            await client.functions.reproduction.fetchResource.run(client, interaction, fileFormat, selection);
 
             //Almacena librerías necesarios para manejar conexiones de voz
             const { getVoiceConnection, joinVoiceChannel } = require('@discordjs/voice');
@@ -275,10 +275,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             const { VoiceConnectionStatus, entersState } = require('@discordjs/voice');
 
             //Manda un mensaje de notificación de la carga
-            interaction.reply({ content: `⌛ | ${client.functions.localeParser(locale.loadingFile, { fileName: selection })}.` });
+            interaction.reply({ content: `⌛ | ${await client.functions.utilities.parseLocale.run(locale.loadingFile, { fileName: selection })}.` });
 
             //Si ya había conexión y el reproductor estaba a la espera, solo ejecuta el mediaPlayer
-            if (connection && connection._state.subscription && connection._state.subscription.player.state.status === 'idle') return require('../../../../utils/voice/mediaPlayer.js').run(client, interaction, connection);
+            if (connection && connection._state.subscription && connection._state.subscription.player.state.status === 'idle') return await client.functions.reproduction.mediaPlayer.run(client, interaction, connection);
 
             //Omite si ya hay reproducción en curso
             if (connection && connection._state.subscription && connection._state.subscription.player.state.status === 'playing') return;
@@ -294,10 +294,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             });
 
             //Almacena el canal de texto de la interacción
-            const interactionChannel = await client.functions.fetchChannel(interaction.channelId);
+            const interactionChannel = await client.functions.utilities.fetch.run(client, 'channel', interaction.channelId);
 
             //Manda un mensaje de confirmación
-            interactionChannel.send({ content: `📥 | ${client.functions.localeParser(locale.bounded, { voiceChannel: voiceChannel, textChannel: interactionChannel })}.` });
+            interactionChannel.send({ content: `📥 | ${await client.functions.utilities.parseLocale.run(locale.bounded, { voiceChannel: voiceChannel, textChannel: interactionChannel })}.` });
 
             //Si la conexión desaparece
             connection.on(VoiceConnectionStatus.Disconnected, async () => {
@@ -321,13 +321,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             await entersState(connection, VoiceConnectionStatus.Ready, 5_000);
 
             //Ejecuta el reproductor de medios
-            require('../../../../utils/voice/mediaPlayer.js').run(client, interaction, connection);
+            await client.functions.reproduction.mediaPlayer.run(client, interaction, connection);
         };
 
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 
@@ -343,7 +343,7 @@ exports.autocomplete = async (client, interaction, command, locale) => {
         let filtered = command.config.soundList.filter(audio => audio.startsWith(focusedValue));
 
         //Aleatoriza y recorta la lista de audios
-        filtered = await client.functions.getMultipleRandom(filtered, 25);
+        filtered = await client.functions.utilities.getMultipleRandom.run(filtered, 25);
 
         //Responde a la interacción con la lista
         await interaction.respond(filtered.map(audio => ({ name: audio, value: audio })));
@@ -351,7 +351,7 @@ exports.autocomplete = async (client, interaction, command, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

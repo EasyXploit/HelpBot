@@ -41,7 +41,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             };
 
             //Crea una invitación permanente en el canal
-            await inviteChannel.createInvite({maxAge: 0, reason: client.functions.localeParser(locale.inviteReason, { botTag: client.user.tag })}).then(async invite => { foundInvite = invite.code; });
+            await inviteChannel.createInvite({maxAge: 0, reason: await client.functions.utilities.parseLocale.run(locale.inviteReason, { botTag: client.user.tag })}).then(async invite => { foundInvite = invite.code; });
 
             //Graba la invitación en memoria (en el cliente)
             client.config.dynamic.inviteCode = foundInvite;
@@ -91,7 +91,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

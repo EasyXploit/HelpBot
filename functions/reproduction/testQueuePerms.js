@@ -1,9 +1,11 @@
+
+//Función para comprobar si un miembro tiene permisos para ajustar la cola de reproducción
 exports.run = async (client, interaction, command, index) => {
 
     try {
 
         //Almacena las traducciones
-		const locale = client.locale.utils.voice.testQueuePerms;
+		const locale = client.locale.functions.reproduction.testQueuePerms;
 
         //Omite si no hay roles de DJ
         if (client.config.music.djRoles.length == 0) return true;
@@ -63,8 +65,8 @@ exports.run = async (client, interaction, command, index) => {
 
         //Maneja la cantidad de votos necesarios para realizar la acción
         if (actualPercentage < client.config.music.votesPercentage) {
-            const interactionChannel = await client.functions.fetchChannel(interaction.channelId);
-            interactionChannel.send({ content: client.functions.localeParser(locale.neededVotes, { actualVotes: actualVotes, requiredVotes: requiredVotes }) });
+            const interactionChannel = await client.functions.utilities.fetch.run(client, 'channel', interaction.channelId);
+            interactionChannel.send({ content: await client.functions.utilities.parseLocale.run(locale.neededVotes, { actualVotes: actualVotes, requiredVotes: requiredVotes }) });
             return false;
         } else {
             reproductionQueue.votes[command] = 0;
@@ -74,6 +76,6 @@ exports.run = async (client, interaction, command, index) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };

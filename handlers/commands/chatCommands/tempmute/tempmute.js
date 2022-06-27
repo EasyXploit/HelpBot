@@ -3,7 +3,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     try {
 
         //Busca al miembro proporcionado
-        const member = await client.functions.fetchMember(interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se ha encontrado al miembro
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -41,7 +41,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         ], ephemeral: true});
 
         //Comprueba si existe el rol silenciado, sino lo crea
-        const mutedRole = await client.functions.checkMutedRole(interaction.guild);
+        const mutedRole = await client.functions.moderation.checkMutedRole.run(client, interaction.guild);
 
         //Comprueba si el miembro ya tenía el rol silenciado
         if (member.roles.cache.has(mutedRole.id)) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -56,7 +56,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         ], ephemeral: true});
 
         //Calcula el tiempo estimado en milisegundos
-        const milliseconds = await client.functions.magnitudesToMs(interaction.options._hoistedOptions[1].value);
+        const milliseconds = await client.functions.utilities.magnitudesToMs.run(interaction.options._hoistedOptions[1].value);
 
         //Comprueba si se ha proporcionado un tiempo válido
         if (!milliseconds) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -80,7 +80,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Si no se permitió la ejecución, manda un mensaje de error
         if (!authorized && milliseconds > commandConfig.maxRegularTime) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.exceededDuration, { time: client.functions.msToTime(commandConfig.maxRegularTime) })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.exceededDuration, { time: await client.functions.utilities.msToTime.run(client, commandConfig.maxRegularTime) })}.`)
         ], ephemeral: true});
 
         //Almacena la razón
@@ -128,12 +128,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             member.roles.add(mutedRole);
 
             //Propaga el rol silenciado
-            client.functions.spreadMutedRole(interaction.guild);
+            await client.functions.moderation.spreadMutedRole.run(client, interaction.guild);
 
             //Envía un mensaje al canal de registros
-            await client.functions.loggingManager('embed', new client.MessageEmbed()
+            await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setAuthor({ name: client.functions.localeParser(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                 .addField(locale.loggingEmbed.memberId, member.id, true)
                 .addField(locale.loggingEmbed.moderator, interaction.user.tag, true)
                 .addField(locale.loggingEmbed.reason, reason || locale.undefinedReason, true)
@@ -141,7 +141,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             );
 
             //Genera una descripción para el embed de notificación
-            const notificationEmbedDescription = reason ? client.functions.localeParser(locale.notificationEmbed.withReason, { memberTag: member.user.tag, reason: reason }) : client.functions.localeParser(locale.notificationEmbed.withoutReason, { memberTag: member.user.tag })
+            const notificationEmbedDescription = reason ? await client.functions.utilities.parseLocale.run(locale.notificationEmbed.withReason, { memberTag: member.user.tag, reason: reason }) : await client.functions.utilities.parseLocale.run(locale.notificationEmbed.withoutReason, { memberTag: member.user.tag })
 
             //Notifica la acción en el canal de invocación
             await interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -153,7 +153,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-                .setDescription(client.functions.localeParser(locale.privateEmbed.description, { member: member, guildName: interaction.guild.name }))
+                .setDescription(await client.functions.utilities.parseLocale.run(locale.privateEmbed.description, { member: member, guildName: interaction.guild.name }))
                 .addField(locale.privateEmbed.moderator, interaction.user.tag, true)
                 .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
                 .addField(locale.privateEmbed.expiration, `<t:${Math.round(new Date(parseInt(Date.now() + milliseconds)) / 1000)}:R>`, true)
@@ -163,7 +163,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

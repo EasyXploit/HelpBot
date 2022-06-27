@@ -55,14 +55,14 @@ exports.run = async (banData, client, locale) => {
                 return await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
-                    .setDescription(client.functions.localeParser(locale.botLoggingEmbed.description, { userTag: banData.user.tag }))
+                    .setDescription(await client.functions.utilities.parseLocale.run(locale.botLoggingEmbed.description, { userTag: banData.user.tag }))
                 ]});
             };
 
             //Envía un mensaje al canal de registros
-            await client.functions.loggingManager('embed', new client.MessageEmbed()
+            await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setAuthor({ name: client.functions.localeParser(locale.loggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
+                .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
                 .addField(locale.loggingEmbed.memberId, banData.user.id, true)
                 .addField(locale.loggingEmbed.moderator, executor ? executor.tag : locale.loggingEmbed.unknownModerator, true)
                 .addField(locale.loggingEmbed.reason, reason ? reason : locale.loggingEmbed.undefinedReason, true)
@@ -74,6 +74,6 @@ exports.run = async (banData, client, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.eventErrorHandler(error, 'guildBanAdd');
+        await client.functions.managers.eventError.run(client, error, 'guildBanAdd');
     };
 };

@@ -24,7 +24,7 @@ exports.run = async (client, interaction, checks) => {
                 //Devuelve un mensaje de error
                 await interaction.reply({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.parseLocale(locale.botNotConnected, { botUser: client.user })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.botNotConnected, { botUser: client.user })}.`)
                 ], ephemeral: true});
 
                 //Devuelve el estado "falso"
@@ -67,7 +67,7 @@ exports.run = async (client, interaction, checks) => {
                 //Devuelve un mensaje de error
                 await interaction.reply({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.parseLocale(locale.notSameChannel, { botUser: client.user })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.notSameChannel, { botUser: client.user })}.`)
                 ], ephemeral: true});
 
                 //Devuelve el estado "falso"
@@ -119,7 +119,7 @@ exports.run = async (client, interaction, checks) => {
                 //Devuelve un mensaje de error
                 await interaction.reply({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.parseLocale(locale.alreadyConnected, { botUser: client.user, voiceChannel: voiceChannel })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.alreadyConnected, { botUser: client.user, voiceChannel: voiceChannel })}.`)
                 ], ephemeral: true});
     
                 //Devuelve el estado "falso"
@@ -142,7 +142,7 @@ exports.run = async (client, interaction, checks) => {
                 //Devuelve un mensaje de error
                 await interaction.reply({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.parseLocale(locale.isAfk, { botUser: client.user })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.isAfk, { botUser: client.user })}.`)
                 ], ephemeral: true});
 
                 //Devuelve el estado "falso"
@@ -165,7 +165,7 @@ exports.run = async (client, interaction, checks) => {
                 //Devuelve un mensaje de error
                 await interaction.reply({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.parseLocale(locale.cantSpeak, { botUser: client.user, voiceChannel: voiceChannel })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.cantSpeak, { botUser: client.user, voiceChannel: voiceChannel })}.`)
                 ], ephemeral: true});
 
                 //Devuelve el estado "falso"
@@ -188,7 +188,7 @@ exports.run = async (client, interaction, checks) => {
                 //Devuelve un mensaje de error
                 await interaction.reply({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.parseLocale(locale.forbiddenJoin, { botUser: client.user, voiceChannel: voiceChannel })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.forbiddenJoin, { botUser: client.user, voiceChannel: voiceChannel })}.`)
                 ], ephemeral: true});
     
                 //Devuelve el estado "falso"
@@ -211,7 +211,7 @@ exports.run = async (client, interaction, checks) => {
                 //Devuelve un mensaje de error
                 await interaction.reply({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.parseLocale(locale.cantJoin, { botUser: client.user, voiceChannel: voiceChannel })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.cantJoin, { botUser: client.user, voiceChannel: voiceChannel })}.`)
                 ], ephemeral: true})
                 
                 //Devuelve el estado "falso"
@@ -234,7 +234,7 @@ exports.run = async (client, interaction, checks) => {
                 //Devuelve un mensaje de error
                 await interaction.reply({ embeds: [new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.parseLocale(locale.fullChannel, { voiceChannel: voiceChannel })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.fullChannel, { voiceChannel: voiceChannel })}.`)
                 ], ephemeral: true});
     
                 //Devuelve el estado "falso"

@@ -142,7 +142,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         };
 
         //Envía un registro al canal de registro
-        await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+        if (client.config.logging.sentDM) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
             .setColor(client.config.colors.logging)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
             .setDescription(await client.functions.utilities.parseLocale.run(locale.loggingEmbed.description, { authorTag: interaction.user.tag, memberTag: member.user.tag, botUser: client.user }))

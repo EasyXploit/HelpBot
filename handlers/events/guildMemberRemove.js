@@ -22,13 +22,13 @@ exports.run = async (member, client, locale) => {
 
                 //Si la expulsión fue al propio bot, ignora
                 if (member.user.id === client.user.id) return;
-                
+
                 //Envía un registro al canal de registros
-                return await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [ new client.MessageEmbed()
+                if (client.config.logging.kickedBot) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.botLoggingEmbed.description, { memberTag: member.user.tag }))
-                ]});
+                );
             };
 
             //Almacena el ejecutor y la razón
@@ -48,13 +48,13 @@ exports.run = async (member, client, locale) => {
             };
 
             //Envía un registro al canal de registros
-            await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [ new client.MessageEmbed()
+            if (client.config.logging.kickedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                 .addField(locale.loggingEmbed.memberId, member.id, true)
                 .addField(locale.loggingEmbed.moderator, executor ? executor.tag : locale.loggingEmbed.unknownModerator, true)
                 .addField(locale.loggingEmbed.reason, reason ? reason : locale.loggingEmbed.undefinedReason, true)
-            ]});
+            );
 
         } else { //Si no se encontró una expulsión
 
@@ -71,7 +71,7 @@ exports.run = async (member, client, locale) => {
             if (!banLog || Date.now() > (banLog.createdTimestamp + 5000)) {
                 
                 //Envía un registro al canal de bienvenidas/despedidas (por que no se trató ni de una expulsión ni de un baneo)
-                await client.channels.cache.get(client.config.main.joinsAndLeavesChannel).send({ embeds: [ new client.MessageEmbed()
+                if (client.config.logging.memberLeaved) await client.joinsAndLeavesChannel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
                     .setAuthor({ name: locale.goodbyeEmbed.author, iconURL: 'attachment://out.png' })

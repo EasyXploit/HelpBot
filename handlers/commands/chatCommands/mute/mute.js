@@ -97,7 +97,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             await client.functions.moderation.spreadMutedRole.run(client, interaction.guild);
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+            if (client.config.logging.mutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                 .addField(locale.loggingEmbed.memberId, member.id, true)

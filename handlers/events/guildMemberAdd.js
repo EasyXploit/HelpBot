@@ -12,11 +12,14 @@ exports.run = async (member, client, locale) => {
             if (!member.roles.cache.has(client.config.main.newBotRole)) await member.roles.add(client.config.main.newBotRole);
 
             //Envía un mensaje al canal de registro
-            return await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+            if (client.config.logging.botJoined) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
                 .setDescription(`${await client.functions.utilities.parseLocale.run(locale.botLoggingEmbed.description, { memberTag: member.user.tag })}.`)
             );
+
+            //Aborta el resto del script
+            return
         };
 
         //Ejecuta el manejador de nuevos miembros (si procede)

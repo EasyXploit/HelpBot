@@ -134,7 +134,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (member) loggingEmbedAuthor.iconURL = member.user.displayAvatarURL({dynamic: true});
 
         //Envía un mensaje al canal de registros
-        await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+        if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
             .setColor(client.config.colors.correct)
             .setAuthor(loggingEmbedAuthor )
             .addField(locale.loggingEmbed.memberId, memberId.toString(), true)

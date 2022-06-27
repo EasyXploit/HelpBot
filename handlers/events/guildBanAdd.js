@@ -60,7 +60,7 @@ exports.run = async (banData, client, locale) => {
             };
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+            if (client.config.logging.bannedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
                 .addField(locale.loggingEmbed.memberId, banData.user.id, true)

@@ -42,7 +42,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             if (member.roles.cache.has(mutedRole.id) && !oldDuration && !duration) return;
 
             //Envía un mensaje al canal de registro
-            await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+            if (client.config.logging.mutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.muteFunction.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                 .addField(locale.muteFunction.loggingEmbed.memberId, member.id, true)
@@ -210,7 +210,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 if (err) throw err;
 
                 //Ejecuta el manejador de registro
-                await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                if (client.config.logging.warnedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.warn.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                     .addField(locale.warn.loggingEmbed.memberId, member.id, true)
@@ -222,7 +222,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 );
 
                 //Si procede, adjunta el mensaje filtrado
-                if (message && client.config.moderation.attachFilteredMessages) await client.functions.managers.logging.run(client, 'file', new client.MessageAttachment(Buffer.from(message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
+                if (message && client.config.logging.warnedMember && client.config.moderation.attachFilteredMessages) await client.functions.managers.logging.run(client, 'file', new client.MessageAttachment(Buffer.from(message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
             });
 
             //Banea temporalmente a los miembros que se acaban de unir al servidor y han mandado invitaciones

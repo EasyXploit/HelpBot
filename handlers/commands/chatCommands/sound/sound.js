@@ -151,7 +151,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                         const ownerMember = await client.functions.utilities.fetch.run(client, 'member', fileOwner);
 
                         //Envía un registro al canal de registro
-                        await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                        if (client.config.logging.soundUploaded) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                             .setColor(client.config.colors.logging)
                             .setTitle(`📑 ${locale.uploadLoggingEmbed.title}`)
                             .setDescription(locale.uploadLoggingEmbed.description)
@@ -220,7 +220,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 if (err) throw err;
 
                 //Envía un registro al canal de registro
-                await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                if (client.config.logging.soundDeleted) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                     .setColor(client.config.colors.logging)
                     .setTitle(`📑 ${locale.deleteLoggingEmbed.title}`)
                     .setDescription(locale.deleteLoggingEmbed.description)

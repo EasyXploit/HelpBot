@@ -42,7 +42,7 @@ exports.run = (client) => {
                 if (member) authorProperty.iconURL = member.user.displayAvatarURL({dynamic: true});
                 
                 //Ejecuta el manejador de registro
-                await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
                     .setAuthor(authorProperty)
                     .addField(locale.mutes.loggingEmbed.member, member ? member.user.tag : `\`${idKey}\``, true)
@@ -93,7 +93,7 @@ exports.run = (client) => {
                     if (user) await client.homeGuild.members.unban(idKey);
 
                     //Ejecuta el manejador de registro
-                    await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                    if (client.config.logging.unbannedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                         .setColor(client.config.colors.correct)
                         .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.bans.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
                         .addField(locale.bans.loggingEmbed.user, user.tag, true)
@@ -233,7 +233,7 @@ exports.run = (client) => {
                 ], files: ['./resources/images/endFlag.png']}).then(async poll => {
 
                     //Envía una notificación al canal de registro
-                    await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                    if (client.config.logging.pollEnded) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                         .setColor(client.config.colors.logging)
                         .setTitle(`📑 ${locale.polls.loggingEmbed.title}`)
                         .setDescription(`${await client.functions.utilities.parseLocale.run(locale.polls.loggingEmbed.description, { poll: `[${storedPoll.title}](${poll.url})`, channel: channel })}.`)

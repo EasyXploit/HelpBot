@@ -209,7 +209,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (err) throw err;
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.logging.run(client, 'embed',  new client.MessageEmbed()
+            if (client.config.logging.experienceModified) await client.functions.managers.logging.run(client, 'embed',  new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle(`📑 ${locale.loggingEmbed.title}`)
                 .setDescription(`${await client.functions.utilities.parseLocale.run(locale.loggingEmbed.description, { memberTag: member.user.tag })}.`)

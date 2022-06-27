@@ -30,7 +30,7 @@ exports.run = async (client, member) => {
         else if (client.db.mutes[member.id] && !client.db.mutes[member.id].until) welcomeEmbed.addField(`🔇 ${locale.actualSanction}`, locale.unlimitedSantion, false);
 
         //Se notifica en el canal de registro
-        await client.joinsAndLeavesChannel.send({ embeds: [ welcomeEmbed ], files: ['./resources/images/in.png'] });
+        if (client.config.logging.memberJoined) await client.joinsAndLeavesChannel.send({ embeds: [ welcomeEmbed ], files: ['./resources/images/in.png'] });
 
         //Añade el rol de bienvenida para nuevos miembros (si no lo tiene ya)
         if (member.roles.cache.has(client.config.main.newMemberRole)) await member.roles.add(client.config.main.newMemberRole);

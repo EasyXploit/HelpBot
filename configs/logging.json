@@ -1,0 +1,21 @@
+{
+    "warnedMember": true,
+    "warnRemoved": true,
+    "mutedMember": true,
+    "unmutedMember": true,
+    "kickedMember": true,
+    "kickedBot": true,
+    "bannedMember": true,
+    "unbannedMember": true,
+    "sentDM": true,
+    "pollStarted": true,
+    "pollEnded": true,
+    "purgedChannel": true,
+    "slowmodeChanged": true,
+    "soundUploaded": true,
+    "soundDeleted": true,
+    "experienceModified": true,
+    "memberJoined": true,
+    "botJoined": true,
+    "memberLeaved": true
+}

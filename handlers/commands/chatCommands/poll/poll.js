@@ -288,7 +288,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                         });
                         
                         //Envía un mensaje al canal de registros
-                        await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                        if (client.config.logging.pollStarted) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                             .setColor(client.config.colors.logging)
                             .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { memberTag: interaction.member.user.tag }), iconURL: interaction.user.displayAvatarURL({dynamic: true}) })
                             .addField(locale.loggingEmbed.title, `__[${title}](${pollEmbed.url})__`, true)

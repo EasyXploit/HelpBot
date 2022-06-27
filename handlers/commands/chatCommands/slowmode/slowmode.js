@@ -21,7 +21,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             await interactionChannel.setRateLimitPerUser(0);
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+            if (client.config.logging.slowmodeChanged) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle(`📑 ${locale.disabledLoggingEmbed.title}`)
                 .setDescription(locale.disabledLoggingEmbed.description)
@@ -97,7 +97,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             await interactionChannel.setRateLimitPerUser(argument, reason || locale.undefinedReason);
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+            if (client.config.logging.slowmodeChanged) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle(`📑 ${locale.enabledLoggingEmbed.title}`)
                 .setDescription(locale.enabledLoggingEmbed.description)

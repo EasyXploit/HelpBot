@@ -23,7 +23,7 @@
                 "cantGainXp": "You cannot earn EXP, so you will not receive notifications",
                 "alreadyApplied": "This setting was already applied. No changes will be made",
                 "newButon": {
-                    "disable": "Turn off notifications",
+                    "disable": "Disable notifications",
                     "enable": "Reactivate notifications"
                 }
             }
@@ -978,8 +978,8 @@
                         "description": "A locally stored audio has been deleted",
                         "executor": "Executor",
                         "owner": "Owner",
-                        "unknownOwner": "Unknown",
-                        "audioName": "Audio name"
+                        "audioName": "Audio name",
+                        "unknownOwner": "Unknown"
                     },
                     "alreadyPlaying": "The player is running on another channel",
                     "doesntExist": "The audio **{{recordName}}** does not exist",
@@ -1467,16 +1467,6 @@
                 "replacing": "It will be replaced by a new one",
                 "reason": "Role to manage muted members"
             },
-            "checkUsername": {
-                "kickReason": "The username contained a banned word",
-                "privateEmbed": {
-                    "author": "[KICKED]",
-                    "description": "{{member}}, you have been kicked from {{guildName}}",
-                    "moderator": "Moderator",
-                    "reasonTitle": "Reason",
-                    "reasonDescription": "Your username contains a word that is banned in the community"
-                }
-            },
             "manageWarn": {
                 "muteFunction": {
                     "loggingEmbed": {
@@ -1539,6 +1529,16 @@
                     }
                 },
                 "error": "ERROR"
+            },
+            "checkUsername": {
+                "kickReason": "The username contained a banned word",
+                "privateEmbed": {
+                    "author": "[KICKED]",
+                    "description": "{{member}}, you have been kicked from {{guildName}}",
+                    "moderator": "Moderator",
+                    "reasonTitle": "Reason",
+                    "reasonDescription": "Your username contains a word that is banned in the community"
+                }
             }
         },
         "reproduction": {
@@ -1693,12 +1693,12 @@
             "configLoaded": "Loaded successfully",
             "configNotLoaded": "Could not load",
             "guildConfigLoaded": "Guild config loading completed",
-            "functionsLoaded": "Global functions loading completed",
             "presenceLoaded": "Presence loading completed",
             "voiceStatesLoaded": "Voice states loading completed",
             "loadedCorrectly": "{{botUsername}} started successfully",
             "loadMention": "{{botUsername}} started successfully",
-            "error": "ERROR"
+            "error": "ERROR",
+            "functionsLoaded": "Global functions loading completed"
         },
         "loadTimers": {
             "configLoaded": "Timers loading completed"

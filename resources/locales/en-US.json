@@ -811,7 +811,7 @@
                         "owner": "Owner",
                         "nsfwFilter": "NSFW filter",
                         "tier": "Boost level",
-                        "boostsCount": "({{boostsCount}} boosts)",
+                        "boostsCount": "{{boostsCount}} boosts",
                         "verification": "Verification level",
                         "invitations": "Invitations",
                         "totalInvites": "{{totalInvites}} total invites",

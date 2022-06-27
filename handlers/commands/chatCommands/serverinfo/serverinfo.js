@@ -24,7 +24,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Envía un embed con el resultado
         await interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.primary)
-            .setAuthor({ name: client.functions.localeParser(locale.embed.author, { guildName: interaction.guild.name }), iconURL: interaction.guild.iconURL({dynamic: true}) })
+            .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.embed.author, { guildName: interaction.guild.name }), iconURL: interaction.guild.iconURL({dynamic: true}) })
             .setDescription(interaction.guild.description)
             .setThumbnail(interaction.guild.iconURL({dynamic: true}))
             .addField(`🏷 ${locale.embed.name}`, interaction.guild.name, true)
@@ -33,21 +33,21 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .addField(`📝 ${locale.embed.creationDate}`, `<t:${Math.round(interaction.guild.createdTimestamp / 1000)}>`, true)
             .addField(`👑 ${locale.embed.owner}`, `<@${interaction.guild.ownerId}> (ID: ${interaction.guild.ownerId})`, true)
             .addField(`🚫 ${locale.embed.nsfwFilter}`, locale.guildNsfwLevel[interaction.guild.explicitContentFilter], true)
-            .addField(`💎 ${locale.embed.tier}`, `${locale.guildTiers[client.homeGuild.premiumTier]} (${client.functions.localeParser(locale.embed.boostsCount, { boostsCount: interaction.guild.premiumSubscriptionCount })})`, true)
+            .addField(`💎 ${locale.embed.tier}`, `${locale.guildTiers[client.homeGuild.premiumTier]} (${await client.functions.utilities.parseLocale.run(locale.embed.boostsCount, { boostsCount: interaction.guild.premiumSubscriptionCount })})`, true)
             .addField(`👮 ${locale.embed.verification}`, locale.guildverificationLevel[interaction.guild.verificationLevel], true)
-            .addField(`🎟️ ${locale.embed.invitations}`, client.functions.localeParser(locale.embed.totalInvites, { totalInvites: (await interaction.guild.invites.fetch()).size.toString() }), true)
-            .addField(`🔖 ${locale.embed.roles}`, client.functions.localeParser(locale.embed.totalRoles, { totalRoles: (await interaction.guild.roles.fetch()).size.toString() }), true)
-            .addField(`🌝 ${locale.embed.stickersAndEmojis}`, `${client.functions.localeParser(locale.embed.totalEmojis, { totalEmojis: (await interaction.guild.emojis.fetch()).size.toString() })}\n${client.functions.localeParser(locale.embed.totalStickers, { totalStickers: (await interaction.guild.stickers.fetch()).size.toString() })}`, true)
-            .addField(`👥 ${locale.embed.members}`, `${client.functions.localeParser(locale.embed.totalMembers, { totalMembers: guildMembers.size })}\n${client.functions.localeParser(locale.embed.totalHumans, { totalHumans: guildMembers.filter(member => !member.user.bot).size })}\n${client.functions.localeParser(locale.embed.totalBots, { totalBots: guildMembers.filter(member => member.user.bot).size })}`, true)
-            .addField(`🔨 ${locale.embed.bans}`, client.functions.localeParser(locale.embed.bannedUsers, { bannedUsers: (await interaction.guild.bans.fetch()).size.toString() }), true)
-            .addField(`🕗 ${locale.embed.afk}`, client.functions.localeParser(locale.embed.afkTime, { afkTime: interaction.guild.afkTimeout / 60 }), true)
-            .addField(`💬 ${locale.embed.channels}`, `${client.functions.localeParser(locale.embed.totalCategories, { totalCategories: categories.size - 1 })}\n${client.functions.localeParser(locale.embed.totalTextChannels, { totalTextChannels: guildChannels.filter(c => c.type === 'GUILD_TEXT').size })}\n${client.functions.localeParser(locale.embed.totalVoiceChannels, { totalVoiceChannels: guildChannels.filter(c => c.type === 'GUILD_VOICE').size })}`, true)
+            .addField(`🎟️ ${locale.embed.invitations}`, await client.functions.utilities.parseLocale.run(locale.embed.totalInvites, { totalInvites: (await interaction.guild.invites.fetch()).size.toString() }), true)
+            .addField(`🔖 ${locale.embed.roles}`, await client.functions.utilities.parseLocale.run(locale.embed.totalRoles, { totalRoles: (await interaction.guild.roles.fetch()).size.toString() }), true)
+            .addField(`🌝 ${locale.embed.stickersAndEmojis}`, `${await client.functions.utilities.parseLocale.run(locale.embed.totalEmojis, { totalEmojis: (await interaction.guild.emojis.fetch()).size.toString() })}\n${await client.functions.utilities.parseLocale.run(locale.embed.totalStickers, { totalStickers: (await interaction.guild.stickers.fetch()).size.toString() })}`, true)
+            .addField(`👥 ${locale.embed.members}`, `${await client.functions.utilities.parseLocale.run(locale.embed.totalMembers, { totalMembers: guildMembers.size })}\n${await client.functions.utilities.parseLocale.run(locale.embed.totalHumans, { totalHumans: guildMembers.filter(member => !member.user.bot).size })}\n${await client.functions.utilities.parseLocale.run(locale.embed.totalBots, { totalBots: guildMembers.filter(member => member.user.bot).size })}`, true)
+            .addField(`🔨 ${locale.embed.bans}`, await client.functions.utilities.parseLocale.run(locale.embed.bannedUsers, { bannedUsers: (await interaction.guild.bans.fetch()).size.toString() }), true)
+            .addField(`🕗 ${locale.embed.afk}`, await client.functions.utilities.parseLocale.run(locale.embed.afkTime, { afkTime: interaction.guild.afkTimeout / 60 }), true)
+            .addField(`💬 ${locale.embed.channels}`, `${await client.functions.utilities.parseLocale.run(locale.embed.totalCategories, { totalCategories: categories.size - 1 })}\n${await client.functions.utilities.parseLocale.run(locale.embed.totalTextChannels, { totalTextChannels: guildChannels.filter(c => c.type === 'GUILD_TEXT').size })}\n${await client.functions.utilities.parseLocale.run(locale.embed.totalVoiceChannels, { totalVoiceChannels: guildChannels.filter(c => c.type === 'GUILD_VOICE').size })}`, true)
         ]});
 
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

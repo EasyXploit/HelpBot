@@ -3,7 +3,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     try {
 
         //Comprueba los requisitos previos para el comando
-        if (!await require('../../../../utils/voice/preChecks.js').run(client, interaction, ['bot-connected',  'same-channel',  'has-queue',  'can-speak'])) return;
+        if (!await client.functions.reproduction.preChecks.run(client, interaction, ['bot-connected',  'same-channel',  'has-queue',  'can-speak'])) return;
 
         //Almacena el argumento proporcionado por el usuario (si lo hay)
         const argument = interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : null;
@@ -37,7 +37,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (argument === 'all') {
 
                 //Comprueba si es necesaria una votación y cambia la cola
-                if (await require('../../../../utils/voice/testQueuePerms.js').run(client, interaction, 'skip-all')) {
+                if (await client.functions.reproduction.testQueuePerms.run(client, interaction, 'skip-all')) {
                     await reproductionQueue.tracks.splice(0, reproductionQueue.tracks.length);
                     await skip();
                 };
@@ -71,11 +71,11 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 //Comprueba si el valor introducido es válido
                 if (argument > (reproductionQueue.tracks.length)) return interaction.reply({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantSkipThis, { quantity: reproductionQueue.tracks.length })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.cantSkipThis, { quantity: reproductionQueue.tracks.length })}.`)
                 ], ephemeral: true});
                 
                 //Comprueba si es necesaria una votación y cambia la cola
-                if (await require('../../../../utils/voice/testQueuePerms.js').run(client, interaction, `skip-${argument}`)) {
+                if (await client.functions.reproduction.testQueuePerms.run(client, interaction, `skip-${argument}`)) {
                     await reproductionQueue.tracks.splice(0, argument - 1);
                     await skip();
                 };
@@ -84,13 +84,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         } else {
 
             //Comprueba si es necesaria una votación y omite
-            if (await require('../../../../utils/voice/testQueuePerms.js').run(client, interaction, 'skip', 0)) await skip();
+            if (await client.functions.reproduction.testQueuePerms.run(client, interaction, 'skip', 0)) await skip();
         };
 
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

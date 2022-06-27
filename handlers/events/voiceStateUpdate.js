@@ -70,13 +70,13 @@ exports.run = async (oldState, newState, client, locale) => {
             if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].lastXpReward + client.config.xp.XPGainInterval)) {
 
                 //Almacena al miembro
-                const member = await client.functions.fetchMember(newState.id);
+                const member = await client.functions.utilities.fetch.run(client, 'member', newState.id);
 
                 //Si el miembro está muteado o ensordecido, no hace nada
                 if (!member || member.voice.mute || member.voice.deaf) return;
 
                 //Añade XP al miembro por última vez
-                await client.functions.addXP(member, 'voice');
+                await client.functions.leveling.addExperience.run(client, member, 'voice');
             };
             
             //Borra el registro del miembro que ha dejado el canal de voz
@@ -144,6 +144,6 @@ exports.run = async (oldState, newState, client, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.eventErrorHandler(error, 'voiceStateUpdate');
+        await client.functions.managers.eventError.run(client, error, 'voiceStateUpdate');
     };
 };

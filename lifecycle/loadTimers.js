@@ -1,7 +1,7 @@
 exports.run = async (client) => {
 
     //Traducciones de los timers
-    const locale = client.locale.utils.timers;
+    const locale = client.locale.lifecycle.loadTimers;
 
     //Aborta si los timers están deshabilitados
     if (!client.config.main.timers) return;
@@ -94,7 +94,7 @@ exports.run = async (client) => {
                 };
 
                 //Cambia los placeholders por sus valores reales
-                return await client.functions.localeParser(string, wildcards);
+                return await client.functions.utilities.parseLocale.run(string, wildcards);
             };
 
             //Devuelve la cadena sin modificar
@@ -258,7 +258,7 @@ exports.run = async (client) => {
         const timerConfig = client.db.timers.messages[hash]; 
 
         //Busca el canal especificado en la config.
-        const channel = await client.functions.fetchChannel(timerConfig.channelId);
+        const channel = await client.functions.utilities.fetch.run(client, 'channel', timerConfig.channelId);
 
         //Omite la iteración si no encuentra el mensaje
         if (!channel) continue;

@@ -4,7 +4,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Almacena el ID del canal proporcionado, o el del actual
         const destinationChannelId = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : interaction.channelId;
-        const destinationChannel = await client.functions.fetchChannel(destinationChannelId);
+        const destinationChannel = await client.functions.utilities.fetch.run(client, 'channel', destinationChannelId);
 
         //Comprueba si el canal existe
         if (!destinationChannel || !['GUILD_TEXT', 'GUILD_NEWS', 'GUILD_STORE', 'GUILD_NEWS_THREAD', 'GUILD_PUBLIC_THREAD', 'GUILD_PRIVATE_THREAD'].includes(destinationChannel.type)) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -16,7 +16,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         const memberPermissions = destinationChannel.permissionsFor(interaction.user).bitfield;
         if ((memberPermissions & BigInt(0x800)) !== BigInt(0x800)) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.noPermission, { channel: destinationChannel })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.noPermission, { channel: destinationChannel })}.`)
         ], ephemeral: true});
 
         //Almacena el modo seleccionado
@@ -87,7 +87,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

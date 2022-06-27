@@ -3,7 +3,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     try {
 
         //Comprueba los requisitos previos para el comando
-        if (!await require('../../../../utils/voice/preChecks.js').run(client, interaction, ['bot-connected', 'has-queue'])) return;
+        if (!await client.functions.reproduction.preChecks.run(client, interaction, ['bot-connected', 'has-queue'])) return;
 
         //Método para obtener conexiones de voz
         const { getVoiceConnection } = require('@discordjs/voice');
@@ -40,20 +40,20 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         const randomColor = require('randomcolor');
 
         //Almacena el progreso formateado
-        const formatteProgress = reproductionQueue.tracks[0].meta.length !== 0 ? `${progressBar.join('')} ${percentage}%\n\`${client.functions.msToTime(progress)} / ${client.functions.msToTime(total)}\`.` : `${locale.isLive} (${locale.elapsed}: \`${client.functions.msToTime(progress)}\`).`;
+        const formattedProgress = reproductionQueue.tracks[0].meta.length !== 0 ? `${progressBar.join('')} ${percentage}%\n\`${await client.functions.utilities.msToTime.run(client, progress)} / ${await client.functions.utilities.msToTime.run(client, total)}\`` : `${locale.isLive} (${locale.elapsed}: \`${await client.functions.utilities.msToTime.run(client, progress)}\`)`;
 
         //Envía el mensaje con el resultado
         interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(randomColor())
             .setAuthor({ name: `${locale.rightNow}:`, iconURL: 'attachment://dj.png' })
-            .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n${formatteProgress}`)
-            .setFooter({ text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild) })
+            .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n${formattedProgress}`)
+            .setFooter({ text: await client.functions.reproduction.getFooter.run(client, reproductionQueue.boundedTextChannel.guild) })
         ], files: ['./resources/images/dj.png'] });
 
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

@@ -3,7 +3,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     try {
 
         //Comprueba los requisitos previos para el comando
-        if (!await require('../../../../utils/voice/preChecks.js').run(client, interaction, ['has-queue'])) return;
+        if (!await client.functions.reproduction.preChecks.run(client, interaction, ['has-queue'])) return;
 
         //Almacena la cola
         const reproductionQueue = client.reproductionQueues[interaction.guild.id];
@@ -29,8 +29,8 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             let queueEmbed = new client.MessageEmbed()
                 .setColor(randomColor())
                 .setAuthor({ name: locale.queueEmbed.author, iconURL: 'attachment://dj.png' })
-                .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n● ${locale.queueEmbed.duration}: \`${reproductionQueue.tracks[0].meta.length !== 0 ? client.functions.msToTime(reproductionQueue.tracks[0].meta.length) : locale.queueEmbed.isLive}\`\n ● ${locale.queueEmbed.requestedBy}: <@${reproductionQueue.tracks[0].requesterId}>`)
-                .setFooter({ text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild) });
+                .setDescription(`[${reproductionQueue.tracks[0].meta.title}](${reproductionQueue.tracks[0].meta.location})\n\n● ${locale.queueEmbed.duration}: \`${reproductionQueue.tracks[0].meta.length !== 0 ? await client.functions.utilities.msToTime.run(client, reproductionQueue.tracks[0].meta.length) : locale.queueEmbed.isLive}\`\n ● ${locale.queueEmbed.requestedBy}: <@${reproductionQueue.tracks[0].requesterId}>`)
+                .setFooter({ text: await client.functions.reproduction.getFooter.run(client, reproductionQueue.boundedTextChannel.guild) });
             
             //Si hay cola, carga la cola en el embed
             if (reproductionQueue.tracks[1]) {
@@ -43,7 +43,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                     let title = trackMeta.title; //Almacena el título
                     title = title.replace('[', '').replace('[', '').replace(']', '').replace('|', '').replace('(', '').replace(')', '').replace('_', '').replace('*', ''); //Elimina signos que alteren la forma en la que se muestra la entrada
                     if (title.length > 40) title = `${title.slice(0, 40)} ...`; //Acorta el título si es demasiado largo
-                    queueList = `${queueList}\`${id}.\` [${title}](${trackMeta.location}) | \`${trackMeta.length !== 0 ? client.functions.msToTime(trackMeta.length) : locale.queueEmbed.isLive}\` | <@${reproductionQueue.tracks[id].requesterId}>\n`;
+                    queueList = `${queueList}\`${id}.\` [${title}](${trackMeta.location}) | \`${trackMeta.length !== 0 ? await client.functions.utilities.msToTime.run(client, trackMeta.length) : locale.queueEmbed.isLive}\` | <@${reproductionQueue.tracks[id].requesterId}>\n`;
                 };
                 
                 //Añade el campo al embed
@@ -105,7 +105,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

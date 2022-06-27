@@ -3,7 +3,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     try {
 
         //Comprueba los requisitos previos para el comando
-        if (!await require('../../../../utils/voice/preChecks.js').run(client, interaction, ['has-queue'])) return;
+        if (!await client.functions.reproduction.preChecks.run(client, interaction, ['has-queue'])) return;
 
         //Almacena los filtros de expresiones regulares para comprobar el formato del parámetro
         const ssFilter = (/(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)/gm);
@@ -35,7 +35,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         ], ephemeral: true});
 
         //Calcula los milisegundos a retroceder
-        const rewindMs = await client.functions.HHMMSSToMs(argument);
+        const rewindMs = await client.functions.utilities.HHMMSSToMs.run(argument);
 
         //Almacena el progreso actual de la pista
         let actualProgress = connection._state.subscription.player._state.resource.playbackDuration;
@@ -53,15 +53,18 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         ], ephemeral: true});
 
         //Almacena el objetivo de avance (en HH:MM:SS)
-        const rewindTo = await client.functions.msToTime(rewindToMs);
+        const rewindTo = await client.functions.utilities.msToTime.run(client, rewindToMs);
+
+        //Almacena la config. del comando "seek"
+        const seekCommand = client.commands.chatCommands.get('seek');
 
         //Ejecuta el comando "seek"
-        await require('../seek/seek.js').run(client, interaction, client.locale.handlers.commands.chatCommands.seek, rewindTo);
+        await require('../seek/seek.js').run(client, interaction, seekCommand.userConfig, client.locale.handlers.commands.chatCommands.seek, rewindTo);
 
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

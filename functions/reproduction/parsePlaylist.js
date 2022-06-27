@@ -1,3 +1,4 @@
+//Función para desestructurar una lista de reproducción en pistas individuales
 exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, requestingMember, interaction) => {
 
     try {
@@ -8,7 +9,7 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
         const playlistItems = await playlist.all_videos();
 
         //Almacena las traducciones
-		const locale = client.locale.utils.voice.parsePlaylist;
+		const locale = client.locale.functions.reproduction.parsePlaylist;
 
         //Almacena las pistas autorizadas restantes
         let remainingTracks = authorizedTracks;
@@ -27,7 +28,7 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
         //Si hubieron omitidas por que no se podían reproducir o superaron la duración máxima, lo advierte
         if (deletedCount > 0) await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.ignoredTracks, { ignoredCount: deletedCount, duration: client.functions.msToTime(client.config.music.maxTrackDuration) })}.`)]
+            .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(locale.ignoredTracks, { ignoredCount: deletedCount, duration: await client.functions.utilities.msToTime.run(client, client.config.music.maxTrackDuration) })}.`)]
         }).then(msg => {setTimeout(() => msg.delete(), 10000)});
 
         //Almacena la cantidad de pistas duplicadas
@@ -43,7 +44,7 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
             if (!result) continue;
 
             //Crea el objeto de la cola
-            let queueTrackInfo = await require('./addTrack').run(client, reproductionQueue, true, 'stream', requestingMember.id, result, interaction);
+            let queueTrackInfo = await client.functions.reproduction.addTrack.run(client, reproductionQueue, true, 'stream', requestingMember.id, result, interaction);
 
             //Continua si es un duplicado y aumenta la cantidad de duplicados
             if (!queueTrackInfo) {
@@ -74,19 +75,19 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
             .setAuthor({name: `${locale.addedPlaylistEmbed.authorTitle} 🎶`, iconURL: 'attachment://dj.png'})
             .setDescription(`[${playlist.title}](${playlist.url})\n\n● **${locale.addedPlaylistEmbed.author}:** \`${playlist.channel.name !== null ? playlist.channel.name : 'YouTube'}\`\n● **${locale.addedPlaylistEmbed.tracks}:** \`${playlistItems.length}\``)
             .addField(`${locale.addedPlaylistEmbed.requestedBy}:`, `${requestingMember}`, true)
-            .setFooter({text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild) })
+            .setFooter({text: await client.functions.reproduction.getFooter.run(client, reproductionQueue.boundedTextChannel.guild) })
         ], files: ['./resources/images/dj.png']});
 
         //Si hubieron pistas omitidas por que eran duplicadas, lo advierte
         if (duplicateCount > 0) await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.ignoredDuplicates, { ignoredCount: duplicateCount })}.`)]
+            .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(locale.ignoredDuplicates, { ignoredCount: duplicateCount })}.`)]
         }).then(msg => {setTimeout(() => msg.delete(), 10000)});
 
         //Si hubieron pistas omitidas por que excedían la cantidad máxima de pistas autorizadas, lo advierte
         if ((playlistItems.length - duplicateCount) > authorizedTracks) await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
-            .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.ignoredFull, { ignoredCount: playlistItems.length - authorizedTracks })}.`)]
+            .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(locale.ignoredFull, { ignoredCount: playlistItems.length - authorizedTracks })}.`)]
         }).then(msg => {setTimeout(() => msg.delete(), 10000)});
 
         //Devuelve true si el total de pistas no eran duplicadas
@@ -95,6 +96,6 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };

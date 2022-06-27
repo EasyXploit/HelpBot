@@ -3,7 +3,7 @@ exports.run = async (client, interaction, commandConfig, locale, inheritedMoment
     try {
 
         //Comprueba los requisitos previos para el comando
-        if (!await require('../../../../utils/voice/preChecks.js').run(client, interaction, ['bot-connected', 'same-channel', 'has-queue', 'can-speak'])) return;
+        if (!await client.functions.reproduction.preChecks.run(client, interaction, ['bot-connected', 'same-channel', 'has-queue', 'can-speak'])) return;
 
         //Almacena los filtros de expresiones regulares para comprobar el formato del parámetro
         const ssFilter = (/(?:[01]\d|2[0123]):(?:[012345]\d):(?:[012345]\d)/gm);
@@ -20,7 +20,7 @@ exports.run = async (client, interaction, commandConfig, locale, inheritedMoment
         ], ephemeral: true});
 
         //Calcula los segundos para la propiedad seekTo
-        const seekTo = await client.functions.HHMMSSToMs(argument) / 1000;
+        const seekTo = await client.functions.utilities.HHMMSSToMs.run(argument) / 1000;
 
         //Almacena la información de la cola de la guild
         const reproductionQueue = client.reproductionQueues[interaction.guild.id];
@@ -43,11 +43,11 @@ exports.run = async (client, interaction, commandConfig, locale, inheritedMoment
         //Comprueba si se ha excedido el tiempo máximo
         if (seekTo * 1000 > queueItem.meta.length - 1000) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.cantForward, { time: client.functions.msToTime(queueItem.meta.length - 1000) })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.cantForward, { time: await client.functions.utilities.msToTime.run(client, queueItem.meta.length - 1000) })}.`)
         ], ephemeral: true});
 
         //Comprueba si es necesaria una votación
-        if (await require('../../../../utils/voice/testQueuePerms.js').run(client, interaction, `seek-${argument}`, 0)) {
+        if (await client.functions.reproduction.testQueuePerms.run(client, interaction, `seek-${argument}`, 0)) {
 
             //Añade al objeto un tiempo a buscar
             queueItem.meta.seekTo = seekTo;
@@ -65,13 +65,13 @@ exports.run = async (client, interaction, commandConfig, locale, inheritedMoment
             connection._state.subscription.player.stop();
 
             //Envía un mensaje de confirmación
-            interaction.reply({ content: `📍 | ${client.functions.localeParser(locale.seeked, { time: client.functions.msToTime(seekTo * 1000) })}` });
+            interaction.reply({ content: `📍 | ${await client.functions.utilities.parseLocale.run(locale.seeked, { time: await client.functions.utilities.msToTime.run(client, seekTo * 1000) })}` });
         };
 
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

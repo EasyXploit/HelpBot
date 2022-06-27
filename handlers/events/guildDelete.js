@@ -6,7 +6,7 @@ exports.run = async (guild, client, locale) => {
         if (guild.ownerId === client.user.id) return;
 
         //Notifica el abandono de la guild
-        console.warn(`${new Date().toLocaleString()} 》${client.functions.localeParser(locale.abandonedGuild, { botUsername: client.user.username, guildName: guild.name })}.`);
+        console.warn(`${new Date().toLocaleString()} 》${await client.functions.utilities.parseLocale.run(locale.abandonedGuild, { botUsername: client.user.username, guildName: guild.name })}.`);
 
         //Carga el listado de guilds a las que el bot está unido
         const cachedGuilds = client.guilds.cache;

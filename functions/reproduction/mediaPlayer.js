@@ -1,9 +1,10 @@
+//Función para reproducir pistas de audio
 exports.run = async (client, interaction, connection) => {
 
     try {
 
         //Almacena las traducciones
-        const locale = client.locale.utils.voice.mediaPlayer;
+        const locale = client.locale.functions.reproduction.mediaPlayer;
 
         //Función para reproducir
         async function mediaPlayer(connection) {
@@ -195,10 +196,10 @@ exports.run = async (client, interaction, connection) => {
                 .setColor(randomColor())
                 .setThumbnail(info.meta.thumbnail)
                 .setAuthor({name: `${locale.playingEmbed.authorTitle} 🎶`, iconURL: 'attachment://dj.png'})
-                .setDescription(`${info.meta.location.startsWith('http') ? `[${info.meta.title}](${info.meta.location})` : `${locale.playingEmbed.localAudio}: \`${info.meta.title}\``}\n\n● **${locale.playingEmbed.author}:** ${info.meta.author}\n● **${locale.playingEmbed.duration}:** \`${client.functions.msToTime(info.meta.length)}\``)
+                .setDescription(`${info.meta.location.startsWith('http') ? `[${info.meta.title}](${info.meta.location})` : `${locale.playingEmbed.localAudio}: \`${info.meta.title}\``}\n\n● **${locale.playingEmbed.author}:** ${info.meta.author}\n● **${locale.playingEmbed.duration}:** \`${await client.functions.utilities.msToTime.run(client, info.meta.length)}\``)
                 .addField(`${locale.playingEmbed.requestedBy}:`, `<@${reproductionQueue.tracks[toPlay].requesterId}>`, true)
                 .addField(`${locale.playingEmbed.upNext}:`, upNext, true)
-                .setFooter({text: await client.functions.getMusicFooter(reproductionQueue.boundedTextChannel.guild) })
+                .setFooter({text: await client.functions.reproduction.getFooter.run(client, reproductionQueue.boundedTextChannel.guild) })
             ], files: ['./resources/images/dj.png'] });
         };
 
@@ -210,12 +211,12 @@ exports.run = async (client, interaction, connection) => {
         //Se comprueba si el error es provocado por una limitación de API
         if (error.toString().includes('416') || error.toString().includes('429')) client.reproductionQueues[interaction.guild.id].boundedTextChannel.send({ embeds: [new client.MessageEmbed()
             .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} ${client.locale.utils.voice.mediaPlayer.apiRateLimit}.`)
+            .setDescription(`${client.customEmojis.redTick} ${client.locale.functions.reproduction.mediaPlayer.apiRateLimit}.`)
         ]});
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
         
-        console.error(`${new Date().toLocaleString()} 》${client.locale.utils.voice.mediaPlayer.error}:`, error.stack);
+        console.error(`${new Date().toLocaleString()} 》${client.locale.functions.reproduction.mediaPlayer.error}:`, error.stack);
     };
 };

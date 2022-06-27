@@ -1,14 +1,14 @@
 exports.run = (client) => {
 
     //Traducciones de los intervalos
-    const locale = client.locale.utils.intervals;
+    const locale = client.locale.lifecycle.loadIntervals;
 
     //SILENCIADOS
     //Comprobación de miembros silenciados temporalmente
     setInterval(async () => {
 
         //Busca el rol silenciado (o lo crea si es necesario)
-        const role = await client.functions.fetchRole(client.config.dynamic.mutedRoleId) || await client.functions.checkMutedRole(client.homeGuild);
+        const role = await client.functions.utilities.fetch.run(client, 'role', client.config.dynamic.mutedRoleId) || await client.functions.moderation.checkMutedRole.run(client, client.homeGuild);
         
         //Para cada uno de los silencios temporales de la BD
         for (let idKey in client.db.mutes) {
@@ -23,7 +23,7 @@ exports.run = (client) => {
             if (Date.now() < endTime) continue;
             
             //Busca el miembro
-            const member = await client.functions.fetchMember(idKey);
+            const member = await client.functions.utilities.fetch.run(client, 'member', idKey);
 
             //Si el miembro estaba en la guild (y tenía el rol), se lo elimina
             if (member && member.roles.cache.has(role.id)) await member.roles.remove(role);
@@ -37,12 +37,12 @@ exports.run = (client) => {
                 //Si hubo un error, lo devuelve
                 if (err) throw err;
 
-                //Almacena el autor del embed para el loggingManager
-                let authorProperty = { name: client.functions.localeParser(locale.mutes.loggingEmbed.author, { memberTag: member ? member.user.tag : idKey }) }
+                //Almacena el autor del embed para el logging
+                let authorProperty = { name: await client.functions.utilities.parseLocale.run(locale.mutes.loggingEmbed.author, { memberTag: member ? member.user.tag : idKey }) }
                 if (member) authorProperty.iconURL = member.user.displayAvatarURL({dynamic: true});
                 
                 //Ejecuta el manejador de registro
-                await client.functions.loggingManager('embed', new client.MessageEmbed()
+                await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
                     .setAuthor(authorProperty)
                     .addField(locale.mutes.loggingEmbed.member, member ? member.user.tag : `\`${idKey}\``, true)
@@ -54,7 +54,7 @@ exports.run = (client) => {
                 if (member) await member.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
                     .setAuthor({ name: locale.mutes.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
-                    .setDescription(client.functions.localeParser(locale.mutes.privateEmbed.description, { memberTag: member ? member.user.tag : `\`${idKey}\``, guildName: client.homeGuild.name }))
+                    .setDescription(await client.functions.utilities.parseLocale.run(locale.mutes.privateEmbed.description, { memberTag: member ? member.user.tag : `\`${idKey}\``, guildName: client.homeGuild.name }))
                     .addField(locale.mutes.privateEmbed.moderator, `${client.user}`, true)
                     .addField(locale.mutes.privateEmbed.reason, locale.mutes.reason, true)
                 ]});
@@ -93,9 +93,9 @@ exports.run = (client) => {
                     if (user) await client.homeGuild.members.unban(idKey);
 
                     //Ejecuta el manejador de registro
-                    await client.functions.loggingManager('embed', new client.MessageEmbed()
+                    await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                         .setColor(client.config.colors.correct)
-                        .setAuthor({ name: client.functions.localeParser(locale.bans.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
+                        .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.bans.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
                         .addField(locale.bans.loggingEmbed.user, user.tag, true)
                         .addField(locale.bans.loggingEmbed.moderator, `${client.user}`, true)
                         .addField(locale.bans.loggingEmbed.reason, locale.bans.reason, true)
@@ -127,7 +127,7 @@ exports.run = (client) => {
             console.warn(`${new Date().toLocaleString()} 》${locale.ping.consoleMsg}: ${actualPing} ms\n`);
 
             //Ejecuta el manejador de depuración
-            await client.functions.debuggingManager('embed', new client.MessageEmbed()
+            await client.functions.managers.debugging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
                 .setDescription(`${client.customEmojis.orangeTick} ${locale.ping.debuggingMsg}: **${actualPing}** ms`)
                 .setFooter({ text: client.user.username, iconURL: client.user.avatarURL() })
@@ -143,7 +143,7 @@ exports.run = (client) => {
         await client.homeGuild.members.cache.forEach(async guildMember => {
 
             //Comprueba si el nombre de usuario (visible) del miembro es válido
-            await client.functions.checkUsername(guildMember);
+            await client.functions.moderation.checkUsername.run(client, guildMember);
         });
 
     }, 120000);
@@ -162,10 +162,10 @@ exports.run = (client) => {
             if (!storedPoll.expiration) continue;
 
             //Busca el canal de la encuesta
-            const channel = await client.functions.fetchChannel(storedPoll.channel);
+            const channel = await client.functions.utilities.fetch.run(client, 'channel', storedPoll.channel);
 
             //Busca el mensaje de la encuesta
-            const poll = await client.functions.fetchMessage(storedPoll.message, channel);
+            const poll = await client.functions.utilities.fetch.run(client, 'message', storedPoll.message, channel);
 
             //Si no se encontró el canal o la encuesta
             if (!channel || !poll) {
@@ -222,7 +222,7 @@ exports.run = (client) => {
                     if(isNaN(roundedPercentage)) roundedPercentage = 0;
 
                     //Añade la cadena del resultado al array de resultados
-                    results.push(`🞄 ${votes[index].emoji} ${client.functions.localeParser(locale.polls.votesPercentage, { votesCount: count, percentage: roundedPercentage })}`);
+                    results.push(`🞄 ${votes[index].emoji} ${await client.functions.utilities.parseLocale.run(locale.polls.votesPercentage, { votesCount: count, percentage: roundedPercentage })}`);
                 };
 
                 //Envía los resultados al canal de la encuesta
@@ -233,10 +233,10 @@ exports.run = (client) => {
                 ], files: ['./resources/images/endFlag.png']}).then(async poll => {
 
                     //Envía una notificación al canal de registro
-                    await client.functions.loggingManager('embed', new client.MessageEmbed()
+                    await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                         .setColor(client.config.colors.logging)
                         .setTitle(`📑 ${locale.polls.loggingEmbed.title}`)
-                        .setDescription(`${client.functions.localeParser(locale.polls.loggingEmbed.description, { poll: `[${storedPoll.title}](${poll.url})`, channel: channel })}.`)
+                        .setDescription(`${await client.functions.utilities.parseLocale.run(locale.polls.loggingEmbed.description, { poll: `[${storedPoll.title}](${poll.url})`, channel: channel })}.`)
                     );
                 });
                 
@@ -267,7 +267,7 @@ exports.run = (client) => {
                 const oldRemainingTime = poll.footer;
 
                 //Genera el string del nuevo footer
-                const newRemainingTime = `ID: ${idKey} - ${client.functions.localeParser(locale.polls.progressEmbed.remaining, { remainingDays: remainingDays, remainingHours: remainingHours, remainingMinutes: remainingMinutes })}`;
+                const newRemainingTime = `ID: ${idKey} - ${await client.functions.utilities.parseLocale.run(locale.polls.progressEmbed.remaining, { remainingDays: remainingDays, remainingHours: remainingHours, remainingMinutes: remainingMinutes })}`;
 
                 //Si el string de tiempo debería cambiar, edita el mensaje de la encuesta
                 if (oldRemainingTime !== newRemainingTime) await poll.edit({ embeds: [ new client.MessageEmbed()
@@ -288,7 +288,7 @@ exports.run = (client) => {
         for (let idKey in client.usersVoiceStates) {
 
             //Almacena el miembro
-            const member = await client.functions.fetchMember(idKey);
+            const member = await client.functions.utilities.fetch.run(client, 'member', idKey);
 
             //Elimina el miembro de los etados de voz si ya no se encuentra voz
             if (!member || !member.voice.channelId) {
@@ -304,7 +304,7 @@ exports.run = (client) => {
             if (member.voice.mute || member.voice.deaf || member.voice.channel.members.filter(member => !member.user.bot).size === 1) return;
 
             //Añade XP al miembro
-            await client.functions.addXP(member, 'voice');
+            await client.functions.leveling.addExperience.run(client, member, 'voice');
 
             //Actualiza el timestamp de la última recompensa de XP obtenida
             client.usersVoiceStates[member.id].lastXpReward = Date.now();
@@ -322,7 +322,7 @@ exports.run = (client) => {
             if (!client.config.presence.membersCount) return;
 
             //Genera el nuevo string para la actividad
-            const name = `${client.functions.localeParser(locale.presence.name, { memberCount: await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}`;
+            const name = `${await client.functions.utilities.parseLocale.run(locale.presence.name, { memberCount: await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}`;
 
             //Actualiza la presencia del bot
             await client.user.setPresence({

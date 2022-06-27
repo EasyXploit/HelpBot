@@ -57,9 +57,31 @@ exports.run = async (client, locale) => {
             //Notifica que la carga se ha completado
             console.log(`\n - [OK] ${locale.guildConfigLoaded}.`);
 
-            //Carga las funciones globales
-            const functions = await import('../functions.mjs');
-            functions.loadFunctions(client);
+            //Crea un objeto para almacenar todas las funciones globales
+            client.functions = {};
+
+            //Por cada uno de los tipos de función global
+            for (const functionType of await client.fs.readdirSync('./functions/')) {
+
+                //Crea el objeto en el cliente para la categoría
+                client.functions[functionType] = {};
+
+                //Por cada función de dicha categoría
+                for (const functionFile of await client.fs.readdirSync(`./functions/${functionType}/`)) {
+
+                    //Almacena la extensión del archivo
+                    const fileExtension = functionFile.split('.').pop();
+
+                    //Almacena la ruta al fichero
+                    const path = `../functions/${functionType}/${functionFile}`;
+
+                    //Carga la función de ejecución de cada archivo, en función del cargador de módulos a emplear (CommonJS o ESM)
+                    client.functions[functionType][functionFile.split('.').shift()] = fileExtension === 'mjs' ? await import(path) : await require(path);
+                };
+            };
+
+            //Muestra el resultado de la carga de funciones
+            console.log(` - [OK] ${locale.functionLoaded}.`);
 
             //Carga los customEmojis en el cliente
             await require('./loadEmojis.js').run(client);
@@ -71,7 +93,7 @@ exports.run = async (client, locale) => {
             await client.user.setPresence({
                 status: client.config.presence.status,
                 activities: [{
-                    name: client.config.presence.membersCount ? `${client.functions.localeParser(client.locale.utils.intervals.presence.name, { memberCount: await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}` : client.config.presence.name,
+                    name: client.config.presence.membersCount ? `${await client.functions.utilities.parseLocale.run(client.locale.lifecycle.loadIntervals.presence.name, { memberCount: await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}` : client.config.presence.name,
                     type: client.config.presence.type
                 }]
             });
@@ -80,10 +102,10 @@ exports.run = async (client, locale) => {
             console.log(` - [OK] ${locale.presenceLoaded}.`);
 
             //Carga los scripts que funcionan a intervalos
-            require('../intervals.js').run(client);
+            require('./loadIntervals.js').run(client);
 
             //Carga los temporizadores configurados
-            await require('../timers.js').run(client);
+            await require('./loadTimers.js').run(client);
 
             //Carga los estados de voz (si se su monitorización)
             if (client.config.xp.rewardVoice) {
@@ -95,7 +117,7 @@ exports.run = async (client, locale) => {
                 voiceStates.forEach(async voiceState => {
 
                     //Almacena el miembro, si lo encuentra
-                    const member = await client.functions.fetchMember(voiceState.id);
+                    const member = await client.functions.utilities.fetch.run(client, 'member', voiceState.id);
                     if (!member) return;
 
                     //Comprueba si el rol no puede ganar XP
@@ -133,10 +155,10 @@ exports.run = async (client, locale) => {
             };
 
             //Notifica la correcta carga del bot
-            console.log(`\n 》${client.functions.localeParser(locale.loadedCorrectly, { botUsername: client.user.username })}.`);
+            console.log(`\n 》${await client.functions.utilities.parseLocale.run(locale.loadedCorrectly, { botUsername: client.user.username })}.`);
 
             //Genera un registro en el canal de registro
-            if (client.debuggingChannel && client.config.main.loadMention) client.debuggingChannel.send({ content: `${client.functions.localeParser(locale.loadMention, { botUsername: client.user.username })} [<@${client.homeGuild.ownerId}>]` }).then(msg => { setTimeout(() => msg.delete(), 5000) });
+            if (client.debuggingChannel && client.config.main.loadMention) client.debuggingChannel.send({ content: `${await client.functions.utilities.parseLocale.run(locale.loadMention, { botUsername: client.user.username })} [<@${client.homeGuild.ownerId}>]` }).then(msg => { setTimeout(() => msg.delete(), 5000) });
         });
 
     } catch (error) {

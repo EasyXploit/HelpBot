@@ -11,14 +11,14 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Si la encuesta no existe, devuelve un error
             if (!pollData) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.unknownPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.unknownPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
             ], ephemeral: true});
 
             //Busca y almacena el canal de la encuesta
-            const pollChannel = await client.functions.fetchChannel(pollData.channel);
+            const pollChannel = await client.functions.utilities.fetch.run(client, 'channel', pollData.channel);
 
             //Busca y almacena el mensaje de la encuesta (si se pudo encontrar el canal)
-            const pollMessage = pollChannel ? await client.functions.fetchMessage(pollData.message, pollChannel) : null;
+            const pollMessage = pollChannel ? await client.functions.utilities.fetch.run(client, 'message', pollData.message, pollChannel) : null;
 
             //Si el canal o el mensaje de la encuesta ya no existen
             if (!pollChannel || !pollMessage) {
@@ -29,7 +29,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 //Notifica del error al miembro
                 return interaction.reply({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.secondaryError)
-                    .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.deletedPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.deletedPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
                 ], ephemeral: true});
             };
 
@@ -69,7 +69,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 return interaction.reply({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.secondaryCorrect)
                     .setTitle(`${client.customEmojis.greenTick} ${locale.endedPollEmbed.title}`)
-                    .setDescription(`${client.functions.localeParser(locale.endedPollEmbed.description, { poll: `[${pollData.title}](${pollMessage.url})`, pollChannel: pollChannel })}.`)
+                    .setDescription(`${await client.functions.utilities.parseLocale.run(locale.endedPollEmbed.description, { poll: `[${pollData.title}](${pollMessage.url})`, pollChannel: pollChannel })}.`)
                 ], ephemeral: true});
             });
 
@@ -105,7 +105,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         interaction.reply({ content: `${locale.startingAssistant}...`});
 
         //Almacena el canal de la interacción
-        const interactionChannel = await client.functions.fetchChannel(interaction.channelId);
+        const interactionChannel = await client.functions.utilities.fetch.run(client, 'channel', interaction.channelId);
 
         //Envía el assistantEmbed del título
         interactionChannel.send({ embeds: [ new client.MessageEmbed()
@@ -140,7 +140,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                         const parameters = duration.split(' ');
 
                         //Convierte y almacena las magnitudes en milisegundos
-                        duration = await client.functions.magnitudesToMs(parameters);
+                        duration = await client.functions.utilities.magnitudesToMs.run(parameters);
 
                         //Si no se puedieron obtener milisegundos
                         if (!duration) {
@@ -189,7 +189,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                             assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
                                 .setColor(client.config.colors.primary)
                                 .setTitle(`${emojiOptions[index + 1]} ${locale.newFieldEmbed.title}`)
-                                .setDescription(`${client.functions.localeParser(locale.newFieldEmbed.description, { remaining: 10 - index - 1 })}${ index > 0 ? `.\n${locale.newFieldEmbed.endAssistant}.` : ''}`)
+                                .setDescription(`${await client.functions.utilities.parseLocale.run(locale.newFieldEmbed.description, { remaining: 10 - index - 1 })}${ index > 0 ? `.\n${locale.newFieldEmbed.endAssistant}.` : ''}`)
                             ]});
                         });
 
@@ -234,7 +234,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                     };
 
                     //Almacena un nuevo ID para la encuesta
-                    const pollId = await client.functions.sidGenerator();
+                    const pollId = await client.functions.utilities.generateSid.run();
                     
                     //Envía la encuesta generada al canal de invocación
                     interactionChannel.send({ embeds: [ new client.MessageEmbed()
@@ -288,9 +288,9 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                         });
                         
                         //Envía un mensaje al canal de registros
-                        await client.functions.loggingManager('embed', new client.MessageEmbed()
+                        await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                             .setColor(client.config.colors.logging)
-                            .setAuthor({ name: client.functions.localeParser(locale.loggingEmbed.author, { memberTag: interaction.member.user.tag }), iconURL: interaction.user.displayAvatarURL({dynamic: true}) })
+                            .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { memberTag: interaction.member.user.tag }), iconURL: interaction.user.displayAvatarURL({dynamic: true}) })
                             .addField(locale.loggingEmbed.title, `__[${title}](${pollEmbed.url})__`, true)
                             .addField(locale.loggingEmbed.channel, `${interactionChannel}`, true)
                             .addField(locale.loggingEmbed.expiration, duration !== 0 ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : locale.loggingEmbed.noExpiration, true)
@@ -303,7 +303,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

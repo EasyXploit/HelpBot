@@ -3,7 +3,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     try {
 
         //Busca el miembro en la guild
-        const member = await client.functions.fetchMember(interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
+        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
 
         //Comprueba si se ha proporcionado un miembro válido
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -51,14 +51,14 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Envía un embed con el resultado del comando
         await interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(member.displayHexColor)
-            .setTitle(client.functions.localeParser(locale.embed.title, { memberDisplayName: member.displayName }))
-            .setDescription(client.functions.localeParser(locale.embed.description, { memberTag: member.user.tag }))
+            .setTitle(await client.functions.utilities.parseLocale.run(locale.embed.title, { memberDisplayName: member.displayName }))
+            .setDescription(await client.functions.utilities.parseLocale.run(locale.embed.description, { memberTag: member.user.tag }))
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
             .addField(`🆔 ${locale.embed.memberId}`, member.id, true)
             .addField(`📝 ${locale.embed.registerDate}`, `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
             .addField(`↙ ${locale.embed.joinDate}`, `<t:${Math.round(member.joinedTimestamp / 1000)}>`, true)
             .addField(`👑 ${locale.embed.status}`, status.join(', '), true)
-            .addField(`💎 ${locale.embed.nitroBooster}`, member.premiumSince ? client.functions.localeParser(locale.embed.isBooster, { time: `<t:${Math.round(member.premiumSinceTimestamp / 1000)}>` }) : locale.embed.isntBooster, true)
+            .addField(`💎 ${locale.embed.nitroBooster}`, member.premiumSince ? await client.functions.utilities.parseLocale.run(locale.embed.isBooster, { time: `<t:${Math.round(member.premiumSinceTimestamp / 1000)}>` }) : locale.embed.isntBooster, true)
             .addField(`🎖 ${locale.embed.highestRole}`, member.roles.highest.name, true)
             .addField(`⚖ ${locale.embed.infractions}`, client.db.warns[member.id] ? (Object.keys(client.db.warns[member.id]).length).toString() : '0', true)
             .addField(`📓 ${locale.embed.verification}`, member.pending ? locale.embed.isntVerified : locale.embed.isVerified, true)
@@ -68,7 +68,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

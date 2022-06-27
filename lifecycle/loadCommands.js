@@ -2,7 +2,7 @@
 exports.run = async (client) => {
 
     //Almacena las traducciones
-	const locale = client.locale.utils.lifecycle.loadCommands;
+	const locale = client.locale.lifecycle.loadCommands;
 
     //Salta una línea en la consola
     console.log('\n');
@@ -36,7 +36,7 @@ exports.run = async (client) => {
         if (availableLocales.includes(client.config.commands.forceNameLocale)) {
 
             //Reemplaza los nombres de los comandos por los de ese locale
-            localeForNames = require(`../../resources/locales/${client.config.commands.forceNameLocale}.json`);
+            localeForNames = require(`../resources/locales/${client.config.commands.forceNameLocale}.json`);
         };
     };
 
@@ -80,33 +80,33 @@ exports.run = async (client) => {
 
                     //Borra el comando de la guild y lo notifica
                     await client.homeGuild.commands.delete(command[1]);
-                    console.log(` - [UP] ${client.functions.localeParser(locale.unregisteredFromGuild, { command: `[${commandType}/${command[1].name}]`, guildName: client.homeGuild.name })}.`);
+                    console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.unregisteredFromGuild, { command: `[${commandType}/${command[1].name}]`, guildName: client.homeGuild.name })}.`);
 
                 } else {
 
                     //Borra el comando del cliente y lo notifica
                     await client.application.commands.delete(command[1]);
-                    console.log(` - [UP] ${client.functions.localeParser(locale.unregisteredFromGlobal, { command: `[${commandType}/${command[1].name}]` })}.`);
+                    console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.unregisteredFromGlobal, { command: `[${commandType}/${command[1].name}]` })}.`);
                 };
 
             } else {
 
                 //Requiere el comando para obtener su información
-                const appType = await require(`../../handlers/commands/${commandType}/${localCommands[command[1].name]}/${localCommands[command[1].name]}.js`).config.type;
+                const appType = await require(`../handlers/commands/${commandType}/${localCommands[command[1].name]}/${localCommands[command[1].name]}.js`).config.type;
 
                 //Si es un comando de guild pero el tipo local ya no coincide
                 if (command[1].guildId && appType !== 'guild') {
 
                     //Lo borra y lo notifica
                     await client.homeGuild.commands.delete(command[1]);
-                    console.log(` - [UP] ${client.functions.localeParser(locale.convertedToGlobal, { command: `[${commandType}/${command[1].name}]` })}.`);
+                    console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.convertedToGlobal, { command: `[${commandType}/${command[1].name}]` })}.`);
 
                 //Si es un comando global pero el tipo local ya no coincide
                 } else if (!command[1].guildId && appType === 'guild') {
 
                     //Lo borra y lo notifica
                     await client.application.commands.delete(command[1]);
-                    console.log(` - [UP] ${client.functions.localeParser(locale.convertedToGuild, { command: `[${commandType}/${command[1].name}]` })}.`);
+                    console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.convertedToGuild, { command: `[${commandType}/${command[1].name}]` })}.`);
                 };
             };
         };
@@ -115,7 +115,7 @@ exports.run = async (client) => {
         for (const commandName of await client.fs.readdirSync(`./handlers/commands/${commandType}/`)) {
 
             //Requiere el comando para obtener su información
-            const commandData = await require(`../../handlers/commands/${commandType}/${commandName}/${commandName}.js`);
+            const commandData = await require(`../handlers/commands/${commandType}/${commandName}/${commandName}.js`);
             let localCmd = commandData.config;
 
             //Almacena las traducciones para ese comando
@@ -177,7 +177,7 @@ exports.run = async (client) => {
 
             //Omite si el comando no tiene fichero de configuración
             if (!userConfig) {
-                console.log(` - [ERR] ${client.functions.localeParser(locale.convertedToGuild, { command: `[${commandType}/${commandName}]` })}.`);
+                console.log(` - [ERR] ${await client.functions.utilities.parseLocale.run(locale.convertedToGuild, { command: `[${commandType}/${commandName}]` })}.`);
                 continue;
             };
 
@@ -204,7 +204,7 @@ exports.run = async (client) => {
                 if (!['global', 'guild'].includes(localCmd.type)) {
 
                     //Advierte y omite el comando
-                    console.log(` - [ERR] ${client.functions.localeParser(locale.invalidTypeError, { command: `[${commandType}/${commandName}]` })}.`);
+                    console.log(` - [ERR] ${await client.functions.utilities.parseLocale.run(locale.invalidTypeError, { command: `[${commandType}/${commandName}]` })}.`);
                     continue;
                 };
 
@@ -222,8 +222,8 @@ exports.run = async (client) => {
 
                 //Almacena el mensaje para la confirmación
                 const logString = localCmd.type === 'global' ? 
-                    client.functions.localeParser(locale.registeredOnGlobal, { command: `[${commandType}/${localCmd.appData.name}]` }) : 
-                    client.functions.localeParser(locale.registeredOnGuild, { command: `[${commandType}/${localCmd.appData.name}]`, guildName: client.homeGuild.name });
+                    await client.functions.utilities.parseLocale.run(locale.registeredOnGlobal, { command: `[${commandType}/${localCmd.appData.name}]` }) : 
+                    await client.functions.utilities.parseLocale.run(locale.registeredOnGuild, { command: `[${commandType}/${localCmd.appData.name}]`, guildName: client.homeGuild.name });
                 
                 
                 //Envía un mensaje de confirmación por consola
@@ -235,7 +235,7 @@ exports.run = async (client) => {
                 let lodash = require('lodash');
 
                 //Elimina las claves nulas o indefinidas de las opciones remotas
-                let remoteCmdOptions = await client.functions.isArrOfObjNil(remoteCmd.options, lodash);
+                let remoteCmdOptions = await client.functions.utilities.isArrOfObjNil.run(client, remoteCmd.options, lodash);
 
                 //Si hay opciones locales, las almacena, sino crea un objeto vacío
                 const localCmdOptions = localCmd.appData.options ? localCmd.appData.options : [];
@@ -251,7 +251,7 @@ exports.run = async (client) => {
                     });
     
                     //Envía un mensaje de confirmación por consola
-                    console.log(` - [UP] ${client.functions.localeParser(locale.parametersUpdated, { command: `[${commandType}/${localCmd.appData.name}]` })}.`);
+                    console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.parametersUpdated, { command: `[${commandType}/${localCmd.appData.name}]` })}.`);
                 };
 
                 //Comprueba si el permiso por defecto almacenado es el mismo que el registrado
@@ -263,7 +263,7 @@ exports.run = async (client) => {
                     });
     
                     //Envía un mensaje de confirmación por consola
-                    console.log(` - [UP] ${client.functions.localeParser(locale.defaultPermUpdated, { command: `[${commandType}/${localCmd.appData.name}]` })}.`);
+                    console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.defaultPermUpdated, { command: `[${commandType}/${localCmd.appData.name}]` })}.`);
                 };
             };
 
@@ -277,7 +277,7 @@ exports.run = async (client) => {
             await client.commands[commandType].set(localCmd.appData.name, commandData);
 
             //Manda un mensaje de confirmación
-            console.log(` - [OK] ${client.functions.localeParser(locale.loadedCorrectly, { command: `[${commandType}/${localCmd.appData.name}]` })}.`);
+            console.log(` - [OK] ${await client.functions.utilities.parseLocale.run(locale.loadedCorrectly, { command: `[${commandType}/${localCmd.appData.name}]` })}.`);
         };
     };
 

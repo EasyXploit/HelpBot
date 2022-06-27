@@ -3,7 +3,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     try {
 
         //Busca al usuario proporcionado
-        const user = await client.functions.fetchUser(interaction.options._hoistedOptions[0].value);
+        const user = await client.functions.utilities.fetch.run(client, 'user', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se ha encontrado al usuario
         if (!user) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -77,9 +77,9 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         };
 
         //Envía un mensaje al canal de registros
-        await client.functions.loggingManager('embed', new client.MessageEmbed()
+        await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
             .setColor(client.config.colors.correct)
-            .setAuthor({ name: client.functions.localeParser(locale.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
+            .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
             .addField(locale.loggingEmbed.userId, user.id.toString(), true)
             .addField(locale.loggingEmbed.moderator, interaction.user.tag, true)
             .addField(locale.loggingEmbed.reason, reason || locale.undefinedReason, true)
@@ -89,13 +89,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         await interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryCorrect)
             .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbed.title}`)
-            .setDescription(client.functions.localeParser(locale.loggingEmbed.author, { userTag: user.tag }))
+            .setDescription(await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { userTag: user.tag }))
         ]});
         
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

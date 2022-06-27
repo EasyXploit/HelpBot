@@ -3,7 +3,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     try {
 
         //Busca el miembro en la guild
-        const member = await client.functions.fetchMember(interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
+        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
 
         //Si no se encuentra, devuelve un error
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -14,14 +14,14 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Devuelve un error si el miembro no tiene stats
         if (!client.db.stats[member.id]) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} ${client.functions.localeParser(locale.noXp, { member: member })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.noXp, { member: member })}.`)
         ], ephemeral: true});
         
         //Almacena las stats del miembro
         const memberStats = client.db.stats[member.id];
 
         //Calcula el XP necesario para pasar al siguiente nivel
-        const xpToNextLevel = await client.functions.xpToLevel(memberStats.level + 1);
+        const xpToNextLevel = await client.functions.leveling.getXpToLevel.run(client, memberStats.level + 1);
 
         //Comprueba si el miembro puede ganar XP
         let nonXP;
@@ -99,13 +99,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         };
 
         //Almacena el tiempo de voz aproximado
-        const aproxVoiceTime = memberStats.aproxVoiceTime > 0 ? `\`${await client.functions.msToTime(memberStats.aproxVoiceTime)}\`` : '\`00:00:00\`';
+        const aproxVoiceTime = memberStats.aproxVoiceTime > 0 ? `\`${await client.functions.utilities.msToTime.run(client, memberStats.aproxVoiceTime)}\`` : '\`00:00:00\`';
 
         //Envía el mensaje con las estadísticas
         await interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.primary)
             .setTitle(`🥇 ${locale.statsEmbed.title}`)
-            .setDescription(client.functions.localeParser(locale.statsEmbed.description, { memberTag: member.user.tag }))
+            .setDescription(await client.functions.utilities.parseLocale.run(locale.statsEmbed.description, { memberTag: member.user.tag }))
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
             .addField(locale.statsEmbed.actualLevel, `\`${memberStats.level}\``, true)
             .addField(locale.statsEmbed.totalXp, `\`${memberStats.totalXP}\``, true)
@@ -117,7 +117,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.interactionErrorHandler(error, interaction);
+        await client.functions.managers.interactionError.run(client, error, interaction);
     };
 };
 

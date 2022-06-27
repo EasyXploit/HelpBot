@@ -1,15 +1,16 @@
+//Función para manejar las infracciones generadas
 exports.run = async (client, member, reason, action, moderator, message, interaction, channel) => {
 
     try {
 
         //Almacena las traducciones
-        const locale = client.locale.utils.moderation.infractionsHandler;
+        const locale = client.locale.functions.moderation.manageWarn;
 
         //Función para silenciar
         async function mute(duration) {
 
             //Comprueba si existe el rol silenciado, sino lo crea
-            const mutedRole = await client.functions.checkMutedRole(client.homeGuild);
+            const mutedRole = await client.functions.moderation.checkMutedRole.run(client, client.homeGuild);
 
             //Si el miembro no estaba silenciado
             if (!member.roles.cache.has(mutedRole.id)) {
@@ -18,7 +19,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 member.roles.add(mutedRole);
 
                 //Propaga el rol silenciado por todos los canales
-                client.functions.spreadMutedRole(client.homeGuild);
+                await client.functions.moderation.spreadMutedRole(client.homeGuild);
             };
 
             //Almacena la anterior duración del silenciamiento
@@ -41,9 +42,9 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             if (member.roles.cache.has(mutedRole.id) && !oldDuration && !duration) return;
 
             //Envía un mensaje al canal de registro
-            await client.functions.loggingManager('embed', new client.MessageEmbed()
+            await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setAuthor({ name: client.functions.localeParser(locale.muteFunction.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.muteFunction.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                 .addField(locale.muteFunction.loggingEmbed.memberId, member.id, true)
                 .addField(locale.muteFunction.loggingEmbed.moderator, `${client.user}`, true)
                 .addField(locale.muteFunction.loggingEmbed.reason, locale.muteFunction.reason, true)
@@ -53,14 +54,14 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             //Envía un mensaje al canal de la infracción
             await channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
-                .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.muteFunction.notificationEmbed, { memberTag: member.user.tag })}`)
+                .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(locale.muteFunction.notificationEmbed, { memberTag: member.user.tag })}`)
             ]});
 
             //Envía un mensaje al miembro
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setAuthor({ name: locale.muteFunction.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
-                .setDescription(client.functions.localeParser(locale.muteFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
+                .setDescription(await client.functions.utilities.parseLocale.run(locale.muteFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
                 .addField(locale.muteFunction.privateEmbed.moderator, `${client.user}`, true)
                 .addField(locale.muteFunction.privateEmbed.reason, locale.muteFunction.reason, true)
                 .addField(locale.muteFunction.privateEmbed.expiration, duration ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : locale.muteFunction.privateEmbed.noExpiration, true)
@@ -73,14 +74,14 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             //Envía un mensaje al canal de la infracción
             await channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
-                .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.kickFunction.notificationEmbed, { memberTag: member.user.tag })}`)
+                .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(locale.kickFunction.notificationEmbed, { memberTag: member.user.tag })}`)
             ]});
 
             //Envía un mensaje al miembro
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setAuthor({ name: locale.kickFunction.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
-                .setDescription(client.functions.localeParser(locale.kickFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
+                .setDescription(await client.functions.utilities.parseLocale.run(locale.kickFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
                 .addField(locale.kickFunction.privateEmbed.moderator, `${client.user}`, true)
                 .addField(locale.kickFunction.privateEmbed.reason, locale.kickFunction.reason, true)
             ]});
@@ -124,14 +125,14 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             //Envía un mensaje al canal de la infracción
             await channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
-                .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.banFunction.notificationEmbed, { memberTag: member.user.tag })}`)
+                .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(locale.banFunction.notificationEmbed, { memberTag: member.user.tag })}`)
             ]});
 
             //Envía un mensaje al miembro
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setAuthor({ name: locale.banFunction.privateEmbed.author, iconURL: client.homeGuild.iconURL({ dynamic: true}) })
-                .setDescription(client.functions.localeParser(locale.banFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
+                .setDescription(await client.functions.utilities.parseLocale.run(locale.banFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
                 .addField(locale.banFunction.privateEmbed.moderator, moderator.tag, true)
                 .addField(locale.banFunction.privateEmbed.reason, locale.banFunction.reason, true)
                 .addField(locale.banFunction.privateEmbed.expiration, duration ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : locale.banFunction.privateEmbed.noExpiration, true)
@@ -150,7 +151,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
                 .setAuthor({ name: locale.warn.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
-                .setDescription(client.functions.localeParser(locale.warn.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
+                .setDescription(await client.functions.utilities.parseLocale.run(locale.warn.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
                 .addField(locale.warn.privateEmbed.moderator, moderator.tag, true)
                 .addField(locale.warn.privateEmbed.reason, warnReason, true)
             ]});
@@ -170,7 +171,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 //Responde a la interacción con la advertencia
                 await interaction.reply({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
-                    .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.warn.notificationEmbed, { memberTag: member.user.tag, warnReason: warnReason })}.`)
+                    .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(locale.warn.notificationEmbed, { memberTag: member.user.tag, warnReason: warnReason })}.`)
                 ]});
 
             } else {
@@ -178,7 +179,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 //Envía un mensaje con la advertencia
                 await message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
-                    .setDescription(`${client.customEmojis.orangeTick} ${client.functions.localeParser(locale.warn.notificationEmbed, { memberTag: member.user.tag, warnReason: warnReason })}.`)
+                    .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(locale.warn.notificationEmbed, { memberTag: member.user.tag, warnReason: warnReason })}.`)
                 ]});
             };
         };
@@ -193,7 +194,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             if (!client.db.warns[member.id]) client.db.warns[member.id] = {};
 
             //Genera un ID para la infracción
-            const warnID = await client.functions.sidGenerator();
+            const warnID = await client.functions.utilities.generateSid.run();
             
             //Graba la infracción en la base de datos
             client.db.warns[member.id][warnID] = {
@@ -209,9 +210,9 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 if (err) throw err;
 
                 //Ejecuta el manejador de registro
-                await client.functions.loggingManager('embed', new client.MessageEmbed()
+                await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
-                    .setAuthor({ name: client.functions.localeParser(locale.warn.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                    .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.warn.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                     .addField(locale.warn.loggingEmbed.memberId, member.id, true)
                     .addField(locale.warn.loggingEmbed.moderator, moderator.tag, true)
                     .addField(locale.warn.loggingEmbed.reason, warnReason, true)
@@ -221,7 +222,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 );
 
                 //Si procede, adjunta el mensaje filtrado
-                if (message && client.config.moderation.attachFilteredMessages) client.functions.loggingManager('file', new client.MessageAttachment(Buffer.from(message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
+                if (message && client.config.moderation.attachFilteredMessages) await client.functions.managers.logging.run(client, 'file', new client.MessageAttachment(Buffer.from(message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
             });
 
             //Banea temporalmente a los miembros que se acaban de unir al servidor y han mandado invitaciones
@@ -275,6 +276,6 @@ exports.run = async (client, member, reason, action, moderator, message, interac
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》${client.locale.utils.moderation.infractionsHandler.error}:`, error.stack);
+        console.error(`${new Date().toLocaleString()} 》${client.locale.functions.moderation.manageWarn.error}:`, error.stack);
     };
 };

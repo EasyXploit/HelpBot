@@ -31,12 +31,12 @@ exports.run = async (event, client, locale) => {
         if (!client.config.dynamic.homeGuild || client.config.dynamic.homeGuild !== cachedGuilds.first().id) {
 
             //Almacena la nueva configuración
-            await require('../../utils/lifecycle/newGuild.js').run(client, cachedGuilds.first());
+            await require('../../lifecycle/newGuild.js').run(client, cachedGuilds.first());
             
         } else {
 
             //Carga la config. en memoria y arranca el sistema
-            await require('../../utils/lifecycle/systemLoad.js').run(client, client.locale.utils.lifecycle.systemLoad);
+            await require('../../lifecycle/loadSystem.js').run(client, client.locale.lifecycle.loadSystem);
         };
 
     } catch (error) {

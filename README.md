@@ -47,28 +47,4 @@ In the [wiki](https://github.com/EasyXploit/HelpBot/wiki) of this repository, yo
 * Thanks to my programming teacher María José Lozano, for teaching me the basics of JavaScript and how to think like a programmer. Without her lessons, I probably would not have started this project.
 * Thanks to the [supported languages](https://github.com/EasyXploit/HelpBot/wiki/Translation#supported-languages) translators who make this repository accessible to many more people.
 * Thanks to the community of [Discord.js](https://github.com/discordjs/discord.js), who have always been there to answer all my questions about the library, and that they constantly work to cover the 100% of the API.<br />
-* Thanks to [Flaticon](https://www.flaticon.com) for providing the images contained in the [resources/images/](https://github.com/EasyXploit/HelpBot/tree/master/resources/images) directory.<br />
-<br />
-
-## License
-MIT License
-
-Copyright (c) 2022 Daniel Perales Mauriz
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+* Thanks to [Flaticon](https://www.flaticon.com) for providing the images contained in the [resources/images/](https://github.com/EasyXploit/HelpBot/tree/master/resources/images) directory.

@@ -66,7 +66,7 @@ exports.run = async (client, interaction, streamType, toStream) => {
 				.setThumbnail(trackItem.meta.thumbnail)
 				.setAuthor({ name: `${locale.newItemEmbed.authorTitle} 🎶`, iconURL: 'attachment://dj.png' })
 				.setDescription(`[${trackItem.meta.title}](${trackItem.meta.location})\n\n● **${locale.newItemEmbed.author}:** \`${trackItem.meta.author}\`\n● **${locale.newItemEmbed.duration}:** \`${await client.functions.utilities.msToTime.run(client, trackItem.meta.length)}\``)
-				.setFooter({ text: await client.functions.reproduction.getFooter.run(clientinteraction.guild) })
+				.setFooter({ text: await client.functions.reproduction.getFooter.run(client, interaction.guild) })
 			], files: ['./resources/images/dj.png'] });
 		};
 	

@@ -849,14 +849,14 @@
                         "options": {
                             "quantity": {
                                 "name": "cantidad",
-                                "description": "Introduce una cantidad de pistas a saltar"
+                                "description": "Introduce una cantidad de pistas a saltar, o la palabra "
                             }
                         }
                     },
                     "skipped": "Pista/s omitida/s",
                     "cantSkipOnRandom": "No puedes omitir más de una pista con el modo aleatorio activado",
                     "cantMultipleOnLoop": "No puedes omitir más de una pista con el modo loop activado",
-                    "notInteger": "Debes proporcionar un número entero",
+                    "notInteger": "Debes proporcionar un número entero, o la palabra \"all\"",
                     "belowOne": "Quieres jugar sucio eh ...",
                     "cantSkipThis": "Solo puedes hacer skip de `{{quantity}}` pistas"
                 },

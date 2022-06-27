@@ -849,14 +849,14 @@
                         "options": {
                             "quantity": {
                                 "name": "quantity",
-                                "description": "Introduce a number of tracks to skip"
+                                "description": "Introduce a number of tracks to skip, or the \"all\" keyword"
                             }
                         }
                     },
                     "skipped": "Track/s skipped",
                     "cantSkipOnRandom": "You cannot skip more than one track with shuffle mode enabled",
                     "cantMultipleOnLoop": "You cannot skip more than one track with loop mode enabled",
-                    "notInteger": "You must provide an integer number",
+                    "notInteger": "You must provide an integer number, or the \"all\" keyword",
                     "belowOne": "You want to play dirty huh...",
                     "cantSkipThis": "You can only skip `{{quantity}}` tracks"
                 },

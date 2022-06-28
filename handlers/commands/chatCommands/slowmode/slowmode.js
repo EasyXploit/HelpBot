@@ -38,28 +38,11 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         } else { //Si se debe activar el modo lento
 
-            //Función para comprobar si el miembro puede usar tiempo ilimitado
-            function checkIfCanUseUnlimitedTime() {
-
-                //Almacena si el miembro puede usar tiempo ilimitado
-                let authorized; 
-                
-                //Para cada ID de rol de la lista blanca
-                for (let index = 0; index < commandConfig.unlimitedTime.length; index++) {
-
-                    //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                    if (interaction.member.id === interaction.guild.ownerId || interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || interaction.member.roles.cache.find(role => role.id === commandConfig.unlimitedTime[index])) {
-                        authorized = true;
-                        break;
-                    };
-                };
-
-                //Devuelve el estado de autorización
-                return authorized;
-            };
+            //Almacena si el miembro puede usar tiempo ilimitado
+            const canUseUnlimitedTime = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
 
             //Comprueba si los segundos excedieron el máximo configurado
-            if (!checkIfCanUseUnlimitedTime() && argument > commandConfig.maxRegularSeconds) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            if (!canUseUnlimitedTime && argument > commandConfig.maxRegularSeconds) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.privateEmbedSingle.description, { max: commandConfig.maxRegularSeconds })}`)
             ], ephemeral: true});

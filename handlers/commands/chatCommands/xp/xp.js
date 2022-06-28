@@ -54,20 +54,19 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (subcommand === locale.appData.options.clear.name && memberStats.totalXP === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} ${locale.hasNoXp}.`)
-        ], ephemeral: true});  
-        
-        //Si el ejecutor no es el dueño de la guild, o un botManager
-        if (interaction.member.id !== interaction.guild.ownerId && !interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole)) {
+        ], ephemeral: true});
 
-            //Si el rol del miembro es mayor o igual que el del ejecutor
-            if (member && interaction.member.roles.highest.position <= member.roles.highest.position) {
-    
-                //Devuelve un mensaje de error
-                return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${locale.unauthorizedModify}.`)
-                ], ephemeral: true});
-            };
+        //Almacena si se omite la comprobación de jerarquía
+        const byPassed = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true });
+
+        //Si no se omitió y el rol del miembro es mayor o igual que el del ejecutor
+        if (!byPassed && member && interaction.member.roles.highest.position <= member.roles.highest.position) {
+
+            //Devuelve un mensaje de error
+            return interaction.reply({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} ${locale.unauthorizedModify}.`)
+            ], ephemeral: true});
         };
         
         //Se declaran variables para almacenar las cantidades de XP (antiguas y nuevas) y el nivel modificado

@@ -29,17 +29,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         } else if (interaction.options._subcommand === locale.appData.options.upload.name) {
 
             //Almacena si el miembro puede subir audios, en función de si tiene permisos o no
-            let authorized = interaction.member.id === interaction.guild.ownerId || interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole);
-
-            //Para cada ID de rol de la lista blanca
-            if (!authorized) for (let index = 0; index < commandConfig.canUpload.length; index++) {
-
-                //Si uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                if (interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || interaction.member.roles.cache.find(role => role.id === commandConfig.canUpload[index])) {
-                    authorized = true;
-                    break;
-                };
-            };
+            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canUpload});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -176,17 +166,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             const audioName = interaction.options._hoistedOptions[0].value;
 
             //Almacena si el miembro puede eliminar cualquier audio, en función de si tiene permisos o no
-            let authorized = interaction.member.id === interaction.guild.ownerId || interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || client.db.audios[audioName].ownerId === interaction.member.id;
-
-            //Para cada ID de rol de la lista blanca
-            if (!authorized) for (let index = 0; index < commandConfig.canRemoveAny.length; index++) {
-
-                //Si uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                if (interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || interaction.member.roles.cache.find(role => role.id === commandConfig.canRemoveAny[index])) {
-                    authorized = true;
-                    break;
-                };
-            };
+            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canRemoveAny.push(client.db.audios[audioName].ownerId)});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()

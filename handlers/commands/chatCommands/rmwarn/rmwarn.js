@@ -58,25 +58,8 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .setDescription(`${client.customEmojis.redTick} ${locale.noWarns}`)
         ], ephemeral: true});
 
-        //Función para comprobar si el miembro puede borrar cualquier advertencia
-        function checkIfCanRemoveAny() {
-
-            //Almacena si el miembro puede borrar cualquiera
-            let authorized;
-
-            //Para cada ID de rol de la lista blanca
-            for (let index = 0; index < commandConfig.removeAny.length; index++) {
-
-                //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                if (interaction.member.id === interaction.guild.ownerId || interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || interaction.member.roles.cache.find(role => role.id === commandConfig.removeAny[index])) {
-                    authorized = true;
-                    break;
-                };
-            };
-
-            //Devuelve el estado de autorización
-            return authorized;
-        };
+        //Almacena si el miembro puede borrar cualquiera
+        const canRemoveAny = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
 
         //Crear variables para almacenar los embeds a enviar
         let successEmbed, loggingEmbed, toDMEmbed;
@@ -85,7 +68,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (warnId === 'all') {
 
             //Comprueba si el miembro puede eliminar cualquier advertencia
-            if (!checkIfCanRemoveAny()) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            if (!canRemoveAny) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantRemoveAny}.`)
             ], ephemeral: true});
@@ -129,7 +112,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             ], ephemeral: true});
 
             //Comprueba si puede borrar esta advertencia
-            if (client.db.warns[memberId][warnId].moderator !== interaction.member.id && !checkIfCanRemoveAny()) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            if (client.db.warns[memberId][warnId].moderator !== interaction.member.id && !canRemoveAny) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantRemoveAny}.`)
             ], ephemeral: true});

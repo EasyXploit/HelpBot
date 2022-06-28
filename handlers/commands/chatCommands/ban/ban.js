@@ -64,17 +64,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (!providedDuration) {
 
             //Almacena si el miembro puede banear indefinidamente
-            let authorized;
-
-            //Para cada ID de rol de la lista blanca
-            for (let index = 0; index < commandConfig.unlimitedTime.length; index++) {
-
-                //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                if (interaction.member.id === interaction.guild.ownerId || interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || interaction.member.roles.cache.find(role => role.id === commandConfig.unlimitedTime[index])) {
-                    authorized = true;
-                    break;
-                };
-            };
+            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -105,17 +95,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             ], ephemeral: true});
 
             //Almacena si el miembro puede banear
-            let authorized;
-
-            //Para cada ID de rol de la lista blanca
-            for (let index = 0; index < commandConfig.unlimitedTime.length; index++) {
-
-                //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                if (interaction.member.id === interaction.guild.ownerId || interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || interaction.member.roles.cache.find(role => role.id === commandConfig.unlimitedTime[index])) {
-                    authorized = true;
-                    break;
-                };
-            };
+            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized && milliseconds > commandConfig.maxRegularTime) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -132,17 +112,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (deletedDays) {
 
             //Almacena si el miembro puede banear indefinidamente
-            let authorized;
-
-            //Para cada ID de rol de la lista blanca
-            for (let index = 0; index < commandConfig.canSoftBan.length; index++) {
-
-                //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                if (interaction.member.id === interaction.guild.ownerId || interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || interaction.member.roles.cache.find(role => role.id === commandConfig.canSoftBan[index])) {
-                    authorized = true;
-                    break;
-                };
-            };
+            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSoftBan});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()

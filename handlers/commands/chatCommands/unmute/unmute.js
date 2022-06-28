@@ -84,28 +84,11 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.badHierarchy, { interactionAuthor: interaction.member })}.`)
         ], ephemeral: true});
 
-        //Función para comprobar si el miembro puede borrar cualquier advertencia
-        function checkIfCanRemoveAny() {
-
-            //Almacena si el miembro puede borrar cualquier muteo
-            let authorized;
-
-            //Para cada ID de rol de la lista blanca
-            for (let index = 0; index < commandConfig.removeAny.length; index++) {
-
-                //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                if (interaction.member.id === interaction.guild.ownerId || interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || interaction.member.roles.cache.find(role => role.id === commandConfig.removeAny[index])) {
-                    authorized = true;
-                    break;
-                };
-            };
-
-            //Devuelve el estado de autorización
-            return authorized;
-        };
+        //Almacena si el miembro puede borrar cualquier muteo
+        const canRemoveAny = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
 
         //Devuelve el estado de autorización
-        if (client.db.mutes[memberId].moderator !== interaction.member.id && !checkIfCanRemoveAny()) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (client.db.mutes[memberId].moderator !== interaction.member.id && !canRemoveAny) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.cantRemoveAny, { interactionAuthor: interaction.member })}.`)
         ], ephemeral: true});

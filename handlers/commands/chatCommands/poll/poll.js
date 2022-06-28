@@ -37,17 +37,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (interaction.member.id !== pollData.author) {
 
                 //Variable para saber si está autorizado
-                let authorized;
-
-                //Para cada ID de rol de la lista blanca
-                for (let index = 0; index < commandConfig.canEndAny.length; index++) {
-
-                    //Si se permite si el que invocó el comando es el dueño, o uno de los roles del miembro coincide con la lista blanca, entonces permite la ejecución
-                    if (interaction.member.id === interaction.guild.ownerId || interaction.member.roles.cache.find(role => role.id === client.config.main.botManagerRole) || interaction.member.roles.cache.find(role => role.id === commandConfig.canEndAny[index])) {
-                        authorized = true;
-                        break;
-                    };
-                };
+                const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canEndAny});
 
                 //Si no se permitió la ejecución, manda un mensaje de error
                 if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()

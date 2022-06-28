@@ -1,6 +1,6 @@
 {
     "locale": "en-us",
-    "botManagerRole": "",
+    "botManagers": [],
     "loggingChannel": "",
     "debuggingChannel": "",
     "joinsAndLeavesChannel": "",

@@ -849,7 +849,7 @@
                         "options": {
                             "quantity": {
                                 "name": "cantidad",
-                                "description": "Introduce una cantidad de pistas a saltar, o la palabra "
+                                "description": "Introduce una cantidad de pistas a saltar, o la palabra \"all\""
                             }
                         }
                     },

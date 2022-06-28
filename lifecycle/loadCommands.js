@@ -128,7 +128,7 @@ exports.run = async (client) => {
             if (commandType === 'chatCommands') {
 
                 //Añade la descripción al comando, y la recorta si procede                
-                localCmd.appData.description = appDataLocale.description.length > 100 ? `${appDataLocale.description.slice(0, 96)} ...` : appDataLocale.description;
+                localCmd.appData.description = appDataLocale.description.length > 100 ? `${appDataLocale.description.slice(0, 96)} ...` : appDataLocale.description.trimEnd();
 
                 //Por cada una de las opciones
                 if (localCmd.appData.options) for (const option of localCmd.appData.options) {
@@ -138,7 +138,7 @@ exports.run = async (client) => {
 
                     //Sobreescribe el campo de nombre y el de descripción
                     option.name = optionLocale.name.toLowerCase();
-                    option.description = optionLocale.description;
+                    option.description = optionLocale.description.length > 100 ? `${optionLocale.description.slice(0, 96)} ...` : optionLocale.description.trimEnd();
 
                     //Elimina el campo de "optionName" provisional
                     delete option.optionName;
@@ -151,7 +151,7 @@ exports.run = async (client) => {
 
                         //Sobreescribe el campo de nombre y el de descripción
                         nestedOption.name = nestedOptionLocale.name.toLowerCase();
-                        nestedOption.description = nestedOptionLocale.description;
+                        nestedOption.description = nestedOptionLocale.description.length > 100 ? `${nestedOptionLocale.description.slice(0, 96)} ...` : nestedOptionLocale.description.trimEnd();
 
                         //Elimina el campo de "optionName" provisional
                         delete nestedOption.optionName;

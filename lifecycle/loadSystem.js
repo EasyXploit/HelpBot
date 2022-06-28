@@ -81,7 +81,7 @@ exports.run = async (client, locale) => {
             };
 
             //Muestra el resultado de la carga de funciones
-            console.log(` - [OK] ${locale.functionLoaded}.`);
+            console.log(` - [OK] ${locale.functionsLoaded}.`);
 
             //Carga los customEmojis en el cliente
             await require('./loadEmojis.js').run(client);
@@ -102,7 +102,7 @@ exports.run = async (client, locale) => {
             console.log(` - [OK] ${locale.presenceLoaded}.`);
 
             //Carga los scripts que funcionan a intervalos
-            require('./loadIntervals.js').run(client);
+            await require('./loadIntervals.js').run(client);
 
             //Carga los temporizadores configurados
             await require('./loadTimers.js').run(client);

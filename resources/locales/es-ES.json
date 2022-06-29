@@ -613,9 +613,9 @@
                                 "name": "usuario",
                                 "description": "Selecciona un usuario o escribe su ID"
                             },
-                            "id": {
-                                "name": "id",
-                                "description": "Escribe el ID de la advertencia a eliminar"
+                            "warn": {
+                                "name": "advertencia",
+                                "description": "Busca la advertencia a eliminar"
                             },
                             "reason": {
                                 "name": "razón",
@@ -672,6 +672,9 @@
                     "notificationEmbedSingle": {
                         "title": "Operación completada",
                         "description": "Se ha retirado la advertencia con ID `{{warnId}}` al miembro **{{member}}**"
+                    },
+                    "autocomplete": {
+                        "unknownModerator": "Desconocido"
                     }
                 },
                 "roleinfo": {

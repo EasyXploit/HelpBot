@@ -15,7 +15,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         ], ephemeral: true});
         
         //Comprueba si se ha aportado alguna advertencia
-        const warnIdOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.id.name);
+        const warnIdOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.warn.name);
         const warnId = warnIdOption ? warnIdOption.value : null;
 
         //Almacena la razón y la capitaliza, si se ha aportado
@@ -167,6 +167,79 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     };
 };
 
+//Exporta la función de autocompletado
+exports.autocomplete = async (client, interaction, command, locale) => {
+
+    try {
+
+        //Almacena el ID del usuario objetivo
+        const userId = interaction.options._hoistedOptions[0].value;
+
+        //Almacena el valor parcial que ha introducido el usuario
+        const focusedValue = interaction.options.getFocused();
+
+        //Almacena los warns del usuario objetivo
+        const userWarns = client.db.warns[userId];
+        
+        //Envía una lista vacía si el usuario no tiene warns
+        if (!userWarns || Object.keys(userWarns).length === 0) return await interaction.respond(null);
+
+        //Almacena si el miembro puede borrar cualquier advertencia
+        const canRemoveAny = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: command.userConfig.removeAny});
+
+        //Almacena los IDs de manera cronológica inversa
+        const reversedIds = Object.keys(userWarns).reverse();
+
+        //Crea un objeto para almacenar los warns mapeados y ordenados
+        const sortedWarnsObject = {};
+
+        //Por cada uno de los IDs del array de IDs coronológicos
+        for (const warnId of reversedIds) {
+
+            //Almacena la información de la advertencia
+            const warnData = userWarns[warnId];
+
+            //Omite esta advertencia si no fue emitida por el ejecutor del comando, y no tiene permiso para eliminar todas
+            if (!canRemoveAny && warnData.moderator !== interaction.member.id) continue;
+
+            //Genera una fecha a partir de la advertencia
+            const warnDate = new Date(warnData.timestamp);
+    
+            //Obtiene una cadena a partir de la fecha de la advertencia
+            const dateString = `${warnDate.getDate()}/${warnDate.getMonth() + 1}/${warnDate.getFullYear()} ${warnDate.getHours()}:${warnDate.getMinutes()}:${warnDate.getSeconds()}`;
+
+            //Obtiene el moderador de la advertencia, o una cadena genérica
+            const moderatorUser = await client.functions.utilities.fetch.run(client, 'user', warnData.moderator) || locale.autocomplete.unknownModerator;
+
+            //Genera una cadena para mostrarla cómo resultado
+            let warnString = `${warnId} • ${moderatorUser.tag} • ${dateString} • ${warnData.reason}`;
+
+            //Recorta la cadena si es necesario
+            warnString = warnString.length > 100 ? `${warnString.slice(0, 96)} ...` : warnString;
+
+            //Si no se ha proporcionado valor a buscar, o el proporcionado encaja parcialmente, lo almacena en el objeto de warns
+            if (focusedValue.length === 0 || warnString.toLowerCase().includes(focusedValue.toLowerCase())) sortedWarnsObject[warnId] = warnString;
+        };
+
+        //Genera un array mapeado a partir del objeto de warns
+        const arrayOfWarns = Object.entries(sortedWarnsObject).map((entry) => ( { [entry[0]]: entry[1] } ));
+
+        //Mapea el array de advertencias en par nombre-valor
+        let mappedList = arrayOfWarns.map(warn => ({ name: Object.values(warn)[0], value: Object.keys(warn)[0] }));
+
+        //Recorta la lista si es demasiado grande
+        mappedList = mappedList.slice(0, 25);
+
+        //Responde a la interacción con la lista
+        await interaction.respond(mappedList);
+
+    } catch (error) {
+
+        //Ejecuta el manejador de errores
+        await client.functions.managers.interactionError.run(client, error, interaction);
+    };
+};
+
 module.exports.config = {
     type: 'guild',
     defaultPermission: false,
@@ -179,9 +252,10 @@ module.exports.config = {
                 required: true
             },
             {
-                optionName: 'id',
+                optionName: 'warn',
                 type: 'STRING',
-                required: false
+                required: false,
+                autocomplete: true
             },
             {
                 optionName: 'reason',

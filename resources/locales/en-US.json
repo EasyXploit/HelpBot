@@ -613,9 +613,9 @@
                                 "name": "user",
                                 "description": "Select a user o write it's ID"
                             },
-                            "id": {
-                                "name": "id",
-                                "description": "Type the ID of the warning to remove it"
+                            "warn": {
+                                "name": "warn",
+                                "description": "Search for the warning to remove it"
                             },
                             "reason": {
                                 "name": "reason",
@@ -672,6 +672,9 @@
                     "notificationEmbedSingle": {
                         "title": "Operation completed",
                         "description": "Removed warning with ID `{{warnId}}` to member **{{member}}**"
+                    },
+                    "autocomplete": {
+                        "unknownModerator": "Unknown"
                     }
                 },
                 "roleinfo": {

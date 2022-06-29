@@ -45,14 +45,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (Date.now() - latestWarn.timestamp < commandConfig.minimumTimeDifference) {
 
                 //Almacena si el miembro puede saltarse el intervalo mínimo
-                let authorized;
-
-                //Por cada uno de los roles que pueden saltarse el intervalo mínimo
-                for (let index = 0; index < commandConfig.unlimitedFrequency.length; index++) {
-
-                    //Comprueba si el miembro ejecutor lo tiene
-                    if (interaction.member.roles.cache.has(commandConfig.unlimitedFrequency[index])) authorized = true; break;
-                };
+                const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedFrequency});
 
                 //Si no está autorizado, devuelve un mensaje de error
                 if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()

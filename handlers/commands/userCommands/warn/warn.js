@@ -2,17 +2,8 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
     try {
 
-        //Carga los permisos del miembro en el canal
-        const executorPermissions = interaction.channel.permissionsFor(interaction.user);
-
-        //Si el ejecutor no tiene permisos para borrar mensajes, envía un error
-        if ((executorPermissions & BigInt(0x2000)) !== BigInt(0x2000)) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setDescription(`${client.customEmojis.redTick} ${locale.cantDeleteMessages}.`)
-        ], ephemeral: true});
-
         //Busca al miembro objetivo
-        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0].message.author.id);
+        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se ha encontrado al miembro
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -65,7 +56,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Genera un nuevo modal
         const reasonModal = new client.Modal()
             .setTitle(locale.bodyModal.title)
-            .setCustomId('removeAndWarnReason');
+            .setCustomId('warnReason');
 
         //Genera la única fila del modal
         const bodyRow = new client.MessageActionRow().addComponents(
@@ -86,30 +77,21 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         await interaction.showModal(reasonModal);
 
         //Crea un filtro para obtener el modal esperado
-        const modalsFilter = (interaction) => interaction.customId === 'removeAndWarnReason';
+        const modalsFilter = (interaction) => interaction.customId === 'warnReason';
 
         //Espera a que se rellene el modal
         const reason = await interaction.awaitModalSubmit({ filter: modalsFilter, time: 300000 }).then(async modalInteraction => {
 
-            //Envía un mensaje de confirmación
-            await modalInteraction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryCorrect)
-                .setDescription(`${client.customEmojis.greenTick} ${locale.correct}`)
-            ], ephemeral: true});
+            //Almacena el campo del cuerpo
+            const obtainedReason = modalInteraction.fields.getField('body').value;
 
-            //Devuelve el campo del cuerpo
-            return modalInteraction.fields.getField('body').value;
+            //Ejecuta el manejador de infracciones
+            await client.functions.moderation.manageWarn.run(client, member, obtainedReason, 2, interaction.user, null, modalInteraction, interaction.channel);
             
         }).catch(() => { null; });
 
         //Aborta si no se proporcionó una razón en el tiempo esperado
         if (!reason) return;
-
-        //Almacena el mensaje advertido
-        const warnedMessage = interaction.options._hoistedOptions[0].message;
-
-        //Ejecuta el manejador de infracciones
-        await client.functions.moderation.manageWarn.run(client, member, reason, 3, interaction.user, warnedMessage, null, warnedMessage.channel);
 
     } catch (error) {
 
@@ -122,6 +104,6 @@ module.exports.config = {
     type: 'guild',
     defaultPermission: false,
     appData: {
-        type: 'MESSAGE'
+        type: 'USER'
     }
 };

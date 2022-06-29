@@ -172,7 +172,7 @@
         }
     },
     "userCommands": {
-        "test": {
+        "warn": {
             "enabled": true
         }
     },

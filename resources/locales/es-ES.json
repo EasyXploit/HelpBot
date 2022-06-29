@@ -1308,9 +1308,19 @@
                 }
             },
             "userCommands": {
-                "test": {
+                "warn": {
                     "appData": {
-                        "name": "Comando de usuario de prueba"
+                        "name": "Advertir"
+                    },
+                    "cantDeleteMessages": "No tienes permiso para eliminar mensajes en este canal",
+                    "memberNotFound": "El miembro ya no se encuentra en el servidor",
+                    "noBots": "No puedes advertir a un bot",
+                    "badHierarchy": "No puedes advertir a un miembro con un rol igual o superior al tuyo",
+                    "cooldown": "Tienes que esperar antes de poder poner una nueva advertencia a {{member}}",
+                    "bodyModal": {
+                        "title": "Advertir un miembro",
+                        "fieldTitle": "Razón de la advertencia",
+                        "fieldPlaceholder": "Escribe una razón para la advertencia"
                     }
                 }
             }

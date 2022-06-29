@@ -1308,9 +1308,19 @@
                 }
             },
             "userCommands": {
-                "test": {
+                "warn": {
                     "appData": {
-                        "name": "Test user command"
+                        "name": "Warn"
+                    },
+                    "cantDeleteMessages": "You do not have permission to delete messages in this channel",
+                    "memberNotFound": "The member is no longer on the server",
+                    "noBots": "You can't warn a bot",
+                    "badHierarchy": "You cannot warn a member with a role equal to or higher than yours",
+                    "cooldown": "You have to wait before you can put a new warning on {{member}}",
+                    "bodyModal": {
+                        "title": "Warn a member",
+                        "fieldTitle": "Reason for the warning",
+                        "fieldPlaceholder": "Write a reason for the warning"
                     }
                 }
             }

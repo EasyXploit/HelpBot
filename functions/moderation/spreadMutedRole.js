@@ -1,11 +1,11 @@
 //Función para propagar el rol silenciado
-exports.run = async (client, guild) => {
+exports.run = async (client) => {
 
     //Busca el rol silenciado
-    let mutedRole = await guild.roles.cache.find(role => role.id === client.config.dynamic.mutedRoleId);
+    let mutedRole = await client.homeGuild.roles.cache.find(role => role.id === client.config.dynamic.mutedRoleId);
 
     //Para cada canal, añade el permiso para el rol
-    await guild.channels.cache.forEach(async (channel) => {
+    await client.homeGuild.channels.cache.forEach(async (channel) => {
 
         //Ignora este canal si debe estar excluido del silenciamiento
         if (client.config.moderation.mutedRoleExcludedChannels.includes(channel.id)) return;

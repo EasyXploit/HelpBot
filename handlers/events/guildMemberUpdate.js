@@ -21,7 +21,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
                 await newMember.roles.add(mutedRole);
 
                 //Propaga el rol silenciado
-                await client.functions.moderation.spreadMutedRole.run(client, newMember.guild);
+                await client.functions.moderation.spreadMutedRole.run(client);
             };
 
             //Ejecuta el manejador de nuevos miembros (si procede)

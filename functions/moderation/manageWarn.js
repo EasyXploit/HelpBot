@@ -19,7 +19,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 member.roles.add(mutedRole);
 
                 //Propaga el rol silenciado por todos los canales
-                await client.functions.moderation.spreadMutedRole.run(client.homeGuild);
+                await client.functions.moderation.spreadMutedRole.run(client);
             };
 
             //Almacena la anterior duración del silenciamiento

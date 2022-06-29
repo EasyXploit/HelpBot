@@ -74,7 +74,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             member.roles.add(mutedRole);
 
             //Propaga el rol silenciado
-            await client.functions.moderation.spreadMutedRole.run(client, interaction.guild);
+            await client.functions.moderation.spreadMutedRole.run(client);
 
             //Envía un mensaje al canal de registros
             if (client.config.logging.mutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()

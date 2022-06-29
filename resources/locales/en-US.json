@@ -615,7 +615,7 @@
                             },
                             "id": {
                                 "name": "id",
-                                "description": "Type the ID of the warning or \"all\" to remove all"
+                                "description": "Type the ID of the warning to remove it"
                             },
                             "reason": {
                                 "name": "reason",

@@ -615,7 +615,7 @@
                             },
                             "id": {
                                 "name": "id",
-                                "description": "Escribe el ID de la advertencia o \"all\" para eliminar todas"
+                                "description": "Escribe el ID de la advertencia a eliminar"
                             },
                             "reason": {
                                 "name": "razón",

@@ -13,9 +13,23 @@ exports.run = async (banData, client, locale) => {
 
         //Almacena el primer resultado de la búsqueda
         const banLog = fetchedLogs.entries.first();
+        
+        //Si no hubo registro, o este era inconcluso
+        if (!banLog || banLog.target.id !== banData.user.id) {
+
+            //Envía un mensaje al canal de registros
+            if (client.config.logging.bannedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryError)
+                .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.inconclusiveLoggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
+                .addField(locale.inconclusiveLoggingEmbed.memberId, banData.user.id, true)
+                .addField(locale.inconclusiveLoggingEmbed.moderator, locale.inconclusiveLoggingEmbed.unknownModerator, true)
+                .addField(locale.inconclusiveLoggingEmbed.reason, locale.inconclusiveLoggingEmbed.unknownReason, true)
+                .addField(locale.inconclusiveLoggingEmbed.expiration, locale.inconclusiveLoggingEmbed.unknownExpiration, true)
+                .addField(locale.inconclusiveLoggingEmbed.deletedDays, locale.inconclusiveLoggingEmbed.unknownDeletedDays, true)
+            );
 
         //Si se encontró un baneo en el primer resultado
-        if (banLog) {
+        } else if (banLog) {
 
             //Almacena el ejecutor y la razón
             let { executor, reason } = banLog;

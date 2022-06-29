@@ -16,6 +16,19 @@ exports.run = async (member, client, locale) => {
         
         //Si se encontró una expulsión en el primer resultado, y han pasado menos de 5 segundos
         if (kickLog && (kickLog.createdTimestamp > (Date.now() - 5000))) {
+
+            //Si no hubo registro, o este era inconcluso
+            if (kickLog.target.id !== member.id) {
+
+                //Envía un registro al canal de registros
+                if (client.config.logging.kickedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                    .setColor(client.config.colors.error)
+                    .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.inconclusiveLoggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                    .addField(locale.inconclusiveLoggingEmbed.memberId, member.id, true)
+                    .addField(locale.inconclusiveLoggingEmbed.moderator, locale.inconclusiveLoggingEmbed.unknownModerator, true)
+                    .addField(locale.inconclusiveLoggingEmbed.reason, locale.inconclusiveLoggingEmbed.undefinedReason, true)
+                );
+            };
         
             //Si el miembro expulsado era un bot
             if (member.user.bot) {

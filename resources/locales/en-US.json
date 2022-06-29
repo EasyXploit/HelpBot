@@ -1335,6 +1335,18 @@
                 "otherError": "ERROR"
             },
             "guildBanAdd": {
+                "inconclusiveLoggingEmbed": {
+                    "author": "{{userTag}} has been BANNED",
+                    "memberId": "Member ID",
+                    "moderator": "Moderator",
+                    "unknownModerator": "Unknown",
+                    "reason": "Reason",
+                    "unknownReason": "Unknown",
+                    "expiration": "Expiration",
+                    "unknownExpiration": "Unknown",
+                    "deletedDays": "Days of deleted messages",
+                    "unknownDeletedDays": "Unknown"
+                },
                 "botLoggingEmbed": {
                     "title": "Logging - [BOTS]",
                     "description": "The **BOT** {{userTag}} was banned from the server"
@@ -1369,6 +1381,14 @@
                 }
             },
             "guildMemberRemove": {
+                "inconclusiveLoggingEmbed": {
+                    "author": "{{memberTag}} has been KICKED",
+                    "memberId": "Member ID",
+                    "moderator": "Moderator",
+                    "unknownModerator": "Unknown",
+                    "reason": "Reason",
+                    "unknownReason": "Unknown"
+                },
                 "botLoggingEmbed": {
                     "title": "Logging - [BOTS]",
                     "description": "The **BOT** {{memberTag}} was kicked from the server"

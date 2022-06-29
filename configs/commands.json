@@ -173,7 +173,9 @@
     },
     "userCommands": {
         "warn": {
-            "enabled": true
+            "enabled": true,
+            "minimumTimeDifference": 15000,
+            "unlimitedFrequency": []
         }
     },
     "ignored": {

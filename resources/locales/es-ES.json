@@ -570,7 +570,6 @@
                             }
                         }
                     },
-                    "nonInt": "Debes proporcionar un número entero",
                     "belowOne": "Quieres jugar sucio eh ...",
                     "doesntExist": "La pista Nº`{{number}}` no está añadida a la cola",
                     "deletedTrack": "Pista eliminada"

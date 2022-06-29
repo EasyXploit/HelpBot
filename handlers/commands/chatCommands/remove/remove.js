@@ -2,20 +2,14 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
     try {
 
-        //Almacena el argumento proporcionado por el usuario (si lo hay)
-        const argument = interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : null;
+        //Almacena el argumento proporcionado por el usuario
+        const argument = interaction.options._hoistedOptions[0].value;
 
         //Comprueba los requisitos previos para el comando
         if (!await client.functions.reproduction.preChecks.run(client, interaction, ['bot-connected',  'same-channel',  'has-queue'])) return;
 
         //Almacena la información de la cola de la guild
         const reproductionQueue = client.reproductionQueues[interaction.guild.id];
-
-        //Comprueba si se ha proporcionado un número entero
-        if (!Number.isInteger(parseInt(argument))) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
-            .setDescription(`${client.customEmojis.redTick} ${locale.nonInt}.`)
-        ], ephemeral: true});
         
         //Comprueba si no es 0
         if (argument <= 0) return interaction.reply({ embeds: [ new client.MessageEmbed()

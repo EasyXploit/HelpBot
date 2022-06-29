@@ -570,7 +570,6 @@
                             }
                         }
                     },
-                    "nonInt": "You must provide an integer number",
                     "belowOne": "You want to play dirty huh...",
                     "doesntExist": "Track #`{{number}}` is not added to the queue",
                     "deletedTrack": "Track deleted"

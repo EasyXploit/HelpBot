@@ -14,7 +14,7 @@
 </div>
 
 > **NOTICE:**<br />
-This repository is <ins>currently under development</ins> and does not have a final stable version, so it is possible that there are bugs and I'm still making commits until the [final release](https://github.com/EasyXploit/HelpBot/releases).
+This repository is <ins>currently under development</ins> and does not have a final stable version, so it is possible that there are bugs and I'm still making fixes and improvements until the [final release](https://github.com/EasyXploit/HelpBot/releases).
 
 
 ## About

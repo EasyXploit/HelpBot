@@ -562,7 +562,7 @@
                 "remove": {
                     "appData": {
                         "name": "remove",
-                        "description": "Removes a track from the reproduction queue (introduce \"all\" to remove all)",
+                        "description": "Removes a track from the reproduction queue",
                         "options": {
                             "position": {
                                 "name": "position",
@@ -570,7 +570,6 @@
                             }
                         }
                     },
-                    "allDeleted": "I have deleted all tracks from the queue",
                     "nonInt": "You must provide an integer number",
                     "belowOne": "You want to play dirty huh...",
                     "doesntExist": "Track #`{{number}}` is not added to the queue",

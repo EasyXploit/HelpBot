@@ -562,7 +562,7 @@
                 "remove": {
                     "appData": {
                         "name": "eliminar",
-                        "description": "Elimina una pista de la cola de reproducción (inttroduce \"all\" para eliminar todas)",
+                        "description": "Elimina una pista de la cola de reproducción",
                         "options": {
                             "position": {
                                 "name": "posición",
@@ -570,7 +570,6 @@
                             }
                         }
                     },
-                    "allDeleted": "He eliminado todas las pistas de la cola",
                     "nonInt": "Debes proporcionar un número entero",
                     "belowOne": "Quieres jugar sucio eh ...",
                     "doesntExist": "La pista Nº`{{number}}` no está añadida a la cola",

@@ -10,48 +10,33 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Almacena la información de la cola de la guild
         const reproductionQueue = client.reproductionQueues[interaction.guild.id];
+
+        //Comprueba si se ha proporcionado un número entero
+        if (!Number.isInteger(parseInt(argument))) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} ${locale.nonInt}.`)
+        ], ephemeral: true});
         
-        if (argument === 'all') {
+        //Comprueba si no es 0
+        if (argument <= 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} ${locale.belowOne}.`)
+        ], ephemeral: true});
+        
+        //Comprueba si el valor introducido es válido
+        if (argument >= (reproductionQueue.tracks.length)) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.doesntExist, { number: argument })}.`)
+        ], ephemeral: true});
 
-            //Comprueba si es necesaria una votación
-            if (await client.functions.reproduction.testQueuePerms.run(client, interaction, 'remove-all')) {
+        //Comprueba si es necesaria una votación
+        if (await client.functions.reproduction.testQueuePerms.run(client, interaction, 'remove', argument)) {
 
-                //Elimina el elemento de la cola
-                await reproductionQueue.tracks.splice(1);
-                
-                //Manda un mensaje de confirmación
-                await interaction.reply({ content: `${client.customEmojis.greenTick} | ${locale.allDeleted}` });
-            };
-
-        } else {
-
-            //Comprueba si se ha proporcionado un número entero
-            if (!Number.isInteger(parseInt(argument))) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} ${locale.nonInt}.`)
-            ], ephemeral: true});
+            //Elimina el elemento de la cola
+            await reproductionQueue.tracks.splice(argument, 1);
             
-            //Comprueba si no es 0
-            if (argument <= 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} ${locale.belowOne}.`)
-            ], ephemeral: true});
-            
-            //Comprueba si el valor introducido es válido
-            if (argument >= (reproductionQueue.tracks.length)) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.doesntExist, { number: argument })}.`)
-            ], ephemeral: true});
-
-            //Comprueba si es necesaria una votación
-            if (await client.functions.reproduction.testQueuePerms.run(client, interaction, 'remove', argument)) {
-
-                //Elimina el elemento de la cola
-                await reproductionQueue.tracks.splice(argument, 1);
-                
-                //Manda un mensaje de confirmación
-                await interaction.reply({ content: `🗑️ | ${locale.deletedTrack}` });
-            };
+            //Manda un mensaje de confirmación
+            await interaction.reply({ content: `🗑️ | ${locale.deletedTrack}` });
         };
 
     } catch (error) {
@@ -69,7 +54,7 @@ module.exports.config = {
         options: [
             {
                 optionName: 'position',
-                type: 'STRING',
+                type: 'NUMBER',
                 required: true
             }
         ]

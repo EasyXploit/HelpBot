@@ -323,7 +323,6 @@
                             }
                         }
                     },
-                    "notInteger": "Debes proporcionar un número entero",
                     "tooHigh": "Valor demasiado grande",
                     "belowOne": "Quieres jugar sucio eh ...",
                     "movedTrack": "He reubicado la pista en la cola"
@@ -850,16 +849,22 @@
                         "options": {
                             "quantity": {
                                 "name": "cantidad",
-                                "description": "Introduce una cantidad de pistas a saltar, o la palabra \"all\""
+                                "description": "Introduce una cantidad de pistas a saltar"
                             }
                         }
                     },
                     "skipped": "Pista/s omitida/s",
                     "cantSkipOnRandom": "No puedes omitir más de una pista con el modo aleatorio activado",
                     "cantMultipleOnLoop": "No puedes omitir más de una pista con el modo loop activado",
-                    "notInteger": "Debes proporcionar un número entero, o la palabra \"all\"",
                     "belowOne": "Quieres jugar sucio eh ...",
                     "cantSkipThis": "Solo puedes hacer skip de `{{quantity}}` pistas"
+                },
+                "skipall": {
+                    "appData": {
+                        "name": "saltartodo",
+                        "description": "Salta todas las pistas de la cola"
+                    },
+                    "skipped": "Pista/s omitida/s"
                 },
                 "slowmode": {
                     "appData": {

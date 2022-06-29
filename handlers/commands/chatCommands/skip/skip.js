@@ -32,53 +32,35 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Almacena la información de la cola de la guild
             const reproductionQueue = client.reproductionQueues[interaction.guild.id];
+                
+            //Comprueba si está activado el modo aleatorio
+            if (reproductionQueue.mode === 'shuffle') return interaction.reply({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} ${locale.cantSkipOnRandom}.`)
+            ], ephemeral: true});
 
-            //Si hay que omitir todas
-            if (argument === 'all') {
-
-                //Comprueba si es necesaria una votación y cambia la cola
-                if (await client.functions.reproduction.testQueuePerms.run(client, interaction, 'skip-all')) {
-                    await reproductionQueue.tracks.splice(0, reproductionQueue.tracks.length);
-                    await skip();
-                };
-
-            } else {
-                
-                //Comprueba si está activado el modo aleatorio
-                if (reproductionQueue.mode === 'shuffle') return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${locale.cantSkipOnRandom}.`)
-                ], ephemeral: true});
-
-                //Comprueba si está activado el modo bucle
-                if (reproductionQueue.mode === 'loopsingle' || reproductionQueue.mode === 'loopqueue') return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${cantMultipleOnLoop}.`)
-                ], ephemeral: true});
-                
-                //Comprueba si se ha proporcionado un número entero
-                if (!Number.isInteger(parseInt(argument))) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${locale.notInteger}.`)
-                ], ephemeral: true});
-                
-                //Comprueba si no es 0
-                if (argument <= 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${locale.belowOne}.`)
-                ], ephemeral: true});
-                
-                //Comprueba si el valor introducido es válido
-                if (argument > (reproductionQueue.tracks.length)) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
-                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.cantSkipThis, { quantity: reproductionQueue.tracks.length })}.`)
-                ], ephemeral: true});
-                
-                //Comprueba si es necesaria una votación y cambia la cola
-                if (await client.functions.reproduction.testQueuePerms.run(client, interaction, `skip-${argument}`)) {
-                    await reproductionQueue.tracks.splice(0, argument - 1);
-                    await skip();
-                };
+            //Comprueba si está activado el modo bucle
+            if (reproductionQueue.mode === 'loopsingle' || reproductionQueue.mode === 'loopqueue') return interaction.reply({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} ${cantMultipleOnLoop}.`)
+            ], ephemeral: true});
+            
+            //Comprueba si no es 0
+            if (argument <= 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} ${locale.belowOne}.`)
+            ], ephemeral: true});
+            
+            //Comprueba si el valor introducido es válido
+            if (argument > (reproductionQueue.tracks.length)) return interaction.reply({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.error)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.cantSkipThis, { quantity: reproductionQueue.tracks.length })}.`)
+            ], ephemeral: true});
+            
+            //Comprueba si es necesaria una votación y cambia la cola
+            if (await client.functions.reproduction.testQueuePerms.run(client, interaction, `skip-${argument}`)) {
+                await reproductionQueue.tracks.splice(0, argument - 1);
+                await skip();
             };
 
         } else {
@@ -102,7 +84,7 @@ module.exports.config = {
         options: [
             {
                 optionName: 'quantity',
-                type: 'STRING',
+                type: 'NUMBER',
                 required: false
             }
         ]

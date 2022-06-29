@@ -120,6 +120,9 @@
         "skip": {
             "enabled": true
         },
+        "skipall": {
+            "enabled": true
+        },
         "slowmode": {
             "enabled": true,
             "unlimitedTime": [],

@@ -76,7 +76,7 @@ exports.run = async (client, interaction, customId, actualPage, totalPages, gene
         if (pressedButtonId === `nextPage-${customId}`) newActualPage = actualPage + 1;
         if (pressedButtonId === `lastPage-${customId}`) newActualPage = totalPages;
 
-        //
+        //Almacena la última interacción relacionada recibida
         latestInteraction = buttonInteraction;
 
     //Si no se ha pulsado en el tiempo esperado

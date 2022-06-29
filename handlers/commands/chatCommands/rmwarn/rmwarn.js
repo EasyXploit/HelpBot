@@ -15,13 +15,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         ], ephemeral: true});
         
         //Comprueba si se ha aportado alguna advertencia
-        const warnId = interaction.options._hoistedOptions[1].value;
+        const warnIdOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.id.name);
+        const warnId = warnIdOption ? warnIdOption.value : null;
 
-        //Almacena la razón
-        let reason = interaction.options._hoistedOptions[2] ? interaction.options._hoistedOptions[2].value : null;
-
-        //Capitaliza la razón
-        if (reason) reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;
+        //Almacena la razón y la capitaliza, si se ha aportado
+        const reasonOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.reason.name);
+        const reason = reasonOption ? `${reasonOption.value.charAt(0).toUpperCase()}${reasonOption.value.slice(1)}` : null;
 
         //Si no se ha proporcionado razón y el miembro no es el dueño
         if (!reason && interaction.member.id !== interaction.guild.ownerId) {
@@ -55,7 +54,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         let successEmbed, loggingEmbed, toDMEmbed;
 
         //Si hay que eliminar todas las infracciones
-        if (warnId === 'all') {
+        if (!warnId) {
 
             //Comprueba si el miembro puede eliminar cualquier advertencia
             if (!canRemoveAny) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -182,7 +181,7 @@ module.exports.config = {
             {
                 optionName: 'id',
                 type: 'STRING',
-                required: true
+                required: false
             },
             {
                 optionName: 'reason',

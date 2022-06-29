@@ -272,7 +272,9 @@
                     "unknownMember": "Unknown",
                     "embed": {
                         "title": "Leaderboard",
-                        "footer": "Page {{position}} of {{totalPages}}"
+                        "xp": "xp",
+                        "lvl": "lvl",
+                        "footer": "Page {{actualPage}} of {{totalPages}}"
                     }
                 },
                 "leave": {
@@ -1446,6 +1448,9 @@
             }
         },
         "managers": {
+            "buttonNavigation": {
+                "cantUseNavigation": "You cannot control a menu invoked by another member"
+            },
             "debugging": {
                 "cannotSend": "ERROR: Cannot send messages to the debugging channel.\n{{botUsername}} must have the following permissions on the channel: Send Messages, Send Links, Attach Files",
                 "cannotAccess": "ERROR: Cannot access the debugging channel.\n The channel has been cleared from the configuration and unloaded from memory",

@@ -272,7 +272,9 @@
                     "unknownMember": "Desconocido",
                     "embed": {
                         "title": "Tabla de clasificación",
-                        "footer": "Página {{position}} de {{totalPages}}"
+                        "xp": "exp",
+                        "lvl": "nvl",
+                        "footer": "Página {{actualPage}} de {{totalPages}}"
                     }
                 },
                 "leave": {
@@ -1446,6 +1448,9 @@
             }
         },
         "managers": {
+            "buttonNavigation": {
+                "cantUseNavigation": "No puedes controlar un menú invocado por otro miembro"
+            },
             "debugging": {
                 "cannotSend": "ERROR: No se pueden enviar mensajes al canal de depuración.\n{{botUsername}} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos",
                 "cannotAccess": "ERROR: No se puede tener acceso al canal de depuración.\n Se ha borrado de la configuración y se ha descargado de la memoria",

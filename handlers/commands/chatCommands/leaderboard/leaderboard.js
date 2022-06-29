@@ -30,18 +30,26 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         entries.sort(compare);
 
         //Almacena las páginas totales
-        const pages = Math.ceil(entries.length / 10);
+        const totalPages = Math.ceil(entries.length / 10);
 
         //Almacena la posición provista, si se proporcionó
-        const providedPosition = interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : null
+        const providedactualPage = interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : null
 
         //Almacena la página actual (si se proporciona una, se elige esa)
-        let position = providedPosition && providedPosition > 0 && providedPosition <= pages ? providedPosition : 1;
+        let actualPage = providedactualPage && providedactualPage > 0 && providedactualPage <= totalPages ? providedactualPage : 1;
 
-        //Función para cargar un rango de entradas de la tabla
-        async function loadBoard(fromRange, toRange) {
+        //Almacena la última interacción del comando
+        let latestInteraction;
+        
+        do {
 
-            //Almacena el string de la tabla
+            //Almacena el primer índice del rango de páginas
+            const fromRange = 10 * actualPage - 9;
+
+            //Almacena el último índice del rango de páginas
+            const toRange = 10 * actualPage;
+
+            //Almacena el string para la descripción
             let board = '';
 
             //Por cada indice del rango especificado
@@ -57,80 +65,28 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 const member = await client.functions.utilities.fetch.run(client, 'member', entry.memberId) || locale.unknownMember;
 
                 //Actualiza la tabla con una entrada formateada
-                board += `\n**#${index + 1}** • \`${entry.totalXP} xp\` • \`lvl ${entry.lvl}\` • ${member}`;
+                board += `\n**#${index + 1}** • \`${entry.totalXP} ${locale.embed.xp}\` • \`${locale.embed.lvl} ${entry.lvl}\` • ${member}`;
 
             };
 
-            //Devuelve la tabla actual
-            return board;
-        };
-
-        //Función para mostrar la primera tabla de clasififcación o actualizarla
-        async function showLeaderboard(embed) {
-
-            //Genera una tabla de clasificación (cómo embed)
-            const leaderboard = new client.MessageEmbed()
+            //Genera un embed a modo de página
+            const newPageEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
                 .setTitle(`:trophy: ${locale.embed.title}`)
-                .setDescription(await loadBoard(10 * position - 9, 10 * position))
-                .setFooter({ text: await client.functions.utilities.parseLocale.run(locale.embed.footer, { position: position, totalPages: pages }), iconURL: client.homeGuild.iconURL({dynamic: true}) });
+                .setDescription(board)
+                .setFooter({ text: await client.functions.utilities.parseLocale.run(locale.embed.footer, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.homeGuild.iconURL({dynamic: true}) });
 
-            //Envía o actualiza la tabla de clasificación
-            if (embed) await embed.edit({ embeds: [leaderboard] }).then(async embed => {awaitReactions(embed)});
-            else {
-                const sentEmbed = await interaction.reply({ embeds: [leaderboard], fetchReply: true });
-                awaitReactions(sentEmbed);
-            };
-        };
+            //Invoca el gestor de navegación mediante botones
+            const buttonNavigationResult = await client.functions.managers.buttonNavigation.run(client, interaction, 'leaderboard', actualPage, totalPages, newPageEmbed, latestInteraction);
 
-        //Función para manejar el menú de reacciones
-        async function awaitReactions(embed) {
+            //Almacena la última interacción
+            latestInteraction = buttonNavigationResult.latestInteraction;
 
-            //Borra todas las reacciones previas (si tiene)
-            if (embed.reactions) await embed.reactions.removeAll(); 
+            //Almacena la nueva página actual
+            actualPage = buttonNavigationResult.newActualPage;
 
-            //Reacciona con el menú correspondiente según la página
-            if (position > 1) await embed.react('⏮');
-            if (position > 1) await embed.react('◀');
-            if (position < pages) await embed.react('▶');
-            if (position < pages) await embed.react('⏭');
-
-            //Crea el filtro de reacciones según la página
-            const filter = (reaction, user) => {
-
-                //Crea un array de reacciones válidas
-                let validReactions = [];
-
-                //Si no es la primera página
-                if (position > 1) validReactions.push('⏮', '◀');
-
-                //Si no es la última página
-                if (position < pages) validReactions.push('▶', '⏭');
-
-                //Devuelve si el filtro encajó con la reacción
-                return validReactions.includes(reaction.emoji.name) && user.id === interaction.member.id;
-            };
-
-            //Inicializa un listener de reaccciones en función del filtro
-            embed.awaitReactions({ filter: filter, max: 1, time: 60000, errors: ['time'] }).then(async collected => {
-
-                //Almacena la primera reacción
-                const reaction = collected.first();
-
-                //Según el emoji reaccionado, actualiza el contador consecutivamente
-                if (reaction.emoji.name === '⏮' && position > 1) position = 1;
-                if (reaction.emoji.name === '◀' && position > 1) position = position - 1;
-                if (reaction.emoji.name === '▶' && position < pages) position = position + 1;
-                if (reaction.emoji.name === '⏭' && position < pages) position = pages;
-
-                //Carga la nueva tabla de clasififcación
-                showLeaderboard(embed);
-
-            }).catch(() => embed.reactions.removeAll());
-        };
-
-        //Genera la primera tabla de clasififcación
-        showLeaderboard();
+        //Mientras no se deba abortar por inactividad, continuará el bucle
+        } while (actualPage !== false);
 
     } catch (error) {
 

@@ -269,6 +269,7 @@
                             }
                         }
                     },
+                    "noLeaderboard": "Nadie ha ganado EXP todavía",
                     "unknownMember": "Desconocido",
                     "embed": {
                         "title": "Tabla de clasificación",

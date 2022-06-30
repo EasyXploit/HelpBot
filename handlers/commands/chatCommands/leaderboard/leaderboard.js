@@ -2,6 +2,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
     try {
 
+        //Devuelve un error si no hay tabla de clasificación
+        if (!client.db.stats || !Object.keys(client.db.stats).length) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            .setColor(client.config.colors.error)
+            .setDescription(`${client.customEmojis.redTick} ${locale.noLeaderboard}.`)
+        ], ephemeral: true});
+
         //Almacena las entradas de la leaderboard
         let entries = [];
 

@@ -269,6 +269,7 @@
                             }
                         }
                     },
+                    "noLeaderboard": "No one has gained XP yet",
                     "unknownMember": "Unknown",
                     "embed": {
                         "title": "Leaderboard",

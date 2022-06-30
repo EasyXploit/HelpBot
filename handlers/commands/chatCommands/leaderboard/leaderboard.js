@@ -83,7 +83,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setFooter({ text: await client.functions.utilities.parseLocale.run(locale.embed.footer, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.homeGuild.iconURL({dynamic: true}) });
 
             //Invoca el gestor de navegación mediante botones
-            const buttonNavigationResult = await client.functions.managers.buttonNavigation.run(client, interaction, 'leaderboard', actualPage, totalPages, newPageEmbed, latestInteraction);
+            const buttonNavigationResult = await client.functions.managers.buttonNavigation.run(client, interaction, 'leaderboard', actualPage, totalPages, newPageEmbed, latestInteraction, null);
 
             //Almacena la última interacción
             latestInteraction = buttonNavigationResult.latestInteraction;

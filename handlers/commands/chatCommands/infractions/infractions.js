@@ -117,7 +117,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (member) newPageEmbed.setThumbnail(member.user.displayAvatarURL({dynamic: true}));
 
             //Invoca el gestor de navegación mediante botones
-            const buttonNavigationResult = await client.functions.managers.buttonNavigation.run(client, interaction, 'infractions', actualPage, totalPages, newPageEmbed, latestInteraction);
+            const buttonNavigationResult = await client.functions.managers.buttonNavigation.run(client, interaction, 'infractions', actualPage, totalPages, newPageEmbed, latestInteraction, null);
 
             //Almacena la última interacción
             latestInteraction = buttonNavigationResult.latestInteraction;

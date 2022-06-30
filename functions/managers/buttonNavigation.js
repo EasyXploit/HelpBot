@@ -1,5 +1,5 @@
 //Función para gestionar la navegación por menús en los embeds
-exports.run = async (client, interaction, customId, actualPage, totalPages, generatedPageMessage, latestInteraction) => {
+exports.run = async (client, interaction, customId, actualPage, totalPages, generatedPageMessage, latestInteraction, attachedFiles) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.managers.buttonNavigation;
@@ -9,6 +9,9 @@ exports.run = async (client, interaction, customId, actualPage, totalPages, gene
 
     //Almacena la respuesta a la interacción
     let response = { embeds: [generatedPageMessage], fetchReply: true };
+
+    //Si se deben adjuntar archivos, lo hace
+    if (attachedFiles) response.files = attachedFiles;
 
     //Añade botones si es necesario
     if (totalPages > 1) {

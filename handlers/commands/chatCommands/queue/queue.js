@@ -71,7 +71,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             };
 
             //Invoca el gestor de navegación mediante botones
-            const buttonNavigationResult = await client.functions.managers.buttonNavigation.run(client, interaction, 'leaderboard', actualPage, totalPages, newPageEmbed, latestInteraction, ['./resources/images/dj.png']);
+            const buttonNavigationResult = await client.functions.managers.buttonNavigation.run(client, interaction, 'queue', actualPage, totalPages, newPageEmbed, latestInteraction, ['./resources/images/dj.png']);
 
             //Almacena la última interacción
             latestInteraction = buttonNavigationResult.latestInteraction;

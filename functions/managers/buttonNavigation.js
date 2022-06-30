@@ -50,16 +50,22 @@ exports.run = async (client, interaction, customId, actualPage, totalPages, gene
         ]
     };
 
+    //Almacena el mensaje del menú
+    let navigationMenuMessage;
+
     //Envía o actualiza el mensaje
     if (latestInteraction) {
 
         //Actualiza el mensaje enviado anteriormente
         await latestInteraction.update(response);
 
+        //Almacena el mensaje del menú
+        navigationMenuMessage = latestInteraction.message;
+
     } else {
 
         //Envía el mensaje por primera vez y lo almacena
-        newActualPageMessage = await interaction.reply(response);
+        navigationMenuMessage = await interaction.reply(response);
     };
 
     //Si solo hay una página, aborta el resto del código por que no hace falta navegación
@@ -79,7 +85,7 @@ exports.run = async (client, interaction, customId, actualPage, totalPages, gene
     };
 
     //Espera pulsaciones de botón en el mensaje
-    await newActualPageMessage.awaitMessageComponent({ filter: buttonsFilter, time: 60000, errors: ['time']  }).then(async buttonInteraction => {
+    await navigationMenuMessage.awaitMessageComponent({ filter: buttonsFilter, time: 60000, errors: ['time']  }).then(async buttonInteraction => {
 
         //Almacena el ID del botón pulsado
         const pressedButtonId = buttonInteraction.customId;
@@ -97,7 +103,7 @@ exports.run = async (client, interaction, customId, actualPage, totalPages, gene
     }).catch(async () => {
 
         //Elimina la fila de botones
-        await newActualPageMessage.edit({ components: [] });
+        await navigationMenuMessage.edit({ components: [] });
 
         //Anula la página actual para abortar posibles bucles
         return newActualPage = false;

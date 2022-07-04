@@ -17,7 +17,7 @@ exports.run = async (client, message) => {
         if (!filterCfg.status) continue;
 
         //Si el filtro funciona en MD, es un mensaje directo y su uso está desactivado, omite
-        if (message.channel.type === 'DM' && (!filterCfg.hasOwnProperty('onDM') || filterCfg.onDM === false)) continue;
+        if (message.channel.type === 'DM' && (!filterCfg['onDM'] || filterCfg.onDM === false)) continue;
 
         //Lo omite si el autor del mensaje es el propietario de la guild
         if (message.author.id === client.homeGuild.ownerId) continue;

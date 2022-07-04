@@ -6,9 +6,6 @@ exports.run = (client) => {
     //SILENCIADOS
     //Comprobación de miembros silenciados temporalmente
     setInterval(async () => {
-
-        //Busca el rol silenciado (o lo crea si es necesario)
-        const role = await client.functions.utilities.fetch.run(client, 'role', client.config.dynamic.mutedRoleId) || await client.functions.moderation.checkMutedRole.run(client, client.homeGuild);
         
         //Para cada uno de los silencios temporales de la BD
         for (let idKey in client.db.mutes) {
@@ -16,17 +13,11 @@ exports.run = (client) => {
             //Almacena el tiempo de finalización del silenciamiento
             const endTime = client.db.mutes[idKey].until;
 
-            //Omite si la sanción es indefinida
-            if (!endTime) continue; 
-
             //Omite si aún no ha expirado la sanción
             if (Date.now() < endTime) continue;
             
             //Busca el miembro
             const member = await client.functions.utilities.fetch.run(client, 'member', idKey);
-
-            //Si el miembro estaba en la guild (y tenía el rol), se lo elimina
-            if (member && member.roles.cache.has(role.id)) await member.roles.remove(role);
 
             //Bora el silenciamiento de la base de datos
             delete client.db.mutes[idKey];
@@ -38,14 +29,14 @@ exports.run = (client) => {
                 if (err) throw err;
 
                 //Almacena el autor del embed para el logging
-                let authorProperty = { name: await client.functions.utilities.parseLocale.run(locale.mutes.loggingEmbed.author, { memberTag: member ? member.user.tag : idKey }) }
+                let authorProperty = { name: member ? await client.functions.utilities.parseLocale.run(locale.mutes.loggingEmbed.author, { userTag: member.user.tag }) : locale.mutes.loggingEmbed.authorNoMember };
                 if (member) authorProperty.iconURL = member.user.displayAvatarURL({dynamic: true});
                 
                 //Ejecuta el manejador de registro
                 if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
                     .setAuthor(authorProperty)
-                    .addField(locale.mutes.loggingEmbed.member, member ? member.user.tag : `\`${idKey}\``, true)
+                    .addField(locale.mutes.loggingEmbed.memberId, idKey.toString(), true)
                     .addField(locale.mutes.loggingEmbed.moderator, `${client.user}`, true)
                     .addField(locale.mutes.loggingEmbed.reason, locale.mutes.reason, true)
                 );
@@ -54,7 +45,7 @@ exports.run = (client) => {
                 if (member) await member.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
                     .setAuthor({ name: locale.mutes.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
-                    .setDescription(await client.functions.utilities.parseLocale.run(locale.mutes.privateEmbed.description, { memberTag: member ? member.user.tag : `\`${idKey}\``, guildName: client.homeGuild.name }))
+                    .setDescription(await client.functions.utilities.parseLocale.run(locale.mutes.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
                     .addField(locale.mutes.privateEmbed.moderator, `${client.user}`, true)
                     .addField(locale.mutes.privateEmbed.reason, locale.mutes.reason, true)
                 ]});

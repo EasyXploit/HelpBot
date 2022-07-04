@@ -9,21 +9,8 @@ exports.run = async (client, member, reason, action, moderator, message, interac
         //Función para silenciar
         async function mute(duration) {
 
-            //Comprueba si existe el rol silenciado, sino lo crea
-            const mutedRole = await client.functions.moderation.checkMutedRole.run(client, client.homeGuild);
-
-            //Si el miembro no estaba silenciado
-            if (!member.roles.cache.has(mutedRole.id)) {
-
-                //Añade el rol silenciado al miembro 
-                member.roles.add(mutedRole);
-
-                //Propaga el rol silenciado por todos los canales
-                await client.functions.moderation.spreadMutedRole.run(client);
-            };
-
-            //Almacena la anterior duración del silenciamiento
-            const oldDuration = client.db.mutes[member.id] ? client.db.mutes[member.id].until : null;
+            //Almacena la anterior expiración del silenciamiento
+            const oldExpiration = client.db.mutes[member.id] ? client.db.mutes[member.id].until : null;
 
             //Almacena el silenciamiento en la BD
             client.db.mutes[member.id] = {
@@ -31,40 +18,30 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 moderator: client.user.id
             };
 
+            //Si no hay caché de registros
+            if (!client.loggingCache) client.loggingCache = {};
+
+            //Crea una nueva entrada en la caché de registros
+            client.loggingCache[member.id] = {
+                action: 'mute',
+                executor: member.id,
+                reason: locale.muteFunction.reason
+            };
+
             //Sobreescribe el fichero de BD
             client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
 
                 //Si hubo algún error, lo lanza por consola
                 if (err) throw err;
+
+                //Deshabilita la comunicación del miembro en el servidor
+                await member.disableCommunicationUntil((Date.now() + duration), locale.muteFunction.reason);
             });
-
-            //Si ya estaba silenciado indefinidamente, no lo notifica
-            if (member.roles.cache.has(mutedRole.id) && !oldDuration && !duration) return;
-
-            //Envía un mensaje al canal de registro
-            if (client.config.logging.mutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.muteFunction.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                .addField(locale.muteFunction.loggingEmbed.memberId, member.id, true)
-                .addField(locale.muteFunction.loggingEmbed.moderator, `${client.user}`, true)
-                .addField(locale.muteFunction.loggingEmbed.reason, locale.muteFunction.reason, true)
-                .addField(locale.muteFunction.loggingEmbed.expiration, duration ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : locale.muteFunction.loggingEmbed.noExpiration, true)
-            );
 
             //Envía un mensaje al canal de la infracción
             await channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
-                .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(locale.muteFunction.notificationEmbed, { memberTag: member.user.tag })}`)
-            ]});
-
-            //Envía un mensaje al miembro
-            await member.send({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
-                .setAuthor({ name: locale.muteFunction.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
-                .setDescription(await client.functions.utilities.parseLocale.run(locale.muteFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
-                .addField(locale.muteFunction.privateEmbed.moderator, `${client.user}`, true)
-                .addField(locale.muteFunction.privateEmbed.reason, locale.muteFunction.reason, true)
-                .addField(locale.muteFunction.privateEmbed.expiration, duration ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : locale.muteFunction.privateEmbed.noExpiration, true)
+                .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(oldExpiration ? locale.muteFunction.notificationEmbed.initiated : locale.muteFunction.notificationEmbed.extended, { memberTag: member.user.tag })}`)
             ]});
         };
 

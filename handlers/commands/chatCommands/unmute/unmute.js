@@ -14,8 +14,8 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Capitaliza la razón
         if (reason) reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;
 
-        //Si no se ha proporcionado razón y el miembro no es el dueño
-        if (!reason && interaction.member.id !== interaction.guild.ownerId) {
+        //Si no se ha proporcionado razón
+        if (!reason) {
 
             //Almacena si el miembro puede omitir la razón
             const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
@@ -27,46 +27,11 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             ], ephemeral: true});
         };
 
-        //Comprueba si existe el rol silenciado, sino lo crea
-        const mutedRole = await client.functions.moderation.checkMutedRole.run(client, interaction.guild);
-
         //Comprueba si el miembro no estaba silenciado
-        if (member && !member.roles.cache.has(mutedRole.id)) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (member && !member.communicationDisabledUntilTimestamp) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} ${locale.notSilenced}.`)
         ], ephemeral: true});
-
-        //Crea una copia de los roles del miembro
-        let newRolesCollection = member.roles.cache.clone();
-
-        //Elimina el rol silenciado de la copia de roles
-        newRolesCollection.delete(mutedRole.id);
-
-        //Crea un array para almacenar los roles ordenados por posición
-        let sortedRoles = [];
-
-        //Por cada uno de los IDs de roles del miembro
-        for (const key of newRolesCollection) {   
-            
-            //Obtiene el rol en base al ID
-            const role = newRolesCollection.get(key[0]);
-            
-            //Sube al array de roles ordenados, un objeto con la propiedades deseadas
-            sortedRoles.push({
-                roleId: role.id,
-                position: role.rawPosition,
-            });
-        };
-
-        //Función para comprar un array
-        function compare(a, b) {
-            if (a.position < b.position) return 1;
-            if (a.position > b.position) return -1;
-            return 0;
-        };
-
-        //Compara y ordena el array de roles
-        sortedRoles.sort(compare);
 
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
         if (member && interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= sortedRoles[0].position) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -78,16 +43,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         const canRemoveAny = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
 
         //Devuelve el estado de autorización
-        if (client.db.mutes[memberId].moderator !== interaction.member.id && !canRemoveAny) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (!canRemoveAny && (!client.db.mutes[memberId] || client.db.mutes[memberId].moderator !== interaction.member.id)) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.cantRemoveAny, { interactionAuthor: interaction.member })}.`)
         ], ephemeral: true});
 
-        //Elimina el rol silenciado al miembro
-        if (member) await member.roles.remove(mutedRole);
-        
         //Si el silenciamiento estaba registrado en la base de datos
-        if (client.db.mutes.hasOwnProperty(memberId)) {
+        if (client.db.mutes[memberId]) {
 
             //Elimina la entrada de la base de datos
             delete client.db.mutes[memberId];
@@ -100,35 +62,37 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             });
         };
 
-        //Almacena el campo de autor del embed de registro
-        let loggingEmbedAuthor = { name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { userTag: member ? member.user.tag : locale.loggingEmbed.unknownAuthor })};
+        //Si no hay caché de registros
+        if (!client.loggingCache) client.loggingCache = {};
 
-        //Si se especificó un miembro, añade su avatar al embed
-        if (member) loggingEmbedAuthor.iconURL = member.user.displayAvatarURL({dynamic: true});
+        //Crea una nueva entrada en la caché de registros
+        if (member) client.loggingCache[memberId] = {
+            action: 'unmute',
+            executor: interaction.member.id,
+            reason: reason || locale.undefinedReason
+        };
 
-        //Envía un mensaje al canal de registros
-        if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-            .setColor(client.config.colors.correct)
-            .setAuthor(loggingEmbedAuthor )
-            .addField(locale.loggingEmbed.memberId, memberId.toString(), true)
-            .addField(locale.loggingEmbed.moderator, interaction.user.tag, true)
-            .addField(locale.loggingEmbed.reason, reason || locale.undefinedReason, true)
-        );
+        //Habilita la comunicación del miembro en el servidor
+        if (member) await member.disableCommunicationUntil(null, reason || locale.undefinedReason);
+
+        //Si el miembro no está en la guild
+        if (!member) {
+
+            //Envía un mensaje al canal de registros
+            if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                .setColor(client.config.colors.correct)
+                .setAuthor(locale.loggingEmbed.author)
+                .addField(locale.loggingEmbed.memberId, member.id.toString(), true)
+                .addField(locale.loggingEmbed.moderator, interaction.user.tag, true)
+                .addField(locale.loggingEmbed.reason, reason || locale.undefinedReason, true)
+            );
+        };
 
         //Notifica la acción en el canal de invocación
         await interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryCorrect)
             .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbed.title}`)
             .setDescription(await client.functions.utilities.parseLocale.run(locale.notificationEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)` }))
-        ]});
-
-        //Envía una notificación al miembro
-        if (member) await member.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.correct)
-            .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-            .setDescription(await client.functions.utilities.parseLocale.run(locale.privateEmbed.description, { member: member, guildName: interaction.guild.name }))
-            .addField(locale.privateEmbed.moderator, interaction.user.tag, true)
-            .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
         ]});
         
     } catch (error) {

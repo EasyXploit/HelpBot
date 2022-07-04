@@ -195,7 +195,6 @@
                     "noBots": "No puedes obtener información de un bot",
                     "unknownModerator": "Moderador desconocido",
                     "mutedUntil": "Silenciado hasta",
-                    "mutedUndefinetly": "Silenciado indefinidamente",
                     "noMute": "Ninguna",
                     "infractionsEmbed": {
                         "title": "Infracciones",
@@ -333,11 +332,29 @@
                 "mute": {
                     "appData": {
                         "name": "silenciar",
-                        "description": "Silencia a un miembro de los canales de texto y voz",
+                        "description": "Deshabilita las comunicaciones de un miembro en el servidor por un tiempo limitado",
                         "options": {
                             "user": {
                                 "name": "usuario",
                                 "description": "Selecciona un usuario o escribe su ID"
+                            },
+                            "expiration": {
+                                "name": "expiración",
+                                "description": "Selecciona cuando expirará la sanción",
+                                "choices": {
+                                    "sixtySeconds": "60 segundos",
+                                    "fiveMinutes": "5 minutos",
+                                    "fifteenMinutes": "15 minutos",
+                                    "thirtyMinutes": "30 minutos",
+                                    "oneHour": "1 hora",
+                                    "sixHours": "6 horas",
+                                    "twelveHours": "12 horas",
+                                    "oneDay": "1 día",
+                                    "threeDays": "3 días",
+                                    "oneWeek": "1 semana",
+                                    "oneMonth": "1 mes",
+                                    "threeMonths": "3 meses"
+                                }
                             },
                             "reason": {
                                 "name": "razón",
@@ -348,25 +365,9 @@
                     "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
                     "noBots": "No puedes silenciar a un bot",
                     "badHierarchy": "No puedes silenciar a un miembro con un rol igual o superior al tuyo",
-                    "alreadySilenced": "Este miembro ya esta silenciado",
+                    "exceededDuration": "Solo puedes silenciar un máximo de `{{time}}`",
                     "noReason": "Debes proporcionar una razón",
                     "undefinedReason": "Indefinida",
-                    "loggingEmbed": {
-                        "author": "{{memberTag}} ha sido SILENCIADO",
-                        "memberId": "ID del miembro",
-                        "moderator": "Moderador",
-                        "reason": "Razón",
-                        "expiration": "Vencimiento",
-                        "noExpiration": "No vence"
-                    },
-                    "privateEmbed": {
-                        "author": "[SILENCIADO]",
-                        "description": "{{member}}, has sido silenciado en {{guildName}",
-                        "moderator": "Moderador",
-                        "reason": "Razón",
-                        "expiration": "Vencimiento",
-                        "noExpiration": "No vence"
-                    },
                     "notificationEmbed": {
                         "withReason": "**{{memberTag}}** ha sido silenciado debido a __{{reason}}__, ¿alguien más?",
                         "withoutReason": "**{{memberTag}}** ha sido silenciado, ¿alguien más?"
@@ -1022,52 +1023,6 @@
                         "noNextRewards": "No puede ganar recompensas"
                     }
                 },
-                "tempmute": {
-                    "appData": {
-                        "name": "silenciotemp",
-                        "description": "Silencia temporalmente a un miembro de los canales de texto y voz",
-                        "options": {
-                            "user": {
-                                "name": "usuario",
-                                "description": "Selecciona un usuario o escribe su ID"
-                            },
-                            "duration": {
-                                "name": "duración",
-                                "description": "Escriba una duración con el formato: días\"D\" | minutos\"M\" | horas\"H\" | segundos\"S\""
-                            },
-                            "reason": {
-                                "name": "razón",
-                                "description": "Aporta una razón para la acción"
-                            }
-                        }
-                    },
-                    "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
-                    "noBots": "No puedes banear a un bot",
-                    "badHierarchy": "No puedes silenciar a un miembro con un rol igual o superior al tuyo",
-                    "alreadySilenced": "Este miembro ya esta silenciado",
-                    "wrongMagnitudes": "Tienes que escribir una duración con el formato: días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"",
-                    "exceededDuration": "Solo puedes silenciar un máximo de `{{time}}`",
-                    "noReason": "Debes proporcionar una razón",
-                    "undefinedReason": "Indefinida",
-                    "loggingEmbed": {
-                        "author": "{{memberTag}} ha sido SILENCIADO",
-                        "memberId": "ID del miembro",
-                        "moderator": "Moderador",
-                        "reason": "Razón",
-                        "expiration": "Vencimiento"
-                    },
-                    "privateEmbed": {
-                        "author": "[SILENCIADO]",
-                        "description": "{{member}}, has sido silenciado en {{guildName}",
-                        "moderator": "Moderador",
-                        "reason": "Razón",
-                        "expiration": "Vencimiento"
-                    },
-                    "notificationEmbed": {
-                        "withReason": "**{{memberTag}}** ha sido silenciado debido a __{{reason}}__, ¿alguien más?",
-                        "withoutReason": "**{{memberTag}}** ha sido silenciado, ¿alguien más?"
-                    }
-                },
                 "unban": {
                     "appData": {
                         "name": "desbanear",
@@ -1117,22 +1072,14 @@
                             }
                         }
                     },
-                    "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
                     "noReason": "Debes proporcionar una razón",
                     "notSilenced": "Este miembro no esta silenciado",
                     "badHierarchy": "{{interactionAuthor}}, no puedes des-silenciar a alguien con un rol igual o superior al tuyo",
                     "cantRemoveAny": "{{interactionAuthor}}, no puedes des-silenciar a alguien que no has silenciado tú",
                     "undefinedReason": "Indefinida",
                     "loggingEmbed": {
-                        "author": "{{userTag}} ha sido DES-SILENCIADO",
-                        "unknownAuthor": "Un miembro",
+                        "author": "Un miembro ha sido DES-SILENCIADO",
                         "memberId": "ID del miembro",
-                        "moderator": "Moderador",
-                        "reason": "Razón"
-                    },
-                    "privateEmbed": {
-                        "author": "[DES-SILENCIADO]",
-                        "description": "{{member}}, has sido des-silenciado en {{guildName}",
                         "moderator": "Moderador",
                         "reason": "Razón"
                     },
@@ -1162,7 +1109,6 @@
                     },
                     "embed": {
                         "mutedUntil": "Silenciado hasta",
-                        "undefinedMute": "Silenciado indefinidamente",
                         "title": "Información sobre {{memberDisplayName}}",
                         "description": "Mostrando información acerca de **{{memberTag}}**",
                         "memberId": "ID del miembro",
@@ -1387,6 +1333,9 @@
                 "botLoggingEmbed": {
                     "title": "Registro - [BOTS]",
                     "description": "El **BOT** {{memberTag}} fue añadido al servidor"
+                },
+                "communicationEnabled": {
+                    "reason": "Fue dessilenciado mientras que el miembro no se encontraba en la guild"
                 }
             },
             "guildMemberRemove": {
@@ -1415,6 +1364,46 @@
                     "description": "{{memberTag}} abandonó el servidor",
                     "memberId": "ID del miembro",
                     "antiquity": "Antigüedad"
+                }
+            },
+            "guildMemberUpdate": {
+                "communicationDisabled": {
+                    "loggingEmbed": {
+                        "author": "{{memberTag}} ha sido SILENCIADO",
+                        "memberId": "ID del miembro",
+                        "moderator": "Moderador",
+                        "unknownModerator": "Desconocido",
+                        "reason": "Razón",
+                        "undefinedReason": "Indefinida",
+                        "expiration": "Vencimiento"
+                    },
+                    "privateEmbed": {
+                        "author": "[SILENCIADO]",
+                        "description": "{{member}}, has sido silenciado en {{guildName}",
+                        "moderator": "Moderador",
+                        "unknownModerator": "Desconocido",
+                        "reason": "Razón",
+                        "undefinedReason": "Indefinida",
+                        "expiration": "Vencimiento"
+                    }
+                },
+                "communicationEnabled": {
+                    "loggingEmbed": {
+                        "author": "{{userTag}} ha sido DES-SILENCIADO",
+                        "memberId": "ID del miembro",
+                        "moderator": "Moderador",
+                        "unknownModerator": "Desconocido",
+                        "reason": "Razón",
+                        "undefinedReason": "Indefinida"
+                    },
+                    "privateEmbed": {
+                        "author": "[DES-SILENCIADO]",
+                        "description": "{{member}}, has sido des-silenciado en {{guildName}",
+                        "moderator": "Moderador",
+                        "unknownModerator": "Desconocido",
+                        "reason": "Razón",
+                        "undefinedReason": "Indefinida"
+                    }
                 }
             },
             "interactionCreate": {
@@ -1500,35 +1489,17 @@
                 "memberId": "ID del miembro",
                 "registerDate": "Fecha de registro",
                 "actualSanction": "Sanción actual",
-                "limitedSanction": "Silenciado hasta",
-                "unlimitedSantion": "Silenciado indefinidamente"
+                "mutedUntil": "Silenciado hasta"
             }
         },
         "moderation": {
-            "checkMutedRole": {
-                "replacing": "Será reemplazado por uno nuevo",
-                "reason": "Rol para gestionar miembros silenciados"
-            },
             "manageWarn": {
                 "muteFunction": {
-                    "loggingEmbed": {
-                        "author": "{{memberTag}} ha sido SILENCIADO",
-                        "memberId": "ID del miembro",
-                        "moderator": "Moderador",
-                        "reason": "Razón",
-                        "expiration": "Vencimiento",
-                        "noExpiration": "No vence"
-                    },
-                    "notificationEmbed": "**{{memberTag}}** ha sido silenciado por que acumuló __demasiadas advertencias__, ¿alguien más?",
-                    "privateEmbed": {
-                        "author": "[SILENCIADO]",
-                        "description": "{{member}}, has sido silenciado en {{guildName}}",
-                        "moderator": "Moderador",
-                        "reason": "Razón",
-                        "expiration": "Vencimiento",
-                        "noExpiration": "No vence"
-                    },
-                    "reason": "Demasiadas advertencias"
+                    "reason": "Demasiadas advertencias",
+                    "notificationEmbed":  {
+                        "initiated": "**{{memberTag}}** ha sido silenciado por que acumuló __demasiadas advertencias__, ¿alguien más?",
+                        "extended": "Se ha ampliado el silenciamiento de **{{memberTag}}** por que acumuló __más advertencias__, ¿alguien más?"
+                    }
                 },
                 "kickFunction": {
                     "notificationEmbed": "{{memberTag}} ha sido expulsado por que acumuló __demasiadas advertencias__, ¿alguien más?",
@@ -1669,14 +1640,15 @@
         "loadIntervals": {
             "mutes": {
                 "loggingEmbed": {
-                    "author": "{{memberTag}} ha sido DES-SILENCIADO",
-                    "member": "Miembro",
+                    "author": "{{userTag}} ha sido DES-SILENCIADO",
+                    "authorNoMember": "Un miembro ha sido DES-SILENCIADO",
+                    "memberId": "ID del miembro",
                     "moderator": "Moderador",
                     "reason": "Razón"
                 },
                 "privateEmbed": {
                     "author": "[DES-SILENCIADO]",
-                    "description": "{{memberTag}}, has sido des-silenciado en {{guildName}}",
+                    "description": "{{member}}, has sido des-silenciado en {{guildName}",
                     "moderator": "Moderador",
                     "reason": "Razón"
                 },

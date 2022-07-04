@@ -53,7 +53,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         await interaction.guild.members.unban(user.id);
         
         //Si el baneo estaba registrado en la base de datos
-        if (client.db.bans.hasOwnProperty(user.id)) {
+        if (client.db.bans[user.id]) {
 
             //Elimina la entrada de la base de datos
             delete client.db.bans[user.id];

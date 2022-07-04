@@ -11,21 +11,123 @@ exports.run = async (oldMember, newMember, client, locale) => {
             //Si el miembro tiene entradas en la tabla de estadísticas, asigna las recompensas que le corresponda
             if (client.db.stats[newMember.id] && client.config.xp.preserveStats) await client.functions.leveling.assignRewards.run(client, newMember, client.db.stats[newMember.id].level);
 
-            //Si el miembro tiene un silenciamiento en vigor
-            if (client.db.mutes[newMember.id]) {
-
-                //Comprueba si existe el rol silenciado, sino lo crea
-                const mutedRole = await client.functions.moderation.checkMutedRole.run(client, newMember.guild);
-
-                //Añade el rol silenciado al miembro
-                await newMember.roles.add(mutedRole);
-
-                //Propaga el rol silenciado
-                await client.functions.moderation.spreadMutedRole.run(client);
-            };
-
             //Ejecuta el manejador de nuevos miembros (si procede)
             if (client.config.main.newMemberMode === 'after') await client.functions.managers.newMember.run(client, newMember);
+        };
+
+        //Si el miembro ha sido silenciado o dessilenciado
+        if (oldMember.communicationDisabledUntilTimestamp !== newMember.communicationDisabledUntilTimestamp) {
+
+            //Almacena la expiración del silenciamiento
+            let expiration = newMember.communicationDisabledUntilTimestamp;
+            
+            //Genera variables para almacenar los campos de los embeds
+            let executor = null, reason = null;
+
+            //Busca el último silenciamiento en el registro de auditoría
+            const fetchedLogs = await newMember.guild.fetchAuditLogs({
+                limit: 1,
+                type: 'MEMBER_UPDATE',
+            });
+
+            //Almacena el primer resultado de la búsqueda
+            const timeoutLog = fetchedLogs.entries.first();
+            
+            //Si se encontró un silenciamiento en el primer resultado, y han pasado menos de 5 segundos
+            if (timeoutLog && (timeoutLog.createdTimestamp > (Date.now() - 5000)) && timeoutLog.target.id === newMember.id) {
+
+                //Actualiza los campos de ejecutor y razón
+                executor = timeoutLog.executor;
+                reason = timeoutLog.reason;
+            };
+
+            //Almacena la caché de registros del usuario silenciao o dessilenciado, si existe
+            const loggingCache = (client.loggingCache && client.loggingCache[newMember.id]) ? client.loggingCache[newMember.id] : null;
+        
+            //Si se trata de una caché de usuario silenciao o dessilenciado
+            if (loggingCache && loggingCache.action.includes('mute')) {
+
+                //Almacena al moderador correcto
+                if (!executor) executor = await client.users.fetch(loggingCache.executor);
+
+                //Almacena la razón formateada
+                if (!reason) reason = loggingCache.reason;
+
+                //Borra la caché de registros del miembro
+                delete client.loggingCache[newMember.id];
+            };
+
+            //Guarda el silenciamiento en la base de datos (si no lo estaba ya)
+            if (!client.db.mutes[newMember.id]) client.db.mutes[newMember.id] = {
+                until: expiration,
+                moderator: newMember.id
+            };
+
+            //Sobreescribe el fichero de la base de datos con los cambios
+            client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
+
+                //Si hubo un error, lo lanza a la consola
+                if (err) throw err;
+            });
+
+            //Si se ha silenciado
+            if (newMember.communicationDisabledUntilTimestamp) {
+
+                //Envía un mensaje al canal de registros
+                if (client.config.logging.mutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                    .setColor(client.config.colors.error)
+                    .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.communicationDisabled.loggingEmbed.author, { memberTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true}) })
+                    .addField(locale.communicationDisabled.loggingEmbed.memberId, newMember.id, true)
+                    .addField(locale.communicationDisabled.loggingEmbed.moderator, executor ? executor.tag : locale.communicationDisabled.loggingEmbed.unknownModerator, true)
+                    .addField(locale.communicationDisabled.loggingEmbed.reason, reason || locale.communicationDisabled.loggingEmbed.undefinedReason, true)
+                    .addField(locale.communicationDisabled.loggingEmbed.expiration, `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>`, true)
+                );
+
+                //Envía una notificación al miembro
+                await newMember.send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.error)
+                    .setAuthor({ name: locale.communicationDisabled.privateEmbed.author, iconURL: newMember.guild.iconURL({ dynamic: true}) })
+                    .setDescription(await client.functions.utilities.parseLocale.run(locale.communicationDisabled.privateEmbed.description, { member: newMember, guildName: newMember.guild.name }))
+                    .addField(locale.communicationDisabled.privateEmbed.moderator, executor ? executor.tag : locale.communicationDisabled.loggingEmbed.unknownModerator, true)
+                    .addField(locale.communicationDisabled.privateEmbed.reason, reason || locale.communicationDisabled.privateEmbed.undefinedReason, true)
+                    .addField(locale.communicationDisabled.privateEmbed.expiration, `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>`, true)
+                ]});
+
+            //Si se ha dessilenciado
+            } else {
+
+                //Si el silenciamiento estaba registrado en la base de datos
+                if (client.db.mutes[newMember.id]) {
+
+                    //Elimina la entrada de la base de datos
+                    delete client.db.mutes[newMember.id];
+
+                    //Sobreescribe el fichero de la base de datos con los cambios
+                    await client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes), async err => {
+
+                        //Si hubo un error, lo lanza a la consola
+                        if (err) throw err;
+                    });
+                };
+
+                //Envía un mensaje al canal de registros
+                if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                    .setColor(client.config.colors.correct)
+                    .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.communicationEnabled.loggingEmbed.author, { userTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true})})
+                    .addField(locale.communicationEnabled.loggingEmbed.memberId, newMember.id.toString(), true)
+                    .addField(locale.communicationEnabled.loggingEmbed.moderator, executor ? executor.tag : locale.communicationEnabled.loggingEmbed.unknownModerator, true)
+                    .addField(locale.communicationEnabled.loggingEmbed.reason, reason || locale.communicationEnabled.loggingEmbed.undefinedReason, true)
+                );
+
+                //Envía una notificación al miembro
+                await newMember.send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.correct)
+                    .setAuthor({ name: locale.communicationEnabled.privateEmbed.author, iconURL: newMember.guild.iconURL({ dynamic: true}) })
+                    .setDescription(await client.functions.utilities.parseLocale.run(locale.communicationEnabled.privateEmbed.description, { member: newMember, guildName: newMember.guild.name }))
+                    .addField(locale.communicationEnabled.privateEmbed.moderator, executor ? executor.tag : locale.communicationEnabled.privateEmbed.unknownModerator, true)
+                    .addField(locale.communicationEnabled.privateEmbed.reason, reason || locale.communicationEnabled.privateEmbed.undefinedReason, true)
+                ]});
+            };
         };
 
     } catch (error) {

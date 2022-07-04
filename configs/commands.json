@@ -51,6 +51,8 @@
         },
         "mute": {
             "enabled": true,
+            "unlimitedTime": [],
+            "maxRegularTime": 86400000,
             "reasonNotNeeded": [],
             "botsAllowed": []
         },
@@ -137,13 +139,6 @@
         },
         "stats": {
             "enabled": true
-        },
-        "tempmute": {
-            "enabled": true,
-            "unlimitedTime": [],
-            "maxRegularTime": 86400000,
-            "reasonNotNeeded": [],
-            "botsAllowed": []
         },
         "unban": {
             "enabled": true,

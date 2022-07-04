@@ -5,6 +5,27 @@ exports.run = async (member, client, locale) => {
         //Aborta si no es un evento de la guild registrada
         if (member.guild.id !== client.homeGuild.id) return;
 
+        //Si el miembro tiene un silenciamiento en vigor y se le debe retirar, o no lo tiene y se tiene que desregistrar
+        if ((member.communicationDisabledUntilTimestamp && !client.db.mutes[member.id]) || (!member.communicationDisabledUntilTimestamp && client.db.mutes[member.id])) {
+
+            //Habilita la comunicación del miembro en el servidor
+            await member.disableCommunicationUntil(null, locale.communicationEnabled.reason);
+
+            //Si tiene registrado el silenciamiento
+            if (client.db.mutes[member.id]) {
+
+                //Elimina la entrada de la base de datos
+                delete client.db.mutes[member.id];
+
+                //Sobreescribe el fichero de la base de datos con los cambios
+                await client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes), async err => {
+
+                    //Si hubo un error, lo lanza a la consola
+                    if (err) throw err;
+                });
+            };
+        };
+
         //Si el nuevo miembro es un bot
         if (member.user.bot) {
 
@@ -19,7 +40,7 @@ exports.run = async (member, client, locale) => {
             );
 
             //Aborta el resto del script
-            return
+            return;
         };
 
         //Ejecuta el manejador de nuevos miembros (si procede)

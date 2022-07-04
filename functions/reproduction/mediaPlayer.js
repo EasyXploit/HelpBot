@@ -13,7 +13,7 @@ exports.run = async (client, interaction, connection) => {
             const reproductionQueue = client.reproductionQueues[connection.joinConfig.guildId];
 
             //Almacena la posición a reproducir de la cola, y la aleatoriza si así se ha especificado
-            let toPlay = reproductionQueue.mode === 'shuffle' ? Math.floor(Math.random() * (reproductionQueue.tracks.length - 1)) : 0;
+            let toPlay = reproductionQueue && reproductionQueue.mode === 'shuffle' ? Math.floor(Math.random() * (reproductionQueue.tracks.length - 1)) : 0;
 
             //Crea un nuevo reproductor de audio
             const { createAudioPlayer } = require('@discordjs/voice');

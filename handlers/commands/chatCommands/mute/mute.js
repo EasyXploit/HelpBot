@@ -78,8 +78,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         client.loggingCache[member.id] = {
             action: 'mute',
             executor: interaction.member.id,
-            reason: reason || locale.undefinedReason,
-            expiration: Date.now() + expiresAfter
+            reason: reason || locale.undefinedReason
         };
 
         //Sobreescribe el fichero de la base de datos con los cambios

@@ -3,6 +3,56 @@ exports.run = (client) => {
     //Traducciones de los intervalos
     const locale = client.locale.lifecycle.loadIntervals;
 
+    //SILENCIADOS
+    //Comprobación de miembros silenciados temporalmente
+    setInterval(async () => {
+        
+        //Para cada uno de los silencios temporales de la BD
+        for (let idKey in client.db.mutes) {
+
+            //Almacena el tiempo de finalización del silenciamiento
+            const endTime = client.db.mutes[idKey].until;
+
+            //Omite si aún no ha expirado la sanción
+            if (Date.now() < endTime) continue;
+            
+            //Busca el miembro
+            const member = await client.functions.utilities.fetch.run(client, 'member', idKey);
+
+            //Bora el silenciamiento de la base de datos
+            delete client.db.mutes[idKey];
+
+            //Graba la nueva base de datos
+            client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
+
+                //Si hubo un error, lo devuelve
+                if (err) throw err;
+
+                //Almacena el autor del embed para el logging
+                let authorProperty = { name: member ? await client.functions.utilities.parseLocale.run(locale.mutes.loggingEmbed.author, { userTag: member.user.tag }) : locale.mutes.loggingEmbed.authorNoMember };
+                if (member) authorProperty.iconURL = member.user.displayAvatarURL({dynamic: true});
+                
+                //Ejecuta el manejador de registro
+                if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                    .setColor(client.config.colors.correct)
+                    .setAuthor(authorProperty)
+                    .addField(locale.mutes.loggingEmbed.memberId, idKey.toString(), true)
+                    .addField(locale.mutes.loggingEmbed.moderator, `${client.user}`, true)
+                    .addField(locale.mutes.loggingEmbed.reason, locale.mutes.reason, true)
+                );
+                
+                //Envía una confirmación al miembro
+                if (member) await member.send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.correct)
+                    .setAuthor({ name: locale.mutes.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
+                    .setDescription(await client.functions.utilities.parseLocale.run(locale.mutes.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
+                    .addField(locale.mutes.privateEmbed.moderator, `${client.user}`, true)
+                    .addField(locale.mutes.privateEmbed.reason, locale.mutes.reason, true)
+                ]});
+            });
+        };
+    }, 5000);
+
     //BANEOS
     //Comprobación de miembros baneados temporalmente
     setInterval(async () => {

@@ -1374,9 +1374,8 @@
                         "moderator": "Moderator",
                         "unknownModerator": "Unknown",
                         "reason": "Reason",
-                        "unknownReason": "Unknown",
-                        "expiration": "Expiration",
-                        "unknownExpiration": "Unknown"
+                        "undefinedReason": "Undefined",
+                        "expiration": "Expiration"
                     },
                     "privateEmbed": {
                         "author": "[MUTED]",
@@ -1384,9 +1383,8 @@
                         "moderator": "Moderator",
                         "unknownModerator": "Unknown",
                         "reason": "Reason",
-                        "unknownReason": "Unknown",
-                        "expiration": "Expiration",
-                        "unknownExpiration": "Unknown"
+                        "undefinedReason": "Undefined",
+                        "expiration": "Expiration"
                     }
                 },
                 "communicationEnabled": {
@@ -1396,7 +1394,7 @@
                         "moderator": "Moderator",
                         "unknownModerator": "Unknown",
                         "reason": "Reason",
-                        "unknownReason": "Unknown"
+                        "undefinedReason": "Undefined"
                     },
                     "privateEmbed": {
                         "author": "[UN-MUTED]",
@@ -1404,7 +1402,7 @@
                         "moderator": "Moderator",
                         "unknownModerator": "Unknown",
                         "reason": "Reason",
-                        "unknownReason": "Unknown"
+                        "undefinedReason": "Undefined"
                     }
                 }
             },
@@ -1640,6 +1638,22 @@
     },
     "lifecycle": {
         "loadIntervals": {
+            "mutes": {
+                "loggingEmbed": {
+                    "author": "{{userTag}} has been UN-MUTED",
+                    "authorNoMember": "A member has been UN-MUTED",
+                    "memberId": "Member ID",
+                    "moderator": "Moderator",
+                    "reason": "Reason"
+                },
+                "privateEmbed": {
+                    "author": "[UN-MUTED]",
+                    "description": "{{member}}, you have been unmuted on {{guildName}",
+                    "moderator": "Moderator",
+                    "reason": "Reason"
+                },
+                "reason": "The sanction expired"
+            },
             "bans": {
                 "loggingEmbed": {
                     "author": "{{userTag}} has been UN-BANNED",

@@ -25,8 +25,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             client.loggingCache[member.id] = {
                 action: 'mute',
                 executor: member.id,
-                reason: locale.muteFunction.reason,
-                expiration: Date.now() + duration
+                reason: locale.muteFunction.reason
             };
 
             //Sobreescribe el fichero de BD

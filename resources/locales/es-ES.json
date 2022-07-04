@@ -1374,9 +1374,8 @@
                         "moderator": "Moderador",
                         "unknownModerator": "Desconocido",
                         "reason": "Razón",
-                        "unknownReason": "Desconocida",
-                        "expiration": "Vencimiento",
-                        "unknownExpiration": "Desconocido"
+                        "undefinedReason": "Indefinida",
+                        "expiration": "Vencimiento"
                     },
                     "privateEmbed": {
                         "author": "[SILENCIADO]",
@@ -1384,9 +1383,8 @@
                         "moderator": "Moderador",
                         "unknownModerator": "Desconocido",
                         "reason": "Razón",
-                        "unknownReason": "Desconocida",
-                        "expiration": "Vencimiento",
-                        "unknownExpiration": "Desconocido"
+                        "undefinedReason": "Indefinida",
+                        "expiration": "Vencimiento"
                     }
                 },
                 "communicationEnabled": {
@@ -1396,7 +1394,7 @@
                         "moderator": "Moderador",
                         "unknownModerator": "Desconocido",
                         "reason": "Razón",
-                        "unknownReason": "Desconocida"
+                        "undefinedReason": "Indefinida"
                     },
                     "privateEmbed": {
                         "author": "[DES-SILENCIADO]",
@@ -1404,7 +1402,7 @@
                         "moderator": "Moderador",
                         "unknownModerator": "Desconocido",
                         "reason": "Razón",
-                        "unknownReason": "Desconocida"
+                        "undefinedReason": "Indefinida"
                     }
                 }
             },
@@ -1640,6 +1638,22 @@
     },
     "lifecycle": {
         "loadIntervals": {
+            "mutes": {
+                "loggingEmbed": {
+                    "author": "{{userTag}} ha sido DES-SILENCIADO",
+                    "authorNoMember": "Un miembro ha sido DES-SILENCIADO",
+                    "memberId": "ID del miembro",
+                    "moderator": "Moderador",
+                    "reason": "Razón"
+                },
+                "privateEmbed": {
+                    "author": "[DES-SILENCIADO]",
+                    "description": "{{member}}, has sido des-silenciado en {{guildName}",
+                    "moderator": "Moderador",
+                    "reason": "Razón"
+                },
+                "reason": "Venció la amonestación"
+            },
             "bans": {
                 "loggingEmbed": {
                     "author": "{{userTag}} ha sido DES-BANEADO",

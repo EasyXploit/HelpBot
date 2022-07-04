@@ -96,17 +96,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             };
 
             //Almacena la sanción actual, si aplica
-            let sanction;
-
-            //Comprueba qué tipo de sanción tiene el miembro (si la tiene, según duración)
-            if (client.db.mutes[memberId] && client.db.mutes[memberId].until) sanction = `\`${locale.mutedUntil}:\` <t:${Math.round(new Date(client.db.mutes[memberId].until) / 1000)}>`;
-            else if (client.db.mutes[memberId] && !client.db.mutes[memberId].until) sanction = `\`${locale.mutedUndefinetly}\``;
+            const sanction = member.communicationDisabledUntilTimestamp ? `${locale.mutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>` : `\`${locale.noMute}\``;
 
             //Genera el embed de las infracciones
             let newPageEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
                 .setTitle(`⚠ ${locale.infractionsEmbed.title}`)
-                .setDescription(`${await client.functions.utilities.parseLocale.run(locale.infractionsEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)`, sanction: sanction || `\`${locale.noMute}\`` })}.`)
+                .setDescription(`${await client.functions.utilities.parseLocale.run(locale.infractionsEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)`, sanction: sanction })}.`)
                 .addField(locale.infractionsEmbed.last24h, onDay.toString(), true)
                 .addField(locale.infractionsEmbed.last7d, onWeek.toString(), true)
                 .addField(locale.infractionsEmbed.total, total.toString(), true)

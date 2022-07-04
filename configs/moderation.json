@@ -1,6 +1,4 @@
 {
-    "mutedRoleName": "Muted",
-    "mutedRoleExcludedChannels": [],
     "kickOnBadUsername": true,
     "newMemberForbiddenNames": [],
     "includeBannedWords": false,

@@ -32,11 +32,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (status.length < 1) status.push(locale.memberType.regular);
 
         //Almacena la sanción actual, si aplica
-        let sanction;
-
-        //Comprueba qué tipo de sanción tiene el miembro (si la tiene, según duración)
-        if (client.db.mutes[member.id] && client.db.mutes[member.id].until) sanction = `${locale.embed.mutedUntil}: <t:${Math.round(new Date(client.db.mutes[member.id].until) / 1000)}>`;
-        else if (client.db.mutes[member.id] && !client.db.mutes[member.id].until) sanction = locale.embed.undefinedMute;
+        const sanction = member.communicationDisabledUntilTimestamp ? `${locale.embed.mutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>` : locale.embed.noSanction;
 
         //Envía un embed con el resultado del comando
         await interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -52,7 +48,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .addField(`🎖 ${locale.embed.highestRole}`, member.roles.highest.name, true)
             .addField(`⚖ ${locale.embed.infractions}`, client.db.warns[member.id] ? (Object.keys(client.db.warns[member.id]).length).toString() : '0', true)
             .addField(`📓 ${locale.embed.verification}`, member.pending ? locale.embed.isntVerified : locale.embed.isVerified, true)
-            .addField(`⚠️ ${locale.embed.actualSanction}`, sanction || locale.embed.noSanction, true)
+            .addField(`⚠️ ${locale.embed.actualSanction}`, sanction, true)
         ]});
 
     } catch (error) {

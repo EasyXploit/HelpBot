@@ -195,7 +195,6 @@
                     "noBots": "You cannot get information from a bot",
                     "unknownModerator": "Unknown moderator",
                     "mutedUntil": "Muted until",
-                    "mutedUndefinetly": "Muted indefinitely",
                     "noMute": "None",
                     "infractionsEmbed": {
                         "title": "Infractions",
@@ -333,11 +332,29 @@
                 "mute": {
                     "appData": {
                         "name": "mute",
-                        "description": "Mutes a member from text and voice channels",
+                        "description": "Disable a member's communications on the server for a limited time",
                         "options": {
                             "user": {
                                 "name": "user",
                                 "description": "Select a user or write it's ID"
+                            },
+                            "expiration": {
+                                "name": "expiration",
+                                "description": "Select when the sanction will expire",
+                                "choices": {
+                                    "sixtySeconds": "60 seconds",
+                                    "fiveMinutes": "5 minutes",
+                                    "fifteenMinutes": "15 minutes",
+                                    "thirtyMinutes": "30 minutes",
+                                    "oneHour": "1 hour",
+                                    "sixHours": "6 hours",
+                                    "twelveHours": "12 hours",
+                                    "oneDay": "1 day",
+                                    "threeDays": "3 days",
+                                    "oneWeek": "1 week",
+                                    "oneMonth": "1 month",
+                                    "threeMonths": "3 months"
+                                }
                             },
                             "reason": {
                                 "name": "reason",
@@ -348,25 +365,9 @@
                     "memberNotFound": "Member not found. You must mention a member or enter it's ID",
                     "noBots": "You cannot ban a bot",
                     "badHierarchy": "You cannot mute a member with a role equal to or higher than yours",
-                    "alreadySilenced": "This member is already muted",
+                    "exceededDuration": "You can only mute a maximum of `{{time}}`",
                     "noReason": "You must provide a reason",
                     "undefinedReason": "Undefined",
-                    "loggingEmbed": {
-                        "author": "{{memberTag}} has been MUTED",
-                        "memberId": "Member ID",
-                        "moderator": "Moderator",
-                        "reason": "Reason",
-                        "expiration": "Expiration",
-                        "noExpiration": "Does not expire"
-                    },
-                    "privateEmbed": {
-                        "author": "[MUTED]",
-                        "description": "{{member}}, you have been muted on {{guildName}",
-                        "moderator": "Moderator",
-                        "reason": "Reason",
-                        "expiration": "Expiration",
-                        "noExpiration": "Does not expire"
-                    },
                     "notificationEmbed": {
                         "withReason": "**{{memberTag}}** has been muted due to __{{reason}}__, anyone else?",
                         "withoutReason": "**{{memberTag}}** has been muted, anyone else?"
@@ -1022,52 +1023,6 @@
                         "noNextRewards": "Cannot earn rewards"
                     }
                 },
-                "tempmute": {
-                    "appData": {
-                        "name": "tempmute",
-                        "description": "Temporarily mutes a member from text and voice channels",
-                        "options": {
-                            "user": {
-                                "name": "user",
-                                "description": "Select a user or write it's ID"
-                            },
-                            "duration": {
-                                "name": "duration",
-                                "description": "Enter a duration in the format: seconds\"S\" | minutes\"M\" | hours\"H\" | days\"D\""
-                            },
-                            "reason": {
-                                "name": "reason",
-                                "description": "Provide a reason for the action"
-                            }
-                        }
-                    },
-                    "memberNotFound": "Member not found. You must mention a member or enter it's ID",
-                    "noBots": "You cannot ban a bot",
-                    "badHierarchy": "You cannot mute a member with a role equal to or higher than yours",
-                    "alreadySilenced": "This member is already muted",
-                    "wrongMagnitudes": "You have to enter a duration in the format: seconds\"S\" | minutes\"M\" | hours\"H\" | days\"D\"",
-                    "exceededDuration": "You can only mute a maximum of `{{time}}`",
-                    "noReason": "You must provide a reason",
-                    "undefinedReason": "Undefined",
-                    "loggingEmbed": {
-                        "author": "{{memberTag}} has been MUTED",
-                        "memberId": "Member ID",
-                        "moderator": "Moderator",
-                        "reason": "Reason",
-                        "expiration": "Expiration"
-                    },
-                    "privateEmbed": {
-                        "author": "[MUTED]",
-                        "description": "{{member}}, you have been muted on {{guildName}",
-                        "moderator": "Moderator",
-                        "reason": "Reason",
-                        "expiration": "Expiration"
-                    },
-                    "notificationEmbed": {
-                        "withReason": "**{{memberTag}}** has been muted due to __{{reason}}__, anyone else?",
-                        "withoutReason": "**{{memberTag}}** has been muted, anyone else?"
-                    }
-                },
                 "unban": {
                     "appData": {
                         "name": "unban",
@@ -1117,22 +1072,14 @@
                             }
                         }
                     },
-                    "memberNotFound": "Member not found. You must mention a member or enter it's ID",
                     "noReason": "You must provide a reason",
                     "notSilenced": "This member is not muted",
                     "badHierarchy": "{{interactionAuthor}}, you cannot un-mute someone with a role equal to or higher than yours",
                     "cantRemoveAny": "{{interactionAuthor}}, you can't unmute someone you haven't muted yourself",
                     "undefinedReason": "Undefined",
                     "loggingEmbed": {
-                        "author": "{{userTag}} has been UN-MUTED",
-                        "unknownAuthor": "A member",
+                        "author": "A member has been UN-MUTED",
                         "memberId": "Member ID",
-                        "moderator": "Moderator",
-                        "reason": "Reason"
-                    },
-                    "privateEmbed": {
-                        "author": "[UN-MUTED]",
-                        "description": "{{member}}, you have been unmuted on {{guildName}",
                         "moderator": "Moderator",
                         "reason": "Reason"
                     },
@@ -1162,7 +1109,6 @@
                     },
                     "embed": {
                         "mutedUntil": "Muted until",
-                        "undefinedMute": "Muted indefinitely",
                         "title": "Information about {{memberDisplayName}}",
                         "description": "Displaying information about **{{memberTag}}**",
                         "memberId": "Member ID",
@@ -1387,6 +1333,9 @@
                 "botLoggingEmbed": {
                     "title": "Logging - [BOTS]",
                     "description": "The **BOT** {{memberTag}} was added to the server"
+                },
+                "communicationEnabled": {
+                    "reason": "Was unmuted while the memebr was not in the guild"
                 }
             },
             "guildMemberRemove": {
@@ -1415,6 +1364,48 @@
                     "description": "{{memberTag}} left the server",
                     "memberId": "Member ID",
                     "antiquity": "Antiquity"
+                }
+            },
+            "guildMemberUpdate": {
+                "communicationDisabled": {
+                    "loggingEmbed": {
+                        "author": "{{memberTag}} has been MUTED",
+                        "memberId": "Member ID",
+                        "moderator": "Moderator",
+                        "unknownModerator": "Unknown",
+                        "reason": "Reason",
+                        "unknownReason": "Unknown",
+                        "expiration": "Expiration",
+                        "unknownExpiration": "Unknown"
+                    },
+                    "privateEmbed": {
+                        "author": "[MUTED]",
+                        "description": "{{member}}, you have been muted on {{guildName}",
+                        "moderator": "Moderator",
+                        "unknownModerator": "Unknown",
+                        "reason": "Reason",
+                        "unknownReason": "Unknown",
+                        "expiration": "Expiration",
+                        "unknownExpiration": "Unknown"
+                    }
+                },
+                "communicationEnabled": {
+                    "loggingEmbed": {
+                        "author": "{{userTag}} has been UN-MUTED",
+                        "memberId": "Member ID",
+                        "moderator": "Moderator",
+                        "unknownModerator": "Unknown",
+                        "reason": "Reason",
+                        "unknownReason": "Unknown"
+                    },
+                    "privateEmbed": {
+                        "author": "[UN-MUTED]",
+                        "description": "{{member}}, you have been unmuted on {{guildName}",
+                        "moderator": "Moderator",
+                        "unknownModerator": "Unknown",
+                        "reason": "Reason",
+                        "unknownReason": "Unknown"
+                    }
                 }
             },
             "interactionCreate": {
@@ -1500,35 +1491,17 @@
                 "memberId": "Member ID",
                 "registerDate": "Register date",
                 "actualSanction": "Current sanction",
-                "limitedSanction": "Muted until",
-                "unlimitedSantion": "Muted indefinitely"
+                "mutedUntil": "Muted until"
             }
         },
         "moderation": {
-            "checkMutedRole": {
-                "replacing": "It will be replaced by a new one",
-                "reason": "Role to manage muted members"
-            },
             "manageWarn": {
                 "muteFunction": {
-                    "loggingEmbed": {
-                        "author": "{{memberTag}} has been MUTED",
-                        "memberId": "Member ID",
-                        "moderator": "Moderator",
-                        "reason": "Reason",
-                        "expiration": "Expiration",
-                        "noExpiration": "Does not expire"
-                    },
-                    "notificationEmbed": "**{{memberTag}}** has been muted for accumulating __too many warnings__, anyone else?",
-                    "privateEmbed": {
-                        "author": "[MUTED]",
-                        "description": "{{member}}, you have been muted on {{guildName}}",
-                        "moderator": "Moderator",
-                        "reason": "Reason",
-                        "expiration": "Expiration",
-                        "noExpiration": "Does not expire"
-                    },
-                    "reason": "Too many warnings"
+                    "reason": "Too many warnings",
+                    "notificationEmbed": {
+                        "initiated": "**{{memberTag}}** has been muted for accumulating __too many warnings__, anyone else?",
+                        "extended": "**{{memberTag}}**'s mute has been extended because it racked up __more warnings__, anyone else?"
+                    }
                 },
                 "kickFunction": {
                     "notificationEmbed": "{{memberTag}} has been kicked for accumulating __too many warnings__, anyone else?",
@@ -1667,21 +1640,6 @@
     },
     "lifecycle": {
         "loadIntervals": {
-            "mutes": {
-                "loggingEmbed": {
-                    "author": "{{memberTag}} has been UN-MUTED",
-                    "member": "Member",
-                    "moderator": "Moderator",
-                    "reason": "Reason"
-                },
-                "privateEmbed": {
-                    "author": "[UN-MUTED]",
-                    "description": "{{memberTag}}, you have been unmuted on {{guildName}}",
-                    "moderator": "Moderator",
-                    "reason": "Reason"
-                },
-                "reason": "The sanction expired"
-            },
             "bans": {
                 "loggingEmbed": {
                     "author": "{{userTag}} has been UN-BANNED",

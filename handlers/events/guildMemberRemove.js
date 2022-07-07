@@ -96,7 +96,7 @@ exports.run = async (member, client, locale) => {
         };
 
         //Si el miembro tiene estadísticas y no se desea preservarlas
-        if (client.db.stats[member.id] && !client.config.xp.preserveStats) {
+        if (client.db.stats[member.id] && !client.config.leveling.preserveStats) {
 
             //Borra la entrada de la base de datos
             delete client.db.stats[member.id];

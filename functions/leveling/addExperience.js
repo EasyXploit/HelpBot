@@ -5,24 +5,10 @@ exports.run = async (client, member, mode, channel) => {
     const locale = client.locale.functions.leveling.addExperience;
 
     //Para comprobar si el rol puede ganar XP o no.
-    let nonXP;
-
-    //Para cada rol que tiene prohibido ganar XP
-    for (let index = 0; index < client.config.xp.nonXPRoles.length; index++) {
-
-        //Si el miembro tiene dicho rol
-        if (await member.roles.cache.find(role => role.id === client.config.xp.nonXPRoles[index])) {
-
-            //Ajusta la variable de estado
-            nonXP = true;
-
-            //Para el bucle
-            break;
-        };
-    };
+    const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, member, { guildOwner: true, botManagers: true, bypassIds: client.config.leveling.wontEarnXP });
 
     //Devuelve si no se puede ganar XP
-    if (nonXP) return;
+    if (notAuthorizedToEarnXp) return;
 
     //Si el miembro no tiene tabla de XP
     if (!client.db.stats[member.id]) {
@@ -45,10 +31,10 @@ exports.run = async (client, member, mode, channel) => {
     const memberStats = client.db.stats[member.id];
 
     //Genera XP si es un canal de voz o si se ha sobrepasado el umbral de cola de mensajes
-    if (mode === 'voice' || (mode === 'message' && Date.now() - memberStats.lastMessage > client.config.xp.minimumTimeBetweenMessages)) {
+    if (mode === 'voice' || (mode === 'message' && Date.now() - memberStats.lastMessage > client.config.leveling.minimumTimeBetweenMessages)) {
 
         //Genera XP aleatorio según los rangos
-        const newXp = await client.functions.utilities.randomIntBetween.run(client.config.xp.minimumXpReward, client.config.xp.maximumXpReward);
+        const newXp = await client.functions.utilities.randomIntBetween.run(client.config.leveling.minimumXpReward, client.config.leveling.maximumXpReward);
 
         //Añade el XP a la cantidad actual del miembro
         memberStats.actualXP += newXp;
@@ -58,7 +44,7 @@ exports.run = async (client, member, mode, channel) => {
         if (mode === 'message') memberStats.lastMessage = Date.now();
 
         //Si es un intervalo de voz, concatena la duración de un intervalo de voz en las stats del miembro
-        if (mode === 'voice') memberStats.aproxVoiceTime += client.config.xp.XPGainInterval;
+        if (mode === 'voice') memberStats.aproxVoiceTime += client.config.leveling.XPGainInterval;
 
         //Fórmula para calcular el XP necesario para subir al siguiente nivel
         const xpToNextLevel = await client.functions.leveling.getXpToLevel.run(client, memberStats.level + 1)
@@ -115,8 +101,8 @@ exports.run = async (client, member, mode, channel) => {
             };
 
             //Manda el mensaje de subida de nivel, si se ha configurado
-            if (mode === 'message' && client.config.xp.notifylevelUpOnChat && memberStats.notifications.public) channel.send({ embeds: [levelUpEmbed] });
-            if (mode === 'voice' && client.config.xp.notifylevelUpOnVoice && memberStats.notifications.private) member.send({ embeds: [levelUpEmbed], components: [buttonsRow] });
+            if (mode === 'message' && client.config.leveling.notifylevelUpOnChat && memberStats.notifications.public) channel.send({ embeds: [levelUpEmbed] });
+            if (mode === 'voice' && client.config.leveling.notifylevelUpOnVoice && memberStats.notifications.private) member.send({ embeds: [levelUpEmbed], components: [buttonsRow] });
         };
 
         //Guarda las nuevas estadísticas del miembro en la base de datos

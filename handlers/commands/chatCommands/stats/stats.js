@@ -23,18 +23,8 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Calcula el XP necesario para pasar al siguiente nivel
         const xpToNextLevel = await client.functions.leveling.getXpToLevel.run(client, memberStats.level + 1);
 
-        //Comprueba si el miembro puede ganar XP
-        let nonXP;
-        
-        //Por cada uno de los roles configurados para no ganar XP
-        for (let index = 0; index < client.config.xp.nonXPRoles.length; index++) {
-
-            //Comprueba si el miembro tiene el rol iterado
-            if (await member.roles.cache.find(role => role.id === client.config.xp.nonXPRoles[index])) {
-                nonXP = true;
-                break;
-            };
-        };
+        //Para comprobar si el rol puede ganar XP o no.
+        const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: client.config.leveling.wontEarnXP });
 
         //Función para comparar un array
         function compare(a, b) {
@@ -109,9 +99,9 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
             .addField(locale.statsEmbed.actualLevel, `\`${memberStats.level}\``, true)
             .addField(locale.statsEmbed.totalXp, `\`${memberStats.totalXP}\``, true)
-            .addField(locale.statsEmbed.xpToNextLevel, nonXP ? `\`${locale.statsEmbed.noXpToNextLevel}\`` : `\`${xpToNextLevel - memberStats.totalXP}\``, true)
-            .addField(locale.statsEmbed.voiceTime, nonXP ? `\`${locale.statsEmbed.noVoiceTime}\`` : `\`${aproxVoiceTime}\``, true)
-            .addField(locale.statsEmbed.nextRewards, nonXP ? `\`${locale.statsEmbed.noNextRewards}\`` : `\`${nextRewards}\``, true)
+            .addField(locale.statsEmbed.xpToNextLevel, notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noXpToNextLevel}\`` : `\`${xpToNextLevel - memberStats.totalXP}\``, true)
+            .addField(locale.statsEmbed.voiceTime, notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noVoiceTime}\`` : `\`${aproxVoiceTime}\``, true)
+            .addField(locale.statsEmbed.nextRewards, notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noNextRewards}\`` : `\`${nextRewards}\``, true)
         ]});
 
     } catch (error) {

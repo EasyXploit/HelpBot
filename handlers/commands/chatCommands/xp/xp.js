@@ -109,7 +109,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 for (max = providedValue; max != 0; max--) {
 
                     //Genera XP aleatorio y actualiza la variable del total
-                    generatedXp += await client.functions.utilities.randomIntBetween.run(client.config.xp.minimumXpReward, client.config.xp.maximumXpReward);
+                    generatedXp += await client.functions.utilities.randomIntBetween.run(client.config.leveling.minimumXpReward, client.config.leveling.maximumXpReward);
                 };
 
                 //Almacena el nuevo XP

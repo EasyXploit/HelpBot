@@ -8,6 +8,15 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .setDescription(`${client.customEmojis.redTick} ${locale.noLeaderboard}.`)
         ], ephemeral: true});
 
+
+
+
+
+
+
+
+        
+
         //Almacena las entradas de la leaderboard
         let entries = [];
 
@@ -34,6 +43,17 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Compara y ordena el array de entradas
         entries.sort(compare);
+
+
+
+
+
+
+
+
+
+
+
 
         //Almacena las páginas totales
         const totalPages = Math.ceil(entries.length / 10);

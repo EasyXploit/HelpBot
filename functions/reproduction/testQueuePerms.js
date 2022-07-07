@@ -8,7 +8,7 @@ exports.run = async (client, interaction, command, index) => {
 		const locale = client.locale.functions.reproduction.testQueuePerms;
 
         //Omite si no hay roles de DJ
-        if (client.config.music.djRoles.length == 0) return true;
+        if (client.config.music.unrestrictedUsage.length == 0) return true;
 
         //Almacena la cola de reproducción
         let reproductionQueue = client.reproductionQueues[interaction.guild.id];
@@ -18,13 +18,12 @@ exports.run = async (client, interaction, command, index) => {
 
         //Calcula a qué posición de la cola ha de acceder para realizar comprobaciones
         if (interaction.member.id === reproductionQueue.tracks[index || 0].requesterId) return true;
+
+        //Comprueba si el miembro no tiene restricciones a la hora de gestionar la cola
+        const hasUnrestrictedUsage = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: client.config.music.unrestrictedUsage });
         
-        //Comprueba si el miembro es DJ, y de serlo omite la comprobación de votos
-        for (let index = 0; index < client.config.music.djRoles.length; index++) {
-            if (await interaction.member.roles.cache.find(role => role.id === client.config.music.djRoles[index])) {
-                return true;
-            };
-        };
+        //Si tiene permiso, omite la comprobación
+        if (hasUnrestrictedUsage) return true;
 
         //Variable necesaria para calcular los votos y los permisos
         let actualVotes;

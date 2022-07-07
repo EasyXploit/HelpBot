@@ -3,7 +3,7 @@
     "rewardVoice": true,
     "notifylevelUpOnChat": true,
     "notifylevelUpOnVoice": true,
-    "nonXPRoles": [],
+    "wontEarnXP": [],
     "nonXPChannels": [],
     "XPGainInterval": 60000,
     "minimumTimeBetweenMessages": 5000,

@@ -6,10 +6,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         let notAuthorized;
 
         //Por cada uno de los roles que pueden ganar EXP
-        for (let index = 0; index < client.config.xp.nonXPRoles.length; index++) {
+        for (let index = 0; index < client.config.leveling.wontEarnXP.length; index++) {
 
             //Comprueba si el miembro ejecutor lo tiene
-            if (interaction.member.roles.cache.has(client.config.xp.nonXPRoles[index])) notAuthorized = true; break;
+            if (interaction.member.roles.cache.has(client.config.leveling.wontEarnXP[index])) notAuthorized = true; break;
         };
 
         //Si no está autorizado para ello, devuelve un mensaje de error

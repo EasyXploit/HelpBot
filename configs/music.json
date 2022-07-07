@@ -1,6 +1,6 @@
 {
     "forbiddenChannels": [],
-    "djRoles": [],
+    "unrestrictedUsage": [],
     "votesPercentage": 75,
     "preventDuplicates": true,
     "queueLimit": 100,

@@ -301,7 +301,7 @@ exports.run = (client) => {
             client.usersVoiceStates[member.id].lastXpReward = Date.now();
         };
         
-    }, client.config.xp.XPGainInterval);
+    }, client.config.leveling.XPGainInterval);
 
     //PRESENCIA
     //Actualización de miembros totales en presencia

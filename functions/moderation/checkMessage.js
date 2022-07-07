@@ -31,11 +31,11 @@ exports.run = async (client, message) => {
         //Busca y almacena al miembro en la guild
         const guildMember = await client.functions.utilities.fetch.run(client, 'member', message.author.id)
 
-        //Almacena los roles a los que no afecta
-        const bypassRoles = filterCfg.bypassRoles;
+        //Almacena los roles y miembros a los que no afecta
+        const bypassIds = filterCfg.bypassIds;
 
-        //Lo omite si algún rol del miembro tiene el filtro desactivado
-        for (let index = 0; index < bypassRoles.length; index++) if (guildMember.roles.cache.has(bypassRoles[index])) continue;
+        //Lo omite si el miembro o alguno de sus roles tiene el filtro desactivado
+        for (let index = 0; index < bypassIds.length; index++) if (guildMember.id === bypassIds[index] || guildMember.roles.cache.has(bypassIds[index])) continue;
 
         //Almacena si un filtro ha encajado
         let match;

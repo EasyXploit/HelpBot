@@ -3,14 +3,14 @@
         "status": false,
         "action": 3,
         "reason": "Swear words",
-        "bypassRoles": [],
+        "bypassIds": [],
         "bypassChannels": []
     },
     "invites": {
         "status": false,
         "action": 3,
         "reason": "Invitations not allowed",
-        "bypassRoles": [],
+        "bypassIds": [],
         "bypassChannels": [],
         "onDM": true
     },
@@ -18,7 +18,7 @@
         "status": false,
         "action": 3,
         "reason": "Too many capital letters",
-        "bypassRoles": [],
+        "bypassIds": [],
         "bypassChannels": [],
         "percentage": 75,
         "minimumLength": 50
@@ -27,14 +27,14 @@
         "status": false,
         "action": 3,
         "reason": "Links not allowed",
-        "bypassRoles": [],
+        "bypassIds": [],
         "bypassChannels": []
     },
     "massEmojis": {
         "status": false,
         "action": 3,
         "reason": "Too many emojis",
-        "bypassRoles": [],
+        "bypassIds": [],
         "bypassChannels": [],
         "quantity": 20
     },
@@ -42,7 +42,7 @@
         "status": false,
         "action": 3,
         "reason": "Too many mentions",
-        "bypassRoles": [],
+        "bypassIds": [],
         "bypassChannels": [],
         "quantity": 5
     },
@@ -50,7 +50,7 @@
         "status": false,
         "action": 3,
         "reason": "Too many spoilers",
-        "bypassRoles": [],
+        "bypassIds": [],
         "bypassChannels": [],
         "quantity": 10
     },
@@ -58,7 +58,7 @@
         "status": false,
         "action": 3,
         "reason": "Repetitive text",
-        "bypassRoles": [],
+        "bypassIds": [],
         "bypassChannels": []
     }
 }

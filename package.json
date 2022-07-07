@@ -21,7 +21,7 @@
   "license": "MIT",
   "homepage": "https://github.com/EasyXploit/HelpBot#readme",
   "dependencies": {
-    "@discordjs/opus": "^0.7.0",
+    "@discordjs/opus": "^0.8.0",
     "@discordjs/voice": "^0.10.0",
     "asciiart-logo": "^0.2.6",
     "bufferutil": "^4.0.6",

@@ -23,7 +23,7 @@
   "dependencies": {
     "@discordjs/opus": "^0.8.0",
     "@discordjs/voice": "^0.10.0",
-    "asciiart-logo": "^0.2.6",
+    "asciiart-logo": "^0.2.7",
     "bufferutil": "^4.0.6",
     "discord.js": "^13.8.1",
     "get-audio-duration": "^3.1.0",
@@ -35,7 +35,7 @@
     "randomcolor": "^0.6.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.16"
+    "nodemon": "^2.0.19"
   },
   "nodemonConfig": {
     "ignore": [

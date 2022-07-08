@@ -2,5 +2,5 @@
 exports.run = async (client, level) => {
 
     //Devuelve el resultado
-    return (5 * client.config.leveling.dificultyModifier) * Math.pow((level - 1), 3) + 50 * (level - 1) + 100;
+    return (5 * client.config.leveling.difficultyModifier) * Math.pow((level - 1), 3) + 50 * (level - 1) + 100;
 };

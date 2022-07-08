@@ -30,7 +30,6 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (!client.db.stats[memberId]) {
             client.db.stats[memberId] = {
                 totalXP: 0,
-                actualXP: 0,
                 level: 0,
                 lastMessage: 0,
                 aproxVoiceTime: 0,
@@ -139,9 +138,6 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 //Actualiza el total de XP del miembro
                 memberStats.totalXP = 0;
 
-                //Actualiza el XP actual del miembro
-                memberStats.actualXP = 0;
-
                 //Para el switch
                 break;
         };
@@ -168,9 +164,6 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 if (xpCount >= xpToNextLevel) xpCount -= xpToNextLevel;
             };
 
-            //Actualiza el XP actual del miembro
-            memberStats.actualXP = xpCount;
-
         } else if (newValue < oldValue) { //Si el nuevo valor de XP es inferior al antiguo
 
             //Inicia un bucle desde 0 al infinito
@@ -186,9 +179,6 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                     break;
                 };
             };
-
-            //Actualiza el XP actual, en función de si ha subido de nivel o no
-            memberStats.actualXP = newLevel > 0 ? newValue - await client.functions.leveling.getXpToLevel.run(client, newLevel + 1) : newValue;
         };
 
         //Si el nivel ha sido modificado

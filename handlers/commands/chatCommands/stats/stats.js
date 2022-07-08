@@ -24,7 +24,9 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         const xpToNextLevel = await client.functions.leveling.getXpToLevel.run(client, memberStats.level + 1);
 
         //Para comprobar si el rol puede ganar XP o no.
-        const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: client.config.leveling.wontEarnXP });
+        const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, member, { bypassIds: client.config.leveling.wontEarnXP });
+
+        console.log(notAuthorizedToEarnXp)
 
         //Función para comparar un array
         function compare(a, b) {

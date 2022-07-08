@@ -5,7 +5,7 @@ exports.run = async (client, member, mode, channel) => {
     const locale = client.locale.functions.leveling.addExperience;
 
     //Para comprobar si el rol puede ganar XP o no.
-    const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, member, { guildOwner: true, botManagers: true, bypassIds: client.config.leveling.wontEarnXP });
+    const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, member, { bypassIds: client.config.leveling.wontEarnXP });
 
     //Devuelve si no se puede ganar XP
     if (notAuthorizedToEarnXp) return;
@@ -16,7 +16,6 @@ exports.run = async (client, member, mode, channel) => {
         //Crea la tabla del miembro
         client.db.stats[member.id] = {
             totalXP: 0,
-            actualXP: 0,
             level: 0,
             lastMessage: 0,
             aproxVoiceTime: 0,
@@ -37,7 +36,6 @@ exports.run = async (client, member, mode, channel) => {
         const newXp = await client.functions.utilities.randomIntBetween.run(client.config.leveling.minimumXpReward, client.config.leveling.maximumXpReward);
 
         //Añade el XP a la cantidad actual del miembro
-        memberStats.actualXP += newXp;
         memberStats.totalXP += newXp;
 
         //Si es un mensaje, actualiza la variable para evitar spam
@@ -54,9 +52,6 @@ exports.run = async (client, member, mode, channel) => {
 
             //Ajusta el nivel del miembro
             memberStats.level++;
-
-            //Ajusta el XP actual de miembro
-            memberStats.actualXP = xpToNextLevel - memberStats.totalXP;
 
             //Asigna las recompensas correspondientes al nivel (si corresponde), y almacena los roles recompensados
             const rewardedRoles = await client.functions.leveling.assignRewards.run(client, member, memberStats.level);

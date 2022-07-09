@@ -29,7 +29,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Si el miembro no tiene estadísticas, se las crea
         if (!client.db.stats[memberId]) {
             client.db.stats[memberId] = {
-                totalXP: 0,
+                experience: 0,
                 level: 0,
                 lastMessage: 0,
                 aproxVoiceTime: 0,
@@ -44,13 +44,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         const memberStats = client.db.stats[memberId];
 
         //Comprueba si se le puede restar esa cantidad al miembro
-        if (subcommand === locale.appData.options.remove.name && memberStats.totalXP < providedValue) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (subcommand === locale.appData.options.remove.name && memberStats.experience < providedValue) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidQuantity}.`)
         ], ephemeral: true});
 
         //Comprueba si se le puede quitar el XP al miembro
-        if (subcommand === locale.appData.options.clear.name && memberStats.totalXP === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (subcommand === locale.appData.options.clear.name && memberStats.experience === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} ${locale.hasNoXp}.`)
         ], ephemeral: true});
@@ -69,7 +69,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         };
         
         //Se declaran variables para almacenar las cantidades de XP (antiguas y nuevas) y el nivel modificado
-        let oldValue = memberStats.totalXP, newValue = 0, newLevel = memberStats.level;
+        let oldValue = memberStats.experience, newValue = 0, newLevel = memberStats.level;
 
         //Ejecuta la operación indicada en función del argumento
         switch (subcommand) {
@@ -78,7 +78,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             case locale.appData.options.set.name:
 
                 //Almacena el nuevo XP
-                memberStats.totalXP = parseInt(providedValue);
+                memberStats.experience = parseInt(providedValue);
 
                 //Almacena el nuevo valor de XP
                 newValue = parseInt(providedValue);
@@ -90,7 +90,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             case locale.appData.options.add.name:
 
                 //Almacena el nuevo XP
-                memberStats.totalXP = parseInt(oldValue) + parseInt(providedValue);
+                memberStats.experience = parseInt(oldValue) + parseInt(providedValue);
 
                 //Almacena el nuevo valor de XP
                 newValue = parseInt(oldValue) + parseInt(providedValue);
@@ -112,7 +112,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 };
 
                 //Almacena el nuevo XP
-                memberStats.totalXP = parseInt(oldValue) + parseInt(generatedXp);
+                memberStats.experience = parseInt(oldValue) + parseInt(generatedXp);
 
                 //Almacena el nuevo valor de XP
                 newValue = parseInt(oldValue) + parseInt(generatedXp);
@@ -124,7 +124,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             case locale.appData.options.remove.name:
 
                 //Almacena el nuevo XP
-                memberStats.totalXP = parseInt(oldValue) - parseInt(providedValue);
+                memberStats.experience = parseInt(oldValue) - parseInt(providedValue);
 
                 //Almacena el nuevo valor de XP
                 newValue = parseInt(oldValue) - parseInt(providedValue);
@@ -136,50 +136,17 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             case locale.appData.options.clear.name:
 
                 //Actualiza el total de XP del miembro
-                memberStats.totalXP = 0;
+                memberStats.experience = 0;
 
                 //Para el switch
                 break;
         };
 
-        //Si el nuevo valor de XP es superior al antiguo
-        if (newValue > oldValue) {
+        //Almacena el nivel correspondiente al XP especificado
+        const neededExperience = await client.functions.leveling.getNeededExperience.run(client, newValue);
 
-            //Almacena el XP a incrementar
-            let xpCount = parseInt(newValue);
-
-            //Almacena el XP necesario para pasar al siguiente nivel
-            let xpToNextLevel = await client.functions.leveling.getXpToLevel.run(client, newLevel + 1);
-
-            //Mientras que el XP actual sea mayor o igual que el necesario para subir al siguiente nivel
-            while (newValue >= xpToNextLevel) {
-                
-                //Incrementa el contador de nivel
-                newLevel++;
-
-                //Actualiza el XP necesario para subir de nivel
-                xpToNextLevel = await client.functions.leveling.getXpToLevel.run(client, newLevel + 1);
-
-                //Mientras que el conteo de XP sea mayor o igual que el necesario para el siguiente nivel, le resta este último
-                if (xpCount >= xpToNextLevel) xpCount -= xpToNextLevel;
-            };
-
-        } else if (newValue < oldValue) { //Si el nuevo valor de XP es inferior al antiguo
-
-            //Inicia un bucle desde 0 al infinito
-            for (let index = 0; ; index++) {
-
-                //Por cada uno de los niveles, comprueba si el XP requerido supera el asignado al miembro
-                if (await client.functions.leveling.getXpToLevel.run(client, index + 1) > newValue) {
-
-                    //Almacena el nuevo nivel del miembro
-                    newLevel = index;
-
-                    //Para el bucle
-                    break;
-                };
-            };
-        };
+        //Almacena el nuevo nivel del miembro
+        newLevel = neededExperience.nextLevel;
 
         //Si el nivel ha sido modificado
         if (newLevel !== memberStats.level) {

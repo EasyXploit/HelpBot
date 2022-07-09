@@ -15,7 +15,7 @@ exports.run = async (client, member, mode, channel) => {
 
         //Crea la tabla del miembro
         client.db.stats[member.id] = {
-            totalXP: 0,
+            experience: 0,
             level: 0,
             lastMessage: 0,
             aproxVoiceTime: 0,
@@ -36,7 +36,7 @@ exports.run = async (client, member, mode, channel) => {
         const newXp = await client.functions.utilities.randomIntBetween.run(client.config.leveling.minimumXpReward, client.config.leveling.maximumXpReward);
 
         //Añade el XP a la cantidad actual del miembro
-        memberStats.totalXP += newXp;
+        memberStats.experience += newXp;
 
         //Si es un mensaje, actualiza la variable para evitar spam
         if (mode === 'message') memberStats.lastMessage = Date.now();
@@ -44,11 +44,11 @@ exports.run = async (client, member, mode, channel) => {
         //Si es un intervalo de voz, concatena la duración de un intervalo de voz en las stats del miembro
         if (mode === 'voice') memberStats.aproxVoiceTime += client.config.leveling.XPGainInterval;
 
-        //Fórmula para calcular el XP necesario para subir al siguiente nivel
-        const xpToNextLevel = await client.functions.leveling.getXpToLevel.run(client, memberStats.level + 1)
+        //Calcula el XP necesario para subir al siguiente nivel
+        const neededExperience = await client.functions.leveling.getNeededExperience.run(client, memberStats.experience);
 
         //Comprueba si el miembro ha de subir de nivel
-        if (memberStats.totalXP >= xpToNextLevel) {
+        if (neededExperience.nextLevel > memberStats.level) {
 
             //Ajusta el nivel del miembro
             memberStats.level++;

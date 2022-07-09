@@ -29,15 +29,15 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Sube una entrada al array de entradas
             entries.push({
                 memberId: memberId,
-                totalXP: memberStats.totalXP,
+                experience: memberStats.experience,
                 lvl: memberStats.level
             });
         };
 
         //Ordena las entradas en función de su cantidad de XP
         function compare(a, b) {
-            if (a.totalXP < b.totalXP) return 1;
-            if (a.totalXP > b.totalXP) return -1;
+            if (a.experience < b.experience) return 1;
+            if (a.experience > b.experience) return -1;
             return 0;
         };
 
@@ -91,7 +91,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 const member = await client.functions.utilities.fetch.run(client, 'member', entry.memberId) || locale.unknownMember;
 
                 //Actualiza la tabla con una entrada formateada
-                board += `\n**#${index + 1}** • \`${entry.totalXP} ${locale.embed.xp}\` • \`${locale.embed.lvl} ${entry.lvl}\` • ${member}`;
+                board += `\n**#${index + 1}** • \`${entry.experience} ${locale.embed.xp}\` • \`${locale.embed.lvl} ${entry.lvl}\` • ${member}`;
 
             };
 

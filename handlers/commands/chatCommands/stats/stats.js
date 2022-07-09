@@ -20,13 +20,8 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Almacena las stats del miembro
         const memberStats = client.db.stats[member.id];
 
-        //Calcula el XP necesario para pasar al siguiente nivel
-        const xpToNextLevel = await client.functions.leveling.getXpToLevel.run(client, memberStats.level + 1);
-
         //Para comprobar si el rol puede ganar XP o no.
         const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, member, { bypassIds: client.config.leveling.wontEarnXP });
-
-        console.log(notAuthorizedToEarnXp)
 
         //Función para comparar un array
         function compare(a, b) {
@@ -86,12 +81,15 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             await getRewards.then(() => {
 
                 //Sobreescribe la variable "nextRewards" con los resultados obtenidos
-                nextRewards = `${roleNames.join(', ')} (lvl ${nextRewardedRoles.requiredLevel})`;
+                nextRewards = `${roleNames.join(', ')} (${nextRewardedRoles.lvl} ${nextRewardedRoles.requiredLevel})`;
             });
         };
 
         //Almacena el tiempo de voz aproximado
         const aproxVoiceTime = memberStats.aproxVoiceTime > 0 ? `\`${await client.functions.utilities.msToTime.run(client, memberStats.aproxVoiceTime)}\`` : '\`00:00:00\`';
+
+        //Calcula el XP necesario por defecto para el siguiente nivel
+        const neededExperience = await client.functions.leveling.getNeededExperience.run(client, memberStats.experience);
 
         //Envía el mensaje con las estadísticas
         await interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -100,8 +98,8 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .setDescription(await client.functions.utilities.parseLocale.run(locale.statsEmbed.description, { memberTag: member.user.tag }))
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
             .addField(locale.statsEmbed.actualLevel, `\`${memberStats.level}\``, true)
-            .addField(locale.statsEmbed.totalXp, `\`${memberStats.totalXP}\``, true)
-            .addField(locale.statsEmbed.xpToNextLevel, notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noXpToNextLevel}\`` : `\`${xpToNextLevel - memberStats.totalXP}\``, true)
+            .addField(locale.statsEmbed.experience, `\`${memberStats.experience}\``, true)
+            .addField(locale.statsEmbed.xpToNextLevel, notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noXpToNextLevel}\`` : `\`${neededExperience.experience}\``, true)
             .addField(locale.statsEmbed.voiceTime, notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noVoiceTime}\`` : `\`${aproxVoiceTime}\``, true)
             .addField(locale.statsEmbed.nextRewards, notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noNextRewards}\`` : `\`${nextRewards}\``, true)
         ]});

@@ -71,7 +71,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
             });
 
             //Si se ha silenciado
-            if (newMember.communicationDisabledUntilTimestamp) {
+            if (newMember.communicationDisabledUntilTimestamp && newMember.communicationDisabledUntilTimestamp > Date.now()) {
 
                 //Envía un mensaje al canal de registros
                 if (client.config.logging.mutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()

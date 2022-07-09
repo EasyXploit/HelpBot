@@ -28,7 +28,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         };
 
         //Comprueba si el miembro no estaba silenciado
-        if (member && !member.communicationDisabledUntilTimestamp) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (member && (!member.communicationDisabledUntilTimestamp || member.communicationDisabledUntilTimestamp <= Date.now())) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.secondaryError)
             .setDescription(`${client.customEmojis.redTick} ${locale.notSilenced}.`)
         ], ephemeral: true});

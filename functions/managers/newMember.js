@@ -26,7 +26,7 @@ exports.run = async (client, member) => {
             .addField(`📝 ${locale.registerDate}`, `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
 
         //Comprueba si el miembro está silenciado, y añade el campo al embed de registro (si procede)
-        if (member.communicationDisabledUntilTimestamp) welcomeEmbed.addField(`🔇 ${locale.actualSanction}`, `${locale.mutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>`, false);
+        if (member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now()) welcomeEmbed.addField(`🔇 ${locale.actualSanction}`, `${locale.mutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>`, false);
 
         //Se notifica en el canal de registro
         if (client.config.logging.memberJoined) await client.joinsAndLeavesChannel.send({ embeds: [ welcomeEmbed ], files: ['./resources/images/in.png'] });

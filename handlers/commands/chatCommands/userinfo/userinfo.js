@@ -32,7 +32,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (status.length < 1) status.push(locale.memberType.regular);
 
         //Almacena la sanción actual, si aplica
-        const sanction = member.communicationDisabledUntilTimestamp ? `${locale.embed.mutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>` : locale.embed.noSanction;
+        const sanction = member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now() ? `${locale.embed.mutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>` : locale.embed.noSanction;
 
         //Envía un embed con el resultado del comando
         await interaction.reply({ embeds: [ new client.MessageEmbed()

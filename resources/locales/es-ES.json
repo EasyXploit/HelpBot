@@ -1033,12 +1033,13 @@
                         "description": "Mostrando las estadísticas del miembro **{{memberTag}}**",
                         "actualLevel": "Nivel actual",
                         "experience": "EXP total",
-                        "xpToNextLevel": "EXP para el siguiente nivel",
+                        "xpToNextLevel": "EXP para siguiente nivel",
                         "noXpToNextLevel": "No puede subir de nivel",
-                        "voiceTime": "Tiempo de voz aprox.",
-                        "noVoiceTime": "No se contabiliza",
+                        "messagesCount": "Mensajes",
+                        "voiceTime": "Tiempo de voz",
+                        "antiquity": "Antigüedad",
                         "nextRewards": "Siguientes recompensas",
-                        "lvl": "nvl",
+                        "level": "nvl",
                         "noNextRewards": "No puede ganar recompensas"
                     }
                 },

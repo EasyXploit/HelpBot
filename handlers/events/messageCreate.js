@@ -13,7 +13,7 @@ exports.run = async (message, client, locale) => {
     if (!isPermitted) return;
 
     //Aumenta la cantidad de XP del miembro (si procede)
-    if (message.channel.type !== 'DM' && client.config.leveling.rewardMessages && !client.config.leveling.nonXPChannels.includes(message.channel.id)) await client.functions.leveling.addExperience.run(client, message.member, 'message', message.channel);
+    if (message.channel.type !== 'DM' && client.config.leveling.rewardMessages) await client.functions.leveling.addExperience.run(client, message.member, 'message', message.channel);
 
     //Si el miembro no tiene tabla de estadísticas
     if (!client.db.stats[message.member.id]) {

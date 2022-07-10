@@ -1033,12 +1033,13 @@
                         "description": "Displaying stats of **{{memberTag}}**",
                         "actualLevel": "Current Level",
                         "experience": "Total XP",
-                        "xpToNextLevel": "XP to the next level",
+                        "xpToNextLevel": "XP to next level",
                         "noXpToNextLevel": "Cannot level up",
-                        "voiceTime": "Aprox. voice time",
-                        "noVoiceTime": "Not counted",
+                        "messagesCount": "Messages",
+                        "voiceTime": "Voice time",
+                        "antiquity": "Antiquity",
                         "nextRewards": "Next Rewards",
-                        "lvl": "lvl",
+                        "level": "lvl",
                         "noNextRewards": "Cannot earn rewards"
                     }
                 },

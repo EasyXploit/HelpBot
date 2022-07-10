@@ -76,7 +76,32 @@ exports.run = async (oldState, newState, client, locale) => {
                 if (!member || member.voice.mute || member.voice.deaf) return;
 
                 //Añade XP al miembro por última vez
-                await client.functions.leveling.addExperience.run(client, member, 'voice');
+                await client.functions.leveling.addExperience.run(client, member, 'voice', member.voice.channelId);
+
+                //Si el miembro no tiene tabla de stats
+                if (!client.db.stats[member.id]) {
+
+                    //Crea la tabla del miembro
+                    client.db.stats[member.id] = {
+                        experience: 0,
+                        level: 0,
+                        lastMessage: 0,
+                        aproxVoiceTime: 0,
+                        messagesCount: 0,
+                        notifications: {
+                            public: true,
+                            private: true
+                        }
+                    };
+                };
+
+                //Actualiza el tiempo de voz del miembro
+                client.db.stats[member.id].aproxVoiceTime += client.config.leveling.XPGainInterval;
+
+                //Guarda las nuevas estadísticas del miembro en la base de datos
+                client.fs.writeFile('./storage/databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
+                    if (err) throw err;
+                });
             };
             
             //Borra el registro del miembro que ha dejado el canal de voz
@@ -92,11 +117,8 @@ exports.run = async (oldState, newState, client, locale) => {
             //Acaba el conteo de minutos si el miembro se queda solo o con únicamente bots en la sala
             if (newState.channel.members.filter(member => !member.user.bot).size === 1 && client.usersVoiceStates[newState.id]) return endVoiceTime();
 
-            //Almacena si el miembro tiene un rol que no puede ganar XP
-            const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, member, { bypassIds: client.config.leveling.wontEarnXP });
-
             //Si es un bot, el canal de AFK, un canal prohibido o un rol prohibido
-            if (member.user.bot || client.config.leveling.nonXPChannels.includes(newState.channelId) || newState.channelId === newState.guild.afkChannel.id || notAuthorizedToEarnXp) {
+            if (member.user.bot || newState.channelId === newState.guild.afkChannel.id) {
 
                 //Si el miembro tenía un estado de voz almacenado
                 if (client.usersVoiceStates[newState.id]) {

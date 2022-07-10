@@ -120,11 +120,8 @@ exports.run = async (client, locale) => {
                     const member = await client.functions.utilities.fetch.run(client, 'member', voiceState.id);
                     if (!member) return;
 
-                    //Almacena si el miembro tiene un rol que no puede ganar XP
-                    const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, member, { bypassIds: client.config.leveling.wontEarnXP });
-
                     //Comprueba si en el canal no se puede ganar XP
-                    if (member.user.bot || client.config.leveling.nonXPChannels.includes(voiceState.channelId) || voiceState.channelId === voiceState.guild.afkChannel.id || notAuthorizedToEarnXp) {
+                    if (member.user.bot || voiceState.channelId === voiceState.guild.afkChannel.id) {
                         if (client.usersVoiceStates[voiceState.id]) {
 
                             //Borra el registro del miembro que ha dejado el canal de voz

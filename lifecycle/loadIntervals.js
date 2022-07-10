@@ -281,7 +281,7 @@ exports.run = (client) => {
             //Almacena el miembro
             const member = await client.functions.utilities.fetch.run(client, 'member', idKey);
 
-            //Elimina el miembro de los etados de voz si ya no se encuentra voz
+            //Elimina el miembro de los estados de voz si ya no se encuentra voz
             if (!member || !member.voice.channelId) {
 
                 //Elimina la entrada de los estados de voz
@@ -295,10 +295,35 @@ exports.run = (client) => {
             if (member.voice.mute || member.voice.deaf || member.voice.channel.members.filter(member => !member.user.bot).size === 1) return;
 
             //Añade XP al miembro
-            await client.functions.leveling.addExperience.run(client, member, 'voice');
+            await client.functions.leveling.addExperience.run(client, member, 'voice', member.voice.channelId);
 
             //Actualiza el timestamp de la última recompensa de XP obtenida
             client.usersVoiceStates[member.id].lastXpReward = Date.now();
+
+            //Si el miembro no tiene tabla de stats
+            if (!client.db.stats[member.id]) {
+
+                //Crea la tabla del miembro
+                client.db.stats[member.id] = {
+                    experience: 0,
+                    level: 0,
+                    lastMessage: 0,
+                    aproxVoiceTime: 0,
+                    messagesCount: 0,
+                    notifications: {
+                        public: true,
+                        private: true
+                    }
+                };
+            };
+
+            //Actualiza el tiempo de voz del miembro
+            client.db.stats[member.id].aproxVoiceTime += client.config.leveling.XPGainInterval;
+
+            //Guarda las nuevas estadísticas del miembro en la base de datos
+            client.fs.writeFile('./storage/databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
+                if (err) throw err;
+            });
         };
         
     }, client.config.leveling.XPGainInterval);

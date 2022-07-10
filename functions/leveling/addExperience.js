@@ -10,7 +10,10 @@ exports.run = async (client, member, mode, channel) => {
     //Devuelve si no se puede ganar XP
     if (notAuthorizedToEarnXp) return;
 
-    //Si el miembro no tiene tabla de XP
+    //Si no se puede ganar XP en el canal, aborta
+    if (client.config.leveling.nonXPChannels.includes(channel.id)) return;
+
+    //Si el miembro no tiene tabla de stats
     if (!client.db.stats[member.id]) {
 
         //Crea la tabla del miembro
@@ -41,9 +44,6 @@ exports.run = async (client, member, mode, channel) => {
 
         //Si es un mensaje, actualiza la variable para evitar spam
         if (mode === 'message') memberStats.lastMessage = Date.now();
-
-        //Si es un intervalo de voz, concatena la duración de un intervalo de voz en las stats del miembro
-        if (mode === 'voice') memberStats.aproxVoiceTime += client.config.leveling.XPGainInterval;
 
         //Calcula el XP necesario para subir al siguiente nivel
         const neededExperience = await client.functions.leveling.getNeededExperience.run(client, memberStats.experience);

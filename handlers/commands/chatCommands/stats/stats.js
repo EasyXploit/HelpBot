@@ -81,7 +81,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             await getRewards.then(() => {
 
                 //Sobreescribe la variable "nextRewards" con los resultados obtenidos
-                nextRewards = `${roleNames.join(', ')} (${nextRewardedRoles.lvl} ${nextRewardedRoles.requiredLevel})`;
+                nextRewards = `${roleNames.join(', ')} (${locale.statsEmbed.level} ${nextRewardedRoles.requiredLevel})`;
             });
         };
 
@@ -100,7 +100,9 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .addField(locale.statsEmbed.actualLevel, `\`${memberStats.level}\``, true)
             .addField(locale.statsEmbed.experience, `\`${memberStats.experience}\``, true)
             .addField(locale.statsEmbed.xpToNextLevel, notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noXpToNextLevel}\`` : `\`${neededExperience.experience}\``, true)
-            .addField(locale.statsEmbed.voiceTime, notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noVoiceTime}\`` : `\`${aproxVoiceTime}\``, true)
+            .addField(locale.statsEmbed.messagesCount, `\`${memberStats.messagesCount}\``, true)
+            .addField(locale.statsEmbed.voiceTime, `\`${aproxVoiceTime}\``, true)
+            .addField(locale.statsEmbed.antiquity, `\`${await client.functions.utilities.msToTime.run(client, Date.now() - member.joinedTimestamp)}\``, true)
             .addField(locale.statsEmbed.nextRewards, notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noNextRewards}\`` : `\`${nextRewards}\``, true)
         ]});
 

@@ -8,15 +8,6 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .setDescription(`${client.customEmojis.redTick} ${locale.noLeaderboard}.`)
         ], ephemeral: true});
 
-
-
-
-
-
-
-
-        
-
         //Almacena las entradas de la leaderboard
         let entries = [];
 
@@ -25,10 +16,17 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Almacena las stats del miembro iterado
             const memberStats = client.db.stats[memberId];
+
+            //Busca el miembro en la guild
+            const member = await client.functions.utilities.fetch.run(client, 'member', memberId);
+
+            //Si el miembro no estaba en la guild y no se debe mostrar, lo omite
+            if (commandConfig.hideNotPresent && !member) continue;
                 
             //Sube una entrada al array de entradas
             entries.push({
                 memberId: memberId,
+                memberTag: member ? `**${member.user.tag}**` : locale.unknownMember,
                 experience: memberStats.experience,
                 lvl: memberStats.level
             });
@@ -43,17 +41,6 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Compara y ordena el array de entradas
         entries.sort(compare);
-
-
-
-
-
-
-
-
-
-
-
 
         //Almacena las páginas totales
         const totalPages = Math.ceil(entries.length / 10);
@@ -87,12 +74,8 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 //Si ya no quedan más entradas, aborta el bucle
                 if (!entry) break;
 
-                //Busca el miembro en la guild
-                const member = await client.functions.utilities.fetch.run(client, 'member', entry.memberId) || locale.unknownMember;
-
                 //Actualiza la tabla con una entrada formateada
-                board += `\n**#${index + 1}** • \`${entry.experience} ${locale.embed.xp}\` • \`${locale.embed.lvl} ${entry.lvl}\` • ${member}`;
-
+                board += `\n**#${index + 1}** • \`${entry.experience} ${locale.embed.xp}\` • \`${locale.embed.lvl} ${entry.lvl}\` • ${entry.memberTag}`;
             };
 
             //Genera un embed a modo de página

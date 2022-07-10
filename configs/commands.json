@@ -38,7 +38,8 @@
             "botsAllowed": []
         },
         "leaderboard": {
-            "enabled": true
+            "enabled": true,
+            "hideNotPresent": true
         },
         "leave": {
             "enabled": true

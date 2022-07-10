@@ -3,17 +3,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     try {
 
         //Almacena si el miembro puede ganar EXP
-        let notAuthorized;
-
-        //Por cada uno de los roles que pueden ganar EXP
-        for (let index = 0; index < client.config.leveling.wontEarnXP.length; index++) {
-
-            //Comprueba si el miembro ejecutor lo tiene
-            if (interaction.member.roles.cache.has(client.config.leveling.wontEarnXP[index])) notAuthorized = true; break;
-        };
+        const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { bypassIds: client.config.leveling.wontEarnXP });
 
         //Si no está autorizado para ello, devuelve un mensaje de error
-        if (notAuthorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (notAuthorizedToEarnXp) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.warning)
             .setDescription(`${client.customEmojis.orangeTick} ${locale.cantGainXp}.`)
         ], ephemeral: true});

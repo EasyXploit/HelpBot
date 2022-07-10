@@ -15,6 +15,9 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Almacena las entradas de la leaderboard
         let entries = [];
 
+        //Almacena si el orden se ha de invertir
+        let invertedOrder = type === 'antiquity' ? true : false;
+
         //Por cada miembro en la base de datos de stats
         for (const memberId in client.db.stats) {
 
@@ -26,6 +29,9 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Si el miembro no estaba en la guild y no se debe mostrar, lo omite
             if (commandConfig.hideNotPresent && !member) continue;
+
+            //Omite si es clasificación de antigüedad y el miembro ya no está en el servidor
+            if (type === 'antiquity' && !member) continue;
                 
             //Sube una entrada al array de entradas
             entries.push({
@@ -34,14 +40,15 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 experience: memberStats.experience,
                 aproxVoiceTime: memberStats.aproxVoiceTime,
                 messagesCount: memberStats.messagesCount,
+                antiquity: member.joinedTimestamp,
                 lvl: memberStats.level
             });
         };
 
-        //Ordena las entradas en función de su cantidad de XP
+        //Ordena las entradas de mayor a menor
         function compare(a, b) {
-            if (a[type] < b[type]) return 1;
-            if (a[type] > b[type]) return -1;
+            if (a[type] < b[type]) return invertedOrder ? -1 : 1;
+            if (a[type] > b[type]) return invertedOrder ? 1 : -1;
             return 0;
         };
 
@@ -110,6 +117,15 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                         
                         //Para el switch
                         break;
+                
+                    //Si se desea mostrar la tabla de antigüedad
+                    case 'antiquity':
+
+                        //Genera la tabla de antigüedad
+                        board += `\n**#${index + 1}** • \`${await client.functions.utilities.msToTime.run(client, Date.now() - entry.antiquity)}\` • ${entry.memberTag}`;
+                        
+                        //Para el switch
+                        break;
                 };
             };
 
@@ -161,6 +177,10 @@ module.exports.config = {
                     {
                         choiceName: 'messagesCount',
                         value: 'messagesCount'
+                    },
+                    {
+                        choiceName: 'antiquity',
+                        value: 'antiquity'
                     }
                 ]
             },

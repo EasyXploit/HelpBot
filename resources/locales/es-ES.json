@@ -268,7 +268,8 @@
                                 "choices": {
                                     "experience": "Puntos de experiencia",
                                     "aproxVoiceTime": "Tiempo de voz",
-                                    "messagesCount": "Mensajes enviados"
+                                    "messagesCount": "Mensajes enviados",
+                                    "antiquity": "Antigüedad"
                                 }
                             },
                             "page": {
@@ -283,7 +284,8 @@
                         "title": {
                             "experience": "Clasificación de puntos de experiencia",
                             "aproxVoiceTime": "Clasificación de tiempo de voz",
-                            "messagesCount": "Clasificación de mensajes enviado"
+                            "messagesCount": "Clasificación de mensajes enviado",
+                            "antiquity": "Clasificación de antigüedad"
                         },
                         "board": {
                             "experience": "exp",

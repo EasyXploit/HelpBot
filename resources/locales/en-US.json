@@ -268,7 +268,8 @@
                                 "choices": {
                                     "experience": "Experience points",
                                     "aproxVoiceTime": "Voice time",
-                                    "messagesCount": "Sent messages"
+                                    "messagesCount": "Sent messages",
+                                    "antiquity": "Anitiquity"
                                 }
                             },
                             "page": {
@@ -283,7 +284,8 @@
                         "title": {
                             "experience": "Experience points ranking",
                             "aproxVoiceTime": "Voice time ranking",
-                            "messagesCount": "Sent messages ranking"
+                            "messagesCount": "Sent messages ranking",
+                            "antiquity": "Antiquity ranking"
                         },
                         "board": {
                             "experience": "xp",

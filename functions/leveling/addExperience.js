@@ -19,6 +19,7 @@ exports.run = async (client, member, mode, channel) => {
             level: 0,
             lastMessage: 0,
             aproxVoiceTime: 0,
+            messagesCount: 0,
             notifications: {
                 public: true,
                 private: true

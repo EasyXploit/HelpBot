@@ -262,6 +262,15 @@
                         "name": "clasificacion",
                         "description": "Muestra la tabla de clasificación de EXP de la comunidad",
                         "options": {
+                            "type": {
+                                "name": "tipo",
+                                "description": "Selecciona el tipo de clasificación a mostrar",
+                                "choices": {
+                                    "experience": "Puntos de experiencia",
+                                    "aproxVoiceTime": "Tiempo de voz",
+                                    "messagesCount": "Mensajes enviados"
+                                }
+                            },
                             "page": {
                                 "name": "página",
                                 "description": "Introduce el nº de página a consultar"
@@ -271,9 +280,16 @@
                     "noLeaderboard": "Nadie ha ganado EXP todavía",
                     "unknownMember": "Desconocido",
                     "embed": {
-                        "title": "Tabla de clasificación",
-                        "xp": "exp",
-                        "lvl": "nvl",
+                        "title": {
+                            "experience": "Clasificación de puntos de experiencia",
+                            "aproxVoiceTime": "Clasificación de tiempo de voz",
+                            "messagesCount": "Clasificación de mensajes enviado"
+                        },
+                        "board": {
+                            "experience": "exp",
+                            "messagesCount": "mensajes",
+                            "level": "nvl"
+                        },
                         "footer": "Página {{actualPage}} de {{totalPages}}"
                     }
                 },

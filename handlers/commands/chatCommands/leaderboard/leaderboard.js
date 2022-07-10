@@ -8,6 +8,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .setDescription(`${client.customEmojis.redTick} ${locale.noLeaderboard}.`)
         ], ephemeral: true});
 
+        //Almacena el tipo de clasifición a mostrar, si se proporciona
+        const typeOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.type.name);
+        const type = typeOption ? typeOption.value : 'experience';
+
         //Almacena las entradas de la leaderboard
         let entries = [];
 
@@ -28,14 +32,16 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 memberId: memberId,
                 memberTag: member ? `**${member.user.tag}**` : locale.unknownMember,
                 experience: memberStats.experience,
+                aproxVoiceTime: memberStats.aproxVoiceTime,
+                messagesCount: memberStats.messagesCount,
                 lvl: memberStats.level
             });
         };
 
         //Ordena las entradas en función de su cantidad de XP
         function compare(a, b) {
-            if (a.experience < b.experience) return 1;
-            if (a.experience > b.experience) return -1;
+            if (a[type] < b[type]) return 1;
+            if (a[type] > b[type]) return -1;
             return 0;
         };
 
@@ -45,11 +51,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Almacena las páginas totales
         const totalPages = Math.ceil(entries.length / 10);
 
-        //Almacena la posición provista, si se proporcionó
-        const providedactualPage = interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : null
+        //Almacena el número de página a mostrar, si se proporciona
+        const providedactualPageOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.page.name);
+        const providedactualPage = providedactualPageOption ? providedactualPageOption.value : null;
 
         //Almacena la página actual (si se proporciona una, se elige esa)
-        let actualPage = providedactualPage && providedactualPage > 0 && providedactualPage <= totalPages ? providedactualPage : 1;
+        let actualPage = providedactualPage && providedactualPage <= totalPages ? providedactualPage : 1;
 
         //Almacena la última interacción del comando
         let latestInteraction;
@@ -74,14 +81,42 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 //Si ya no quedan más entradas, aborta el bucle
                 if (!entry) break;
 
-                //Actualiza la tabla con una entrada formateada
-                board += `\n**#${index + 1}** • \`${entry.experience} ${locale.embed.xp}\` • \`${locale.embed.lvl} ${entry.lvl}\` • ${entry.memberTag}`;
+                //En función del tipo proporcionado
+                switch (type) {
+
+                    //Si se desea mostrar la tabla de experiencia
+                    case 'experience':
+
+                        //Genera la tabla de experiencia
+                        board += `\n**#${index + 1}** • \`${entry.experience} ${locale.embed.board.experience}\` • \`${locale.embed.board.level} ${entry.lvl}\` • ${entry.memberTag}`;
+                        
+                        //Para el switch
+                        break;
+                
+                    //Si se desea mostrar la tabla de tiempo de voz
+                    case 'aproxVoiceTime':
+
+                        //Genera la tabla de tiempo de voz
+                        board += `\n**#${index + 1}** • \`${await client.functions.utilities.msToTime.run(client, entry.aproxVoiceTime)}\` • ${entry.memberTag}`;
+                        
+                        //Para el switch
+                        break;
+                
+                    //Si se desea mostrar la tabla de mensajes enviados
+                    case 'messagesCount':
+
+                        //Genera la tabla de mensajes enviados
+                        board += `\n**#${index + 1}** • \`${entry.messagesCount} ${locale.embed.board.messagesCount}\` • ${entry.memberTag}`;
+                        
+                        //Para el switch
+                        break;
+                };
             };
 
             //Genera un embed a modo de página
             const newPageEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.primary)
-                .setTitle(`:trophy: ${locale.embed.title}`)
+                .setTitle(`:trophy: ${locale.embed.title[type]}`)
                 .setDescription(board)
                 .setFooter({ text: await client.functions.utilities.parseLocale.run(locale.embed.footer, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.homeGuild.iconURL({dynamic: true}) });
 
@@ -111,8 +146,28 @@ module.exports.config = {
         type: 'CHAT_INPUT',
         options: [
             {
+                optionName: 'type',
+                type: 'STRING',
+                required: false,
+                choices: [
+                    {
+                        choiceName: 'experience',
+                        value: 'experience'
+                    },
+                    {
+                        choiceName: 'aproxVoiceTime',
+                        value: 'aproxVoiceTime'
+                    },
+                    {
+                        choiceName: 'messagesCount',
+                        value: 'messagesCount'
+                    }
+                ]
+            },
+            {
                 optionName: 'page',
                 type: 'INTEGER',
+                minValue: 1,
                 required: false
             }
         ]

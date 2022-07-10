@@ -262,6 +262,15 @@
                         "name": "leaderboard",
                         "description": "Shows the community experience point leaderboard",
                         "options": {
+                            "type": {
+                                "name": "type",
+                                "description": "Select the type of classification to display",
+                                "choices": {
+                                    "experience": "Experience points",
+                                    "aproxVoiceTime": "Voice time",
+                                    "messagesCount": "Sent messages"
+                                }
+                            },
                             "page": {
                                 "name": "page",
                                 "description": "Enter the page number to consult"
@@ -271,9 +280,16 @@
                     "noLeaderboard": "No one has gained XP yet",
                     "unknownMember": "Unknown",
                     "embed": {
-                        "title": "Leaderboard",
-                        "xp": "xp",
-                        "lvl": "lvl",
+                        "title": {
+                            "experience": "Experience points ranking",
+                            "aproxVoiceTime": "Voice time ranking",
+                            "messagesCount": "Sent messages ranking"
+                        },
+                        "board": {
+                            "experience": "xp",
+                            "messagesCount": "messages",
+                            "level": "lvl"
+                        },
                         "footer": "Page {{actualPage}} of {{totalPages}}"
                     }
                 },

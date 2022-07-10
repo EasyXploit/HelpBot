@@ -14,4 +14,24 @@ exports.run = async (message, client, locale) => {
 
     //Aumenta la cantidad de XP del miembro (si procede)
     if (message.channel.type !== 'DM' && client.config.leveling.rewardMessages && !client.config.leveling.nonXPChannels.includes(message.channel.id)) await client.functions.leveling.addExperience.run(client, message.member, 'message', message.channel);
+
+    //Si el miembro no tiene tabla de estadísticas
+    if (!client.db.stats[message.member.id]) {
+
+        //Crea la tabla del miembro
+        client.db.stats[member.id] = {
+            experience: 0,
+            level: 0,
+            lastMessage: 0,
+            aproxVoiceTime: 0,
+            messagesCount: 0,
+            notifications: {
+                public: true,
+                private: true
+            }
+        };
+    };
+
+    //Incrementa el contador de mensajes enviados del miembro
+    client.db.stats[message.member.id].messagesCount++;
 };

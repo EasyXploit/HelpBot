@@ -33,6 +33,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 level: 0,
                 lastMessage: 0,
                 aproxVoiceTime: 0,
+                messagesCount: 0,
                 notifications: {
                     public: true,
                     private: true

@@ -88,7 +88,7 @@ exports.run = async (client, interaction, customId, actualPage, totalPages, gene
     };
 
     //Espera pulsaciones de botón en el mensaje
-    await navigationMenuMessage.awaitMessageComponent({ filter: buttonsFilter, time: 60000, errors: ['time']  }).then(async buttonInteraction => {
+    await navigationMenuMessage.awaitMessageComponent({ filter: buttonsFilter, time: 60000  }).then(async buttonInteraction => {
 
         //Almacena el ID del botón pulsado
         const pressedButtonId = buttonInteraction.customId;
@@ -103,10 +103,14 @@ exports.run = async (client, interaction, customId, actualPage, totalPages, gene
         latestInteraction = buttonInteraction;
 
     //Si no se ha pulsado en el tiempo esperado
-    }).catch(async () => {
+    }).catch(async error => {
 
-        //Elimina la fila de botones
-        await navigationMenuMessage.edit({ components: [] });
+        //Si no es un error por borrado del mensaje
+        if (!error.toString().includes('messageDelete')) {
+
+            //Elimina la fila de botones
+            await navigationMenuMessage.edit({ components: [] });
+        };
 
         //Anula la página actual para abortar posibles bucles
         return newActualPage = false;

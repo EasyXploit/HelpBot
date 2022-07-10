@@ -76,7 +76,7 @@ exports.run = async (oldState, newState, client, locale) => {
                 if (!member || member.voice.mute || member.voice.deaf) return;
 
                 //Añade XP al miembro por última vez
-                await client.functions.leveling.addExperience.run(client, member, 'voice', member.voice.channelId);
+                await client.functions.leveling.addExperience.run(client, member, 'voice', member.voice.channel);
 
                 //Si el miembro no tiene tabla de stats
                 if (!client.db.stats[member.id]) {

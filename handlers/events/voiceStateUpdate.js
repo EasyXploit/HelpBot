@@ -75,8 +75,11 @@ exports.run = async (oldState, newState, client, locale) => {
                 //Si el miembro está muteado o ensordecido, no hace nada
                 if (!member || member.voice.mute || member.voice.deaf) return;
 
+                //Almacena el canal
+                const channel = await client.functions.utilities.fetch.run(client, 'channel', oldState.channelId);
+
                 //Añade XP al miembro por última vez
-                await client.functions.leveling.addExperience.run(client, member, 'voice', oldState.voice.channel);
+                await client.functions.leveling.addExperience.run(client, member, 'voice', channel);
 
                 //Si el miembro no tiene tabla de stats
                 if (!client.db.stats[member.id]) {

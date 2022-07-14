@@ -127,7 +127,7 @@ exports.run = async (client, interaction, streamType, toStream) => {
 							const fetchedUrl = await playdl.video_info(toStream);
 							metadata = fetchedUrl.video_details;
 
-						} catch (error) { 
+						} catch (error) {
 
 							//Notifica si el error se debe a una restricción de edad por falta de cookies
 							if (error.toString().includes('Sign in to confirm your age')) return await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()

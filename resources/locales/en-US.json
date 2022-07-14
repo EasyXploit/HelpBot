@@ -1604,6 +1604,7 @@
                 "mode": "Mode"
             },
             "mediaPlayer": {
+                "ageRestricted": "You cannot play age-restricted videos",
                 "finishedReproduction": "Reproduction finished",
                 "channelLeave": "I have left the channel",
                 "error": "ERROR",

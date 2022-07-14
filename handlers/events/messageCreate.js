@@ -12,8 +12,11 @@ exports.run = async (message, client, locale) => {
     //Aborta si no se permitió el mensaje
     if (!isPermitted) return;
 
+    //Aborta el resto del código si es un canal de MD
+    if (message.channel.type === 'DM' ) return;
+
     //Aumenta la cantidad de XP del miembro (si procede)
-    if (message.channel.type !== 'DM' && client.config.leveling.rewardMessages) await client.functions.leveling.addExperience.run(client, message.member, 'message', message.channel);
+    if (client.config.leveling.rewardMessages) await client.functions.leveling.addExperience.run(client, message.member, 'message', message.channel);
 
     //Si el miembro no tiene tabla de estadísticas
     if (!client.db.stats[message.member.id]) {

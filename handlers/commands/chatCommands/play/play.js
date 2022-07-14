@@ -100,8 +100,8 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Almacena el canal de texto de la interacción
             const interactionChannel = await client.functions.utilities.fetch.run(client, 'channel', interaction.channelId);
 
-            //Manda un mensaje de confirmación
-            interactionChannel.send({ content: `📥 | ${await client.functions.utilities.parseLocale.run(locale.bounded, { voiceChannel: voiceChannel, textChannel: interactionChannel })}.` });
+            //Manda un mensaje de confirmación (si procede)
+            if (!interaction.guild.me.voice.channel) interactionChannel.send({ content: `📥 | ${await client.functions.utilities.parseLocale.run(locale.bounded, { voiceChannel: voiceChannel, textChannel: interactionChannel })}.` });
 
             //Si la conexión desaparece
             connection.on(VoiceConnectionStatus.Disconnected, async () => {

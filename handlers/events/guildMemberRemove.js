@@ -4,6 +4,9 @@ exports.run = async (member, client, locale) => {
 
         //Aborta si no es un evento de la guild registrada
         if (member.guild.id !== client.homeGuild.id) return;
+
+        //Almacena la caché de registros del usuario expulsado, si existe
+        const loggingCache = (client.loggingCache && client.loggingCache[member.id]) ? client.loggingCache[member.id] : null;
         
         //Busca la última expulsión en el registro de auditoría
         const fetchedLogs = await member.guild.fetchAuditLogs({
@@ -15,7 +18,7 @@ exports.run = async (member, client, locale) => {
         const kickLog = fetchedLogs.entries.first();
         
         //Si se encontró una expulsión en el primer resultado, y han pasado menos de 5 segundos
-        if (kickLog && (kickLog.createdTimestamp > (Date.now() - 5000))) {
+        if (loggingCache || (kickLog && (kickLog.createdTimestamp > (Date.now() - 5000)))) {
 
             //Si no hubo registro, o este era inconcluso
             if (kickLog.target.id !== member.id) {
@@ -45,19 +48,20 @@ exports.run = async (member, client, locale) => {
             };
 
             //Almacena el ejecutor y la razón
-            let { executor, reason } = kickLog;
+            let executor = kickLog.executor;
+            let reason = kickLog.reason;
 
             //Si se detecta que la expulsión fue realizada por el bot
-            if (client.loggingCache && client.loggingCache[member.id] && client.loggingCache[member.id].action === 'kick') {
+            if (loggingCache && loggingCache.action === 'kick') {
 
                 //Cambia el ejecutor, por el especificado en la razón
-                executor = await client.users.fetch(client.loggingCache[member.id].executor);
+                executor = await client.users.fetch(loggingCache.executor);
 
                 //Cambia la razón provista, para contener solo el campo de razón
-                reason = client.loggingCache[member.id].reason;
+                reason = loggingCache.reason;
 
                 //Borra la caché de registros del miembro
-                delete client.loggingCache[member.id];
+                delete loggingCache;
             };
 
             //Envía un registro al canal de registros

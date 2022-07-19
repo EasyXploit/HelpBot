@@ -5,6 +5,9 @@ exports.run = async (banData, client, locale) => {
         //Aborta si no es un evento de la guild registrada
         if (banData.guild.id !== client.homeGuild.id) return;
 
+        //Almacena la caché de registros del usuario baneado, si existe
+        const loggingCache = (client.loggingCache && client.loggingCache[banData.user.id]) ? client.loggingCache[banData.user.id] : null;
+
         //Busca el último baneo en el registro de auditoría
         const fetchedLogs = await banData.guild.fetchAuditLogs({
             limit: 1,
@@ -15,7 +18,7 @@ exports.run = async (banData, client, locale) => {
         const banLog = fetchedLogs.entries.first();
         
         //Si no hubo registro, o este era inconcluso
-        if (!banLog || banLog.target.id !== banData.user.id) {
+        if (!loggingCache && (!banLog || banLog.target.id !== banData.user.id)) {
 
             //Envía un mensaje al canal de registros
             if (client.config.logging.bannedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
@@ -29,16 +32,14 @@ exports.run = async (banData, client, locale) => {
             );
 
         //Si se encontró un baneo en el primer resultado
-        } else if (banLog) {
+        } else {
 
             //Almacena el ejecutor y la razón
-            let { executor, reason } = banLog;
+            let executor = banLog.executor;
+            let reason = banLog.reason;
 
             //Almacena la expiración del baneo y los días de mensajes borrados
             let expiration, deletedDays;
-
-            //Almacena la caché de registros del usuario baneado, si existe
-            const loggingCache = (client.loggingCache && client.loggingCache[banData.user.id]) ? client.loggingCache[banData.user.id] : null;
         
             //Si se trata de una caché de baneo
             if (loggingCache && loggingCache.action.includes('ban')) {

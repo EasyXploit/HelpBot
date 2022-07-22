@@ -67,8 +67,20 @@ exports.run = async (client, interaction, customId, actualPage, totalPages, gene
 
     } else {
 
-        //Envía el mensaje por primera vez y lo almacena
-        navigationMenuMessage = await interaction.reply(response);
+        try {
+
+            //Envía el mensaje por primera vez y lo almacena (si )
+            navigationMenuMessage = await interaction.reply(response);
+
+        } catch (error) {
+
+            //Si el error se debe a que el mensaje estaba deferido
+            if (error.toString().includes('The reply to this interaction has already been sent or deferred')) {
+
+                //Edita la respuesta deferida con el mensaje y lo almacena
+                navigationMenuMessage = await interaction.editReply(response);
+            };
+        };
     };
 
     //Si solo hay una página, aborta el resto del código por que no hace falta navegación

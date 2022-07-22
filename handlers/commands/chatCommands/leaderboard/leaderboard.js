@@ -18,6 +18,9 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Almacena si el orden se ha de invertir
         let invertedOrder = type === 'antiquity' ? true : false;
 
+        //Pospone la respuesta del bot
+        await interaction.deferReply();
+
         //Por cada miembro en la base de datos de stats
         for (const memberId in client.db.stats) {
 
@@ -67,7 +70,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Almacena la última interacción del comando
         let latestInteraction;
-        
+
         do {
 
             //Almacena el primer índice del rango de páginas

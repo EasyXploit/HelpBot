@@ -1479,7 +1479,7 @@
             },
             "interactionError": {
                 "error": "ERROR",
-                "noParameters": "Ninguno",
+                "noArguments": "Ninguno",
                 "noCommandName": "No aplicable",
                 "notificationEmbed": {
                     "title": "¡Vaya! Algo fue mal",

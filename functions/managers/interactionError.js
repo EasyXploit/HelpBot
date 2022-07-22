@@ -23,7 +23,7 @@ exports.run = async (client, error, interaction) => {
     const commandName = interaction.commandName ? interaction.commandName : locale.noCommandName;
 
     //Se comprueba si se han proporcionado parámetros
-    const parameters = interaction.options._hoistedOptions[0] ? `\`\`\`${argsString}\`\`\`` : locale.noArguments;
+    const arguments = interaction.options._hoistedOptions[0] ? `\`\`\`${argsString}\`\`\`` : locale.noArguments;
 
     //Genera un embed de notificación
     const notificationEmbed = new client.MessageEmbed()
@@ -55,7 +55,7 @@ exports.run = async (client, error, interaction) => {
         .addField(locale.debuggingEmbed.channel, `<@${interaction.channelId}>`, true)
         .addField(locale.debuggingEmbed.author, interaction.member.user.tag, true)
         .addField(locale.debuggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
-        .addField(locale.debuggingEmbed.noParameters, parameters)
+        .addField(locale.debuggingEmbed.arguments, arguments)
         .addField(locale.debuggingEmbed.error, `\`\`\`${errorString}\`\`\``)
         .setFooter({ text: locale.debuggingEmbed.footer })
     );

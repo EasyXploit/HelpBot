@@ -1479,7 +1479,7 @@
             },
             "interactionError": {
                 "error": "ERROR",
-                "noParameters": "None",
+                "noArguments": "None",
                 "noCommandName": "Non aplicable",
                 "notificationEmbed": {
                     "title": "Oops! Something went wrong",

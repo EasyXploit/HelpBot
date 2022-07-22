@@ -38,8 +38,9 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 };
 
 module.exports.config = {
-    type: 'guild',
+    type: 'global',
     defaultPermission: true,
+    dmPermission: false,
     appData: {
         type: 'CHAT_INPUT'
     }

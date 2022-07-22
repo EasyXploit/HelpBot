@@ -241,8 +241,9 @@ exports.autocomplete = async (client, interaction, command, locale) => {
 };
 
 module.exports.config = {
-    type: 'guild',
+    type: 'global',
     defaultPermission: false,
+    dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',
         options: [

@@ -1721,6 +1721,7 @@
             "registeredOnGuild": "Comando {{command}} registrado en {{guildName}}",
             "parametersUpdated": "El comando {{command}} ha actualizado sus parámetros",
             "defaultPermUpdated": "El comando {{command}} ha actualizado su permiso por defecto",
+            "dmPermUpdated": "El comando {{command}} ha actualizado su permiso para ser usado mediante MD",
             "loadedCorrectly": "Comando {{command}} cargado correctamente"
         },
         "loadSystem": {

@@ -217,7 +217,8 @@ exports.run = async (client) => {
                     description: localCmd.appData.description,
                     type: localCmd.appData.type,
                     options: localCmd.appData.options,
-                    defaultPermission: localCmd.defaultPermission
+                    defaultPermission: localCmd.defaultPermission,
+                    dmPermission: localCmd.dmPermission
                 });
 
                 //Almacena el mensaje para la confirmación
@@ -264,6 +265,18 @@ exports.run = async (client) => {
     
                     //Envía un mensaje de confirmación por consola
                     console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.defaultPermUpdated, { command: `[${commandType}/${localCmd.appData.name}]` })}.`);
+                };
+
+                //Comprueba si el permiso de uso mediante MD es el mismo que el registrado
+                if (remoteCmd.dmPermission !== localCmd.dmPermission) {
+                    
+                    //Actualiza el permiso de uso mediante MD
+                    await remoteCmd.edit({
+                        dmPermission: localCmd.dmPermission
+                    });
+    
+                    //Envía un mensaje de confirmación por consola
+                    console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.dmPermUpdated, { command: `[${commandType}/${localCmd.appData.name}]` })}.`);
                 };
             };
 

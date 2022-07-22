@@ -337,8 +337,9 @@ exports.autocomplete = async (client, interaction, command, locale) => {
 
 //Exporta la configuración del comando
 module.exports.config = {
-    type: 'guild',
+    type: 'global',
     defaultPermission: true,
+    dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',
         options: [

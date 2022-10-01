@@ -956,11 +956,11 @@
                             },
                             "upload": {
                                 "name": "subir",
-                                "description": "Sube un fichero .mp3 o .ogg al directorio de audios",
+                                "description": "Sube un fichero .mp3, .opus o .ogg al directorio de audios",
                                 "options": {
                                     "attachment": {
                                         "name": "adjunto",
-                                        "description": "Carga un fichero .mp3 o .ogg"
+                                        "description": "Carga un fichero .mp3, .opus o .ogg"
                                     },
                                     "name": {
                                         "name": "nombre",
@@ -988,7 +988,7 @@
                         "title": "Lista de audios"
                     },
                     "cantUpload": "No tienes permiso para subir audios",
-                    "wrongFormat": "El fichero debe tener extensión `.mp3` o `.ogg`",
+                    "wrongFormat": "El fichero debe tener extensión `.mp3`, `.opus` o `.ogg`",
                     "maxDirectorySizeReached": "Se ha alcanzado el espacio máximo global permitdo de {{maxDirectorySize}}",
                     "alreadyExists": "Ya existe un audio con el nombre {{audioName}}",
                     "maxFileSize": "El tamaño máximo de archivo es de {{maxFileSize}}",

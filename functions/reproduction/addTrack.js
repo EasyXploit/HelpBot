@@ -28,6 +28,7 @@ exports.run = async (client, reproductionQueue, silentMode, contentType, request
                 };
                 break;
             case 'mp3':
+            case 'opus':
             case 'ogg':
                 newTrack = {
                     type: contentType,

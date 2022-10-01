@@ -166,7 +166,7 @@ exports.run = async (client, interaction, connection) => {
                     };
                 };
 
-            } else if (['mp3', 'ogg'].includes(reproductionQueue.tracks[toPlay].type)) { //Si es un archivo local
+            } else if (['mp3', 'ogg', 'opus'].includes(reproductionQueue.tracks[toPlay].type)) { //Si es un archivo local
 
                 //Almacena el formato del audio elegido
                 const fileFormat = client.db.audios[reproductionQueue.tracks[toPlay].meta.title].format;

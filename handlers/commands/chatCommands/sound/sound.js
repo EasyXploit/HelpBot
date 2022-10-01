@@ -8,7 +8,7 @@ let fileNames = fs.readdirSync('./storage/audios/');
 let soundList = [];
 
 //Para cada archivo, almacena su nombre sin extensión en el array "soundList"
-for (let file = 0; file < fileNames.length; file ++) soundList.push(fileNames[file].replace('.mp3', '').replace('.ogg', ''));
+for (let file = 0; file < fileNames.length; file ++) soundList.push(fileNames[file].replace('.mp3', '').replace('.ogg', '').replace('.opus', ''));
 
 //Exporta la función para ser ejecutada
 exports.run = async (client, interaction, commandConfig, locale) => {
@@ -41,7 +41,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             const url = interaction.options._hoistedOptions[0].attachment.url;
 
             //Si el fichero no tiene extensión .mp3 o .ogg, devuelve un error
-            if (!url.endsWith('.mp3') && !url.endsWith('.ogg')) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            if (!url.endsWith('.mp3') && !url.endsWith('.ogg') && !url.endsWith('.opus')) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} ${locale.wrongFormat}.`)
             ], ephemeral: true});

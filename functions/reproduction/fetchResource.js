@@ -71,7 +71,7 @@ exports.run = async (client, interaction, streamType, toStream) => {
 		};
 	
 		//Comprueba si se quiere reproducir un audio local o un streaming de internet
-		if (['mp3', 'ogg'].includes(streamType)) {
+		if (['mp3', 'ogg', 'opus'].includes(streamType)) {
 	
 			//Herramienta para obtener la duración de la pista
 			const { getAudioDurationInSeconds } = require('get-audio-duration');

@@ -956,11 +956,11 @@
                             },
                             "upload": {
                                 "name": "upload",
-                                "description": "Upload a .mp3 or .ogg file to the audio directory",
+                                "description": "Upload a .mp3, .opus or .ogg file to the audio directory",
                                 "options": {
                                     "attachment": {
                                         "name": "adjunto",
-                                        "description": "Upload a .mp3 or .ogg file"
+                                        "description": "Upload a .mp3, .opus or .ogg file"
                                     },
                                     "name": {
                                         "name": "name",
@@ -988,7 +988,7 @@
                         "title": "List of audios"
                     },
                     "cantUpload": "You don't have permission to upload audio",
-                    "wrongFormat": "The file must have the extension `.mp3` or `.ogg`",
+                    "wrongFormat": "The file must have the extension `.mp3`, `.opus` or `.ogg`",
                     "maxDirectorySizeReached": "The global maximum allowed space of {{maxDirectorySize}} has been reached",
                     "alreadyExists": "An audio with the name {{audioName}} already exists",
                     "maxFileSize": "The maximum file size is {{maxFileSize}}",

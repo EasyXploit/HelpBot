@@ -43,7 +43,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Si el fichero no tiene extensión .mp3 o .ogg, devuelve un error
             if (!url.endsWith('.mp3') && !url.endsWith('.ogg')) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
-                .setDescription(`${client.customEmojis.redTick} ${wrongFormat}.`)
+                .setDescription(`${client.customEmojis.redTick} ${locale.wrongFormat}.`)
             ], ephemeral: true});
 
             //Almacena el nombre que tendrá el fichero de audio

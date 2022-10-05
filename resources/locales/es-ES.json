@@ -531,7 +531,7 @@
                 "purge": {
                     "appData": {
                         "name": "purgar",
-                        "description": "Elimina una cierta cantidad de mensajes en un canal (siempre que tenga menos de 14 días de antiguedad)",
+                        "description": "Elimina una cierta cantidad de mensajes en un canal (siempre que tenga menos de 14 días de antigüedad)",
                         "options": {
                             "quantity": {
                                 "name": "cantidad",

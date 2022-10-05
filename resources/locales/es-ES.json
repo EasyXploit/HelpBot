@@ -776,7 +776,7 @@
                 "send": {
                     "appData": {
                         "name": "enviar",
-                        "description": "El bot enviará un mensaje al canal de texto actual",
+                        "description": "El bot enviará un mensaje al canal de texto actual o el especificado, con o sin formato incrustado",
                         "options": {
                             "type": {
                                 "name": "tipo",

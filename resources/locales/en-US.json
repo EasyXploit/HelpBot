@@ -776,7 +776,7 @@
                 "send": {
                     "appData": {
                         "name": "send",
-                        "description": "The bot will send a message to the current text channel, with or without embedded formatting",
+                        "description": "The bot will send a message to the current or the specified text channel, with or without embedded formatting",
                         "options": {
                             "type": {
                                 "name": "type",

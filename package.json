@@ -27,6 +27,7 @@
     "bufferutil": "^4.0.6",
     "discord.js": "^13.9.1",
     "get-audio-duration": "^3.1.0",
+    "inquirer": "^9.1.4",
     "libsodium-wrappers": "^0.7.10",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",

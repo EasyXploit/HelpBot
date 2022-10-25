@@ -1,0 +1,25 @@
+version: "3" # version de docker-compose
+services:
+    bot:
+        container_name: helpbot_beta
+        # restart: always # si el contenedor falla, lo reinicia
+        image: easyxploit/helpbot
+        build: .
+        links:
+            - mongodb
+        volumes:
+            - .:/usr/src/helpbot
+    mongodb:
+            container_name: mongodb
+            image: mongo:6.0
+            # environment:
+                # - MONGO_INITDB_DATABASE=demo1
+                # - MONGO_INITDB_ROOT_USERNAME=demouser
+                # - MONGO_INITDB_ROOT_PASSWORD=demopassword
+            # command: mongod --quiet --logpath /dev/null 
+            volumes:
+                # script de configuración de mongodb (lo de antes de los : puntos es la ruta en el host, lo de después, la ruta en docker [bind volume])
+                # - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro # no --auth is needed here as presence of username and password add this option automatically
+                - /data/db
+            ports:
+            - '27020:27017' # externo:interno

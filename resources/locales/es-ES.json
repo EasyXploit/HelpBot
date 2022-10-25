@@ -15,7 +15,8 @@
         "uncompleteEventsLoad": "ERROR: No se ha podido completar la carga de los eventos",
         "eventLoaded": "Evento",
         "loggingIn": "Iniciando sesión",
-        "loggedIn": "¡Sesion iniciada correctamente!"
+        "loggedIn": "¡Sesion iniciada correctamente!",
+        "couldNotLogIn": "No ha sido posible iniciar sesión. Comprueba si el token de inicio de sesión es válido"
     },
     "handlers": {
         "buttons": {

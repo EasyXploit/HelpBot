@@ -15,7 +15,8 @@
         "uncompleteEventsLoad": "ERROR: Failed to complete events load",
         "eventLoaded": "Event",
         "loggingIn": "Logging in",
-        "loggedIn": "Logged in successfully!"
+        "loggedIn": "Logged in successfully!",
+        "couldNotLogIn": "Login failed. Check if the login token is valid"
     },
     "handlers": {
         "buttons": {

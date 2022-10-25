@@ -18,4 +18,4 @@ RUN apk add ffmpeg
 COPY . /usr/src/helpbot
 
 # Starts the bot.
-CMD ["npm", "run", "devStart"]
+CMD ["npm", "run", "dockerDevStart"]

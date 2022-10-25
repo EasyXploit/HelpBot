@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "devStart": "nodemon index.js",
+    "dockerDevStart": "nodemon --legacy-watch index.js",
     "debug": "nodemon --trace-warnings index.js"
   },
   "repository": {

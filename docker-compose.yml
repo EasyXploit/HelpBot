@@ -1,25 +1,28 @@
-version: "3" # version de docker-compose
+# Será neecsario ajustar las composiciones en función del entorno
+# https://docs.docker.com/compose/production/
+
+# Queda pendiente uniformar el versionado de las imágenes
+
+version: "3" # Versión de Docker Compose
 services:
     bot:
         container_name: helpbot_beta
-        # restart: always # si el contenedor falla, lo reinicia
+        # restart: always # Si el contenedor falla, lo reinicia (sólo debería usarse en producción)
         image: easyxploit/helpbot
         build: .
         links:
             - mongodb
         volumes:
-            - .:/usr/src/helpbot
+            - .:/usr/src/helpbot # Para poder modificar el código en ejecución con Nodemon
     mongodb:
             container_name: mongodb
             image: mongo:6.0
-            # environment:
-                # - MONGO_INITDB_DATABASE=demo1
-                # - MONGO_INITDB_ROOT_USERNAME=demouser
-                # - MONGO_INITDB_ROOT_PASSWORD=demopassword
-            # command: mongod --quiet --logpath /dev/null 
+            # environment: # No parece necesario, dado que se crea mediante un script
+                # - MONGO_INITDB_DATABASE=demo_database
+                # - MONGO_INITDB_ROOT_USERNAME=demo_user
+                # - MONGO_INITDB_ROOT_PASSWORD=demo_password
+            # command: mongod --quiet --logpath /dev/null  # No funciona (buscar alternativa para ofuscar los logs de MongoDB)
             volumes:
-                # script de configuración de mongodb (lo de antes de los : puntos es la ruta en el host, lo de después, la ruta en docker [bind volume])
-                # - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro # no --auth is needed here as presence of username and password add this option automatically
-                - /data/db
+                - /data/db # Si no hay parte anterior a los :, quiere decir que se usa un directorio anónimo del host
             ports:
-            - '27020:27017' # externo:interno
+            - '27020:27017' # Puertos: externo:interno

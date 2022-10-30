@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "devStart": "nodemon index.js",
+    "dockerDevStart": "nodemon --legacy-watch index.js",
     "debug": "nodemon --trace-warnings index.js"
   },
   "repository": {
@@ -27,9 +28,11 @@
     "bufferutil": "^4.0.6",
     "discord.js": "^13.9.1",
     "get-audio-duration": "^3.1.0",
+    "inquirer": "^9.1.4",
     "libsodium-wrappers": "^0.7.10",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
+    "mongoose": "^6.6.5",
     "nanoid": "^4.0.0",
     "play-dl": "^1.9.6",
     "randomcolor": "^0.6.2"

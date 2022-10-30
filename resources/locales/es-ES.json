@@ -1573,6 +1573,9 @@
                     "reasonTitle": "Razón",
                     "reasonDescription": "Tu nombre de usuario contiene una palabra prohibida en la comunidad"
                 }
+            },
+            "checkMessage": {
+                "filteredDm": "vía MD"
             }
         },
         "reproduction": {

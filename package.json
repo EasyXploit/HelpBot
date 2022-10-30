@@ -34,7 +34,7 @@
     "md5": "^2.3.0",
     "mongoose": "^6.6.5",
     "nanoid": "^4.0.0",
-    "play-dl": "^1.9.5",
+    "play-dl": "^1.9.6",
     "randomcolor": "^0.6.2"
   },
   "devDependencies": {

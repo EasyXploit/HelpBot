@@ -39,7 +39,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             });
 
             //Envía un mensaje al canal de la infracción
-            await channel.send({ embeds: [ new client.MessageEmbed()
+            if (channel.type !== 'DM') await channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
                 .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(oldExpiration ? locale.muteFunction.notificationEmbed.initiated : locale.muteFunction.notificationEmbed.extended, { memberTag: member.user.tag })}`)
             ]});
@@ -49,7 +49,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
         async function kick() {
 
             //Envía un mensaje al canal de la infracción
-            await channel.send({ embeds: [ new client.MessageEmbed()
+            if (channel.type !== 'DM') await channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
                 .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(locale.kickFunction.notificationEmbed, { memberTag: member.user.tag })}`)
             ]});
@@ -100,7 +100,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             if (duration) client.loggingCache[member.id].until = Date.now() + duration;
 
             //Envía un mensaje al canal de la infracción
-            await channel.send({ embeds: [ new client.MessageEmbed()
+            if (channel.type !== 'DM') await channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
                 .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(locale.banFunction.notificationEmbed, { memberTag: member.user.tag })}`)
             ]});
@@ -154,7 +154,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             } else {
 
                 //Envía un mensaje con la advertencia
-                await message.channel.send({ embeds: [ new client.MessageEmbed()
+                if (channel.type !== 'DM') await message.channel.send({ embeds: [ new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(locale.warn.notificationEmbed, { memberTag: member.user.tag, warnReason: warnReason })}.`)
                 ]});

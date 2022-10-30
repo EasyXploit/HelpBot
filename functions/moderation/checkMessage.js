@@ -1,6 +1,9 @@
 //Función apara comprobar el contenido de los mensajes enviados
 exports.run = async (client, message) => {
 
+    //Almacena las traducciones
+    const locale = client.locale.functions.moderation.checkMessage;
+
     //Carga los filtros de automoderación
     const filters = client.config.automodFilters;
 

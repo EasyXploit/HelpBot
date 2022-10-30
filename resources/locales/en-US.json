@@ -1573,6 +1573,9 @@
                     "reasonTitle": "Reason",
                     "reasonDescription": "Your username contains a word that is banned in the community"
                 }
+            },
+            "checkMessage": {
+                "filteredDm": "via DM"
             }
         },
         "reproduction": {

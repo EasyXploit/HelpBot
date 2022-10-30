@@ -4,9 +4,6 @@ const locale = require(`./resources/locales/${require('./configs/main.json').loc
 //Muestra el logo de arranque en la consola
 require('./lifecycle/splashLogo.js').run(locale.lifecycle.splashLogo);
 
-//Carga del sistema gestor de bases de datos
-require('./lifecycle/loadDatabase.js').run();
-
 //CARGA DE CLIENTE
 //Carga una nueva instancia de cliente en Discord
 console.log(`${locale.index.startingClient} ...`);

@@ -29,7 +29,7 @@ exports.run = async (member, client, locale) => {
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.inconclusiveLoggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                     .addField(locale.inconclusiveLoggingEmbed.memberId, member.id, true)
                     .addField(locale.inconclusiveLoggingEmbed.moderator, locale.inconclusiveLoggingEmbed.unknownModerator, true)
-                    .addField(locale.inconclusiveLoggingEmbed.reason, locale.inconclusiveLoggingEmbed.undefinedReason, true)
+                    .addField(locale.inconclusiveLoggingEmbed.reason, locale.inconclusiveLoggingEmbed.unknownReason, true)
                 );
             };
         

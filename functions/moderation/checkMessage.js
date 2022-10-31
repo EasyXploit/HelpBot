@@ -174,8 +174,14 @@ exports.run = async (client, message) => {
             //Filtro de texto repetitivo
             case 'repeatedText':
 
+                //Almacena una copia del mensaje sin emojis UTF
+                const messageWithoutUTFEmojis = message.content.replace(/([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g, '');
+
+                //Almacena una copia del mensaje sin ningún tipo de emoji
+                const messageWithoutEmojis = messageWithoutUTFEmojis.replace(new RegExp(/<:.+?:\d+>/g), "");
+
                 //Comprueba si el mensaje contenía texto repetitivo
-                match = new RegExp(`^(.+)(?: +\\1){${filters.repeatedText.maxRepetitions}}`).test(message.content);
+                match = new RegExp(`^(.+)(?: +\\1){${filters.repeatedText.maxRepetitions}}`).test(messageWithoutEmojis);
                 
                 //Para el switch
                 break;

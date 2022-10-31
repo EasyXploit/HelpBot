@@ -1400,7 +1400,7 @@
                     },
                     "privateEmbed": {
                         "author": "[SILENCIADO]",
-                        "description": "{{member}}, has sido silenciado en {{guildName}",
+                        "description": "{{member}}, has sido silenciado en {{guildName}}",
                         "moderator": "Moderador",
                         "unknownModerator": "Desconocido",
                         "reason": "Razón",
@@ -1419,7 +1419,7 @@
                     },
                     "privateEmbed": {
                         "author": "[DES-SILENCIADO]",
-                        "description": "{{member}}, has sido des-silenciado en {{guildName}",
+                        "description": "{{member}}, has sido des-silenciado en {{guildName}}",
                         "moderator": "Moderador",
                         "unknownModerator": "Desconocido",
                         "reason": "Razón",
@@ -1673,7 +1673,7 @@
                 },
                 "privateEmbed": {
                     "author": "[DES-SILENCIADO]",
-                    "description": "{{member}}, has sido des-silenciado en {{guildName}",
+                    "description": "{{member}}, has sido des-silenciado en {{guildName}}",
                     "moderator": "Moderador",
                     "reason": "Razón"
                 },

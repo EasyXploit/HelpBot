@@ -1400,7 +1400,7 @@
                     },
                     "privateEmbed": {
                         "author": "[MUTED]",
-                        "description": "{{member}}, you have been muted on {{guildName}",
+                        "description": "{{member}}, you have been muted on {{guildName}}",
                         "moderator": "Moderator",
                         "unknownModerator": "Unknown",
                         "reason": "Reason",
@@ -1419,7 +1419,7 @@
                     },
                     "privateEmbed": {
                         "author": "[UN-MUTED]",
-                        "description": "{{member}}, you have been unmuted on {{guildName}",
+                        "description": "{{member}}, you have been unmuted on {{guildName}}",
                         "moderator": "Moderator",
                         "unknownModerator": "Unknown",
                         "reason": "Reason",
@@ -1673,7 +1673,7 @@
                 },
                 "privateEmbed": {
                     "author": "[UN-MUTED]",
-                    "description": "{{member}}, you have been unmuted on {{guildName}",
+                    "description": "{{member}}, you have been unmuted on {{guildName}}",
                     "moderator": "Moderator",
                     "reason": "Reason"
                 },

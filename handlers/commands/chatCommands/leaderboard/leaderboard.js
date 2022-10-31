@@ -21,14 +21,17 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Pospone la respuesta del bot
         await interaction.deferReply();
 
+        //Almacena la caché de los miembros de la guild
+        const guildMembers = await client.homeGuild.members.fetch();
+
         //Por cada miembro en la base de datos de stats
         for (const memberId in client.db.stats) {
 
             //Almacena las stats del miembro iterado
             const memberStats = client.db.stats[memberId];
 
-            //Busca el miembro en la guild
-            const member = await client.functions.utilities.fetch.run(client, 'member', memberId);
+            //Busca el miembro en la guild, pasándole caché a la función
+            const member = await client.functions.utilities.fetch.run(client, 'member', memberId, null, guildMembers);
 
             //Si el miembro no estaba en la guild y no se debe mostrar, lo omite
             if (commandConfig.hideNotPresent && !member) continue;

@@ -59,6 +59,7 @@
         "action": 3,
         "reason": "Repetitive text",
         "bypassIds": [],
-        "bypassChannels": []
+        "bypassChannels": [],
+        "maxRepetitions": 5
     }
 }

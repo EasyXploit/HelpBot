@@ -175,7 +175,7 @@ exports.run = async (client, message) => {
             case 'repeatedText':
 
                 //Comprueba si el mensaje contenía texto repetitivo
-                match = new RegExp(/^(.+)(?: +\1){3}/).test(message.content);
+                match = new RegExp(`^(.+)(?: +\\1){${filters.repeatedText.maxRepetitions}}`).test(message.content);
                 
                 //Para el switch
                 break;

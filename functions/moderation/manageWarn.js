@@ -14,7 +14,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
 
             //Almacena el silenciamiento en la BD
             client.db.mutes[member.id] = {
-                until: duration ? Date.now() + duration : null,
+                until: Date.now() + duration,
                 moderator: client.user.id
             };
 
@@ -41,7 +41,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             //Envía un mensaje al canal de la infracción
             if (channel.type !== 'DM') await channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
-                .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(oldExpiration ? locale.muteFunction.notificationEmbed.initiated : locale.muteFunction.notificationEmbed.extended, { memberTag: member.user.tag })}`)
+                .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(oldExpiration ? locale.muteFunction.notificationEmbed.extended : locale.muteFunction.notificationEmbed.initiated, { memberTag: member.user.tag })}`)
             ]});
         };
 
@@ -237,8 +237,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
 
                     //Ejecuta la acción de moderación que corresponda
                     switch (rule.action) {
-                        case 'tempmute':    mute(rule.duration);    break;
-                        case 'mute':        mute();                 break;
+                        case 'mute':        mute(rule.duration);    break;
                         case 'kick':        kick();                 break;
                         case 'tempban':     ban(rule.duration);     break;
                         case 'ban':         ban();                  break;

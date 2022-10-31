@@ -1,12 +1,13 @@
 [
     {
-        "action": "tempmute",
+        "action": "mute",
         "duration": 43200000,
         "quantity": 3,
         "age": 86400000
     },
     {
         "action": "mute",
+        "duration": 604800000,
         "quantity": 5,
         "age": 604800000
     },

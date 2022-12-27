@@ -4,6 +4,8 @@
     "loggingChannel": "",
     "debuggingChannel": "",
     "joinsAndLeavesChannel": "",
+    "voiceMovesChannel": "",
+    "voiceMovesExcludedChannels": [],
     "newMemberMode": "before",
     "newBotRole": "",
     "newMemberRole": "",

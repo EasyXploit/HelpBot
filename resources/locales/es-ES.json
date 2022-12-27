@@ -1256,11 +1256,18 @@
                         "newValue": "Nuevo valor"
                     },
                     "privateEmbed": {
-                        "author": "[EXP MODIFICADA]",
-                        "description": "{{member}}, tu cantidad de EXP ha sido modificada",
-                        "moderator": "Moderador",
-                        "oldValue": "Valor anterior",
-                        "newValue": "Nuevo valor"
+                        "reset": {
+                            "author": "Se han REINICIADO tus puntos de experiencia",
+                            "description": "**{{moderatorTag}}** ha eliminado todos tus puntos de EXP.\nAhora tienes `0` puntos de EXP"
+                        },
+                        "increased": {
+                            "author": "Has RECIBIDO puntos de experiencia",
+                            "description": "**{{moderatorTag}}** te ha dado `{{givenExp}}` puntos de EXP.\nAhora tienes `{{newXP}}` puntos de EXP"
+                        },
+                        "decreased": {
+                            "author": "Has PERDIDO puntos de experiencia",
+                            "description": "**{{moderatorTag}}** te ha quitado `{{removedXP}}` puntos de EXP.\nAhora tienes `{{newXP}}` puntos de EXP"
+                        }
                     },
                     "notificationEmbed": "Se ha modificado la cantidad de puntos de experiencia del miembro **{{memberTag}}**"
                 }
@@ -1440,13 +1447,6 @@
                 "error": "ERROR"
             },
             "voiceStateUpdate": {
-                "voiceMovesLoggingEmbed": {
-                    "author": "{{memberTag}} ha modificado su canal de voz",
-                    "noChannel" : "Ninguno",
-                    "oldChannel": "Anterior canal",
-                    "newChannel": "Nuevo canal",
-                    "actualMembers": "Miembros del nuevo canal"
-                },
                 "leftWhenIdle": "He abandonado el canal y borrado la cola"
             },
             "warn": {

@@ -1256,11 +1256,18 @@
                         "newValue": "New value"
                     },
                     "privateEmbed": {
-                        "author": "[XP CHANGED]",
-                        "description": "{{member}}, your experience points amount has changed",
-                        "moderator": "Moderator",
-                        "oldValue": "Old value",
-                        "newValue": "New value"
+                        "reset": {
+                            "author": "Your experience points have been RESET",
+                            "description": "**{{moderatorTag}}** has removed all your XP.\nYou now have `0` XP"
+                        },
+                        "increased": {
+                            "author": "You have RECEIVED experience points",
+                            "description": "**{{moderatorTag}}** has given you `{{givenExp}}` XP.\nYou now have `{{newXP}}` XP"
+                        },
+                        "decreased": {
+                            "author": "You have LOST experience points",
+                            "description": "**{{moderatorTag}}** has removed `{{removedXP}}` XP from you.\nYou now have `{{newXP}}` XP"
+                        }
                     },
                     "notificationEmbed": "The experience points amount of **{{memberTag}}** has changed"
                 }
@@ -1440,13 +1447,6 @@
                 "error": "ERROR"
             },
             "voiceStateUpdate": {
-                "voiceMovesLoggingEmbed": {
-                    "author": "{{memberTag}} has modified it's voice channel",
-                    "noChannel" : "None",
-                    "oldChannel": "Previous channel",
-                    "newChannel": "New channel",
-                    "actualMembers": "New channel members"
-                },
                 "leftWhenIdle": "I have left the channel and deleted the queue"
             },
             "warn": {

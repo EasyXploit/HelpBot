@@ -1,3 +1,5 @@
+const { zip } = require("lodash");
+
 exports.run = async (client, interaction, commandConfig, locale) => {
     
     try {
@@ -180,17 +182,38 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             await interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
                 .setDescription(`${client.customEmojis.greenTick} ${await client.functions.utilities.parseLocale.run(locale.notificationEmbed, { memberTag: member.user.tag })}.`)
-            ]});
+            ], ephemeral: true});
 
-            //Envía una notificación al miembro
-            await member.send({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.correct)
-                .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-                .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.description, { member: member })}.`)
-                .addField(locale.privateEmbed.moderator, interaction.user.tag, true)
-                .addField(locale.privateEmbed.oldValue, oldValue.toString(), true)
-                .addField(locale.privateEmbed.newValue, newValue.toString(), true)
-            ]});
+            //Si se le han vaciado los puntos de EXP al miembro
+            if (newValue === 0) {
+
+                //Envía al miembro una notificación por mensaje privado
+                await member.send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.primary)
+                    .setAuthor({ name: locale.privateEmbed.reset.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
+                    .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.reset.description, { moderatorTag: interaction.user.tag })}.`)
+                ]});
+
+            //Si se le han aumentado los puntos de EXP al miembro
+            } else if (newValue > oldValue) {
+
+                //Envía al miembro una notificación por mensaje privado
+                await member.send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.primary)
+                    .setAuthor({ name: locale.privateEmbed.increased.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
+                    .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.increased.description, { moderatorTag: interaction.user.tag, givenExp: providedValue, newXP: newValue.toString() })}.`)
+                ]});
+
+            //Si se le han reducido los puntos de EXP al miembro
+            } else if (newValue < oldValue) {
+
+                //Envía al miembro una notificación por mensaje privado
+                await member.send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.primary)
+                    .setAuthor({ name: locale.privateEmbed.decreased.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
+                    .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.decreased.description, { moderatorTag: interaction.user.tag, removedXP: providedValue, newXP: newValue.toString() })}.`)
+                ]});
+            };
         });
         
     } catch (error) {

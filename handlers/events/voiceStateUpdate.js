@@ -25,10 +25,10 @@ exports.run = async (oldState, newState, client, locale) => {
             if (newState.channelId && !client.config.main.voiceMovesExcludedChannels.includes(newState.channelId)) {
 
                 //Genera y almacena un array con los tags de los miembros de dicho canal
-                const channelMembers = Array.from(newState.channel.members, member => newState.channel.members.get(member[0]).user.tag);
+                const channelMembers = Array.from(newState.channel.members, member => newState.channel.members.get(member[0]));
 
                 //Añade un bloque de código con los tags de los miembros del canal al embed de registro
-                embedFields.push({ name: `${await client.functions.utilities.parseLocale.run(locale.voiceMovesLoggingEmbed.actualMembers)} (${newState.channel.members.size}/${newState.channel.userLimit != 0 ? newState.channel.userLimit : '∞'})`, value: `\`\`\`${channelMembers.join(', ')}\`\`\``});
+                embedFields.push({ name: `${await client.functions.utilities.parseLocale.run(locale.voiceMovesLoggingEmbed.actualMembers)} (${newState.channel.members.size}/${newState.channel.userLimit != 0 ? newState.channel.userLimit : '∞'})`, value: `${channelMembers.join(', ')}`});
             };
     
             //Se formatea y envía un registro al canal especificado en la configuración

@@ -8,7 +8,10 @@ exports.run = async (oldState, newState, client, locale) => {
         // ---- VOICE MOVES (DEV BUILD) ----
 
         //
-        if (client.config.logging.voiceMoves && !(client.config.main.voiceMovesExcludedChannels.includes(oldState.channelId) && client.config.main.voiceMovesExcludedChannels.includes(newState.channelId))) {
+        voiceMovesIf: if (client.config.logging.voiceMoves && !(client.config.main.voiceMovesExcludedChannels.includes(oldState.channelId) && client.config.main.voiceMovesExcludedChannels.includes(newState.channelId))) {
+
+            //
+            if (oldState.channelId === newState.channelId) break voiceMovesIf;
 
             //
             const oldChannel = oldState.channelId && !client.config.main.voiceMovesExcludedChannels.includes(oldState.channelId) ? `<#${oldState.channel.id}>` : `\`Ninguno\``;

@@ -5,6 +5,41 @@ exports.run = async (oldState, newState, client, locale) => {
         //Aborta si no es un evento de la guild registrada
         if (oldState.guild.id !== client.homeGuild.id) return;
 
+        //Si el registro de cambios de canal de voz está activado, y no ocurrió un cambio entre canales ignorados
+        voiceMovesIf: if (client.config.logging.voiceMoves && !(client.config.main.voiceMovesExcludedChannels.includes(oldState.channelId) && client.config.main.voiceMovesExcludedChannels.includes(newState.channelId))) {
+
+            //Omite si solo se trata de un cambio que no implique cambio de canal
+            if (oldState.channelId === newState.channelId) break voiceMovesIf;
+
+            //Almacena los campos de anterior y nuevo canal, ofuscando los canales ignorados
+            const oldChannel = oldState.channelId && !client.config.main.voiceMovesExcludedChannels.includes(oldState.channelId) ? `<#${oldState.channel.id}>` : `\`${await client.functions.utilities.parseLocale.run(locale.voiceMovesLoggingEmbed.noChannel)}\``;
+            const newChannel = newState.channelId && !client.config.main.voiceMovesExcludedChannels.includes(newState.channelId) ? `<#${newState.channel.id}>` : `\`${await client.functions.utilities.parseLocale.run(locale.voiceMovesLoggingEmbed.noChannel)}\``;
+
+            //Genera los campos de anterior y nuevo canal para el embed de registros
+            let embedFields = [
+                { name: await client.functions.utilities.parseLocale.run(locale.voiceMovesLoggingEmbed.oldChannel), value: oldChannel, inline: true },
+                { name: await client.functions.utilities.parseLocale.run(locale.voiceMovesLoggingEmbed.newChannel), value: newChannel, inline: true }
+            ];
+
+            //Si hay un nuevo canal para el miemmbro y este no está ignorado
+            if (newState.channelId && !client.config.main.voiceMovesExcludedChannels.includes(newState.channelId)) {
+
+                //Genera y almacena un array con los tags de los miembros de dicho canal
+                const channelMembers = Array.from(newState.channel.members, member => newState.channel.members.get(member[0]));
+
+                //Añade un bloque de código con los tags de los miembros del canal al embed de registro
+                embedFields.push({ name: `${await client.functions.utilities.parseLocale.run(locale.voiceMovesLoggingEmbed.actualMembers)} (${newState.channel.members.size}/${newState.channel.userLimit != 0 ? newState.channel.userLimit : '∞'})`, value: `${channelMembers.join(', ')}`});
+            };
+    
+            //Se formatea y envía un registro al canal especificado en la configuración
+            await client.voiceMovesChannel.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.logging)
+                .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.voiceMovesLoggingEmbed.author, { memberTag: newState.member.user.tag }), iconURL: newState.member.user.displayAvatarURL({dynamic: true}) })
+                .setFields(embedFields)
+                .setTimestamp()
+            ]});
+        };
+
         //Si el bot está conectado
         if (newState.guild.me.voice.channelId) {
 

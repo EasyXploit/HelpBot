@@ -21,7 +21,7 @@ exports.run = async (client, locale) => {
                 const config = mainConfigs[index];
 
                 //Comprueba de qué forma tiene que cargar cada configuración
-                if (config.toLowerCase().includes('channel')) { //Si es config. de canal
+                if (config.toLowerCase().includes('channel') && !config.toLowerCase().includes('channels')) { //Si es config. de canal
 
                     try {
 

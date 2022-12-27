@@ -1440,6 +1440,13 @@
                 "error": "ERROR"
             },
             "voiceStateUpdate": {
+                "voiceMovesLoggingEmbed": {
+                    "author": "{{memberTag}} has modified it's voice channel",
+                    "noChannel" : "None",
+                    "oldChannel": "Previous channel",
+                    "newChannel": "New channel",
+                    "actualMembers": "New channel members"
+                },
                 "leftWhenIdle": "I have left the channel and deleted the queue"
             },
             "warn": {

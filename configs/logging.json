@@ -17,5 +17,6 @@
     "experienceModified": true,
     "memberJoined": true,
     "botJoined": true,
-    "memberLeaved": true
+    "memberLeaved": true,
+    "voiceMoves": true
 }

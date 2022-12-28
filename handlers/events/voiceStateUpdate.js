@@ -11,6 +11,10 @@ exports.run = async (oldState, newState, client, locale) => {
             //Omite si solo se trata de un cambio que no implique cambio de canal
             if (oldState.channelId === newState.channelId) break voiceMovesIf;
 
+            //Omite si el miembro se conecta o se desconecta de un canal excluido
+            if (!oldState.channelId && client.config.main.voiceMovesExcludedChannels.includes(newState.channelId)) break voiceMovesIf;
+            if (!newState.channelId && client.config.main.voiceMovesExcludedChannels.includes(oldState.channelId)) break voiceMovesIf;
+
             //Almacena los campos de anterior y nuevo canal, ofuscando los canales ignorados
             const oldChannel = oldState.channelId && !client.config.main.voiceMovesExcludedChannels.includes(oldState.channelId) ? `<#${oldState.channel.id}>` : `\`${await client.functions.utilities.parseLocale.run(locale.voiceMovesLoggingEmbed.noChannel)}\``;
             const newChannel = newState.channelId && !client.config.main.voiceMovesExcludedChannels.includes(newState.channelId) ? `<#${newState.channel.id}>` : `\`${await client.functions.utilities.parseLocale.run(locale.voiceMovesLoggingEmbed.noChannel)}\``;

@@ -15,9 +15,6 @@ exports.run = async (message, client, locale) => {
     //Aborta el resto del código si es un canal de MD
     if (message.channel.type === 'DM' ) return;
 
-    //Aumenta la cantidad de XP del miembro (si procede)
-    if (client.config.leveling.rewardMessages) await client.functions.leveling.addExperience.run(client, message.member, 'message', message.channel);
-
     //Si el miembro no tiene tabla de estadísticas
     if (!client.db.stats[message.member.id]) {
 
@@ -35,6 +32,20 @@ exports.run = async (message, client, locale) => {
         };
     };
 
+    //Almacena las stats del miembro
+    const memberStats = client.db.stats[message.member.id];
+
     //Incrementa el contador de mensajes enviados del miembro
-    client.db.stats[message.member.id].messagesCount++;
+    memberStats.messagesCount++;
+
+    //Actualiza la variable para evitar spam
+    memberStats.lastMessage = Date.now();
+    
+    //Guarda las nuevas estadísticas del miembro en la base de datos
+    client.fs.writeFile('./storage/databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
+        if (err) throw err;
+    });
+
+    //Aumenta la cantidad de XP del miembro (si procede)
+    if (client.config.leveling.rewardMessages && Date.now() - memberStats.lastMessage > client.config.leveling.minimumTimeBetweenMessages) await client.functions.leveling.addExperience.run(client, message.member, 'message', message.channel);
 };

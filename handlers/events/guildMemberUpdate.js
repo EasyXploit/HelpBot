@@ -57,19 +57,6 @@ exports.run = async (oldMember, newMember, client, locale) => {
                 delete client.loggingCache[newMember.id];
             };
 
-            //Guarda el silenciamiento en la base de datos (si no lo estaba ya)
-            if (!client.db.mutes[newMember.id]) client.db.mutes[newMember.id] = {
-                until: expiration,
-                moderator: newMember.id
-            };
-
-            //Sobreescribe el fichero de la base de datos con los cambios
-            client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
-
-                //Si hubo un error, lo lanza a la consola
-                if (err) throw err;
-            });
-
             //Si se ha silenciado
             if (newMember.communicationDisabledUntilTimestamp && newMember.communicationDisabledUntilTimestamp > Date.now()) {
 
@@ -103,7 +90,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
                     delete client.db.mutes[newMember.id];
 
                     //Sobreescribe el fichero de la base de datos con los cambios
-                    await client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes), async err => {
+                    await client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
 
                         //Si hubo un error, lo lanza a la consola
                         if (err) throw err;

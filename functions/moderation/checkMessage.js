@@ -73,6 +73,36 @@ exports.run = async (client, message) => {
                 //Para el switch
                 break;
 
+            //Filtro de inundación de varios canales con el mismo mensaje
+            case 'crossPost':
+
+                //Almacena el historial de mensajes del miembro
+                const messagesHistory = client.memberMessages[message.member.id].history;
+
+                //Omite si el historial no es lo suficientemente amplio
+                if (messagesHistory.length < filterCfg.triggerLimit) break;
+
+                //Almacena un contador de mensajes hasta alcanzar el tope
+                let matches = 0;
+
+                //Itera el historial de mensajes hasta el límite de alarma
+                for (let index = 0; index <= filterCfg.triggerLimit; index++) {
+
+                    //Almacena el mennsaje iterado, y el previo
+                    const iteratedMessage = messagesHistory[messagesHistory.length - index - 1];
+                    const previousMessage = messagesHistory[messagesHistory.length - index - 2];
+
+                    //Si no supera el umbral de aceptación y hay mensaje previo, incrementa el contador, sino y es el primer mensaje, omite el bucle
+                    if (previousMessage && iteratedMessage.content === previousMessage.content) matches++;
+                    else if (index === 0) break;
+                };
+
+                //Si se supera o iguala el límite, propaga la coincidencia
+                if (matches >= filterCfg.triggerLimit) match = true;
+
+                //Para el switch
+                break;
+
             //Filtro de palabras malsonantes
             case 'swearWords':
 

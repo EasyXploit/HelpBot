@@ -8,6 +8,13 @@
         "triggerLimit": 5,
         "maxTimeBetween": 2000
     },
+    "crossPost": {
+        "status": true,
+        "action": 3,
+        "reason": "Crossed posts",
+        "bypassIds": [],
+        "bypassChannels": [],
+        "triggerLimit": 3
     },
     "swearWords": {
         "status": false,

@@ -5,7 +5,9 @@
         "reason": "Channel flooding",
         "bypassIds": [],
         "bypassChannels": [],
-        "triggerLimit": 5
+        "triggerLimit": 5,
+        "minTimeBetween": 2000
+    },
     },
     "swearWords": {
         "status": false,

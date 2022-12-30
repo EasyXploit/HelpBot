@@ -6,7 +6,7 @@
         "bypassIds": [],
         "bypassChannels": [],
         "triggerLimit": 5,
-        "minTimeBetween": 2000
+        "maxTimeBetween": 2000
     },
     },
     "swearWords": {

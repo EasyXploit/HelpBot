@@ -63,7 +63,7 @@ exports.run = async (client, message) => {
                     const previousMessage = history[history.length - index - 2];
                     
                     //Si no supera el umbral de aceptación, aumenta el recuento, pero si lo supera, omite el bucle
-                    if (iteratedMessage.timestamp - previousMessage.timestamp < filterCfg.minTimeBetween) matchesCount++;
+                    if (iteratedMessage.timestamp - previousMessage.timestamp < filterCfg.maxTimeBetween) matchesCount++;
                     else break;
                 };
 

@@ -22,7 +22,6 @@ exports.run = async (message, client, locale) => {
         client.db.stats[member.id] = {
             experience: 0,
             level: 0,
-            lastMessage: 0,
             aproxVoiceTime: 0,
             messagesCount: 0,
             notifications: {
@@ -38,14 +37,39 @@ exports.run = async (message, client, locale) => {
     //Incrementa el contador de mensajes enviados del miembro
     memberStats.messagesCount++;
 
-    //Actualiza la variable para evitar spam
-    memberStats.lastMessage = Date.now();
+    //Si el miembro no tiene entrada en el objeto de mensajes de miembros, la crea
+    if (!client.memberMessages[message.member.id]) client.memberMessages[message.member.id] = {
+        history: [],
+        lastValidTimestamp: 0
+    };
+
+    //Crea una variable para almacenar los mensajes del miembro
+    let memberMessages = client.memberMessages[message.member.id];
+
+    //Añade el mensaje al historial de mensajes del miembro
+    memberMessages.history.push({
+        id: message.id,
+        timestamp: message.createdTimestamp,
+        editedTimestamp: message.editedTimestamp,
+        channelId: message.channel.id,
+        content: message.content
+    });
+
+    //Si el historial está lleno, elimina el primer elemento del array
+    if (memberMessages.history.length >= client.config.main.messageHistorySize) memberMessages.history.shift();
     
     //Guarda las nuevas estadísticas del miembro en la base de datos
     client.fs.writeFile('./storage/databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
         if (err) throw err;
     });
 
-    //Aumenta la cantidad de XP del miembro (si procede)
-    if (client.config.leveling.rewardMessages && Date.now() - memberStats.lastMessage > client.config.leveling.minimumTimeBetweenMessages) await client.functions.leveling.addExperience.run(client, message.member, 'message', message.channel);
+    //Si el último mensaje que generó EXP fue hace más del periodo establecido
+    if (client.config.leveling.rewardMessages && ((message.createdTimestamp - memberMessages.lastValidTimestamp) > client.config.leveling.minimumTimeBetweenMessages)) {
+
+        //Actualiza el valor del tiempo de última ganancia de EXP
+        memberMessages.lastValidTimestamp = message.createdTimestamp;
+
+        //Aumenta la cantidad de EXP del miembr
+        await client.functions.leveling.addExperience.run(client, message.member, 'message', message.channel);
+    };
 };

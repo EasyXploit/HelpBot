@@ -11,5 +11,6 @@
     "newMemberRole": "",
     "loadMention": true,
     "pingTreshold": 1000,
-    "timers": true
+    "timers": true,
+    "messageHistorySize": 10
 }

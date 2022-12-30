@@ -49,6 +49,9 @@ exports.run = async (client, locale) => {
                 //Resuelve la promesa una vez acabado
                 if (index === mainConfigs.length -1) resolve();
             };
+
+            //Corrige el tamaño del historial de mensajes si es necesario (el sistema antiflood funciona mediante este historial)
+            if (client.config.main.messageHistorySize < 5) client.config.main.messageHistorySize = 5; 
         });
         
         //Cuando se carguen en memoria todos los recursos

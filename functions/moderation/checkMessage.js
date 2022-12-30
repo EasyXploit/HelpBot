@@ -43,6 +43,36 @@ exports.run = async (client, message) => {
         //En función del filtro iterado
         switch (filter) {
 
+            //Filtro de inundación de canales con muchos mensajes
+            case 'flood':
+
+                //Almacena el historial de mensajes del miembro
+                const history = client.memberMessages[message.member.id].history;
+
+                //Omite si el historial no es lo suficientemente amplio
+                if (history.length < filterCfg.triggerLimit) break;
+
+                //Almacena un contador de mensajes hasta alcanzar el tope
+                let matchesCount = 0;
+
+                //Itera el historial de mensajes hasta el límite de alarma
+                for (let index = 0; index <= filterCfg.triggerLimit; index++) {
+
+                    //Almacena el mennsaje iterado, y el previo
+                    const iteratedMessage = history[history.length - index - 1];
+                    const previousMessage = history[history.length - index - 2];
+                    
+                    //Si no supera el umbral de aceptación, aumenta el recuento, pero si lo supera, omite el bucle
+                    if (iteratedMessage.timestamp - previousMessage.timestamp < filterCfg.minTimeBetween) matchesCount++;
+                    else break;
+                };
+
+                //Si se supera o iguala el límite, propaga la coincidencia
+                if (matchesCount >= filterCfg.triggerLimit) match = true;
+
+                //Para el switch
+                break;
+
             //Filtro de palabras malsonantes
             case 'swearWords':
 

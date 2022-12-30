@@ -1,4 +1,12 @@
 {
+    "flood": {
+        "status": false,
+        "action": 3,
+        "reason": "Channel flooding",
+        "bypassIds": [],
+        "bypassChannels": [],
+        "triggerLimit": 5
+    },
     "swearWords": {
         "status": false,
         "action": 3,

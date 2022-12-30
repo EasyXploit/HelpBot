@@ -31,14 +31,11 @@ exports.run = async (client, message) => {
         //Lo omite si el canal tiene el filtro desactivado
         if (message.channel && bypassChannels.includes(message.channel.id)) continue;
 
-        //Busca y almacena al miembro en la guild
-        const guildMember = await client.functions.utilities.fetch.run(client, 'member', message.author.id)
-
         //Almacena los roles y miembros a los que no afecta
         const bypassIds = filterCfg.bypassIds;
 
         //Lo omite si el miembro o alguno de sus roles tiene el filtro desactivado
-        for (let index = 0; index < bypassIds.length; index++) if (guildMember.id === bypassIds[index] || guildMember.roles.cache.has(bypassIds[index])) continue;
+        for (let index = 0; index < bypassIds.length; index++) if (message.member.id === bypassIds[index] || message.member.roles.cache.has(bypassIds[index])) continue;
 
         //Almacena si un filtro ha encajado
         let match;
@@ -197,7 +194,7 @@ exports.run = async (client, message) => {
             const reason = message.channel.type === 'DM' ? `${filterCfg.reason} (${locale.filteredDm})` : filterCfg.reason; 
         
             //Ejecuta el manejador de infracciones
-            await client.functions.moderation.manageWarn.run(client, guildMember, reason, filterCfg.action, client.user, message, null, message.channel);
+            await client.functions.moderation.manageWarn.run(client, message.member, reason, filterCfg.action, client.user, message, null, message.channel);
 
             //Para el resto del bucle
             break;

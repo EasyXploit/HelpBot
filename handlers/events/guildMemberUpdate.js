@@ -64,10 +64,12 @@ exports.run = async (oldMember, newMember, client, locale) => {
                 if (client.config.logging.mutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                     .setColor(client.config.colors.error)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.communicationDisabled.loggingEmbed.author, { memberTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true}) })
-                    .addField(locale.communicationDisabled.loggingEmbed.memberId, newMember.id, true)
-                    .addField(locale.communicationDisabled.loggingEmbed.moderator, executor ? executor.tag : locale.communicationDisabled.loggingEmbed.unknownModerator, true)
-                    .addField(locale.communicationDisabled.loggingEmbed.reason, reason || locale.communicationDisabled.loggingEmbed.undefinedReason, true)
-                    .addField(locale.communicationDisabled.loggingEmbed.expiration, `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>`, true)
+                    .addFields(
+                        { name: locale.communicationDisabled.loggingEmbed.memberId, value: newMember.id, inline: true },
+                        { name: locale.communicationDisabled.loggingEmbed.moderator, value: executor ? executor.tag : locale.communicationDisabled.loggingEmbed.unknownModerator, inline: true },
+                        { name: locale.communicationDisabled.loggingEmbed.reason, value: reason || locale.communicationDisabled.loggingEmbed.undefinedReason, inline: true },
+                        { name: locale.communicationDisabled.loggingEmbed.expiration, value: `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>`, inline: true }
+                    )
                 );
 
                 //Envía una notificación al miembro
@@ -75,9 +77,11 @@ exports.run = async (oldMember, newMember, client, locale) => {
                     .setColor(client.config.colors.error)
                     .setAuthor({ name: locale.communicationDisabled.privateEmbed.author, iconURL: newMember.guild.iconURL({ dynamic: true}) })
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.communicationDisabled.privateEmbed.description, { member: newMember, guildName: newMember.guild.name }))
-                    .addField(locale.communicationDisabled.privateEmbed.moderator, executor ? executor.tag : locale.communicationDisabled.loggingEmbed.unknownModerator, true)
-                    .addField(locale.communicationDisabled.privateEmbed.reason, reason || locale.communicationDisabled.privateEmbed.undefinedReason, true)
-                    .addField(locale.communicationDisabled.privateEmbed.expiration, `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>`, true)
+                    .addFields(
+                        { name: locale.communicationDisabled.privateEmbed.moderator, value: executor ? executor.tag : locale.communicationDisabled.loggingEmbed.unknownModerator, inline: true },
+                        { name: locale.communicationDisabled.privateEmbed.reason, value: reason || locale.communicationDisabled.privateEmbed.undefinedReason, inline: true },
+                        { name: locale.communicationDisabled.privateEmbed.expiration, value: `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>`, inline: true }
+                    )
                 ]});
 
             //Si se ha dessilenciado
@@ -101,9 +105,11 @@ exports.run = async (oldMember, newMember, client, locale) => {
                 if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.communicationEnabled.loggingEmbed.author, { userTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true})})
-                    .addField(locale.communicationEnabled.loggingEmbed.memberId, newMember.id.toString(), true)
-                    .addField(locale.communicationEnabled.loggingEmbed.moderator, executor ? executor.tag : locale.communicationEnabled.loggingEmbed.unknownModerator, true)
-                    .addField(locale.communicationEnabled.loggingEmbed.reason, reason || locale.communicationEnabled.loggingEmbed.undefinedReason, true)
+                    .addFields(
+                        { name: locale.communicationEnabled.loggingEmbed.memberId, value: newMember.id.toString(), inline: true },
+                        { name: locale.communicationEnabled.loggingEmbed.moderator, value: executor ? executor.tag : locale.communicationEnabled.loggingEmbed.unknownModerator, inline: true },
+                        { name: locale.communicationEnabled.loggingEmbed.reason, value: reason || locale.communicationEnabled.loggingEmbed.undefinedReason, inline: true }
+                    )
                 );
 
                 //Envía una notificación al miembro
@@ -111,8 +117,10 @@ exports.run = async (oldMember, newMember, client, locale) => {
                     .setColor(client.config.colors.correct)
                     .setAuthor({ name: locale.communicationEnabled.privateEmbed.author, iconURL: newMember.guild.iconURL({ dynamic: true}) })
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.communicationEnabled.privateEmbed.description, { member: newMember, guildName: newMember.guild.name }))
-                    .addField(locale.communicationEnabled.privateEmbed.moderator, executor ? executor.tag : locale.communicationEnabled.privateEmbed.unknownModerator, true)
-                    .addField(locale.communicationEnabled.privateEmbed.reason, reason || locale.communicationEnabled.privateEmbed.undefinedReason, true)
+                    .addFields(
+                        { name: locale.communicationEnabled.privateEmbed.moderator, value: executor ? executor.tag : locale.communicationEnabled.privateEmbed.unknownModerator, inline: true },
+                        { name: locale.communicationEnabled.privateEmbed.reason, value: reason || locale.communicationEnabled.privateEmbed.undefinedReason, inline: true }
+                    )
                 ]});
             };
         };

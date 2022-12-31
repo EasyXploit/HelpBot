@@ -67,7 +67,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 };
                 
                 //Añade el campo al embed
-                newPageEmbed.addField(locale.queueEmbed.upNext, queueList, true);
+                newPageEmbed.addFields({ name: locale.queueEmbed.upNext, value: queueList, inline: true });
             };
 
             //Invoca el gestor de navegación mediante botones

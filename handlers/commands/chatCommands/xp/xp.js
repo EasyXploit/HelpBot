@@ -172,11 +172,14 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setColor(client.config.colors.logging)
                 .setTitle(`📑 ${locale.loggingEmbed.title}`)
                 .setDescription(`${await client.functions.utilities.parseLocale.run(locale.loggingEmbed.description, { memberTag: member.user.tag })}.`)
-                .addField(locale.loggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
-                .addField(locale.loggingEmbed.moderator, interaction.user.tag, true)
-                .addField(locale.loggingEmbed.memberId, memberId.toString(), true)
-                .addField(locale.loggingEmbed.oldValue, oldValue.toString(), true)
-                .addField(locale.loggingEmbed.newValue, newValue.toString(), true));
+                .addFields(
+                    { name: locale.loggingEmbed.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
+                    { name: locale.loggingEmbed.moderator, value: interaction.user.tag, inline: true },
+                    { name: locale.loggingEmbed.memberId, value: memberId.toString(), inline: true },
+                    { name: locale.loggingEmbed.oldValue, value: oldValue.toString(), inline: true },
+                    { name: locale.loggingEmbed.newValue, value: newValue.toString(), inline: true }
+                )
+            );
 
             //Notifica la acción en el canal de invocación
             await interaction.reply({ embeds: [ new client.MessageEmbed()

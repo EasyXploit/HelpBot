@@ -97,13 +97,15 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .setTitle(`🥇 ${locale.statsEmbed.title}`)
             .setDescription(await client.functions.utilities.parseLocale.run(locale.statsEmbed.description, { memberTag: member.user.tag }))
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
-            .addField(locale.statsEmbed.actualLevel, `\`${memberStats.level}\``, true)
-            .addField(locale.statsEmbed.experience, `\`${memberStats.experience}\``, true)
-            .addField(locale.statsEmbed.xpToNextLevel, notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noXpToNextLevel}\`` : `\`${neededExperience.experience}\``, true)
-            .addField(locale.statsEmbed.messagesCount, `\`${memberStats.messagesCount}\``, true)
-            .addField(locale.statsEmbed.voiceTime, `\`${aproxVoiceTime}\``, true)
-            .addField(locale.statsEmbed.antiquity, `\`${await client.functions.utilities.msToTime.run(client, Date.now() - member.joinedTimestamp)}\``, true)
-            .addField(locale.statsEmbed.nextRewards, notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noNextRewards}\`` : `\`${nextRewards}\``, true)
+            .addFields(
+                { name: locale.statsEmbed.actualLevel, value: `\`${memberStats.level}\``, inline: true },
+                { name: locale.statsEmbed.experience, value: `\`${memberStats.experience}\``, inline: true },
+                { name: locale.statsEmbed.xpToNextLevel, value: notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noXpToNextLevel}\`` : `\`${neededExperience.experience}\``, inline: true },
+                { name: locale.statsEmbed.messagesCount, value: `\`${memberStats.messagesCount}\``, inline: true },
+                { name: locale.statsEmbed.voiceTime, value: `\`${aproxVoiceTime}\``, inline: true },
+                { name: locale.statsEmbed.antiquity, value: `\`${await client.functions.utilities.msToTime.run(client, Date.now() - member.joinedTimestamp)}\``, inline: true },
+                { name: locale.statsEmbed.nextRewards, value: notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noNextRewards}\`` : `\`${nextRewards}\``, inline: true }
+            )
         ]});
 
     } catch (error) {

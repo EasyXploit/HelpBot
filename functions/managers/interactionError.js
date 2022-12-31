@@ -50,13 +50,15 @@ exports.run = async (client, error, interaction) => {
         .setColor(client.config.colors.debugging)
         .setTitle(`📋 ${locale.debuggingEmbed.title}`)
         .setDescription(locale.debuggingEmbed.description)
-        .addField(locale.debuggingEmbed.type, interaction.type, true)
-        .addField(locale.debuggingEmbed.command, commandName, true)
-        .addField(locale.debuggingEmbed.channel, `<@${interaction.channelId}>`, true)
-        .addField(locale.debuggingEmbed.author, interaction.member.user.tag, true)
-        .addField(locale.debuggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
-        .addField(locale.debuggingEmbed.arguments, arguments)
-        .addField(locale.debuggingEmbed.error, `\`\`\`${errorString}\`\`\``)
+        .addFields(
+            { name: locale.debuggingEmbed.type, value: interaction.type, inline: true },
+            { name: locale.debuggingEmbed.command, value: commandName, inline: true },
+            { name: locale.debuggingEmbed.channel, value: `<@${interaction.channelId}>`, inline: true },
+            { name: locale.debuggingEmbed.author, value: interaction.member.user.tag, inline: true },
+            { name: locale.debuggingEmbed.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
+            { name: locale.debuggingEmbed.arguments, value: arguments, inline: false },
+            { name: locale.debuggingEmbed.error, value: `\`\`\`${errorString}\`\`\``, inline: false }
+        )
         .setFooter({ text: locale.debuggingEmbed.footer })
     );
 };

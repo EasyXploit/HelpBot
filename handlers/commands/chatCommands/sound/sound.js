@@ -66,7 +66,6 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (folderSize > client.config.music.maxLocalAudiosFolderSize) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.maxDirectorySizeReached, { maxDirectorySize: `\`${await client.functions.utilities.formatBytes.run(client.config.music.maxLocalAudiosFolderSize)}\`` })}.`)
-                
             ]});
 
             //Almacena el nombre que tendrá el audio
@@ -145,9 +144,11 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                             .setColor(client.config.colors.logging)
                             .setTitle(`📑 ${locale.uploadLoggingEmbed.title}`)
                             .setDescription(locale.uploadLoggingEmbed.description)
-                            .addField(locale.uploadLoggingEmbed.uploader, interaction.user.tag, true)
-                            .addField(locale.uploadLoggingEmbed.owner, ownerMember.user.tag, true)
-                            .addField(locale.uploadLoggingEmbed.audioName, `\`${audioName}\``, true)
+                            .addFields(
+                                { name: locale.uploadLoggingEmbed.uploader, value: interaction.user.tag, inline: true },
+                                { name: locale.uploadLoggingEmbed.owner, value: ownerMember.user.tag, inline: true },
+                                { name: locale.uploadLoggingEmbed.audioName, value: `\`${audioName}\``, inline: true }
+                            )
                         );
 
                         //Responde a la interacción con una confirmación
@@ -204,9 +205,11 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                     .setColor(client.config.colors.logging)
                     .setTitle(`📑 ${locale.deleteLoggingEmbed.title}`)
                     .setDescription(locale.deleteLoggingEmbed.description)
-                    .addField(locale.deleteLoggingEmbed.executor, interaction.user.tag, true)
-                    .addField(locale.deleteLoggingEmbed.owner, ownerMember ? ownerMember.user.tag : locale.deleteLoggingEmbed.unknownOwner, true)
-                    .addField(locale.deleteLoggingEmbed.audioName, `\`${audioName}\``, true)
+                    .addFields(
+                        { name: locale.deleteLoggingEmbed.executor, value: interaction.user.tag, inline: true },
+                        { name: locale.deleteLoggingEmbed.owner, value: ownerMember ? ownerMember.user.tag : locale.deleteLoggingEmbed.unknownOwner, inline: true },
+                        { name: locale.deleteLoggingEmbed.audioName, value: `\`${audioName}\``, inline: true }
+                    )
                 );
 
                 //Responde a la interacción con una confirmación

@@ -141,7 +141,7 @@ exports.run = async (client) => {
                     const field = embedProperties.fields[index];
 
                     //Añade el campo al embed
-                    if (field.name && field.value) timedEmbed.addField(await parseWildcards(field.name), await parseWildcards(field.value), field.inline);
+                    if (field.name && field.value) timedEmbed.addFields({ name: await parseWildcards(field.name), value: await parseWildcards(field.value), inline: field.inline });
                 };
             };
         };

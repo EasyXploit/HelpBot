@@ -30,8 +30,10 @@ exports.run = async (client, member) => {
             .setColor(client.config.colors.secondaryError)
             .setAuthor({ name: locale.privateEmbed.author, iconURL: member.guild.iconURL({dynamic: true}) })
             .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.description, { member: member, guildName: member.guild.name })}.`)
-            .addField(locale.privateEmbed.moderator, `${client.user}`, true)
-            .addField(locale.privateEmbed.reasonTitle, `${locale.privateEmbed.reasonDescription}.`, true)
+            .addFields(
+                { name: locale.privateEmbed.moderator, value: `${client.user}`, inline: true },
+                { name: reasonTitle, value: `${locale.privateEmbed.reasonDescription}.`, inline: true }
+            )
         ]});
 
         //Se expulsa al miembro

@@ -17,14 +17,16 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .setTitle(`🔖 ${locale.resultEmbed.title}`)
             .setDescription(await client.functions.utilities.parseLocale.run(locale.resultEmbed.description, { role: role }))
             .setThumbnail(role.iconURL())
-            .addField(`🏷 ${locale.resultEmbed.roleName}`, `${role.name}${role.unicodeEmoji ? ` ${role.unicodeEmoji}` : ''}`, true)
-            .addField(`🆔 ${locale.resultEmbed.roleId}`, role.id, true)
-            .addField(`👥 ${locale.resultEmbed.roleMembers}`, role.members.size.toString(), true)
-            .addField(`🗣 ${locale.resultEmbed.mentionable}`, role.mentionable ? locale.resultEmbed.isMentionable : locale.resultEmbed.isntMntionable, true)
-            .addField(`👁️‍ ${locale.resultEmbed.hoisted}`, role.hoist ? locale.resultEmbed.isHoisted : locale.resultEmbed.isntHoisted, true)
-            .addField(`🎨 ${locale.resultEmbed.color}`, role.hexColor, true)
-            .addField(`📝 ${locale.resultEmbed.creationDate}`, `<t:${Math.round(role.createdTimestamp / 1000)}>`, true)
-            .addField(`🤖 ${locale.resultEmbed.integration}`, role.managed ? locale.resultEmbed.isIntegration : locale.resultEmbed.isntIntegration, true)
+            .addFields(
+                { name: `🏷 ${locale.resultEmbed.roleName}`, value: `${role.name}${role.unicodeEmoji ? ` ${role.unicodeEmoji}` : ''}`, inline: true },
+                { name: `🆔 ${locale.resultEmbed.roleId}`, value: role.id, inline: true },
+                { name: `👥 ${locale.resultEmbed.roleMembers}`, value: role.members.size.toString(), inline: true },
+                { name: `🗣 ${locale.resultEmbed.mentionable}`, value: role.mentionable ? locale.resultEmbed.isMentionable : locale.resultEmbed.isntMntionable, inline: true },
+                { name: `👁️‍ ${locale.resultEmbed.hoisted}`, value: role.hoist ? locale.resultEmbed.isHoisted : locale.resultEmbed.isntHoisted, inline: true },
+                { name: `🎨 ${locale.resultEmbed.color}`, value: role.hexColor, inline: true },
+                { name: `📝 ${locale.resultEmbed.creationDate}`, value: `<t:${Math.round(role.createdTimestamp / 1000)}>`, inline: true },
+                { name: `🤖 ${locale.resultEmbed.integration}`, value: role.managed ? locale.resultEmbed.isIntegration : locale.resultEmbed.isntIntegration, inline: true }
+            )
         ]});
 
     } catch (error) {

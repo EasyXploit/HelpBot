@@ -27,9 +27,11 @@ exports.run = async (member, client, locale) => {
                 if (client.config.logging.kickedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                     .setColor(client.config.colors.error)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.inconclusiveLoggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                    .addField(locale.inconclusiveLoggingEmbed.memberId, member.id, true)
-                    .addField(locale.inconclusiveLoggingEmbed.moderator, locale.inconclusiveLoggingEmbed.unknownModerator, true)
-                    .addField(locale.inconclusiveLoggingEmbed.reason, locale.inconclusiveLoggingEmbed.unknownReason, true)
+                    .addFields(
+                        { name: locale.inconclusiveLoggingEmbed.memberId, value: member.id, inline: true },
+                        { name: locale.inconclusiveLoggingEmbed.moderator, value: locale.inconclusiveLoggingEmbed.unknownModerator, inline: true },
+                        { name: locale.inconclusiveLoggingEmbed.reason, value: locale.inconclusiveLoggingEmbed.unknownReason, inline: true }
+                    )
                 );
             };
         
@@ -68,9 +70,11 @@ exports.run = async (member, client, locale) => {
             if (client.config.logging.kickedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                .addField(locale.loggingEmbed.memberId, member.id, true)
-                .addField(locale.loggingEmbed.moderator, executor ? executor.tag : locale.loggingEmbed.unknownModerator, true)
-                .addField(locale.loggingEmbed.reason, reason ? reason : locale.loggingEmbed.undefinedReason, true)
+                .addFields(
+                    { name: locale.loggingEmbed.memberId, value: member.id, inline: true },
+                    { name: locale.loggingEmbed.moderator, value: executor ? executor.tag : locale.loggingEmbed.unknownModerator, inline: true },
+                    { name: locale.loggingEmbed.reason, value: reason ? reason : locale.loggingEmbed.undefinedReason, inline: true }
+                )
             );
 
         } else { //Si no se encontró una expulsión
@@ -93,8 +97,10 @@ exports.run = async (member, client, locale) => {
                     .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
                     .setAuthor({ name: locale.goodbyeEmbed.author, iconURL: 'attachment://out.png' })
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.goodbyeEmbed.description, { memberTag: member.user.tag }))
-                    .addField(`🆔 ${locale.goodbyeEmbed.memberId}`, member.user.id, true)     
-                    .addField(`📆 ${locale.goodbyeEmbed.antiquity}`, `\`${await client.functions.utilities.msToTime.run(client, Date.now() - member.joinedTimestamp)}\``, true)
+                    .addFields(
+                        { name: `🆔 ${locale.goodbyeEmbed.memberId}`, value: member.user.id, inline: true },
+                        { name: `📆 ${locale.goodbyeEmbed.antiquity}`, value: `\`${await client.functions.utilities.msToTime.run(client, Date.now() - member.joinedTimestamp)}\``, inline: true }
+                    )
                 ], files: ['./resources/images/out.png'] });
             };
         };

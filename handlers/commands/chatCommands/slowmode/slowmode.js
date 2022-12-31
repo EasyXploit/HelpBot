@@ -25,8 +25,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setColor(client.config.colors.logging)
                 .setTitle(`📑 ${locale.disabledLoggingEmbed.title}`)
                 .setDescription(locale.disabledLoggingEmbed.description)
-                .addField(locale.disabledLoggingEmbed.moderator, interaction.user.tag, true)
-                .addField(locale.disabledLoggingEmbed.channel, `${interactionChannel}`, true)
+                .addFields(
+                    { name: locale.disabledLoggingEmbed.moderator, value: interaction.user.tag, inline: true },
+                    { name: locale.disabledLoggingEmbed.channel, value: `${interactionChannel}`, inline: true }
+                )
             );
 
             //Notifica la acción en el canal de invocación
@@ -74,10 +76,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setColor(client.config.colors.logging)
                 .setTitle(`📑 ${locale.enabledLoggingEmbed.title}`)
                 .setDescription(locale.enabledLoggingEmbed.description)
-                .addField(locale.enabledLoggingEmbed.moderator, interaction.user.tag, true)
-                .addField(locale.enabledLoggingEmbed.delay, await client.functions.utilities.parseLocale.run(locale.enabledLoggingEmbed.delayed, { seconds: argument }), true)
-                .addField(locale.enabledLoggingEmbed.channel, `${interactionChannel}`, true)
-                .addField(locale.enabledLoggingEmbed.reason, reason || locale.undefinedReason, true)
+                .addFields(
+                    { name: locale.enabledLoggingEmbed.moderator, value: interaction.user.tag, inline: true },
+                    { name: locale.enabledLoggingEmbed.delay, value: await client.functions.utilities.parseLocale.run(locale.enabledLoggingEmbed.delayed, { seconds: argument }), inline: true },
+                    { name: locale.enabledLoggingEmbed.channel, value: `${interactionChannel}`, inline: true },
+                    { name: locale.enabledLoggingEmbed.reason, value: reason || locale.undefinedReason, inline: true }
+                )
             );
 
             //Notifica la acción en el canal de invocación

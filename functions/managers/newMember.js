@@ -22,11 +22,13 @@ exports.run = async (client, member) => {
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
             .setAuthor({ name: locale.author, iconURL: 'attachment://in.png' })
             .setDescription(await client.functions.utilities.parseLocale.run(locale.description, { memberTag: member.user.tag }))
-            .addField(`🆔 ${locale.memberId}`, member.user.id, true)
-            .addField(`📝 ${locale.registerDate}`, `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
+            .addFields(
+                { name: `🆔 ${locale.memberId}`, value: member.user.id, inline: true },
+                { name: `📝 ${locale.registerDate}`, value: `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, inline: true }
+            );
 
         //Comprueba si el miembro está silenciado, y añade el campo al embed de registro (si procede)
-        if (member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now()) welcomeEmbed.addField(`🔇 ${locale.actualSanction}`, `${locale.mutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>`, false);
+        if (member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now()) welcomeEmbed.addFieldw({ name: `🔇 ${locale.actualSanction}`, value: `${locale.mutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>`, inline: false });
 
         //Se notifica en el canal de registro
         if (client.config.logging.memberJoined) await client.joinsAndLeavesChannel.send({ embeds: [ welcomeEmbed ], files: ['./resources/images/in.png'] });

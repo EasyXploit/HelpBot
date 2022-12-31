@@ -15,9 +15,11 @@ exports.run = async (client, error, eventName) => {
         .setColor(client.config.colors.debugging)
         .setTitle(`📋 ${locale.debuggingEmbed.title}`)
         .setDescription(locale.debuggingEmbed.description)
-        .addField(locale.debuggingEmbed.event, eventName, true)
-        .addField(locale.debuggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
-        .addField(locale.debuggingEmbed.error, `\`\`\`${errorString}\`\`\``)
+        .addFields(
+            { name: locale.debuggingEmbed.event, value: eventName, inline: true },
+            { name: locale.debuggingEmbed.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
+            { name: locale.debuggingEmbed.error, value: `\`\`\`${errorString}\`\`\``, inline: false }
+        )
         .setFooter({ text: locale.debuggingEmbed.footer })
     );
 };

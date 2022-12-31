@@ -87,7 +87,7 @@ exports.run = async (client, member, mode, channel) => {
             };
 
             //Añade un campo al embed de levelup con los roles recompensados
-            levelUpEmbed.addField(locale.levelUpEmbed.rewards, `\`${roleNames.join('`, `')}\``);
+            levelUpEmbed.addFields({ name: locale.levelUpEmbed.rewards, value: `\`${roleNames.join('`, `')}\`` });
         };
 
         //Manda el mensaje de subida de nivel, si se ha configurado

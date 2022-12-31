@@ -44,8 +44,10 @@ process.on('unhandledRejection', error => {
             .setColor(client.config.colors.debugging)
             .setTitle(`📋 ${locale.index.unhandledRejection.debuggingEmbed.title}`)
             .setDescription(locale.index.unhandledRejection.debuggingEmbed.description)
-            .addField(locale.index.unhandledRejection.debuggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
-            .addField(locale.index.unhandledRejection.debuggingEmbed.error, `\`\`\`${errorString}\`\`\``)
+            .addFields(
+                { name: locale.index.unhandledRejection.debuggingEmbed.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
+                { name: locale.index.unhandledRejection.debuggingEmbed.error, value: `\`\`\`${errorString}\`\`\``, inline: false }
+            )
             .setFooter({ text: locale.index.unhandledRejection.debuggingEmbed.footer })
         );
     };

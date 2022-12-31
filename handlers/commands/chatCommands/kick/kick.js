@@ -73,8 +73,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .setColor(client.config.colors.secondaryError)
             .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
             .setDescription(await client.functions.utilities.parseLocale.run(locale.privateEmbed.description, { member: member, guildName: interaction.guild.name }))
-            .addField(locale.privateEmbed.moderator, interaction.user.tag, true)
-            .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
+            .addFields(
+                { name: locale.privateEmbed.moderator, value: interaction.user.tag, inline: true },
+                { name: locale.privateEmbed.reason, value: reason || locale.undefinedReason, inline: true }
+            )
         ]});
 
         //Expulsa al miembro

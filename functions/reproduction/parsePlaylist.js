@@ -74,7 +74,7 @@ exports.run = async (client, reproductionQueue, playlistUrl, authorizedTracks, r
             .setColor(randomColor())
             .setAuthor({name: `${locale.addedPlaylistEmbed.authorTitle} 🎶`, iconURL: 'attachment://dj.png'})
             .setDescription(`[${playlist.title}](${playlist.url})\n\n● **${locale.addedPlaylistEmbed.author}:** \`${playlist.channel.name !== null ? playlist.channel.name : 'YouTube'}\`\n● **${locale.addedPlaylistEmbed.tracks}:** \`${playlistItems.length}\``)
-            .addField(`${locale.addedPlaylistEmbed.requestedBy}:`, `${requestingMember}`, true)
+            .addFields({ name: `${locale.addedPlaylistEmbed.requestedBy}:`, value: `${requestingMember}`, inline: true })
             .setFooter({text: await client.functions.reproduction.getFooter.run(client, reproductionQueue.boundedTextChannel.guild) })
         ], files: ['./resources/images/dj.png']});
 

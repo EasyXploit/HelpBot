@@ -185,10 +185,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .setColor(client.config.colors.error)
             .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
             .setDescription(await client.functions.utilities.parseLocale.run(locale.privateEmbed.description, { user: user, guildName: interaction.guild.name }))
-            .addField(locale.privateEmbed.moderator, interaction.user.tag, true)
-            .addField(locale.privateEmbed.reason, reason || locale.undefinedReason, true)
-            .addField(locale.privateEmbed.expiration, expiration ? `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>` : locale.privateEmbed.noExpiration, true)
-            .addField(locale.privateEmbed.deletedDays, deletedDays ? deletedDays.toString() : `\`${locale.privateEmbed.noDeletedDays}\``, true)
+            .addFields(
+                { name: locale.privateEmbed.moderator, value: interaction.user.tag, inline: true },
+                { name: locale.privateEmbed.reason, value: reason || locale.undefinedReason, inline: true },
+                { name: locale.privateEmbed.expiration, value: expiration ? `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>` : locale.privateEmbed.noExpiration, inline: true },
+                { name: locale.privateEmbed.deletedDays, value: deletedDays ? deletedDays.toString() : `\`${locale.privateEmbed.noDeletedDays}\``, inline: true }
+            )
         ]});
         
     } catch (error) {

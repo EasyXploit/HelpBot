@@ -203,8 +203,10 @@ exports.run = async (client, interaction, connection) => {
                 .setThumbnail(info.meta.thumbnail)
                 .setAuthor({name: `${locale.playingEmbed.authorTitle} 🎶`, iconURL: 'attachment://dj.png'})
                 .setDescription(`${info.meta.location.startsWith('http') ? `[${info.meta.title}](${info.meta.location})` : `${locale.playingEmbed.localAudio}: \`${info.meta.title}\``}\n\n● **${locale.playingEmbed.author}:** ${info.meta.author}\n● **${locale.playingEmbed.duration}:** \`${await client.functions.utilities.msToTime.run(client, info.meta.length)}\``)
-                .addField(`${locale.playingEmbed.requestedBy}:`, `<@${reproductionQueue.tracks[toPlay].requesterId}>`, true)
-                .addField(`${locale.playingEmbed.upNext}:`, upNext, true)
+                .addFields(
+                    { name: `${locale.playingEmbed.requestedBy}:`, value: `<@${reproductionQueue.tracks[toPlay].requesterId}>`, inline: true },
+                    { name: `${locale.playingEmbed.upNext}:`, value: upNext, inline: true }
+                )
                 .setFooter({text: await client.functions.reproduction.getFooter.run(client, reproductionQueue.boundedTextChannel.guild) })
             ], files: ['./resources/images/dj.png'] });
         };

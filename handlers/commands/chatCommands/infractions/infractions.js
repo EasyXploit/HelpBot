@@ -103,10 +103,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setColor(client.config.colors.primary)
                 .setTitle(`⚠ ${locale.infractionsEmbed.title}`)
                 .setDescription(`${await client.functions.utilities.parseLocale.run(locale.infractionsEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)`, sanction: sanction })}.`)
-                .addField(locale.infractionsEmbed.last24h, onDay.toString(), true)
-                .addField(locale.infractionsEmbed.last7d, onWeek.toString(), true)
-                .addField(locale.infractionsEmbed.total, total.toString(), true)
-                .addField(locale.infractionsEmbed.list, total > 0 ? board : locale.infractionsEmbed.noList)
+                .addFields(
+                    { name: locale.infractionsEmbed.last24h, value: onDay.toString(), inline: true },
+                    { name: locale.infractionsEmbed.last7d, value: onWeek.toString(), inline: true },
+                    { name: locale.infractionsEmbed.total, value: total.toString(), inline: true },
+                    { name: locale.infractionsEmbed.list, value: total > 0 ? board : locale.infractionsEmbed.noList, inline: false }
+                )
                 .setFooter({ text: await client.functions.utilities.parseLocale.run(locale.infractionsEmbed.page, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.homeGuild.iconURL({dynamic: true}) });
 
             //Si se encontró el miembro, muestra su avatar en el embed

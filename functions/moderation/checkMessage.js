@@ -47,7 +47,7 @@ exports.run = async (client, message) => {
             case 'flood':
 
                 //Almacena el historial de mensajes del miembro
-                const history = client.memberMessages[message.member.id].history;
+                const history = client.memberMessages[message.member.id] ? client.memberMessages[message.member.id].history : [];
 
                 //Omite si el historial no es lo suficientemente amplio
                 if (history.length < filterCfg.triggerLimit) break;

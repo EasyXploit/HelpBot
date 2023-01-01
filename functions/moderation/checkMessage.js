@@ -11,7 +11,7 @@ exports.run = async (client, message) => {
     let isPermitted = true;
 
     //Por cada uno de los filtros de automoderación
-    for (const filter in filters) {
+    filtersLoop: for (const filter in filters) {
 
         //Almacena la configuración del filtro
         const filterCfg = filters[filter];
@@ -35,7 +35,7 @@ exports.run = async (client, message) => {
         const bypassIds = filterCfg.bypassIds;
 
         //Lo omite si el miembro o alguno de sus roles tiene el filtro desactivado
-        for (let index = 0; index < bypassIds.length; index++) if (message.member.id === bypassIds[index] || message.member.roles.cache.has(bypassIds[index])) continue;
+        for (let index = 0; index < bypassIds.length; index++) if (message.member.id === bypassIds[index] || message.member.roles.cache.has(bypassIds[index])) continue filtersLoop;
 
         //Almacena si un filtro ha encajado
         let match;

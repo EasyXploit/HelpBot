@@ -111,13 +111,19 @@ exports.run = async (client, interaction, connection) => {
 
                 } catch (error) {
 
-                    //Si el error se debe a uns restricción de edad por falta de cookies
-                    if (error.toString().includes('Sign in to confirm your age')) {
+                    //Si el error se debe a una restricción de edad por falta de cookies o por motivos de copyright
+                    if (error.toString().includes('Sign in to confirm your age') || error.toString().includes('Video unavailable')) {
 
-                        //Notifica si el error al miembro
-                        await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
+                        //Notifica si el error al miembro si es por edad
+                        if (error.toString().includes('Sign in to confirm your age')) await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
                             .setColor(client.config.colors.warning)
                             .setDescription(`${client.customEmojis.orangeTick} ${locale.ageRestricted}.`)
+                        ]});
+
+                        //Notifica si el error al miembro si es por copyright
+                        if (error.toString().includes('Video unavailable')) await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
+                            .setColor(client.config.colors.warning)
+                            .setDescription(`${client.customEmojis.orangeTick} ${locale.copyrightedVideo}.`)
                         ]});
 
                         //Elimina de la cola la pista actual

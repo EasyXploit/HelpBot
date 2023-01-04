@@ -137,6 +137,12 @@ exports.run = async (client, interaction, streamType, toStream) => {
 								.setDescription(`${client.customEmojis.orangeTick} ${locale.ageRestricted}.`)
 							]});
 
+							//Notifica si el error se debe a una restricción por copyright regional
+							if (error.toString().includes('Video unavailable')) return await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
+								.setColor(client.config.colors.warning)
+								.setDescription(`${client.customEmojis.orangeTick} ${client.locale.functions.reproduction.fetchResource.copyrightedVideo}.`)]
+							});
+
 							//Notifica si el error se debe a que no es una URL válida
 							if (error.toString().includes('This is not a YouTube Watch URL')) return await reproductionQueue.boundedTextChannel.send({ embeds: [ new client.MessageEmbed()
 								.setColor(client.config.colors.error)

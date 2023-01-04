@@ -1620,13 +1620,15 @@
                 "onlyFromYouTube": "{{botUser}} solo puede obtener pistas desde YouTube",
                 "invalidResults": "No se encontraron resultados válidos",
                 "cantPlay": "No se puede reproducir este resultado",
-                "ageRestricted": "No puedes reproducir vídeos con restricción de edad"
+                "ageRestricted": "No puedes reproducir vídeos con restricción de edad",
+                "copyrightedVideo": "No puedes reproducir vídeos con restricción regional (copyright)"
             },
             "getFooter": {
                 "mode": "Modo"
             },
             "mediaPlayer": {
                 "ageRestricted": "No puedes reproducir vídeos con restricción de edad",
+                "copyrightedVideo": "No puedes reproducir vídeos con restricción regional (copyright)",
                 "finishedReproduction": "Reproducción finalizada",
                 "channelLeave": "He abandonado el canal",
                 "error": "ERROR",

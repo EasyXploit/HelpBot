@@ -1620,13 +1620,15 @@
                 "onlyFromYouTube": "{{botUser}} can only get tracks from YouTube",
                 "invalidResults": "No valid results found",
                 "cantPlay": "Cannot play this result",
-                "ageRestricted": "You cannot play age-restricted videos"
+                "ageRestricted": "You cannot play age-restricted videos",
+                "copyrightedVideo": "You cannot play videos with region restriction (copyright)"
             },
             "getFooter": {
                 "mode": "Mode"
             },
             "mediaPlayer": {
                 "ageRestricted": "You cannot play age-restricted videos",
+                "copyrightedVideo": "You cannot play videos with region restriction (copyright)",
                 "finishedReproduction": "Reproduction finished",
                 "channelLeave": "I have left the channel",
                 "error": "ERROR",

@@ -298,7 +298,7 @@ exports.run = async (client, interaction, streamType, toStream) => {
 						});
 
 						//Devuelve un error si no se encontraron resultados
-						if (optionsList.length === 1) return interaction.reply({ embeds: [ new client.MessageEmbed()
+						if (optionsList.length === 2) return interaction.reply({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
 							.setDescription(`${client.customEmojis.redTick} ${locale.selectMenu.invalidResults}.`)
 						], ephemeral: true});

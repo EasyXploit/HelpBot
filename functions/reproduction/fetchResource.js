@@ -1,3 +1,5 @@
+const { slice } = require('lodash');
+
 //Función para obtener una pista de audio
 exports.run = async (client, interaction, streamType, toStream) => {
 
@@ -192,10 +194,10 @@ exports.run = async (client, interaction, streamType, toStream) => {
 				const playdl = require('play-dl');
 				
 				//Realiza la búsqueda
-				await playdl.search(toStream, {limit: 10}).then(async results => {
+				await playdl.search(toStream, {limit: 20}).then(async results => {
 	
 					//Comprueba si se han obtenido resultados
-					if (!results || results.length === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
+					if (!results || results.length === 0) return interactionChannel.send({ embeds: [ new client.MessageEmbed()
 						.setColor(client.config.colors.error)
 						.setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.noResults, { searchInput: toStream })}.`)
 					], ephemeral: true});
@@ -204,13 +206,13 @@ exports.run = async (client, interaction, streamType, toStream) => {
 					if (results.length == 1) {
 
 						//Comprueba si el resultado es un vídeo privado
-						if (results[0].private) return interaction.reply({ embeds: [ new client.MessageEmbed()
+						if (results[0].private) return interactionChannel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
 							.setDescription(`${client.customEmojis.redTick} ${locale.cantPlayPrivate}.`)
 						], ephemeral: true});
 
 						//Comprueba si el resultado supera la duración máxima establecida
-						if (musicConfig.maxTrackDuration > 0 && (results[0].durationInSec * 1000 > musicConfig.maxTrackDuration || results[0].durationInSec * 1000 < 0)) return interaction.reply({ embeds: [ new client.MessageEmbed()
+						if (musicConfig.maxTrackDuration > 0 && (results[0].durationInSec * 1000 > musicConfig.maxTrackDuration || results[0].durationInSec * 1000 < 0)) return interactionChannel.send({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
 							.setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.exceededLength, { duration: await client.functions.utilities.msToTime.run(client, musicConfig.maxTrackDuration) })}.`)
 						], ephemeral: true});
@@ -229,11 +231,9 @@ exports.run = async (client, interaction, streamType, toStream) => {
 						};
 	
 					} else {
-	
-						//Si hubo más de un resultado, muestra un menú
-						let formattedResults = ''; //Almacena el string del menú
-						let pointer = 1; //Almacena el puntero que indica el número de resultado en el menú
-						let asociatedPositions = {}; //Asocia la posición del puntero con la posición en la lista de resultados
+
+						//Almacena la lista de opciones del selector
+						let optionsList = [];
 	
 						//Para cada resultado, evalúa si ha de ser añadido a la lista
 						for (let index = 0; index < results.length; index++) {
@@ -243,95 +243,112 @@ exports.run = async (client, interaction, streamType, toStream) => {
 
 							//Convierte la duración a milisegundos
 							const milliseconds = result.durationInSec * 1000;
+
+							//Acorta el título si es demasiado largo
+							const title = result.title.length <= 90 ? result.title : `${result.title.slice(0, 90)} ...`; 
 	
 							//Solo añade el resultado si es una playlist, o un vídeo (que no esté en directo y no sea privado)
 							if (result.type === 'playlist' || (result.type === 'video' && !result.private)) {
 
 								//Omite si el vídeo excede la duración máxima, o es un directo
 								if (musicConfig.maxTrackDuration > 0 && (milliseconds > musicConfig.maxTrackDuration || milliseconds <= 0)) continue;
-	
-								//Crea la asociación puntero-posición
-								asociatedPositions[pointer] = index;
 
-								//Almacena el título y elimina signos que alteren la forma en la que se muestra la entrada
-								let title = result.title.replace('[', '').replace(']', '').replace('|', '').replace('(', '').replace(')', '').replace('_', '').replace('*', '');
-	
-								//Acorta el título si es demasiado largo
-								if (title.length > 40) title = `${title.slice(0, 40)} ...`; 
+								//Si se trata de una playlist, almacena el string "playlist" en vez de la duración de la pista
+								if (result.type === 'playlist') {
 
-								if (result.type === 'playlist') { //Si se trata de una playlist, almacena el string "playlist" en vez de la duración de la pista
-									formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${result.url}) | \`${result.type}\``;
+									//Genera y recorta si es necesario el campo de descripción de la opción
+									let description = `${locale.selectMenu.playlist} | ${result.channel.name}`;
+									description.length <= 90 ? description : `${description.slice(0, 90)} ...`; 
+
+									//Genera y almacena la opción del selector para la pista
+									optionsList.push({
+										label: `🎶 | ${title}`,
+										description: description,
+										value: index.toString(),
+									});
+
 								} else { //Si se trata de un vídeo, almacena la duración de la pista en vez de el string "playlist"
-									formattedResults = `${formattedResults}\n\`${pointer}.\` - [${title}](${result.url}) | \`${result.durationInSec > 0 ? result.durationRaw : 'Directo'}\``;
-								};
 
-								pointer ++; //Incremento de puntero
+									//Genera y recorta si es necesario el campo de descripción de la opción
+									let description = `${result.durationInSec > 0 ? result.durationRaw : locale.selectMenu.direct} | ${result.channel.name}`;
+									description.length <= 90 ? description : `${description.slice(0, 90)} ...`;
+
+									//Genera y almacena la opción del selector para la pista
+									optionsList.push({
+										label: `${result.durationInSec > 0 ? '🎵' : '📻'} | ${title}`,
+										description: description,
+										value: index.toString(),
+									});
+								};
 							};
 						};
 
+						//Añade una opción para seleccionar una opción aleatoria
+						optionsList.push({
+							label: `🔀 | ${locale.selectMenu.randomOption.label}`,
+							description: locale.selectMenu.randomOption.description,
+							value: 'random',
+						});
+
+						//Añade una opción para abortar la selección
+						optionsList.push({
+							label: `❌ | ${locale.selectMenu.cancelOption.label}`,
+							description: locale.selectMenu.cancelOption.description,
+							value: 'cancel',
+						});
+
 						//Devuelve un error si no se encontraron resultados
-						if (Object.keys(asociatedPositions).length === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
+						if (optionsList.length === 1) return interaction.reply({ embeds: [ new client.MessageEmbed()
 							.setColor(client.config.colors.error)
-							.setDescription(`${client.customEmojis.redTick} ${locale.invalidResults}.`)
+							.setDescription(`${client.customEmojis.redTick} ${locale.selectMenu.invalidResults}.`)
 						], ephemeral: true});
-	
-						//Se espera a que el miembro elija una pista de la lista
-						await interactionChannel.send({ embeds: [ new client.MessageEmbed()
-							.setColor(randomColor())
-							.setAuthor({ name: `${locale.selectionEmbed.author} 🎶`, iconURL: 'attachment://dj.png' })
-							.setFooter({ text: `${locale.selectionEmbed.footer}.` })
-							.setDescription(formattedResults)
-						], files: ['./resources/images/dj.png'] }).then(async msg => {
 
-							//Reacciona con un emoji para cancelar
-							await msg.react('❌');
+						//Genera una fila para el selector
+						const selectorRow = new client.MessageActionRow()
+							.addComponents(
+								new client.MessageSelectMenu()
+									.setCustomId('play-result-search')
+									.setPlaceholder(locale.selectMenu.placeholder)
+									.addOptions(optionsList),
+							);
 
-							//Crea un filtro de reacciones
-							const reactionsFilter = (reaction, user) => reaction.emoji.name === '❌' && user.id === interaction.member.id;
+						//Envía el selector y ejecuta el callback
+						await interactionChannel.send({ components: [selectorRow] }).then(async selectMenuMessage => {
 
-							//Crea un colector de reacciones que encajen con el filtro
-							const reactionsCollector = await msg.createReactionCollector({ filter: reactionsFilter, max: 1, time: 60000 });
+							//Genera un filtro de selectores
+							const selectorsFilter = (selectInteraction) => {
 
-							//Borra el mensaje si el colector colecciona
-							reactionsCollector.on('collect', () => msg.delete());
-							
-							//Crea un filtro de mensajes
-							const messagesFilter = m => m.author.id === interaction.member.id;
-	
-							//Crea un colector de mensajes que encajen con el filtro
-							await msg.channel.awaitMessages({filter: messagesFilter, max: 1, time: 60000}).then(async collected => {
+								//Si el selector fue enviado por el ejecutor del comando, dispara el filtro
+								if (selectInteraction.member.id === interaction.member.id) return true;
 
-								//No ejecuta el resto del programa si el mensaje fue borrado mediante reacción
-								if (!interactionChannel.messages.cache.get(msg.id)) return;
-	
-								let option = collected.first().content; //Almacena la opción elegida
-								setTimeout(() => collected.first().delete(), 2000); //Borra el mensaje de elección
-								option = parseInt(option); //Parsea la opción
-	
-								//Maneja si la elección es errónea
-								if (isNaN(option) || option < 1 || option > pointer - 1) {
+								//Si el selector no fue enviado por el ejecutor del comando, devuelve un error
+								return selectInteraction.reply({ embeds: [ new client.MessageEmbed()
+									.setColor(client.config.colors.error)
+									.setDescription(`${client.customEmojis.redTick} ${locale.selectMenu.cantUseSelector}.`)
+								], ephemeral: true});
+							};
 
-									msg.delete();	//Elimina el menú de resultados
+							//Espera selecciones del selector en el mensaje
+							await selectMenuMessage.awaitMessageComponent({ filter: selectorsFilter, time: 60000  }).then(async selectInteraction => {
 
-									//Envía un mensaje de error
-									return interactionChannel.send({ embeds: [ new client.MessageEmbed()
-										.setColor(client.config.colors.error)
-										.setDescription(`${client.customEmojis.redTick} ${locale.didntChoose}.`)]
-									});
-								};
-	
-								//Busca el resultado en la lista de asociaciones en función de la opción elegida
-								option = asociatedPositions[option];
-	
-								//Borra el menú
-								setTimeout(() => msg.delete(), 2000);
-	
+								//Almacena la opción seleccionada
+								let selectedOption = selectInteraction.values[0];
+
+								//Elige una opción aleatoria si se ha seleccionado dicha opción
+								if (selectedOption === 'random') selectedOption = Math.floor(Math.random() * (optionsList.length - 3));
+
+								//Aborta si se desea cancelar la búsqueda
+								if (selectedOption === 'cancel') return await selectMenuMessage.edit({ content: `❌ | ${locale.selectMenu.cancelledSearch}`, components: [] });
+
+								//Borra el selector
+								setTimeout(() => selectMenuMessage.delete(), 2000);
+
 								//Maneja el resultado en función de si es una playlist o un vídeo
-								if (results[option].type === 'playlist') await client.functions.reproduction.parsePlaylist.run(reproductionQueue, results[option].url, authorizedTracks, interaction.member, interaction); //Maneja la playlist
-								else if (results[option].type === 'video') {
+								if (results[selectedOption].type === 'playlist') await client.functions.reproduction.parsePlaylist.run(reproductionQueue, results[selectedOption].url, authorizedTracks, interaction.member, interaction); //Maneja la playlist
+								else if (results[selectedOption].type === 'video') {
 									
 									//Crea el objeto de la cola
-									const newTrack = await client.functions.reproduction.addTrack.run(client, reproductionQueue, false, 'stream', interaction.member.id, results[option], interaction);
+									const newTrack = await client.functions.reproduction.addTrack.run(client, reproductionQueue, false, 'stream', interaction.member.id, results[selectedOption], interaction);
 
 									//Si se añadió la pista
 									if (newTrack) {
@@ -342,21 +359,25 @@ exports.run = async (client, interaction, streamType, toStream) => {
 										//Avisa sobre la adición a la cola
 										showNewQueueItem(newTrack);
 									};
-	
+
 								} else {
-	
+
 									//Si es un tipo de resultado inesperado, lo maneja y lanza un error
 									return interactionChannel.send({ embeds: [ new client.MessageEmbed()
 										.setColor(client.config.colors.error)
 										.setDescription(`${client.customEmojis.redTick} ${locale.cantPlay}.`)]
 									});
 								};
-							}).catch(() => {
 
-								//Borra el mensaje si este no fue borrado previamente por una reacción de aborción
-								msg.delete().catch((error) => {
-									if (error.httpStatus !== 404) console.error(`${new Date().toLocaleString()} 》ERROR: `, error.stack);
-								});
+							//Si no se ha elegido en el tiempo esperado
+							}).catch(async error => {
+
+								//Si no es un error por borrado del mensaje
+								if (!error.toString().includes('messageDelete')) {
+
+									//Edita el mensaje indicando que el selector ha expirado
+									await selectMenuMessage.edit({ content: `❌ | ${locale.selectMenu.expiredSearch}`, components: [] });
+								};
 							});
 						});
 					};

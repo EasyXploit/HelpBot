@@ -1601,13 +1601,24 @@
                 "noResults": "No results found matching `{{searchInput}}`",
                 "cantPlayPrivate": "Cannot play private videos",
                 "exceededLength": "Cannot play tracks longer than `{{duration}}`",
+                "selectMenu": {
+                    "playlist": "Playlist",
+                    "direct": "Direct",
+                    "cancelOption": {
+                        "label": "Leave the selector",
+                        "description": "You can search again"
+                    },
+                    "randomOption": {
+                        "label": "Random selection",
+                        "description": "Choose a random track from the list"
+                    },
+                    "placeholder": "Choose a track from the list",
+                    "cantUseSelector": "You can't use a selector you haven't called",
+                    "cancelledSearch": "Search canceled by user",
+                    "expiredSearch": "Search expired"
+                },
                 "onlyFromYouTube": "{{botUser}} can only get tracks from YouTube",
                 "invalidResults": "No valid results found",
-                "selectionEmbed": {
-                    "author": "Choose a track",
-                    "footer": "Enter the number of the track/playlist you want to add to the queue"
-                },
-                "didntChoose": "You must choose a track from the list",
                 "cantPlay": "Cannot play this result",
                 "ageRestricted": "You cannot play age-restricted videos"
             },

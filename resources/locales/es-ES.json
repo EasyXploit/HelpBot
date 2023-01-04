@@ -1601,13 +1601,24 @@
                 "noResults": "No se ha encontrado ningún resultado que coincida con `{{searchInput}}`",
                 "cantPlayPrivate": "No se pueden reproducir vídeos privados",
                 "exceededLength": "No se pueden reproducir pistas de más de `{{duration}}`",
+                "selectMenu": {
+                    "playlist": "Lista de rep.",
+                    "direct": "Directo",
+                    "cancelOption": {
+                        "label": "Salir del selector",
+                        "description": "Podrás volver a realizar la búsqueda"
+                    },
+                    "randomOption": {
+                        "label": "Selección aleatoria",
+                        "description": "Elige una pista aleatoria de la lista"
+                    },
+                    "placeholder": "Elige una pista de la lista",
+                    "cantUseSelector": "No puedes usar un selector que no has invocado",
+                    "cancelledSearch": "Búsqueda cancelada por el usuario",
+                    "expiredSearch": "Búsqueda caducada"
+                },
                 "onlyFromYouTube": "{{botUser}} solo puede obtener pistas desde YouTube",
                 "invalidResults": "No se encontraron resultados válidos",
-                "selectionEmbed": {
-                    "author": "Elige una pista",
-                    "footer": "Escribe el número de la pista/playlist que deseas añadir a la cola"
-                },
-                "didntChoose": "Debes escoger una pista de la lista",
                 "cantPlay": "No se puede reproducir este resultado",
                 "ageRestricted": "No puedes reproducir vídeos con restricción de edad"
             },

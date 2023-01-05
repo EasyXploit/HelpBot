@@ -1447,7 +1447,14 @@
                 "error": "ERROR"
             },
             "voiceStateUpdate": {
-                "leftWhenIdle": "He abandonado el canal y borrado la cola"
+                "leftWhenIdle": "He abandonado el canal y borrado la cola",
+                "voiceMovesLogging": {
+                    "noChannel": "Ninguno",
+                    "oldChannel": "Anterior canal",
+                    "newChannel": "Nuevo canal",
+                    "actualMembers": "Miembros del nuevo canal",
+                    "embedAuthor": "{{memberTag}} ha modificado su canal de voz"
+                }
             },
             "warn": {
                 "warnMessage": "AVISO"

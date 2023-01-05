@@ -1447,7 +1447,14 @@
                 "error": "ERROR"
             },
             "voiceStateUpdate": {
-                "leftWhenIdle": "I have left the channel and deleted the queue"
+                "leftWhenIdle": "I have left the channel and deleted the queue",
+                "voiceMovesLogging": {
+                    "noChannel": "None",
+                    "oldChannel": "Last channel",
+                    "newChannel": "New members",
+                    "actualMembers": "Members of the new channel",
+                    "embedAuthor": "{{memberTag}} has changed his voice channel"
+                }
             },
             "warn": {
                 "warnMessage": "WARNING"

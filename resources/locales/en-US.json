@@ -1689,6 +1689,17 @@
         }
     },
     "lifecycle": {
+        "loadDebugging": {
+            "loadingDebugging": "Loading remote debugging via Sentry ...",
+            "configLoaded": "Remote debugging load completed!",
+            "tracesSampleRate": "Traces sample rate",
+            "errors": {
+                "invalidDSN": "You have not specified a valid Sentry DSN. Remote debugging will not be used",
+                "noTracesSampleRate": "You have not specified a sample rate. 1.0 will be used instead (the maximum)",
+                "smallTracesSampleRate": "You have not specified a valid sample rate. 0 will be used instead (the minimum)",
+                "largeTracesSampleRate": "You have not specified a valid sample rate. 1.0 will be used instead (the maximum)"
+            }
+        },
         "loadIntervals": {
             "mutes": {
                 "loggingEmbed": {

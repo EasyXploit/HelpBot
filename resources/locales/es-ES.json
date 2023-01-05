@@ -1689,6 +1689,17 @@
         }
     },
     "lifecycle": {
+        "loadDebugging": {
+            "loadingDebugging": "Cargando depuración remota mediante Sentry ...",
+            "configLoaded": "¡Carga de depuración remota completada!",
+            "tracesSampleRate": "Tasa de muestreo de trazas",
+            "errors": {
+                "invalidDSN": "No has especificado un DSN de Sentry válido. No se utilizará la depuración remota",
+                "noTracesSampleRate": "No has especificado una tasa de muestras. Se usará 1.0 en su lugar (el máximo)",
+                "smallTracesSampleRate": "No has especificado una tasa de muestras válida. Se usará 0 en su lugar (el mínimo)",
+                "largeTracesSampleRate": "No has especificado una tasa de muestras válida. Se usará 1.0 en su lugar (el máximo)"
+            }
+        },
         "loadIntervals": {
             "mutes": {
                 "loggingEmbed": {

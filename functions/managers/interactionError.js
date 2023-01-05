@@ -44,21 +44,4 @@ exports.run = async (client, error, interaction) => {
         //Envía el embed al canal de texto
         interactionChannel.send({ embeds: [notificationEmbed]});
     };
-
-    //Se muestra el error en el canal de depuración¡
-    await client.functions.managers.debugging.run(client, 'embed', new client.MessageEmbed()
-        .setColor(client.config.colors.debugging)
-        .setTitle(`📋 ${locale.debuggingEmbed.title}`)
-        .setDescription(locale.debuggingEmbed.description)
-        .addFields(
-            { name: locale.debuggingEmbed.type, value: interaction.type, inline: true },
-            { name: locale.debuggingEmbed.command, value: commandName, inline: true },
-            { name: locale.debuggingEmbed.channel, value: `<@${interaction.channelId}>`, inline: true },
-            { name: locale.debuggingEmbed.author, value: interaction.member.user.tag, inline: true },
-            { name: locale.debuggingEmbed.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
-            { name: locale.debuggingEmbed.arguments, value: arguments, inline: false },
-            { name: locale.debuggingEmbed.error, value: `\`\`\`${errorString}\`\`\``, inline: false }
-        )
-        .setFooter({ text: locale.debuggingEmbed.footer })
-    );
 };

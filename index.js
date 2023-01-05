@@ -4,8 +4,8 @@ const locale = require(`./resources/locales/${require('./configs/main.json').loc
 //Muestra el logo de arranque en la consola
 require('./lifecycle/splashLogo.js').run(locale.lifecycle.splashLogo);
 
-//Si está habilitada, carga la depuración remota
-if (require('./configs/debugging.json').enabled) require('./lifecycle/loadDebugging.js').run(locale.lifecycle.loadDebugging);
+//Si está habilitada, carga el manejador de errores remoto
+if (require('./configs/errorTracker.json').enabled) require('./lifecycle/loadErrorTracker.js').run(locale.lifecycle.loadErrorTracker);
 
 //CARGA DE CLIENTE
 //Carga una nueva instancia de cliente en Discord

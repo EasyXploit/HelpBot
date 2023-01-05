@@ -1,10 +1,10 @@
 exports.run = async (locale) => {
 
-    //Anuncia la carga de la depuración remota
-    console.log(locale.loadingDebugging);
+    //Anuncia la carga del manejador de errores remoto
+    console.log(locale.loading);
 
-    //Carga la configuración de la depuración remota
-    const config = require('../configs/debugging.json').sentry;
+    //Carga la configuración del manejador de errores remoto
+    const config = require('../configs/errorTracker.json').sentry;
 
     //Almacena la librería de Sentry
     const Sentry = require("@sentry/node");

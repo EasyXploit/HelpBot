@@ -18,9 +18,6 @@ exports.run = async (locale) => {
     //Si se trata de un entorno de desarrollo, reemplaza la tasa de recogida de muestras
     if (process.env.NODE_ENV === 'development') config.tracesSampleRate = 0;
 
-    //Si no hay tasa de recogida de muestras configurada, muestra un advertencia
-    if (!config.tracesSampleRate) console.warn(locale.errors.noTracesSampleRate);
-
     //Si la tasa de recogida de muestras configurada es menor al mínimo
     if (config.tracesSampleRate < 0) {
 

@@ -1669,7 +1669,6 @@
             "tracesSampleRate": "Tasa de muestreo de trazas",
             "errors": {
                 "invalidDSN": "No has especificado un DSN de Sentry válido. No se utilizará el rastreo de errores remoto",
-                "noTracesSampleRate": "No has especificado una tasa de muestras. Se usará 1.0 en su lugar (el máximo)",
                 "smallTracesSampleRate": "No has especificado una tasa de muestras válida. Se usará 0 en su lugar (el mínimo)",
                 "largeTracesSampleRate": "No has especificado una tasa de muestras válida. Se usará 1.0 en su lugar (el máximo)"
             }

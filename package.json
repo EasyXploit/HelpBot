@@ -23,6 +23,8 @@
   "dependencies": {
     "@discordjs/opus": "^0.8.0",
     "@discordjs/voice": "^0.10.0",
+    "@sentry/node": "^7.29.0",
+    "@sentry/tracing": "^7.29.0",
     "asciiart-logo": "^0.2.7",
     "bufferutil": "^4.0.6",
     "discord.js": "^13.9.1",

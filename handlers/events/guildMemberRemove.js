@@ -125,6 +125,6 @@ exports.run = async (member, client, locale) => {
         if (member.user.id === client.user.id) return;
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.eventError.run(client, error, 'guildMemberRemove');
+        await client.functions.managers.eventError.run(client, error);
     };
 };

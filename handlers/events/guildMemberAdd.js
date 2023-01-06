@@ -49,6 +49,6 @@ exports.run = async (member, client, locale) => {
     } catch (error) {
 
         //Invoca el manejador de errores
-        await client.functions.managers.eventError.run(client, error, 'guildMemberAdd');
+        await client.functions.managers.eventError.run(client, error);
     };
 };

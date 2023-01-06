@@ -198,6 +198,6 @@ exports.run = async (oldState, newState, client, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.eventError.run(client, error, 'voiceStateUpdate');
+        await client.functions.managers.eventError.run(client, error);
     };
 };

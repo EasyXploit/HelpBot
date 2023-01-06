@@ -26,6 +26,6 @@ exports.run = async (channel, client, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.eventError.run(client, error, 'channelDelete');
+        await client.functions.managers.eventError.run(client, error);
     };
 };

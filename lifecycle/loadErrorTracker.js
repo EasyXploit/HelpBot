@@ -7,10 +7,10 @@ exports.run = async (locale) => {
     const config = require('../configs/errorTracker.json').sentry;
 
     //Almacena la librería de Sentry
-    const Sentry = require("@sentry/node");
+    const sentry = require("@sentry/node");
 
     //Se importa de @sentry/tracing para parchear el centro global para que funcione el rastreo
-    const SentryTracing = require("@sentry/tracing");
+    /*const sentryTracing = */require("@sentry/tracing");
 
     //Si no hay DSN configurado, devuelve un error y continua
     if (!config.dsn) return console.error(`${locale.errors.invalidDSN}\n`);
@@ -41,7 +41,7 @@ exports.run = async (locale) => {
     try {
 
         //Inicializa la conexión con Sentry
-        Sentry.init({
+        sentry.init({
             
             dsn: config.dsn,                           //Proporciona el DSN (Data Source Name)
             tracesSampleRate: config.tracesSampleRate  //Proporciona la tasa de recogida de muestras

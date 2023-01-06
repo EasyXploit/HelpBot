@@ -10,6 +10,9 @@ exports.run = async (client, error, interaction) => {
     //Se muestra el error en consola
     console.error(`\n${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
 
+    //Envía la excepción al manejador de errores remoto
+    client.errorTracker.captureException(error);
+
     //Genera un embed de notificación
     const notificationEmbed = new client.MessageEmbed()
         .setColor(client.config.colors.error)

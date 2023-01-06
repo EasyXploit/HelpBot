@@ -55,4 +55,6 @@ exports.run = async (locale) => {
 
     //Muestra un mensaje de confirmación en la consola
     console.log(` - ${locale.tracesSampleRate}: ${config.tracesSampleRate}\n\n${locale.configLoaded}\n`);
+
+    return true;
 }

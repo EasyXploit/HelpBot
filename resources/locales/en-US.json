@@ -3,14 +3,7 @@
         "startingClient": "Starting client",
         "clientStarted": "Client started successfully!",
         "unhandledRejection": {
-            "consoleMsg": "ERROR: Unhandled rejected promise",
-            "debuggingEmbed": {
-                "title": "Debugging",
-                "description": "A rejected promise has not been handled",
-                "date": "Date",
-                "error": "Error",
-                "footer": "Check the console for more details"
-            }
+            "consoleMsg": "ERROR: Unhandled rejected promise"
         },
         "uncompleteEventsLoad": "ERROR: Failed to complete events load",
         "eventLoaded": "Event",

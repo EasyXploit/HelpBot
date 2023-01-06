@@ -38,21 +38,6 @@ process.on('unhandledRejection', error => {
 
         //Envía un mensaje de error a la consola
         console.error(`${new Date().toLocaleString()} 》${locale.index.unhandledRejection.consoleMsg}:`, error.stack);
-
-        //Almacena el string del error, y lo recorta si es necesario
-        const errorString = error.stack.length > 1014 ? `${error.stack.slice(0, 1014)} ...` : error.stack;
-
-        //Ejecuta el manejador de depuración
-        if (client.functions) client.functions.managers.debugging.run(client, 'embed', new client.MessageEmbed()
-            .setColor(client.config.colors.debugging)
-            .setTitle(`📋 ${locale.index.unhandledRejection.debuggingEmbed.title}`)
-            .setDescription(locale.index.unhandledRejection.debuggingEmbed.description)
-            .addFields(
-                { name: locale.index.unhandledRejection.debuggingEmbed.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
-                { name: locale.index.unhandledRejection.debuggingEmbed.error, value: `\`\`\`${errorString}\`\`\``, inline: false }
-            )
-            .setFooter({ text: locale.index.unhandledRejection.debuggingEmbed.footer })
-        );
     };
 });
 

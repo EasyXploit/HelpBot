@@ -3,14 +3,7 @@
         "startingClient": "Iniciando cliente",
         "clientStarted": "¡Cliente iniciado correctamente!",
         "unhandledRejection": {
-            "consoleMsg": "ERROR: Promesa rechazada no manejada",
-            "debuggingEmbed": {
-                "title": "Depuración",
-                "description": "Una promesa rechazada no ha sido manejada",
-                "date": "Fecha",
-                "error": "Error",
-                "footer": "Revisa la consola para obtener más detalles"
-            }
+            "consoleMsg": "ERROR: Promesa rechazada no manejada"
         },
         "uncompleteEventsLoad": "ERROR: No se ha podido completar la carga de los eventos",
         "eventLoaded": "Evento",

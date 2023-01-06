@@ -1469,15 +1469,7 @@
                 "cantUseNavigation": "You cannot control a menu invoked by another member"
             },
             "eventError": {
-                "error": "ERROR",
-                "debuggingEmbed": {
-                    "title": "Debugging",
-                    "description": "An error was declared during the execution of an event",
-                    "event": "Event",
-                    "date": "Date",
-                    "error": "Error",
-                    "footer": "Check the console for more details"
-                }
+                "error": "ERROR"
             },
             "interactionError": {
                 "error": "ERROR",

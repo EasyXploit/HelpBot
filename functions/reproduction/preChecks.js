@@ -114,7 +114,7 @@ exports.run = async (client, interaction, checks) => {
             if (connection) {
 
                 //Obtiene el nombre canal de voz
-                const voiceChannel = await client.functions.fetchChannel(connection.joinConfig.channelId);
+                const voiceChannel = await client.functions.utilities.fetch(client, 'channel', connection.joinConfig.channelId);
 
                 //Devuelve un mensaje de error
                 await interaction.reply({ embeds: [new client.MessageEmbed()

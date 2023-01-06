@@ -122,13 +122,6 @@ exports.run = (client) => {
 
             //Envía una advertencia a la consola
             console.warn(`${new Date().toLocaleString()} 》${locale.ping.consoleMsg}: ${actualPing} ms\n`);
-
-            //Ejecuta el manejador de depuración
-            await client.functions.managers.debugging.run(client, 'embed', new client.MessageEmbed()
-                .setColor(client.config.colors.warning)
-                .setDescription(`${client.customEmojis.orangeTick} ${locale.ping.debuggingMsg}: **${actualPing}** ms`)
-                .setFooter({ text: client.user.username, iconURL: client.user.avatarURL() })
-            );
         };
     }, 60000);
 

@@ -3,14 +3,7 @@
         "startingClient": "Iniciando cliente",
         "clientStarted": "¡Cliente iniciado correctamente!",
         "unhandledRejection": {
-            "consoleMsg": "ERROR: Promesa rechazada no manejada",
-            "debuggingEmbed": {
-                "title": "Depuración",
-                "description": "Una promesa rechazada no ha sido manejada",
-                "date": "Fecha",
-                "error": "Error",
-                "footer": "Revisa la consola para obtener más detalles"
-            }
+            "consoleMsg": "ERROR: Promesa rechazada no manejada"
         },
         "uncompleteEventsLoad": "ERROR: No se ha podido completar la carga de los eventos",
         "eventLoaded": "Evento",
@@ -1310,7 +1303,6 @@
         },
         "events": {
             "channelDelete": {
-                "missingDebuggingChannel": "AVISO: El canal de depuración ya no existe o no se puede tener acceso.\n Se ha borrado de la configuración y se ha descargado de la memoria",
                 "missingLoggingChannel": "AVISO: El canal de registro ya no existe o no se puede tener acceso.\n Se ha borrado de la configuración y se ha descargado de la memoria"
             },
             "error": {
@@ -1476,21 +1468,8 @@
             "buttonNavigation": {
                 "cantUseNavigation": "No puedes controlar un menú invocado por otro miembro"
             },
-            "debugging": {
-                "cannotSend": "ERROR: No se pueden enviar mensajes al canal de depuración.\n{{botUsername}} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos",
-                "cannotAccess": "ERROR: No se puede tener acceso al canal de depuración.\n Se ha borrado de la configuración y se ha descargado de la memoria",
-                "error": "ERROR: Error durante la ejecución del debugging"
-            },
             "eventError": {
-                "error": "ERROR",
-                "debuggingEmbed": {
-                    "title": "Depuración",
-                    "description": "Se declaró un error durante la ejecución de un evento",
-                    "event": "Evento",
-                    "date": "Fecha",
-                    "error": "Error",
-                    "footer": "Revisa la consola para obtener más detalles"
-                }
+                "error": "ERROR"
             },
             "interactionError": {
                 "error": "ERROR",
@@ -1499,18 +1478,6 @@
                 "notificationEmbed": {
                     "title": "¡Vaya! Algo fue mal",
                     "description": "Lo hemos reportado a los responsables del bot"
-                },
-                "debuggingEmbed": {
-                    "title": "Depuración",
-                    "description": "Se declaró un error durante la ejecución de una interacción",
-                    "type": "Tipo",
-                    "command": "Comando",
-                    "arguments": "Argumentos",
-                    "channel": "Canal",
-                    "author": "Autor",
-                    "date": "Fecha",
-                    "error": "Error",
-                    "footer": "Revisa la consola para obtener más detalles"
                 }
             },
             "logging": {
@@ -1689,6 +1656,16 @@
         }
     },
     "lifecycle": {
+        "loadErrorTracker": {
+            "loading": "Cargando el rastreador de errores remoto mediante Sentry ...",
+            "configLoaded": "¡Carga del rastreador de errores remoto completada!",
+            "tracesSampleRate": "Tasa de muestreo de trazas",
+            "errors": {
+                "invalidDSN": "No has especificado un DSN de Sentry válido. No se utilizará el rastreo de errores remoto",
+                "smallTracesSampleRate": "No has especificado una tasa de muestras válida. Se usará 0 en su lugar (el mínimo)",
+                "largeTracesSampleRate": "No has especificado una tasa de muestras válida. Se usará 1.0 en su lugar (el máximo)"
+            }
+        },
         "loadIntervals": {
             "mutes": {
                 "loggingEmbed": {
@@ -1717,8 +1694,7 @@
                 "error": "ERROR"
             },
             "ping": {
-                "consoleMsg": "AVISO: Tiempo de respuesta del websocket elevado",
-                "debuggingMsg": "El tiempo de respuesta del websocket es anormalmente alto"
+                "consoleMsg": "AVISO: Tiempo de respuesta del websocket elevado"
             },
             "polls": {
                 "votesPercentage": "{{votesCount}} votos, el {{percentage}}%",
@@ -1764,7 +1740,6 @@
             "presenceLoaded": "Carga de presencia completada",
             "voiceStatesLoaded": "Carga de estados de voz completada",
             "loadedCorrectly": "{{botUsername}} iniciado correctamente",
-            "loadMention": "{{botUsername}} iniciado correctamente",
             "error": "ERROR"
         },
         "loadTimers": {

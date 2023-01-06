@@ -4,6 +4,9 @@ const locale = require(`./resources/locales/${require('./configs/main.json').loc
 //Muestra el logo de arranque en la consola
 require('./lifecycle/splashLogo.js').run(locale.lifecycle.splashLogo);
 
+//Si está habilitada, carga el manejador de errores remoto
+const errorTrackingEnambled = require('./configs/errorTracker.json').enabled ? require('./lifecycle/loadErrorTracker.js').run(locale.lifecycle.loadErrorTracker) : false;
+
 //CARGA DE CLIENTE
 //Carga una nueva instancia de cliente en Discord
 console.log(`${locale.index.startingClient} ...`);
@@ -22,6 +25,9 @@ const client = new discord.Client({     //Inicia el cliente con el array de inte
 });
 console.log(`${locale.index.clientStarted}\n`);
 
+//Si se ha cargado el manejador de errores remoto, almacena la librería en el cliente
+if (errorTrackingEnambled) client.errorTracker = require("@sentry/node");
+
 //CARGA DE ESTRUCTURAS ADICIONALES
 //Carga de módulos, objetos y colecciones en el cliente
 ['MessageEmbed', 'MessageAttachment', 'MessageActionRow', 'MessageSelectMenu', 'TextInputComponent', 'MessageButton', 'Collection', 'Modal'].forEach(x => client[x] = discord[x]);       //Carga de métodos de Discord.js en el cliente
@@ -35,21 +41,6 @@ process.on('unhandledRejection', error => {
 
         //Envía un mensaje de error a la consola
         console.error(`${new Date().toLocaleString()} 》${locale.index.unhandledRejection.consoleMsg}:`, error.stack);
-
-        //Almacena el string del error, y lo recorta si es necesario
-        const errorString = error.stack.length > 1014 ? `${error.stack.slice(0, 1014)} ...` : error.stack;
-
-        //Ejecuta el manejador de depuración
-        if (client.functions) client.functions.managers.debugging.run(client, 'embed', new client.MessageEmbed()
-            .setColor(client.config.colors.debugging)
-            .setTitle(`📋 ${locale.index.unhandledRejection.debuggingEmbed.title}`)
-            .setDescription(locale.index.unhandledRejection.debuggingEmbed.description)
-            .addFields(
-                { name: locale.index.unhandledRejection.debuggingEmbed.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
-                { name: locale.index.unhandledRejection.debuggingEmbed.error, value: `\`\`\`${errorString}\`\`\``, inline: false }
-            )
-            .setFooter({ text: locale.index.unhandledRejection.debuggingEmbed.footer })
-        );
     };
 });
 

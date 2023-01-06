@@ -3,14 +3,7 @@
         "startingClient": "Starting client",
         "clientStarted": "Client started successfully!",
         "unhandledRejection": {
-            "consoleMsg": "ERROR: Unhandled rejected promise",
-            "debuggingEmbed": {
-                "title": "Debugging",
-                "description": "A rejected promise has not been handled",
-                "date": "Date",
-                "error": "Error",
-                "footer": "Check the console for more details"
-            }
+            "consoleMsg": "ERROR: Unhandled rejected promise"
         },
         "uncompleteEventsLoad": "ERROR: Failed to complete events load",
         "eventLoaded": "Event",
@@ -1310,7 +1303,6 @@
         },
         "events": {
             "channelDelete": {
-                "missingDebuggingChannel": "WARNING: The debugging channel no longer exists or is inaccessible.\n It has been cleared from the configuration and unloaded from memory",
                 "missingLoggingChannel": "WARNING: The logging channel no longer exists or is inaccessible.\n It has been cleared from the configuration and unloaded from memory"
             },
             "error": {
@@ -1476,11 +1468,6 @@
             "buttonNavigation": {
                 "cantUseNavigation": "You cannot control a menu invoked by another member"
             },
-            "debugging": {
-                "cannotSend": "ERROR: Cannot send messages to the debugging channel.\n{{botUsername}} must have the following permissions on the channel: Send Messages, Send Links, Attach Files",
-                "cannotAccess": "ERROR: Cannot access the debugging channel.\n The channel has been cleared from the configuration and unloaded from memory",
-                "error": "ERROR: Error while executing the debugging"
-            },
             "eventError": {
                 "error": "ERROR",
                 "debuggingEmbed": {
@@ -1499,18 +1486,6 @@
                 "notificationEmbed": {
                     "title": "Oops! Something went wrong",
                     "description": "We have reported it to those responsible for the bot"
-                },
-                "debuggingEmbed": {
-                    "title": "Debugging",
-                    "description": "An error was declared during the execution of an interaction",
-                    "type": "Type",
-                    "command": "Command",
-                    "arguments": "Arguments",
-                    "channel": "Channel",
-                    "author": "Author",
-                    "date": "Date",
-                    "error": "Error",
-                    "footer": "Check the console for more details"
                 }
             },
             "logging": {
@@ -1689,6 +1664,16 @@
         }
     },
     "lifecycle": {
+        "loadErrorTracker": {
+            "loading": "Loading remote error tracking via Sentry ...",
+            "configLoaded": "Remote error tracking load completed!",
+            "tracesSampleRate": "Traces sample rate",
+            "errors": {
+                "invalidDSN": "You have not specified a valid Sentry DSN. Remote error tracking will not be used",
+                "smallTracesSampleRate": "You have not specified a valid sample rate. 0 will be used instead (the minimum)",
+                "largeTracesSampleRate": "You have not specified a valid sample rate. 1.0 will be used instead (the maximum)"
+            }
+        },
         "loadIntervals": {
             "mutes": {
                 "loggingEmbed": {
@@ -1717,8 +1702,7 @@
                 "error": "ERROR"
             },
             "ping": {
-                "consoleMsg": "WARNING: High websocket response time",
-                "debuggingMsg": "Websocket response time is abnormally high"
+                "consoleMsg": "WARNING: High websocket response time"
             },
             "polls": {
                 "votesPercentage": "{{votesCount}} votes, the {{percentage}}%",
@@ -1763,7 +1747,6 @@
             "presenceLoaded": "Presence loading completed",
             "voiceStatesLoaded": "Voice states loading completed",
             "loadedCorrectly": "{{botUsername}} started successfully",
-            "loadMention": "{{botUsername}} started successfully",
             "error": "ERROR",
             "functionsLoaded": "Global functions loading completed"
         },

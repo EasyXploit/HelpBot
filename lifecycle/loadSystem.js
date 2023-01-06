@@ -150,9 +150,6 @@ exports.run = async (client, locale) => {
 
             //Notifica la correcta carga del bot
             console.log(`\n 》${await client.functions.utilities.parseLocale.run(locale.loadedCorrectly, { botUsername: client.user.username })}.`);
-
-            //Genera un registro en el canal de registro
-            if (client.debuggingChannel && client.config.main.loadMention) client.debuggingChannel.send({ content: `${await client.functions.utilities.parseLocale.run(locale.loadMention, { botUsername: client.user.username })} [<@${client.homeGuild.ownerId}>]` }).then(msg => { setTimeout(() => msg.delete(), 5000) });
         });
 
     } catch (error) {

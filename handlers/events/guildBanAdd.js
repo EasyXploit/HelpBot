@@ -93,6 +93,6 @@ exports.run = async (banData, client, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.eventError.run(client, error, 'guildBanAdd');
+        await client.functions.managers.eventError.run(client, error);
     };
 };

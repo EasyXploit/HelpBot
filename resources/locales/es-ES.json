@@ -574,6 +574,27 @@
                         "upNext": "A continuación"
                     }
                 },
+                "report": {
+                    "appData": {
+                        "name": "reportar",
+                        "description": "Reporta algo al equipo de moderación",
+                        "options": {
+                            "body": {
+                                "name": "reporte",
+                                "description": "¿Qué quieres reportar?"
+                            },
+                            "member": {
+                                "name": "miembro",
+                                "description": "¿A quien quieres reportar?"
+                            }
+                        }
+                    },
+                    "bodyModal": {
+                        "title": "Reportar algo",
+                        "fieldTitle": "Razón del reporte",
+                        "fieldPlaceholder": "¿Cual es tu reporte?"
+                    }
+                },
                 "remove": {
                     "appData": {
                         "name": "eliminar",
@@ -1266,6 +1287,18 @@
                 }
             },
             "messageCommands": {
+                "reportMessage": {
+                    "appData": {
+                        "name": "Reportar mensaje"
+                    },
+                    "memberNotFound": "El miembro ya no se encuentra en el servidor",
+                    "cantReportYourself": "No puedes reportarte a tí mismo",
+                    "bodyModal": {
+                        "title": "Reportar un mensaje de un miembro",
+                        "fieldTitle": "Razón del reporte",
+                        "fieldPlaceholder": "¿Cual es tu reporte?"
+                    }
+                },
                 "removeAndWarn": {
                     "appData": {
                         "name": "Eliminar y advertir"
@@ -1284,6 +1317,18 @@
                 }
             },
             "userCommands": {
+                "reportMember": {
+                    "appData": {
+                        "name": "Reportar miembro"
+                    },
+                    "memberNotFound": "El miembro ya no se encuentra en el servidor",
+                    "cantReportYourself": "No puedes reportarte a tí mismo",
+                    "bodyModal": {
+                        "title": "Reportar un miembro",
+                        "fieldTitle": "Razón del reporte",
+                        "fieldPlaceholder": "¿Cual es tu reporte?"
+                    }
+                },
                 "warn": {
                     "appData": {
                         "name": "Advertir"
@@ -1492,6 +1537,13 @@
                 "registerDate": "Fecha de registro",
                 "actualSanction": "Sanción actual",
                 "mutedUntil": "Silenciado hasta"
+            },
+            "report": {
+                "cannotSend": "ERROR: No se pueden enviar mensajes al canal de reportes.\n{{botUsername}} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos",
+                "correct": "El reporte ha sido enviado",
+                "temporaryError": "Está característica no se encuentra disponible en estos momentos.\nPor favor, inténtalo de nuevo más tarde",
+                "cannotAccess": "ERROR: No se puede tener acceso al canal de reportes.\n Se ha borrado de la configuración y se ha descargado de la memoria",
+                "error": "ERROR: Error durante la ejecución del manejador de reportes"
             }
         },
         "moderation": {

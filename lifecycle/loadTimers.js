@@ -135,7 +135,7 @@ exports.run = async (client) => {
                 for (let index = 0; index < embedProperties.fields.length; index++) {
 
                     //Aborta si se ha superado el límite de API
-                    if (index > 25) break;timedmessages
+                    if (index > 25) break;
 
                     //Almacena las propiedades del campo iterado
                     const field = embedProperties.fields[index];

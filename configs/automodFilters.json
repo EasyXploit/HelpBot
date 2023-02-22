@@ -14,7 +14,8 @@
         "reason": "Crossed posts",
         "bypassIds": [],
         "bypassChannels": [],
-        "triggerLimit": 3
+        "triggerLimit": 3,
+        "filterFiles": true
     },
     "swearWords": {
         "status": false,

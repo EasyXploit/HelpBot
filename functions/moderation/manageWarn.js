@@ -1,5 +1,5 @@
 //Función para manejar las infracciones generadas
-exports.run = async (client, member, reason, action, moderator, message, interaction, channel) => {
+exports.run = async (client, member, reason, action, moderator, message, interaction, channel, filteredURL) => {
 
     try {
 
@@ -207,7 +207,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 );
 
                 //Si procede, adjunta el mensaje filtrado
-                if (message && client.config.logging.warnedMember && client.config.moderation.attachFilteredMessages) await client.functions.managers.logging.run(client, 'file', new client.MessageAttachment(Buffer.from(message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
+                if (message && client.config.logging.warnedMember && client.config.moderation.attachFilteredMessages) await client.functions.managers.logging.run(client, 'file', new client.MessageAttachment(Buffer.from(filteredURL || message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
             });
 
             //Banea temporalmente a los miembros que se acaban de unir al servidor y han mandado invitaciones

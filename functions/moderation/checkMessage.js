@@ -10,6 +10,9 @@ exports.run = async (client, message) => {
     //Almacena si el mensaje está permitido
     let isPermitted = true;
 
+    //Almacena la URL del adjunto filtrado
+    let filteredURL;
+
     //Por cada uno de los filtros de automoderación
     filtersLoop: for (const filter in filters) {
 
@@ -92,9 +95,16 @@ exports.run = async (client, message) => {
                     const iteratedMessage = messagesHistory[messagesHistory.length - index - 1];
                     const previousMessage = messagesHistory[messagesHistory.length - index - 2];
 
-                    //Si no supera el umbral de aceptación y hay mensaje previo, incrementa el contador, sino y es el primer mensaje, omite el bucle
-                    if (previousMessage && iteratedMessage.content === previousMessage.content) matches++;
-                    else if (index === 0) break;
+                    //Si no supera el umbral de aceptación y hay mensaje previo
+                    if (previousMessage && iteratedMessage.hash === previousMessage.hash) {
+
+                        //Incrementa el contador de coincidencias 
+                        matches++;
+
+                        //Almacena el contenido del mensaje filtrado
+                        filteredURL = iteratedMessage.content;
+
+                    } else if (index === 0) break; //Sino y es el primer mensaje, omite el bucle
                 };
 
                 //Si se supera o iguala el límite, propaga la coincidencia
@@ -254,7 +264,7 @@ exports.run = async (client, message) => {
             const reason = message.channel.type === 'DM' ? `${filterCfg.reason} (${locale.filteredDm})` : filterCfg.reason; 
         
             //Ejecuta el manejador de infracciones
-            await client.functions.moderation.manageWarn.run(client, message.member, reason, filterCfg.action, client.user, message, null, message.channel);
+            await client.functions.moderation.manageWarn.run(client, message.member, reason, filterCfg.action, client.user, message, null, message.channel, message.content.length === 0 ? filteredURL : null);
 
             //Para el resto del bucle
             break;

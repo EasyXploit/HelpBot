@@ -172,11 +172,8 @@ exports.run = async (client) => {
             "message": timedMessage,
         };
 
-        //Dependencia para generar hashes MD5
-        const md5 = require('md5');
-
         //Genera un hash MD5 a partir de la config. del timer
-        const hash = md5(JSON.stringify(timerData));
+        const hash = client.md5(JSON.stringify(timerData));
 
         //Si el timer no estaba almacenado en la BD
         if (!client.db.timers.messages[hash]) {

@@ -15,14 +15,50 @@ exports.run = async (message, client, locale) => {
     //Crea una variable para almacenar los mensajes del miembro
     let memberMessages = client.memberMessages[message.member.id];
 
-    //Añade el mensaje al historial de mensajes del miembro
-    memberMessages.history.push({
-        id: message.id,
-        timestamp: message.createdTimestamp,
-        editedTimestamp: message.editedTimestamp,
-        channelId: message.channel.id,
-        content: message.content
-    });
+    //Si el mensaje tiene contenido
+    if (message.content.length > 0) {
+        
+        //
+        const messageHash = await client.md5(text);
+
+        //Añade el mensaje al historial de mensajes del miembro
+        memberMessages.history.push({
+            id: message.id,
+            timestamp: message.createdTimestamp,
+            editedTimestamp: message.editedTimestamp,
+            channelId: message.channel.id,
+            content: message.content,
+            hash: messageHash,
+        });
+    };
+    
+    //Si el mensaje tiene adjuntos y se desean filtrar
+    if (client.config.automodFilters['crossPost'].filterFiles && message.attachments.size > 0) {
+
+        //
+        const attachmentsArray = Array.from(message.attachments.values());
+
+        //
+        for (let index = 0; index < attachmentsArray.length; index++) {
+
+            //
+            await fetch(attachmentsArray[index].proxyURL).then(async (response) => {
+
+                const attachmentBody = await response.text();
+                const attachmentHash = await client.md5(attachmentBody);
+
+                //Añade el hash al historial de mensajes del miembro
+                memberMessages.history.push({
+                    id: message.id,
+                    timestamp: message.createdTimestamp,
+                    editedTimestamp: message.editedTimestamp,
+                    channelId: message.channel.id,
+                    content: attachmentsArray[index].proxyURL,
+                    hash: attachmentHash
+                });
+            });
+        };
+    };
 
     //Si el historial está lleno, elimina el primer elemento del array
     if (memberMessages.history.length >= client.config.main.messageHistorySize) memberMessages.history.shift();

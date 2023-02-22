@@ -33,6 +33,9 @@ if (errorTrackingEnambled) client.errorTracker = require("@sentry/node");
 ['MessageEmbed', 'MessageAttachment', 'MessageActionRow', 'MessageSelectMenu', 'TextInputComponent', 'MessageButton', 'Collection', 'Modal'].forEach(x => client[x] = discord[x]);       //Carga de métodos de Discord.js en el cliente
 ['config', 'db', 'usersVoiceStates', 'reproductionQueues', 'memberMessages'].forEach(x => client[x] = {});                                                          //Creación de objetos para almacenar las configuraciones, bases de datos y cachés
 
+//Dependencia para generar hashes MD5
+client.md5 = require('md5');
+
 //Gestión de promesas rechazadas y no manejadas
 process.on('unhandledRejection', error => {
 

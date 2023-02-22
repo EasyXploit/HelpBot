@@ -73,10 +73,10 @@ databaseFiles.forEach(async file => {
 
 //MANEJADOR DE EVENTOS
 //Lee el directorio de los eventos
-client.fs.readdir('./handlers/events/', async (err, files) => {
+client.fs.readdir('./handlers/events/', async (error, files) => {
 
     //Si se genera un error, aborta la carga del resto de eventos
-    if (err) return console.error(`${new Date().toLocaleString()} 》${locale.index.uncompleteEventsLoad}.`, error.stack);
+    if (error) return console.error(`${new Date().toLocaleString()} 》${locale.index.uncompleteEventsLoad}.`, error.stack);
     
     //Precarga cada uno de los eventos
     files.forEach(file => {

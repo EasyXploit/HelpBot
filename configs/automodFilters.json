@@ -10,7 +10,7 @@
     "crossPost": {
         "status": true,
         "action": 3,
-        "reason": "Crossed posts",
+        "reason": "Repeated posts",
         "bypassIds": [],
         "triggerLimit": 3,
         "filterFiles": true

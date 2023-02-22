@@ -230,7 +230,7 @@ exports.run = async (client, message) => {
                 const spoilerCount = (message.content.match(new RegExp(/\|\|.*?\|\|/g)) || []).length;
 
                 //Comprueba si superan el umbral máximo permitido
-                if (spoilerCount > filters.massSpoilers.quantity) return true;
+                if (spoilerCount > filters.massSpoilers.quantity) match =  true;
                 
                 //Para el switch
                 break;

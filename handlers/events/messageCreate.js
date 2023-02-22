@@ -19,7 +19,7 @@ exports.run = async (message, client, locale) => {
     if (message.content.length > 0) {
         
         //Se genera un hash a partir del contenido del mensaje
-        const messageHash = await client.md5(text);
+        const messageHash = await client.md5(message.content);
 
         //Añade el mensaje al historial de mensajes del miembro
         memberMessages.history.push({

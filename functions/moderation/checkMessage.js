@@ -28,14 +28,11 @@ exports.run = async (client, message) => {
         //Lo omite si el autor del mensaje es el propietario de la guild
         if (message.author.id === client.homeGuild.ownerId) continue;
 
-        //Almacena los canales a los que no afecta
-        const bypassChannels = filterCfg.bypassChannels;
+        //Almacena los roles, miembros y canales a los que no afecta
+        const bypassIds = filterCfg.bypassIds;
 
         //Lo omite si el canal tiene el filtro desactivado
-        if (message.channel && bypassChannels.includes(message.channel.id)) continue;
-
-        //Almacena los roles y miembros a los que no afecta
-        const bypassIds = filterCfg.bypassIds;
+        if (message.channel && bypassIds.includes(message.channel.id)) continue;
 
         //Lo omite si el miembro o alguno de sus roles tiene el filtro desactivado
         for (let index = 0; index < bypassIds.length; index++) if (message.member.id === bypassIds[index] || message.member.roles.cache.has(bypassIds[index])) continue filtersLoop;

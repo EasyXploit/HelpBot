@@ -1,4 +1,4 @@
-//Función apara comprobar el contenido de los mensajes enviados
+//Función para comprobar el contenido de los mensajes enviados
 exports.run = async (client, message) => {
 
     //Almacena las traducciones
@@ -91,7 +91,7 @@ exports.run = async (client, message) => {
                 //Itera el historial de mensajes hasta el límite de alarma
                 for (let index = 0; index <= filterCfg.triggerLimit; index++) {
 
-                    //Almacena el mennsaje iterado, y el previo
+                    //Almacena el mensaje iterado, y el previo
                     const iteratedMessage = messagesHistory[messagesHistory.length - index - 1];
                     const previousMessage = messagesHistory[messagesHistory.length - index - 2];
 

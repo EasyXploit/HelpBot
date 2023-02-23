@@ -13,13 +13,7 @@
             "enabled": true,
             "anonymousMode": []
         },
-        "clear": {
-            "enabled": true
-        },
         "edit": {
-            "enabled": true
-        },
-        "forward": {
             "enabled": true
         },
         "infractions": {
@@ -27,9 +21,6 @@
             "canSeeAny": []
         },
         "invitation": {
-            "enabled": true
-        },
-        "join": {
             "enabled": true
         },
         "kick": {
@@ -41,15 +32,6 @@
             "enabled": true,
             "hideNotPresent": true
         },
-        "leave": {
-            "enabled": true
-        },
-        "loop": {
-            "enabled": true
-        },
-        "move": {
-            "enabled": true
-        },
         "mute": {
             "enabled": true,
             "unlimitedTime": [],
@@ -60,19 +42,7 @@
         "notifications": {
             "enabled": true
         },
-        "nowplaying": {
-            "enabled": true
-        },
-        "pause": {
-            "enabled": true
-        },
         "ping": {
-            "enabled": true
-        },
-        "play": {
-            "enabled": true
-        },
-        "playskip": {
             "enabled": true
         },
         "poll": {
@@ -80,21 +50,6 @@
             "canEndAny": []
         },
         "purge": {
-            "enabled": true
-        },
-        "queue": {
-            "enabled": true
-        },
-        "remove": {
-            "enabled": true
-        },
-        "replay": {
-            "enabled": true
-        },
-        "resume": {
-            "enabled": true
-        },
-        "rewind": {
             "enabled": true
         },
         "rmwarn": {
@@ -108,22 +63,10 @@
         "run": {
             "enabled": true
         },
-        "seek": {
-            "enabled": true
-        },
         "send": {
             "enabled": true
         },
         "serverinfo": {
-            "enabled": true
-        },
-        "shuffle": {
-            "enabled": true
-        },
-        "skip": {
-            "enabled": true
-        },
-        "skipall": {
             "enabled": true
         },
         "slowmode": {
@@ -131,12 +74,6 @@
             "unlimitedTime": [],
             "maxRegularSeconds": 30,
             "reasonNotNeeded": []
-        },
-        "sound": {
-            "enabled": true,
-            "maxFileSize": 2097152,
-            "canUpload": [],
-            "canRemoveAny": []
         },
         "stats": {
             "enabled": true

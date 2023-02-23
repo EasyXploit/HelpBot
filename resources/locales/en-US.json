@@ -423,6 +423,27 @@
                         "description": "{{authorTag}} deleted {{deletedCount}} messages from channel {{channel}}"
                     }
                 },
+                "report": {
+                    "appData": {
+                        "name": "report",
+                        "description": "Reports something to the moderation team",
+                        "options": {
+                            "body": {
+                                "name": "report",
+                                "description": "What do you want to report?"
+                            },
+                            "member": {
+                                "name": "member",
+                                "description": "Who do you want to report?"
+                            }
+                        }
+                    },
+                    "bodyModal": {
+                        "title": "Report something",
+                        "fieldTitle": "Reason for the report",
+                        "fieldPlaceholder": "What is your report?"
+                    }
+                },
                 "rmwarn": {
                     "appData": {
                         "name": "rmwarn",
@@ -938,6 +959,18 @@
                 }
             },
             "messageCommands": {
+                "reportMessage": {
+                    "appData": {
+                        "name": "Report message"
+                    },
+                    "memberNotFound": "The member is no longer on the server",
+                    "cantReportYourself": "You can't report yourself",
+                    "bodyModal": {
+                        "title": "Report a member's message",
+                        "fieldTitle": "Reason for the report",
+                        "fieldPlaceholder": "What is your report?"
+                    }
+                },
                 "removeAndWarn": {
                     "appData": {
                         "name": "Remove and warn"
@@ -956,6 +989,18 @@
                 }
             },
             "userCommands": {
+                "reportMember": {
+                    "appData": {
+                        "name": "Report member"
+                    },
+                    "memberNotFound": "The member is no longer on the server",
+                    "cantReportYourself": "You can't report yourself",
+                    "bodyModal": {
+                        "title": "Report a member",
+                        "fieldTitle": "Reason for the report",
+                        "fieldPlaceholder": "What is your report?"
+                    }
+                },
                 "warn": {
                     "appData": {
                         "name": "Warn"
@@ -1161,6 +1206,13 @@
                 "registerDate": "Register date",
                 "actualSanction": "Current sanction",
                 "mutedUntil": "Muted until"
+            },
+            "report": {
+                "cannotSend": "ERROR: Cannot send messages to the reports channel.\n{{botUsername}} must have the following permissions on the channel: Send Messages, Send Links, Attach Files",
+                "correct": "The report has been sent",
+                "temporaryError": "This feature is not available at this time.\nPlease try again later",
+                "cannotAccess": "ERROR: Cannot access the reports channel.\n The channel has been cleared from the configuration and unloaded from memory",
+                "error": "ERROR: Error while executing the report manager"
             }
         },
         "moderation": {

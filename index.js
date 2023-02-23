@@ -26,7 +26,7 @@ const client = new discord.Client({     //Inicia el cliente con el array de inte
 console.log(`${locale.index.clientStarted}\n`);
 
 //Si se ha cargado el manejador de errores remoto, almacena la librería en el cliente
-if (errorTrackingEnambled) client.errorTracker = require("@sentry/node");
+if (errorTrackingEnambled) client.errorTracker = require('@sentry/node');
 
 //CARGA DE ESTRUCTURAS ADICIONALES
 //Carga de módulos, objetos y colecciones en el cliente

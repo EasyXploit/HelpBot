@@ -1,4 +1,4 @@
-//Función apara comprobar el contenido de los mensajes enviados
+//Función para comprobar el contenido de los mensajes enviados
 exports.run = async (client, message) => {
 
     //Almacena las traducciones
@@ -9,6 +9,9 @@ exports.run = async (client, message) => {
 
     //Almacena si el mensaje está permitido
     let isPermitted = true;
+
+    //Almacena la URL del adjunto filtrado
+    let filteredURL;
 
     //Por cada uno de los filtros de automoderación
     filtersLoop: for (const filter in filters) {
@@ -25,14 +28,11 @@ exports.run = async (client, message) => {
         //Lo omite si el autor del mensaje es el propietario de la guild
         if (message.author.id === client.homeGuild.ownerId) continue;
 
-        //Almacena los canales a los que no afecta
-        const bypassChannels = filterCfg.bypassChannels;
+        //Almacena los roles, miembros y canales a los que no afecta
+        const bypassIds = filterCfg.bypassIds;
 
         //Lo omite si el canal tiene el filtro desactivado
-        if (message.channel && bypassChannels.includes(message.channel.id)) continue;
-
-        //Almacena los roles y miembros a los que no afecta
-        const bypassIds = filterCfg.bypassIds;
+        if (message.channel && bypassIds.includes(message.channel.id)) continue;
 
         //Lo omite si el miembro o alguno de sus roles tiene el filtro desactivado
         for (let index = 0; index < bypassIds.length; index++) if (message.member.id === bypassIds[index] || message.member.roles.cache.has(bypassIds[index])) continue filtersLoop;
@@ -88,13 +88,20 @@ exports.run = async (client, message) => {
                 //Itera el historial de mensajes hasta el límite de alarma
                 for (let index = 0; index <= filterCfg.triggerLimit; index++) {
 
-                    //Almacena el mennsaje iterado, y el previo
+                    //Almacena el mensaje iterado, y el previo
                     const iteratedMessage = messagesHistory[messagesHistory.length - index - 1];
                     const previousMessage = messagesHistory[messagesHistory.length - index - 2];
 
-                    //Si no supera el umbral de aceptación y hay mensaje previo, incrementa el contador, sino y es el primer mensaje, omite el bucle
-                    if (previousMessage && iteratedMessage.content === previousMessage.content) matches++;
-                    else if (index === 0) break;
+                    //Si no supera el umbral de aceptación y hay mensaje previo
+                    if (previousMessage && iteratedMessage.hash === previousMessage.hash) {
+
+                        //Incrementa el contador de coincidencias 
+                        matches++;
+
+                        //Almacena el contenido del mensaje filtrado
+                        filteredURL = iteratedMessage.content;
+
+                    } else if (index === 0) break; //Sino y es el primer mensaje, omite el bucle
                 };
 
                 //Si se supera o iguala el límite, propaga la coincidencia
@@ -223,7 +230,7 @@ exports.run = async (client, message) => {
                 const spoilerCount = (message.content.match(new RegExp(/\|\|.*?\|\|/g)) || []).length;
 
                 //Comprueba si superan el umbral máximo permitido
-                if (spoilerCount > filters.massSpoilers.quantity) return true;
+                if (spoilerCount > filters.massSpoilers.quantity) match =  true;
                 
                 //Para el switch
                 break;
@@ -254,7 +261,7 @@ exports.run = async (client, message) => {
             const reason = message.channel.type === 'DM' ? `${filterCfg.reason} (${locale.filteredDm})` : filterCfg.reason; 
         
             //Ejecuta el manejador de infracciones
-            await client.functions.moderation.manageWarn.run(client, message.member, reason, filterCfg.action, client.user, message, null, message.channel);
+            await client.functions.moderation.manageWarn.run(client, message.member, reason, filterCfg.action, client.user, message, null, message.channel, message.content.length === 0 ? filteredURL : null);
 
             //Para el resto del bucle
             break;

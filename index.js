@@ -26,12 +26,15 @@ const client = new discord.Client({     //Inicia el cliente con el array de inte
 console.log(`${locale.index.clientStarted}\n`);
 
 //Si se ha cargado el manejador de errores remoto, almacena la librería en el cliente
-if (errorTrackingEnambled) client.errorTracker = require("@sentry/node");
+if (errorTrackingEnambled) client.errorTracker = require('@sentry/node');
 
 //CARGA DE ESTRUCTURAS ADICIONALES
 //Carga de módulos, objetos y colecciones en el cliente
 ['MessageEmbed', 'MessageAttachment', 'MessageActionRow', 'MessageSelectMenu', 'TextInputComponent', 'MessageButton', 'Collection', 'Modal'].forEach(x => client[x] = discord[x]);       //Carga de métodos de Discord.js en el cliente
-['config', 'db', 'usersVoiceStates', 'reproductionQueues', 'memberMessages'].forEach(x => client[x] = {});                                                          //Creación de objetos para almacenar las configuraciones, bases de datos y cachés
+['config', 'db', 'usersVoiceStates', 'memberMessages'].forEach(x => client[x] = {});                                                          //Creación de objetos para almacenar las configuraciones, bases de datos y cachés
+
+//Dependencia para generar hashes MD5
+client.md5 = require('md5');
 
 //Gestión de promesas rechazadas y no manejadas
 process.on('unhandledRejection', error => {
@@ -70,10 +73,10 @@ databaseFiles.forEach(async file => {
 
 //MANEJADOR DE EVENTOS
 //Lee el directorio de los eventos
-client.fs.readdir('./handlers/events/', async (err, files) => {
+client.fs.readdir('./handlers/events/', async (error, files) => {
 
     //Si se genera un error, aborta la carga del resto de eventos
-    if (err) return console.error(`${new Date().toLocaleString()} 》${locale.index.uncompleteEventsLoad}.`, error.stack);
+    if (error) return console.error(`${new Date().toLocaleString()} 》${locale.index.uncompleteEventsLoad}.`, error.stack);
     
     //Precarga cada uno de los eventos
     files.forEach(file => {

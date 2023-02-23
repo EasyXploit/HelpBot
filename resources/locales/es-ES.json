@@ -72,14 +72,6 @@
                         "withoutReason": "**{{userTag}}** ha sido baneado, ¿alguien más?"
                     }
                 },
-                "clear": {
-                    "appData": {
-                        "name": "vaciar",
-                        "description": "Vacía la cola de reproducción"
-                    },
-                    "noQueue": "No hay elementos en la cola",
-                    "queueDeleted": "Cola eliminada"
-                },
                 "dm": {
                     "appData": {
                         "name": "md",
@@ -160,20 +152,6 @@
                         "description": "El mensaje ha sido modificado correctamente"
                     }
                 },
-                "forward": {
-                    "appData": {
-                        "name": "avanzar",
-                        "description": "Avanza el momento de una pista en una cantidad de tiempo especificada",
-                        "options": {
-                            "magnitudes": {
-                                "name": "momento",
-                                "description": "Introduce un momento con el formato HH:MM:SS"
-                            }
-                        }
-                    },
-                    "invalidMomentFormat": "El formato de momento introducido es inválido. Usa: `HH:MM:SS`",
-                    "cantAdjustLive": "No puedes ajustar el momento de una transmisión en directo"
-                },
                 "infractions": {
                     "appData": {
                         "name": "infracciones",
@@ -211,14 +189,6 @@
                         "author": "Invitación permanente",
                         "footer": "Este enlace nunca caduca y tiene usos ilimitados"
                     }
-                },
-                "join": {
-                    "appData": {
-                        "name": "unir",
-                        "description": "Conecta al bot a tu canal de voz"
-                    },
-                    "bounded": "Unido a {{voiceChannel}} y vinculado a {{textChannel}}",
-                    "leftChannel": "He abandonado el canal"
                 },
                 "kick": {
                     "appData": {
@@ -288,58 +258,6 @@
                         },
                         "footer": "Página {{actualPage}} de {{totalPages}}"
                     }
-                },
-                "leave": {
-                    "appData": {
-                        "name": "abandonar",
-                        "description": "Hace que el bot abandone el canal de voz"
-                    },
-                    "leftChannel": "He abandonado el canal"
-                },
-                "loop": {
-                    "appData": {
-                        "name": "bucle",
-                        "description": "Activa el modo bucle para la pista o la cola actual",
-                        "options": {
-                            "mode": {
-                                "name": "modo",
-                                "description": "Selecciona el modo del bucle",
-                                "choices": {
-                                    "single": "La pista actual",
-                                    "queue": "Toda la cola",
-                                    "disabled": "Deshabilitar"
-                                }
-                            }
-                        }
-                    },
-                    "notEnabled": "El modo bucle no está activado",
-                    "loopsingle": {
-                        "enabled": "He activado el modo bucle en la pista actual",
-                        "disabled": "He desactivado el modo bucle en la pista actual"
-                    },
-                    "loopqueue": {
-                        "enabled": "He activado el modo bucle en la cola",
-                        "disabled": "He desactivado el modo bucle en la cola"
-                    }
-                },
-                "move": {
-                    "appData": {
-                        "name": "mover",
-                        "description": "Modifica la posición de una pista en la cola",
-                        "options": {
-                            "origin": {
-                                "name": "origen",
-                                "description": "Escoge la posición de la pista a mover"
-                            },
-                            "destination": {
-                                "name": "destino",
-                                "description": "Escoge la nueva posición de la pista"
-                            }
-                        }
-                    },
-                    "tooHigh": "Valor demasiado grande",
-                    "belowOne": "Quieres jugar sucio eh ...",
-                    "movedTrack": "He reubicado la pista en la cola"
                 },
                 "mute": {
                     "appData": {
@@ -416,24 +334,6 @@
                     "privateEnabled": "Ahora recibirás notificaciones por subida de nivel por tiempo de voz",
                     "privateDisabled": "Y no recibirás más notificaciones por subida de nivel por tiempo de voz"
                 },
-                "nowplaying": {
-                    "appData": {
-                        "name": "reproduciendo",
-                        "description": "Muestra información sobre la pista actual"
-                    },
-                    "rightNow": "Ahora mismo",
-                    "isLive": "Vídeo en directo",
-                    "elapsed": "transcurrido"
-                },
-                "pause": {
-                    "appData": {
-                        "name": "pausa",
-                        "description": "Pausa la cola de reproducción"
-                    },
-                    "alreadyPaused": "El bot ya está pausado",
-                    "abandonOnIdle": "He abandonado el canal y borrado la cola",
-                    "paused": "Cola pausada"
-                },
                 "ping": {
                     "appData": {
                         "name": "ping",
@@ -441,37 +341,6 @@
                     },
                     "botResponseTime": "Tiempo de respuesta del bot",
                     "websocketResponseTime": "Tiempo de respuesta del Websocket"
-                },
-                "play": {
-                    "appData": {
-                        "name": "reproducir",
-                        "description": "Busca una pista o lista de reproducción por nombre o URL de YouTube. Si no proporcionas parámetros, reanuda la cola",
-                        "options": {
-                            "search": {
-                                "name": "búsqueda",
-                                "description": "Introduce una URL de YouTube o un término de búsqueda"
-                            }
-                        }
-                    },
-                    "notPaused": "El bot no está pausado",
-                    "resumed": "Cola reanudada",
-                    "unavailable": "El reproductor se encuentra en ejecución en otro canal",
-                    "searching": "Buscando `{{serachTerm}}`",
-                    "bounded": "Unido a {{voiceChannel}} y vinculado a {{textChannel}}"
-                },
-                "playskip": {
-                    "appData": {
-                        "name": "reproducirsaltar",
-                        "description": "Busca una pista o lista de reproducción por nombre o URL de YouTube y omite la pista actual",
-                        "options": {
-                            "search": {
-                                "name": "búsqueda",
-                                "description": "Introduce una URL de YouTube o un término de búsqueda"
-                            }
-                        }
-                    },
-                    "searching": "Buscando `{{serachTerm}}`",
-                    "skipped": "Pista omitida"
                 },
                 "poll": {
                     "appData": {
@@ -554,26 +423,6 @@
                         "description": "{{authorTag}} eliminó {{deletedCount}} mensajes del canal {{channel}}"
                     }
                 },
-                "queue": {
-                    "appData": {
-                        "name": "cola",
-                        "description": "Muestra las pistas que están en la cola",
-                        "options": {
-                            "page": {
-                                "name": "página",
-                                "description": "Introduce un número de página"
-                            }
-                        }
-                    },
-                    "showingQueue": "Mostrando la cola actual",
-                    "queueEmbed": {
-                        "isLive": "Directo",
-                        "author": "Cola de reproducción",
-                        "duration": "Duración",
-                        "requestedBy": "Solicitada por",
-                        "upNext": "A continuación"
-                    }
-                },
                 "report": {
                     "appData": {
                         "name": "reportar",
@@ -594,51 +443,6 @@
                         "fieldTitle": "Razón del reporte",
                         "fieldPlaceholder": "¿Cual es tu reporte?"
                     }
-                },
-                "remove": {
-                    "appData": {
-                        "name": "eliminar",
-                        "description": "Elimina una pista de la cola de reproducción",
-                        "options": {
-                            "position": {
-                                "name": "posición",
-                                "description": "Introduce la posición de la pista"
-                            }
-                        }
-                    },
-                    "belowOne": "Quieres jugar sucio eh ...",
-                    "doesntExist": "La pista Nº`{{number}}` no está añadida a la cola",
-                    "deletedTrack": "Pista eliminada"
-                },
-                "replay": {
-                    "appData": {
-                        "name": "repetir",
-                        "description": "Reproduce la pista actual desde el principio"
-                    },
-                    "willReplay": "La pista se volverá a reproducir"
-                },
-                "resume": {
-                    "appData": {
-                        "name": "reanudar",
-                        "description": "Reanuda la cola de reproducción"
-                    },
-                    "notPaused": "El bot no está pausado",
-                    "resumed": "Cola reanudada"
-                },
-                "rewind": {
-                    "appData": {
-                        "name": "rebobinar",
-                        "description": "Retrocede el momento de una pista una cierta cantidad de tiempo",
-                        "options": {
-                            "magnitudes": {
-                                "name": "momento",
-                                "description": "Introduce un momento con el formato HH:MM:SS"
-                            }
-                        }
-                    },
-                    "invalidMomentFormat": "El formato de momento introducido es inválido. Usa: `HH:MM:SS`",
-                    "cantAdjustLive": "No puedes ajustar el momento de una transmisión en directo",
-                    "cantRweindMore": "No puedes especificar un momento anterior al `00:00:00`"
                 },
                 "rmwarn": {
                     "appData": {
@@ -771,23 +575,6 @@
                     },
                     "invalidCommand": "No has especificado un comando válido"
                 },
-                "seek": {
-                    "appData": {
-                        "name": "buscar",
-                        "description": "Cambia el tiempo de la pista a una marca de tiempo específica",
-                        "options": {
-                            "magnitudes": {
-                                "name": "momento",
-                                "description": "Introduce un momento con el formato HH:MM:SS"
-                            }
-                        }
-                    },
-                    "invalidMomentFormat": "El formato de momento introducido es inválido. Usa: `HH:MM:SS`",
-                    "cantAdjustLive": "No puedes ajustar el momento de una transmisión en directo",
-                    "cantAdjustFiles": "No se puede modificar el punto de reproducción de archvios locales",
-                    "cantForward": "No se puede avanzar más allá de `{{time}}`",
-                    "seeked": "Situado en el momento `{{time}}`"
-                },
                 "send": {
                     "appData": {
                         "name": "enviar",
@@ -871,38 +658,6 @@
                         "totalVoiceChannels": "{{totalVoiceChannels}} canales de voz"
                     }
                 },
-                "shuffle": {
-                    "appData": {
-                        "name": "aleatorio",
-                        "description": "Activa el modo aleatorio en la cola de reproducción"
-                    },
-                    "enabled": "He activado el modo aleatorio",
-                    "disabled": "He desactivado el modo aleatorio"
-                },
-                "skip": {
-                    "appData": {
-                        "name": "saltar",
-                        "description": "Salta la pista actual o una cantidad especificada",
-                        "options": {
-                            "quantity": {
-                                "name": "cantidad",
-                                "description": "Introduce una cantidad de pistas a saltar"
-                            }
-                        }
-                    },
-                    "skipped": "Pista/s omitida/s",
-                    "cantSkipOnRandom": "No puedes omitir más de una pista con el modo aleatorio activado",
-                    "cantMultipleOnLoop": "No puedes omitir más de una pista con el modo loop activado",
-                    "belowOne": "Quieres jugar sucio eh ...",
-                    "cantSkipThis": "Solo puedes hacer skip de `{{quantity}}` pistas"
-                },
-                "skipall": {
-                    "appData": {
-                        "name": "saltartodo",
-                        "description": "Salta todas las pistas de la cola"
-                    },
-                    "skipped": "Pista/s omitida/s"
-                },
                 "slowmode": {
                     "appData": {
                         "name": "modolento",
@@ -945,89 +700,6 @@
                         "title": "Operación completada",
                         "description": "El modo lento ha sido activado con un retraso de `{{seconds}}s`"
                     }
-                },
-                "sound": {
-                    "appData": {
-                        "name": "sonido",
-                        "description": "Reproduce un archivo de audio local, sube o elimina uno, o muestra una lista de ellos",
-                        "options": {
-                            "list": {
-                                "name": "lista",
-                                "description": "Muestra la lista de audios almacenados en el bot"
-                            },
-                            "play": {
-                                "name": "reproducir",
-                                "description": "Reproduce un audio almacenado",
-                                "options": {
-                                    "selection": {
-                                        "name": "selección",
-                                        "description": "Introduce el nombre del audio a reproducir"
-                                    }
-                                }
-                            },
-                            "random": {
-                                "name": "aleatorio",
-                                "description": "Reproduce un audio al azar"
-                            },
-                            "upload": {
-                                "name": "subir",
-                                "description": "Sube un fichero .mp3, .opus o .ogg al directorio de audios",
-                                "options": {
-                                    "attachment": {
-                                        "name": "adjunto",
-                                        "description": "Carga un fichero .mp3, .opus o .ogg"
-                                    },
-                                    "name": {
-                                        "name": "nombre",
-                                        "description": "Elige un nombre para el audio"
-                                    },
-                                    "owner": {
-                                        "name": "dueño",
-                                        "description": "Elige el miembro que será propietario del audio"
-                                    }
-                                }
-                            },
-                            "remove": {
-                                "name": "eliminar",
-                                "description": "Elimina un audio almacenado",
-                                "options": {
-                                    "selection": {
-                                        "name": "selección",
-                                        "description": "Introduce el nombre del audio a eliminar"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "soundListEmbed": {
-                        "title": "Lista de audios"
-                    },
-                    "cantUpload": "No tienes permiso para subir audios",
-                    "wrongFormat": "El fichero debe tener extensión `.mp3`, `.opus` o `.ogg`",
-                    "maxDirectorySizeReached": "Se ha alcanzado el espacio máximo global permitdo de {{maxDirectorySize}}",
-                    "alreadyExists": "Ya existe un audio con el nombre {{audioName}}",
-                    "maxFileSize": "El tamaño máximo de archivo es de {{maxFileSize}}",
-                    "uploadLoggingEmbed": {
-                        "title": "Registro - [AUDIO AÑADIDO]",
-                        "description": "Se ha añadido un nuevo audio al directorio local",
-                        "uploader": "Subido por",
-                        "owner": "Propietario",
-                        "audioName": "Nombre del audio"
-                    },
-                    "uploaded": "El audio {{audioName}} ha sido almacenado correctamente",
-                    "cantDeleteAny": "No tienes permiso para eliminar audios que no son de tu propiedad",
-                    "deleteLoggingEmbed": {
-                        "title": "Registro - [AUDIO ELIMINADO]",
-                        "description": "Se ha eliminado un audio almacenado localmente",
-                        "executor": "Ejecutor",
-                        "owner": "Propietario",
-                        "unknownOwner": "Desconocido",
-                        "audioName": "Nombre del audio"
-                    },
-                    "alreadyPlaying": "El reproductor se encuentra en ejecución en otro canal",
-                    "doesntExist": "El audio **{{recordName}}** no existe",
-                    "loadingFile": "Cargando el audio `{{fileName}}` ...",
-                    "bounded": "Unido a {{voiceChannel}} y vinculado a {{textChannel}}"
                 },
                 "stats": {
                     "appData": {
@@ -1484,7 +1156,6 @@
                 "error": "ERROR"
             },
             "voiceStateUpdate": {
-                "leftWhenIdle": "He abandonado el canal y borrado la cola",
                 "voiceMovesLogging": {
                     "noChannel": "Ninguno",
                     "oldChannel": "Anterior canal",
@@ -1518,8 +1189,6 @@
             },
             "interactionError": {
                 "error": "ERROR",
-                "noArguments": "Ninguno",
-                "noCommandName": "No aplicable",
                 "notificationEmbed": {
                     "title": "¡Vaya! Algo fue mal",
                     "description": "Lo hemos reportado a los responsables del bot"
@@ -1611,99 +1280,11 @@
                 "filteredDm": "vía MD"
             }
         },
-        "reproduction": {
-            "addTrack": {
-                "actuallyOnQueue": "Esta pista ya está en la cola"
-            },
-            "fetchResource": {
-                "cantAddMore": "No puedes añadir más pistas a la cola",
-                "fullQueue": "La cola de reproducción está llena",
-                "newItemEmbed": {
-                    "authorTitle": "Añadido a la cola",
-                    "author": "Autor",
-                    "duration": "Duración"
-                },
-                "unknownAudioAuthor": "Desconocido",
-                "noResults": "No se ha encontrado ningún resultado que coincida con `{{searchInput}}`",
-                "cantPlayPrivate": "No se pueden reproducir vídeos privados",
-                "exceededLength": "No se pueden reproducir pistas de más de `{{duration}}`",
-                "selectMenu": {
-                    "playlist": "Lista de rep.",
-                    "direct": "Directo",
-                    "cancelOption": {
-                        "label": "Salir del selector",
-                        "description": "Podrás volver a realizar la búsqueda"
-                    },
-                    "randomOption": {
-                        "label": "Selección aleatoria",
-                        "description": "Elige una pista aleatoria de la lista"
-                    },
-                    "placeholder": "Elige una pista de la lista",
-                    "cantUseSelector": "No puedes usar un selector que no has invocado",
-                    "cancelledSearch": "Búsqueda cancelada por el usuario",
-                    "expiredSearch": "Búsqueda caducada"
-                },
-                "onlyFromYouTube": "{{botUser}} solo puede obtener pistas desde YouTube",
-                "invalidResults": "No se encontraron resultados válidos",
-                "cantPlay": "No se puede reproducir este resultado",
-                "ageRestricted": "No puedes reproducir vídeos con restricción de edad",
-                "copyrightedVideo": "No puedes reproducir vídeos con restricción regional (copyright)"
-            },
-            "getFooter": {
-                "mode": "Modo"
-            },
-            "mediaPlayer": {
-                "ageRestricted": "No puedes reproducir vídeos con restricción de edad",
-                "copyrightedVideo": "No puedes reproducir vídeos con restricción regional (copyright)",
-                "finishedReproduction": "Reproducción finalizada",
-                "channelLeave": "He abandonado el canal",
-                "error": "ERROR",
-                "errorAndSkip": "Ocurrió un error. Se ha omitido esta pista",
-                "nothingUpNext": "Nada",
-                "random": "Aleatorio",
-                "playingEmbed": {
-                    "authorTitle": "Reproduciendo",
-                    "localAudio": "Audio local",
-                    "author": "Autor",
-                    "duration": "Duración",
-                    "requestedBy": "Solicitado por",
-                    "upNext": "Siguiente"
-                },
-                "apiRateLimit": "Límite de solicitudes a la API de YouTube alcanzado"
-            },
-            "parsePlaylist": {
-                "ignoredTracks": "Se han omitido `{{ignoredCount}}` pistas por que no se podían reproducir o superaron la duración de `{{duration}}`",
-                "fullQueue": "La cola de reproducción está llena",
-                "addedPlaylistEmbed": {
-                    "authorTitle": "Playlist añadida a la cola",
-                    "author": "Autor",
-                    "tracks": "Pistas",
-                    "requestedBy": "Solicitado por"
-                },
-                "ignoredDuplicates": "Se han omitido `{{ignoredCount}}` pistas duplicadas",
-                "ignoredFull": "Se han omitido `{{ignoredCount}}` pistas por que no puedes añadir más"
-            },
-            "preChecks": {
-                "botNotConnected": "{{botUser}} no está conectado a ningún canal",
-                "notConnected": "Debes estar conectado a un canal de voz",
-                "notSameChannel": "Debes estar en el mismo canal de voz que {{botUser}}",
-                "inactive": "El reproductor está inactivo",
-                "alreadyConnected": "{{botUser}} ya está conectado a {{voiceChannel}}",
-                "isAfk": "{{botUser}} no puede conectarse al canal de AFK",
-                "cantSpeak": "{{botUser}} no tiene permiso para hablar en {{voiceChannel}}",
-                "forbiddenJoin": "{{botUser}} tiene prohibido conetarse a {{voiceChannel}}",
-                "cantJoin": "{{botUser}} no tiene permiso para unirse a {{voiceChannel}}",
-                "fullChannel": "El canal de voz {{voiceChannel}} está lleno"
-            },
-            "testQueuePerms": {
-                "neededVotes": "Votos necesarios: `{{actualVotes}}` de `{{requiredVotes}}`"
-            }
-        },
         "utilities": {
             "msToTime": {
-                "years": "años",
-                "months": "meses",
-                "days": "días"
+                "years": "año/s",
+                "months": "mes/es",
+                "days": "día/s"
             }
         }
     },
@@ -1808,7 +1389,7 @@
             "error": "ERROR"
         },
         "splashLogo": {
-            "description": "Soy un bot diseñado para moderación de comunidades automatizada, reproducción de música, gestión de niveles ¡y mucho más!",
+            "description": "Soy un bot diseñado para moderación de comunidades automatizada, gestión de niveles, utilidades de chat ¡y mucho más!",
             "divider": "Iniciando aplicación"
         }
     }

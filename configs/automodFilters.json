@@ -4,31 +4,28 @@
         "action": 3,
         "reason": "Channel flooding",
         "bypassIds": [],
-        "bypassChannels": [],
         "triggerLimit": 5,
         "maxTimeBetween": 2000
     },
     "crossPost": {
         "status": true,
         "action": 3,
-        "reason": "Crossed posts",
+        "reason": "Repeated posts",
         "bypassIds": [],
-        "bypassChannels": [],
-        "triggerLimit": 3
+        "triggerLimit": 3,
+        "filterFiles": true
     },
     "swearWords": {
         "status": false,
         "action": 3,
         "reason": "Swear words",
-        "bypassIds": [],
-        "bypassChannels": []
+        "bypassIds": []
     },
     "invites": {
         "status": false,
         "action": 3,
         "reason": "Invitations not allowed",
         "bypassIds": [],
-        "bypassChannels": [],
         "onDM": true
     },
     "uppercase": {
@@ -36,7 +33,6 @@
         "action": 3,
         "reason": "Too many capital letters",
         "bypassIds": [],
-        "bypassChannels": [],
         "percentage": 75,
         "minimumLength": 50
     },
@@ -44,15 +40,13 @@
         "status": false,
         "action": 3,
         "reason": "Links not allowed",
-        "bypassIds": [],
-        "bypassChannels": []
+        "bypassIds": []
     },
     "massEmojis": {
         "status": false,
         "action": 3,
         "reason": "Too many emojis",
         "bypassIds": [],
-        "bypassChannels": [],
         "quantity": 20
     },
     "massMentions": {
@@ -60,7 +54,6 @@
         "action": 3,
         "reason": "Too many mentions",
         "bypassIds": [],
-        "bypassChannels": [],
         "quantity": 5
     },
     "massSpoilers": {
@@ -68,7 +61,6 @@
         "action": 3,
         "reason": "Too many spoilers",
         "bypassIds": [],
-        "bypassChannels": [],
         "quantity": 10
     },
     "repeatedText": {
@@ -76,7 +68,6 @@
         "action": 3,
         "reason": "Repetitive text",
         "bypassIds": [],
-        "bypassChannels": [],
         "maxRepetitions": 5
     }
 }

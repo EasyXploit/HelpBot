@@ -17,7 +17,7 @@
 | :--------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 ## About
-[**HelpBot**](https://github.com/EasyXploit/HelpBot) is a [Discord](https://discord.com/) self-hosted bot designed to run on a [Node.js](https://nodejs.org) server, whose main functions are automated community moderation, music reproduction, leveling, and much more!<br /><br />
+[**HelpBot**](https://github.com/EasyXploit/HelpBot) is a [Discord](https://discord.com/) self-hosted bot designed to run on a [Node.js](https://nodejs.org) server, whose main functions are automated community moderation, leveling, chat utilities and much more!<br /><br />
 This project was born out of curiosity, as a way to give form to the knowledge about [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) that I acquired during a Professional Formation course that I was doing, but that over time has made me discover that I am passionate about programming.<br /><br />
 Given that initially it was a project with quite unstable knowledge bases, the code has undergone several refactorings until reaching this point, from which I have decided that I'm going to make it [open source](https://opensource.com/) under an [MIT license](https://en.wikipedia.org/wiki/MIT_License), and continue with it's development and work on other related projects.<br /><br />
 Due to this, the bot has **NOT** been designed from the beginning to work in more than one Discord community ([guild](https://discord.com/developers/docs/resources/guild)) at the same time, so the bot does not have a database system, and instead works with [JSON](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON) files.<br /><br />
@@ -32,8 +32,8 @@ The bot code is <ins>excessively full of comments</ins> (in Spanish), because it
 |:---:|:---:|:---:|:---:|
 | Swear words filtering        | Excesive mentions filtering | XP & role rewards by activity (text & voice) | Preprogrammed scripts support |
 | Server invites filtering     | Excesive spoilers filtering | Timed messages                               | Message purging tool          |
-| Excesive uppercase filtering | Repetitive text filtering   | Infractions history                          | YouTube music player          |
-| Links filtering              | Automatic penalty dispenser | Multiple locales                             | Local audio tracks player   |
+| Excesive uppercase filtering | Repetitive text filtering   | Infractions history                          | Reports system                |
+| Links filtering              | Automatic penalty dispenser | Multiple locales                             | Flood filtering               |
 | Excesive emojis filtering    | Manual moderation commands  | Role, user and server info. showing          | Polls maker                   |
 <br />
 

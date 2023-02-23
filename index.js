@@ -31,7 +31,7 @@ if (errorTrackingEnambled) client.errorTracker = require('@sentry/node');
 //CARGA DE ESTRUCTURAS ADICIONALES
 //Carga de módulos, objetos y colecciones en el cliente
 ['MessageEmbed', 'MessageAttachment', 'MessageActionRow', 'MessageSelectMenu', 'TextInputComponent', 'MessageButton', 'Collection', 'Modal'].forEach(x => client[x] = discord[x]);       //Carga de métodos de Discord.js en el cliente
-['config', 'db', 'usersVoiceStates', 'reproductionQueues', 'memberMessages'].forEach(x => client[x] = {});                                                          //Creación de objetos para almacenar las configuraciones, bases de datos y cachés
+['config', 'db', 'usersVoiceStates', 'memberMessages'].forEach(x => client[x] = {});                                                          //Creación de objetos para almacenar las configuraciones, bases de datos y cachés
 
 //Dependencia para generar hashes MD5
 client.md5 = require('md5');

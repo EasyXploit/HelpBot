@@ -72,14 +72,6 @@
                         "withoutReason": "**{{userTag}}** got banned, anyone else?"
                     }
                 },
-                "clear": {
-                    "appData": {
-                        "name": "clear",
-                        "description": "Empty the play queue"
-                    },
-                    "noQueue": "There are no items in the queue",
-                    "queueDeleted": "Queue deleted"
-                },
                 "dm": {
                     "appData": {
                         "name": "dm",
@@ -160,20 +152,6 @@
                         "description": "El mensaje ha sido modificado correctamente"
                     }
                 },
-                "forward": {
-                    "appData": {
-                        "name": "forward",
-                        "description": "Moves a track forward by a specified amount of time",
-                        "options": {
-                            "magnitudes": {
-                                "name": "moment",
-                                "description": "Introduce a moment with the HH:MM:SS format"
-                            }
-                        }
-                    },
-                    "invalidMomentFormat": "The moment format entered is invalid. Use: `HH:MM:SS`",
-                    "cantAdjustLive": "You cannot adjust the timing of a live broadcast"
-                },
                 "infractions": {
                     "appData": {
                         "name": "infractions",
@@ -211,14 +189,6 @@
                         "author": "Permanent invite",
                         "footer": "This link never expires and has unlimited uses"
                     }
-                },
-                "join": {
-                    "appData": {
-                        "name": "join",
-                        "description": "Connects the bot to your voice channel"
-                    },
-                    "bounded": "Joined {{voiceChannel}} and bound to {{textChannel}}",
-                    "leftChannel": "I have left the channel"
                 },
                 "kick": {
                     "appData": {
@@ -288,58 +258,6 @@
                         },
                         "footer": "Page {{actualPage}} of {{totalPages}}"
                     }
-                },
-                "leave": {
-                    "appData": {
-                        "name": "leave",
-                        "description": "Makes the bot leave the voice channel"
-                    },
-                    "leftChannel": "I have left the channel"
-                },
-                "loop": {
-                    "appData": {
-                        "name": "loop",
-                        "description": "Enables loop mode for the current track or queue",
-                        "options": {
-                            "mode": {
-                                "name": "mode",
-                                "description": "Select a mode for the loop",
-                                "choices": {
-                                    "single": "The single track",
-                                    "queue": "All the queue",
-                                    "disabled": "Disable"
-                                }
-                            }
-                        }
-                    },
-                    "notEnabled": "The loop mode isn't enabled",
-                    "loopsingle": {
-                        "enabled": "I have enabled the loop mode on the current track",
-                        "disabled": "I have disabled the loop mode on the current track"
-                    },
-                    "loopqueue": {
-                        "enabled": "I have enabled the loop mode on the queue",
-                        "disabled": "I have disabled the loop mode on the queue"
-                    }
-                },
-                "move": {
-                    "appData": {
-                        "name": "move",
-                        "description": "Modifies the position of a track in the queue",
-                        "options": {
-                            "origin": {
-                                "name": "origin",
-                                "description": "Choose the position of the track to move"
-                            },
-                            "destination": {
-                                "name": "destination",
-                                "description": "Choose the new track position"
-                            }
-                        }
-                    },
-                    "tooHigh": "Value too high",
-                    "belowOne": "You want to play dirty huh...",
-                    "movedTrack": "I have moved the track on the queue"
                 },
                 "mute": {
                     "appData": {
@@ -416,24 +334,6 @@
                     "privateEnabled": "You will now receive level-up notifications for voice time",
                     "privateDisabled": "You will no longer receive level-up notifications for voice time"
                 },
-                "nowplaying": {
-                    "appData": {
-                        "name": "nowplaying",
-                        "description": "Shows information about the current track"
-                    },
-                    "rightNow": "Right now",
-                    "isLive": "Live video",
-                    "elapsed": "elapsed"
-                },
-                "pause": {
-                    "appData": {
-                        "name": "pause",
-                        "description": "Pauses the reproduction queue"
-                    },
-                    "alreadyPaused": "The bot is already paused",
-                    "abandonOnIdle": "I have abandoned the channel and cleared the queue",
-                    "paused": "Queue paused"
-                },
                 "ping": {
                     "appData": {
                         "name": "ping",
@@ -441,37 +341,6 @@
                     },
                     "botResponseTime": "Bot response time",
                     "websocketResponseTime": "Websocket response time"
-                },
-                "play": {
-                    "appData": {
-                        "name": "play",
-                        "description": "Searchs for a track or playlist by name or YouTube URL. If you don't provide parameters, resumes queue",
-                        "options": {
-                            "search": {
-                                "name": "search",
-                                "description": "Introduce a YouTube URL or a search term"
-                            }
-                        }
-                    },
-                    "notPaused": "The bot is not paused",
-                    "resumed": "Queue resumed",
-                    "unavailable": "The player is running on another channel",
-                    "searching": "Searching for `{{serachTerm}}`",
-                    "bounded": "Joined {{voiceChannel}} and bound to {{textChannel}}"
-                },
-                "playskip": {
-                    "appData": {
-                        "name": "playskip",
-                        "description": "Searchs for a track or playlist by name or YouTube URL and skips the current track",
-                        "options": {
-                            "search": {
-                                "name": "search",
-                                "description": "Introduce a YouTube URL or a search term"
-                            }
-                        }
-                    },
-                    "searching": "Searching for `{{serachTerm}}`",
-                    "skipped": "Track skipped"
                 },
                 "poll": {
                     "appData": {
@@ -553,71 +422,6 @@
                         "title": "Logging - [MESSAGE PURGE]",
                         "description": "{{authorTag}} deleted {{deletedCount}} messages from channel {{channel}}"
                     }
-                },
-                "queue": {
-                    "appData": {
-                        "name": "queue",
-                        "description": "Shows the tracks that are in the queue",
-                        "options": {
-                            "page": {
-                                "name": "page",
-                                "description": "Introduce a page number"
-                            }
-                        }
-                    },
-                    "showingQueue": "Showing the actual queue",
-                    "queueEmbed": {
-                        "isLive": "Live",
-                        "author": "Reproduction queue",
-                        "duration": "Duration",
-                        "requestedBy": "Requested by",
-                        "upNext": "Up next"
-                    }
-                },
-                "remove": {
-                    "appData": {
-                        "name": "remove",
-                        "description": "Removes a track from the reproduction queue",
-                        "options": {
-                            "position": {
-                                "name": "position",
-                                "description": "Introduce the position of the track"
-                            }
-                        }
-                    },
-                    "belowOne": "You want to play dirty huh...",
-                    "doesntExist": "Track #`{{number}}` is not added to the queue",
-                    "deletedTrack": "Track deleted"
-                },
-                "replay": {
-                    "appData": {
-                        "name": "replay",
-                        "description": "Plays the current track from the beginning"
-                    },
-                    "willReplay": "The track will replay"
-                },
-                "resume": {
-                    "appData": {
-                        "name": "resume",
-                        "description": "Resumes the reproduction queue"
-                    },
-                    "notPaused": "The bot is not paused",
-                    "resumed": "Queue resumed"
-                },
-                "rewind": {
-                    "appData": {
-                        "name": "rewind",
-                        "description": "Moves back the moment of a track by a certain amount of time",
-                        "options": {
-                            "magnitudes": {
-                                "name": "moment",
-                                "description": "Introduce a moment with the HH:MM:SS format"
-                            }
-                        }
-                    },
-                    "invalidMomentFormat": "The moment format entered is invalid. Use: `HH:MM:SS`",
-                    "cantAdjustLive": "You cannot adjust the timing of a live stream",
-                    "cantRweindMore": "You cannot specify a time before `00:00:00`"
                 },
                 "rmwarn": {
                     "appData": {
@@ -750,23 +554,6 @@
                     },
                     "invalidCommand": "You did not specify a valid command"
                 },
-                "seek": {
-                    "appData": {
-                        "name": "seek",
-                        "description": "Changes the track time to a specific timestamp",
-                        "options": {
-                            "magnitudes": {
-                                "name": "moment",
-                                "description": "Introduce a moment with the HH:MM:SS format"
-                            }
-                        }
-                    },
-                    "invalidMomentFormat": "The moment format entered is invalid. Use: `HH:MM:SS`",
-                    "cantAdjustLive": "You cannot adjust the timing of a live stream",
-                    "cantAdjustFiles": "Cannot modify local files playback point",
-                    "cantForward": "Cannot forward beyond `{{time}}`",
-                    "seeked": "Located at time `{{time}}`"
-                },
                 "send": {
                     "appData": {
                         "name": "send",
@@ -850,38 +637,6 @@
                         "totalVoiceChannels": "{{totalVoiceChannels}} voice channels"
                     }
                 },
-                "shuffle": {
-                    "appData": {
-                        "name": "shuffle",
-                        "description": "Enables shuffle mode in the reproduction queue"
-                    },
-                    "enabled": "I have enabled shuffle mode",
-                    "disabled": "I have disabled shuffle mode"
-                },
-                "skip": {
-                    "appData": {
-                        "name": "skip",
-                        "description": "Skips the current track or a specified amount",
-                        "options": {
-                            "quantity": {
-                                "name": "quantity",
-                                "description": "Introduce a number of tracks to skip"
-                            }
-                        }
-                    },
-                    "skipped": "Track/s skipped",
-                    "cantSkipOnRandom": "You cannot skip more than one track with shuffle mode enabled",
-                    "cantMultipleOnLoop": "You cannot skip more than one track with loop mode enabled",
-                    "belowOne": "You want to play dirty huh...",
-                    "cantSkipThis": "You can only skip `{{quantity}}` tracks"
-                },
-                "skipall": {
-                    "appData": {
-                        "name": "skipall",
-                        "description": "Skips all the tracks of the queue"
-                    },
-                    "skipped": "Track/s skipped"
-                },
                 "slowmode": {
                     "appData": {
                         "name": "slowmode",
@@ -924,89 +679,6 @@
                         "title": "Operation completed",
                         "description": "Slow mode has been activated with a delay of `{{seconds}}s`"
                     }
-                },
-                "sound": {
-                    "appData": {
-                        "name": "sound",
-                        "description": "Plays a local audio file, uploads or deletes one, or shows a list of them",
-                        "options": {
-                            "list": {
-                                "name": "list",
-                                "description": "Shows a list of audios stored in the bot"
-                            },
-                            "play": {
-                                "name": "play",
-                                "description": "Play a stored audio",
-                                "options": {
-                                    "selection": {
-                                        "name": "selection",
-                                        "description": "Introduce the name of an audio to be played"
-                                    }
-                                }
-                            },
-                            "random": {
-                                "name": "random",
-                                "description": "Plays a random audio"
-                            },
-                            "upload": {
-                                "name": "upload",
-                                "description": "Upload a .mp3, .opus or .ogg file to the audio directory",
-                                "options": {
-                                    "attachment": {
-                                        "name": "adjunto",
-                                        "description": "Upload a .mp3, .opus or .ogg file"
-                                    },
-                                    "name": {
-                                        "name": "name",
-                                        "description": "Choose a name for the audio"
-                                    },
-                                    "owner": {
-                                        "name": "owner",
-                                        "description": "Choose the member who will own the audio"
-                                    }
-                                }
-                            },
-                            "remove": {
-                                "name": "remove",
-                                "description": "Removes a locally stored audio",
-                                "options": {
-                                    "selection": {
-                                        "name": "selection",
-                                        "description": "Introduce the name of an audio to be deleted"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "soundListEmbed": {
-                        "title": "List of audios"
-                    },
-                    "cantUpload": "You don't have permission to upload audio",
-                    "wrongFormat": "The file must have the extension `.mp3`, `.opus` or `.ogg`",
-                    "maxDirectorySizeReached": "The global maximum allowed space of {{maxDirectorySize}} has been reached",
-                    "alreadyExists": "An audio with the name {{audioName}} already exists",
-                    "maxFileSize": "The maximum file size is {{maxFileSize}}",
-                    "uploadLoggingEmbed": {
-                        "title": "Log - [ADDED AUDIO]",
-                        "description": "Added new audio to local directory",
-                        "uploader": "Uploaded by",
-                        "owner": "Owner",
-                        "audioName": "Audio name"
-                    },
-                    "uploaded": "Audio {{audioName}} has been successfully stored",
-                    "cantDeleteAny": "You don't have permission to delete audios that are not your property",
-                    "deleteLoggingEmbed": {
-                        "title": "Log - [AUDIO REMOVED]",
-                        "description": "A locally stored audio has been deleted",
-                        "executor": "Executor",
-                        "owner": "Owner",
-                        "audioName": "Audio name",
-                        "unknownOwner": "Unknown"
-                    },
-                    "alreadyPlaying": "The player is running on another channel",
-                    "doesntExist": "The audio **{{recordName}}** does not exist",
-                    "loadingFile": "Loading the `{{fileName}}` audio ...",
-                    "bounded": "Joined {{voiceChannel}} and bound to {{textChannel}}"
                 },
                 "stats": {
                     "appData": {
@@ -1439,7 +1111,6 @@
                 "error": "ERROR"
             },
             "voiceStateUpdate": {
-                "leftWhenIdle": "I have left the channel and deleted the queue",
                 "voiceMovesLogging": {
                     "noChannel": "None",
                     "oldChannel": "Last channel",
@@ -1473,8 +1144,6 @@
             },
             "interactionError": {
                 "error": "ERROR",
-                "noArguments": "None",
-                "noCommandName": "Non aplicable",
                 "notificationEmbed": {
                     "title": "Oops! Something went wrong",
                     "description": "We have reported it to those responsible for the bot"
@@ -1559,99 +1228,11 @@
                 "filteredDm": "via DM"
             }
         },
-        "reproduction": {
-            "addTrack": {
-                "actuallyOnQueue": "This track is already in the queue"
-            },
-            "fetchResource": {
-                "cantAddMore": "You cannot add more tracks to the queue",
-                "fullQueue": "Reproduction queue is full",
-                "newItemEmbed": {
-                    "authorTitle": "Added to the queue",
-                    "author": "Author",
-                    "duration": "Duration"
-                },
-                "unknownAudioAuthor": "Unknown",
-                "noResults": "No results found matching `{{searchInput}}`",
-                "cantPlayPrivate": "Cannot play private videos",
-                "exceededLength": "Cannot play tracks longer than `{{duration}}`",
-                "selectMenu": {
-                    "playlist": "Playlist",
-                    "direct": "Direct",
-                    "cancelOption": {
-                        "label": "Leave the selector",
-                        "description": "You can search again"
-                    },
-                    "randomOption": {
-                        "label": "Random selection",
-                        "description": "Choose a random track from the list"
-                    },
-                    "placeholder": "Choose a track from the list",
-                    "cantUseSelector": "You can't use a selector you haven't called",
-                    "cancelledSearch": "Search canceled by user",
-                    "expiredSearch": "Search expired"
-                },
-                "onlyFromYouTube": "{{botUser}} can only get tracks from YouTube",
-                "invalidResults": "No valid results found",
-                "cantPlay": "Cannot play this result",
-                "ageRestricted": "You cannot play age-restricted videos",
-                "copyrightedVideo": "You cannot play videos with region restriction (copyright)"
-            },
-            "getFooter": {
-                "mode": "Mode"
-            },
-            "mediaPlayer": {
-                "ageRestricted": "You cannot play age-restricted videos",
-                "copyrightedVideo": "You cannot play videos with region restriction (copyright)",
-                "finishedReproduction": "Reproduction finished",
-                "channelLeave": "I have left the channel",
-                "error": "ERROR",
-                "errorAndSkip": "An error occurred. This track has been skipped",
-                "nothingUpNext": "Nothing",
-                "random": "Random",
-                "playingEmbed": {
-                    "authorTitle": "Now playing",
-                    "localAudio": "Local audio",
-                    "author": "Author",
-                    "duration": "Duration",
-                    "requestedBy": "Requested by",
-                    "upNext": "Up next"
-                },
-                "apiRateLimit": "YouTube API request limit reached"
-            },
-            "parsePlaylist": {
-                "ignoredTracks": "`{{ignoredCount}}` tracks were skipped because they could not be played or exceeded the duration of `{{duration}}`",
-                "fullQueue": "Reproduction queue is full",
-                "addedPlaylistEmbed": {
-                    "authorTitle": "Playlist added to queue",
-                    "author": "Author",
-                    "tracks": "Tracks",
-                    "requestedBy": "Requested by"
-                },
-                "ignoredDuplicates": "Ignored `{{ignoredCount}}` duplicated tracks",
-                "ignoredFull": "`{{ignoredCount}}` tracks have been skipped because you can't add more"
-            },
-            "preChecks": {
-                "botNotConnected": "{{botUser}} is not connected to any channel",
-                "notConnected": "You must be connected to a voice channel",
-                "notSameChannel": "You must be on the same voice channel as {{botUser}}",
-                "inactive": "The player is inactive",
-                "alreadyConnected": "{{botUser}} is already connected to {{voiceChannel}}",
-                "isAfk": "{{botUser}} cannot be connected to the AFK channel",
-                "cantSpeak": "{{botUser}} does not have permission to speak on {{voiceChannel}}",
-                "forbiddenJoin": "{{botUser}} is prohibited from connecting to {{voiceChannel}}",
-                "cantJoin": "{{botUser}} does not have permission to join {{voiceChannel}}",
-                "fullChannel": "Voice channel {{voiceChannel}} is full"
-            },
-            "testQueuePerms": {
-                "neededVotes": "Needed votes: `{{actualVotes}}` of `{{requiredVotes}}`"
-            }
-        },
         "utilities": {
             "msToTime": {
-                "years": "years",
-                "months": "months",
-                "days": "days"
+                "years": "year/s",
+                "months": "month/s",
+                "days": "day/s"
             }
         }
     },
@@ -1756,7 +1337,7 @@
             "error": "ERROR"
         },
         "splashLogo": {
-            "description": "I'm a bot designed for automated community moderation, music reproduction, leveling, and much more!",
+            "description": "I'm a bot designed for automated community moderation, leveling, chat utilities, and much more!",
             "divider": "Starting application"
         }
     }

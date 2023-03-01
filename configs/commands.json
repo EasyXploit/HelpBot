@@ -52,6 +52,9 @@
         "purge": {
             "enabled": true
         },
+        "report": {
+            "enabled": true
+        },
         "rmwarn": {
             "enabled": true,
             "removeAny": [],
@@ -105,9 +108,15 @@
             "enabled": true,
             "minimumTimeDifference": 15000,
             "unlimitedFrequency": []
+        },
+        "reportMessage": {
+            "enabled": true
         }
     },
     "userCommands": {
+        "reportMember": {
+            "enabled": true
+        },
         "warn": {
             "enabled": true,
             "minimumTimeDifference": 15000,

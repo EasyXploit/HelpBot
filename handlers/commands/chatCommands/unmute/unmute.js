@@ -55,7 +55,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             delete client.db.mutes[memberId];
 
             //Sobreescribe el fichero de la base de datos con los cambios
-            await client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes), async err => {
+            await client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
 
                 //Si hubo un error, lo lanza a la consola
                 if (err) throw err;
@@ -82,9 +82,11 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.correct)
                 .setAuthor(locale.loggingEmbed.author)
-                .addField(locale.loggingEmbed.memberId, member.id.toString(), true)
-                .addField(locale.loggingEmbed.moderator, interaction.user.tag, true)
-                .addField(locale.loggingEmbed.reason, reason || locale.undefinedReason, true)
+                .addFields(
+                    { name: locale.loggingEmbed.memberId, value: member.id.toString(), inline: true },
+                    { name: locale.loggingEmbed.moderator, value: interaction.user.tag, inline: true },
+                    { name: locale.loggingEmbed.reason, value: reason || locale.undefinedReason, inline: true }
+                )
             );
         };
 

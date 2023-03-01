@@ -5,59 +5,43 @@ exports.run = async (oldState, newState, client, locale) => {
         //Aborta si no es un evento de la guild registrada
         if (oldState.guild.id !== client.homeGuild.id) return;
 
-        //Si el bot está conectado
-        if (newState.guild.me.voice.channelId) {
+        //Si el registro de cambios de canal de voz está activado, y no ocurrió un cambio entre canales ignorados
+        voiceMovesIf: if (client.config.logging.voiceMoves && !(client.config.main.voiceMovesExcludedChannels.includes(oldState.channelId) && client.config.main.voiceMovesExcludedChannels.includes(newState.channelId))) {
 
-            //Almacena la información de reproducción de la guild
-            const reproductionQueue = client.reproductionQueues[newState.guild.id];
+            //Omite si solo se trata de un cambio que no implique cambio de canal
+            if (oldState.channelId === newState.channelId) break voiceMovesIf;
 
-            //Almacena el número de miembros del canal de voz
-            const memberCount = oldState.guild.me.voice.channel.members.filter(member => !member.user.bot).size;
+            //Omite si el miembro se conecta o se desconecta de un canal excluido
+            if (!oldState.channelId && client.config.main.voiceMovesExcludedChannels.includes(newState.channelId)) break voiceMovesIf;
+            if (!newState.channelId && client.config.main.voiceMovesExcludedChannels.includes(oldState.channelId)) break voiceMovesIf;
 
-            //Si el bot se queda solo o con únicamente bots en el canal
-            if (memberCount === 0) {
+            //Almacena los campos de anterior y nuevo canal, ofuscando los canales ignorados
+            const oldChannel = oldState.channelId && !client.config.main.voiceMovesExcludedChannels.includes(oldState.channelId) ? `<#${oldState.channel.id}>` : `\`${await client.functions.utilities.parseLocale.run(locale.voiceMovesLogging.noChannel)}\``;
+            const newChannel = newState.channelId && !client.config.main.voiceMovesExcludedChannels.includes(newState.channelId) ? `<#${newState.channel.id}>` : `\`${await client.functions.utilities.parseLocale.run(locale.voiceMovesLogging.noChannel)}\``;
 
-                //Crea un contador para demorar la salida del canal y la destrucción de la cola
-                if (reproductionQueue) reproductionQueue.timeout = setTimeout(async () => {
+            //Genera los campos de anterior y nuevo canal para el embed de registros
+            let embedFields = [
+                { name: await client.functions.utilities.parseLocale.run(locale.voiceMovesLogging.oldChannel), value: oldChannel, inline: true },
+                { name: await client.functions.utilities.parseLocale.run(locale.voiceMovesLogging.newChannel), value: newChannel, inline: true }
+            ];
 
-                    //Método para obtener conexiones de voz
-                    const { getVoiceConnection } = require('@discordjs/voice');
+            //Si hay un nuevo canal para el miemmbro y este no está ignorado
+            if (newState.channelId && !client.config.main.voiceMovesExcludedChannels.includes(newState.channelId)) {
 
-                    //Almacena la conexión de voz del bot (si tiene)
-                    const connection = await getVoiceConnection(newState.guild.id);
+                //Genera y almacena un array con los tags de los miembros de dicho canal
+                const channelMembers = Array.from(newState.channel.members, member => newState.channel.members.get(member[0]));
 
-                    //Aborta la conexión
-                    if (connection && connection.state.status !== 'Destroyed') connection.destroy();
-
-                    //Confirma la acción
-                    reproductionQueue.boundedTextChannel.send({ content: `⏏ | ${locale.leftWhenIdle}` });
-
-                    //Borra la información de reproducción de la guild
-                    delete client.reproductionQueues[newState.guild.id];
-
-                }, client.config.music.maxIdleTime);
-
-            } else if (memberCount !== 0 && reproductionQueue && reproductionQueue.timeout && reproductionQueue.tracks.length > 0) { //Si el canal recupera un mínimo de miembros
-
-                //Método para obtener conexiones de voz
-                const { getVoiceConnection } = require('@discordjs/voice');
-
-                //Almacena la conexión de voz del bot
-                const connection = await getVoiceConnection(newState.guild.id);
-
-                //Almacena el reproductor suscrito
-                const player = connection._state.subscription.player;
-                
-                //Si el reproductor no estaba pausado
-                if (player.state.status !== 'paused') {
-
-                    //Finalzia el timeout
-                    clearTimeout(reproductionQueue.timeout);
-
-                    //Anula la variable del timeout
-                    reproductionQueue.timeout = null;
-                };
+                //Añade un bloque de código con los tags de los miembros del canal al embed de registro
+                embedFields.push({ name: `${await client.functions.utilities.parseLocale.run(locale.voiceMovesLogging.actualMembers)} (${newState.channel.members.size}/${newState.channel.userLimit != 0 ? newState.channel.userLimit : '∞'})`, value: `${channelMembers.join(', ')}`});
             };
+    
+            //Se formatea y envía un registro al canal especificado en la configuración
+            await client.voiceMovesChannel.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.logging)
+                .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.voiceMovesLogging.embedAuthor, { memberTag: newState.member.user.tag }), iconURL: newState.member.user.displayAvatarURL({dynamic: true}) })
+                .setFields(embedFields)
+                .setTimestamp()
+            ]});
         };
 
         //Aborta el resto de la ejecución si no están habilitadas las recompensas de XP
@@ -159,6 +143,6 @@ exports.run = async (oldState, newState, client, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.eventError.run(client, error, 'voiceStateUpdate');
+        await client.functions.managers.eventError.run(client, error);
     };
 };

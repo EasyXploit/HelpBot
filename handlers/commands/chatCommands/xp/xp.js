@@ -1,3 +1,5 @@
+const { zip } = require("lodash");
+
 exports.run = async (client, interaction, commandConfig, locale) => {
     
     try {
@@ -170,27 +172,51 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setColor(client.config.colors.logging)
                 .setTitle(`📑 ${locale.loggingEmbed.title}`)
                 .setDescription(`${await client.functions.utilities.parseLocale.run(locale.loggingEmbed.description, { memberTag: member.user.tag })}.`)
-                .addField(locale.loggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
-                .addField(locale.loggingEmbed.moderator, interaction.user.tag, true)
-                .addField(locale.loggingEmbed.memberId, memberId.toString(), true)
-                .addField(locale.loggingEmbed.oldValue, oldValue.toString(), true)
-                .addField(locale.loggingEmbed.newValue, newValue.toString(), true));
+                .addFields(
+                    { name: locale.loggingEmbed.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
+                    { name: locale.loggingEmbed.moderator, value: interaction.user.tag, inline: true },
+                    { name: locale.loggingEmbed.memberId, value: memberId.toString(), inline: true },
+                    { name: locale.loggingEmbed.oldValue, value: oldValue.toString(), inline: true },
+                    { name: locale.loggingEmbed.newValue, value: newValue.toString(), inline: true }
+                )
+            );
 
             //Notifica la acción en el canal de invocación
             await interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryCorrect)
                 .setDescription(`${client.customEmojis.greenTick} ${await client.functions.utilities.parseLocale.run(locale.notificationEmbed, { memberTag: member.user.tag })}.`)
-            ]});
+            ], ephemeral: true});
 
-            //Envía una notificación al miembro
-            await member.send({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.correct)
-                .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-                .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.description, { member: member })}.`)
-                .addField(locale.privateEmbed.moderator, interaction.user.tag, true)
-                .addField(locale.privateEmbed.oldValue, oldValue.toString(), true)
-                .addField(locale.privateEmbed.newValue, newValue.toString(), true)
-            ]});
+            //Si se le han vaciado los puntos de EXP al miembro
+            if (newValue === 0) {
+
+                //Envía al miembro una notificación por mensaje privado
+                await member.send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.primary)
+                    .setAuthor({ name: locale.privateEmbed.reset.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
+                    .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.reset.description, { moderatorTag: interaction.user.tag })}.`)
+                ]});
+
+            //Si se le han aumentado los puntos de EXP al miembro
+            } else if (newValue > oldValue) {
+
+                //Envía al miembro una notificación por mensaje privado
+                await member.send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.primary)
+                    .setAuthor({ name: locale.privateEmbed.increased.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
+                    .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.increased.description, { moderatorTag: interaction.user.tag, givenExp: providedValue, newXP: newValue.toString() })}.`)
+                ]});
+
+            //Si se le han reducido los puntos de EXP al miembro
+            } else if (newValue < oldValue) {
+
+                //Envía al miembro una notificación por mensaje privado
+                await member.send({ embeds: [ new client.MessageEmbed()
+                    .setColor(client.config.colors.primary)
+                    .setAuthor({ name: locale.privateEmbed.decreased.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
+                    .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.decreased.description, { moderatorTag: interaction.user.tag, removedXP: providedValue, newXP: newValue.toString() })}.`)
+                ]});
+            };
         });
         
     } catch (error) {

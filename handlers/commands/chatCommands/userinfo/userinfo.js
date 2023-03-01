@@ -40,15 +40,17 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .setTitle(await client.functions.utilities.parseLocale.run(locale.embed.title, { memberDisplayName: member.displayName }))
             .setDescription(await client.functions.utilities.parseLocale.run(locale.embed.description, { memberTag: member.user.tag }))
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
-            .addField(`🆔 ${locale.embed.memberId}`, member.id, true)
-            .addField(`📝 ${locale.embed.registerDate}`, `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, true)
-            .addField(`↙ ${locale.embed.joinDate}`, `<t:${Math.round(member.joinedTimestamp / 1000)}>`, true)
-            .addField(`👑 ${locale.embed.status}`, status.join(', '), true)
-            .addField(`💎 ${locale.embed.nitroBooster}`, member.premiumSince ? await client.functions.utilities.parseLocale.run(locale.embed.isBooster, { time: `<t:${Math.round(member.premiumSinceTimestamp / 1000)}>` }) : locale.embed.isntBooster, true)
-            .addField(`🎖 ${locale.embed.highestRole}`, member.roles.highest.name, true)
-            .addField(`⚖ ${locale.embed.infractions}`, client.db.warns[member.id] ? (Object.keys(client.db.warns[member.id]).length).toString() : '0', true)
-            .addField(`📓 ${locale.embed.verification}`, member.pending ? locale.embed.isntVerified : locale.embed.isVerified, true)
-            .addField(`⚠️ ${locale.embed.actualSanction}`, sanction, true)
+            .addFields(
+                { name: `🆔 ${locale.embed.memberId}`, value: member.id, inline: true },
+                { name: `📝 ${locale.embed.registerDate}`, value: `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, inline: true },
+                { name: `↙ ${locale.embed.joinDate}`, value: `<t:${Math.round(member.joinedTimestamp / 1000)}>`, inline: true },
+                { name: `👑 ${locale.embed.status}`, value: status.join(', '), inline: true },
+                { name: `💎 ${locale.embed.nitroBooster}`, value: member.premiumSince ? await client.functions.utilities.parseLocale.run(locale.embed.isBooster, { time: `<t:${Math.round(member.premiumSinceTimestamp / 1000)}>` }) : locale.embed.isntBooster, inline: true },
+                { name: `🎖 ${locale.embed.highestRole}`, value: member.roles.highest.name, inline: true },
+                { name: `⚖ ${locale.embed.infractions}`, value: client.db.warns[member.id] ? (Object.keys(client.db.warns[member.id]).length).toString() : '0', inline: true },
+                { name: `📓 ${locale.embed.verification}`, value: member.pending ? locale.embed.isntVerified : locale.embed.isVerified, inline: true },
+                { name: `⚠️ ${locale.embed.actualSanction}`, value: sanction, inline: true }
+            )
         ]});
 
     } catch (error) {

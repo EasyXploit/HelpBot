@@ -33,77 +33,70 @@ exports.run = async (client, member, mode, channel) => {
     //Almacena las stats del miembro
     const memberStats = client.db.stats[member.id];
 
-    //Genera XP si es un canal de voz o si se ha sobrepasado el umbral de cola de mensajes
-    if (mode === 'voice' || (mode === 'message' && Date.now() - memberStats.lastMessage > client.config.leveling.minimumTimeBetweenMessages)) {
+    //Genera XP aleatorio según los rangos
+    const newXp = await client.functions.utilities.randomIntBetween.run(client.config.leveling.minimumXpReward, client.config.leveling.maximumXpReward);
 
-        //Genera XP aleatorio según los rangos
-        const newXp = await client.functions.utilities.randomIntBetween.run(client.config.leveling.minimumXpReward, client.config.leveling.maximumXpReward);
+    //Añade el XP a la cantidad actual del miembro
+    memberStats.experience += newXp;
 
-        //Añade el XP a la cantidad actual del miembro
-        memberStats.experience += newXp;
+    //Calcula el XP necesario para subir al siguiente nivel
+    const neededExperience = await client.functions.leveling.getNeededExperience.run(client, memberStats.experience);
 
-        //Si es un mensaje, actualiza la variable para evitar spam
-        if (mode === 'message') memberStats.lastMessage = Date.now();
+    //Comprueba si el miembro ha de subir de nivel
+    if (neededExperience.nextLevel > memberStats.level) {
 
-        //Calcula el XP necesario para subir al siguiente nivel
-        const neededExperience = await client.functions.leveling.getNeededExperience.run(client, memberStats.experience);
+        //Ajusta el nivel del miembro
+        memberStats.level++;
 
-        //Comprueba si el miembro ha de subir de nivel
-        if (neededExperience.nextLevel > memberStats.level) {
+        //Asigna las recompensas correspondientes al nivel (si corresponde), y almacena los roles recompensados
+        const rewardedRoles = await client.functions.leveling.assignRewards.run(client, member, memberStats.level);
 
-            //Ajusta el nivel del miembro
-            memberStats.level++;
+        //Genera un embed de subida de nivel
+        let levelUpEmbed = new client.MessageEmbed()
+            .setColor(client.config.colors.primary)
+            .setAuthor({ name: locale.levelUpEmbed.author, iconURL: member.user.displayAvatarURL({dynamic: true}) })
+            .setDescription(`${await client.functions.utilities.parseLocale.run(locale.levelUpEmbed.description, { member: member, memberLevel: memberStats.level })}.`);
 
-            //Asigna las recompensas correspondientes al nivel (si corresponde), y almacena los roles recompensados
-            const rewardedRoles = await client.functions.leveling.assignRewards.run(client, member, memberStats.level);
+        //Genera una fila de botones
+        const buttonsRow = new client.MessageActionRow();
+        
+        //Añade un botón a la filla, si se trata del modo voz
+        if (mode === 'voice') buttonsRow.addComponents(
 
-            //Genera un embed de subida de nivel
-            let levelUpEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.primary)
-                .setAuthor({ name: locale.levelUpEmbed.author, iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                .setDescription(`${await client.functions.utilities.parseLocale.run(locale.levelUpEmbed.description, { member: member, memberLevel: memberStats.level })}.`);
+            //Genera un botón para activar o desactivar las notificaciones
+            new client.MessageButton()
+                .setLabel(locale.levelUpEmbed.disablePrivateNotification)
+                .setStyle('SECONDARY')
+                .setCustomId('updateNotifications')
+        );
 
-            //Genera una fila de botones
-            const buttonsRow = new client.MessageActionRow();
-            
-            //Añade un botón a la filla, si se trata del modo voz
-            if (mode === 'voice') buttonsRow.addComponents(
+        //Si se recompensó al miembro con roles
+        if (rewardedRoles) {
 
-                //Genera un botón para activar o desactivar las notificaciones
-                new client.MessageButton()
-                    .setLabel(locale.levelUpEmbed.disablePrivateNotification)
-                    .setStyle('SECONDARY')
-                    .setCustomId('updateNotifications')
-            );
+            //Almacena los nombres de los roles
+            const roleNames = [];
 
-            //Si se recompensó al miembro con roles
-            if (rewardedRoles) {
+            //Por cada uno de los roles recompensados
+            for (const roleId of rewardedRoles) {
 
-                //Almacena los nombres de los roles
-                const roleNames = [];
+                //Busca el rol en la guild
+                const fetchedRole = await client.functions.utilities.fetch.run(client, 'role', roleId);
 
-                //Por cada uno de los roles recompensados
-                for (const roleId of rewardedRoles) {
-
-                    //Busca el rol en la guild
-                    const fetchedRole = await client.functions.utilities.fetch.run(client, 'role', roleId);
-
-                    //Sube al array de nombre, el nombre del rol iterado
-                    roleNames.push(fetchedRole.name);
-                };
-
-                //Añade un campo al embed de levelup con los roles recompensados
-                levelUpEmbed.addField(locale.levelUpEmbed.rewards, `\`${roleNames.join('`, `')}\``);
+                //Sube al array de nombre, el nombre del rol iterado
+                roleNames.push(fetchedRole.name);
             };
 
-            //Manda el mensaje de subida de nivel, si se ha configurado
-            if (mode === 'message' && client.config.leveling.notifylevelUpOnChat && memberStats.notifications.public) channel.send({ embeds: [levelUpEmbed] });
-            if (mode === 'voice' && client.config.leveling.notifylevelUpOnVoice && memberStats.notifications.private) member.send({ embeds: [levelUpEmbed], components: [buttonsRow] });
+            //Añade un campo al embed de levelup con los roles recompensados
+            levelUpEmbed.addFields({ name: locale.levelUpEmbed.rewards, value: `\`${roleNames.join('`, `')}\`` });
         };
 
-        //Guarda las nuevas estadísticas del miembro en la base de datos
-        client.fs.writeFile('./storage/databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
-            if (err) throw err;
-        });
+        //Manda el mensaje de subida de nivel, si se ha configurado
+        if (mode === 'message' && client.config.leveling.notifylevelUpOnChat && memberStats.notifications.public) channel.send({ embeds: [levelUpEmbed] });
+        if (mode === 'voice' && client.config.leveling.notifylevelUpOnVoice && memberStats.notifications.private) member.send({ embeds: [levelUpEmbed], components: [buttonsRow] });
     };
+
+    //Guarda las nuevas estadísticas del miembro en la base de datos
+    client.fs.writeFile('./storage/databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
+        if (err) throw err;
+    });
 };

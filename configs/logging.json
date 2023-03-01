@@ -12,10 +12,9 @@
     "pollEnded": true,
     "purgedChannel": true,
     "slowmodeChanged": true,
-    "soundUploaded": true,
-    "soundDeleted": true,
     "experienceModified": true,
     "memberJoined": true,
     "botJoined": true,
-    "memberLeaved": true
+    "memberLeaved": true,
+    "voiceMoves": true
 }

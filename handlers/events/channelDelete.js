@@ -8,20 +8,6 @@ exports.run = async (channel, client, locale) => {
             //Aborta si no es un evento de la guild registrada
             if (channel.guild.id !== client.homeGuild.id) return;
 
-            //Solo si el canal era el de depuración
-            if (channel.id === client.config.main.debuggingChannel) {
-
-                //Borra la configuración y descarga el canal
-                client.config.main.debuggingChannel = '';
-                client.debuggingChannel = null;
-
-                //Advertir por consola
-                console.warn(`${new Date().toLocaleString()} 》${locale.missingDebuggingChannel}.`);
-
-                //Graba la nueva configuración en el almacenamiento
-                await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), async err => { if (err) throw err });
-            };
-
             //Solo si el canal era el de registro
             if (channel.id === client.config.main.loggingChannel) {
 
@@ -40,6 +26,6 @@ exports.run = async (channel, client, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.eventError.run(client, error, 'channelDelete');
+        await client.functions.managers.eventError.run(client, error);
     };
 };

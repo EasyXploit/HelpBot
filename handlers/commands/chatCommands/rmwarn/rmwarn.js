@@ -67,10 +67,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setColor(client.config.colors.logging)
                 .setTitle(`📑 ${locale.loggingEmbedAll.title}`)
                 .setDescription(locale.loggingEmbedAll.description)
-                .addField(locale.loggingEmbedAll.date, `<t:${Math.round(new Date() / 1000)}>`, true)
-                .addField(locale.loggingEmbedAll.moderator, interaction.user.tag, true)
-                .addField(locale.loggingEmbedAll.reason, reason || locale.undefinedReason, true)
-                .addField(locale.loggingEmbedAll.memberId, memberId.toString(), true);
+                .addFields(
+                    { name: locale.loggingEmbedAll.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
+                    { name: locale.loggingEmbedAll.moderator, value: interaction.user.tag, inline: true },
+                    { name: locale.loggingEmbedAll.reason, value: reason || locale.undefinedReason, inline: true },
+                    { name: locale.loggingEmbedAll.memberId, value: memberId.toString(), inline: true }
+                );
 
             //Genera una notificación de la acción para el canal de invocación
             successEmbed = new client.MessageEmbed()
@@ -79,15 +81,17 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setDescription(await client.functions.utilities.parseLocale.run(locale.notificationEmbedAll.description, { member: member ? member.user.tag : `${memberId} (ID)` }));
 
             //Si se encontró al miembro, añade su tag al registro
-            member ? loggingEmbed.addField(locale.loggingEmbedAll.member, member.user.tag, true) : null;
+            member ? loggingEmbed.addFields({ name: locale.loggingEmbedAll.member, value: member.user.tag, inline: true }) : null;
 
             //Genera una notificación para el miembro
             if (member) toDMEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.correct)
                 .setAuthor({ name: locale.privateEmbedAll.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
                 .setDescription(await client.functions.utilities.parseLocale.run(locale.privateEmbedAll.description, { member: member }))
-                .addField(locale.privateEmbedAll.moderator, interaction.user.tag, true)
-                .addField(locale.privateEmbedAll.reason, reason || locale.undefinedReason, true);
+                .addFields(
+                    { name: locale.privateEmbedAll.moderator, value: interaction.user.tag, inline: true },
+                    { name: locale.privateEmbedAll.reason, value: reason || locale.undefinedReason, inline: true }
+                );
 
             //Elimina la entrada de la base de datos
             delete client.db.warns[memberId];
@@ -111,12 +115,14 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setColor(client.config.colors.logging)
                 .setTitle(`📑 ${locale.loggingEmbedSingle.title}`)
                 .setDescription(locale.loggingEmbedSingle.description)
-                .addField(locale.loggingEmbedSingle.date, `<t:${Math.round(new Date() / 1000)}>`, true)
-                .addField(locale.loggingEmbedSingle.moderator, interaction.user.tag, true)
-                .addField(locale.loggingEmbedSingle.warnId, warnId, true)
-                .addField(locale.loggingEmbedSingle.warn, client.db.warns[memberId][warnId].reason, true)
-                .addField(locale.loggingEmbedSingle.reason, reason || locale.undefinedReason, true)
-                .addField(locale.loggingEmbedSingle.memberId, memberId.toString(), true);
+                .addFields(
+                    { name: locale.loggingEmbedSingle.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
+                    { name: locale.loggingEmbedSingle.moderator, value: interaction.user.tag, inline: true },
+                    { name: locale.loggingEmbedSingle.warnId, value: warnId, inline: true },
+                    { name: locale.loggingEmbedSingle.warn, value: client.db.warns[memberId][warnId].reason, inline: true },
+                    { name: locale.loggingEmbedSingle.reason, value: reason || locale.undefinedReason, inline: true },
+                    { name: locale.loggingEmbedSingle.memberId, value: memberId.toString(), inline: true }
+                );
 
             //Genera una notificación de la acción para el canal de invocación
             successEmbed = new client.MessageEmbed()
@@ -125,17 +131,19 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setDescription(await client.functions.utilities.parseLocale.run(locale.notificationEmbedSingle.description, { warnId: warnId, member: member ? member.user.tag : `${memberId} (ID)` }));
 
             //Si se encontró al miembro, añade su tag al registro
-            member ? loggingEmbed.addField(locale.loggingEmbedSingle.member, member.user.tag, true) : null;
+            member ? loggingEmbed.addFields({ name: locale.loggingEmbedSingle.member, value: member.user.tag, inline: true }) : null;
 
             //Genera una notificación para el miembro
             if (member) toDMEmbed = new client.MessageEmbed()
                 .setColor(client.config.colors.correct)
                 .setAuthor({ name: locale.privateEmbedSingle.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
                 .setDescription(await client.functions.utilities.parseLocale.run(locale.privateEmbedSingle.description, { member: member, warnId: warnId }))
-                .addField(locale.privateEmbedSingle.moderator, interaction.user.tag, true)
-                .addField(locale.privateEmbedSingle.warnId, warnId, true)
-                .addField(locale.privateEmbedSingle.warn, client.db.warns[memberId][warnId].reason, true)
-                .addField(locale.privateEmbedSingle.reason, reason || locale.undefinedReason, true);
+                .addFields(
+                    { name: locale.privateEmbedSingle.moderator, value: interaction.user.tag, inline: true },
+                    { name: locale.privateEmbedSingle.warnId, value: warnId, inline: true },
+                    { name: locale.privateEmbedSingle.warn, value: client.db.warns[memberId][warnId].reason, inline: true },
+                    { name: locale.privateEmbedSingle.reason, value: reason || locale.undefinedReason, inline: true }
+                );
 
             //Resta el warn indicado
             delete client.db.warns[memberId][warnId];

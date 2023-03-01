@@ -4,8 +4,8 @@ const locale = require(`./resources/locales/${require('./configs/main.json').loc
 //Muestra el logo de arranque en la consola
 require('./lifecycle/splashLogo.js').run(locale.lifecycle.splashLogo);
 
-//Carga del sistema gestor de bases de datos
-require('./lifecycle/loadDatabase.js').run();
+//Si está habilitada, carga el manejador de errores remoto
+const errorTrackingEnambled = require('./configs/errorTracker.json').enabled ? require('./lifecycle/loadErrorTracker.js').run(locale.lifecycle.loadErrorTracker) : false;
 
 //CARGA DE CLIENTE
 //Carga una nueva instancia de cliente en Discord
@@ -25,10 +25,16 @@ const client = new discord.Client({     //Inicia el cliente con el array de inte
 });
 console.log(`${locale.index.clientStarted}\n`);
 
+//Si se ha cargado el manejador de errores remoto, almacena la librería en el cliente
+if (errorTrackingEnambled) client.errorTracker = require('@sentry/node');
+
 //CARGA DE ESTRUCTURAS ADICIONALES
 //Carga de módulos, objetos y colecciones en el cliente
-['MessageEmbed', 'MessageAttachment', 'MessageActionRow', 'TextInputComponent', 'MessageButton', 'Collection', 'Modal'].forEach(x => client[x] = discord[x]);       //Carga de métodos de Discord.js en el cliente
-['config', 'db', 'usersVoiceStates', 'reproductionQueues'].forEach(x => client[x] = {});                                                                 //Creación de objetos para almacenar las configuraciones, bases de datos y cachés
+['MessageEmbed', 'MessageAttachment', 'MessageActionRow', 'MessageSelectMenu', 'TextInputComponent', 'MessageButton', 'Collection', 'Modal'].forEach(x => client[x] = discord[x]);       //Carga de métodos de Discord.js en el cliente
+['config', 'db', 'usersVoiceStates', 'memberMessages'].forEach(x => client[x] = {});                                                          //Creación de objetos para almacenar las configuraciones, bases de datos y cachés
+
+//Dependencia para generar hashes MD5
+client.md5 = require('md5');
 
 //Gestión de promesas rechazadas y no manejadas
 process.on('unhandledRejection', error => {
@@ -38,19 +44,6 @@ process.on('unhandledRejection', error => {
 
         //Envía un mensaje de error a la consola
         console.error(`${new Date().toLocaleString()} 》${locale.index.unhandledRejection.consoleMsg}:`, error.stack);
-
-        //Almacena el string del error, y lo recorta si es necesario
-        const errorString = error.stack.length > 1014 ? `${error.stack.slice(0, 1014)} ...` : error.stack;
-
-        //Ejecuta el manejador de depuración
-        if (client.functions) client.functions.managers.debugging.run(client, 'embed', new client.MessageEmbed()
-            .setColor(client.config.colors.debugging)
-            .setTitle(`📋 ${locale.index.unhandledRejection.debuggingEmbed.title}`)
-            .setDescription(locale.index.unhandledRejection.debuggingEmbed.description)
-            .addField(locale.index.unhandledRejection.debuggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
-            .addField(locale.index.unhandledRejection.debuggingEmbed.error, `\`\`\`${errorString}\`\`\``)
-            .setFooter({ text: locale.index.unhandledRejection.debuggingEmbed.footer })
-        );
     };
 });
 
@@ -80,10 +73,10 @@ databaseFiles.forEach(async file => {
 
 //MANEJADOR DE EVENTOS
 //Lee el directorio de los eventos
-client.fs.readdir('./handlers/events/', async (err, files) => {
+client.fs.readdir('./handlers/events/', async (error, files) => {
 
     //Si se genera un error, aborta la carga del resto de eventos
-    if (err) return console.error(`${new Date().toLocaleString()} 》${locale.index.uncompleteEventsLoad}.`, error.stack);
+    if (error) return console.error(`${new Date().toLocaleString()} 》${locale.index.uncompleteEventsLoad}.`, error.stack);
     
     //Precarga cada uno de los eventos
     files.forEach(file => {

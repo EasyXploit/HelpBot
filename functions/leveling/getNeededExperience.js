@@ -14,7 +14,7 @@ exports.run = async (client, experience) => {
         if (nextLevelExperience) iteratedLevel++;
 
         //Actualiza el XP requerido para el siguiente nivel en función del modificador
-        nextLevelExperience = Math.round((5 * Math.pow(iteratedLevel, 3) + 50 * iteratedLevel + 100) * client.config.leveling.difficultyModifier);
+        nextLevelExperience = Math.round(5 * Math.pow(iteratedLevel, 3) + 50 * iteratedLevel + 100);
     };
 
     //Devuelve un objeto con la experiencia necesaria y el nivel que se alcanzará

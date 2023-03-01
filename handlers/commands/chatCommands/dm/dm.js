@@ -136,10 +136,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .setColor(client.config.colors.logging)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
             .setDescription(await client.functions.utilities.parseLocale.run(locale.loggingEmbed.description, { authorTag: interaction.user.tag, memberTag: member.user.tag, botUser: client.user }))
-            .addField(locale.loggingEmbed.date, `<t:${Math.round(new Date() / 1000)}>`, true)
-            .addField(locale.loggingEmbed.mode, mode, true)
-            .addField(locale.loggingEmbed.type, type, true)
-            .addField(locale.loggingEmbed.content, `\`\`\`${body.length > 1014 ? `${body.slice(0, 1014)} ...` : body}\`\`\``)
+            .addFields(
+                { name: locale.loggingEmbed.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
+                { name: locale.loggingEmbed.mode, value: mode, inline: true },
+                { name: locale.loggingEmbed.type, value: type, inline: true },
+                { name: locale.loggingEmbed.content, value: `\`\`\`${body.length > 1014 ? `${body.slice(0, 1014)} ...` : body}\`\`\``, inline: false }
+            )
         );
         
     } catch (error) {

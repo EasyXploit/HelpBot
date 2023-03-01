@@ -2,12 +2,14 @@
     "locale": "en-us",
     "botManagers": [],
     "loggingChannel": "",
-    "debuggingChannel": "",
+    "reportsChannel": "",
     "joinsAndLeavesChannel": "",
+    "voiceMovesChannel": "",
+    "voiceMovesExcludedChannels": [],
     "newMemberMode": "before",
     "newBotRole": "",
     "newMemberRole": "",
-    "loadMention": true,
     "pingTreshold": 1000,
-    "timers": true
+    "timers": true,
+    "messageHistorySize": 10
 }

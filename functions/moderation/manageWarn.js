@@ -1,5 +1,5 @@
 //Función para manejar las infracciones generadas
-exports.run = async (client, member, reason, action, moderator, message, interaction, channel) => {
+exports.run = async (client, member, reason, action, moderator, message, interaction, channel, filteredURL) => {
 
     try {
 
@@ -14,7 +14,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
 
             //Almacena el silenciamiento en la BD
             client.db.mutes[member.id] = {
-                until: duration ? Date.now() + duration : null,
+                until: Date.now() + duration,
                 moderator: client.user.id
             };
 
@@ -41,7 +41,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             //Envía un mensaje al canal de la infracción
             if (channel.type !== 'DM') await channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.warning)
-                .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(oldExpiration ? locale.muteFunction.notificationEmbed.initiated : locale.muteFunction.notificationEmbed.extended, { memberTag: member.user.tag })}`)
+                .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(oldExpiration ? locale.muteFunction.notificationEmbed.extended : locale.muteFunction.notificationEmbed.initiated, { memberTag: member.user.tag })}`)
             ]});
         };
 
@@ -59,8 +59,10 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 .setColor(client.config.colors.secondaryError)
                 .setAuthor({ name: locale.kickFunction.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
                 .setDescription(await client.functions.utilities.parseLocale.run(locale.kickFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
-                .addField(locale.kickFunction.privateEmbed.moderator, `${client.user}`, true)
-                .addField(locale.kickFunction.privateEmbed.reason, locale.kickFunction.reason, true)
+                .addFields(
+                    { name: locale.kickFunction.privateEmbed.moderator, value: `${client.user}`, inline: true },
+                    { name: locale.kickFunction.privateEmbed.reason, value: locale.kickFunction.reason, inline: true }
+                )
             ]});
 
             //Expulsa al miembro
@@ -110,9 +112,11 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 .setColor(client.config.colors.secondaryError)
                 .setAuthor({ name: locale.banFunction.privateEmbed.author, iconURL: client.homeGuild.iconURL({ dynamic: true}) })
                 .setDescription(await client.functions.utilities.parseLocale.run(locale.banFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
-                .addField(locale.banFunction.privateEmbed.moderator, moderator.tag, true)
-                .addField(locale.banFunction.privateEmbed.reason, locale.banFunction.reason, true)
-                .addField(locale.banFunction.privateEmbed.expiration, duration ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : locale.banFunction.privateEmbed.noExpiration, true)
+                .addFields(
+                    { name: locale.banFunction.privateEmbed.moderator, value: moderator.tag, inline: true },
+                    { name: locale.banFunction.privateEmbed.reason, value: locale.banFunction.reason, inline: true },
+                    { name: locale.banFunction.privateEmbed.expiration, value: duration ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : locale.banFunction.privateEmbed.noExpiration, inline: true }
+                )
             ]});
 
             //Banea al miembro
@@ -129,8 +133,10 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 .setColor(client.config.colors.warning)
                 .setAuthor({ name: locale.warn.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
                 .setDescription(await client.functions.utilities.parseLocale.run(locale.warn.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
-                .addField(locale.warn.privateEmbed.moderator, moderator.tag, true)
-                .addField(locale.warn.privateEmbed.reason, warnReason, true)
+                .addFields(
+                    { name: locale.warn.privateEmbed.moderator, value: moderator.tag, inline: true },
+                    { name: locale.warn.privateEmbed.reason, value: warnReason, inline: true }
+                )
             ]});
 
         } catch (error) {
@@ -190,16 +196,18 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 if (client.config.logging.warnedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.warn.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                    .addField(locale.warn.loggingEmbed.memberId, member.id, true)
-                    .addField(locale.warn.loggingEmbed.moderator, moderator.tag, true)
-                    .addField(locale.warn.loggingEmbed.reason, warnReason, true)
-                    .addField(locale.warn.loggingEmbed.warnId, warnID, true)
-                    .addField(locale.warn.loggingEmbed.channel, `${channel}`, true)
-                    .addField(locale.warn.loggingEmbed.infractions, (Object.keys(client.db.warns[member.id]).length).toString(), true)
+                    .addFields(
+                        { name: locale.warn.loggingEmbed.memberId, value: member.id, inline: true },
+                        { name: locale.warn.loggingEmbed.moderator, value: moderator.tag, inline: true },
+                        { name: locale.warn.loggingEmbed.reason, value: warnReason, inline: true },
+                        { name: locale.warn.loggingEmbed.warnId, value: warnID, inline: true },
+                        { name: locale.warn.loggingEmbed.channel, value: `${channel}`, inline: true },
+                        { name: locale.warn.loggingEmbed.infractions, value: (Object.keys(client.db.warns[member.id]).length).toString(), inline: true }
+                    )
                 );
 
                 //Si procede, adjunta el mensaje filtrado
-                if (message && client.config.logging.warnedMember && client.config.moderation.attachFilteredMessages) await client.functions.managers.logging.run(client, 'file', new client.MessageAttachment(Buffer.from(message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
+                if (message && client.config.logging.warnedMember && client.config.moderation.attachFilteredMessages) await client.functions.managers.logging.run(client, 'file', new client.MessageAttachment(Buffer.from(filteredURL || message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
             });
 
             //Banea temporalmente a los miembros que se acaban de unir al servidor y han mandado invitaciones
@@ -237,8 +245,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
 
                     //Ejecuta la acción de moderación que corresponda
                     switch (rule.action) {
-                        case 'tempmute':    mute(rule.duration);    break;
-                        case 'mute':        mute();                 break;
+                        case 'mute':        mute(rule.duration);    break;
                         case 'kick':        kick();                 break;
                         case 'tempban':     ban(rule.duration);     break;
                         case 'ban':         ban();                  break;

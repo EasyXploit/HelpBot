@@ -135,13 +135,13 @@ exports.run = async (client) => {
                 for (let index = 0; index < embedProperties.fields.length; index++) {
 
                     //Aborta si se ha superado el límite de API
-                    if (index > 25) break;timedmessages
+                    if (index > 25) break;
 
                     //Almacena las propiedades del campo iterado
                     const field = embedProperties.fields[index];
 
                     //Añade el campo al embed
-                    if (field.name && field.value) timedEmbed.addField(await parseWildcards(field.name), await parseWildcards(field.value), field.inline);
+                    if (field.name && field.value) timedEmbed.addFields({ name: await parseWildcards(field.name), value: await parseWildcards(field.value), inline: field.inline });
                 };
             };
         };
@@ -172,11 +172,8 @@ exports.run = async (client) => {
             "message": timedMessage,
         };
 
-        //Dependencia para generar hashes MD5
-        const md5 = require('md5');
-
         //Genera un hash MD5 a partir de la config. del timer
-        const hash = md5(JSON.stringify(timerData));
+        const hash = client.md5(JSON.stringify(timerData));
 
         //Si el timer no estaba almacenado en la BD
         if (!client.db.timers.messages[hash]) {

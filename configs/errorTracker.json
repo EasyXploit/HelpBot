@@ -1,0 +1,7 @@
+{
+    "enabled": true,
+    "sentry": {
+        "dsn": "",
+        "tracesSampleRate": 1.0
+    }
+}

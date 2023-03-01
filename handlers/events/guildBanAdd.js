@@ -24,11 +24,13 @@ exports.run = async (banData, client, locale) => {
             if (client.config.logging.bannedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.inconclusiveLoggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
-                .addField(locale.inconclusiveLoggingEmbed.memberId, banData.user.id, true)
-                .addField(locale.inconclusiveLoggingEmbed.moderator, locale.inconclusiveLoggingEmbed.unknownModerator, true)
-                .addField(locale.inconclusiveLoggingEmbed.reason, locale.inconclusiveLoggingEmbed.unknownReason, true)
-                .addField(locale.inconclusiveLoggingEmbed.expiration, locale.inconclusiveLoggingEmbed.unknownExpiration, true)
-                .addField(locale.inconclusiveLoggingEmbed.deletedDays, locale.inconclusiveLoggingEmbed.unknownDeletedDays, true)
+                .addFields(
+                    { name: locale.inconclusiveLoggingEmbed.memberId, value: banData.user.id, inline: true },
+                    { name: locale.inconclusiveLoggingEmbed.moderator, value: locale.inconclusiveLoggingEmbed.unknownModerator, inline: true },
+                    { name: locale.inconclusiveLoggingEmbed.reason, value: locale.inconclusiveLoggingEmbed.unknownReason, inline: true },
+                    { name: locale.inconclusiveLoggingEmbed.expiration, value: locale.inconclusiveLoggingEmbed.unknownExpiration, inline: true },
+                    { name: locale.inconclusiveLoggingEmbed.deletedDays, value: locale.inconclusiveLoggingEmbed.unknownDeletedDays, inline: true }
+                )
             );
 
         //Si se encontró un baneo en el primer resultado
@@ -78,17 +80,19 @@ exports.run = async (banData, client, locale) => {
             if (client.config.logging.bannedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
-                .addField(locale.loggingEmbed.memberId, banData.user.id, true)
-                .addField(locale.loggingEmbed.moderator, executor ? executor.tag : locale.loggingEmbed.unknownModerator, true)
-                .addField(locale.loggingEmbed.reason, reason ? reason : locale.loggingEmbed.undefinedReason, true)
-                .addField(locale.loggingEmbed.expiration, expiration ? `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>` : locale.loggingEmbed.noExpiration, true)
-                .addField(locale.loggingEmbed.deletedDays, deletedDays || locale.loggingEmbed.noDeletedDays, true)
+                .addFields(
+                    { name: locale.loggingEmbed.memberId, value: banData.user.id, inline: true },
+                    { name: locale.loggingEmbed.moderator, value: executor ? executor.tag : locale.loggingEmbed.unknownModerator, inline: true },
+                    { name: locale.loggingEmbed.reason, value: reason ? reason : locale.loggingEmbed.undefinedReason, inline: true },
+                    { name: locale.loggingEmbed.expiration, value: expiration ? `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>` : locale.loggingEmbed.noExpiration, inline: true },
+                    { name: locale.loggingEmbed.deletedDays, value: deletedDays || locale.loggingEmbed.noDeletedDays, inline: true }
+                )
             );
         };
 
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.eventError.run(client, error, 'guildBanAdd');
+        await client.functions.managers.eventError.run(client, error);
     };
 };

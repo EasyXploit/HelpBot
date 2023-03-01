@@ -36,9 +36,11 @@ exports.run = (client) => {
                 if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
                     .setAuthor(authorProperty)
-                    .addField(locale.mutes.loggingEmbed.memberId, idKey.toString(), true)
-                    .addField(locale.mutes.loggingEmbed.moderator, `${client.user}`, true)
-                    .addField(locale.mutes.loggingEmbed.reason, locale.mutes.reason, true)
+                    .addFields(
+                        { name: locale.mutes.loggingEmbed.memberId, value: idKey.toString(), inline: true },
+                        { name: locale.mutes.loggingEmbed.moderator, value: `${client.user}`, inline: true },
+                        { name: locale.mutes.loggingEmbed.reason, value: locale.mutes.reason, inline: true }
+                    )
                 );
                 
                 //Envía una confirmación al miembro
@@ -46,8 +48,10 @@ exports.run = (client) => {
                     .setColor(client.config.colors.correct)
                     .setAuthor({ name: locale.mutes.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.mutes.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
-                    .addField(locale.mutes.privateEmbed.moderator, `${client.user}`, true)
-                    .addField(locale.mutes.privateEmbed.reason, locale.mutes.reason, true)
+                    .addFields(
+                        { name: locale.mutes.privateEmbed.moderator, value: `${client.user}`, inline: true },
+                        { name: locale.mutes.privateEmbed.reason, value: locale.mutes.reason, inline: true }
+                    )
                 ]});
             });
         };
@@ -87,9 +91,11 @@ exports.run = (client) => {
                     if (client.config.logging.unbannedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                         .setColor(client.config.colors.correct)
                         .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.bans.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
-                        .addField(locale.bans.loggingEmbed.user, user.tag, true)
-                        .addField(locale.bans.loggingEmbed.moderator, `${client.user}`, true)
-                        .addField(locale.bans.loggingEmbed.reason, locale.bans.reason, true)
+                        .addFields(
+                            { name: locale.bans.loggingEmbed.user, value: user.tag, inline: true },
+                            { name: locale.bans.loggingEmbed.moderator, value: `${client.user}`, inline: true },
+                            { name: locale.bans.loggingEmbed.reason, value: locale.bans.reason, inline: true }
+                        )
                     );
 
                 } catch (error) {
@@ -116,13 +122,6 @@ exports.run = (client) => {
 
             //Envía una advertencia a la consola
             console.warn(`${new Date().toLocaleString()} 》${locale.ping.consoleMsg}: ${actualPing} ms\n`);
-
-            //Ejecuta el manejador de depuración
-            await client.functions.managers.debugging.run(client, 'embed', new client.MessageEmbed()
-                .setColor(client.config.colors.warning)
-                .setDescription(`${client.customEmojis.orangeTick} ${locale.ping.debuggingMsg}: **${actualPing}** ms`)
-                .setFooter({ text: client.user.username, iconURL: client.user.avatarURL() })
-            );
         };
     }, 60000);
 
@@ -220,7 +219,7 @@ exports.run = (client) => {
                 await poll.channel.send({ embeds: [ new client.MessageEmbed()
                     .setAuthor({ name: locale.polls.finishedEmbed.author, iconURL: 'attachment://endFlag.png' })
                     .setDescription(`${storedPoll.title}\n\n${storedPoll.options}`)
-                    .addField(locale.polls.finishedEmbed.results, results.join(' '))
+                    .addFields({ name: locale.polls.finishedEmbed.results, value: results.join(' '), inline: false })
                 ], files: ['./resources/images/endFlag.png']}).then(async poll => {
 
                     //Envía una notificación al canal de registro

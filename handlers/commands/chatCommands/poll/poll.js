@@ -281,9 +281,11 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                         if (client.config.logging.pollStarted) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
                             .setColor(client.config.colors.logging)
                             .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { memberTag: interaction.member.user.tag }), iconURL: interaction.user.displayAvatarURL({dynamic: true}) })
-                            .addField(locale.loggingEmbed.title, `__[${title}](${pollEmbed.url})__`, true)
-                            .addField(locale.loggingEmbed.channel, `${interactionChannel}`, true)
-                            .addField(locale.loggingEmbed.expiration, duration !== 0 ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : locale.loggingEmbed.noExpiration, true)
+                            .addFields(
+                                { name: locale.loggingEmbed.title, value: `__[${title}](${pollEmbed.url})__`, inline: true },
+                                { name: locale.loggingEmbed.channel, value: `${interactionChannel}`, inline: true },
+                                { name: locale.loggingEmbed.expiration, value: duration !== 0 ? `<t:${Math.round(new Date(parseInt(Date.now() + duration)) / 1000)}:R>` : locale.loggingEmbed.noExpiration, inline: true }
+                            )
                         );
                     });
                 });

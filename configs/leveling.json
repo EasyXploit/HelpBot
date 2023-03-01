@@ -7,7 +7,6 @@
     "nonXPChannels": [],
     "XPGainInterval": 60000,
     "minimumTimeBetweenMessages": 5000,
-    "difficultyModifier": 1,
     "minimumXpReward": 5,
     "maximumXpReward": 15,
     "preserveStats": true,

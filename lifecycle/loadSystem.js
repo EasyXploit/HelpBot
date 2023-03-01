@@ -21,7 +21,7 @@ exports.run = async (client, locale) => {
                 const config = mainConfigs[index];
 
                 //Comprueba de qué forma tiene que cargar cada configuración
-                if (config.toLowerCase().includes('channel')) { //Si es config. de canal
+                if (config.toLowerCase().includes('channel') && !config.toLowerCase().includes('channels')) { //Si es config. de canal
 
                     try {
 
@@ -49,6 +49,9 @@ exports.run = async (client, locale) => {
                 //Resuelve la promesa una vez acabado
                 if (index === mainConfigs.length -1) resolve();
             };
+
+            //Corrige el tamaño del historial de mensajes si es necesario (el sistema antiflood funciona mediante este historial)
+            if (client.config.main.messageHistorySize < 5) client.config.main.messageHistorySize = 5; 
         });
         
         //Cuando se carguen en memoria todos los recursos
@@ -147,9 +150,6 @@ exports.run = async (client, locale) => {
 
             //Notifica la correcta carga del bot
             console.log(`\n 》${await client.functions.utilities.parseLocale.run(locale.loadedCorrectly, { botUsername: client.user.username })}.`);
-
-            //Genera un registro en el canal de registro
-            if (client.debuggingChannel && client.config.main.loadMention) client.debuggingChannel.send({ content: `${await client.functions.utilities.parseLocale.run(locale.loadMention, { botUsername: client.user.username })} [<@${client.homeGuild.ownerId}>]` }).then(msg => { setTimeout(() => msg.delete(), 5000) });
         });
 
     } catch (error) {

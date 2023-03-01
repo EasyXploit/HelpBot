@@ -5,7 +5,7 @@ const locale = require(`./resources/locales/${require('./configs/main.json').loc
 require('./lifecycle/splashLogo.js').run(locale.lifecycle.splashLogo);
 
 //Si está habilitada, carga el manejador de errores remoto
-const errorTrackingEnambled = require('./configs/errorTracker.json').enabled ? require('./lifecycle/loadErrorTracker.js').run(locale.lifecycle.loadErrorTracker) : false;
+const errorTrackingEnabled = require('./configs/errorTracker.json').enabled ? require('./lifecycle/loadErrorTracker.js').run(locale.lifecycle.loadErrorTracker) : false;
 
 //CARGA DE CLIENTE
 //Carga una nueva instancia de cliente en Discord
@@ -26,7 +26,7 @@ const client = new discord.Client({     //Inicia el cliente con el array de inte
 console.log(`${locale.index.clientStarted}\n`);
 
 //Si se ha cargado el manejador de errores remoto, almacena la librería en el cliente
-if (errorTrackingEnambled) client.errorTracker = require('@sentry/node');
+if (errorTrackingEnabled) client.errorTracker = require('@sentry/node');
 
 //CARGA DE ESTRUCTURAS ADICIONALES
 //Carga de módulos, objetos y colecciones en el cliente

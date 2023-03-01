@@ -19,54 +19,60 @@ exports.run = async (client, interaction, modalInteraction, reportReason, report
                 //Almacena el mensaje reportado
                 const reportedMessage = interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].message : null;
 
-                //
+                //Se genera un embed base para el reporte
                 let reportEmbed = new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
-                    .setAuthor({ name: `${interaction.member.user.tag} ha reportado lo siguiente:`, iconURL: interaction.member.user.displayAvatarURL({dynamic: true}) })
+                    .setAuthor({ name: `${await client.functions.utilities.parseLocale.run(locale.reportEmbed.author, { memberTag: interaction.member.user.tag })}:`, iconURL: interaction.member.user.displayAvatarURL({dynamic: true}) })
                     .setFields([
-                        { name: 'Motivo del reporte', value: reportReason, inline: true },
-                        { name: 'Canal del reporte', value: `<#${interaction.channelId}>`, inline: true }
+                        { name: locale.reportEmbed.reportReason, value: reportReason, inline: true },
+                        { name: locale.reportEmbed.reportChannel, value: `<#${interaction.channelId}>`, inline: true }
                     ])
                     .setTimestamp()
 
-                //
+                //Si se proporcionó un miembro reportado, añade el cambo al embed
                 if (reportedMember) reportEmbed.addFields([
-                    { name: 'Miembro reportado', value: `${reportedMember}`, inline: true }
+                    { name: locale.reportEmbed.reportedMember, value: `${reportedMember}`, inline: true }
 
                 ]);
 
-                //
+                //Si se proporcionó un mensaje reportado, añade el cambo al embed
                 if (reportedMessage) reportEmbed.addFields([
-                    { name: 'Mensaje reportado', value: reportedMessage.content.length > 0 ? reportedMessage.content : '`Inserción`', inline: true },
-                    { name: 'ID del mensaje', value: `[${reportedMessage.id}](${reportedMessage.url})`, inline: true }
+                    { name: locale.reportEmbed.reportedMessage, value: reportedMessage.content.length > 0 ? reportedMessage.content : `\`${locale.reportEmbed.isInsertion}\``, inline: true },
+                    { name: locale.reportEmbed.reportedMessageId, value: `[${reportedMessage.id}](${reportedMessage.url})`, inline: true }
                 ]);
                 
-                //
+                //Si se proporcionó un mensaje reportado y este tenía adjuntos
                 if (reportedMessage && reportedMessage.attachments.size > 0 ) {
 
-                    const chunkSize = 5; // 1-9
-                    const chunks = Math.ceil(reportedMessage.attachments.size / chunkSize);
+                    //Almacena la cantidad de archivos por campo del embed
+                    const chunkSize = 5; // Valores seguros: 1-9
+
+                    //Almacena el número total de bloques
+                    const totalChunks = Math.ceil(reportedMessage.attachments.size / chunkSize);
+
+                    //Obtiene un array con los adjuntos del mensaje reportado
                     const attachmentsArray = Array.from(reportedMessage.attachments.values());
 
-                    //
-                    for (let currentChunk = 1; currentChunk <= chunks; currentChunk++) {
+                    //Por cada uno de los bloques del total calculado
+                    for (let currentChunk = 1; currentChunk <= totalChunks; currentChunk++) {
 
-                        //
+                        //Genera un array par almacenar los asjuntos procesados
                         let attachments = [];
 
-                        //
+                        //Por cada uno de los adjuntos que sorresponden a este bloque
                         for (let index = chunkSize * (currentChunk - 1); index <= chunkSize * currentChunk - 1; index++) {
 
-                            //
+                            //Si se alcanza el total de adjuntos, para el bucle
                             if (index >= attachmentsArray.length) break;
 
-                            //
-                            attachments.push(`[Archivo ${index + 1} [${attachmentsArray[index].contentType}]](${attachmentsArray[index].url})`)
+                            //Genera un string enlazado a la descarga del fichero para añadirla al campo
+                            attachments.push(`[${await client.functions.utilities.parseLocale.run(locale.reportEmbed.fileName, { fileNumber: index + 1, fileType: attachmentsArray[index].contentType})}](${attachmentsArray[index].url})`)
                         };
 
-                        //
+                        //Adjunta todos los campos generados para los adjuntos al embed del reporte
                         reportEmbed.addFields([
-                            { name: `Archivos adjuntos [${currentChunk}/${chunks}]`, value: attachments.join(', '), inline: false }
+                            { name: await client.functions.utilities.parseLocale.run(locale.reportEmbed.attachedFiles, { currentChunk: currentChunk, totalChunks: totalChunks}), value: attachments.join(', '), inline: false }
+                            
                         ]);
                     };
                 };

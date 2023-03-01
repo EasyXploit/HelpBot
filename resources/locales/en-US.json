@@ -1208,6 +1208,17 @@
                 "mutedUntil": "Muted until"
             },
             "report": {
+                "reportEmbed": {
+                    "author": "{{memberTag}} has reported the following",
+                    "reportReason": "Report reason",
+                    "reportChannel": "Report channel",
+                    "reportedMember": "Reported member",
+                    "reportedMessage": "Reported message",
+                    "isInsertion": "Insertion",
+                    "reportedMessageId": "Message ID",
+                    "attachedFiles": "Attached files [{{currentChunk}}/{{totalChunks}}]",
+                    "fileName": "File {{fileNumber}} [{{fileType}}]"
+                },
                 "cannotSend": "ERROR: Cannot send messages to the reports channel.\n{{botUsername}} must have the following permissions on the channel: Send Messages, Send Links, Attach Files",
                 "correct": "The report has been sent",
                 "temporaryError": "This feature is not available at this time.\nPlease try again later",

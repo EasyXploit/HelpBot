@@ -16,6 +16,8 @@
 | :bangbang: | This repository is <ins>currently under development</ins> and does not have a stable version, so it is possible that there are bugs and I'm still making fixes and improvements until the [first release](https://github.com/EasyXploit/HelpBot/releases). |
 | :--------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
+Do you want to help with bot testing, or receive support? Join the HelpBot Labs server! https://discord.gg/6U7rsnD2zu 
+
 ## About
 [**HelpBot**](https://github.com/EasyXploit/HelpBot) is a [Discord](https://discord.com/) self-hosted bot designed to run on a [Node.js](https://nodejs.org) server, whose main functions are automated community moderation, leveling, chat utilities and much more!<br /><br />
 This project was born out of curiosity, as a way to give form to the knowledge about [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) that I acquired during a Professional Formation course that I was doing, but that over time has made me discover that I am passionate about programming.<br /><br />

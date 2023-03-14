@@ -31,6 +31,12 @@ console.log(`${locale.index.clientStarted}\n`);
 //Si se ha cargado el manejador de errores remoto, almacena la librería en el cliente
 if (errorTrackingEnabled) client.errorTracker = require('@sentry/node');
 
+//Almacena y ejecuta el cargador de la base de datos
+client.mongoose = require('./lifecycle/loadDatabase.js');
+
+//Establece la conexión con la base de datos
+client.mongoose.dbConnect();
+
 //CARGA DE ESTRUCTURAS ADICIONALES
 //Carga de módulos, objetos y colecciones en el cliente
 ['MessageEmbed', 'MessageAttachment', 'MessageActionRow', 'MessageSelectMenu', 'TextInputComponent', 'MessageButton', 'Collection', 'Modal'].forEach(x => client[x] = discord[x]);       //Carga de métodos de Discord.js en el cliente

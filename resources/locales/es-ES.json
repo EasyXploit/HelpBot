@@ -1403,5 +1403,44 @@
             "description": "Soy un bot diseñado para moderación de comunidades automatizada, gestión de niveles, utilidades de chat ¡y mucho más!",
             "divider": "Iniciando aplicación"
         }
+    },
+    "models": {
+        "config": {
+            "automodFilters": {
+                "flood": {
+                    "reason": "Inundación del canal"
+                },
+                "crossPost": {
+                    "reason": "Publicaciones repetidas"
+                },
+                "swearWords": {
+                    "reason": "Palabras malsonantes"
+                },
+                "invites": {
+                    "reason": "Invitaciones no permitidas"
+                },
+                "uppercase": {
+                    "reason": "Demasiadas mayúsculas"
+                },
+                "links": {
+                    "reason": "Enlaces no permitidos"
+                },
+                "massEmojis": {
+                    "reason": "Demasiados emojis"
+                },
+                "massMentions": {
+                    "reason": "Demasiadas menciones"
+                },
+                "massSpoilers": {
+                    "reason": "Demasiados spoilers"
+                },
+                "repeatedText": {
+                    "reason": "Texto repetitivo"
+                }
+            },
+            "presence": {
+                "name": "¡Hola!"
+            }
+        }
     }
 }

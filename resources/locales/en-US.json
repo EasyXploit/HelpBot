@@ -1403,5 +1403,44 @@
             "description": "I'm a bot designed for automated community moderation, leveling, chat utilities, and much more!",
             "divider": "Starting application"
         }
+    },
+    "models": {
+        "config": {
+            "automodFilters": {
+                "flood": {
+                    "reason": "Channel flooding"
+                },
+                "crossPost": {
+                    "reason": "Repeated posts"
+                },
+                "swearWords": {
+                    "reason": "Swear words"
+                },
+                "invites": {
+                    "reason": "Invitations not allowed"
+                },
+                "uppercase": {
+                    "reason": "Too many capital letters"
+                },
+                "links": {
+                    "reason": "Links not allowed"
+                },
+                "massEmojis": {
+                    "reason": "Too many emojis"
+                },
+                "massMentions": {
+                    "reason": "Too many mentions"
+                },
+                "massSpoilers": {
+                    "reason": "Too many spoilers"
+                },
+                "repeatedText": {
+                    "reason": "Repetitive text"
+                }
+            },
+            "presence": {
+                "name": "Hi there!"
+            }
+        }
     }
 }

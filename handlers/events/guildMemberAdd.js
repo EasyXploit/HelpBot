@@ -44,7 +44,7 @@ exports.run = async (member, client, locale) => {
         };
 
         //Ejecuta el manejador de nuevos miembros (si procede)
-        if (client.config.main.newMemberMode === 'before') await client.functions.managers.newMember.run(client, member);
+        if (client.config.main.newMemberMode === 0) await client.functions.managers.newMember.run(client, member);
 
     } catch (error) {
 

@@ -12,7 +12,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
             if (client.db.stats[newMember.id] && client.config.leveling.preserveStats) await client.functions.leveling.assignRewards.run(client, newMember, client.db.stats[newMember.id].level);
 
             //Ejecuta el manejador de nuevos miembros (si procede)
-            if (client.config.main.newMemberMode === 'after') await client.functions.managers.newMember.run(client, newMember);
+            if (client.config.main.newMemberMode === 1) await client.functions.managers.newMember.run(client, newMember);
         };
 
         //Si el miembro ha sido silenciado o dessilenciado

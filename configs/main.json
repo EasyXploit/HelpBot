@@ -6,7 +6,7 @@
     "joinsAndLeavesChannel": "",
     "voiceMovesChannel": "",
     "voiceMovesExcludedChannels": [],
-    "newMemberMode": "before",
+    "newMemberMode": 0,
     "newBotRole": "",
     "newMemberRole": "",
     "pingTreshold": 1000,

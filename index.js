@@ -1,3 +1,6 @@
+//Carga las variables de entorno desde el fichero .env (si existe)
+require('dotenv').config();
+
 //Almacena las traducciones al idioma configurado
 const locale = require(`./resources/locales/${require('./configs/main.json').locale}.json`);
 
@@ -94,6 +97,6 @@ client.fs.readdir('./handlers/events/', async (error, files) => {
 
 //Inica sesión en el cliente
 console.log(`\n- ${locale.index.loggingIn} ...\n`);
-client.login(client.config.token.key)
+client.login(process.env.DISCORD_TOKEN.length > 0 ? process.env.DISCORD_TOKEN : client.config.token.key)
     .then(() => console.log(`\n - ${locale.index.loggedIn}\n`))
     .catch(() => console.error(`\n - ${locale.index.couldNotLogIn}\n`));

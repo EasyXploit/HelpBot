@@ -5,8 +5,6 @@
         "unhandledRejection": {
             "consoleMsg": "ERROR: Unhandled rejected promise"
         },
-        "uncompleteEventsLoad": "ERROR: Failed to complete events load",
-        "eventLoaded": "Event",
         "loggingIn": "Logging in",
         "loggedIn": "Logged in successfully!",
         "couldNotLogIn": "Login failed. Check if the login token is valid"
@@ -1170,6 +1168,14 @@
         }
     },
     "functions": {
+        "db": {
+            "migrate": {
+                "noPendingMigrations": "There are no pending migrations",
+                "pendingMigrations": "Migrations to be performed",
+                "migrationsDone": "All documents in the database have been migrated!",
+                "migrationsUncomplete": "An error occurred during the migration of the database documents"
+            }
+        },
         "leveling": {
             "addExperience": {
                 "levelUpEmbed": {
@@ -1191,7 +1197,7 @@
                 "error": "ERROR",
                 "notificationEmbed": {
                     "title": "Oops! Something went wrong",
-                    "description": "We have reported it to those responsible for the bot"
+                    "description": "We have reported it to the development team"
                 }
             },
             "logging": {
@@ -1300,15 +1306,28 @@
         }
     },
     "lifecycle": {
+        "loadDatabase": {
+            "connecting": "Starting connection to database",
+            "cantConnect": "Could not connect to the database",
+            "onConnected": "Connection to the database successfully opened",
+            "checkIfMigrationNeeded": "Checking that all documents have the correct version",
+            "onError": "Connection to the database error",
+            "onDisconnected": "Connection to the database aborted",
+            "onReconnected": "Connection to the database restablished"
+        },
         "loadErrorTracker": {
-            "loading": "Loading remote error tracking via Sentry ...",
-            "configLoaded": "Remote error tracking load completed!",
+            "loading": "Loading remote error tracker ...",
             "tracesSampleRate": "Traces sample rate",
-            "errors": {
-                "invalidDSN": "You have not specified a valid Sentry DSN. Remote error tracking will not be used",
-                "smallTracesSampleRate": "You have not specified a valid sample rate. 0 will be used instead (the minimum)",
-                "largeTracesSampleRate": "You have not specified a valid sample rate. 1.0 will be used instead (the maximum)"
-            }
+            "configLoaded": "Remote error tracker load completed!",
+            "error": "An error occurred while loading the remote error tracker, so it will not be used"
+        },
+        "loadEvents": {
+            "uncompleteEventsLoad": "ERROR: Failed to complete events load",
+            "event": "Event"
+        },
+        "loadFunctions": {
+            "functionsLoaded": "Global functions loading completed",
+            "error": "Global functions could not be loaded correctly"
         },
         "loadIntervals": {
             "mutes": {
@@ -1383,8 +1402,7 @@
             "presenceLoaded": "Presence loading completed",
             "voiceStatesLoaded": "Voice states loading completed",
             "loadedCorrectly": "{{botUsername}} started successfully",
-            "error": "ERROR",
-            "functionsLoaded": "Global functions loading completed"
+            "error": "ERROR"
         },
         "loadTimers": {
             "configLoaded": "Timers loading completed"

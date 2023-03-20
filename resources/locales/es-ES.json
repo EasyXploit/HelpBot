@@ -5,8 +5,6 @@
         "unhandledRejection": {
             "consoleMsg": "ERROR: Promesa rechazada no manejada"
         },
-        "uncompleteEventsLoad": "ERROR: No se ha podido completar la carga de los eventos",
-        "eventLoaded": "Evento",
         "loggingIn": "Iniciando sesión",
         "loggedIn": "¡Sesion iniciada correctamente!",
         "couldNotLogIn": "No ha sido posible iniciar sesión. Comprueba si el token de inicio de sesión es válido"
@@ -1170,6 +1168,14 @@
         }
     },
     "functions": {
+        "db": {
+            "migrate": {
+                "noPendingMigrations": "No hay migraciones pendientes",
+                "pendingMigrations": "Migraciones que se realizarán",
+                "migrationsDone": "¡Se han migrado todos los documentos de la base de datos!",
+                "migrationsUncomplete": "Ocurrió un error durante la migración de los documentos de la base de datos"
+            }
+        },
         "leveling": {
             "addExperience": {
                 "levelUpEmbed": {
@@ -1191,7 +1197,7 @@
                 "error": "ERROR",
                 "notificationEmbed": {
                     "title": "¡Vaya! Algo fue mal",
-                    "description": "Lo hemos reportado a los responsables del bot"
+                    "description": "Lo hemos reportado al equipo de desarrollo"
                 }
             },
             "logging": {
@@ -1300,15 +1306,28 @@
         }
     },
     "lifecycle": {
+        "loadDatabase": {
+            "connecting": "Iniciando conexión con la base de datos",
+            "cantConnect": "No se pudo conectar con la base de datos",
+            "onConnected": "Conexión a la base de datos establecida con éxito",
+            "checkIfMigrationNeeded": "Comprobando que todos los documentos tienen la versión adecuada",
+            "onError": "Error de conexión a la base de datos",
+            "onDisconnected": "Conexión a la base de datos abortada",
+            "onReconnected": "Conexión a la base de datos restablecida"
+        },
         "loadErrorTracker": {
-            "loading": "Cargando el rastreador de errores remoto mediante Sentry ...",
-            "configLoaded": "¡Carga del rastreador de errores remoto completada!",
+            "loading": "Cargando el rastreador de errores remoto...",
             "tracesSampleRate": "Tasa de muestreo de trazas",
-            "errors": {
-                "invalidDSN": "No has especificado un DSN de Sentry válido. No se utilizará el rastreo de errores remoto",
-                "smallTracesSampleRate": "No has especificado una tasa de muestras válida. Se usará 0 en su lugar (el mínimo)",
-                "largeTracesSampleRate": "No has especificado una tasa de muestras válida. Se usará 1.0 en su lugar (el máximo)"
-            }
+            "configLoaded": "¡Carga del rastreador de errores remoto completada!",
+            "error": "Ocurrió un error durante la carga del rastreador de errores remoto, por lo que no se utilizará"
+        },
+        "loadEvents": {
+            "uncompleteEventsLoad": "ERROR: No se ha podido completar la carga del evento:",
+            "event": "Evento"
+        },
+        "loadFunctions": {
+            "functionsLoaded": "Carga de funciones globales completada",
+            "error": "Las funciones globales no pudieron ser cargadas correctamente"
         },
         "loadIntervals": {
             "mutes": {
@@ -1380,7 +1399,6 @@
             "configLoaded": "Cargado correctamente",
             "configNotLoaded": "No se pudo cargar",
             "guildConfigLoaded": "Carga de configuración de la guild completada",
-            "functionsLoaded": "Carga de funciones globales completada",
             "presenceLoaded": "Carga de presencia completada",
             "voiceStatesLoaded": "Carga de estados de voz completada",
             "loadedCorrectly": "{{botUsername}} iniciado correctamente",

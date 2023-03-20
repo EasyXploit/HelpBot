@@ -44,10 +44,10 @@ exports.run = async (locale) => {
     mongoose.connection.on('connected', async () => {
 
         //Lo notifica en la consola
-        console.log(`\n${locale.lifecycle.loadDatabase.onConnected}`)
+        console.log(`\n${locale.lifecycle.loadDatabase.onConnected}`);
 
         //Notifica la migración de los documentos en la consola
-        console.log(`${locale.lifecycle.loadDatabase.checkIfMigrationNeeded} ...\n`)
+        console.log(`${locale.lifecycle.loadDatabase.checkIfMigrationNeeded} ...\n`);
 
         //Migra los documentos de la base de datos a la última versión
         await require('../functions/db/migrate.js').run(locale.functions.db.migrate, options, 'up');

@@ -1,21 +1,15 @@
 //Librería para interactuar con la BD
 const mongoose = require('mongoose');
 
-//Carga la configuración del repositorio
-const packageConfig = require('../../package.json');
-
 //Almacena las traducciones al idioma configurado
-//const locale = require(`../../resources/locales/${require('./configs/main.json').locale}.json`).models.config.presence;
+const locale = require('../../resources/locales/en-us.json').models.config.presence;
 
 //Crea un nuevo esquema
 const schema = new mongoose.Schema({
-    _id: {
+    docType: {
         type: String,
-        default: 'presence'
-    },
-    requiredVersion: {
-        type: Number,
-        default: packageConfig.version
+        default: 'presence',
+        immutable: true
     },
     name: {
         type: String,
@@ -23,19 +17,21 @@ const schema = new mongoose.Schema({
     },
     membersCount: {
         type: Boolean,
-        default: true
+        default: true,
+        required: true
     },
     status: {
         type: String,
-        default: 'online'
+        default: 'online',
+        enum: ['online', 'idle', 'offline', 'dnd'],
+        required: true
     },
-    type: {
+    presence: {
         type: String,
-        default: 'WATCHING'
+        default: 'WATCHING',
+        enum: ['PLAYING', 'STREAMING', 'LISTENING', 'WATCHING', 'CUSTOM', 'COMPETING']
     }
-}, { 
-    capped: { size: 2048, max: 1} 
 });
 
 //Añade el esquema al modelo
-module.exports = mongoose.model('presence', schema);
+module.exports = mongoose.model('presence', schema, 'configs');

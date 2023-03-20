@@ -1,43 +1,49 @@
 const mongoose = require('mongoose');
 
-//Carga la configuración del repositorio
-const packageConfig = require('../../package.json');
-
 //Crea un nuevo esquema para la estadística de miembro
 const statSchema = new mongoose.Schema({
-    _id: String,
-    requiredVersion: {
-        type: Number,
-        default: packageConfig.version
+    docType: {
+        type: String,
+        default: 'stat',
+        immutable: true
     },
-    userId: String,
+    userId: {
+        type: String,
+        required: true
+    },
     experience: {
         type: Number,
-        default: 0
+        default: 0,
+        required: true
     },
     level: {
         type: Number,
-        default: 0
+        default: 0,
+        required: true
     },
     aproxVoiceTime: {
         type: Number,
-        default: 0
+        default: 0,
+        required: true
     },
     messagesCount: {
         type: Number,
-        default: 0
+        default: 0,
+        required: true
     },
     notifications: {
         public: {
             type: Boolean,
-            default: true
+            default: true,
+            required: true
         },
         private: {
             type: Boolean,
-            default: true
+            default: true,
+            required: true
         }
     }
 });
 
 //Añade el esquema al modelo
-module.exports = mongoose.model('stats', statSchema);
+module.exports = mongoose.model('stat', statSchema);

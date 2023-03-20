@@ -1,18 +1,12 @@
 //Librería para interactuar con la BD
 const mongoose = require('mongoose');
 
-//Carga la configuración del repositorio
-const packageConfig = require('../../package.json');
-
 //Crea un nuevo esquema
 const schema = new mongoose.Schema({
-    _id: {
+    docType: {
         type: String,
-        default: 'commands'
-    },
-    requiredVersion: {
-        type: Number,
-        default: packageConfig.version
+        default: 'commands',
+        immutable: true
     },
     forceNameLocale: String,
     chatCommands: {
@@ -27,39 +21,45 @@ const schema = new mongoose.Schema({
             unlimitedTime: [String],
             maxRegularTime: {
                 type: Number,
-                default: 86400000
+                default: 86400000,
+                required: true
             }
         },
         dm: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             },
             anonymousMode: [String]
         },
         edit: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             }
         },
         infractions: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             },
             canSeeAny: [String]
         },
         invitation: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             }
         },
         kick: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             },
             reasonNotNeeded: [String],
             botsAllowed: [String]
@@ -67,22 +67,26 @@ const schema = new mongoose.Schema({
         leaderboard: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             },
             hideNotPresent: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             }
         },
         mute: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             },
             unlimitedTime: [String],
             maxRegularTime: {
                 type: Number,
-                default: 86400000
+                default: 86400000,
+                required: true
             },
             reasonNotNeeded: [String],
             botsAllowed: [String]
@@ -90,38 +94,44 @@ const schema = new mongoose.Schema({
         notifications: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             }
         },
         ping: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             }
         },
         poll: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             },
             canEndAny: [String]
         },
         purge: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             }
         },
         report: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             }
         },
         rmwarn: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             },
             removeAny: [String],
             reasonNotNeeded: [String]
@@ -129,56 +139,65 @@ const schema = new mongoose.Schema({
         roleinfo: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             }
         },
         run: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             }
         },
         send: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             }
         },
         serverinfo: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             }
         },
         slowmode: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             },
             unlimitedTime: [String],
             maxRegularSeconds: {
                 type: Number,
-                default: 30
+                default: 30,
+                required: true
             },
             reasonNotNeeded: [String]
         },
         stats: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             }
         },
         unban: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             },
             reasonNotNeeded: [String]
         },
         unmute: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             },
             reasonNotNeeded: [String],
             removeAny: [String]
@@ -186,25 +205,29 @@ const schema = new mongoose.Schema({
         userinfo: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             },
             canSeeAny: [String]
         },
         warn: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             },
             minimumTimeDifference: {
                 type: Number,
-                default: 15000
+                default: 15000,
+                required: true
             },
             unlimitedFrequency: [String]
         },
         xp: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             }
         }
     },
@@ -212,18 +235,21 @@ const schema = new mongoose.Schema({
         removeAndWarn: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             },
             minimumTimeDifference: {
                 type: Number,
-                default: 15000
+                default: 15000,
+                required: true
             },
             unlimitedFrequency: [String]
         },
         reportMessage: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             }
         }
     },
@@ -231,17 +257,20 @@ const schema = new mongoose.Schema({
         reportMember: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             }
         },
         warn: {
             enabled: {
                 type: Boolean,
-                default: true
+                default: true,
+                required: true
             },
             minimumTimeDifference: {
                 type: Number,
-                default: 15000
+                default: 15000,
+                required: true
             },
             unlimitedFrequency: [String]
         }
@@ -251,9 +280,7 @@ const schema = new mongoose.Schema({
         messageCommands: [String],
         userCommands: [String]
     }
-}, { 
-    capped: { size: 2048, max: 1} 
 });
 
 //Añade el esquema al modelo
-module.exports = mongoose.model('commands', schema);
+module.exports = mongoose.model('commands', schema, 'configs');

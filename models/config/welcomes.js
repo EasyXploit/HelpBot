@@ -1,28 +1,23 @@
 //Librería para interactuar con la BD
 const mongoose = require('mongoose');
 
-//Carga la configuración del repositorio
-const packageConfig = require('../../package.json');
-
 //Crea un nuevo esquema para la guild
-const guildSchema = new mongoose.Schema({
-    _id: {
+const schema = new mongoose.Schema({
+    docType: {
         type: String,
-        default: 'welcomes'
-    },
-    requiredVersion: {
-        type: Number,
-        default: packageConfig.version
+        default: 'welcomes',
+        immutable: true
     },
     newMemberMode: {
         type: Number,
-        default: 0
+        default: 0,
+        min: 0,
+        max: 1,
+        required: true
     },
-    newBotRole: String,
-    newMemberRole: String,
-}, { 
-    capped: { size: 2048, max: 1} 
+    newBotRoleId: String,
+    newMemberRoleId: String
 });
 
 //Añade el esquema al modelo
-module.exports = mongoose.model('welcomes', guildSchema);
+module.exports = mongoose.model('welcomes', schema, 'configs');

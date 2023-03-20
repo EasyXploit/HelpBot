@@ -1,19 +1,25 @@
 const mongoose = require('mongoose');
 
-//Carga la configuración del repositorio
-const packageConfig = require('../../package.json');
-
 //Crea un nuevo esquema para el baneo
 const banSchema = new mongoose.Schema({
-    _id: String,
-    requiredVersion: {
-        type: Number,
-        default: packageConfig.version
+    docType: {
+        type: String,
+        default: 'ban',
+        immutable: true
     },
-    userId: String,
-    moderatorId: String,
-    untilTimestamp: Number
+    userId: {
+        type: String,
+        required: true
+    },
+    moderatorId: {
+        type: String,
+        required: true
+    },
+    untilTimestamp: {
+        type: Number,
+        required: true
+    }
 });
 
 //Añade el esquema al modelo
-module.exports = mongoose.model('bans', banSchema);
+module.exports = mongoose.model('ban', banSchema);

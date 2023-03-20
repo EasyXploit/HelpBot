@@ -1,64 +1,66 @@
 //Librería para interactuar con la BD
 const mongoose = require('mongoose');
 
-//Carga la configuración del repositorio
-const packageConfig = require('../../package.json');
-
 //Crea un nuevo esquema
 const schema = new mongoose.Schema({
-    _id: {
+    docType: {
         type: String,
-        default: 'leveling'
-    },
-    requiredVersion: {
-        type: Number,
-        default: packageConfig.version
+        default: 'leveling',
+        immutable: true
     },
     rewardMessages: {
         type: Boolean,
-        default: true
+        default: true,
+        required: true
     },
     rewardVoice: {
         type: Boolean,
-        default: true
+        default: true,
+        required: true
     },
-    notifylevelUpOnChat: {
+    notifyLevelUpOnChat: {
         type: Boolean,
-        default: true
+        default: true,
+        required: true
     },
-    notifylevelUpOnVoice: {
+    notifyLevelUpOnVoice: {
         type: Boolean,
-        default: true
+        default: true,
+        required: true
     },
     wontEarnXP: [String],
     nonXPChannels: [String],
     XPGainInterval: {
         type: Number,
-        default: 60000
+        default: 60000,
+        required: true
     },
     minimumTimeBetweenMessages: {
         type: Number,
-        default: 5000
+        default: 5000,
+        required: true
     },
     minimumXpReward: {
         type: Number,
-        default: 5
+        default: 5,
+        required: true
     },
     maximumXpReward: {
         type: Number,
-        default: 15
+        default: 15,
+        required: true
     },
     preserveStats: {
         type: Boolean,
-        default: true
+        default: true,
+        required: true
     },
     removePreviousRewards: {
         type: Boolean,
-        default: true
+        default: true,
+        required: true
     }
-}, { 
-    capped: { size: 2048, max: 1} 
 });
 
 //Añade el esquema al modelo
-module.exports = mongoose.model('leveling', schema);
+module.exports = mongoose.model('leveling', schema, 'configs');

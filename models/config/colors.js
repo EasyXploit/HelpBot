@@ -1,58 +1,59 @@
 //Librería para interactuar con la BD
 const mongoose = require('mongoose');
 
-//Carga la configuración del repositorio
-const packageConfig = require('../../package.json');
-
 //Crea un nuevo esquema
 const schema = new mongoose.Schema({
-    _id: {
+    docType: {
         type: String,
-        default: 'colors'
-    },
-    requiredVersion: {
-        type: Number,
-        default: packageConfig.version
+        default: 'colors',
+        immutable: true
     },
     primary: {
         type: String,
-        default: 'FEB526'
+        default: 'FEB526',
+        required: true
     },
     error: {
         type: String,
-        default: 'F12F49'
+        default: 'F12F49',
+        required: true
     },
     secondaryError: {
         type: String,
-        default: 'F04647'
+        default: 'F04647',
+        required: true
     },
     correct: {
         type: String,
-        default: '3EB57B'
+        default: '3EB57B',
+        required: true
     },
     secondaryCorrect: {
         type: String,
-        default: 'B8E986'
+        default: 'B8E986',
+        required: true
     },
     warning: {
         type: String,
-        default: 'F8A41E'
+        default: 'F8A41E',
+        required: true
     },
     information: {
         type: String,
-        default: 'C6C9C6'
+        default: 'C6C9C6',
+        required: true
     },
     logging: {
         type: String,
-        default: '4A90E2'
+        default: '4A90E2',
+        required: true
     },
     polls: {
         type: String,
-        default: '1689FC'
+        default: '1689FC',
+        required: true
     }
-}, { 
-    capped: { size: 2048, max: 1} 
 });
 
 //Añade el esquema al modelo
-module.exports = mongoose.model('colors', schema);
+module.exports = mongoose.model('colors', schema, 'configs');

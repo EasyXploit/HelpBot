@@ -1,19 +1,28 @@
 const mongoose = require('mongoose');
 
-//Carga la configuración del repositorio
-const packageConfig = require('../../package.json');
-
 //Crea un nuevo esquema para la advertencia
 const warnSchema = new mongoose.Schema({
-    _id: String,
-    requiredVersion: {
-        type: Number,
-        default: packageConfig.version
+    docType: {
+        type: String,
+        default: 'warn',
+        immutable: true
     },
-    userId: String,
-    timestamp: Number,
-    reason: String,
-    moderatorId: String
+    userId: {
+        type: String,
+        required: true
+    },
+    timestamp: {
+        type: Number,
+        required: true
+    },
+    reason: {
+        type: String,
+        required: true
+    },
+    moderatorId: {
+        type: String,
+        required: true
+    }
 });
 
 //Añade el esquema al modelo

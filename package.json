@@ -38,7 +38,8 @@
   "nodemonConfig": {
     "ignore": [
       "databases/*",
-      "configs/dynamic.json"
+      "configs/dynamic.json",
+      "config.json"
     ]
   }
 }

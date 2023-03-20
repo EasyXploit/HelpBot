@@ -1,6 +1,9 @@
 //Carga las variables de entorno desde el fichero .env (si existe)
 require('dotenv').config();
 
+//Almacena la configuración local desde el fichero de configuración
+const localConfig = require('./config.json');
+
 //Almacena las traducciones al idioma configurado
 const locale = require(`./resources/locales/${require('./configs/main.json').locale}.json`);
 
@@ -55,6 +58,8 @@ process.on('unhandledRejection', error => {
         console.error(`${new Date().toLocaleString()} 》${locale.index.unhandledRejection.consoleMsg}:`, error.stack);
     };
 });
+//Almacena el la configuración local en el cliente
+client.localConfig = localConfig;
 
 //Almacena en el cliente el idioma preferido
 client.locale = locale;

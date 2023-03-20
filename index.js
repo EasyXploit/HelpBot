@@ -5,48 +5,7 @@ require('dotenv').config();
 const localConfig = require('./config.json');
 
 //Almacena las traducciones al idioma configurado
-const locale = require(`./resources/locales/${require('./configs/main.json').locale}.json`);
-
-//Muestra el logo de arranque en la consola
-require('./lifecycle/splashLogo.js').run(locale.lifecycle.splashLogo);
-
-//Si está habilitada, carga el manejador de errores remoto
-const errorTrackingEnabled = require('./configs/errorTracker.json').enabled ? require('./lifecycle/loadErrorTracker.js').run(locale.lifecycle.loadErrorTracker) : false;
-
-//CARGA DE CLIENTE
-//Carga una nueva instancia de cliente en Discord
-console.log(`${locale.index.startingClient} ...`);
-const discord = require('discord.js');  //Carga el wrapper para interactuar con la API de Discord
-const client = new discord.Client({     //Inicia el cliente con el array de intentos necesarios
-    intents: [
-        discord.Intents.FLAGS.GUILDS,
-        discord.Intents.FLAGS.GUILD_MESSAGES,
-        discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-        discord.Intents.FLAGS.GUILD_MEMBERS,
-        discord.Intents.FLAGS.GUILD_BANS,
-        discord.Intents.FLAGS.DIRECT_MESSAGES,
-        discord.Intents.FLAGS.GUILD_VOICE_STATES],
-    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
-    retryLimit: Infinity 
-});
-console.log(`${locale.index.clientStarted}\n`);
-
-//Si se ha cargado el manejador de errores remoto, almacena la librería en el cliente
-if (errorTrackingEnabled) client.errorTracker = require('@sentry/node');
-
-//Almacena y ejecuta el cargador de la base de datos
-client.mongoose = require('./lifecycle/loadDatabase.js');
-
-//Establece la conexión con la base de datos
-client.mongoose.dbConnect();
-
-//CARGA DE ESTRUCTURAS ADICIONALES
-//Carga de módulos, objetos y colecciones en el cliente
-['MessageEmbed', 'MessageAttachment', 'MessageActionRow', 'MessageSelectMenu', 'TextInputComponent', 'MessageButton', 'Collection', 'Modal'].forEach(x => client[x] = discord[x]);       //Carga de métodos de Discord.js en el cliente
-['config', 'db', 'usersVoiceStates', 'memberMessages'].forEach(x => client[x] = {});                                                          //Creación de objetos para almacenar las configuraciones, bases de datos y cachés
-
-//Dependencia para generar hashes MD5
-client.md5 = require('md5');
+const locale = require(`./resources/locales/${localConfig.locale}.json`);
 
 //Gestión de promesas rechazadas y no manejadas
 process.on('unhandledRejection', error => {
@@ -58,18 +17,65 @@ process.on('unhandledRejection', error => {
         console.error(`${new Date().toLocaleString()} 》${locale.index.unhandledRejection.consoleMsg}:`, error.stack);
     };
 });
+
+//Muestra el logo de arranque en la consola
+require('./lifecycle/splashLogo.js').run(locale.lifecycle.splashLogo);
+
+//Carga el manejador de errores remoto
+require('./lifecycle/loadErrorTracker.js').run(locale.lifecycle.loadErrorTracker);
+
+//Ejecuta el cargador de la base de datos
+require('./lifecycle/loadDatabase.js').run(locale);
+
+//Carga el wrapper para interactuar con la API de Discord
+const discord = require('discord.js');
+
+//Indica el inicio de la carga del cliente en la consola
+console.log(`${locale.index.startingClient} ...`);
+
+//Carga una nueva instancia de cliente de Discord
+const client = new discord.Client({
+    intents: [
+        discord.Intents.FLAGS.GUILDS,
+        discord.Intents.FLAGS.GUILD_MESSAGES,
+        discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        discord.Intents.FLAGS.GUILD_MEMBERS,
+        discord.Intents.FLAGS.GUILD_BANS,
+        discord.Intents.FLAGS.DIRECT_MESSAGES,
+        discord.Intents.FLAGS.GUILD_VOICE_STATES],
+    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+    retryLimit: Infinity 
+});
+
+//Indica la finalización de la carga del cliente en la consola
+console.log(`${locale.index.clientStarted}\n`);
+
+//Almacena la librería del manejador de errores remoto en el cliente 
+client.errorTracker = require('@sentry/node');
+
+//Almacena la librería para generar hashes MD5 en el cliente 
+client.md5 = require('md5');
+
+//Almacena la librería de acceso al sistema de archivos en el cliente 
+client.fs = require('fs');
+
 //Almacena el la configuración local en el cliente
 client.localConfig = localConfig;
 
-//Almacena en el cliente el idioma preferido
+//Almacena el idioma preferido en el cliente
 client.locale = locale;
 
-//Dependencia de acceso al sistema de archivos
-client.fs = require('fs');
+//Carga varios métodos de Discord.js en el cliente
+['MessageEmbed', 'MessageAttachment', 'MessageActionRow', 'MessageSelectMenu', 'TextInputComponent', 'MessageButton', 'Collection', 'Modal'].forEach(x => client[x] = discord[x]);
 
-//Carga los archivos de configuración, bases de datos y locales
+//Crea varios objetos en el cliente para almacenar las configuraciones, bases de datos, cachés y funciones, entre otros
+['functions', 'config', 'db', 'usersVoiceStates', 'memberMessages'].forEach(x => client[x] = {});
+
+//Carga las funciones globales en el cliente
+require('./lifecycle/loadFunctions.js').run(client, locale.lifecycle.loadFunctions);
+
+//Carga los archivos de configuración (heredado)
 const configFiles = client.fs.readdirSync('./configs/', { withFileTypes: true });
-const databaseFiles = client.fs.readdirSync('./storage/databases/', { withFileTypes: true });
 
 //Por cada uno de los archivos de config.
 configFiles.forEach(async file => {
@@ -78,6 +84,9 @@ configFiles.forEach(async file => {
     client.config[file.name.replace('.json', '')] = require(`./configs/${file.name}`);
 });
 
+//Carga los archivos de bases de datos (deprecado)
+const databaseFiles = client.fs.readdirSync('./storage/databases/', { withFileTypes: true });
+
 //Por cada uno de los archivos de BD
 databaseFiles.forEach(async file => {
 
@@ -85,29 +94,16 @@ databaseFiles.forEach(async file => {
     client.db[file.name.replace('.json', '')] = JSON.parse(client.fs.readFileSync(`./storage/databases/${file.name}`));
 });
 
-//MANEJADOR DE EVENTOS
-//Lee el directorio de los eventos
-client.fs.readdir('./handlers/events/', async (error, files) => {
+//Carga los manejadores de eventos
+require('./lifecycle/loadEvents.js').run(client, locale.lifecycle.loadEvents);
 
-    //Si se genera un error, aborta la carga del resto de eventos
-    if (error) return console.error(`${new Date().toLocaleString()} 》${locale.index.uncompleteEventsLoad}.`, error.stack);
-    
-    //Precarga cada uno de los eventos
-    files.forEach(file => {
-
-        const eventFunction = require(`./handlers/events/${file}`);  //Almacena la función del evento
-        const eventName = file.split('.')[0];               //Almacena el nombre del evento
-
-        //Añade un listener para el evento en cuestión (usando spread syntax)
-        client.on(eventName, (...arguments) => eventFunction.run(...arguments, client, locale.handlers.events[eventName]));
-
-        //Notifica la carga en la consola
-        console.log(` - [OK] ${locale.index.eventLoaded}: [${eventName}]`);
-    });
-});
-
-//Inica sesión en el cliente
+//Notifica el inicio de sesión en el cliente por consola
 console.log(`\n- ${locale.index.loggingIn} ...\n`);
-client.login(process.env.DISCORD_TOKEN.length > 0 ? process.env.DISCORD_TOKEN : client.config.token.key)
+
+//Almacena el token de inicio de sesión correspondiente
+const discordToken = process.env.DISCORD_TOKEN && process.env.DISCORD_TOKEN.length > 0 ? process.env.DISCORD_TOKEN : client.config.token.key
+
+//Inicia sesión en el cliente
+client.login(discordToken)
     .then(() => console.log(`\n - ${locale.index.loggedIn}\n`))
     .catch(() => console.error(`\n - ${locale.index.couldNotLogIn}\n`));

@@ -3,7 +3,7 @@ exports.run = async (client, locale) => {
     try {
 
         //Notifica el inicio de la carga del sistema
-        console.log(`\n - ${locale.loadingSystem} ...\n`);
+        console.log(` - ${locale.loadingSystem} ...\n`);
 
         //Carga en memoria de los recursos de la guild necesarios para el bot
         const loadGuildSettings = new Promise(async (resolve, reject) => {
@@ -59,32 +59,6 @@ exports.run = async (client, locale) => {
 
             //Notifica que la carga se ha completado
             console.log(`\n - [OK] ${locale.guildConfigLoaded}.`);
-
-            //Crea un objeto para almacenar todas las funciones globales
-            client.functions = {};
-
-            //Por cada uno de los tipos de función global
-            for (const functionType of await client.fs.readdirSync('./functions/')) {
-
-                //Crea el objeto en el cliente para la categoría
-                client.functions[functionType] = {};
-
-                //Por cada función de dicha categoría
-                for (const functionFile of await client.fs.readdirSync(`./functions/${functionType}/`)) {
-
-                    //Almacena la extensión del archivo
-                    const fileExtension = functionFile.split('.').pop();
-
-                    //Almacena la ruta al fichero
-                    const path = `../functions/${functionType}/${functionFile}`;
-
-                    //Carga la función de ejecución de cada archivo, en función del cargador de módulos a emplear (CommonJS o ESM)
-                    client.functions[functionType][functionFile.split('.').shift()] = fileExtension === 'mjs' ? await import(path) : await require(path);
-                };
-            };
-
-            //Muestra el resultado de la carga de funciones
-            console.log(` - [OK] ${locale.functionsLoaded}.`);
 
             //Carga los customEmojis en el cliente
             await require('./loadEmojis.js').run(client);

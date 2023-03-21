@@ -5,6 +5,7 @@
         "unhandledRejection": {
             "consoleMsg": "ERROR: Unhandled rejected promise"
         },
+        "tokenNotProvided": "A Discord login token has not been provided.\nYou can get create an app and get a token from https://discord.com/developers/applications",
         "loggingIn": "Logging in",
         "loggedIn": "Logged in successfully!",
         "couldNotLogIn": "Login failed. Check if the login token is valid"
@@ -1308,6 +1309,12 @@
     "lifecycle": {
         "loadDatabase": {
             "connecting": "Starting connection to database",
+            "invalidEnv": {
+                "connectionString": "No database connection string provided",
+                "username": "A username has not been provided for the database connection",
+                "password": "A password has not been provided for the connection to the database",
+                "authSource": "No database provided for authorization"
+            },
             "cantConnect": "Could not connect to the database",
             "onConnected": "Connection to the database successfully opened",
             "checkIfMigrationNeeded": "Checking that all documents have the correct version",

@@ -2,19 +2,35 @@
 //Exporta una función para conectarse a la BD
 exports.run = async (locale) => {
 
-    //Indica el estado inicial de la carga en la consola
-    console.log(`${locale.lifecycle.loadDatabase.connecting}: ${process.env.DB_AUTH_SOURCE}`)
-
     //Requiere el módulo para comunicarse con la BD
     const mongoose = require('mongoose');
 
     //Almacena la dependencia para registrar errores remotamente
     const errorTracker = require('@sentry/node');
 
+    //Método para manejar variables de entorno inadecuadas
+    const handleInvalidEnv = (variable) => {
+
+        //Notifica el error por consola
+        console.error(`${locale.lifecycle.loadDatabase.invalidEnv[variable]}.`);
+
+        //Aborta el proceso de manera limpia
+        process.exit();
+    };
+
+    //Comprueba que se hayan proporcionado todos los parámetros necesarios para la conexión
+    if (!process.env.DB_CONNECTION_STRING || process.env.DB_CONNECTION_STRING.length === 0) return handleInvalidEnv('connectionString');
+    if (!process.env.DB_USERNAME || process.env.DB_USERNAME.length === 0) return handleInvalidEnv('username');
+    if (!process.env.DB_PASSWORD || process.env.DB_PASSWORD.length === 0) return handleInvalidEnv('password');
+    if (!process.env.DB_AUTH_SOURCE || process.env.DB_AUTH_SOURCE.length === 0) return handleInvalidEnv('authSource');
+
+    //Indica el estado inicial de la carga en la consola
+    console.log(`${locale.lifecycle.loadDatabase.connecting}: ${process.env.DB_AUTH_SOURCE}`);
+
     //Genera un objeto con las opciones necesarias para la conexión
     const options = {
         authSource: process.env.DB_AUTH_SOURCE, //La base de datos que contiene las credenciales del usuario 
-        user: process.env.DB_USER,              //El nombre de usuario de la base de datos
+        user: process.env.DB_USERNAME,              //El nombre de usuario de la base de datos
         pass: process.env.DB_PASSWORD,          //La contraseña de usuario de la base de datos
         useNewUrlParser: true,                  //Para usar el nuevo analizador de cadenas de conexión
         useUnifiedTopology: true,               //Habilitado porque el motor de supervisión y detección de servidores está en desuso
@@ -46,11 +62,15 @@ exports.run = async (locale) => {
         //Lo notifica en la consola
         console.log(`\n${locale.lifecycle.loadDatabase.onConnected}`);
 
-        //Notifica la migración de los documentos en la consola
-        console.log(`${locale.lifecycle.loadDatabase.checkIfMigrationNeeded} ...\n`);
+        //Si la versión del programa es de producción
+        if (process.env.NODE_ENV === 'production') {
 
-        //Migra los documentos de la base de datos a la última versión, solo si la versión del programa es de producción
-        if (process.env.NODE_ENV === 'production') await require('../functions/db/migrate.js').run(locale.functions.db.migrate, options, 'up');
+            //Notifica la migración de los documentos en la consola
+            console.log(`${locale.lifecycle.loadDatabase.checkIfMigrationNeeded} ...\n`);
+    
+            //Migra los documentos de la base de datos a la última versión
+            await require('../functions/db/migrate.js').run(locale.functions.db.migrate, options, 'up');
+        };
     });
     
     //Cuando el bot sufre un error de conexión con la base de datos

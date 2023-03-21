@@ -1,6 +1,9 @@
 //Carga las variables de entorno desde el fichero .env (si existe)
 require('dotenv').config();
 
+//Si la variable de entorno "NODE_ENV" no está establecida, la establece en modo de desarrollo
+if (!process.env.NODE_ENV) process.env.NODE_ENV = 'development';
+
 //Almacena la configuración local desde el fichero de configuración
 const localConfig = require('./config.json');
 
@@ -101,9 +104,19 @@ require('./lifecycle/loadEvents.js').run(client, locale.lifecycle.loadEvents);
 console.log(`\n- ${locale.index.loggingIn} ...\n`);
 
 //Almacena el token de inicio de sesión correspondiente
-const discordToken = process.env.DISCORD_TOKEN && process.env.DISCORD_TOKEN.length > 0 ? process.env.DISCORD_TOKEN : client.config.token.key
+const discordToken = process.env.DISCORD_TOKEN && process.env.DISCORD_TOKEN.length > 0 ? process.env.DISCORD_TOKEN : null;
+
+//Se comprueba que se haya proporcionado un token de inicio de sesión
+if (!discordToken) {
+
+    //Notifica el error por consola
+    console.error(`${locale.index.tokenNotProvided}.`);
+
+    //Aborta el proceso de manera limpia
+    process.exit();
+};
 
 //Inicia sesión en el cliente
 client.login(discordToken)
     .then(() => console.log(`\n - ${locale.index.loggedIn}\n`))
-    .catch(() => console.error(`\n - ${locale.index.couldNotLogIn}\n`));
+    .catch(() => console.error(`\n - ${locale.index.couldNotLogIn}.\n`));

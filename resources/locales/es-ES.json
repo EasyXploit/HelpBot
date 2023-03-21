@@ -5,6 +5,7 @@
         "unhandledRejection": {
             "consoleMsg": "ERROR: Promesa rechazada no manejada"
         },
+        "tokenNotProvided": "No se ha proporcionado un token de inicio de sesión de Discord.\nPuedes obtener crear una aplicacion y obtener un token desde https://discord.com/developers/applications.",
         "loggingIn": "Iniciando sesión",
         "loggedIn": "¡Sesion iniciada correctamente!",
         "couldNotLogIn": "No ha sido posible iniciar sesión. Comprueba si el token de inicio de sesión es válido"
@@ -1308,6 +1309,12 @@
     "lifecycle": {
         "loadDatabase": {
             "connecting": "Iniciando conexión con la base de datos",
+            "invalidEnv": {
+                "connectionString": "No se ha proporcionado una cadena de conexión a base de datos",
+                "username": "No se ha proporcionado un usuario para la conexión a base de datos",
+                "password": "No se ha proporcionado una contraseña para la conexión a la base de datos",
+                "authSource": "No se ha proporcionado una base de datos para la autorización"
+            },
             "cantConnect": "No se pudo conectar con la base de datos",
             "onConnected": "Conexión a la base de datos establecida con éxito",
             "checkIfMigrationNeeded": "Comprobando que todos los documentos tienen la versión adecuada",

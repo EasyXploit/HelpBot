@@ -49,8 +49,8 @@ exports.run = async (locale) => {
         //Notifica la migración de los documentos en la consola
         console.log(`${locale.lifecycle.loadDatabase.checkIfMigrationNeeded} ...\n`);
 
-        //Migra los documentos de la base de datos a la última versión
-        await require('../functions/db/migrate.js').run(locale.functions.db.migrate, options, 'up');
+        //Migra los documentos de la base de datos a la última versión, solo si la versión del programa es de producción
+        if (process.env.NODE_ENV === 'production') await require('../functions/db/migrate.js').run(locale.functions.db.migrate, options, 'up');
     });
     
     //Cuando el bot sufre un error de conexión con la base de datos

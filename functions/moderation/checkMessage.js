@@ -47,7 +47,7 @@ exports.run = async (client, message) => {
             case 'flood':
 
                 //Almacena el historial de mensajes del miembro
-                const history = client.memberMessages[message.member.id] ? client.memberMessages[message.member.id].history : [];
+                const history = client.userMessages[message.member.id] ? client.userMessages[message.member.id].history : [];
 
                 //Omite si el historial no es lo suficientemente amplio
                 if (history.length < filterCfg.triggerLimit) break;
@@ -77,7 +77,7 @@ exports.run = async (client, message) => {
             case 'crossPost':
 
                 //Almacena el historial de mensajes del miembro
-                const messagesHistory = client.memberMessages[message.member.id].history;
+                const messagesHistory = client.userMessages[message.member.id].history;
 
                 //Omite si el historial no es lo suficientemente amplio
                 if (messagesHistory.length < filterCfg.triggerLimit) break;

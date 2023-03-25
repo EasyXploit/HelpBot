@@ -1,5 +1,8 @@
 //Función para comprobar el contenido de los mensajes enviados
 exports.run = async (client, message) => {
+        
+    //Omite si el autor del mensaje es el propietario de la guild
+    if (message.author.id === client.homeGuild.ownerId) return true;
 
     //Almacena las traducciones
     const locale = client.locale.functions.moderation.checkMessage;
@@ -24,9 +27,6 @@ exports.run = async (client, message) => {
 
         //Si el filtro funciona en MD, es un mensaje directo y su uso está desactivado, omite
         if (message.channel.type === 'DM' && (!filterCfg['onDM'] || filterCfg.onDM === false)) continue;
-
-        //Lo omite si el autor del mensaje es el propietario de la guild
-        if (message.author.id === client.homeGuild.ownerId) continue;
 
         //Almacena los roles, miembros y canales a los que no afecta
         const bypassIds = filterCfg.bypassIds;

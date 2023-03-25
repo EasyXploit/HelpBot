@@ -6,9 +6,6 @@ exports.run = async (message, client, locale) => {
     //Previene la ejecución si el mensaje fue enviado por un bot o por el sistema
     if (message.author.bot || message.type !== 'DEFAULT') return;
 
-    //Comprueba si el contenido del mensaje está permitido
-    const isPermitted = await client.functions.moderation.checkMessage.run(client, message);
-
     //Si el miembro no tiene entrada en el objeto de mensajes de miembros, la crea
     if (!client.userMessages[message.author.id]) client.userMessages[message.author.id] = {
         history: [],
@@ -68,7 +65,10 @@ exports.run = async (message, client, locale) => {
         };
 
         //Si el historial está lleno, elimina el primer elemento del array
-        if (userMessages.history.length >= client.config.main.messageHistorySize) userMessages.history.shift();
+        if (userMessages.history.length >= client.config.main.messageHistorySize) userMessages.history.shift();  
+
+        //Comprueba si el contenido del mensaje está permitido
+        const isPermitted = await client.functions.moderation.checkMessage.run(client, message);
 
         //Si se trata de un mensaje enviado en una guild y no fue filtrado
         if (message.member && isPermitted) {

@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node --no-warnings index.js",
-    "devStart": "nodemon --no-warnings index.js"
+    "devStart": "nodemon --no-warnings index.js",
+    "debug": "nodemon --trace-warnings index.js"
   },
   "repository": {
     "type": "git",

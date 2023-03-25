@@ -95,5 +95,5 @@ client.fs.readdir('./handlers/events/', async (error, files) => {
 //Inica sesión en el cliente
 console.log(`\n- ${locale.index.loggingIn} ...\n`);
 client.login(client.config.token.key)
-    .then(() => console.log(`\n - ${locale.index.loggedIn}\n`))
-    .catch(() => console.error(`\n - ${locale.index.couldNotLogIn}\n`));
+    .then(() => console.log(`\n - ${locale.index.loggedIn}.\n`))
+    .catch(() => console.error(`\n - ${locale.index.couldNotLogIn}.\n`));

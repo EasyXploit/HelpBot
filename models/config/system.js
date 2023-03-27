@@ -13,6 +13,11 @@ const schema = new mongoose.Schema({
     serviceGuildId: String,
     inviteCode: String,
     botManagers: [String],
+    pingMsTreshold: {
+        type: Number,
+        default: 1000,
+        required: true
+    },
     modules: {
         timers: {
             type: Boolean,

@@ -7,7 +7,6 @@
     "newMemberMode": 0,
     "newBotRole": "",
     "newMemberRole": "",
-    "pingTreshold": 1000,
     "timers": true,
     "messageHistorySize": 10
 }

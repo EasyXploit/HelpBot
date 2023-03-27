@@ -118,7 +118,7 @@ exports.run = (client) => {
         const actualPing = Math.round(client.ping);
 
         //Si el ping desciende del umbral establecido
-        if (actualPing > client.config.main.pingTreshold) {
+        if (actualPing > await client.functions.db.getConfig.run('system.pingMsTreshold')) {
 
             //Envía una advertencia a la consola
             console.warn(`${new Date().toLocaleString()} 》${locale.ping.consoleMsg}: ${actualPing} ms\n`);

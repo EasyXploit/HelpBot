@@ -4,11 +4,7 @@
         "clientStarted": "¡Cliente iniciado correctamente!",
         "unhandledRejection": {
             "consoleMsg": "ERROR: Promesa rechazada no manejada"
-        },
-        "tokenNotProvided": "No se ha proporcionado un token de inicio de sesión de Discord.\nPuedes obtener crear una aplicacion y obtener un token desde https://discord.com/developers/applications.",
-        "loggingIn": "Iniciando sesión",
-        "loggedIn": "¡Sesion iniciada correctamente!",
-        "couldNotLogIn": "No ha sido posible iniciar sesión. Comprueba si el token de inicio de sesión es válido"
+        }
     },
     "handlers": {
         "buttons": {
@@ -1413,6 +1409,12 @@
         },
         "loadTimers": {
             "configLoaded": "Carga de temporizadores completada"
+        },
+        "login": {
+            "tokenNotProvided": "No se ha proporcionado un token de inicio de sesión de Discord.\nPuedes obtener crear una aplicacion y obtener un token desde https://discord.com/developers/applications.",
+            "loggingIn": "Iniciando sesión",
+            "loggedIn": "¡Sesion iniciada correctamente!",
+            "couldNotLogIn": "No ha sido posible iniciar sesión. Comprueba si el token de inicio de sesión es válido"
         },
         "loadEmojis": {
             "configLoaded": "Carga de emojis personalizados completada",

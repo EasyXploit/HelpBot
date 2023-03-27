@@ -4,11 +4,7 @@
         "clientStarted": "Client started successfully!",
         "unhandledRejection": {
             "consoleMsg": "ERROR: Unhandled rejected promise"
-        },
-        "tokenNotProvided": "A Discord login token has not been provided.\nYou can get create an app and get a token from https://discord.com/developers/applications",
-        "loggingIn": "Logging in",
-        "loggedIn": "Logged in successfully!",
-        "couldNotLogIn": "Login failed. Check if the login token is valid"
+        }
     },
     "handlers": {
         "buttons": {
@@ -1413,6 +1409,12 @@
         },
         "loadTimers": {
             "configLoaded": "Timers loading completed"
+        },
+        "login": {
+            "tokenNotProvided": "A Discord login token has not been provided.\nYou can get create an app and get a token from https://discord.com/developers/applications",
+            "loggingIn": "Logging in",
+            "loggedIn": "Logged in successfully!",
+            "couldNotLogIn": "Login failed. Check if the login token is valid"
         },
         "loadEmojis": {
             "configLoaded": "Custom emojis loading completed",

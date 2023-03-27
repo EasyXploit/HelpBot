@@ -13,20 +13,10 @@ const schema = new mongoose.Schema({
     serviceGuildId: String,
     inviteCode: String,
     botManagers: [String],
-    errorTracker: {
-        enabled: {
-            type: Boolean,
-            default: true,
-            required: true
-        },
-        sentry: {
-            dsn: String,
-            tracesSampleRate: {
-                type: Number,
-                default: 1.0,
-                required: true
-            }
-        }
+    errorTrackerStatus: {
+        type: Boolean,
+        default: true,
+        required: true
     },
     modules: {
         timers: {

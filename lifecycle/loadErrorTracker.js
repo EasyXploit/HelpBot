@@ -13,9 +13,9 @@ exports.run = async (locale) => {
 
         //Inicializa la conexión con Sentry
         sentry.init({
-            dsn: 'https://fc5a7a66ed7044218b518005e0a48bc6@o1195666.ingest.sentry.io/4504454240075776', //Proporciona el DSN (Data Source Name)
+            dsn: process.env.SENTRY_DSN, //Proporciona el DSN (Data Source Name)
             enabled: process.env.NODE_ENV === 'production' ? true : false, //Determina si se ha de recoger muestras o no
-            tracesSampleRate: 1.0  //Proporciona la tasa de recogida de muestras
+            tracesSampleRate: process.env.SENTRY_TRACES_SAMPLE_RATE || 1.0  //Proporciona la tasa de recogida de muestras
         });
 
         //Muestra un mensaje de confirmación en la consola

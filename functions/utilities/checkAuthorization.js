@@ -23,7 +23,7 @@ exports.run = async (client, member, authorizations) => {
         } else if (parameter === 'botManager' && typeof parameterValue == 'boolean') {
 
             //Por cada uno de los IDs (de rol o usuario) administradores del bot
-            for (const botManagerId of client.config.main.botManagers) {
+            for (const botManagerId of await client.functions.db.getConfig('system.botManagers')) {
 
                 //Si no es un un número, omite la iteración
                 if (isNaN(botManagerId)) continue;

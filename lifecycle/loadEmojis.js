@@ -13,9 +13,6 @@ exports.run = async (client) => {
 
             //Almacena en la config. el ID de la guild de servicio
             await client.functions.db.setConfig.run('system.serviceGuildId', client.serviceGuild.id);
-
-            //Sobreescribe la base de datos con los cambios
-            await client.fs.writeFile('./configs/dynamic.json', JSON.stringify(client.config.dynamic, null, 4), async err => { if (err) throw err });
         };
 
         //Almacena los nombres originales de los archivos de emojis

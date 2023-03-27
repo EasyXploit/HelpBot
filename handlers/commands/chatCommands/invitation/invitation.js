@@ -43,18 +43,18 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             //Crea una invitación permanente en el canal
             await inviteChannel.createInvite({maxAge: 0, reason: await client.functions.utilities.parseLocale.run(locale.inviteReason, { botTag: client.user.tag })}).then(async invite => { foundInvite = invite.code; });
 
-            //Graba la invitación en memoria (en el cliente)
-            client.config.dynamic.inviteCode = foundInvite;
-
-            //Graba la invitación en el fichero de configuración
-            await client.fs.writeFile('./configs/dynamic.json', JSON.stringify(client.config.dynamic, null, 4), async err => { if (err) throw err });
+            //Graba la invitación en la BD
+            await client.functions.db.setConfig.run('system.inviteCode', foundInvite);
         };
 
         //Almacena la invitación obtenida
         let obtainedInvite;
 
+        //Almacena el código de invitación
+        const inviteCode = await client.functions.db.getConfig.run('system.inviteCode');
+
         //Si no hay una invitación grabada
-        if (!client.config.dynamic.inviteCode) {
+        if (!inviteCode) {
 
             //Comprueba si ya existe una invitación
             await client.homeGuild.invites.fetch().then(invites => {
@@ -67,17 +67,17 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (!foundInvite) await createInvite();
 
             //Devuelve la URL, si se puedo obtener un código
-            if (client.config.dynamic.inviteCode) obtainedInvite = `https://discord.gg/${client.config.dynamic.inviteCode}`;
+            if (inviteCode) obtainedInvite = `https://discord.gg/${inviteCode}`;
 
         } else {
             //Busca la invitación
-            const invite = await client.homeGuild.invites.resolve(client.config.dynamic.inviteCode);
+            const invite = await client.homeGuild.invites.resolve(inviteCode);
 
             //Crea la invitación si no existe
             if (!invite) await createInvite();
 
             //Devuelve la URL, si se puedo obtener un código
-            obtainedInvite = `https://discord.gg/${client.config.dynamic.inviteCode}`;
+            obtainedInvite = `https://discord.gg/${inviteCode}`;
         };
 
         //Genera el embed y lo envía, buscando el contenido necesario con la función

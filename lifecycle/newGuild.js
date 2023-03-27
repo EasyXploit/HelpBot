@@ -4,13 +4,10 @@ exports.run = async (client, guild) => {
 
         //Reestablece algunas variables de config. globales
         const homeGuild = await client.functions.db.setConfig.run('system.homeGuildId', guild.id);
-        client.config.dynamic.inviteCode = "";
+        await client.functions.db.setConfig.run('system.inviteCode', '');
 
         //Carga de guild base en memoria
         client.homeGuild = await client.guilds.cache.get(homeGuild);
-
-        //Graba la nueva configuración en el almacenamiento
-        await client.fs.writeFile('./configs/dynamic.json', JSON.stringify(client.config.dynamic, null, 4), async err => { if (err) throw err });
         
         //Carga la config. en memoria y arranca el sistema
         await require('./loadSystem.js').run(client, client.locale.lifecycle.loadSystem);

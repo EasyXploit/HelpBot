@@ -46,8 +46,8 @@ exports.run = async (configPath, newValue) => {
         //Guarda el documento con los cambios
         await configDoc.save();
 
-        //Devuelve el nuevo documento
-        return configDoc;
+        //Devuelve el nuevo valor
+        return newValue;
 
     } catch (error) {
 

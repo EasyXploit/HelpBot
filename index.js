@@ -100,8 +100,21 @@ databaseFiles.forEach(async file => {
 //Carga los manejadores de eventos
 require('./lifecycle/loadEvents.js').run(client, locale.lifecycle.loadEvents);
 
+//Almacena el token de inicio de sesión correspondiente
+const discordToken = process.env.DISCORD_TOKEN && process.env.DISCORD_TOKEN.length > 0 ? process.env.DISCORD_TOKEN : null;
+
+//Se comprueba que se haya proporcionado un token de inicio de sesión
+if (!discordToken) {
+
+    //Notifica el error por consola
+    console.error(`${locale.index.tokenNotProvided}.`);
+
+    //Aborta el proceso de manera limpia
+    process.exit();
+};
+
 //Notifica el inicio de sesión en el cliente por consola
 console.log(`\n- ${locale.index.loggingIn} ...\n`);
-client.login(client.config.token.key)
+client.login(discordToken)
     .then(() => console.log(`\n - ${locale.index.loggedIn}.\n`))
     .catch(() => console.error(`\n - ${locale.index.couldNotLogIn}.\n`));

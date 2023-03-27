@@ -10,9 +10,12 @@ exports.run = async (event, client, locale) => {
 
         //Carga el ID de la guild de servicio
         const serviceGuildId = await client.functions.db.getConfig.run('system.serviceGuildId');
+
+        //Almacena el número de guilds válidas (descontando las de servicio)
+        const validGuildsCount = await cachedGuilds.filter(guild => guild.id !== serviceGuildId);
         
         //Comprueba cuantas guilds hay disponibles
-        if (cachedGuilds.size > 1) {    //Si la cantidad es superior a 1
+        if (validGuildsCount > 1) {    //Si la cantidad es superior a 1
 
             //Por cada guild en caché
             await cachedGuilds.forEach(async guild => {
@@ -30,7 +33,7 @@ exports.run = async (event, client, locale) => {
                 process.exit();
             });
 
-        } else if (cachedGuilds.size === 0) {   //Si la cantidad es 0
+        } else if (validGuildsCount === 0) {   //Si la cantidad es 0
 
             //Notifica que el bot está esperando a que sea unido a una guild
             return console.warn(`\n${new Date().toLocaleString()} 》${locale.waitingGuild}.`);

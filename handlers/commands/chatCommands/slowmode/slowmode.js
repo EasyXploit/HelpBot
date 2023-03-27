@@ -13,7 +13,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Si el modo lento no estaba activado, envía un error
             if (!interactionChannel.rateLimitPerUser) return await interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryError)
+                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.notEnabled}`)
             ], ephemeral: true});
 
@@ -22,7 +22,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Envía un mensaje al canal de registros
             if (client.config.logging.slowmodeChanged) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                .setColor(client.config.colors.logging)
+                .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
                 .setTitle(`📑 ${locale.disabledLoggingEmbed.title}`)
                 .setDescription(locale.disabledLoggingEmbed.description)
                 .addFields(
@@ -33,7 +33,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Notifica la acción en el canal de invocación
             await interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryCorrect)
+                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.disabledNotificationEmbed.title}`)
                 .setDescription(locale.disabledNotificationEmbed.description)
             ], ephemeral: true});
@@ -45,7 +45,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Comprueba si los segundos excedieron el máximo configurado
             if (!canUseUnlimitedTime && argument > commandConfig.maxRegularSeconds) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryError)
+                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.privateEmbedSingle.description, { max: commandConfig.maxRegularSeconds })}`)
             ], ephemeral: true});
 
@@ -63,7 +63,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                 //Si no está autorizado, devuelve un mensaje de error
                 if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.noReason}`)
                 ], ephemeral: true});
             };
@@ -73,7 +73,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Envía un mensaje al canal de registros
             if (client.config.logging.slowmodeChanged) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                .setColor(client.config.colors.logging)
+                .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
                 .setTitle(`📑 ${locale.enabledLoggingEmbed.title}`)
                 .setDescription(locale.enabledLoggingEmbed.description)
                 .addFields(
@@ -86,7 +86,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Notifica la acción en el canal de invocación
             await interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryCorrect)
+                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.enabledNotificationEmbed.title}`)
                 .setDescription(await client.functions.utilities.parseLocale.run(locale.enabledNotificationEmbed.description, { seconds: argument }))
             ], ephemeral: true});

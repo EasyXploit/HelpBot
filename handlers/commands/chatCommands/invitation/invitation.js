@@ -82,7 +82,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Genera el embed y lo envía, buscando el contenido necesario con la función
         await interaction.reply({ embeds: [new client.MessageEmbed()
-            .setColor(client.config.colors.primary)
+            .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
             .setAuthor({ name: locale.embed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
             .setDescription(obtainedInvite)
             .setFooter({ text: `${locale.embed.footer}.` })

@@ -53,7 +53,7 @@ exports.run = async (client, member, mode, channel) => {
 
         //Genera un embed de subida de nivel
         let levelUpEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.primary)
+            .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
             .setAuthor({ name: locale.levelUpEmbed.author, iconURL: member.user.displayAvatarURL({dynamic: true}) })
             .setDescription(`${await client.functions.utilities.parseLocale.run(locale.levelUpEmbed.description, { member: member, memberLevel: memberStats.level })}.`);
 

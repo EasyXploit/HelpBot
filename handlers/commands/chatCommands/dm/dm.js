@@ -7,13 +7,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Devuelve un error si no se encontró al miembro
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.unknownMember}.`)
         ], ephemeral: true});
         
         //Devuelve un error si el miembro es un bot
         if (member.user.bot) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
 
@@ -29,7 +29,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
+                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.unauthorized, { interactionAuthor: interaction.user })}.`)
             ], ephemeral: true});
         };
@@ -72,7 +72,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Envía un mensaje de confirmación
             await modalInteraction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryCorrect)
+                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${locale.notificationEmbed}`)
             ], ephemeral: true});
 
@@ -96,7 +96,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                     //Envía el mensaje al miembro
                     await member.user.send({ embeds: [ new client.MessageEmbed()
                         .setAuthor({ name: `${locale.embedFrom}: ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() })
-                        .setColor(client.config.colors.primary)
+                        .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
                         .setDescription(body)
                     ]});
 
@@ -117,7 +117,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                     //Envía el mensaje al miembro
                     await member.user.send({ embeds: [ new client.MessageEmbed()
-                        .setColor(client.config.colors.primary)
+                        .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
                         .setDescription(body)
                     ]});
 
@@ -133,7 +133,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Envía un registro al canal de registro
         if (client.config.logging.sentDM) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-            .setColor(client.config.colors.logging)
+            .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
             .setDescription(await client.functions.utilities.parseLocale.run(locale.loggingEmbed.description, { authorTag: interaction.user.tag, memberTag: member.user.tag, botUser: client.user }))
             .addFields(
@@ -148,7 +148,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Maneja si un miembro no admite mensajes directos del bot (por la razón que sea)
         if (error.toString().includes('Cannot send messages to this user')) return await interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.cantReceiveDms, { botUser: client.user })}.`)
         ], ephemeral: true});
 

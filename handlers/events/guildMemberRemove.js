@@ -25,7 +25,7 @@ exports.run = async (member, client, locale) => {
 
                 //Envía un registro al canal de registros
                 if (client.config.logging.kickedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.inconclusiveLoggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                     .addFields(
                         { name: locale.inconclusiveLoggingEmbed.memberId, value: member.id, inline: true },
@@ -43,7 +43,7 @@ exports.run = async (member, client, locale) => {
 
                 //Envía un registro al canal de registros
                 if (client.config.logging.kickedBot) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                    .setColor(client.config.colors.warning)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.botLoggingEmbed.description, { memberTag: member.user.tag }))
                 );
@@ -68,7 +68,7 @@ exports.run = async (member, client, locale) => {
 
             //Envía un registro al canal de registros
             if (client.config.logging.kickedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                .setColor(client.config.colors.error)
+                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                 .addFields(
                     { name: locale.loggingEmbed.memberId, value: member.id, inline: true },
@@ -93,7 +93,7 @@ exports.run = async (member, client, locale) => {
                 
                 //Envía un registro al canal de bienvenidas/despedidas (por que no se trató ni de una expulsión ni de un baneo)
                 if (client.config.logging.memberLeaved) await client.joinsAndLeavesChannel.send({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.warning)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                     .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
                     .setAuthor({ name: locale.goodbyeEmbed.author, iconURL: 'attachment://out.png' })
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.goodbyeEmbed.description, { memberTag: member.user.tag }))

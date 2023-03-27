@@ -27,7 +27,7 @@ exports.run = async (client, member) => {
 
         //Alerta al miembro de que ha sido expulsado
         await member.user.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setAuthor({ name: locale.privateEmbed.author, iconURL: member.guild.iconURL({dynamic: true}) })
             .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.description, { member: member, guildName: member.guild.name })}.`)
             .addFields(

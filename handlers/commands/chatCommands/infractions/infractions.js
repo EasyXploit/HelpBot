@@ -16,14 +16,14 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
+                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.nonPrivileged, { interactionAuthor: interaction.member })}.`)
             ], ephemeral: true});
         };
 
         //Comprueba si se trata de un bot
         if (member && member.user.bot) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
 
@@ -100,7 +100,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Genera el embed de las infracciones
             let newPageEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.primary)
+                .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
                 .setTitle(`⚠ ${locale.infractionsEmbed.title}`)
                 .setDescription(`${await client.functions.utilities.parseLocale.run(locale.infractionsEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)`, sanction: sanction })}.`)
                 .addFields(

@@ -8,14 +8,14 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Comprueba si el canal existe
         if (!channel || !['GUILD_TEXT', 'GUILD_NEWS', 'GUILD_STORE', 'GUILD_NEWS_THREAD', 'GUILD_PUBLIC_THREAD', 'GUILD_PRIVATE_THREAD'].includes(channel.type)) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidChannel}.`)
         ], ephemeral: true});
 
         //Comprueba si el miembro tiene permisos para ejecutar esta acción
         const memberPermissions = channel.permissionsFor(interaction.user).bitfield;
         if ((memberPermissions & BigInt(0x2000)) !== BigInt(0x2000)) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.noPermission, { channel: channel })}.`)
         ], ephemeral: true});
 
@@ -24,7 +24,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Si no se encontraron mensajes en el canal, devuelve un error
         if (messages.size === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.noMessages, { channel: channel })}.`)
         ], ephemeral: true});
 
@@ -40,7 +40,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Si ningún mensaje era lo suficientemente reciente, devuelve un error
         if (msgsToDelete.size === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.expiredMessages}.`)
         ], ephemeral: true});
 
@@ -52,7 +52,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Almacena el mensaje de confirmación
         let successEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryCorrect)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
             .setTitle(`${client.customEmojis.greenTick} ${locale.successEmbed.title}`)
             .setDescription(successEmbedDescription);
 
@@ -70,7 +70,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Envía un registro al canal de registro
         if (client.config.logging.purgedChannel) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-            .setColor(client.config.colors.logging)
+            .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
             .setDescription(await client.functions.utilities.parseLocale.run(locale.loggingEmbed.description, { authorTag: interaction.user.tag, deletedCount: msgsToDelete.size, channel: channel }))
         );

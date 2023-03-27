@@ -10,7 +10,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Devuelve un error si se ha proporcionado un bot
         if (member && member.user.bot) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
         
@@ -30,20 +30,20 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
+                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ], ephemeral: true});
         };
         
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
         if (member && interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
+            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ], ephemeral: true});
 
         //Comprueba si el miembro tiene warns
         if (!client.db.warns[memberId]) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noWarns}`)
         ], ephemeral: true});
 
@@ -58,13 +58,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Comprueba si el miembro puede eliminar cualquier advertencia
             if (!canRemoveAny) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
+                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantRemoveAny}.`)
             ], ephemeral: true});
 
             //Genera un mensaje para el canal de registros
             loggingEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.logging)
+                .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
                 .setTitle(`📑 ${locale.loggingEmbedAll.title}`)
                 .setDescription(locale.loggingEmbedAll.description)
                 .addFields(
@@ -76,7 +76,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Genera una notificación de la acción para el canal de invocación
             successEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryCorrect)
+                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbedAll.title}`)
                 .setDescription(await client.functions.utilities.parseLocale.run(locale.notificationEmbedAll.description, { member: member ? member.user.tag : `${memberId} (ID)` }));
 
@@ -85,7 +85,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Genera una notificación para el miembro
             if (member) toDMEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.correct)
+                .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
                 .setAuthor({ name: locale.privateEmbedAll.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
                 .setDescription(await client.functions.utilities.parseLocale.run(locale.privateEmbedAll.description, { member: member }))
                 .addFields(
@@ -100,19 +100,19 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Comprueba si la advertencia existe en la BD
             if (!client.db.warns[memberId][warnId]) return interaction.reply({ embeds: [new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryError)
+                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.warnNotFound, { warnId: warnId })}`)
             ], ephemeral: true});
 
             //Comprueba si puede borrar esta advertencia
             if (client.db.warns[memberId][warnId].moderator !== interaction.member.id && !canRemoveAny) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
+                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantRemoveAny}.`)
             ], ephemeral: true});
 
             //Genera un mensaje para el canal de registros
             loggingEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.logging)
+                .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
                 .setTitle(`📑 ${locale.loggingEmbedSingle.title}`)
                 .setDescription(locale.loggingEmbedSingle.description)
                 .addFields(
@@ -126,7 +126,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Genera una notificación de la acción para el canal de invocación
             successEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryCorrect)
+                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbedSingle.title}`)
                 .setDescription(await client.functions.utilities.parseLocale.run(locale.notificationEmbedSingle.description, { warnId: warnId, member: member ? member.user.tag : `${memberId} (ID)` }));
 
@@ -135,7 +135,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Genera una notificación para el miembro
             if (member) toDMEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.correct)
+                .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
                 .setAuthor({ name: locale.privateEmbedSingle.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
                 .setDescription(await client.functions.utilities.parseLocale.run(locale.privateEmbedSingle.description, { member: member, warnId: warnId }))
                 .addFields(

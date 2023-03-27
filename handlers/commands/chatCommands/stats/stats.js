@@ -7,13 +7,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Si no se encuentra, devuelve un error
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
+            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.unknownMember}.`)
         ], ephemeral: true});
 
         //Devuelve un error si el miembro no tiene stats
         if (!client.db.stats[member.id]) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.noXp, { member: member })}.`)
         ], ephemeral: true});
         
@@ -93,7 +93,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Envía el mensaje con las estadísticas
         await interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.primary)
+            .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
             .setTitle(`🥇 ${locale.statsEmbed.title}`)
             .setDescription(await client.functions.utilities.parseLocale.run(locale.statsEmbed.description, { memberTag: member.user.tag }))
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))

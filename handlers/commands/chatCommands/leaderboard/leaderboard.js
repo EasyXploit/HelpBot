@@ -4,7 +4,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Devuelve un error si no hay tabla de clasificación
         if (!client.db.stats || !Object.keys(client.db.stats).length) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
+            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noLeaderboard}.`)
         ], ephemeral: true});
 
@@ -137,7 +137,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Genera un embed a modo de página
             const newPageEmbed = new client.MessageEmbed()
-                .setColor(client.config.colors.primary)
+                .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
                 .setTitle(`:trophy: ${locale.embed.title[type]}`)
                 .setDescription(board)
                 .setFooter({ text: await client.functions.utilities.parseLocale.run(locale.embed.footer, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.homeGuild.iconURL({dynamic: true}) });

@@ -34,7 +34,7 @@ exports.run = (client) => {
                 
                 //Ejecuta el manejador de registro
                 if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                    .setColor(client.config.colors.correct)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
                     .setAuthor(authorProperty)
                     .addFields(
                         { name: locale.mutes.loggingEmbed.memberId, value: idKey.toString(), inline: true },
@@ -45,7 +45,7 @@ exports.run = (client) => {
                 
                 //Envía una confirmación al miembro
                 if (member) await member.send({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.correct)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
                     .setAuthor({ name: locale.mutes.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.mutes.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
                     .addFields(
@@ -89,7 +89,7 @@ exports.run = (client) => {
 
                     //Ejecuta el manejador de registro
                     if (client.config.logging.unbannedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                        .setColor(client.config.colors.correct)
+                        .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
                         .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.bans.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
                         .addFields(
                             { name: locale.bans.loggingEmbed.user, value: user.tag, inline: true },
@@ -224,7 +224,7 @@ exports.run = (client) => {
 
                     //Envía una notificación al canal de registro
                     if (client.config.logging.pollEnded) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                        .setColor(client.config.colors.logging)
+                        .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
                         .setTitle(`📑 ${locale.polls.loggingEmbed.title}`)
                         .setDescription(`${await client.functions.utilities.parseLocale.run(locale.polls.loggingEmbed.description, { poll: `[${storedPoll.title}](${poll.url})`, channel: channel })}.`)
                     );
@@ -261,7 +261,7 @@ exports.run = (client) => {
 
                 //Si el string de tiempo debería cambiar, edita el mensaje de la encuesta
                 if (oldRemainingTime !== newRemainingTime) await poll.edit({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.polls)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.polls')}`)
                     .setAuthor({ name: locale.polls.progressEmbed.author, iconURL: 'attachment://poll.png' })
                     .setDescription(`${storedPoll.title}\n\n${storedPoll.options}`)
                     .setFooter({ text: newRemainingTime })

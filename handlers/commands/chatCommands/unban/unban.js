@@ -7,7 +7,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Devuelve un error si no se ha encontrado al usuario
         if (!user) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
+            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.userNotFound}.`)
         ], ephemeral: true});
 
@@ -25,7 +25,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
+                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ], ephemeral: true});
         };
@@ -45,7 +45,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Si el usuario no estaba baneado, devuelve un error
         if (!banned) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
+            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.notBanned}.`)
         ], ephemeral: true});
 
@@ -68,7 +68,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Envía un mensaje al canal de registros
         if (client.config.logging.unbannedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-            .setColor(client.config.colors.correct)
+            .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
             .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
             .addFields(
                 { name: locale.loggingEmbed.userId, value: user.id.toString(), inline: true },
@@ -79,7 +79,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Notifica la acción en el canal de invocación
         await interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryCorrect)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
             .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbed.title}`)
             .setDescription(await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { userTag: user.tag }))
         ]});

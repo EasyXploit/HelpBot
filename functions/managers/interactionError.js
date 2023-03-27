@@ -15,7 +15,7 @@ exports.run = async (client, error, interaction) => {
 
     //Genera un embed de notificación
     const notificationEmbed = new client.MessageEmbed()
-        .setColor(client.config.colors.error)
+        .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
         .setTitle(`${client.customEmojis.redTick} ${locale.notificationEmbed.title} ...`)
         .setDescription(locale.notificationEmbed.description);
 

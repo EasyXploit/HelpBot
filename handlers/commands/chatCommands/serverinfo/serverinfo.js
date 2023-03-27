@@ -23,7 +23,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Envía un embed con el resultado
         await interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.primary)
+            .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
             .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.embed.author, { guildName: interaction.guild.name }), iconURL: interaction.guild.iconURL({dynamic: true}) })
             .setDescription(interaction.guild.description)
             .setThumbnail(interaction.guild.iconURL({dynamic: true}))

@@ -7,7 +7,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Si no está autorizado para ello, devuelve un mensaje de error
         if (notAuthorizedToEarnXp) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.warning)
+            .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
             .setDescription(`${client.customEmojis.orangeTick} ${locale.cantGainXp}.`)
         ], ephemeral: true});
 
@@ -25,7 +25,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Si ya estaba activado, notifica el error
             if (memberSettings[modality]) return interaction.reply({embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
+                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.alreadyEnabled}.`)
             ], ephemeral: true});
 
@@ -37,7 +37,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Si ya estaba desactivado, notifica el error
             if (!memberSettings[modality]) return interaction.reply({embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
+                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.alreadyDisabled}.`)
             ], ephemeral: true});
 
@@ -53,7 +53,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Notifica el resultado de la acción
             interaction.reply({embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.correct)
+                .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${locale[`${modality}${status.charAt(0).toUpperCase()}${status.slice(1)}`]}.`)
             ], ephemeral: true})
         });

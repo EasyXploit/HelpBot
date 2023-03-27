@@ -7,7 +7,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Si el rol no existe, devuelve un error
         if (!role) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.roleNotFound, { role: interaction.options._hoistedOptions[0].value })}.`)
         ], ephemeral: true});
 

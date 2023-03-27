@@ -9,7 +9,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 
                 //Devuelve un error si no se ha proporcionado un miembro
                 if (!interaction.options._hoistedOptions[1]) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.welcome.memberNotProvided}.`)
                 ], ephemeral: true});
 
@@ -18,7 +18,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                 //Devuelve un error si no se ha proporcionado un miembro válido
                 if (!targetWelcomeMember) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.welcome.invalidMember}.`)
                 ], ephemeral: true});
                 
@@ -27,7 +27,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                 //Envía un mensaje de confirmación
                 await interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.secondaryCorrect)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
                     .setDescription(`${client.customEmojis.greenTick} ${locale.welcome.done}`)
                 ], ephemeral: true});
 
@@ -38,7 +38,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 
                 //Devuelve un error si no se ha proporcionado un miembro
                 if (!interaction.options._hoistedOptions[1]) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.goodbye.memberNotProvided}.`)
                 ], ephemeral: true});
 
@@ -47,7 +47,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                 //Devuelve un error si no se ha proporcionado un miembro válido
                 if (!targetGoodybeMember) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.goodbye.invalidMember}.`)
                 ], ephemeral: true});
                 
@@ -56,7 +56,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                 //Envía un mensaje de confirmación
                 await interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.secondaryCorrect)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
                     .setDescription(`${client.customEmojis.greenTick} ${locale.goodbye.done}`)
                 ], ephemeral: true});
 
@@ -67,7 +67,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                 //Envía un mensaje de error
                 await interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.invalidCommand}.`)
                 ], ephemeral: true});
 

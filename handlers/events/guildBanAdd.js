@@ -22,7 +22,7 @@ exports.run = async (banData, client, locale) => {
 
             //Envía un mensaje al canal de registros
             if (client.config.logging.bannedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryError)
+                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.inconclusiveLoggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
                 .addFields(
                     { name: locale.inconclusiveLoggingEmbed.memberId, value: banData.user.id, inline: true },
@@ -70,7 +70,7 @@ exports.run = async (banData, client, locale) => {
 
                 //Envía un registro al canal de registros
                 return await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.warning)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.botLoggingEmbed.description, { userTag: banData.user.tag }))
                 ]});
@@ -78,7 +78,7 @@ exports.run = async (banData, client, locale) => {
 
             //Envía un mensaje al canal de registros
             if (client.config.logging.bannedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryError)
+                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
                 .addFields(
                     { name: locale.loggingEmbed.memberId, value: banData.user.id, inline: true },

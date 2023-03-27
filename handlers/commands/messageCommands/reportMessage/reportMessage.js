@@ -7,13 +7,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Devuelve un error si no se ha encontrado al miembro
         if (!reportedMember) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ], ephemeral: true});
 
         //Devuelve un error si el meimbro ha intentado reportarse a sí mismo
         if (reportedMember.id === interaction.member.id) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantReportYourself}.`)
         ], ephemeral: true});
 

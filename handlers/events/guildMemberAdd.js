@@ -34,7 +34,7 @@ exports.run = async (member, client, locale) => {
 
             //Envía un mensaje al canal de registro
             if (client.config.logging.botJoined) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                .setColor(client.config.colors.logging)
+                .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
                 .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
                 .setDescription(`${await client.functions.utilities.parseLocale.run(locale.botLoggingEmbed.description, { memberTag: member.user.tag })}.`)
             );

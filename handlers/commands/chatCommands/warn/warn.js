@@ -7,19 +7,19 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Devuelve un error si no se ha encontrado al miembro
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ], ephemeral: true});
 
         //Devuelve un error si se ha proporcionado un bot
         if (member.user.bot) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
         
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
         if (interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
+            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ], ephemeral: true});
 
@@ -40,7 +40,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                 //Si no está autorizado, devuelve un mensaje de error
                 if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.cooldown, { member: member })}.`)
                 ], ephemeral: true});
             };

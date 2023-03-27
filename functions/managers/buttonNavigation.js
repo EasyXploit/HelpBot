@@ -87,14 +87,14 @@ exports.run = async (client, interaction, customId, actualPage, totalPages, gene
     if (totalPages === 1) return {newActualPage: false, latestInteraction: false};
 
     //Genera un filtro de botones
-    const buttonsFilter = (buttonInteraction) => {
+    const buttonsFilter = async (buttonInteraction) => {
 
         //Si el botón fue pulsado por el ejecutor del comando, dispara el filtro
         if (buttonInteraction.member.id === interaction.member.id) return true;
 
         //Si el botón no fue pulsado por el ejecutor del comando, devuelve un error
         return buttonInteraction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
+            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantUseNavigation}.`)
         ], ephemeral: true});
     };

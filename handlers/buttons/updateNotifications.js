@@ -20,7 +20,7 @@ exports.run = async (client, interaction) => {
 
         //Si no está autorizado para ello, devuelve un mensaje de error
         if (notAuthorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.warning)
+            .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
             .setDescription(`${client.customEmojis.orangeTick} ${locale.cantGainXp}.`)
         ], ephemeral: true});
 

@@ -7,7 +7,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Devuelve un error si no se ha encontrado al miembro
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
+            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ], ephemeral: true});
 
@@ -19,14 +19,14 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Si no está autorizado para ello, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryError)
+                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
             ], ephemeral: true});
         };
         
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
         if ((interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) || !member.bannable) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
+            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ], ephemeral: true});
 
@@ -44,7 +44,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
+                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ], ephemeral: true});
         };
@@ -64,13 +64,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Notifica la acción en el canal de invocación
         await interaction.reply({embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.warning)
+            .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
             .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
         ]});
         
         //Envía una notificación al miembro
         await member.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
             .setDescription(await client.functions.utilities.parseLocale.run(locale.privateEmbed.description, { member: member, guildName: interaction.guild.name }))
             .addFields(

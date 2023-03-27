@@ -40,7 +40,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
 
             //Envía un mensaje al canal de la infracción
             if (channel.type !== 'DM') await channel.send({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.warning)
+                .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                 .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(oldExpiration ? locale.muteFunction.notificationEmbed.extended : locale.muteFunction.notificationEmbed.initiated, { memberTag: member.user.tag })}`)
             ]});
         };
@@ -50,13 +50,13 @@ exports.run = async (client, member, reason, action, moderator, message, interac
 
             //Envía un mensaje al canal de la infracción
             if (channel.type !== 'DM') await channel.send({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.warning)
+                .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                 .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(locale.kickFunction.notificationEmbed, { memberTag: member.user.tag })}`)
             ]});
 
             //Envía un mensaje al miembro
             await member.send({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryError)
+                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
                 .setAuthor({ name: locale.kickFunction.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
                 .setDescription(await client.functions.utilities.parseLocale.run(locale.kickFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
                 .addFields(
@@ -103,13 +103,13 @@ exports.run = async (client, member, reason, action, moderator, message, interac
 
             //Envía un mensaje al canal de la infracción
             if (channel.type !== 'DM') await channel.send({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.warning)
+                .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                 .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(locale.banFunction.notificationEmbed, { memberTag: member.user.tag })}`)
             ]});
 
             //Envía un mensaje al miembro
             await member.send({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryError)
+                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
                 .setAuthor({ name: locale.banFunction.privateEmbed.author, iconURL: client.homeGuild.iconURL({ dynamic: true}) })
                 .setDescription(await client.functions.utilities.parseLocale.run(locale.banFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
                 .addFields(
@@ -130,7 +130,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
 
             //Envía un mensaje de advertencia al miembro por MD
             await member.send({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.warning)
+                .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                 .setAuthor({ name: locale.warn.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
                 .setDescription(await client.functions.utilities.parseLocale.run(locale.warn.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
                 .addFields(
@@ -153,7 +153,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
 
                 //Responde a la interacción con la advertencia
                 await interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.warning)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                     .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(locale.warn.notificationEmbed, { memberTag: member.user.tag, warnReason: warnReason })}.`)
                 ]});
 
@@ -161,7 +161,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
 
                 //Envía un mensaje con la advertencia
                 if (channel.type !== 'DM') await message.channel.send({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.warning)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                     .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(locale.warn.notificationEmbed, { memberTag: member.user.tag, warnReason: warnReason })}.`)
                 ]});
             };
@@ -194,7 +194,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
 
                 //Ejecuta el manejador de registro
                 if (client.config.logging.warnedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                    .setColor(client.config.colors.warning)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.warn.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                     .addFields(
                         { name: locale.warn.loggingEmbed.memberId, value: member.id, inline: true },

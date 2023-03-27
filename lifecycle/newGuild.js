@@ -17,7 +17,7 @@ exports.run = async (client, guild) => {
 
         //Informa sobre la necesidad de realizar la configuración inicial
         return await guild.members.fetch(guild.ownerId).then(async member => await member.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.correct)
+            .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
             .setTitle(`${client.customEmojis.greenTick} ${await client.functions.utilities.parseLocale.run(client.locale.lifecycle.newGuild.title, { botUsername: client.user.username })}`)
             .setDescription(`${await client.functions.utilities.parseLocale.run(client.locale.lifecycle.newGuild.description, { botUser: client.user })}.`)]
         }));

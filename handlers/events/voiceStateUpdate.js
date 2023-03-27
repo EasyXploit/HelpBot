@@ -37,7 +37,7 @@ exports.run = async (oldState, newState, client, locale) => {
     
             //Se formatea y envía un registro al canal especificado en la configuración
             await client.voiceMovesChannel.send({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.logging)
+                .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.voiceMovesLogging.embedAuthor, { memberTag: newState.member.user.tag }), iconURL: newState.member.user.displayAvatarURL({dynamic: true}) })
                 .setFields(embedFields)
                 .setTimestamp()

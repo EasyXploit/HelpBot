@@ -21,7 +21,7 @@ exports.run = async (client, interaction, modalInteraction, reportReason, report
 
                 //Se genera un embed base para el reporte
                 let reportEmbed = new client.MessageEmbed()
-                    .setColor(client.config.colors.warning)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                     .setAuthor({ name: `${await client.functions.utilities.parseLocale.run(locale.reportEmbed.author, { memberTag: interaction.member.user.tag })}:`, iconURL: interaction.member.user.displayAvatarURL({dynamic: true}) })
                     .setFields([
                         { name: locale.reportEmbed.reportReason, value: reportReason, inline: true },
@@ -79,7 +79,7 @@ exports.run = async (client, interaction, modalInteraction, reportReason, report
 
                 //Envía un mensaje de confirmación
                 await (modalInteraction ? modalInteraction : interaction).reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.secondaryCorrect)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
                     .setDescription(`${client.customEmojis.greenTick} ${locale.correct}.`)
                 ], ephemeral: true});
 
@@ -90,7 +90,7 @@ exports.run = async (client, interaction, modalInteraction, reportReason, report
                 
                 //Envía un mensaje de error al usuario
                 await (modalInteraction ? modalInteraction : interaction).reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.temporaryError}.`)
                 ], ephemeral: true});
 

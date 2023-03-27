@@ -22,20 +22,20 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
+                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ], ephemeral: true});
         };
 
         //Comprueba si el miembro no estaba silenciado
         if (member && (!member.communicationDisabledUntilTimestamp || member.communicationDisabledUntilTimestamp <= Date.now())) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.notSilenced}.`)
         ], ephemeral: true});
 
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
         if (member && interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= sortedRoles[0].position) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
+            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.badHierarchy, { interactionAuthor: interaction.member })}.`)
         ], ephemeral: true});
 
@@ -44,7 +44,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Devuelve el estado de autorización
         if (!canRemoveAny && (!client.db.mutes[memberId] || client.db.mutes[memberId].moderator !== interaction.member.id)) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.error)
+            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.cantRemoveAny, { interactionAuthor: interaction.member })}.`)
         ], ephemeral: true});
 
@@ -80,7 +80,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Envía un mensaje al canal de registros
             if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                .setColor(client.config.colors.correct)
+                .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
                 .setAuthor(locale.loggingEmbed.author)
                 .addFields(
                     { name: locale.loggingEmbed.memberId, value: member.id.toString(), inline: true },
@@ -92,7 +92,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Notifica la acción en el canal de invocación
         await interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryCorrect)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
             .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbed.title}`)
             .setDescription(await client.functions.utilities.parseLocale.run(locale.notificationEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)` }))
         ]});

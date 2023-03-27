@@ -8,14 +8,14 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Comprueba si el canal existe
         if (!destinationChannel || !['GUILD_TEXT', 'GUILD_NEWS', 'GUILD_STORE', 'GUILD_NEWS_THREAD', 'GUILD_PUBLIC_THREAD', 'GUILD_PRIVATE_THREAD'].includes(destinationChannel.type)) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidChannel}.`)
         ], ephemeral: true});
 
         //Comprueba si el miembro tiene permisos para ejecutar esta acción
         const memberPermissions = destinationChannel.permissionsFor(interaction.user).bitfield;
         if ((memberPermissions & BigInt(0x800)) !== BigInt(0x800)) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.noPermission, { channel: destinationChannel })}.`)
         ], ephemeral: true});
 
@@ -54,7 +54,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Envía un mensaje de confirmación
             await modalInteraction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryCorrect)
+                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${locale.correct}`)
             ]});
 
@@ -74,7 +74,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Envía un embed con el mensaje
             await destinationChannel.send({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.primary)
+                .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
                 .setDescription(body)]
             });
 

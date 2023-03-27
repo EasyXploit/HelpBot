@@ -7,7 +7,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Comprueba si se ha proporcionado un miembro válido
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidMember}.`)
         ], ephemeral: true});
 
@@ -19,7 +19,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
+                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantSeeAny}.`)
             ], ephemeral: true});
         };

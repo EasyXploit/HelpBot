@@ -13,7 +13,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Asigna un color al embed en función del valor del ping
         if (botPing <= 180) botPingEmbed.setColor('7ED321');
         else if (botPing > 180 && botPing <= 250) botPingEmbed.setColor('F5A623');
-        else botPingEmbed.setColor(client.config.colors.secondaryError);
+        else botPingEmbed.setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`);
 
         //Mide el tiempo de respuesta del websocket
         const websocketPing = Math.floor(client.ws.ping);
@@ -26,7 +26,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Asigna un color al embed en función del valor del ping
         if (websocketPing <= 180) websocketPingEmbed.setColor('7ED321');
         else if (websocketPing > 180 && websocketPing <= 250) websocketPingEmbed.setColor('F5A623');
-        else websocketPingEmbed.setColor(client.config.colors.secondaryError);
+        else websocketPingEmbed.setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`);
 
         //Envía los embeds generados
         await interaction.reply({ embeds: [ botPingEmbed, websocketPingEmbed] });

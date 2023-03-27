@@ -62,7 +62,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
 
                 //Envía un mensaje al canal de registros
                 if (client.config.logging.mutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.communicationDisabled.loggingEmbed.author, { memberTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true}) })
                     .addFields(
                         { name: locale.communicationDisabled.loggingEmbed.memberId, value: newMember.id, inline: true },
@@ -74,7 +74,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
 
                 //Envía una notificación al miembro
                 await newMember.send({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                     .setAuthor({ name: locale.communicationDisabled.privateEmbed.author, iconURL: newMember.guild.iconURL({ dynamic: true}) })
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.communicationDisabled.privateEmbed.description, { member: newMember, guildName: newMember.guild.name }))
                     .addFields(
@@ -103,7 +103,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
 
                 //Envía un mensaje al canal de registros
                 if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                    .setColor(client.config.colors.correct)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.communicationEnabled.loggingEmbed.author, { userTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true})})
                     .addFields(
                         { name: locale.communicationEnabled.loggingEmbed.memberId, value: newMember.id.toString(), inline: true },
@@ -114,7 +114,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
 
                 //Envía una notificación al miembro
                 await newMember.send({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.correct)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
                     .setAuthor({ name: locale.communicationEnabled.privateEmbed.author, iconURL: newMember.guild.iconURL({ dynamic: true}) })
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.communicationEnabled.privateEmbed.description, { member: newMember, guildName: newMember.guild.name }))
                     .addFields(

@@ -18,7 +18,7 @@ exports.run = async (client, member) => {
 
         //Genera un embed con el registro de bienvenida
         let welcomeEmbed = new client.MessageEmbed()
-            .setColor(client.config.colors.correct)
+            .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
             .setAuthor({ name: locale.author, iconURL: 'attachment://in.png' })
             .setDescription(await client.functions.utilities.parseLocale.run(locale.description, { memberTag: member.user.tag }))

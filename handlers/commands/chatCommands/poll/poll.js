@@ -10,7 +10,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Si la encuesta no existe, devuelve un error
             if (!pollData) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryError)
+                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.unknownPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
             ], ephemeral: true});
 
@@ -28,7 +28,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             
                 //Notifica del error al miembro
                 return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.secondaryError)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
                     .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.deletedPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
                 ], ephemeral: true});
             };
@@ -41,7 +41,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                 //Si no se permitió la ejecución, manda un mensaje de error
                 if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.error)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.onlyYours}.`)
                 ], ephemeral: true});
             };
@@ -57,7 +57,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                 //Envía una confirmación al miembro
                 return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.secondaryCorrect)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
                     .setTitle(`${client.customEmojis.greenTick} ${locale.endedPollEmbed.title}`)
                     .setDescription(`${await client.functions.utilities.parseLocale.run(locale.endedPollEmbed.description, { poll: `[${pollData.title}](${pollMessage.url})`, pollChannel: pollChannel })}.`)
                 ], ephemeral: true});
@@ -99,7 +99,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Envía el assistantEmbed del título
         interactionChannel.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.primary)
+            .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
             .setTitle(`📊 ${locale.titleEmbed.title}`)
             .setDescription(locale.titleEmbed.description)
         ]}).then(async assistantEmbed => {
@@ -112,7 +112,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                 //Edita el asistente para preguntar por la duración
                 assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.primary)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
                     .setTitle(`⏱ ${locale.durationEmbed.title}`)
                     .setDescription(locale.durationEmbed.description)
                 ]});
@@ -143,7 +143,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                             //Devuelve un error
                             return interactionChannel.send({ embeds: [ new client.MessageEmbed()
-                                .setColor(client.config.colors.secondaryError)
+                                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
                                 .setDescription(`${client.customEmojis.redTick} ${locale.invalidDuration}.`)
                             ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
                         };
@@ -152,7 +152,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                     //Edita el asistente para preguntar por un campo
                     assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
-                        .setColor(client.config.colors.primary)
+                        .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
                         .setTitle(`:one: ${locale.firstFieldEmbed.title}`)
                         .setDescription(locale.firstFieldEmbed.description)
                     ]});
@@ -177,7 +177,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                             //Edita el asistente para preguntar por otro campo
                             assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
-                                .setColor(client.config.colors.primary)
+                                .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
                                 .setTitle(`${emojiOptions[index + 1]} ${locale.newFieldEmbed.title}`)
                                 .setDescription(`${await client.functions.utilities.parseLocale.run(locale.newFieldEmbed.description, { remaining: 10 - index - 1 })}${ index > 0 ? `.\n${locale.newFieldEmbed.endAssistant}.` : ''}`)
                             ]});
@@ -228,7 +228,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                     
                     //Envía la encuesta generada al canal de invocación
                     interactionChannel.send({ embeds: [ new client.MessageEmbed()
-                        .setColor(client.config.colors.polls)
+                        .setColor(`${await client.functions.db.getConfig.run('colors.polls')}`)
                         .setAuthor({ name: locale.pollEmbed.author, iconURL: 'attachment://poll.png' })
                         .setDescription(`${title}\n\n${formattedOptions}`)
                         .setFooter({ text: `ID: ${pollId} - ${locale.pollEmbed.duration}: ${remainingTime}` })
@@ -279,7 +279,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                         
                         //Envía un mensaje al canal de registros
                         if (client.config.logging.pollStarted) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
-                            .setColor(client.config.colors.logging)
+                            .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
                             .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { memberTag: interaction.member.user.tag }), iconURL: interaction.user.displayAvatarURL({dynamic: true}) })
                             .addFields(
                                 { name: locale.loggingEmbed.title, value: `__[${title}](${pollEmbed.url})__`, inline: true },

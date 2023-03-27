@@ -12,7 +12,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Comprueba si se ha proporcionado un miembro válido
         if (!member && !client.db.stats[interaction.options._hoistedOptions[0].value]) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidMember}.`)
         ], ephemeral: true});
 
@@ -21,7 +21,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Si el miembro era un bot
         if (member && member.user.bot) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
 
@@ -48,13 +48,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Comprueba si se le puede restar esa cantidad al miembro
         if (subcommand === locale.appData.options.remove.name && memberStats.experience < providedValue) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidQuantity}.`)
         ], ephemeral: true});
 
         //Comprueba si se le puede quitar el XP al miembro
         if (subcommand === locale.appData.options.clear.name && memberStats.experience === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
+            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.hasNoXp}.`)
         ], ephemeral: true});
 
@@ -66,7 +66,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Devuelve un mensaje de error
             return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.error)
+                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.unauthorizedModify}.`)
             ], ephemeral: true});
         };
@@ -169,7 +169,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Envía un mensaje al canal de registros
             if (client.config.logging.experienceModified) await client.functions.managers.logging.run(client, 'embed',  new client.MessageEmbed()
-                .setColor(client.config.colors.logging)
+                .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
                 .setTitle(`📑 ${locale.loggingEmbed.title}`)
                 .setDescription(`${await client.functions.utilities.parseLocale.run(locale.loggingEmbed.description, { memberTag: member.user.tag })}.`)
                 .addFields(
@@ -183,7 +183,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
             //Notifica la acción en el canal de invocación
             await interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(client.config.colors.secondaryCorrect)
+                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${await client.functions.utilities.parseLocale.run(locale.notificationEmbed, { memberTag: member.user.tag })}.`)
             ], ephemeral: true});
 
@@ -192,7 +192,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                 //Envía al miembro una notificación por mensaje privado
                 await member.send({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.primary)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
                     .setAuthor({ name: locale.privateEmbed.reset.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
                     .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.reset.description, { moderatorTag: interaction.user.tag })}.`)
                 ]});
@@ -202,7 +202,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                 //Envía al miembro una notificación por mensaje privado
                 await member.send({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.primary)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
                     .setAuthor({ name: locale.privateEmbed.increased.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
                     .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.increased.description, { moderatorTag: interaction.user.tag, givenExp: providedValue, newXP: newValue.toString() })}.`)
                 ]});
@@ -212,7 +212,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
                 //Envía al miembro una notificación por mensaje privado
                 await member.send({ embeds: [ new client.MessageEmbed()
-                    .setColor(client.config.colors.primary)
+                    .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
                     .setAuthor({ name: locale.privateEmbed.decreased.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
                     .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.decreased.description, { moderatorTag: interaction.user.tag, removedXP: providedValue, newXP: newValue.toString() })}.`)
                 ]});

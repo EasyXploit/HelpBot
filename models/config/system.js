@@ -13,11 +13,6 @@ const schema = new mongoose.Schema({
     serviceGuildId: String,
     inviteCode: String,
     botManagers: [String],
-    errorTrackerStatus: {
-        type: Boolean,
-        default: true,
-        required: true
-    },
     modules: {
         timers: {
             type: Boolean,

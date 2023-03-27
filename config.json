@@ -1,3 +1,4 @@
 {
-    "locale": "en-us"
+    "locale": "en-us",
+    "errorTrackingStatus": true
 }

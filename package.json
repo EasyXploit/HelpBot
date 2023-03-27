@@ -40,6 +40,10 @@
       "databases/*",
       "configs/dynamic.json",
       "config.json"
+    ],
+    "watch": [
+      ".",
+      ".env"
     ]
   }
 }

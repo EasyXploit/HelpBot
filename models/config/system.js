@@ -11,11 +11,6 @@ const schema = new mongoose.Schema({
     discordToken: String,
     homeGuildId: String,
     serviceGuildId: String,
-    locale: {
-        type: String,
-        default: 'en-us',
-        required: true
-    },
     inviteCode: String,
     botManagers: [String],
     errorTracker: {

@@ -3,7 +3,7 @@ exports.run = async (client) => {
     try {
 
         //Busca y almacena la guild de servicio para emojis
-        client.serviceGuild = client.guilds.cache.get(client.config.dynamic.serviceGuildId);
+        client.serviceGuild = client.guilds.cache.get(await client.functions.db.getConfig.run('system.serviceGuildId'));
 
         //Si no hay guild de servicio
         if (!client.serviceGuild) {
@@ -12,7 +12,7 @@ exports.run = async (client) => {
             client.serviceGuild = await client.guilds.create(`${client.user.username}-serviceGuild`);
 
             //Almacena en la config. el ID de la guild de servicio
-            client.config.dynamic.serviceGuildId = client.serviceGuild.id;
+            await client.functions.db.setConfig.run('system.serviceGuildId', client.serviceGuild.id);
 
             //Sobreescribe la base de datos con los cambios
             await client.fs.writeFile('./configs/dynamic.json', JSON.stringify(client.config.dynamic, null, 4), async err => { if (err) throw err });

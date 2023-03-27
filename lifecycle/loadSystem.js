@@ -9,7 +9,7 @@ exports.run = async (client, locale) => {
         const loadGuildSettings = new Promise(async (resolve, reject) => {
 
             //Almacena la guild base en memoria
-            client.homeGuild = await client.guilds.cache.get(client.config.dynamic.homeGuild);
+            client.homeGuild = await client.guilds.cache.get(await client.functions.db.getConfig.run('system.homeGuildId'));
 
             //Carga cada una de las claves del objeto de config. main
             const mainConfigs = Object.keys(client.config.main);

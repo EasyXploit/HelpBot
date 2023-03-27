@@ -4,15 +4,18 @@ exports.run = async (event, client, locale) => {
         
         //Carga el listado de guilds a las que el bot está unido
         const cachedGuilds = client.guilds.cache;
+
+        //Carga el ID de la guild base
+        const homeGuild = await client.functions.db.getConfig.run('system.homeGuildId');
         
         //Comprueba cuantas guilds hay disponibles
         if (cachedGuilds.size > 1) {    //Si la cantidad es superior a 1
 
             //Por cada guild en caché
-            await cachedGuilds.forEach(guild => {
+            await cachedGuilds.forEach(async guild => {
                 
                 //Omite la iteración si la guild es la configurada o es del propio bot
-                if (guild.ownerId === client.user.id || guild.id === client.config.dynamic.homeGuild) return;
+                if (guild.ownerId === client.user.id || guild.id === homeGuild) return;
 
                 //Notifica que el bot no puede funcionar en más de una guild
                 console.warn(`\n${new Date().toLocaleString()} 》${locale.justOneGuild}.`);
@@ -28,7 +31,7 @@ exports.run = async (event, client, locale) => {
         };
             
         //Comprueba si la config de la guild ya está almacenada o no
-        if (!client.config.dynamic.homeGuild || client.config.dynamic.homeGuild !== cachedGuilds.first().id) {
+        if (!homeGuild || homeGuild !== cachedGuilds.first().id) {
 
             //Almacena la nueva configuración
             await require('../../lifecycle/newGuild.js').run(client, cachedGuilds.first());

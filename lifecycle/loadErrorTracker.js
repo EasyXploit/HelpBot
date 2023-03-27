@@ -2,6 +2,9 @@ exports.run = async (locale) => {
 
     try {
 
+        //Aborta si no hay un DSN configurado
+        if (!process.env.SENTRY_DSN || process.env.SENTRY_DSN.length === 0) return;
+
         //Anuncia la carga del manejador de errores remoto
         console.log(locale.loading);
 

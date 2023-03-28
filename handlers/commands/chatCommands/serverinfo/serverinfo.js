@@ -21,11 +21,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             categories.add(channel.parent);
         });
 
-        //Envía un embed con el resultado
-        await interaction.reply({ embeds: [ new client.MessageEmbed()
+        //Genera un embed con el resultado
+        let resultEmbed = new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
             .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.embed.author, { guildName: interaction.guild.name }), iconURL: interaction.guild.iconURL({dynamic: true}) })
-            .setDescription(interaction.guild.description)
             .setThumbnail(interaction.guild.iconURL({dynamic: true}))
             .addFields(
                 { name: `🏷 ${locale.embed.name}`, value: interaction.guild.name, inline: true },
@@ -44,7 +43,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 { name: `🕗 ${locale.embed.afk}`, value: await client.functions.utilities.parseLocale.run(locale.embed.afkTime, { afkTime: interaction.guild.afkTimeout / 60 }), inline: true },
                 { name: `💬 ${locale.embed.channels}`, value: `${await client.functions.utilities.parseLocale.run(locale.embed.totalCategories, { totalCategories: categories.size - 1 })}\n${await client.functions.utilities.parseLocale.run(locale.embed.totalTextChannels, { totalTextChannels: guildChannels.filter(c => c.type === 'GUILD_TEXT').size })}\n${await client.functions.utilities.parseLocale.run(locale.embed.totalVoiceChannels, { totalVoiceChannels: guildChannels.filter(c => c.type === 'GUILD_VOICE').size })}`, inline: true }
             )
-        ]});
+
+        //Añade una descripción si el servidor la tiene
+        if (interaction.guild.description) resultEmbed.setDescription(interaction.guild.description);
+
+        //Envía un embed con el resultado
+        await interaction.reply({ embeds: [ resultEmbed ]});
 
     } catch (error) {
 

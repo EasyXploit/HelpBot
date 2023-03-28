@@ -6,7 +6,7 @@ exports.run = async (oldState, newState, client, locale) => {
         if (oldState.guild.id !== client.homeGuild.id) return;
 
         //Si el registro de cambios de canal de voz está activado, y no ocurrió un cambio entre canales ignorados
-        voiceMovesIf: if (client.config.logging.voiceMoves && !(client.config.main.voiceMovesExcludedChannels.includes(oldState.channelId) && client.config.main.voiceMovesExcludedChannels.includes(newState.channelId))) {
+        voiceMovesIf: if (client.config.logging.voiceMoves && client.voiceMovesChannel && !(client.config.main.voiceMovesExcludedChannels.includes(oldState.channelId) && client.config.main.voiceMovesExcludedChannels.includes(newState.channelId))) {
 
             //Omite si solo se trata de un cambio que no implique cambio de canal
             if (oldState.channelId === newState.channelId) break voiceMovesIf;
@@ -105,7 +105,7 @@ exports.run = async (oldState, newState, client, locale) => {
             if (newState.channel.members.filter(member => !member.user.bot).size === 1 && client.usersVoiceStates[newState.id]) return endVoiceTime();
 
             //Si es un bot, el canal de AFK, un canal prohibido o un rol prohibido
-            if (member.user.bot || newState.channelId === newState.guild.afkChannel.id) {
+            if (member.user.bot || (newState.guild.afkChannelId && newState.channelId === newState.guild.afkChannelId)) {
 
                 //Si el miembro tenía un estado de voz almacenado
                 if (client.usersVoiceStates[newState.id]) {

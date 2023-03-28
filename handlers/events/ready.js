@@ -4,6 +4,15 @@ exports.run = async (event, client, locale) => {
         
         //Carga el listado de guilds a las que el bot está unido
         const cachedGuilds = client.guilds.cache;
+
+        //Carga el ID de la guild base
+        const homeGuildId = await client.functions.db.getConfig.run('system.homeGuildId');
+
+        //Carga el ID de la guild de servicio
+        const serviceGuildId = await client.functions.db.getConfig.run('system.serviceGuildId');
+
+        //Almacena el número de guilds válidas (descontando las de servicio)
+        const validGuildsCount = await cachedGuilds.filter(guild => guild.id !== serviceGuildId);
         
         //Comprueba cuantas guilds hay disponibles
         if (validGuildsCount > 1) {    //Si la cantidad es superior a 1

@@ -6,7 +6,7 @@ exports.run = async (oldState, newState, client, locale) => {
         if (oldState.guild.id !== client.homeGuild.id) return;
 
         //Si el registro de cambios de canal de voz está activado, y no ocurrió un cambio entre canales ignorados
-        voiceMovesIf: if (client.config.logging.voiceMoves && !(client.config.main.voiceMovesExcludedChannels.includes(oldState.channelId) && client.config.main.voiceMovesExcludedChannels.includes(newState.channelId))) {
+        voiceMovesIf: if (client.config.logging.voiceMoves && client.voiceMovesChannel && !(client.config.main.voiceMovesExcludedChannels.includes(oldState.channelId) && client.config.main.voiceMovesExcludedChannels.includes(newState.channelId))) {
 
             //Omite si solo se trata de un cambio que no implique cambio de canal
             if (oldState.channelId === newState.channelId) break voiceMovesIf;

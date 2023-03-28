@@ -105,7 +105,7 @@ exports.run = async (oldState, newState, client, locale) => {
             if (newState.channel.members.filter(member => !member.user.bot).size === 1 && client.usersVoiceStates[newState.id]) return endVoiceTime();
 
             //Si es un bot, el canal de AFK, un canal prohibido o un rol prohibido
-            if (member.user.bot || newState.channelId === newState.guild.afkChannel.id) {
+            if (member.user.bot || (newState.guild.afkChannelId && newState.channelId === newState.guild.afkChannelId)) {
 
                 //Si el miembro tenía un estado de voz almacenado
                 if (client.usersVoiceStates[newState.id]) {

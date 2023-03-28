@@ -124,7 +124,7 @@ exports.run = async (client, locale) => {
                     if (!member) return;
 
                     //Comprueba si en el canal no se puede ganar XP
-                    if (member.user.bot || voiceState.channelId === voiceState.guild.afkChannel.id) {
+                    if (member.user.bot || (voiceState.guild.afkChannelId && voiceState.channelId === voiceState.guild.afkChannelId)) {
                         if (client.usersVoiceStates[voiceState.id]) {
 
                             //Borra el registro del miembro que ha dejado el canal de voz

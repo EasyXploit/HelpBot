@@ -1,4 +1,5 @@
 {
+    "testString": "Test string",
     "index": {
         "startingClient": "Starting client",
         "clientStarted": "Client started successfully!",

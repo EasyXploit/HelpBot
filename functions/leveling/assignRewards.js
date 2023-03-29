@@ -34,6 +34,9 @@ exports.run = async (client, member, memberLevel, updateSubsequents) => {
             };
         });
 
+        //Omite esta iteración si el nivel de la recompensa es superior al nivel del miembro 
+        if (reward.requiredLevel > memberLevel) continue;
+
         //Si el miembro puede stackear todas las recompensas, o tiene el nivel de esta, se almacena
         if (!client.config.leveling.removePreviousRewards || reward.requiredLevel === memberLevel || (reward.requiredLevel < memberLevel && index === (sortedRewards.length - 1))) toReward = toReward.concat(reward.roles);
 

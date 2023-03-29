@@ -63,7 +63,7 @@
                         "description": "{{user}}, you have been banned from {{guildName}}",
                         "moderator": "Moderator",
                         "reason": "Reason",
-                        "deletedDays": "Days of messages deleted ",
+                        "deletedDays": "Days of messages deleted",
                         "noDeletedDays": "None",
                         "expiration": "Expiration",
                         "noExpiration": "Does not expire"

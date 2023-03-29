@@ -1,1 +1,1407 @@
-{}
+{
+    "index": {
+        "startingClient": "Iniziando client",
+        "clientStarted": "Client iniziato correttamente!",
+        "unhandledRejection": {
+            "consoleMsg": "ERRORE: Promessa rifiutata non gestita"
+        },
+        "uncompleteEventsLoad": "ERRORE: Non si è riuscito a caricare gli eventi",
+        "eventLoaded": "Evento",
+        "loggingIn": "Iniziando sessione",
+        "loggedIn": "Sessione iniziata correttamente!",
+        "couldNotLogIn": "Login failed. Check if the login token is valid"
+    },
+    "handlers": {
+        "buttons": {
+            "updateNotifications": {
+                "cantGainXp": "Non puoi guadagnare EXP, quindi non riceverai notifiche",
+                "alreadyApplied": "Questa impostazione era già applicata. Non verranno applicate modifiche",
+                "newButon": {
+                    "disable": "Disattivare notificazioni",
+                    "enable": "Riattivare notificazioni"
+                }
+            }
+        },
+        "commands": {
+            "chatCommands": {
+                "ban": {
+                    "appData": {
+                        "name": "bannare",
+                        "description": "Proibire accesso al server a un membro",
+                        "options": {
+                            "user": {
+                                "name": "utente",
+                                "description": "Seleziona un utente o introdurre ID"
+                            },
+                            "reason": {
+                                "name": "motivo",
+                                "description": "Fornisci un motivo per l'azione"
+                            },
+                            "days": {
+                                "name": "giorni_a_cancellare",
+                                "description": "Definire un valore tra 1 e 7"
+                            },
+                            "duration": {
+                                "name": "durazione",
+                                "description": "Definire una durazione con il formato seguente: giorni\"D\" | minuti\"M\" | ore\"H\" | secondi\"S\""
+                            }
+                        }
+                    },
+                    "userNotFound": "Utente non trovato. Devi menzionare un membro o scrivere il suo ID.\nSe l'utente non si trova sul server devi specificare il suo ID",
+                    "noBots": "Non puoi bannare un bot",
+                    "badHierarchy": "Non puoi bannare un membro con un ruolo equivalente o superiore al tuo",
+                    "alreadyBanned": "Questo utente è gia stato bannato",
+                    "cantPermaBan": "Non hai permessi per bannare permanentemente",
+                    "wrongMagnitudes": "Definire una durazione con il formato seguente: giorni\"D\" | minuti\"M\" | ore\"H\" | secondi\"S\"",
+                    "exceededDuration": "Puoi bannare solamente un massimo di `{{time}}`",
+                    "noReason": "Devi fornire un motivo",
+                    "cantSoftBan": "Non hai permessi per cancellare messaggi durante il ban",
+                    "undefinedReason": "Indefinita",
+                    "privateEmbed": {
+                        "author": "[BANNATO]",
+                        "description": "{{user}}, è stato bannato da {{guildName}}",
+                        "moderator": "Moderatore",
+                        "reason": "Motivo",
+                        "deletedDays": "Giorni di messaggi cancellati",
+                        "noDeletedDays": "Nessuno",
+                        "expiration": "Scadenza",
+                        "noExpiration": "Non scade"
+                    },
+                    "notificationEmbed": {
+                        "withReason": "**{{userTag}}** è stato bannato con il motivo __{{reason}}__, qualcun altro?",
+                        "withoutReason": "**{{userTag}}** è stato bannato, qualcun altro?"
+                    }
+                },
+                "dm": {
+                    "appData": {
+                        "name": "md",
+                        "description": "Il bot invierà un messaggio privato al membro",
+                        "options": {
+                            "user": {
+                                "name": "utente",
+                                "description": "Seleziona un utente o scrivi il suo ID"
+                            },
+                            "mode": {
+                                "name": "modo",
+                                "description": "Indicare il metodo d'invio",
+                                "choices": {
+                                    "author": "Autore",
+                                    "anonymous": "Anonimo"
+                                }
+                            },
+                            "type": {
+                                "name": "tipo",
+                                "description": "Specifica il tipo di messaggio",
+                                "choices": {
+                                    "embed": "Integrato",
+                                    "normal": "Normale"
+                                }
+                            }
+                        }
+                    },
+                    "unknownMember": "Membro non trovato. Devi menzionare un membro o scrivere il suo ID",
+                    "noBots": "Non puoi iniziare una conversazione con un bot",
+                    "normalFrom": "Messaggio da {{authorTag}}",
+                    "embedFrom": "Messaggio da",
+                    "unauthorized": "{{interactionAuthor}}, non disponi di privilegi per realizzare quest'azione",
+                    "bodyModal": {
+                        "title": "Inviare messaggio senza formato",
+                        "fieldTitle": "Corpo del messaggio",
+                        "fieldPlaceholder": "Scrivi un corpo per il messaggio"
+                    },
+                    "loggingEmbed": {
+                        "title": "Registro - [MESSAGGISTICA]",
+                        "description": "{{authorTag}} ha inviato un messaggio privato a {{memberTag}} attraverso {{botUser}}",
+                        "date": "Data",
+                        "mode": "Modo",
+                        "type": "Tipo",
+                        "content": "Contenuto"
+                    },
+                    "notificationEmbed": "Messaggio Inviato!",
+                    "cantReceiveDms": "Questo membro non accetta messaggi diretti da {{botUser}}"
+                },
+                "edit": {
+                    "appData": {
+                        "name": "modificare",
+                        "description": "Edita un messaggio inviato precedentemente per il bot",
+                        "options": {
+                            "channel": {
+                                "name": "canale",
+                                "description": "Seleziona il canale del messaggio a modificare"
+                            },
+                            "id": {
+                                "name": "id",
+                                "description": "Introdurre ID del messaggio a modificare"
+                            },
+                            "content": {
+                                "name": "contenuto",
+                                "description": "Scrivi il nuovo contenuto del messaggio"
+                            }
+                        }
+                    },
+                    "noChannel": "Il canale con ID `{{id}}` non esiste",
+                    "msgNotFound": "Il messaggio con ID `{{msgId}}` non esiste",
+                    "cantEdit": "Non posso modificare un messaggio che non ho inviato",
+                    "bodyModal": {
+                        "title": "Modifica del messaggio formattato",
+                        "fieldTitle": "Corpo del messaggio",
+                        "fieldPlaceholder": "Scrivi un nuovo corpo per il messaggio"
+                    },
+                    "correctEmbed": {
+                        "title": "Operazione completata",
+                        "description": "Il messggio è stato modificato correttamente"
+                    }
+                },
+                "infractions": {
+                    "appData": {
+                        "name": "Infrazioni",
+                        "description": "Mostra una lista di infrazioni di un membro e i suoi rispettivi ID",
+                        "options": {
+                            "user": {
+                                "name": "utente",
+                                "description": "Seleziona un utente o scrivi il suo ID"
+                            }
+                        }
+                    },
+                    "nonPrivileged": "{{interactionAuthor}}, non disponi di privilegi per realizzare quest'azione",
+                    "noBots": "Non puoi ottenere informazione da un bot",
+                    "unknownModerator": "Moderatore sconosciuto",
+                    "mutedUntil": "Silenziato fino",
+                    "noMute": "Nessuna",
+                    "infractionsEmbed": {
+                        "title": "Infrazioni",
+                        "description": "Mostrando le infrazioni del membro **{{member}}**.\nSanzione attuale: {{sanction}}",
+                        "last24h": "Ultime 24 ore",
+                        "last7d": "Ultimi 7 giorni",
+                        "total": "Totale",
+                        "list": "Lista d'infrazioni",
+                        "noList": "Nessuna",
+                        "page": "Pagina {{actualPage}} di {{totalPages}}"
+                    }
+                },
+                "invitation": {
+                    "appData": {
+                        "name": "invitazione",
+                        "description": "Genera o recupera un link d'invito permanente nel canale di regole o nel primo canale di testo che lo consente"
+                    },
+                    "inviteReason": "Routine di {{botTag}}",
+                    "embed": {
+                        "author": "Invitazione permanente",
+                        "footer": "Questo link non scade mai ed ha usi illimitati"
+                    }
+                },
+                "kick": {
+                    "appData": {
+                        "name": "espellere",
+                        "description": "Espelli un membro",
+                        "options": {
+                            "user": {
+                                "name": "utente",
+                                "description": "Seleziona un utente o scrivi il suo ID"
+                            },
+                            "reason": {
+                                "name": "motivo",
+                                "description": "Fornisci un motivo per l'azione"
+                            }
+                        }
+                    },
+                    "memberNotFound": "Membro non trovato. Devi menzionare un membro o scrivere il suo ID",
+                    "noBots": "Non puoi espellere un bot",
+                    "badHierarchy": "Non puoi espellere un membro con un ruolo equivalente o superiore al tuo",
+                    "noReason": "Devi fornire un motivo",
+                    "undefinedReason": "Indefinita",
+                    "privateEmbed": {
+                        "author": "[ESPULSO]",
+                        "description": "{{member}}, è stato espulso da {{guildName}}",
+                        "moderator": "Moderatore",
+                        "reason": "Motivo"
+                    },
+                    "notificationEmbed": {
+                        "withReason": "**{{memberTag}}** è stato espulso dovuto a __{{reason}}__, qualcun altro?",
+                        "withoutReason": "**{{memberTag}}** è stato espulso, qualcun altro?"
+                    }
+                },
+                "leaderboard": {
+                    "appData": {
+                        "name": "Classificazione",
+                        "description": "Mostra la classifica di EXP della comunità",
+                        "options": {
+                            "page": {
+                                "name": "pagina",
+                                "description": "Introdurre il nº della pagina a consultare"
+                            },
+                            "type": {
+                                "name": "tipo",
+                                "description": "Seleziona il tipo di classificazione a mostrare",
+                                "choices": {
+                                    "experience": "Experience points",
+                                    "aproxVoiceTime": "Voice time",
+                                    "messagesCount": "Messaggi eliminati",
+                                    "antiquity": "Antichità"
+                                }
+                            }
+                        }
+                    },
+                    "unknownMember": "Sconosciuto",
+                    "embed": {
+                        "footer": "Pagina {{actualPage}} de {{totalPages}}",
+                        "title": {
+                            "experience": "Experience points ranking",
+                            "aproxVoiceTime": "Voice time ranking",
+                            "messagesCount": "Sent messages ranking",
+                            "antiquity": "Classificazione d'antichità"
+                        },
+                        "board": {
+                            "experience": "xp",
+                            "messagesCount": "messages",
+                            "level": "lvl"
+                        }
+                    },
+                    "noLeaderboard": "No one has gained XP yet"
+                },
+                "mute": {
+                    "appData": {
+                        "name": "silenziare",
+                        "description": "Disattivare le comunicazioni di un membro nel sever per un tempo limitato",
+                        "options": {
+                            "user": {
+                                "name": "utente",
+                                "description": "Seleziona un utente o scrivi il suo ID"
+                            },
+                            "reason": {
+                                "name": "motivo",
+                                "description": "Fornisci un motivo per l'azione"
+                            },
+                            "expiration": {
+                                "name": "Scadenza",
+                                "description": "Select when the sanction will expire",
+                                "choices": {
+                                    "sixtySeconds": "60 seconds",
+                                    "fiveMinutes": "5 minuti",
+                                    "fifteenMinutes": "15 minuti",
+                                    "thirtyMinutes": "30 minuti",
+                                    "oneHour": "1 ora",
+                                    "sixHours": "6 ore",
+                                    "twelveHours": "12 ore",
+                                    "oneDay": "1 day",
+                                    "threeDays": "3 days",
+                                    "oneWeek": "1 week",
+                                    "oneMonth": "1 month",
+                                    "threeMonths": "3 months"
+                                }
+                            }
+                        }
+                    },
+                    "memberNotFound": "Membro non trovato. Devi menzionare un membro o scrivere il suo ID",
+                    "noBots": "Non puoi silenziare un bot",
+                    "badHierarchy": "Non puoi silenziare un membro con un ruolo equivalente o superiore al tuo",
+                    "noReason": "Devi fornire un motivo",
+                    "undefinedReason": "Indefinita",
+                    "notificationEmbed": {
+                        "withReason": "**{{memberTag}}** è stato silenziato dovuto a __{{reason}}__, qualcun altro?",
+                        "withoutReason": "**{{memberTag}}** è stato silenziato, qualcun altro?"
+                    },
+                    "exceededDuration": "You can only mute a maximum of `{{time}}`"
+                },
+                "notifications": {
+                    "appData": {
+                        "name": "Notificazioni",
+                        "description": "Configura le notificazioni di aumento di livello per EXP del bot",
+                        "options": {
+                            "modality": {
+                                "name": "modalità",
+                                "description": "Seleziona la modalità delle notificazioni a modificare",
+                                "choices": {
+                                    "public": "Aumento di livello per messaggi",
+                                    "private": "Aumento di livello per tempo di voce"
+                                }
+                            },
+                            "status": {
+                                "name": "stato",
+                                "description": "Seleziona lo stato di attivazione di queste notificazioni",
+                                "choices": {
+                                    "enabled": "Attivate",
+                                    "disabled": "Disattivate"
+                                }
+                            }
+                        }
+                    },
+                    "cantGainXp": "Non puoi guadagnare EXP, non riceverai notificazioni",
+                    "alreadyEnabled": "Questa notificazione è gia attivata",
+                    "alreadyDisabled": "Questa notificazione è gia disattivata",
+                    "publicEnabled": "Ora riceverai le notificazioni per aumento di livello via messaggio di testo",
+                    "publicDisabled": "E non riceverai più le notificazioni per aumento di livello via messaggio di testo",
+                    "privateEnabled": "Ora riceverai le notificazioni per aumento di livello via tempo di voce",
+                    "privateDisabled": "E non riceverai più notificazioni per aumento di livello via tempo di voce"
+                },
+                "ping": {
+                    "appData": {
+                        "name": "ping",
+                        "description": "Fornisce informazione sullo stato del bot"
+                    },
+                    "botResponseTime": "Tempo di risposta del bot",
+                    "websocketResponseTime": "Tempo di risposta del Websocket"
+                },
+                "poll": {
+                    "appData": {
+                        "name": "sondaggio",
+                        "description": "Inizia un assistente interattivo per creare un sondaggio o termina una in corso",
+                        "options": {
+                            "end": {
+                                "name": "end_id",
+                                "description": "Introdurre l'ID del sondaggio a terminare"
+                            }
+                        }
+                    },
+                    "unknownPoll": "Il sondaggio con ID {{id}} non esiste",
+                    "deletedPoll": "Il sondaggio con l'ID {{id}} non esiste più, è stato eliminato dal database",
+                    "onlyYours": "Puoi solo finalizzare i tuoi propi sondaggi",
+                    "endedPollEmbed": {
+                        "title": "Operazione completata",
+                        "description": "Il sondaggio \"__{{poll}}__\" finirà prossimamente nel canale {{pollChannel}}"
+                    },
+                    "startingAssistant": "Starting the interactive wizard",
+                    "titleEmbed": {
+                        "title": "Titolo",
+                        "description": "Fornisci un titolo per il sondaggio"
+                    },
+                    "durationEmbed": {
+                        "title": "Durazione",
+                        "description": "Provide a duration. For example: `1d 2h 3m 4s`.\nEnter `-` for no end"
+                    },
+                    "invalidDuration": "You must provide a unit of time measurement. For example: `5d 10h 2m`",
+                    "firstFieldEmbed": {
+                        "title": "Campi",
+                        "description": "Provide a new field (maximum 10)"
+                    },
+                    "newFieldEmbed": {
+                        "title": "Campi",
+                        "description": "Provide a new field ({{remaining}} remaining)",
+                        "endAssistant": "Type `end` to end the wizard"
+                    },
+                    "pollEmbed": {
+                        "author": "Sondaggio disponibile",
+                        "duration": "Durazione"
+                    },
+                    "loggingEmbed": {
+                        "author": "{{memberTag}} ha iniziato un SONDAGGIO",
+                        "title": "Titolo",
+                        "channel": "Canale",
+                        "expiration": "Scadenza",
+                        "noExpiration": "Non scade"
+                    }
+                },
+                "purge": {
+                    "appData": {
+                        "name": "depurare",
+                        "description": "Deletes a certain number of messages in a channel (as long as they are less than 14 days old)",
+                        "options": {
+                            "quantity": {
+                                "name": "quantità",
+                                "description": "Enter the number of messages to delete (1-99)"
+                            },
+                            "channel": {
+                                "name": "canale",
+                                "description": "Seleziona il canale a depurare"
+                            }
+                        }
+                    },
+                    "quantityNotProvided": "Devi fornire una quantità di messaggi da eliminare",
+                    "wrongQuantity": "You must provide a numerical quantity equal to or greater than 1, and less than 100",
+                    "invalidChannel": "The supplied text channel is invalid",
+                    "noPermission": "Non hai permessi per amministrare messaggi in {{channel}}",
+                    "noMessages": "Could not find any messages on {{channel}}",
+                    "expiredMessages": "Only messages older than `14 days` can be deleted",
+                    "successEmbed": {
+                        "title": "Operazione completata",
+                        "description": "Messaggi eliminati",
+                        "willBeDeleted": "This message will be deleted {{inSeconds}}",
+                        "footer": "{{omittedCount}} messages were skipped"
+                    },
+                    "loggingEmbed": {
+                        "title": "Logging - [MESSAGE PURGE]",
+                        "description": "{{authorTag}} ha eliminato {{deletedCount}} messaggi del canale {{channel}}"
+                    }
+                },
+                "rmwarn": {
+                    "appData": {
+                        "name": "eliminare_adv",
+                        "description": "Per eliminare una avvertenza (o tutte) a un membro",
+                        "options": {
+                            "user": {
+                                "name": "utente",
+                                "description": "Seleziona un utente o scrivi il suo ID"
+                            },
+                            "reason": {
+                                "name": "motivo",
+                                "description": "Provide a reason for the action"
+                            },
+                            "warn": {
+                                "name": "avvertenza",
+                                "description": "Cerca l'avvertenza da eliminare"
+                            }
+                        }
+                    },
+                    "memberNotFound": "Member not found. You must mention a member or enter it's ID",
+                    "noBots": "Bots cannot be warned",
+                    "noReason": "Devi fornire un motivo",
+                    "badHierarchy": "You cannot remove a warning from a member with a role equal to or higher than yours",
+                    "noWarns": "This member has no warnings",
+                    "cantRemoveAny": "Non puoi eliminare avvertenze che non hai realizzato",
+                    "undefinedReason": "Indefinita",
+                    "loggingEmbedAll": {
+                        "title": "Registro - [INFRAZIONI]",
+                        "description": "All warnings on a member have been removed",
+                        "date": "Data",
+                        "moderator": "Moderatore",
+                        "reason": "Motivo",
+                        "memberId": "ID del Membro",
+                        "member": "Membro"
+                    },
+                    "privateEmbedAll": {
+                        "author": "[UN-WARNED]",
+                        "description": "{{member}}, all your warnings have been removed",
+                        "moderator": "Moderatore",
+                        "reason": "Motivo"
+                    },
+                    "notificationEmbedAll": {
+                        "title": "Operazione completata",
+                        "description": "All warnings of member **{{member}}** have been removed"
+                    },
+                    "warnNotFound": "Warning with ID **{{warnId}}** does not exist",
+                    "loggingEmbedSingle": {
+                        "title": "Registro - [INFRAZIONI]",
+                        "description": "A member warning has been removed",
+                        "date": "Data",
+                        "moderator": "Moderatore",
+                        "warnId": "ID di Avvertenza",
+                        "warn": "Avvertenza",
+                        "reason": "Motivo",
+                        "memberId": "ID del Membro",
+                        "member": "Membro"
+                    },
+                    "privateEmbedSingle": {
+                        "author": "[UN-WARNED]",
+                        "description": "{{member}}, your warning with ID `{{warnId}}` has been removed",
+                        "moderator": "Moderatore",
+                        "warnId": "ID di Avvertenza",
+                        "warn": "Avvertenza",
+                        "reason": "Motivo"
+                    },
+                    "notificationEmbedSingle": {
+                        "title": "Operazione completata",
+                        "description": "Removed warning with ID `{{warnId}}` to member **{{member}}**"
+                    },
+                    "autocomplete": {
+                        "unknownModerator": "Sconosciuto"
+                    }
+                },
+                "roleinfo": {
+                    "appData": {
+                        "name": "roleinfo",
+                        "description": "Displays information about a role",
+                        "options": {
+                            "role": {
+                                "name": "role",
+                                "description": "Select one of the roles"
+                            }
+                        }
+                    },
+                    "roleNotFound": "Il ruolo **{{role}}** non esiste",
+                    "resultEmbed": {
+                        "title": "Role information",
+                        "description": "Displaying information about the role {{role}}",
+                        "roleName": "Role mame",
+                        "roleId": "Role ID",
+                        "roleMembers": "Role members",
+                        "mentionable": "Mentionable",
+                        "isMentionable": "Yes",
+                        "isntMntionable": "No",
+                        "hoisted": "Displayed",
+                        "isHoisted": "Visible",
+                        "isntHoisted": "Hoisted",
+                        "color": "Color",
+                        "creationDate": "Data di creazione",
+                        "integration": "Integration",
+                        "isIntegration": "Yes",
+                        "isntIntegration": "No"
+                    }
+                },
+                "run": {
+                    "appData": {
+                        "name": "run",
+                        "description": "Runs one of the preprogrammed scripts",
+                        "options": {
+                            "script": {
+                                "name": "script",
+                                "description": "Write the name of the script"
+                            },
+                            "parameters": {
+                                "name": "parameters",
+                                "description": "Enter the script parameters"
+                            }
+                        }
+                    },
+                    "welcome": {
+                        "memberNotProvided": "You have not provided a member",
+                        "invalidMember": "You have not provided a valid member",
+                        "done": "Done!"
+                    },
+                    "goodbye": {
+                        "memberNotProvided": "You have not provided a member",
+                        "invalidMember": "You have not provided a valid member",
+                        "done": "Done!"
+                    },
+                    "invalidCommand": "You did not specify a valid command"
+                },
+                "send": {
+                    "appData": {
+                        "name": "send",
+                        "description": "The bot will send a message to the current or the specified text channel, with or without embedded formatting",
+                        "options": {
+                            "type": {
+                                "name": "tipo",
+                                "description": "Specifica il tipo di messaggio",
+                                "choices": {
+                                    "embed": "Embedded",
+                                    "normal": "Normal"
+                                }
+                            },
+                            "channel": {
+                                "name": "canale",
+                                "description": "Select the channel to which the message will be sent"
+                            }
+                        }
+                    },
+                    "invalidChannel": "Il canale proporzionato non è valido",
+                    "noPermission": "Non hai permessi per inviare messaggi in {{channel}}",
+                    "bodyModal": {
+                        "title": "Send formatted message",
+                        "fieldTitle": "Corpo del messaggio",
+                        "fieldPlaceholder": "Write a body for the message"
+                    },
+                    "correct": "Done!"
+                },
+                "serverinfo": {
+                    "appData": {
+                        "name": "serverinfo",
+                        "description": "Displays information about the server"
+                    },
+                    "guildTiers": {
+                        "NONE": "Tier 0",
+                        "TIER_1": "Tier 1",
+                        "TIER_2": "Tier 2",
+                        "TIER_3": "Tier 3"
+                    },
+                    "guildNsfwLevel": {
+                        "DISABLED": "Disabled",
+                        "MEMBERS_WITHOUT_ROLES": "Monitoring members without role",
+                        "ALL_MEMBERS": "Monitoring everyone"
+                    },
+                    "guildverificationLevel": {
+                        "NONE": "Disabled",
+                        "LOW": "Low",
+                        "MEDIUM": "Medium",
+                        "HIGH": "High",
+                        "VERY_HIGH": "Very high"
+                    },
+                    "embed": {
+                        "author": "Information about {{guildName}}",
+                        "name": "Name",
+                        "id": "Server ID",
+                        "region": "Region",
+                        "creationDate": "Data di creazione",
+                        "owner": "Owner",
+                        "nsfwFilter": "NSFW filter",
+                        "tier": "Boost level",
+                        "boostsCount": "{{boostsCount}} boosts",
+                        "verification": "Verification level",
+                        "invitations": "Invitations",
+                        "totalInvites": "{{totalInvites}} total invites",
+                        "roles": "Roles",
+                        "totalRoles": "{{totalRoles}} roles in total",
+                        "stickersAndEmojis": "Stickers and Emojis",
+                        "totalEmojis": "{{totalEmojis}} emojis",
+                        "totalStickers": "{{totalStickers}} stickers",
+                        "members": "Membri",
+                        "totalMembers": "{{totalMembers}} membri",
+                        "totalHumans": "{{totalHumans}} humans",
+                        "totalBots": "{{totalBots}} bots",
+                        "bans": "Bans",
+                        "bannedUsers": "{{bannedUsers}} banned users",
+                        "afk": "Time to AFK",
+                        "afkTime": "{{afkTime}} minuti",
+                        "channels": "Canali",
+                        "totalCategories": "{{totalCategories}} categories",
+                        "totalTextChannels": "{{totalTextChannels}} canali di testo",
+                        "totalVoiceChannels": "{{totalVoiceChannels}} canali di voce"
+                    }
+                },
+                "slowmode": {
+                    "appData": {
+                        "name": "slowmode",
+                        "description": "Attiva il modo lento in un canale di testo",
+                        "options": {
+                            "seconds": {
+                                "name": "seconds",
+                                "description": "Type an amount between 0 and 21600 (0 to disable)"
+                            },
+                            "reason": {
+                                "name": "motivo",
+                                "description": "Provide a reason for the action"
+                            }
+                        }
+                    },
+                    "notEnabled": "Slow mode is not enabled",
+                    "disabledLoggingEmbed": {
+                        "title": "Logging - [SLOW MODE]",
+                        "description": "Slow mode has been disabled",
+                        "moderator": "Moderatore",
+                        "channel": "Canale"
+                    },
+                    "disabledNotificationEmbed": {
+                        "title": "Operazione completata",
+                        "description": "Slow mode has been disabled"
+                    },
+                    "maximumConfiguredLengthError": "You can only enable slow mode for a maximum of `{{max}}s`",
+                    "noReason": "Devi fornire un motivo",
+                    "undefinedReason": "Indefinita",
+                    "enabledLoggingEmbed": {
+                        "title": "Logging - [SLOW MODE]",
+                        "description": "Slow mode has been enabled",
+                        "moderator": "Moderatore",
+                        "delay": "Delay",
+                        "delayed": "{{seconds}} seconds",
+                        "channel": "Canale",
+                        "reason": "Motivo"
+                    },
+                    "enabledNotificationEmbed": {
+                        "title": "Operazione completata",
+                        "description": "Slow mode has been activated with a delay of `{{seconds}}s`"
+                    }
+                },
+                "stats": {
+                    "appData": {
+                        "name": "stats",
+                        "description": "Shows your or another member's experience point stats",
+                        "options": {
+                            "user": {
+                                "name": "utente",
+                                "description": "Select a user or enter it's ID"
+                            }
+                        }
+                    },
+                    "unknownMember": "Member not found. You must mention a member or enter it's ID",
+                    "noXp": "{{member}} has no experience points",
+                    "defaultReward": "Nessuna",
+                    "statsEmbed": {
+                        "title": "Statistics",
+                        "description": "Displaying stats of **{{memberTag}}**",
+                        "actualLevel": "Current Level",
+                        "xpToNextLevel": "XP to next level",
+                        "noXpToNextLevel": "Cannot level up",
+                        "voiceTime": "Voice time",
+                        "nextRewards": "Next Rewards",
+                        "noNextRewards": "Cannot earn rewards",
+                        "experience": "EXP totale",
+                        "messagesCount": "Messages",
+                        "antiquity": "Antichità",
+                        "level": "lvl"
+                    }
+                },
+                "unban": {
+                    "appData": {
+                        "name": "unban",
+                        "description": "Unbans a member",
+                        "options": {
+                            "user": {
+                                "name": "utente",
+                                "description": "Seleziona un utente o scrivi il suo ID"
+                            },
+                            "reason": {
+                                "name": "motivo",
+                                "description": "Provide a reason for the action"
+                            }
+                        }
+                    },
+                    "userNotFound": "User not found. You must mention a member or write it's ID.\nIf the user is not on the server, you must specify it's ID",
+                    "noReason": "Devi fornire un motivo",
+                    "notBanned": "This user has not been banned",
+                    "undefinedReason": "Indefinita",
+                    "loggingEmbed": {
+                        "author": "{{userTag}} has been UNBANNED",
+                        "userId": "User ID",
+                        "moderator": "Moderatore",
+                        "reason": "Motivo",
+                        "deletedDays": "Giorni di messaggi eliminati",
+                        "noDeletedDays": "Nessuno",
+                        "expiration": "Scadenza",
+                        "noExpiration": "Non scade"
+                    },
+                    "notificationEmbed": {
+                        "title": "Operazione completata",
+                        "description": "Member **{{userTag}}** has been unbanned"
+                    }
+                },
+                "unmute": {
+                    "appData": {
+                        "name": "unmute",
+                        "description": "Unsilences a member",
+                        "options": {
+                            "user": {
+                                "name": "utente",
+                                "description": "Seleziona un utente o scrivi il suo ID"
+                            },
+                            "reason": {
+                                "name": "motivo",
+                                "description": "Provide a reason for the action"
+                            }
+                        }
+                    },
+                    "noReason": "Devi fornire un motivo",
+                    "notSilenced": "This member is not muted",
+                    "badHierarchy": "{{interactionAuthor}}, you cannot un-mute someone with a role equal to or higher than yours",
+                    "cantRemoveAny": "{{interactionAuthor}}, you can't unmute someone you haven't muted yourself",
+                    "undefinedReason": "Indefinita",
+                    "loggingEmbed": {
+                        "author": "Un membro è stato SMUTATO",
+                        "memberId": "ID del Membro",
+                        "moderator": "Moderatore",
+                        "reason": "Motivo"
+                    },
+                    "notificationEmbed": {
+                        "title": "Operazione completata",
+                        "description": "Il membro **{{member}}** è stato smutato"
+                    }
+                },
+                "userinfo": {
+                    "appData": {
+                        "name": "userinfo",
+                        "description": "Displays information about you or any other member",
+                        "options": {
+                            "user": {
+                                "name": "utente",
+                                "description": "Select a user or enter it's ID"
+                            }
+                        }
+                    },
+                    "invalidMember": "You have not provided a valid member",
+                    "cantSeeAny": "You do not have privileges to see other members information",
+                    "memberType": {
+                        "owner": "Owner",
+                        "administrator": "Administrator",
+                        "moderator": "Moderatore",
+                        "regular": "Regular member"
+                    },
+                    "embed": {
+                        "mutedUntil": "Muted until",
+                        "title": "Information about {{memberDisplayName}}",
+                        "description": "Displaying information about **{{memberTag}}**",
+                        "memberId": "ID del Membro",
+                        "registerDate": "Data di registro",
+                        "joinDate": "Joined to server",
+                        "status": "Status",
+                        "nitroBooster": "Nitro Booster",
+                        "isBooster": "Since {{time}}",
+                        "isntBooster": "No",
+                        "highestRole": "Highest role",
+                        "infractions": "Infrazioni",
+                        "verification": "Verification",
+                        "isVerified": "Verified",
+                        "isntVerified": "Verification pending",
+                        "actualSanction": "Current sanction",
+                        "noSanction": "Nessuna"
+                    }
+                },
+                "warn": {
+                    "appData": {
+                        "name": "warn",
+                        "description": "Aggiungi una avvertenza ad un membro",
+                        "options": {
+                            "user": {
+                                "name": "utente",
+                                "description": "Seleziona un utente o scrivi il suo ID"
+                            },
+                            "reason": {
+                                "name": "motivo",
+                                "description": "Provide a reason for the warning"
+                            }
+                        }
+                    },
+                    "memberNotFound": "Member not found. You must mention a member or enter it's ID",
+                    "noBots": "You cannot warn a bot",
+                    "badHierarchy": "You cannot warn a member with a role equal to or higher than yours",
+                    "cooldown": "You have to wait before you can put a new warning on {{member}}"
+                },
+                "xp": {
+                    "appData": {
+                        "name": "xp",
+                        "description": "Modifies a member's experience point amount",
+                        "options": {
+                            "set": {
+                                "name": "set",
+                                "description": "Adjust the amount of experience points to the chosen value",
+                                "options": {
+                                    "user": {
+                                        "name": "utente",
+                                        "description": "Seleziona un utente o scrivi il suo ID"
+                                    },
+                                    "quantity": {
+                                        "name": "quantità",
+                                        "description": "Enter an amount of experience points"
+                                    }
+                                }
+                            },
+                            "add": {
+                                "name": "add",
+                                "description": "Adds to current amount of experience points",
+                                "options": {
+                                    "user": {
+                                        "name": "utente",
+                                        "description": "Seleziona un utente o scrivi il suo ID"
+                                    },
+                                    "quantity": {
+                                        "name": "quantità",
+                                        "description": "Enter an amount of experience points"
+                                    }
+                                }
+                            },
+                            "addrandom": {
+                                "name": "addrandom",
+                                "description": "Generates X times the experience points earned by writing messages",
+                                "options": {
+                                    "user": {
+                                        "name": "utente",
+                                        "description": "Seleziona un utente o scrivi il suo ID"
+                                    },
+                                    "times": {
+                                        "name": "times",
+                                        "description": "Enter the number of times experience points will be generated"
+                                    }
+                                }
+                            },
+                            "remove": {
+                                "name": "eliminare",
+                                "description": "Subtracts from the current amount of experience points",
+                                "options": {
+                                    "user": {
+                                        "name": "utente",
+                                        "description": "Seleziona un utente o scrivi il suo ID"
+                                    },
+                                    "quantity": {
+                                        "name": "quantità",
+                                        "description": "Enter an amount of experience points"
+                                    }
+                                }
+                            },
+                            "clear": {
+                                "name": "svuotare",
+                                "description": "Resets the amount of experience points to 0",
+                                "options": {
+                                    "user": {
+                                        "name": "utente",
+                                        "description": "Seleziona un utente o scrivi il suo ID"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "invalidMember": "You have not provided a valid member",
+                    "noBots": "Bots cannot earn experience points",
+                    "invalidQuantity": "Devi fornire una quantità valida",
+                    "hasNoXp": "This member has no experience points",
+                    "unauthorizedModify": "You cannot modify the experience points of a member with a role equal to or higher than yours",
+                    "loggingEmbed": {
+                        "title": "Logging - [XP SYSTEM]",
+                        "description": "The experience points amount of **{{memberTag}}** has changed",
+                        "date": "Data",
+                        "moderator": "Moderatore",
+                        "memberId": "ID del Membro",
+                        "oldValue": "Old value",
+                        "newValue": "New value"
+                    },
+                    "notificationEmbed": "The experience points amount of **{{memberTag}}** has changed",
+                    "privateEmbed": {
+                        "reset": {
+                            "author": "Your experience points have been RESET",
+                            "description": "**{{moderatorTag}}** ha eliminato tutti i tuoi punti di EXP.\nOra hai `0` punti di EXP"
+                        },
+                        "increased": {
+                            "author": "You have RECEIVED experience points",
+                            "description": "**{{moderatorTag}}** ti ha dato `{{givenExp}}` punti di EXP.\nOra hai `{{newXP}}` punti di EXP"
+                        },
+                        "decreased": {
+                            "author": "You have LOST experience points",
+                            "description": "**{{moderatorTag}}** ti ha scontato `{{removedXP}}` punti di EXP.\nOra hai `{{newXP}}` punti di EXP"
+                        }
+                    }
+                },
+                "report": {
+                    "appData": {
+                        "name": "report",
+                        "description": "Reports something to the moderation team",
+                        "options": {
+                            "body": {
+                                "name": "report",
+                                "description": "What do you want to report?"
+                            },
+                            "member": {
+                                "name": "member",
+                                "description": "Who do you want to report?"
+                            }
+                        }
+                    },
+                    "bodyModal": {
+                        "title": "Report something",
+                        "fieldTitle": "Reason for the report",
+                        "fieldPlaceholder": "What is your report?"
+                    }
+                }
+            },
+            "messageCommands": {
+                "removeAndWarn": {
+                    "appData": {
+                        "name": "Eliminare e avvertire"
+                    },
+                    "cantDeleteMessages": "Non hai permessi per eliminare messaggi in questo canale",
+                    "memberNotFound": "The member is no longer on the server",
+                    "noBots": "You can't warn a bot",
+                    "badHierarchy": "You cannot warn a member with a role equal to or higher than yours",
+                    "cooldown": "You have to wait before you can put a new warning on {{member}}",
+                    "bodyModal": {
+                        "title": "Warn and delete a message",
+                        "fieldTitle": "Motivo di avvertenza",
+                        "fieldPlaceholder": "Write a reason for the warning"
+                    },
+                    "correct": "The member has been warned"
+                },
+                "reportMessage": {
+                    "appData": {
+                        "name": "Report message"
+                    },
+                    "memberNotFound": "The member is no longer on the server",
+                    "cantReportYourself": "You can't report yourself",
+                    "bodyModal": {
+                        "title": "Report a member's message",
+                        "fieldTitle": "Reason for the report",
+                        "fieldPlaceholder": "What is your report?"
+                    }
+                }
+            },
+            "userCommands": {
+                "warn": {
+                    "appData": {
+                        "name": "Warn"
+                    },
+                    "cantDeleteMessages": "Non hai permessi per eliminare messaggi in questo canale",
+                    "memberNotFound": "The member is no longer on the server",
+                    "noBots": "You can't warn a bot",
+                    "badHierarchy": "You cannot warn a member with a role equal to or higher than yours",
+                    "cooldown": "You have to wait before you can put a new warning on {{member}}",
+                    "bodyModal": {
+                        "title": "Avvisare un membro",
+                        "fieldTitle": "Motivo di avvertenza",
+                        "fieldPlaceholder": "Write a reason for the warning"
+                    }
+                },
+                "reportMember": {
+                    "appData": {
+                        "name": "Report member"
+                    },
+                    "memberNotFound": "The member is no longer on the server",
+                    "cantReportYourself": "You can't report yourself",
+                    "bodyModal": {
+                        "title": "Report a member",
+                        "fieldTitle": "Reason for the report",
+                        "fieldPlaceholder": "What is your report?"
+                    }
+                }
+            }
+        },
+        "events": {
+            "channelDelete": {
+                "missingLoggingChannel": "WARNING: The logging channel no longer exists or is inaccessible.\n It has been cleared from the configuration and unloaded from memory"
+            },
+            "error": {
+                "econnresetError": "ERROR: The connection was closed unexpectedly",
+                "otherError": "ERROR"
+            },
+            "guildBanAdd": {
+                "botLoggingEmbed": {
+                    "title": "Logging - [BOTS]",
+                    "description": "The **BOT** {{userTag}} was banned from the server"
+                },
+                "loggingEmbed": {
+                    "author": "{{userTag}} has been BANNED",
+                    "memberId": "ID del Membro",
+                    "moderator": "Moderatore",
+                    "unknownModerator": "Sconosciuto",
+                    "reason": "Motivo",
+                    "undefinedReason": "Indefinita",
+                    "expiration": "Scadenza",
+                    "noExpiration": "Non scade",
+                    "deletedDays": "Giorni di messaggi eliminati",
+                    "noDeletedDays": "Nessuno"
+                },
+                "inconclusiveLoggingEmbed": {
+                    "author": "{{userTag}} has been BANNED",
+                    "memberId": "ID del Membro",
+                    "moderator": "Moderatore",
+                    "unknownModerator": "Sconosciuto",
+                    "reason": "Motivo",
+                    "unknownReason": "Unknown",
+                    "expiration": "Scadenza",
+                    "unknownExpiration": "Sconosciuto",
+                    "deletedDays": "Giorni di messaggi eliminati",
+                    "unknownDeletedDays": "Sconosciuti"
+                }
+            },
+            "guildCreate": {
+                "newGuild": "{{botUsername}} has joined the guild \"{{guildName}}\"",
+                "justOneGuild": "WARNING: {{botUsername}} is not designed to run on more than one guild",
+                "error": "ERROR:"
+            },
+            "guildDelete": {
+                "abandonedGuild": "NOTICE: {{botUsername}} has abandoned the guild \"{{guildName}}\"",
+                "shouldReboot": "NOTICE: To continue, you must restart the bot",
+                "error": "ERROR"
+            },
+            "guildMemberAdd": {
+                "botLoggingEmbed": {
+                    "title": "Logging - [BOTS]",
+                    "description": "The **BOT** {{memberTag}} was added to the server"
+                },
+                "communicationEnabled": {
+                    "reason": "Was unmuted while the memebr was not in the guild"
+                }
+            },
+            "guildMemberRemove": {
+                "botLoggingEmbed": {
+                    "title": "Logging - [BOTS]",
+                    "description": "The **BOT** {{memberTag}} was kicked from the server"
+                },
+                "loggingEmbed": {
+                    "author": "{{memberTag}} has been KICKED",
+                    "memberId": "ID del Membro",
+                    "moderator": "Moderatore",
+                    "unknownModerator": "Sconosciuto",
+                    "reason": "Motivo",
+                    "undefinedReason": "Indefinita"
+                },
+                "goodbyeEmbed": {
+                    "author": "A member left",
+                    "description": "{{memberTag}} left the server",
+                    "memberId": "ID del Membro",
+                    "antiquity": "Antichità"
+                },
+                "inconclusiveLoggingEmbed": {
+                    "author": "{{memberTag}} has been KICKED",
+                    "memberId": "ID del Membro",
+                    "moderator": "Moderatore",
+                    "unknownModerator": "Sconosciuto",
+                    "reason": "Motivo",
+                    "unknownReason": "Unknown"
+                }
+            },
+            "interactionCreate": {
+                "disabledCommand": "The command `{{commandName}}` has been disabled",
+                "error": "ERROR"
+            },
+            "messageCreate": {
+                "filteredDm": "via DM"
+            },
+            "ready": {
+                "justOneGuild": "WARNING: The bot is not designed to work on more than one guild (server).\nPlease kick the bot from all other guilds and restart the bot",
+                "waitingGuild": "WARNING: Waiting for the bot to join a guild",
+                "error": "ERROR"
+            },
+            "warn": {
+                "warnMessage": "WARNING"
+            },
+            "guildMemberUpdate": {
+                "communicationDisabled": {
+                    "loggingEmbed": {
+                        "author": "{{memberTag}} has been MUTED",
+                        "memberId": "ID del Membro",
+                        "moderator": "Moderatore",
+                        "unknownModerator": "Sconosciuto",
+                        "reason": "Motivo",
+                        "undefinedReason": "Indefinita",
+                        "expiration": "Scadenza"
+                    },
+                    "privateEmbed": {
+                        "author": "[SILENZIATO]",
+                        "description": "{{member}}, è stato silenziato in {{guildName}}",
+                        "moderator": "Moderatore",
+                        "unknownModerator": "Sconosciuto",
+                        "reason": "Motivo",
+                        "undefinedReason": "Indefinita",
+                        "expiration": "Scadenza"
+                    }
+                },
+                "communicationEnabled": {
+                    "loggingEmbed": {
+                        "author": "{{userTag}} è stato SMUTATO",
+                        "memberId": "ID del Membro",
+                        "moderator": "Moderatore",
+                        "unknownModerator": "Sconosciuto",
+                        "reason": "Motivo",
+                        "undefinedReason": "Indefinita"
+                    },
+                    "privateEmbed": {
+                        "author": "[SMUTATO]",
+                        "description": "{{member}}, è stato smutato in {{guildName}}",
+                        "moderator": "Moderatore",
+                        "unknownModerator": "Sconosciuto",
+                        "reason": "Motivo",
+                        "undefinedReason": "Indefinita"
+                    }
+                }
+            },
+            "voiceStateUpdate": {
+                "voiceMovesLogging": {
+                    "noChannel": "Nessuno",
+                    "oldChannel": "Canale precedente",
+                    "newChannel": "Nuovo canale",
+                    "actualMembers": "Membri del nuovo canale",
+                    "embedAuthor": "{{memberTag}} ha modificato il suo canale di voce"
+                }
+            }
+        }
+    },
+    "functions": {
+        "leveling": {
+            "addExperience": {
+                "levelUpEmbed": {
+                    "author": "You leveled up!",
+                    "description": "Congratulazioni {{member}}, sei salito di livello **{{memberLevel}}**",
+                    "rewards": "Rewards earned",
+                    "disablePrivateNotification": "Disattivare notificazioni"
+                }
+            }
+        },
+        "managers": {
+            "eventError": {
+                "error": "ERROR"
+            },
+            "interactionError": {
+                "error": "ERROR",
+                "notificationEmbed": {
+                    "title": "Oops! Something went wrong",
+                    "description": "We have reported it to those responsible for the bot"
+                }
+            },
+            "logging": {
+                "cannotSend": "ERROR: Cannot send messages to the logging channel.\n{{botUsername}} must have the following permissions on the channel: Send Messages, Send Links, Attach Files",
+                "cannotAccess": "ERROR: Cannot access the logging channel.\n The channel has been cleared from the configuration and unloaded from memory",
+                "error": "ERROR: Error while executing the logging"
+            },
+            "newMember": {
+                "author": "Nuovo membro",
+                "description": "{{memberTag}} joined the server",
+                "memberId": "ID del Membro",
+                "registerDate": "Data di registro",
+                "actualSanction": "Current sanction",
+                "mutedUntil": "Muted until"
+            },
+            "buttonNavigation": {
+                "cantUseNavigation": "You cannot control a menu invoked by another member"
+            },
+            "report": {
+                "reportEmbed": {
+                    "author": "{{memberTag}} has reported the following",
+                    "reportReason": "Report reason",
+                    "reportChannel": "Report channel",
+                    "reportedMember": "Reported member",
+                    "reportedMessage": "Reported message",
+                    "isInsertion": "Insertion",
+                    "reportedMessageId": "Message ID",
+                    "attachedFiles": "Attached files [{{currentChunk}}/{{totalChunks}}]",
+                    "fileName": "File {{fileNumber}} [{{fileType}}]"
+                },
+                "cannotSend": "ERROR: Cannot send messages to the reports channel.\n{{botUsername}} must have the following permissions on the channel: Send Messages, Send Links, Attach Files",
+                "correct": "The report has been sent",
+                "temporaryError": "This feature is not available at this time.\nPlease try again later",
+                "cannotAccess": "ERROR: Cannot access the reports channel.\n The channel has been cleared from the configuration and unloaded from memory",
+                "error": "ERROR: Error while executing the report manager"
+            }
+        },
+        "moderation": {
+            "manageWarn": {
+                "muteFunction": {
+                    "reason": "Too many warnings",
+                    "notificationEmbed": {
+                        "initiated": "**{{memberTag}}** has been muted for accumulating __too many warnings__, anyone else?",
+                        "extended": "**{{memberTag}}**'s mute has been extended because it racked up __more warnings__, anyone else?"
+                    }
+                },
+                "kickFunction": {
+                    "notificationEmbed": "{{memberTag}} has been kicked for accumulating __too many warnings__, anyone else?",
+                    "privateEmbed": {
+                        "author": "[ESPULSO]",
+                        "description": "{{member}}, you have been kicked in {{guildName}}",
+                        "moderator": "Moderatore",
+                        "reason": "Motivo"
+                    },
+                    "reason": "Too many warnings"
+                },
+                "banFunction": {
+                    "notificationEmbed": "{{memberTag}} got banned for accumulating __too many warnings__, anyone else?",
+                    "privateEmbed": {
+                        "author": "[BANNED]",
+                        "description": "{{member}}, you have been banned from {{guildName}}",
+                        "moderator": "Moderatore",
+                        "reason": "Motivo",
+                        "expiration": "Scadenza",
+                        "noExpiration": "Non scade"
+                    },
+                    "reason": "Too many warnings"
+                },
+                "warn": {
+                    "privateEmbed": {
+                        "author": "[WARNED]",
+                        "description": "{{member}}, you have been warned at {{guildName}}",
+                        "moderator": "Moderatore",
+                        "reason": "Motivo"
+                    },
+                    "notificationEmbed": "The member **{{memberTag}}** has been warned due to __{{warnReason}}__",
+                    "loggingEmbed": {
+                        "author": "{{memberTag}} has been WARNED",
+                        "memberId": "ID del Membro",
+                        "moderator": "Moderatore",
+                        "reason": "Motivo",
+                        "warnId": "ID di Avvertenza",
+                        "channel": "Canale",
+                        "infractions": "Infrazioni"
+                    }
+                },
+                "error": "ERROR"
+            },
+            "checkUsername": {
+                "kickReason": "The username contained a banned word",
+                "privateEmbed": {
+                    "author": "[ESPULSO]",
+                    "description": "{{member}}, you have been kicked from {{guildName}}",
+                    "moderator": "Moderatore",
+                    "reasonTitle": "Motivo",
+                    "reasonDescription": "Your username contains a word that is banned in the community"
+                }
+            },
+            "checkMessage": {
+                "filteredDm": "via DM"
+            }
+        },
+        "utilities": {
+            "msToTime": {
+                "years": "year/s",
+                "months": "month/s",
+                "days": "day/s"
+            }
+        }
+    },
+    "lifecycle": {
+        "loadIntervals": {
+            "mutes": {
+                "loggingEmbed": {
+                    "author": "{{userTag}} è stato SMUTATO",
+                    "moderator": "Moderatore",
+                    "reason": "Motivo",
+                    "authorNoMember": "Un membro è stato SMUTATO",
+                    "memberId": "ID del Membro"
+                },
+                "privateEmbed": {
+                    "author": "[SMUTATO]",
+                    "description": "{{member}}, è stato smutato in {{guildName}}",
+                    "moderator": "Moderatore",
+                    "reason": "Motivo"
+                },
+                "reason": "The sanction expired"
+            },
+            "bans": {
+                "loggingEmbed": {
+                    "author": "{{userTag}} has been UN-BANNED",
+                    "user": "Utente",
+                    "moderator": "Moderatore",
+                    "reason": "Motivo"
+                },
+                "reason": "The sanction expired",
+                "error": "ERROR"
+            },
+            "ping": {
+                "consoleMsg": "AVVISO: Tempo di risposta del Websocket elevato"
+            },
+            "polls": {
+                "votesPercentage": "{{votesCount}} votes, the {{percentage}}%",
+                "finishedEmbed": {
+                    "author": "Sondaggio finito",
+                    "results": "Results"
+                },
+                "loggingEmbed": {
+                    "title": "Registro - [SONDAGGI]",
+                    "description": "Il sondaggio \"__{{poll}}__\" ha finalizzato nel canale {{channel}}"
+                },
+                "progressEmbed": {
+                    "author": "Sondaggio disponibile",
+                    "remaining": "Remaining: {{remainingDays}}d {{remainingHours}}h {{remainingMinutes}}m"
+                }
+            },
+            "presence": {
+                "name": "{{memberCount}} members"
+            },
+            "configLoaded": "Intervals loading completed"
+        },
+        "loadCommands": {
+            "unregisteredFromGuild": "Command {{command}} un-registered at {{guildName}}",
+            "unregisteredFromGlobal": "Command {{command}} un-registered globally",
+            "convertedToGlobal": "Commando {{command}} convertito al tipo \"global\"",
+            "convertedToGuild": "Commando {{command}} convertito al tipo \"guild\"",
+            "noConfigError": "Command {{command}} has no configuration in commands.json",
+            "sameCommandNamesError": "Two or more commands have the same name",
+            "invalidTypeError": "Il commando {{command}} non ha un tipo válido",
+            "registeredOnGlobal": "Command {{command}} globally registered",
+            "registeredOnGuild": "Command {{command}} registered in {{guildName}}",
+            "parametersUpdated": "The command {{command}} has updated its parameters",
+            "defaultPermUpdated": "The command {{command}} has updated its default permission",
+            "loadedCorrectly": "Command {{command}} loaded successfully",
+            "dmPermUpdated": "The command {{command}} has updated its permission to be used via MD"
+        },
+        "loadSystem": {
+            "loadingSystem": "Loading system",
+            "configLoaded": "Loaded successfully",
+            "configNotLoaded": "Could not load",
+            "guildConfigLoaded": "Guild config loading completed",
+            "presenceLoaded": "Presence loading completed",
+            "voiceStatesLoaded": "Voice states loading completed",
+            "loadedCorrectly": "{{botUsername}} started successfully",
+            "error": "ERROR",
+            "functionsLoaded": "Global functions loading completed"
+        },
+        "loadTimers": {
+            "configLoaded": "Timers loading completed"
+        },
+        "loadEmojis": {
+            "configLoaded": "Custom emojis loading completed",
+            "maxExceeded": "No more than 50 emojis can be loaded",
+            "error": "ERROR"
+        },
+        "newGuild": {
+            "title": "{{botUsername}} added successfully!",
+            "description": "Use the configuration files to adjust the bot to your liking.\nRemember that the bot will only be able to moderate those people who have a role below the role created by {{botUser}}.\nIf you need help, you can [check the wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)",
+            "error": "ERROR"
+        },
+        "splashLogo": {
+            "description": "Sono un bot disegnato per moderare community automatizzate, riproduzione di musica, gestione di livelli e molto altro!",
+            "divider": "Inizio applicazione"
+        },
+        "loadErrorTracker": {
+            "loading": "Loading remote error tracking via Sentry ...",
+            "configLoaded": "Remote error tracking load completed!",
+            "tracesSampleRate": "Traces sample rate",
+            "errors": {
+                "invalidDSN": "You have not specified a valid Sentry DSN. Remote error tracking will not be used",
+                "smallTracesSampleRate": "You have not specified a valid sample rate. 0 will be used instead (the minimum)",
+                "largeTracesSampleRate": "You have not specified a valid sample rate. 1.0 will be used instead (the maximum)"
+            }
+        }
+    }
+}

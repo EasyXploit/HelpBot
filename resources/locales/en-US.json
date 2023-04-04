@@ -226,6 +226,10 @@
                         "name": "leaderboard",
                         "description": "Shows the community experience point leaderboard",
                         "options": {
+                            "page": {
+                                "name": "page",
+                                "description": "Enter the page number to consult"
+                            },
                             "type": {
                                 "name": "type",
                                 "description": "Select the type of classification to display",
@@ -235,16 +239,12 @@
                                     "messagesCount": "Sent messages",
                                     "antiquity": "Anitiquity"
                                 }
-                            },
-                            "page": {
-                                "name": "page",
-                                "description": "Enter the page number to consult"
                             }
                         }
                     },
-                    "noLeaderboard": "No one has gained XP yet",
                     "unknownMember": "Unknown",
                     "embed": {
+                        "footer": "Page {{actualPage}} of {{totalPages}}",
                         "title": {
                             "experience": "Experience points ranking",
                             "aproxVoiceTime": "Voice time ranking",
@@ -255,9 +255,9 @@
                             "experience": "xp",
                             "messagesCount": "messages",
                             "level": "lvl"
-                        },
-                        "footer": "Page {{actualPage}} of {{totalPages}}"
-                    }
+                        }
+                    },
+                    "noLeaderboard": "No one has gained XP yet"
                 },
                 "mute": {
                     "appData": {
@@ -267,6 +267,10 @@
                             "user": {
                                 "name": "user",
                                 "description": "Select a user or write it's ID"
+                            },
+                            "reason": {
+                                "name": "reason",
+                                "description": "Provide a reason for the action"
                             },
                             "expiration": {
                                 "name": "expiration",
@@ -285,23 +289,19 @@
                                     "oneMonth": "1 month",
                                     "threeMonths": "3 months"
                                 }
-                            },
-                            "reason": {
-                                "name": "reason",
-                                "description": "Provide a reason for the action"
                             }
                         }
                     },
                     "memberNotFound": "Member not found. You must mention a member or enter it's ID",
                     "noBots": "You cannot ban a bot",
                     "badHierarchy": "You cannot mute a member with a role equal to or higher than yours",
-                    "exceededDuration": "You can only mute a maximum of `{{time}}`",
                     "noReason": "You must provide a reason",
                     "undefinedReason": "Undefined",
                     "notificationEmbed": {
                         "withReason": "**{{memberTag}}** has been muted due to __{{reason}}__, anyone else?",
                         "withoutReason": "**{{memberTag}}** has been muted, anyone else?"
-                    }
+                    },
+                    "exceededDuration": "You can only mute a maximum of `{{time}}`"
                 },
                 "notifications": {
                     "appData": {
@@ -423,27 +423,6 @@
                         "description": "{{authorTag}} deleted {{deletedCount}} messages from channel {{channel}}"
                     }
                 },
-                "report": {
-                    "appData": {
-                        "name": "report",
-                        "description": "Reports something to the moderation team",
-                        "options": {
-                            "body": {
-                                "name": "report",
-                                "description": "What do you want to report?"
-                            },
-                            "member": {
-                                "name": "member",
-                                "description": "Who do you want to report?"
-                            }
-                        }
-                    },
-                    "bodyModal": {
-                        "title": "Report something",
-                        "fieldTitle": "Reason for the report",
-                        "fieldPlaceholder": "What is your report?"
-                    }
-                },
                 "rmwarn": {
                     "appData": {
                         "name": "rmwarn",
@@ -453,13 +432,13 @@
                                 "name": "user",
                                 "description": "Select a user o write it's ID"
                             },
-                            "warn": {
-                                "name": "warn",
-                                "description": "Search for the warning to remove it"
-                            },
                             "reason": {
                                 "name": "reason",
                                 "description": "Provide a reason for the action"
+                            },
+                            "warn": {
+                                "name": "warn",
+                                "description": "Search for the warning to remove it"
                             }
                         }
                     },
@@ -719,15 +698,15 @@
                         "title": "Statistics",
                         "description": "Displaying stats of **{{memberTag}}**",
                         "actualLevel": "Current Level",
-                        "experience": "Total XP",
                         "xpToNextLevel": "XP to next level",
                         "noXpToNextLevel": "Cannot level up",
-                        "messagesCount": "Messages",
                         "voiceTime": "Voice time",
-                        "antiquity": "Antiquity",
                         "nextRewards": "Next Rewards",
-                        "level": "lvl",
-                        "noNextRewards": "Cannot earn rewards"
+                        "noNextRewards": "Cannot earn rewards",
+                        "experience": "Total XP",
+                        "messagesCount": "Messages",
+                        "antiquity": "Antiquity",
+                        "level": "lvl"
                     }
                 },
                 "unban": {
@@ -941,6 +920,7 @@
                         "oldValue": "Old value",
                         "newValue": "New value"
                     },
+                    "notificationEmbed": "The experience points amount of **{{memberTag}}** has changed",
                     "privateEmbed": {
                         "reset": {
                             "author": "Your experience points have been RESET",
@@ -954,23 +934,31 @@
                             "author": "You have LOST experience points",
                             "description": "**{{moderatorTag}}** has removed `{{removedXP}}` XP from you.\nYou now have `{{newXP}}` XP"
                         }
-                    },
-                    "notificationEmbed": "The experience points amount of **{{memberTag}}** has changed"
-                }
-            },
-            "messageCommands": {
-                "reportMessage": {
+                    }
+                },
+                "report": {
                     "appData": {
-                        "name": "Report message"
+                        "name": "report",
+                        "description": "Reports something to the moderation team",
+                        "options": {
+                            "body": {
+                                "name": "report",
+                                "description": "What do you want to report?"
+                            },
+                            "member": {
+                                "name": "member",
+                                "description": "Who do you want to report?"
+                            }
+                        }
                     },
-                    "memberNotFound": "The member is no longer on the server",
-                    "cantReportYourself": "You can't report yourself",
                     "bodyModal": {
-                        "title": "Report a member's message",
+                        "title": "Report something",
                         "fieldTitle": "Reason for the report",
                         "fieldPlaceholder": "What is your report?"
                     }
-                },
+                }
+            },
+            "messageCommands": {
                 "removeAndWarn": {
                     "appData": {
                         "name": "Remove and warn"
@@ -986,21 +974,21 @@
                         "fieldPlaceholder": "Write a reason for the warning"
                     },
                     "correct": "The member has been warned"
-                }
-            },
-            "userCommands": {
-                "reportMember": {
+                },
+                "reportMessage": {
                     "appData": {
-                        "name": "Report member"
+                        "name": "Report message"
                     },
                     "memberNotFound": "The member is no longer on the server",
                     "cantReportYourself": "You can't report yourself",
                     "bodyModal": {
-                        "title": "Report a member",
+                        "title": "Report a member's message",
                         "fieldTitle": "Reason for the report",
                         "fieldPlaceholder": "What is your report?"
                     }
-                },
+                }
+            },
+            "userCommands": {
                 "warn": {
                     "appData": {
                         "name": "Warn"
@@ -1015,6 +1003,18 @@
                         "fieldTitle": "Reason for the warning",
                         "fieldPlaceholder": "Write a reason for the warning"
                     }
+                },
+                "reportMember": {
+                    "appData": {
+                        "name": "Report member"
+                    },
+                    "memberNotFound": "The member is no longer on the server",
+                    "cantReportYourself": "You can't report yourself",
+                    "bodyModal": {
+                        "title": "Report a member",
+                        "fieldTitle": "Reason for the report",
+                        "fieldPlaceholder": "What is your report?"
+                    }
                 }
             }
         },
@@ -1027,18 +1027,6 @@
                 "otherError": "ERROR"
             },
             "guildBanAdd": {
-                "inconclusiveLoggingEmbed": {
-                    "author": "{{userTag}} has been BANNED",
-                    "memberId": "Member ID",
-                    "moderator": "Moderator",
-                    "unknownModerator": "Unknown",
-                    "reason": "Reason",
-                    "unknownReason": "Unknown",
-                    "expiration": "Expiration",
-                    "unknownExpiration": "Unknown",
-                    "deletedDays": "Days of deleted messages",
-                    "unknownDeletedDays": "Unknown"
-                },
                 "botLoggingEmbed": {
                     "title": "Logging - [BOTS]",
                     "description": "The **BOT** {{userTag}} was banned from the server"
@@ -1054,6 +1042,18 @@
                     "noExpiration": "Does not expire",
                     "deletedDays": "Days of deleted messages",
                     "noDeletedDays": "None"
+                },
+                "inconclusiveLoggingEmbed": {
+                    "author": "{{userTag}} has been BANNED",
+                    "memberId": "Member ID",
+                    "moderator": "Moderator",
+                    "unknownModerator": "Unknown",
+                    "reason": "Reason",
+                    "unknownReason": "Unknown",
+                    "expiration": "Expiration",
+                    "unknownExpiration": "Unknown",
+                    "deletedDays": "Days of deleted messages",
+                    "unknownDeletedDays": "Unknown"
                 }
             },
             "guildCreate": {
@@ -1076,14 +1076,6 @@
                 }
             },
             "guildMemberRemove": {
-                "inconclusiveLoggingEmbed": {
-                    "author": "{{memberTag}} has been KICKED",
-                    "memberId": "Member ID",
-                    "moderator": "Moderator",
-                    "unknownModerator": "Unknown",
-                    "reason": "Reason",
-                    "unknownReason": "Unknown"
-                },
                 "botLoggingEmbed": {
                     "title": "Logging - [BOTS]",
                     "description": "The **BOT** {{memberTag}} was kicked from the server"
@@ -1101,7 +1093,30 @@
                     "description": "{{memberTag}} left the server",
                     "memberId": "Member ID",
                     "antiquity": "Antiquity"
+                },
+                "inconclusiveLoggingEmbed": {
+                    "author": "{{memberTag}} has been KICKED",
+                    "memberId": "Member ID",
+                    "moderator": "Moderator",
+                    "unknownModerator": "Unknown",
+                    "reason": "Reason",
+                    "unknownReason": "Unknown"
                 }
+            },
+            "interactionCreate": {
+                "disabledCommand": "The command `{{commandName}}` has been disabled",
+                "error": "ERROR"
+            },
+            "messageCreate": {
+                "filteredDm": "via DM"
+            },
+            "ready": {
+                "justOneGuild": "WARNING: The bot is not designed to work on more than one guild (server).\nPlease kick the bot from all other guilds and restart the bot",
+                "waitingGuild": "WARNING: Waiting for the bot to join a guild",
+                "error": "ERROR"
+            },
+            "warn": {
+                "warnMessage": "WARNING"
             },
             "guildMemberUpdate": {
                 "communicationDisabled": {
@@ -1143,18 +1158,6 @@
                     }
                 }
             },
-            "interactionCreate": {
-                "disabledCommand": "The command `{{commandName}}` has been disabled",
-                "error": "ERROR"
-            },
-            "messageCreate": {
-                "filteredDm": "via DM"
-            },
-            "ready": {
-                "justOneGuild": "WARNING: The bot is not designed to work on more than one guild (server).\nPlease kick the bot from all other guilds and restart the bot",
-                "waitingGuild": "WARNING: Waiting for the bot to join a guild",
-                "error": "ERROR"
-            },
             "voiceStateUpdate": {
                 "voiceMovesLogging": {
                     "noChannel": "None",
@@ -1163,9 +1166,6 @@
                     "actualMembers": "Members of the new channel",
                     "embedAuthor": "{{memberTag}} has changed his voice channel"
                 }
-            },
-            "warn": {
-                "warnMessage": "WARNING"
             }
         }
     },
@@ -1181,9 +1181,6 @@
             }
         },
         "managers": {
-            "buttonNavigation": {
-                "cantUseNavigation": "You cannot control a menu invoked by another member"
-            },
             "eventError": {
                 "error": "ERROR"
             },
@@ -1206,6 +1203,9 @@
                 "registerDate": "Register date",
                 "actualSanction": "Current sanction",
                 "mutedUntil": "Muted until"
+            },
+            "buttonNavigation": {
+                "cantUseNavigation": "You cannot control a menu invoked by another member"
             },
             "report": {
                 "reportEmbed": {
@@ -1300,24 +1300,14 @@
         }
     },
     "lifecycle": {
-        "loadErrorTracker": {
-            "loading": "Loading remote error tracking via Sentry ...",
-            "configLoaded": "Remote error tracking load completed!",
-            "tracesSampleRate": "Traces sample rate",
-            "errors": {
-                "invalidDSN": "You have not specified a valid Sentry DSN. Remote error tracking will not be used",
-                "smallTracesSampleRate": "You have not specified a valid sample rate. 0 will be used instead (the minimum)",
-                "largeTracesSampleRate": "You have not specified a valid sample rate. 1.0 will be used instead (the maximum)"
-            }
-        },
         "loadIntervals": {
             "mutes": {
                 "loggingEmbed": {
                     "author": "{{userTag}} has been UN-MUTED",
-                    "authorNoMember": "A member has been UN-MUTED",
-                    "memberId": "Member ID",
                     "moderator": "Moderator",
-                    "reason": "Reason"
+                    "reason": "Reason",
+                    "authorNoMember": "A member has been UN-MUTED",
+                    "memberId": "Member ID"
                 },
                 "privateEmbed": {
                     "author": "[UN-MUTED]",
@@ -1372,8 +1362,8 @@
             "registeredOnGuild": "Command {{command}} registered in {{guildName}}",
             "parametersUpdated": "The command {{command}} has updated its parameters",
             "defaultPermUpdated": "The command {{command}} has updated its default permission",
-            "dmPermUpdated": "The command {{command}} has updated its permission to be used via MD",
-            "loadedCorrectly": "Command {{command}} loaded successfully"
+            "loadedCorrectly": "Command {{command}} loaded successfully",
+            "dmPermUpdated": "The command {{command}} has updated its permission to be used via MD"
         },
         "loadSystem": {
             "loadingSystem": "Loading system",
@@ -1402,6 +1392,16 @@
         "splashLogo": {
             "description": "I'm a bot designed for automated community moderation, leveling, chat utilities, and much more!",
             "divider": "Starting application"
+        },
+        "loadErrorTracker": {
+            "loading": "Loading remote error tracking via Sentry ...",
+            "configLoaded": "Remote error tracking load completed!",
+            "tracesSampleRate": "Traces sample rate",
+            "errors": {
+                "invalidDSN": "You have not specified a valid Sentry DSN. Remote error tracking will not be used",
+                "smallTracesSampleRate": "You have not specified a valid sample rate. 0 will be used instead (the minimum)",
+                "largeTracesSampleRate": "You have not specified a valid sample rate. 1.0 will be used instead (the maximum)"
+            }
         }
     }
 }

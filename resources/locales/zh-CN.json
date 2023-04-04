@@ -18,7 +18,7 @@
                 "alreadyApplied": "此设置已应用。不会进行任何更改",
                 "newButon": {
                     "disable": "关闭通知",
-                    "enable": "Reactivate notifications"
+                    "enable": "重新激活通知"
                 }
             }
         },
@@ -43,18 +43,18 @@
                             },
                             "duration": {
                                 "name": "持续时间",
-                                "description": "Enter a duration in the format: days\"D\" | minutes\"M\" | hours\"H\" | seconds\"S\""
+                                "description": "输入持续时间，格式为：天 \"D\" - 分钟 \"M\" - 小时 \"H\" - 秒 \"S\""
                             }
                         }
                     },
                     "userNotFound": "未找到用户。你必须提到一个成员或写出它的ID。\n如果该用户不在服务器上，你必须指定它的ID",
                     "noBots": "你无法禁止机器人",
                     "badHierarchy": "你无法禁止一个权力等于或高于你的成员",
-                    "alreadyBanned": "This user has already been banned",
-                    "cantPermaBan": "You do not have permission to permanently ban",
-                    "wrongMagnitudes": "You have to write a duration with the format: days\"D\" | minutes\"M\" | hours\"H\" | seconds\"S\"",
-                    "exceededDuration": "You can only ban a maximum of `{{time}}`",
-                    "noReason": "You must provide a reason",
+                    "alreadyBanned": "该用户已被禁止",
+                    "cantPermaBan": "你不具备永久禁止权限",
+                    "wrongMagnitudes": "你必须写一个持续时间，格式为：天 \"D\"|分钟 \"M\"|小时 \"H\"|秒 \"S\"",
+                    "exceededDuration": "你最多只能禁止`{{time}}`",
+                    "noReason": "你必须提供一个理由",
                     "cantSoftBan": "You do not have permission to delete messages while banning",
                     "undefinedReason": "Undefined",
                     "privateEmbed": {
@@ -62,7 +62,7 @@
                         "description": "{{user}}, you have been banned from {{guildName}}",
                         "moderator": "Moderator",
                         "reason": "Reason",
-                        "deletedDays": "Days of messages deleted ",
+                        "deletedDays": "Days of messages deleted",
                         "noDeletedDays": "None",
                         "expiration": "Expiration",
                         "noExpiration": "Does not expire"

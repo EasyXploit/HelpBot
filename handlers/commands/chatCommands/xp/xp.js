@@ -1,5 +1,3 @@
-const { zip } = require("lodash");
-
 exports.run = async (client, interaction, commandConfig, locale) => {
     
     try {

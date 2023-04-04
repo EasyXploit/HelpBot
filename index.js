@@ -8,7 +8,10 @@ if (!process.env.NODE_ENV) process.env.NODE_ENV = 'development';
 const localConfig = require('./config.json');
 
 //Almacena las traducciones al idioma configurado
-const locale = require(`./resources/locales/${localConfig.locale}.json`);
+let locale = require(`./resources/locales/${localConfig.locale}.json`);
+
+//Uniforma las traducciones si no se corresponden con las del idioma por defecto
+locale = require('./lifecycle/loadLocales.js').run(localConfig.locale);
 
 //Gestión de promesas rechazadas y no manejadas
 process.on('unhandledRejection', error => {

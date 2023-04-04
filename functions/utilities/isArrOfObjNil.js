@@ -1,5 +1,5 @@
 //Función para eliminar claves indefinidas o nulas de un array de objetos
-exports.run = async (client, array, lodash) => {
+const isArrOfObjNil = async (array, lodash) => {
 
     //Requiere "lodash" para comparar objetos
     lodash ? lodash : require('lodash');
@@ -17,7 +17,7 @@ exports.run = async (client, array, lodash) => {
             if (Array.isArray(object[property]) && object[property].length > 0) {
                 
                 //Ejecuta esta misma función de manera recursiva sobre dicho array
-                object[property] = await client.functions.utilities.isArrOfObjNil.run(client, object[property], lodash);
+                object[property] = await isArrOfObjNil(object[property], lodash);
             }
         };
 
@@ -28,3 +28,6 @@ exports.run = async (client, array, lodash) => {
     //Devuelve el nuevo array
     return cleanArray;
 };
+
+//Exporta la función
+exports.run = isArrOfObjNil;

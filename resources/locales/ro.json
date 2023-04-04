@@ -62,7 +62,7 @@
                         "description": "{{user}}, ai fost interzis in {{guildName}}",
                         "moderator": "Moderator",
                         "reason": "Motiv",
-                        "deletedDays": "Zile de mesaje șterse ",
+                        "deletedDays": "Zile de mesaje șterse",
                         "noDeletedDays": "Nici una",
                         "expiration": "Expirare",
                         "noExpiration": "Fără dată de expirare"
@@ -257,7 +257,7 @@
                             "level": "nivel"
                         }
                     },
-                    "noLeaderboard": "No one has gained XP yet"
+                    "noLeaderboard": "Nimeni nu a câștigat încă XP"
                 },
                 "mute": {
                     "appData": {
@@ -556,11 +556,11 @@
                 },
                 "send": {
                     "appData": {
-                        "name": "send",
-                        "description": "The bot will send a message to the current or the specified text channel, with or without embedded formatting",
+                        "name": "trimite",
+                        "description": "Botul va trimite un mesaj către canalul de text actual sau specificat, cu sau fără formatare încorporată",
                         "options": {
                             "type": {
-                                "name": "type",
+                                "name": "tip",
                                 "description": "Specifică tipul de mesaj",
                                 "choices": {
                                     "embed": "Integrat",
@@ -606,13 +606,13 @@
                         "VERY_HIGH": "Foarte ridicat"
                     },
                     "embed": {
-                        "author": "Information about {{guildName}}",
-                        "name": "Name",
-                        "id": "Server ID",
-                        "region": "Region",
-                        "creationDate": "Creation date",
-                        "owner": "Owner",
-                        "nsfwFilter": "NSFW filter",
+                        "author": "Informații despre {{guildName}}",
+                        "name": "Nume",
+                        "id": "ID server",
+                        "region": "Regiune",
+                        "creationDate": "Data crearii",
+                        "owner": "Proprietar",
+                        "nsfwFilter": "filtru NSFW",
                         "tier": "Nivelul de creștere",
                         "boostsCount": "{{boostsCount}} creșteri",
                         "verification": "Nivel de verificare",
@@ -640,11 +640,11 @@
                 "slowmode": {
                     "appData": {
                         "name": "slowmode",
-                        "description": "Enables slow mode on a text channel",
+                        "description": "Activează modul lent pe un canal de text",
                         "options": {
                             "seconds": {
-                                "name": "seconds",
-                                "description": "Type an amount between 0 and 21600 (0 to disable)"
+                                "name": "secunde",
+                                "description": "Introdu o sumă între 0 și 21600 (0 pentru a dezactiva)"
                             },
                             "reason": {
                                 "name": "motiv",
@@ -652,32 +652,32 @@
                             }
                         }
                     },
-                    "notEnabled": "Slow mode is not enabled",
+                    "notEnabled": "Modul lent nu este activat",
                     "disabledLoggingEmbed": {
                         "title": "Înregistrare - [SLOW MODE]",
-                        "description": "Slow mode has been disabled",
+                        "description": "Modul lent a fost dezactivat",
                         "moderator": "Moderator",
-                        "channel": "Channel"
+                        "channel": "Canal"
                     },
                     "disabledNotificationEmbed": {
                         "title": "Operațiunea finalizată",
-                        "description": "Slow mode has been disabled"
+                        "description": "Modul lent a fost dezactivat"
                     },
-                    "maximumConfiguredLengthError": "You can only enable slow mode for a maximum of `{{max}}s`",
+                    "maximumConfiguredLengthError": "Puteți activa modul lent numai pentru maximum `{{max}}s`",
                     "noReason": "Trebuie să oferiți un motiv",
                     "undefinedReason": "Nedefinit",
                     "enabledLoggingEmbed": {
                         "title": "Înregistrare - [SLOW MODE]",
-                        "description": "Slow mode has been enabled",
+                        "description": "Modul lent a fost activat",
                         "moderator": "Moderator",
-                        "delay": "Delay",
-                        "delayed": "{{seconds}} seconds",
-                        "channel": "Channel",
+                        "delay": "Întârziere",
+                        "delayed": "{{seconds}} secunde",
+                        "channel": "Canal",
                         "reason": "Motiv"
                     },
                     "enabledNotificationEmbed": {
                         "title": "Operațiunea finalizată",
-                        "description": "Slow mode has been activated with a delay of `{{seconds}}s`"
+                        "description": "Modul lent a fost activat cu o întârziere de `{{seconds}}s`"
                     }
                 },
                 "stats": {
@@ -687,7 +687,7 @@
                         "options": {
                             "user": {
                                 "name": "utilizator",
-                                "description": "Selectați un utilizator sau introduceți ID-ul acestuia"
+                                "description": "Selectați un utilizator sau introduceții ID-ul"
                             }
                         }
                     },
@@ -711,8 +711,8 @@
                 },
                 "unban": {
                     "appData": {
-                        "name": "unban",
-                        "description": "Unbans a member",
+                        "name": "neinterzice",
+                        "description": "Anulează interdicția unui membru",
                         "options": {
                             "user": {
                                 "name": "utilizator",
@@ -724,12 +724,12 @@
                             }
                         }
                     },
-                    "userNotFound": "User not found. You must mention a member or write it's ID.\nIf the user is not on the server, you must specify it's ID",
+                    "userNotFound": "Utilizator nu a fost găsit. Trebuie să menționezi un membru sau să scrii ID-ul lui.\nDacă utilizatorul nu se află pe server, trebuie să specificați ID-ul acestuia",
                     "noReason": "Trebuie să oferiți un motiv",
-                    "notBanned": "This user has not been banned",
+                    "notBanned": "Acest utilizator nu a fost interzis",
                     "undefinedReason": "Nedefinit",
                     "loggingEmbed": {
-                        "author": "{{userTag}} has been UNBANNED",
+                        "author": "{{userTag}} a fost NEINTERZIS",
                         "userId": "ID-ul utilizatorului",
                         "moderator": "Moderator",
                         "reason": "Motiv",
@@ -740,7 +740,7 @@
                     },
                     "notificationEmbed": {
                         "title": "Operațiunea finalizată",
-                        "description": "Member **{{userTag}}** has been unbanned"
+                        "description": "Membrul **{{userTag}}** a fost neinterzis"
                     }
                 },
                 "unmute": {
@@ -776,19 +776,19 @@
                 },
                 "userinfo": {
                     "appData": {
-                        "name": "userinfo",
-                        "description": "Displays information about you or any other member",
+                        "name": "infoutilizator",
+                        "description": "Afișează informații despre tine sau despre orice alt membru",
                         "options": {
                             "user": {
                                 "name": "utilizator",
-                                "description": "Select a user or enter it's ID"
+                                "description": "Selectați un utilizator sau introduceții ID-ul"
                             }
                         }
                     },
-                    "invalidMember": "You have not provided a valid member",
-                    "cantSeeAny": "You do not have privileges to see other members information",
+                    "invalidMember": "Nu ați furnizat un membru valid",
+                    "cantSeeAny": "Nu aveți privilegii de a vedea informațiile altor membri",
                     "memberType": {
-                        "owner": "Owner",
+                        "owner": "Proprietar",
                         "administrator": "Administrator",
                         "moderator": "Moderator",
                         "regular": "Membru obișnuit"
@@ -796,13 +796,13 @@
                     "embed": {
                         "mutedUntil": "Amuțit pana la",
                         "title": "Informație despre {{memberDisplayName}}",
-                        "description": "Displaying information about **{{memberTag}}**",
+                        "description": "Se afișează informații despre **{{memberTag}}**",
                         "memberId": "ID-ul membrului",
                         "registerDate": "Data înregistrării",
                         "joinDate": "S-a alăturat serverului",
                         "status": "Stare",
                         "nitroBooster": "Nitro Booster",
-                        "isBooster": "Since {{time}}",
+                        "isBooster": "De la {{time}}",
                         "isntBooster": "Nu",
                         "highestRole": "Rolul cel mai important",
                         "infractions": "Infracțiuni",
@@ -840,53 +840,53 @@
                         "options": {
                             "set": {
                                 "name": "reglare",
-                                "description": "Adjust the amount of experience points to the chosen value",
+                                "description": "Ajustați cantitatea de puncte de experiență la valoarea aleasă",
                                 "options": {
                                     "user": {
                                         "name": "utilizator",
-                                        "description": "Select a user or enter it's ID"
+                                        "description": "Selectați un utilizator sau introduceții ID-ul"
                                     },
                                     "quantity": {
-                                        "name": "quantity",
-                                        "description": "Enter an amount of experience points"
+                                        "name": "cantitate",
+                                        "description": "Introduceți un număr de puncte de experiență"
                                     }
                                 }
                             },
                             "add": {
-                                "name": "add",
-                                "description": "Adds to current amount of experience points",
+                                "name": "adăuga",
+                                "description": "Se adaugă la numărul actual de puncte de experiență",
                                 "options": {
                                     "user": {
                                         "name": "utilizator",
-                                        "description": "Select a user or enter it's ID"
+                                        "description": "Selectați un utilizator sau introduceții ID-ul"
                                     },
                                     "quantity": {
-                                        "name": "quantity",
-                                        "description": "Enter an amount of experience points"
+                                        "name": "cantitate",
+                                        "description": "Introduceți un număr de puncte de experiență"
                                     }
                                 }
                             },
                             "addrandom": {
-                                "name": "addrandom",
+                                "name": "adaugărandom",
                                 "description": "Generează de X ori punctele de experiență câștigate prin scrierea mesajelor",
                                 "options": {
                                     "user": {
                                         "name": "utilizator",
-                                        "description": "Select a user or enter it's ID"
+                                        "description": "Selectați un utilizator sau introduceții ID-ul"
                                     },
                                     "times": {
-                                        "name": "times",
-                                        "description": "Enter the number of times experience points will be generated"
+                                        "name": "ori",
+                                        "description": "Introduceți de câte ori vor fi generate puncte de experiență"
                                     }
                                 }
                             },
                             "remove": {
-                                "name": "remove",
-                                "description": "Subtracts from the current amount of experience points",
+                                "name": "elimina",
+                                "description": "Scade din numărul curent de puncte de experiență",
                                 "options": {
                                     "user": {
                                         "name": "utilizator",
-                                        "description": "Select a user or enter it's ID"
+                                        "description": "Selectați un utilizator sau introduceții ID-ul"
                                     },
                                     "quantity": {
                                         "name": "cantitate",
@@ -900,7 +900,7 @@
                                 "options": {
                                     "user": {
                                         "name": "utilizator",
-                                        "description": "Selectați un utilizator sau introduceți ID-ul acestuia"
+                                        "description": "Selectați un utilizator sau introduceții ID-ul"
                                     }
                                 }
                             }
@@ -938,23 +938,23 @@
                 },
                 "report": {
                     "appData": {
-                        "name": "report",
-                        "description": "Reports something to the moderation team",
+                        "name": "raporta",
+                        "description": "Raportează ceva echipei de moderare",
                         "options": {
                             "body": {
-                                "name": "report",
-                                "description": "What do you want to report?"
+                                "name": "raport",
+                                "description": "Ce vrei să raportezi?"
                             },
                             "member": {
-                                "name": "member",
-                                "description": "Who do you want to report?"
+                                "name": "membru",
+                                "description": "Pe cine vrei să raportezi?"
                             }
                         }
                     },
                     "bodyModal": {
-                        "title": "Report something",
-                        "fieldTitle": "Reason for the report",
-                        "fieldPlaceholder": "What is your report?"
+                        "title": "Raportați ceva",
+                        "fieldTitle": "Motivul raportului",
+                        "fieldPlaceholder": "Care este raportul tău?"
                     }
                 }
             },
@@ -977,14 +977,14 @@
                 },
                 "reportMessage": {
                     "appData": {
-                        "name": "Report message"
+                        "name": "Raportați mesajul"
                     },
-                    "memberNotFound": "The member is no longer on the server",
-                    "cantReportYourself": "You can't report yourself",
+                    "memberNotFound": "Membrul nu mai este pe server",
+                    "cantReportYourself": "Nu te poți raporta singur",
                     "bodyModal": {
-                        "title": "Report a member's message",
-                        "fieldTitle": "Reason for the report",
-                        "fieldPlaceholder": "What is your report?"
+                        "title": "Raportați mesajul unui membru",
+                        "fieldTitle": "Motivul raportului",
+                        "fieldPlaceholder": "Care este raportul tău?"
                     }
                 }
             },
@@ -1006,14 +1006,14 @@
                 },
                 "reportMember": {
                     "appData": {
-                        "name": "Report member"
+                        "name": "Raportează membrul"
                     },
-                    "memberNotFound": "The member is no longer on the server",
-                    "cantReportYourself": "You can't report yourself",
+                    "memberNotFound": "Membrul nu mai este pe server",
+                    "cantReportYourself": "Nu te poți raporta singur",
                     "bodyModal": {
-                        "title": "Report a member",
-                        "fieldTitle": "Reason for the report",
-                        "fieldPlaceholder": "What is your report?"
+                        "title": "Raportați un membru",
+                        "fieldTitle": "Motivul raportului",
+                        "fieldPlaceholder": "Care este raportul tău?"
                     }
                 }
             }
@@ -1044,13 +1044,13 @@
                     "noDeletedDays": "Nici una"
                 },
                 "inconclusiveLoggingEmbed": {
-                    "author": "{{userTag}} has been BANNED",
+                    "author": "{{userTag}} a fost INTERZIS",
                     "memberId": "ID-ul membrului",
                     "moderator": "Moderator",
                     "unknownModerator": "Necunoscut",
                     "reason": "Motiv",
                     "unknownReason": "Necunoscut",
-                    "expiration": "Expiration",
+                    "expiration": "Expirare",
                     "unknownExpiration": "Necunoscut",
                     "deletedDays": "Zile de mesaje șterse",
                     "unknownDeletedDays": "Necunoscut"
@@ -1090,7 +1090,7 @@
                 },
                 "goodbyeEmbed": {
                     "author": "Un membru a plecat",
-                    "description": "{{memberTag}} left the server",
+                    "description": "{{memberTag}} a părăsit serverul",
                     "memberId": "ID al membrului",
                     "antiquity": "Antiquitate"
                 },
@@ -1104,7 +1104,7 @@
                 }
             },
             "interactionCreate": {
-                "disabledCommand": "The command `{{commandName}}` has been disabled",
+                "disabledCommand": "Comanda `{{commandName}}` a fost dezactivată",
                 "error": "EROARE"
             },
             "messageCreate": {
@@ -1127,7 +1127,7 @@
                         "unknownModerator": "Necunoscut",
                         "reason": "Motiv",
                         "undefinedReason": "Nedefinit",
-                        "expiration": "Expiration"
+                        "expiration": "Expirare"
                     },
                     "privateEmbed": {
                         "author": "[AMUȚIT]",
@@ -1136,7 +1136,7 @@
                         "unknownModerator": "Necunoscut",
                         "reason": "Motiv",
                         "undefinedReason": "Nedefinit",
-                        "expiration": "Expiration"
+                        "expiration": "Expirare"
                     }
                 },
                 "communicationEnabled": {
@@ -1174,7 +1174,7 @@
             "addExperience": {
                 "levelUpEmbed": {
                     "author": "Ați urcat un nivel!",
-                    "description": "Congratulations {{member}}, you have reached level **{{memberLevel}}**",
+                    "description": "Felicitări {{member}}, ai atins nivelul **{{memberLevel}}**",
                     "rewards": "Recompensele obținute",
                     "disablePrivateNotification": "Dezactivați notificările"
                 }
@@ -1188,42 +1188,42 @@
                 "error": "EROARE",
                 "notificationEmbed": {
                     "title": "Hopa! Ceva n-a mers bine",
-                    "description": "We have reported it to those responsible for the bot"
+                    "description": "Am raportat-o celor responsabili de bot"
                 }
             },
             "logging": {
                 "cannotSend": "EROARE: Nu se pot trimite mesaje către canalul de înregistrare.\n{{botUsername}} trebuie să aibă următoarele permisiuni pe canal: trimiteți mesaje, trimiteți linkuri, atașați fișiere",
-                "cannotAccess": "ERROR: Cannot access the logging channel.\n The channel has been cleared from the configuration and unloaded from memory",
-                "error": "ERROR: Error while executing the logging"
+                "cannotAccess": "EROARE: Nu se poate accesa canalul de înregistrare.\n Canalul a fost șters din configurație și descărcat din memorie",
+                "error": "EROARE: Eroare la executarea înregistrării"
             },
             "newMember": {
-                "author": "New member",
+                "author": "Membru nou",
                 "description": "{{memberTag}} s-a alăturat serverului",
                 "memberId": "ID-ul membrului",
-                "registerDate": "Register date",
-                "actualSanction": "Current sanction",
+                "registerDate": "Data inregistrarii",
+                "actualSanction": "Sancțiune actuală",
                 "mutedUntil": "Amuțit pana la"
             },
             "buttonNavigation": {
-                "cantUseNavigation": "You cannot control a menu invoked by another member"
+                "cantUseNavigation": "Nu puteți controla un meniu invocat de un alt membru"
             },
             "report": {
                 "reportEmbed": {
-                    "author": "{{memberTag}} has reported the following",
-                    "reportReason": "Report reason",
-                    "reportChannel": "Report channel",
-                    "reportedMember": "Reported member",
-                    "reportedMessage": "Reported message",
-                    "isInsertion": "Insertion",
-                    "reportedMessageId": "Message ID",
-                    "attachedFiles": "Attached files [{{currentChunk}}/{{totalChunks}}]",
-                    "fileName": "File {{fileNumber}} [{{fileType}}]"
+                    "author": "{{memberTag}} a raportat următorul",
+                    "reportReason": "Motivul raportului",
+                    "reportChannel": "Canal de raportare",
+                    "reportedMember": "Membru raportat",
+                    "reportedMessage": "Mesaj raportat",
+                    "isInsertion": "Inserare",
+                    "reportedMessageId": "ID-ul mesajului",
+                    "attachedFiles": "Fișiere atașate [{{currentChunk}}/{{totalChunks}}]",
+                    "fileName": "Fișier {{fileNumber}} [{{fileType}}]"
                 },
-                "cannotSend": "ERROR: Cannot send messages to the reports channel.\n{{botUsername}} must have the following permissions on the channel: Send Messages, Send Links, Attach Files",
-                "correct": "The report has been sent",
-                "temporaryError": "This feature is not available at this time.\nPlease try again later",
-                "cannotAccess": "ERROR: Cannot access the reports channel.\n The channel has been cleared from the configuration and unloaded from memory",
-                "error": "ERROR: Error while executing the report manager"
+                "cannotSend": "EROARE: Nu se pot trimite mesaje către canalul de rapoarte.\n{{botUsername}} trebuie să aibă următoarele permisiuni pe canal: Trimite mesaje, Trimite linkuri, Atașa fișiere",
+                "correct": "Raportul a fost trimis",
+                "temporaryError": "Această funcție nu este disponibilă în acest moment.\nVă rugăm să încercați din nou mai târziu",
+                "cannotAccess": "EROARE: Nu se poate accesa canalul de rapoarte.\n Canalul a fost șters din configurație și descărcat din memorie",
+                "error": "EROARE: Eroare la executarea managerului de rapoarte"
             }
         },
         "moderation": {
@@ -1293,9 +1293,9 @@
         },
         "utilities": {
             "msToTime": {
-                "years": "year/s",
-                "months": "month/s",
-                "days": "day/s"
+                "years": "ani",
+                "months": "luni",
+                "days": "zi/zi"
             }
         }
     },
@@ -1319,7 +1319,7 @@
             },
             "bans": {
                 "loggingEmbed": {
-                    "author": "{{userTag}} has been UN-BANNED",
+                    "author": "{{userTag}} a fost UN-BANNAT",
                     "user": "Utilizator",
                     "moderator": "Moderator",
                     "reason": "Motiv"
@@ -1331,67 +1331,67 @@
                 "consoleMsg": "AVERTISMENT: Timp mare de răspuns la socket web"
             },
             "polls": {
-                "votesPercentage": "{{votesCount}} votes, the {{percentage}}%",
+                "votesPercentage": "{{votesCount}} voturi, {{percentage}}%",
                 "finishedEmbed": {
-                    "author": "Poll finished",
-                    "results": "Results"
+                    "author": "Sondajul s-a terminat",
+                    "results": "Rezultate"
                 },
                 "loggingEmbed": {
                     "title": "Înregistrare - [POLLS]",
-                    "description": "Poll \"__{{poll}}__\" has ended on channel {{channel}}"
+                    "description": "Sondajul „__{{poll}}__” s-a încheiat pe canalul {{channel}}"
                 },
                 "progressEmbed": {
-                    "author": "Poll available",
-                    "remaining": "Remaining: {{remainingDays}}d {{remainingHours}}h {{remainingMinutes}}m"
+                    "author": "Sondaj disponibil",
+                    "remaining": "Au rămas: {{remainingDays}}d {{remainingHours}}h {{remainingMinutes}}m"
                 }
             },
             "presence": {
-                "name": "{{memberCount}} members"
+                "name": "{{memberCount}} membri"
             },
-            "configLoaded": "Intervals loading completed"
+            "configLoaded": "Încărcarea intervalelor s-a încheiat"
         },
         "loadCommands": {
-            "unregisteredFromGuild": "Command {{command}} un-registered at {{guildName}}",
-            "unregisteredFromGlobal": "Command {{command}} un-registered globally",
-            "convertedToGlobal": "Command {{command}} converted to \"global\" type",
-            "convertedToGuild": "Command {{command}} converted to \"guild\" type",
-            "noConfigError": "Command {{command}} has no configuration in commands.json",
-            "sameCommandNamesError": "Two or more commands have the same name",
-            "invalidTypeError": "The command {{command}} does not have a valid type",
-            "registeredOnGlobal": "Command {{command}} globally registered",
-            "registeredOnGuild": "Command {{command}} registered in {{guildName}}",
-            "parametersUpdated": "The command {{command}} has updated its parameters",
-            "defaultPermUpdated": "The command {{command}} has updated its default permission",
-            "loadedCorrectly": "Command {{command}} loaded successfully",
+            "unregisteredFromGuild": "Comanda {{command}} neînregistrată la {{guildName}}",
+            "unregisteredFromGlobal": "Comanda {{command}} neînregistrată la nivel global",
+            "convertedToGlobal": "Comanda {{command}} convertită în tipul \"global\"",
+            "convertedToGuild": "Comanda {{command}} a fost convertită în tipul \"breaslă\"",
+            "noConfigError": "Comanda {{command}} nu are nicio configurație în commands.json",
+            "sameCommandNamesError": "Două sau mai multe comenzi au același nume",
+            "invalidTypeError": "Comanda {{command}} nu are un tip valid",
+            "registeredOnGlobal": "Comanda {{command}} înregistrată la nivel global",
+            "registeredOnGuild": "Comanda {{command}} înregistrată în {{guildName}}",
+            "parametersUpdated": "Comanda {{command}} și-a actualizat parametrii",
+            "defaultPermUpdated": "Comanda {{command}} și-a actualizat permisiunea implicită",
+            "loadedCorrectly": "Comanda {{command}} a fost încărcată cu succes",
             "dmPermUpdated": "Comanda {{command}} și-a actualizat permisiunea de a fi utilizată prin MD"
         },
         "loadSystem": {
-            "loadingSystem": "Loading system",
-            "configLoaded": "Loaded successfully",
-            "configNotLoaded": "Could not load",
-            "guildConfigLoaded": "Guild config loading completed",
-            "presenceLoaded": "Presence loading completed",
-            "voiceStatesLoaded": "Voice states loading completed",
-            "loadedCorrectly": "{{botUsername}} started successfully",
+            "loadingSystem": "Sistemul se incarcă",
+            "configLoaded": "Încărcat cu succes",
+            "configNotLoaded": "Nu s-a putut incărca",
+            "guildConfigLoaded": "Încărcarea configurației breslei a fost finalizată",
+            "presenceLoaded": "Încărcarea prezenței a fost finalizată",
+            "voiceStatesLoaded": "Încărcarea stărilor vocale s-a încheiat",
+            "loadedCorrectly": "{{botUsername}} a început cu succes",
             "error": "EROARE",
-            "functionsLoaded": "Global functions loading completed"
+            "functionsLoaded": "Încărcarea funcțiilor globale a fost finalizată"
         },
         "loadTimers": {
-            "configLoaded": "Timers loading completed"
+            "configLoaded": "Încărcarea temporizatoarelor s-a încheiat"
         },
         "loadEmojis": {
-            "configLoaded": "Custom emojis loading completed",
-            "maxExceeded": "No more than 50 emojis can be loaded",
+            "configLoaded": "Încărcarea emoji-urilor personalizate a fost finalizată",
+            "maxExceeded": "Nu pot fi încărcate mai mult de 50 de emoji",
             "error": "EROARE"
         },
         "newGuild": {
             "title": "{{botUsername}} a fost adăugat cu succes!",
-            "description": "Use the configuration files to adjust the bot to your liking.\nRemember that the bot will only be able to moderate those people who have a role below the role created by {{botUser}}.\nIf you need help, you can [check the wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)",
+            "description": "Utilizați fișierele de configurare pentru a ajusta botul după bunul plac.\nRețineți că bot-ul va putea să modereze doar acele persoane care au un rol sub rolul creat de {{botUser}}.\nDacă aveți nevoie de ajutor, puteți [verifica wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)",
             "error": "EROARE"
         },
         "splashLogo": {
-            "description": "I'm a bot designed for automated community moderation, leveling, chat utilities, and much more!",
-            "divider": "Starting application"
+            "description": "Sunt un bot conceput pentru moderarea automată a comunității, nivelare, utilități de chat și multe altele!",
+            "divider": "Lansarea aplicației"
         },
         "loadErrorTracker": {
             "loading": "Se încarcă urmărirea erorilor de la distanță prin Sentry...",

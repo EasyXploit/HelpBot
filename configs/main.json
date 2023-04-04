@@ -3,6 +3,5 @@
     "reportsChannel": "",
     "joinsAndLeavesChannel": "",
     "voiceMovesChannel": "",
-    "voiceMovesExcludedChannels": [],
-    "messageHistorySize": 10
+    "voiceMovesExcludedChannels": []
 }

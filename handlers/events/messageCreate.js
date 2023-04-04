@@ -65,8 +65,11 @@ exports.run = async (message, client, locale) => {
         };
     };
 
+    //Almacena el tamaño del historial de mensajes de miembros
+    const messageHistorySize = await client.functions.db.getConfig('moderation.messageHistorySize');
+
     //Si el historial está lleno, elimina el primer elemento del array
-    if (userMessages.history.length >= client.config.main.messageHistorySize) userMessages.history.shift();  
+    if (userMessages.history.length >= messageHistorySize) userMessages.history.shift();  
 
     //Comprueba si el contenido del mensaje está permitido
     const isPermitted = await client.functions.moderation.checkMessage.run(client, message);

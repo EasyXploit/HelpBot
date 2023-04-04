@@ -226,6 +226,10 @@
                         "name": "clasificacion",
                         "description": "Muestra la tabla de clasificación de EXP de la comunidad",
                         "options": {
+                            "page": {
+                                "name": "página",
+                                "description": "Introduce el nº de página a consultar"
+                            },
                             "type": {
                                 "name": "tipo",
                                 "description": "Selecciona el tipo de clasificación a mostrar",
@@ -235,16 +239,12 @@
                                     "messagesCount": "Mensajes enviados",
                                     "antiquity": "Antigüedad"
                                 }
-                            },
-                            "page": {
-                                "name": "página",
-                                "description": "Introduce el nº de página a consultar"
                             }
                         }
                     },
-                    "noLeaderboard": "Nadie ha ganado EXP todavía",
                     "unknownMember": "Desconocido",
                     "embed": {
+                        "footer": "Página {{actualPage}} de {{totalPages}}",
                         "title": {
                             "experience": "Clasificación de puntos de experiencia",
                             "aproxVoiceTime": "Clasificación de tiempo de voz",
@@ -255,9 +255,9 @@
                             "experience": "exp",
                             "messagesCount": "mensajes",
                             "level": "nvl"
-                        },
-                        "footer": "Página {{actualPage}} de {{totalPages}}"
-                    }
+                        }
+                    },
+                    "noLeaderboard": "Nadie ha ganado EXP todavía"
                 },
                 "mute": {
                     "appData": {
@@ -267,6 +267,10 @@
                             "user": {
                                 "name": "usuario",
                                 "description": "Selecciona un usuario o escribe su ID"
+                            },
+                            "reason": {
+                                "name": "razón",
+                                "description": "Aporta una razón para la acción"
                             },
                             "expiration": {
                                 "name": "expiración",
@@ -285,23 +289,19 @@
                                     "oneMonth": "1 mes",
                                     "threeMonths": "3 meses"
                                 }
-                            },
-                            "reason": {
-                                "name": "razón",
-                                "description": "Aporta una razón para la acción"
                             }
                         }
                     },
                     "memberNotFound": "Miembro no encontrado. Debes mencionar a un miembro o escribir su ID",
                     "noBots": "No puedes silenciar a un bot",
                     "badHierarchy": "No puedes silenciar a un miembro con un rol igual o superior al tuyo",
-                    "exceededDuration": "Solo puedes silenciar un máximo de `{{time}}`",
                     "noReason": "Debes proporcionar una razón",
                     "undefinedReason": "Indefinida",
                     "notificationEmbed": {
                         "withReason": "**{{memberTag}}** ha sido silenciado debido a __{{reason}}__, ¿alguien más?",
                         "withoutReason": "**{{memberTag}}** ha sido silenciado, ¿alguien más?"
-                    }
+                    },
+                    "exceededDuration": "Solo puedes silenciar un máximo de `{{time}}`"
                 },
                 "notifications": {
                     "appData": {
@@ -423,27 +423,6 @@
                         "description": "{{authorTag}} eliminó {{deletedCount}} mensajes del canal {{channel}}"
                     }
                 },
-                "report": {
-                    "appData": {
-                        "name": "reportar",
-                        "description": "Reporta algo al equipo de moderación",
-                        "options": {
-                            "body": {
-                                "name": "reporte",
-                                "description": "¿Qué quieres reportar?"
-                            },
-                            "member": {
-                                "name": "miembro",
-                                "description": "¿A quien quieres reportar?"
-                            }
-                        }
-                    },
-                    "bodyModal": {
-                        "title": "Reportar algo",
-                        "fieldTitle": "Razón del reporte",
-                        "fieldPlaceholder": "¿Cual es tu reporte?"
-                    }
-                },
                 "rmwarn": {
                     "appData": {
                         "name": "eliminaradv",
@@ -453,13 +432,13 @@
                                 "name": "usuario",
                                 "description": "Selecciona un usuario o escribe su ID"
                             },
-                            "warn": {
-                                "name": "advertencia",
-                                "description": "Busca la advertencia a eliminar"
-                            },
                             "reason": {
                                 "name": "razón",
                                 "description": "Aporta una razón para la acción"
+                            },
+                            "warn": {
+                                "name": "advertencia",
+                                "description": "Busca la advertencia a eliminar"
                             }
                         }
                     },
@@ -719,15 +698,15 @@
                         "title": "Estadísticas",
                         "description": "Mostrando las estadísticas del miembro **{{memberTag}}**",
                         "actualLevel": "Nivel actual",
-                        "experience": "EXP total",
                         "xpToNextLevel": "EXP para siguiente nivel",
                         "noXpToNextLevel": "No puede subir de nivel",
-                        "messagesCount": "Mensajes",
                         "voiceTime": "Tiempo de voz",
-                        "antiquity": "Antigüedad",
                         "nextRewards": "Siguientes recompensas",
-                        "level": "nvl",
-                        "noNextRewards": "No puede ganar recompensas"
+                        "noNextRewards": "No puede ganar recompensas",
+                        "experience": "EXP total",
+                        "messagesCount": "Mensajes",
+                        "antiquity": "Antigüedad",
+                        "level": "nvl"
                     }
                 },
                 "unban": {
@@ -941,6 +920,7 @@
                         "oldValue": "Valor anterior",
                         "newValue": "Nuevo valor"
                     },
+                    "notificationEmbed": "Se ha modificado la cantidad de puntos de experiencia del miembro **{{memberTag}}**",
                     "privateEmbed": {
                         "reset": {
                             "author": "Se han REINICIADO tus puntos de experiencia",
@@ -954,23 +934,31 @@
                             "author": "Has PERDIDO puntos de experiencia",
                             "description": "**{{moderatorTag}}** te ha quitado `{{removedXP}}` puntos de EXP.\nAhora tienes `{{newXP}}` puntos de EXP"
                         }
-                    },
-                    "notificationEmbed": "Se ha modificado la cantidad de puntos de experiencia del miembro **{{memberTag}}**"
-                }
-            },
-            "messageCommands": {
-                "reportMessage": {
+                    }
+                },
+                "report": {
                     "appData": {
-                        "name": "Reportar mensaje"
+                        "name": "reportar",
+                        "description": "Reporta algo al equipo de moderación",
+                        "options": {
+                            "body": {
+                                "name": "reporte",
+                                "description": "¿Qué quieres reportar?"
+                            },
+                            "member": {
+                                "name": "miembro",
+                                "description": "¿A quien quieres reportar?"
+                            }
+                        }
                     },
-                    "memberNotFound": "El miembro ya no se encuentra en el servidor",
-                    "cantReportYourself": "No puedes reportarte a tí mismo",
                     "bodyModal": {
-                        "title": "Reportar un mensaje de un miembro",
+                        "title": "Reportar algo",
                         "fieldTitle": "Razón del reporte",
                         "fieldPlaceholder": "¿Cual es tu reporte?"
                     }
-                },
+                }
+            },
+            "messageCommands": {
                 "removeAndWarn": {
                     "appData": {
                         "name": "Eliminar y advertir"
@@ -986,21 +974,21 @@
                         "fieldPlaceholder": "Escribe una razón para la advertencia"
                     },
                     "correct": "El miembro ha sido advertido"
-                }
-            },
-            "userCommands": {
-                "reportMember": {
+                },
+                "reportMessage": {
                     "appData": {
-                        "name": "Reportar miembro"
+                        "name": "Reportar mensaje"
                     },
                     "memberNotFound": "El miembro ya no se encuentra en el servidor",
                     "cantReportYourself": "No puedes reportarte a tí mismo",
                     "bodyModal": {
-                        "title": "Reportar un miembro",
+                        "title": "Reportar un mensaje de un miembro",
                         "fieldTitle": "Razón del reporte",
                         "fieldPlaceholder": "¿Cual es tu reporte?"
                     }
-                },
+                }
+            },
+            "userCommands": {
                 "warn": {
                     "appData": {
                         "name": "Advertir"
@@ -1015,6 +1003,18 @@
                         "fieldTitle": "Razón de la advertencia",
                         "fieldPlaceholder": "Escribe una razón para la advertencia"
                     }
+                },
+                "reportMember": {
+                    "appData": {
+                        "name": "Reportar miembro"
+                    },
+                    "memberNotFound": "El miembro ya no se encuentra en el servidor",
+                    "cantReportYourself": "No puedes reportarte a tí mismo",
+                    "bodyModal": {
+                        "title": "Reportar un miembro",
+                        "fieldTitle": "Razón del reporte",
+                        "fieldPlaceholder": "¿Cual es tu reporte?"
+                    }
                 }
             }
         },
@@ -1027,18 +1027,6 @@
                 "otherError": "ERROR"
             },
             "guildBanAdd": {
-                "inconclusiveLoggingEmbed": {
-                    "author": "{{userTag}} ha sido BANEADO",
-                    "memberId": "ID del miembro",
-                    "moderator": "Moderador",
-                    "unknownModerator": "Desconocido",
-                    "reason": "Razón",
-                    "unknownReason": "Desconocida",
-                    "expiration": "Vencimiento",
-                    "unknownExpiration": "Desconocido",
-                    "deletedDays": "Días de mensajes borrados",
-                    "unknownDeletedDays": "Desconocidos"
-                },
                 "botLoggingEmbed": {
                     "title": "Registro - [BOTS]",
                     "description": "El **BOT** {{userTag}} fue baneado del servidor"
@@ -1054,6 +1042,18 @@
                     "noExpiration": "No vence",
                     "deletedDays": "Días de mensajes borrados",
                     "noDeletedDays": "Ninguno"
+                },
+                "inconclusiveLoggingEmbed": {
+                    "author": "{{userTag}} ha sido BANEADO",
+                    "memberId": "ID del miembro",
+                    "moderator": "Moderador",
+                    "unknownModerator": "Desconocido",
+                    "reason": "Razón",
+                    "unknownReason": "Desconocida",
+                    "expiration": "Vencimiento",
+                    "unknownExpiration": "Desconocido",
+                    "deletedDays": "Días de mensajes borrados",
+                    "unknownDeletedDays": "Desconocidos"
                 }
             },
             "guildCreate": {
@@ -1076,14 +1076,6 @@
                 }
             },
             "guildMemberRemove": {
-                "inconclusiveLoggingEmbed": {
-                    "author": "{{memberTag}} ha sido EXPULSADO",
-                    "memberId": "ID del miembro",
-                    "moderator": "Moderador",
-                    "unknownModerator": "Desconocido",
-                    "reason": "Razón",
-                    "unknownReason": "Desconocida"
-                },
                 "botLoggingEmbed": {
                     "title": "Registro - [BOTS]",
                     "description": "El **BOT** {{memberTag}} fue expulsado del servidor"
@@ -1101,7 +1093,30 @@
                     "description": "{{memberTag}} abandonó el servidor",
                     "memberId": "ID del miembro",
                     "antiquity": "Antigüedad"
+                },
+                "inconclusiveLoggingEmbed": {
+                    "author": "{{memberTag}} ha sido EXPULSADO",
+                    "memberId": "ID del miembro",
+                    "moderator": "Moderador",
+                    "unknownModerator": "Desconocido",
+                    "reason": "Razón",
+                    "unknownReason": "Desconocida"
                 }
+            },
+            "interactionCreate": {
+                "disabledCommand": "El comando `{{commandName}}` ha sido deshabilitado",
+                "error": "ERROR"
+            },
+            "messageCreate": {
+                "filteredDm": "vía MD"
+            },
+            "ready": {
+                "justOneGuild": "AVISO: El bot no está diseñado para funcionar en más de una guild (servidor).\nExpulse al bot del resto de guilds y reinicie al bot",
+                "waitingGuild": "AVISO: Esperando a que el bot se una a una guild",
+                "error": "ERROR"
+            },
+            "warn": {
+                "warnMessage": "AVISO"
             },
             "guildMemberUpdate": {
                 "communicationDisabled": {
@@ -1143,18 +1158,6 @@
                     }
                 }
             },
-            "interactionCreate": {
-                "disabledCommand": "El comando `{{commandName}}` ha sido deshabilitado",
-                "error": "ERROR"
-            },
-            "messageCreate": {
-                "filteredDm": "vía MD"
-            },
-            "ready": {
-                "justOneGuild": "AVISO: El bot no está diseñado para funcionar en más de una guild (servidor).\nExpulse al bot del resto de guilds y reinicie al bot",
-                "waitingGuild": "AVISO: Esperando a que el bot se una a una guild",
-                "error": "ERROR"
-            },
             "voiceStateUpdate": {
                 "voiceMovesLogging": {
                     "noChannel": "Ninguno",
@@ -1163,9 +1166,6 @@
                     "actualMembers": "Miembros del nuevo canal",
                     "embedAuthor": "{{memberTag}} ha modificado su canal de voz"
                 }
-            },
-            "warn": {
-                "warnMessage": "AVISO"
             }
         }
     },
@@ -1181,9 +1181,6 @@
             }
         },
         "managers": {
-            "buttonNavigation": {
-                "cantUseNavigation": "No puedes controlar un menú invocado por otro miembro"
-            },
             "eventError": {
                 "error": "ERROR"
             },
@@ -1206,6 +1203,9 @@
                 "registerDate": "Fecha de registro",
                 "actualSanction": "Sanción actual",
                 "mutedUntil": "Silenciado hasta"
+            },
+            "buttonNavigation": {
+                "cantUseNavigation": "No puedes controlar un menú invocado por otro miembro"
             },
             "report": {
                 "reportEmbed": {
@@ -1300,24 +1300,14 @@
         }
     },
     "lifecycle": {
-        "loadErrorTracker": {
-            "loading": "Cargando el rastreador de errores remoto mediante Sentry ...",
-            "configLoaded": "¡Carga del rastreador de errores remoto completada!",
-            "tracesSampleRate": "Tasa de muestreo de trazas",
-            "errors": {
-                "invalidDSN": "No has especificado un DSN de Sentry válido. No se utilizará el rastreo de errores remoto",
-                "smallTracesSampleRate": "No has especificado una tasa de muestras válida. Se usará 0 en su lugar (el mínimo)",
-                "largeTracesSampleRate": "No has especificado una tasa de muestras válida. Se usará 1.0 en su lugar (el máximo)"
-            }
-        },
         "loadIntervals": {
             "mutes": {
                 "loggingEmbed": {
                     "author": "{{userTag}} ha sido DES-SILENCIADO",
-                    "authorNoMember": "Un miembro ha sido DES-SILENCIADO",
-                    "memberId": "ID del miembro",
                     "moderator": "Moderador",
-                    "reason": "Razón"
+                    "reason": "Razón",
+                    "authorNoMember": "Un miembro ha sido DES-SILENCIADO",
+                    "memberId": "ID del miembro"
                 },
                 "privateEmbed": {
                     "author": "[DES-SILENCIADO]",
@@ -1372,19 +1362,19 @@
             "registeredOnGuild": "Comando {{command}} registrado en {{guildName}}",
             "parametersUpdated": "El comando {{command}} ha actualizado sus parámetros",
             "defaultPermUpdated": "El comando {{command}} ha actualizado su permiso por defecto",
-            "dmPermUpdated": "El comando {{command}} ha actualizado su permiso para ser usado mediante MD",
-            "loadedCorrectly": "Comando {{command}} cargado correctamente"
+            "loadedCorrectly": "Comando {{command}} cargado correctamente",
+            "dmPermUpdated": "El comando {{command}} ha actualizado su permiso para ser usado mediante MD"
         },
         "loadSystem": {
             "loadingSystem": "Cargando el sistema",
             "configLoaded": "Cargado correctamente",
             "configNotLoaded": "No se pudo cargar",
             "guildConfigLoaded": "Carga de configuración de la guild completada",
-            "functionsLoaded": "Carga de funciones globales completada",
             "presenceLoaded": "Carga de presencia completada",
             "voiceStatesLoaded": "Carga de estados de voz completada",
             "loadedCorrectly": "{{botUsername}} iniciado correctamente",
-            "error": "ERROR"
+            "error": "ERROR",
+            "functionsLoaded": "Carga de funciones globales completada"
         },
         "loadTimers": {
             "configLoaded": "Carga de temporizadores completada"
@@ -1402,6 +1392,16 @@
         "splashLogo": {
             "description": "Soy un bot diseñado para moderación de comunidades automatizada, gestión de niveles, utilidades de chat ¡y mucho más!",
             "divider": "Iniciando aplicación"
+        },
+        "loadErrorTracker": {
+            "loading": "Cargando el rastreador de errores remoto mediante Sentry ...",
+            "configLoaded": "¡Carga del rastreador de errores remoto completada!",
+            "tracesSampleRate": "Tasa de muestreo de trazas",
+            "errors": {
+                "invalidDSN": "No has especificado un DSN de Sentry válido. No se utilizará el rastreo de errores remoto",
+                "smallTracesSampleRate": "No has especificado una tasa de muestras válida. Se usará 0 en su lugar (el mínimo)",
+                "largeTracesSampleRate": "No has especificado una tasa de muestras válida. Se usará 1.0 en su lugar (el máximo)"
+            }
         }
     }
 }

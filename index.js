@@ -1,5 +1,11 @@
+//Almacena el nombre del idioma configurado
+const localeName = require('./configs/main.json').locale;
+
 //Almacena las traducciones al idioma configurado
-const locale = require(`./resources/locales/${require('./configs/main.json').locale}.json`);
+let locale = require(`./resources/locales/${localeName}.json`);
+
+//Uniforma las traducciones si no se corresponden con las del idioma por defecto
+locale = require('./lifecycle/loadLocales.js').run(localeName);
 
 //Muestra el logo de arranque en la consola
 require('./lifecycle/splashLogo.js').run(locale.lifecycle.splashLogo);

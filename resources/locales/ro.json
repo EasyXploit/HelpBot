@@ -1403,6 +1403,5 @@
                 "largeTracesSampleRate": "Nu ați specificat o rată de eșantionare validă. 1.0 va fi folosit în schimb (maximum)"
             }
         }
-    },
-    "testString": "Șirul de testare"
+    }
 }

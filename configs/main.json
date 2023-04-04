@@ -4,8 +4,5 @@
     "joinsAndLeavesChannel": "",
     "voiceMovesChannel": "",
     "voiceMovesExcludedChannels": [],
-    "newMemberMode": 0,
-    "newBotRole": "",
-    "newMemberRole": "",
     "messageHistorySize": 10
 }

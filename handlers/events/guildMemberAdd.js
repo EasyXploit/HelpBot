@@ -29,8 +29,11 @@ exports.run = async (member, client, locale) => {
         //Si el nuevo miembro es un bot
         if (member.user.bot) {
 
+            //Almacena el ID del rol para nuevos bots
+            const newBotRoleId = await client.functions.db.getConfig('welcomes.newBotRoleId');
+
             //Añade el rol de bienvenida para nuevos bots (si no lo tiene ya)
-            if (!member.roles.cache.has(client.config.main.newBotRole)) await member.roles.add(client.config.main.newBotRole);
+            if (!member.roles.cache.has(newBotRoleId)) await member.roles.add(newBotRoleId);
 
             //Envía un mensaje al canal de registro
             if (client.config.logging.botJoined) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
@@ -42,9 +45,12 @@ exports.run = async (member, client, locale) => {
             //Aborta el resto del script
             return;
         };
+        
+        //Almacena el modo de manejo de nuevos miembros
+        const newMemberMode = await client.functions.db.getConfig('welcomes.newMemberMode');
 
         //Ejecuta el manejador de nuevos miembros (si procede)
-        if (client.config.main.newMemberMode === 0) await client.functions.managers.newMember.run(client, member);
+        if (newMemberMode === 0) await client.functions.managers.newMember.run(client, member);
 
     } catch (error) {
 

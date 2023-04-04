@@ -33,8 +33,11 @@ exports.run = async (client, member) => {
         //Se notifica en el canal de registro
         if (client.config.logging.memberJoined) await client.joinsAndLeavesChannel.send({ embeds: [ welcomeEmbed ], files: ['./resources/images/in.png'] });
 
+        //Almacena el ID del rol para nuevos miembros
+        const newMemberRoleId = await client.functions.db.getConfig('welcomes.newMemberRoleId');
+
         //Añade el rol de bienvenida para nuevos miembros (si no lo tiene ya)
-        if (member.roles.cache.has(client.config.main.newMemberRole)) await member.roles.add(client.config.main.newMemberRole);
+        if (member.roles.cache.has(newMemberRoleId)) await member.roles.add(newMemberRoleId);
 
     } catch (error) {
 

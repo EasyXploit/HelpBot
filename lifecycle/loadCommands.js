@@ -236,7 +236,7 @@ exports.run = async (client) => {
                 let lodash = require('lodash');
 
                 //Elimina las claves nulas o indefinidas de las opciones remotas
-                let remoteCmdOptions = await client.functions.utilities.isArrOfObjNil.run(client, remoteCmd.options, lodash);
+                let remoteCmdOptions = await client.functions.utilities.isArrOfObjNil.run(remoteCmd.options, lodash);
 
                 //Si hay opciones locales, las almacena, sino crea un objeto vacío
                 const localCmdOptions = localCmd.appData.options ? localCmd.appData.options : [];

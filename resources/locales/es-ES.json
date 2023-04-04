@@ -1230,7 +1230,7 @@
             "manageWarn": {
                 "muteFunction": {
                     "reason": "Demasiadas advertencias",
-                    "notificationEmbed":  {
+                    "notificationEmbed": {
                         "initiated": "**{{memberTag}}** ha sido silenciado por que acumuló __demasiadas advertencias__, ¿alguien más?",
                         "extended": "Se ha ampliado el silenciamiento de **{{memberTag}}** por que acumuló __más advertencias__, ¿alguien más?"
                     }

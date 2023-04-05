@@ -7,26 +7,6 @@ const localeConfig = require('../../config.json').locale;
 //Almacena las traducciones al idioma configurado
 const locale = require(`../../resources/locales/${localeConfig}.json`).models.config.automodFilters;
 
-//Crea un nuevo esquema para las reglas de automoderación
-const automodRulesSchema = new mongoose.Schema({ 
-    action: {
-        type: String,
-        required: true
-    },
-    duration: {
-        type: Number,
-        required: true
-    },
-    quantity: {
-        type: Number,
-        required: true
-    },
-    age: {
-        type: Number,
-        required: true
-    }
-});
-
 //Crea un nuevo esquema
 const schema = new mongoose.Schema({
     docType: {
@@ -68,7 +48,10 @@ const schema = new mongoose.Schema({
         required: true
     },
     voiceMovesExcludedChannels: [String],
-    automodRules: [automodRulesSchema],
+    automodRules: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'automodRule'
+    }],
     filters: {
         flood: {
             status: {

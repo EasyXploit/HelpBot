@@ -207,14 +207,14 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 );
 
                 //Si procede, adjunta el mensaje filtrado
-                if (message && client.config.moderation.attachFilteredMessages) await client.functions.managers.logging.run(client, 'warnedMember', 'file', new client.MessageAttachment(Buffer.from(filteredURL || message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
+                if (message && await client.functions.db.getConfig.run('moderation.attachFilteredMessages')) await client.functions.managers.logging.run(client, 'warnedMember', 'file', new client.MessageAttachment(Buffer.from(filteredURL || message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
             });
 
             //Banea temporalmente a los miembros que se acaban de unir al servidor y han mandado invitaciones
-            if (message && channel.type === 'DM' && (member.joinedTimestamp + client.config.moderation.newMemberTimeDelimiter) < Date.now()) {
+            if (message && channel.type === 'DM' && (member.joinedTimestamp + await client.functions.db.getConfig.run('moderation.newMemberTimeDelimiter')) < Date.now()) {
 
                 //Ejecuta la función de baneo
-                return ban(client.config.moderation.newSpammerMemberBanDuration);
+                return ban(await client.functions.db.getConfig.run('moderation.newSpammerMemberBanDuration'));
             };
 
             //Función para comparar un array

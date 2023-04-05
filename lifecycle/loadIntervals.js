@@ -1,4 +1,4 @@
-exports.run = (client) => {
+exports.run = async (client) => {
 
     //Traducciones de los intervalos
     const locale = client.locale.lifecycle.loadIntervals;
@@ -127,7 +127,7 @@ exports.run = (client) => {
 
     //NOMBRES DE USUARIO
     //Comprobación de nombres de usuario de miembros
-    if (client.config.moderation.kickOnBadUsername) setInterval(async () => {
+    if (await client.functions.db.getConfig.run('moderation.kickOnBadUsername')) setInterval(async () => {
 
         //Por cada uno de los miembros de la guild
         await client.baseGuild.members.cache.forEach(async guildMember => {

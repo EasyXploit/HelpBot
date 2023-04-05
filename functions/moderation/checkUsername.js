@@ -5,7 +5,7 @@ exports.run = async (client, member) => {
     const locale = client.locale.functions.moderation.checkUsername;
 
     //Almacena las listas de palabras prohibidas
-    const forbiddenNames = client.config.moderation.newMemberForbiddenNames;
+    const forbiddenNames = await client.functions.db.getConfig.run('moderation.newMemberForbiddenNames');
     const bannedWords = await client.functions.db.getConfig.run('moderation.bannedWords');
 
     //Si procede, comprueba si han de comprobarse los nombres de usuario

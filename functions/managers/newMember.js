@@ -7,7 +7,7 @@ exports.run = async (client, member) => {
     try {
 
         //Si hay que explicar a los miembros con un nombre de usuario prohibido
-        if (client.configkickOnBadUsername) {
+        if (await client.functions.db.getConfig.run('moderation.kickOnBadUsername')) {
 
             //Comprueba si el nombre de usuario del miembro es válido
             const usernameIsValid = await client.functions.moderation.checkUsername.run(client, member);

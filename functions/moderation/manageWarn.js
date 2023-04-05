@@ -225,10 +225,11 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             };
 
             //Compara y ordena el array de recompensas
-            const automodRules = client.config.automodRules.sort(compare);
+            const automodRules = await client.functions.db.getConfig.run('moderation.automodRules')
+            const sortedRules = automodRules.sort(compare);
 
             //Por cada una de las reglas de automoderación
-            for (const rule of automodRules) {
+            for (const rule of sortedRules) {
 
                 //Almacena el conteo de infracciones
                 let warnsCount = 0;

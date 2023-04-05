@@ -3,7 +3,7 @@ exports.run = async (oldState, newState, client, locale) => {
     try {
 
         //Aborta si no es un evento de la guild registrada
-        if (oldState.guild.id !== client.homeGuild.id) return;
+        if (oldState.guild.id !== client.baseGuild.id) return;
 
         //
         const excludedChannels = await client.functions.db.getConfig.run('moderation.voiceMovesExcludedChannels');

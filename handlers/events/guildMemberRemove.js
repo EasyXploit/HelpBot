@@ -3,7 +3,7 @@ exports.run = async (member, client, locale) => {
     try {
 
         //Aborta si no es un evento de la guild registrada
-        if (member.guild.id !== client.homeGuild.id) return;
+        if (member.guild.id !== client.baseGuild.id) return;
 
         //Almacena la caché de registros del usuario expulsado, si existe
         const loggingCache = (client.loggingCache && client.loggingCache[member.id]) ? client.loggingCache[member.id] : null;

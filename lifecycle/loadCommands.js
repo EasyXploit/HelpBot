@@ -14,8 +14,8 @@ exports.run = async (client) => {
     //Almacena los comandos registrados globalmente
     const clientCommands = await client.application.commands.fetch();
 
-    //Almacena los comandos registrados en la homeGuild
-    const guildCommands = await client.homeGuild.commands.fetch();
+    //Almacena los comandos registrados en la baseGuild
+    const guildCommands = await client.baseGuild.commands.fetch();
 
     //Almacena el nombre seleccionado para los comandos 
     let localeForNames = client.locale;
@@ -79,8 +79,8 @@ exports.run = async (client) => {
                 if (command[1].guildId) {
 
                     //Borra el comando de la guild y lo notifica
-                    await client.homeGuild.commands.delete(command[1]);
-                    console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.unregisteredFromGuild, { command: `[${commandType}/${command[1].name}]`, guildName: client.homeGuild.name })}.`);
+                    await client.baseGuild.commands.delete(command[1]);
+                    console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.unregisteredFromGuild, { command: `[${commandType}/${command[1].name}]`, guildName: client.baseGuild.name })}.`);
 
                 } else {
 
@@ -98,7 +98,7 @@ exports.run = async (client) => {
                 if (command[1].guildId && appType !== 'guild') {
 
                     //Lo borra y lo notifica
-                    await client.homeGuild.commands.delete(command[1]);
+                    await client.baseGuild.commands.delete(command[1]);
                     console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.convertedToGlobal, { command: `[${commandType}/${command[1].name}]` })}.`);
 
                 //Si es un comando global pero el tipo local ya no coincide
@@ -209,7 +209,7 @@ exports.run = async (client) => {
                 };
 
                 //Almacena el manager de comandos adecuado en función del tipo de comando
-                const commandsManager = localCmd.type === 'global' ? client.application.commands : client.homeGuild.commands
+                const commandsManager = localCmd.type === 'global' ? client.application.commands : client.baseGuild.commands
 
                 //Registra el comando en el manager
                 await commandsManager.create({
@@ -224,7 +224,7 @@ exports.run = async (client) => {
                 //Almacena el mensaje para la confirmación
                 const logString = localCmd.type === 'global' ? 
                     await client.functions.utilities.parseLocale.run(locale.registeredOnGlobal, { command: `[${commandType}/${localCmd.appData.name}]` }) : 
-                    await client.functions.utilities.parseLocale.run(locale.registeredOnGuild, { command: `[${commandType}/${localCmd.appData.name}]`, guildName: client.homeGuild.name });
+                    await client.functions.utilities.parseLocale.run(locale.registeredOnGuild, { command: `[${commandType}/${localCmd.appData.name}]`, guildName: client.baseGuild.name });
                 
                 
                 //Envía un mensaje de confirmación por consola

@@ -3,7 +3,7 @@ exports.run = async (interaction, client, locale) => {
     try {
         
         //Aborta si no es un evento de la guild registrada
-        if (interaction.guild && interaction.guild.id !== client.homeGuild.id) return;
+        if (interaction.guild && interaction.guild.id !== client.baseGuild.id) return;
 
         //Si la interacción es un comando
         if (interaction.isCommand() || interaction.isContextMenu()) {

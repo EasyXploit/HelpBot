@@ -109,7 +109,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                     { name: locale.infractionsEmbed.total, value: total.toString(), inline: true },
                     { name: locale.infractionsEmbed.list, value: total > 0 ? board : locale.infractionsEmbed.noList, inline: false }
                 )
-                .setFooter({ text: await client.functions.utilities.parseLocale.run(locale.infractionsEmbed.page, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.homeGuild.iconURL({dynamic: true}) });
+                .setFooter({ text: await client.functions.utilities.parseLocale.run(locale.infractionsEmbed.page, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.baseGuild.iconURL({dynamic: true}) });
 
             //Si se encontró el miembro, muestra su avatar en el embed
             if (member) newPageEmbed.setThumbnail(member.user.displayAvatarURL({dynamic: true}));

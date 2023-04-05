@@ -57,8 +57,8 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             //Envía un mensaje al miembro
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
-                .setAuthor({ name: locale.kickFunction.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
-                .setDescription(await client.functions.utilities.parseLocale.run(locale.kickFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
+                .setAuthor({ name: locale.kickFunction.privateEmbed.author, iconURL: client.baseGuild.iconURL({dynamic: true}) })
+                .setDescription(await client.functions.utilities.parseLocale.run(locale.kickFunction.privateEmbed.description, { member: member, guildName: client.baseGuild.name }))
                 .addFields(
                     { name: locale.kickFunction.privateEmbed.moderator, value: `${client.user}`, inline: true },
                     { name: locale.kickFunction.privateEmbed.reason, value: locale.kickFunction.reason, inline: true }
@@ -110,8 +110,8 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             //Envía un mensaje al miembro
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
-                .setAuthor({ name: locale.banFunction.privateEmbed.author, iconURL: client.homeGuild.iconURL({ dynamic: true}) })
-                .setDescription(await client.functions.utilities.parseLocale.run(locale.banFunction.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
+                .setAuthor({ name: locale.banFunction.privateEmbed.author, iconURL: client.baseGuild.iconURL({ dynamic: true}) })
+                .setDescription(await client.functions.utilities.parseLocale.run(locale.banFunction.privateEmbed.description, { member: member, guildName: client.baseGuild.name }))
                 .addFields(
                     { name: locale.banFunction.privateEmbed.moderator, value: moderator.tag, inline: true },
                     { name: locale.banFunction.privateEmbed.reason, value: locale.banFunction.reason, inline: true },
@@ -120,7 +120,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             ]});
 
             //Banea al miembro
-            await client.homeGuild.members.ban(member.user, {reason: locale.banFunction.reason });
+            await client.baseGuild.members.ban(member.user, {reason: locale.banFunction.reason });
         };
 
         //Capitaliza la razón de la advertencia
@@ -131,8 +131,8 @@ exports.run = async (client, member, reason, action, moderator, message, interac
             //Envía un mensaje de advertencia al miembro por MD
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
-                .setAuthor({ name: locale.warn.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
-                .setDescription(await client.functions.utilities.parseLocale.run(locale.warn.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
+                .setAuthor({ name: locale.warn.privateEmbed.author, iconURL: client.baseGuild.iconURL({dynamic: true}) })
+                .setDescription(await client.functions.utilities.parseLocale.run(locale.warn.privateEmbed.description, { member: member, guildName: client.baseGuild.name }))
                 .addFields(
                     { name: locale.warn.privateEmbed.moderator, value: moderator.tag, inline: true },
                     { name: locale.warn.privateEmbed.reason, value: warnReason, inline: true }

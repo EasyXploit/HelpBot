@@ -9,7 +9,7 @@ const schema = new mongoose.Schema({
         immutable: true
     },
     discordToken: String,
-    homeGuildId: String,
+    baseGuildId: String,
     serviceGuildId: String,
     inviteCode: String,
     botManagers: [String],

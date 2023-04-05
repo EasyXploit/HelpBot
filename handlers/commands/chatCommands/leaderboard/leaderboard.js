@@ -22,7 +22,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         await interaction.deferReply();
 
         //Almacena la caché de los miembros de la guild
-        const guildMembers = await client.homeGuild.members.fetch();
+        const guildMembers = await client.baseGuild.members.fetch();
 
         //Por cada miembro en la base de datos de stats
         for (const memberId in client.db.stats) {
@@ -140,7 +140,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
                 .setTitle(`:trophy: ${locale.embed.title[type]}`)
                 .setDescription(board)
-                .setFooter({ text: await client.functions.utilities.parseLocale.run(locale.embed.footer, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.homeGuild.iconURL({dynamic: true}) });
+                .setFooter({ text: await client.functions.utilities.parseLocale.run(locale.embed.footer, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.baseGuild.iconURL({dynamic: true}) });
 
             //Invoca el gestor de navegación mediante botones
             const buttonNavigationResult = await client.functions.managers.buttonNavigation.run(client, interaction, 'leaderboard', actualPage, totalPages, newPageEmbed, latestInteraction, null);

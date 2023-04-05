@@ -46,8 +46,8 @@ exports.run = (client) => {
                 //Envía una confirmación al miembro
                 if (member) await member.send({ embeds: [ new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
-                    .setAuthor({ name: locale.mutes.privateEmbed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
-                    .setDescription(await client.functions.utilities.parseLocale.run(locale.mutes.privateEmbed.description, { member: member, guildName: client.homeGuild.name }))
+                    .setAuthor({ name: locale.mutes.privateEmbed.author, iconURL: client.baseGuild.iconURL({dynamic: true}) })
+                    .setDescription(await client.functions.utilities.parseLocale.run(locale.mutes.privateEmbed.description, { member: member, guildName: client.baseGuild.name }))
                     .addFields(
                         { name: locale.mutes.privateEmbed.moderator, value: `${client.user}`, inline: true },
                         { name: locale.mutes.privateEmbed.reason, value: locale.mutes.reason, inline: true }
@@ -85,7 +85,7 @@ exports.run = (client) => {
                 try {
 
                     //Desbanea al usuario (si existe)
-                    if (user) await client.homeGuild.members.unban(idKey);
+                    if (user) await client.baseGuild.members.unban(idKey);
 
                     //Ejecuta el manejador de registro
                     await client.functions.managers.logging.run(client, 'unbannedMember', 'embed', new client.MessageEmbed()
@@ -130,7 +130,7 @@ exports.run = (client) => {
     if (client.config.moderation.kickOnBadUsername) setInterval(async () => {
 
         //Por cada uno de los miembros de la guild
-        await client.homeGuild.members.cache.forEach(async guildMember => {
+        await client.baseGuild.members.cache.forEach(async guildMember => {
 
             //Comprueba si el nombre de usuario (visible) del miembro es válido
             await client.functions.moderation.checkUsername.run(client, guildMember);
@@ -337,7 +337,7 @@ exports.run = (client) => {
             if (!client.config.presence.membersCount) return;
 
             //Genera el nuevo string para la actividad
-            const name = `${await client.functions.utilities.parseLocale.run(locale.presence.name, { memberCount: await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}`;
+            const name = `${await client.functions.utilities.parseLocale.run(locale.presence.name, { memberCount: await client.baseGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}`;
 
             //Actualiza la presencia del bot
             await client.user.setPresence({

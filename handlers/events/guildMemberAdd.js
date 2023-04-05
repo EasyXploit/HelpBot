@@ -3,7 +3,7 @@ exports.run = async (member, client, locale) => {
     try {
 
         //Aborta si no es un evento de la guild registrada
-        if (member.guild.id !== client.homeGuild.id) return;
+        if (member.guild.id !== client.baseGuild.id) return;
 
         //Si el miembro tiene un silenciamiento en vigor y se le debe retirar, o no lo tiene y se tiene que desregistrar
         if ((member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now() && !client.db.mutes[member.id]) || (!member.communicationDisabledUntilTimestamp && client.db.mutes[member.id])) {

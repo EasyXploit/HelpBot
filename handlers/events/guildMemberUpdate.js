@@ -3,7 +3,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
     try {
 
         //Aborta si no es un evento de la guild registrada
-        if (oldMember.guild.id !== client.homeGuild.id) return;
+        if (oldMember.guild.id !== client.baseGuild.id) return;
 
         //Si el miembro ha pasado la pantalla de verificación
         if (oldMember.pending && !newMember.pending) {

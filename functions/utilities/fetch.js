@@ -16,7 +16,7 @@ exports.run = async (client, mode, target, channel, fetchCache) => {
                 const memberMatches = target.toString().match(new RegExp(/^<@!?(\d+)>$/));
 
                 //Almacena la caché de los miembros de la guild
-                if (!fetchCache) fetchCache = await client.homeGuild.members.fetch();
+                if (!fetchCache) fetchCache = await client.baseGuild.members.fetch();
 
                 //Lo busca por ID o por mención (en función de la variable "memberMatches")
                 if (memberMatches) result = fetchCache.find(member => member.id === memberMatches[1]);
@@ -45,8 +45,8 @@ exports.run = async (client, mode, target, channel, fetchCache) => {
                 const roleMatches = target.toString().match(new RegExp(/^<@&?(\d+)>$/));
 
                 //Lo busca por ID o por mención (en función de la variable "roleMatches")
-                if (roleMatches) result = fetchCache ? fetchCache : await client.homeGuild.roles.fetch(roleMatches[1]);
-                else if (!isNaN(target)) result = fetchCache ? fetchCache : await client.homeGuild.roles.fetch(target);
+                if (roleMatches) result = fetchCache ? fetchCache : await client.baseGuild.roles.fetch(roleMatches[1]);
+                else if (!isNaN(target)) result = fetchCache ? fetchCache : await client.baseGuild.roles.fetch(target);
                 
                 //Para el switch
                 break;
@@ -58,8 +58,8 @@ exports.run = async (client, mode, target, channel, fetchCache) => {
                 const channelMatches = target.toString().match(new RegExp(/^<#?(\d+)>$/));
 
                 //Lo busca por ID o por mención (en función de la variable "channelMatches")
-                if (channelMatches) result = fetchCache ? fetchCache : await client.homeGuild.channels.fetch(channelMatches[1]);
-                else if (!isNaN(target)) result = fetchCache ? fetchCache : await client.homeGuild.channels.fetch(target);
+                if (channelMatches) result = fetchCache ? fetchCache : await client.baseGuild.channels.fetch(channelMatches[1]);
+                else if (!isNaN(target)) result = fetchCache ? fetchCache : await client.baseGuild.channels.fetch(target);
                 
                 //Para el switch
                 break;
@@ -79,7 +79,7 @@ exports.run = async (client, mode, target, channel, fetchCache) => {
                 } else {
 
                     //Almacena los canales de la guild
-                    const guildChannels = fetchCache ? fetchCache : await client.homeGuild.channels.fetch();
+                    const guildChannels = fetchCache ? fetchCache : await client.baseGuild.channels.fetch();
 
                     //Itera entre todos los canales de la guild
                     for (const channelId of guildChannels) {

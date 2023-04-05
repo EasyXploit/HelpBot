@@ -12,15 +12,15 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             let inviteChannel;
             
             //Comprueba si hay canal de reglas y si se tiene permiso para crear la invitación
-            if (client.homeGuild.rulesChannel && !(await client.functions.utilities.missingPermissions.run(client, client.homeGuild.rulesChannel, client.user, ['CREATE_INSTANT_INVITE']))) {
+            if (client.baseGuild.rulesChannel && !(await client.functions.utilities.missingPermissions.run(client, client.baseGuild.rulesChannel, client.user, ['CREATE_INSTANT_INVITE']))) {
 
                 //Almacena el canal de reglas
-                inviteChannel = client.homeGuild.rulesChannel;
+                inviteChannel = client.baseGuild.rulesChannel;
 
             } else {
 
                 //De lo contrario, hace lo propio con el primer canal que lo permita
-                await client.homeGuild.channels.fetch().then( async channels => {
+                await client.baseGuild.channels.fetch().then( async channels => {
 
                     //Filtra los canales para que solo se incluyan los de texto
                     channels = await channels.filter(channel => channel.type === 'GUILD_TEXT')
@@ -57,7 +57,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (!inviteCode) {
 
             //Comprueba si ya existe una invitación
-            await client.homeGuild.invites.fetch().then(invites => {
+            await client.baseGuild.invites.fetch().then(invites => {
                 invites.forEach(async invite => {
                     if (invite.inviter === client.user) foundInvite = invite.code;
                 });
@@ -71,7 +71,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         } else {
             //Busca la invitación
-            const invite = await client.homeGuild.invites.resolve(inviteCode);
+            const invite = await client.baseGuild.invites.resolve(inviteCode);
 
             //Crea la invitación si no existe
             if (!invite) await createInvite();
@@ -83,7 +83,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         //Genera el embed y lo envía, buscando el contenido necesario con la función
         await interaction.reply({ embeds: [new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
-            .setAuthor({ name: locale.embed.author, iconURL: client.homeGuild.iconURL({dynamic: true}) })
+            .setAuthor({ name: locale.embed.author, iconURL: client.baseGuild.iconURL({dynamic: true}) })
             .setDescription(obtainedInvite)
             .setFooter({ text: `${locale.embed.footer}.` })
         ]});

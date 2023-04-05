@@ -3,11 +3,11 @@ exports.run = async (client, guild) => {
     try {
 
         //Reestablece algunas variables de config. globales
-        const homeGuild = await client.functions.db.setConfig.run('system.homeGuildId', guild.id);
+        const baseGuild = await client.functions.db.setConfig.run('system.baseGuildId', guild.id);
         await client.functions.db.setConfig.run('system.inviteCode', '');
 
         //Carga de guild base en memoria
-        client.homeGuild = await client.guilds.cache.get(homeGuild);
+        client.baseGuild = await client.guilds.cache.get(baseGuild);
         
         //Carga la config. en memoria y arranca el sistema
         await require('./loadSystem.js').run(client, client.locale.lifecycle.loadSystem);

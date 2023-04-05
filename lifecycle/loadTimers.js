@@ -71,7 +71,7 @@ exports.run = async (client) => {
                         case 'serverName':
 
                             //Almacena el nombre la guild
-                            wildcards[placeHolder] = client.homeGuild.name;
+                            wildcards[placeHolder] = client.baseGuild.name;
                             
                             //Para el switch
                             break;
@@ -80,7 +80,7 @@ exports.run = async (client) => {
                         case 'memberCount':
 
                             //Calcula la cantidad de miembros de la guild
-                            const guildMembers = await client.homeGuild.members.fetch();
+                            const guildMembers = await client.baseGuild.members.fetch();
 
                             //Almacena la cantidad de miembros de la guild
                             wildcards[placeHolder] = guildMembers.size;

@@ -2,7 +2,7 @@
 exports.run = async (client, message) => {
         
     //Omite si el autor del mensaje es el propietario de la guild
-    if (message.author.id === client.homeGuild.ownerId) return true;
+    if (message.author.id === client.baseGuild.ownerId) return true;
 
     //Almacena las traducciones
     const locale = client.locale.functions.moderation.checkMessage;
@@ -135,7 +135,7 @@ exports.run = async (client, message) => {
                     let legitInvites = 0;
 
                     //Almacena las invitaciones del servidor
-                    await client.homeGuild.invites.fetch().then(guildInvites => {
+                    await client.baseGuild.invites.fetch().then(guildInvites => {
 
                         //Crea un array con los códigos de invitación
                         let inviteCodes = Array.from(guildInvites.keys());

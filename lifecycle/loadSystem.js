@@ -6,10 +6,10 @@ exports.run = async (client, locale) => {
         console.log(` - ${locale.loadingSystem} ...\n`);
 
         //Almacena la guild base en memoria
-        client.homeGuild = await client.guilds.cache.get(await client.functions.db.getConfig.run('system.homeGuildId'));
+        client.baseGuild = await client.guilds.cache.get(await client.functions.db.getConfig.run('system.baseGuildId'));
 
         //Notifica que la carga de la guild base se ha completado
-        console.log(`\n - [OK] ${locale.homeGuildLoaded}.`);
+        console.log(`\n - [OK] ${locale.baseGuildLoaded}.`);
 
         //Carga los customEmojis en el cliente
         await require('./loadEmojis.js').run(client);
@@ -21,7 +21,7 @@ exports.run = async (client, locale) => {
         await client.user.setPresence({
             status: client.config.presence.status,
             activities: [{
-                name: client.config.presence.membersCount ? `${await client.functions.utilities.parseLocale.run(client.locale.lifecycle.loadIntervals.presence.name, { memberCount: await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}` : client.config.presence.name,
+                name: client.config.presence.membersCount ? `${await client.functions.utilities.parseLocale.run(client.locale.lifecycle.loadIntervals.presence.name, { memberCount: await client.baseGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}` : client.config.presence.name,
                 type: client.config.presence.type
             }]
         });
@@ -39,7 +39,7 @@ exports.run = async (client, locale) => {
         if (client.config.leveling.rewardVoice) {
 
             //Almacena la caché de los estados de voz
-            let voiceStates = client.homeGuild.voiceStates.cache;
+            let voiceStates = client.baseGuild.voiceStates.cache;
 
             //Para cada estado de voz
             voiceStates.forEach(async voiceState => {

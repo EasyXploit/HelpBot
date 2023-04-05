@@ -1399,9 +1399,7 @@
         },
         "loadSystem": {
             "loadingSystem": "Loading system",
-            "configLoaded": "Loaded successfully",
-            "configNotLoaded": "Could not load",
-            "guildConfigLoaded": "Guild config loading completed",
+            "baseGuildLoaded": "Base guild loading completed",
             "presenceLoaded": "Presence loading completed",
             "voiceStatesLoaded": "Voice states loading completed",
             "loadedCorrectly": "{{botUsername}} started successfully",

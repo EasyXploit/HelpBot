@@ -3,7 +3,7 @@ exports.run = async (banData, client, locale) => {
     try {
 
         //Aborta si no es un evento de la guild registrada
-        if (banData.guild.id !== client.homeGuild.id) return;
+        if (banData.guild.id !== client.baseGuild.id) return;
 
         //Almacena la caché de registros del usuario baneado, si existe
         const loggingCache = (client.loggingCache && client.loggingCache[banData.user.id]) ? client.loggingCache[banData.user.id] : null;

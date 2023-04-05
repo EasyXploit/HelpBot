@@ -33,7 +33,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 { name: `📝 ${locale.embed.creationDate}`, value: `<t:${Math.round(interaction.guild.createdTimestamp / 1000)}>`, inline: true },
                 { name: `👑 ${locale.embed.owner}`, value: `<@${interaction.guild.ownerId}> (ID: ${interaction.guild.ownerId})`, inline: true },
                 { name: `🚫 ${locale.embed.nsfwFilter}`, value: locale.guildNsfwLevel[interaction.guild.explicitContentFilter], inline: true },
-                { name: `💎 ${locale.embed.tier}`, value: `${locale.guildTiers[client.homeGuild.premiumTier]} (${await client.functions.utilities.parseLocale.run(locale.embed.boostsCount, { boostsCount: interaction.guild.premiumSubscriptionCount })})`, inline: true },
+                { name: `💎 ${locale.embed.tier}`, value: `${locale.guildTiers[client.baseGuild.premiumTier]} (${await client.functions.utilities.parseLocale.run(locale.embed.boostsCount, { boostsCount: interaction.guild.premiumSubscriptionCount })})`, inline: true },
                 { name: `👮 ${locale.embed.verification}`, value: locale.guildverificationLevel[interaction.guild.verificationLevel], inline: true },
                 { name: `🎟️ ${locale.embed.invitations}`, value: await client.functions.utilities.parseLocale.run(locale.embed.totalInvites, { totalInvites: (await interaction.guild.invites.fetch()).size.toString() }), inline: true },
                 { name: `🔖 ${locale.embed.roles}`, value: await client.functions.utilities.parseLocale.run(locale.embed.totalRoles, { totalRoles: (await interaction.guild.roles.fetch()).size.toString() }), inline: true },

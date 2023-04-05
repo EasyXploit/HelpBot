@@ -6,7 +6,7 @@ exports.run = async (event, client, locale) => {
         const cachedGuilds = client.guilds.cache;
 
         //Carga el ID de la guild base
-        const homeGuildId = await client.functions.db.getConfig.run('system.homeGuildId');
+        const baseGuildId = await client.functions.db.getConfig.run('system.baseGuildId');
 
         //Carga el ID de la guild de servicio
         const serviceGuildId = await client.functions.db.getConfig.run('system.serviceGuildId');
@@ -21,7 +21,7 @@ exports.run = async (event, client, locale) => {
             await cachedGuilds.forEach(async guild => {
                 
                 //Omite la iteración si la guild es la configurada o es del propio bot
-                if (guild.id === serviceGuildId || guild.id === homeGuildId) return;
+                if (guild.id === serviceGuildId || guild.id === baseGuildId) return;
 
                 //Elimina la guild si es del bot pero no es la de servicio almacenada
                 if(guild.ownerId === client.user.id) return await guild.delete();
@@ -40,7 +40,7 @@ exports.run = async (event, client, locale) => {
         };
             
         //Comprueba si la config de la guild ya está almacenada o no
-        if (!homeGuildId || homeGuildId !== cachedGuilds.first().id) {
+        if (!baseGuildId || baseGuildId !== cachedGuilds.first().id) {
 
             //Almacena la nueva configuración
             await require('../../lifecycle/newGuild.js').run(client, cachedGuilds.first());

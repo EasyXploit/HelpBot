@@ -15,13 +15,7 @@ exports.run = async (client, locale) => {
         await require('./loadCommands.js').run(client);
 
         //Carga la presencia del bot
-        await client.user.setPresence({
-            status: client.config.presence.status,
-            activities: [{
-                name: client.config.presence.membersCount ? `${await client.functions.utilities.parseLocale.run(client.locale.lifecycle.loadIntervals.presence.name, { memberCount: await client.baseGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}` : client.config.presence.name,
-                type: client.config.presence.type
-            }]
-        });
+        await require('../functions/managers/updatePresence.js').run(client);
 
         //Notifica la correcta carga de la presencia
         logger.debug('Presence loading completed');

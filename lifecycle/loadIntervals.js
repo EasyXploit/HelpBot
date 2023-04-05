@@ -331,28 +331,8 @@ exports.run = async (client) => {
     //Actualización de miembros totales en presencia
     setInterval(async () => {
 
-        try {
-
-            //Si no se ha activado el conteo de miembros, ignora
-            if (!client.config.presence.membersCount) return;
-
-            //Genera el nuevo string para la actividad
-            const name = `${await client.functions.utilities.parseLocale.run(locale.presence.name, { memberCount: await client.baseGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}`;
-
-            //Actualiza la presencia del bot
-            await client.user.setPresence({
-                status: client.config.presence.status,
-                activities: [{
-                    name: name,
-                    type: client.config.presence.type
-                }]
-            });
-
-        } catch (error) {
-
-            //Si no se pudo obtener los miembros por un error temporal, aborta
-            if (error.toString().includes('Members didn\'t arrive in time')) return;
-        };
+        //Actualiza la presencia del bot
+        await require('../functions/managers/updatePresence.js').run(client);
 
     }, 60000);
 

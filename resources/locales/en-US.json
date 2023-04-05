@@ -1180,6 +1180,9 @@
                 },
                 "correct": "The report has been sent",
                 "temporaryError": "This feature is not available at this time.\nPlease try again later"
+            },
+            "updatePresence": {
+                "membersCount": "{{memberCount}} members"
             }
         },
         "moderation": {
@@ -1295,10 +1298,8 @@
                     "author": "Poll available",
                     "remaining": "Remaining: {{remainingDays}}d {{remainingHours}}h {{remainingMinutes}}m"
                 }
-            },
-            "presence": {
-                "name": "{{memberCount}} members"
             }
+            
         },
         "loadSystem": {
             "loadedCorrectly": "{{botUsername}} started successfully!"
@@ -1340,9 +1341,6 @@
                 "repeatedText": {
                     "reason": "Repetitive text"
                 }
-            },
-            "presence": {
-                "name": "Hi there!"
             }
         }
     }

@@ -1,9 +1,6 @@
 //Librería para interactuar con la BD
 const mongoose = require('mongoose');
 
-//Almacena las traducciones al idioma configurado
-const locale = require('../../resources/locales/en-us.json').models.config.presence;
-
 //Crea un nuevo esquema
 const schema = new mongoose.Schema({
     docType: {
@@ -11,10 +8,7 @@ const schema = new mongoose.Schema({
         default: 'presence',
         immutable: true
     },
-    name: {
-        type: String,
-        default: locale.name
-    },
+    showText: String,
     membersCount: {
         type: Boolean,
         default: true,
@@ -26,7 +20,7 @@ const schema = new mongoose.Schema({
         enum: ['online', 'idle', 'offline', 'dnd'],
         required: true
     },
-    presence: {
+    type: {
         type: String,
         default: 'WATCHING',
         enum: ['PLAYING', 'STREAMING', 'LISTENING', 'WATCHING', 'CUSTOM', 'COMPETING']

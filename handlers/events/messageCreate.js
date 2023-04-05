@@ -34,7 +34,7 @@ exports.run = async (message, client, locale) => {
     };
     
     //Si el mensaje tiene adjuntos y se desean filtrar
-    if (client.config.automodFilters['crossPost'].filterFiles && message.attachments.size > 0) {
+    if (await client.functions.db.getConfig.run('moderation.filters.crossPost').filterFiles && message.attachments.size > 0) {
 
         //Se genera un array a partir de los valores de los adjuntos
         const attachmentsArray = Array.from(message.attachments.values());

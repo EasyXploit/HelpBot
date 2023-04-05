@@ -8,7 +8,7 @@ exports.run = async (client, message) => {
     const locale = client.locale.functions.moderation.checkMessage;
 
     //Carga los filtros de automoderación
-    const filters = client.config.automodFilters;
+    const filters = await client.functions.db.getConfig.run('moderation.filters');
 
     //Almacena si el mensaje está permitido
     let isPermitted = true;
@@ -111,13 +111,13 @@ exports.run = async (client, message) => {
                 break;
 
             //Filtro de palabras malsonantes
-            case 'swearWords':
+            case 'bannedWords':
 
                 //Almacena las palabras prohibidas
-                const words = client.config.bannedWords;
+                const bannedWords = await client.functions.db.getConfig.run('moderation.bannedWords');
 
                 //Comprueba si el mensaje contenía palabras prohibidas
-                if (words.some(word => message.content.toLowerCase().includes(word))) match = true;
+                if (bannedWords.some(word => message.content.toLowerCase().includes(word))) match = true;
                 
                 //Para el switch
                 break;

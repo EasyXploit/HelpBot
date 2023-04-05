@@ -1,8 +1,11 @@
 //Librería para interactuar con la BD
 const mongoose = require('mongoose');
 
+//Almacena la configuración de locale desde el fichero de configuración
+const localeConfig = require('../../config.json').locale;
+
 //Almacena las traducciones al idioma configurado
-const locale = require('../../resources/locales/en-us.json').models.config.automodFilters;
+const locale = require(`../../resources/locales/${localeConfig}.json`).models.config.automodFilters;
 
 //Crea un nuevo esquema para las reglas de automoderación
 const automodRulesSchema = new mongoose.Schema({ 
@@ -54,6 +57,7 @@ const schema = new mongoose.Schema({
         default: false,
         required: true
     },
+    bannedWords: [String],
     newMemberTimeDelimiter: {
         type: Number,
         default: 1800000,
@@ -69,7 +73,6 @@ const schema = new mongoose.Schema({
         default: true,
         required: true
     },
-    bannedWords: [String],
     messageHistorySize: {
         type: Number,
         default: 10,
@@ -140,7 +143,7 @@ const schema = new mongoose.Schema({
                 required: true
             }
         },
-        swearWords: {
+        bannedWords: {
             status: {
                 type: Boolean,
                 default: false,
@@ -155,7 +158,7 @@ const schema = new mongoose.Schema({
             },
             reason: {
                 type: String,
-                default: locale.swearWords.reason,
+                default: locale.bannedWords.reason,
                 required: true
             },
             bypassIds: [String]

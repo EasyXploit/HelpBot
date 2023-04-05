@@ -6,11 +6,11 @@ exports.run = async (client, member) => {
 
     //Almacena las listas de palabras prohibidas
     const forbiddenNames = client.config.moderation.newMemberForbiddenNames;
-    const bannedWords = client.config.bannedWords;
+    const bannedWords = await client.functions.db.getConfig.run('moderation.bannedWords');
 
     //Si procede, comprueba si han de comprobarse los nombres de usuario
     const containsForbiddenNames = forbiddenNames.some(word => member.displayName.toLowerCase().includes(word));
-    const containsBannedWords = client.config.moderation.includeBannedWords ? bannedWords.some(word => member.displayName.toLowerCase().includes(word)) : false;
+    const containsBannedWords = await client.functions.db.getConfig.run('moderation.includeBannedWords') ? bannedWords.some(word => member.displayName.toLowerCase().includes(word)) : false;
 
     //Si contiene alguna palabra prohibida
     if (containsForbiddenNames || containsBannedWords) {

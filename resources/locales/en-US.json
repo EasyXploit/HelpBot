@@ -1440,17 +1440,17 @@
                 "crossPost": {
                     "reason": "Repeated posts"
                 },
-                "swearWords": {
-                    "reason": "Swear words"
+                "bannedWords": {
+                    "reason": "Banned word"
                 },
                 "invites": {
-                    "reason": "Invitations not allowed"
+                    "reason": "Invitation not allowed"
                 },
                 "uppercase": {
                     "reason": "Too many capital letters"
                 },
                 "links": {
-                    "reason": "Links not allowed"
+                    "reason": "Link not allowed"
                 },
                 "massEmojis": {
                     "reason": "Too many emojis"

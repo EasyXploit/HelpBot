@@ -1421,7 +1421,7 @@
         },
         "newGuild": {
             "title": "{{botUsername}} added successfully!",
-            "description": "Use the configuration files to adjust the bot to your liking.\nRemember that the bot will only be able to moderate those people who have a role below the role created by {{botUser}}.\nIf you need help, you can [check the wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)",
+            "description": "Use the CLI to adjust the bot to your liking.\nRemember that the bot will only be able to moderate those people who have a role below the role created by {{botUser}}.\nIf you need help, you can [check the wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)",
             "error": "ERROR"
         },
         "splashLogo": {

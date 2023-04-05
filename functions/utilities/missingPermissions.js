@@ -18,8 +18,8 @@ exports.run = async (client, targetChannel, targetMember, requiredPermissions) =
             //Almacena los permisos del miembro en el canal objetivo o en la guild si no se proporciona canal
             const memberPermissions = targetChannel ? targetMember.permissionsIn(targetChannel) : targetMember.permissions;
 
-            //Si el miembro no tiene ese permiso en el canal/guild, almacena el permiso traducido
-            if ((memberPermissions & permissionBits) !== permissionBits) permissionsNotGranted.push(client.locale.permissions[permission]);
+            //Si el miembro no tiene ese permiso en el canal/guild, almacena el permiso traducido (o sin  traducir si no se encuentra)
+            if ((memberPermissions & permissionBits) !== permissionBits) permissionsNotGranted.push(client.locale.permissions[permission] ? client.locale.permissions[permission] : permission);
         });
         
         //Si hubieron permisos indisponibles, los devuelve

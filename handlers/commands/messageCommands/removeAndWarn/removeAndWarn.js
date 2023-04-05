@@ -2,11 +2,9 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
     try {
 
-        //Carga los permisos del miembro en el canal
-        const executorPermissions = interaction.channel.permissionsFor(interaction.user);
-
         //Si el ejecutor no tiene permisos para borrar mensajes, envía un error
-        if ((executorPermissions & BigInt(0x2000)) !== BigInt(0x2000)) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        const missingPermissions = await client.functions.utilities.missingPermissions.run(client, channel, interaction.user, ['MANAGE_MESSAGES'])
+        if (missingPermissions) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantDeleteMessages}.`)
         ], ephemeral: true});

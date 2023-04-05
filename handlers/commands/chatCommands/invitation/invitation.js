@@ -12,7 +12,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             let inviteChannel;
             
             //Comprueba si hay canal de reglas y si se tiene permiso para crear la invitación
-            if (client.homeGuild.rulesChannel && !(client.homeGuild.rulesChannel.permissionsFor(client.user) & BigInt(0x1)) !== BigInt(0x1)) {
+            if (client.homeGuild.rulesChannel && !(await client.functions.utilities.missingPermissions.run(client, client.homeGuild.rulesChannel, client.user, ['CREATE_INSTANT_INVITE']))) {
 
                 //Almacena el canal de reglas
                 inviteChannel = client.homeGuild.rulesChannel;
@@ -35,7 +35,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                         const channel = channels.get(channelIds[index]);
 
                         //Si tiene permisos, graba la invitación
-                        if(!(channel.permissionsFor(client.user) & BigInt(0x1)) !== BigInt(0x1)) return inviteChannel = channel;
+                        if(!await client.functions.utilities.missingPermissions.run(client, channel, client.user, ['CREATE_INSTANT_INVITE'])) return inviteChannel = channel;
                     };
                 });
             };

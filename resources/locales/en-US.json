@@ -404,7 +404,7 @@
                     "quantityNotProvided": "You must provide the number of messages to delete",
                     "wrongQuantity": "You must provide a numerical quantity equal to or greater than 1, and less than 100",
                     "invalidChannel": "The supplied text channel is invalid",
-                    "noPermission": "You do not have permission to manage messages on {{channel}}",
+                    "noPermission": "You need the following permissions on {{channel}} to be able to purge it: {{missingPermissions}}",
                     "noMessages": "Could not find any messages on {{channel}}",
                     "expiredMessages": "Only messages older than `14 days` can be deleted",
                     "successEmbed": {
@@ -590,7 +590,7 @@
                         }
                     },
                     "invalidChannel": "The provided channel is invalid",
-                    "noPermission": "You don't have permission to send messages on {{channel}}",
+                    "noPermission": "You need the following permissions on {{channel}} to be able to send messages: {{missingPermissions}}",
                     "bodyModal": {
                         "title": "Send formatted message",
                         "fieldTitle": "Message body",

@@ -13,10 +13,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         ], ephemeral: true});
 
         //Comprueba si el miembro tiene permisos para ejecutar esta acción
-        const memberPermissions = destinationChannel.permissionsFor(interaction.user).bitfield;
-        if ((memberPermissions & BigInt(0x800)) !== BigInt(0x800)) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        const missingPermissions = await client.functions.utilities.missingPermissions.run(client, channel, interaction.user, ['SEND_MESSAGES'])
+        if (missingPermissions) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.noPermission, { channel: destinationChannel })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.noPermission, { channel: destinationChannel, missingPermissions: missingPermissions })}.`)
         ], ephemeral: true});
 
         //Almacena el modo seleccionado

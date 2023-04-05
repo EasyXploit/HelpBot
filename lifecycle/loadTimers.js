@@ -4,7 +4,7 @@ exports.run = async (client) => {
     const locale = client.locale.lifecycle.loadTimers;
 
     //Aborta si los timers están deshabilitados
-    if (!await client.functions.db.getConfig.run('system.modules.timers')) return;
+    if (!await client.functions.db.getConfig.run('system.modules.timedMessages')) return;
 
     //Aborta si los timers no son un array
     if (!Array.isArray(client.config.timers)) return;

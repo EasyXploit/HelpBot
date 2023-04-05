@@ -19,9 +19,14 @@ const schema = new mongoose.Schema({
         required: true
     },
     modules: {
-        timers: {
+        timedMessages: {
             type: Boolean,
-            default: true,
+            default: false,
+            required: true
+        },
+        memberReports: {
+            type: Boolean,
+            default: false,
             required: true
         }
         //Hacer más módulos

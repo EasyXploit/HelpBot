@@ -15,15 +15,15 @@ exports.run = async (guild, client, locale) => {
             await require('../../lifecycle/newGuild.js').run(client, cachedGuilds.first());
 
             //Notifica por consola que el bot se ha unido a la guild
-            logger.info(`${new Date().toLocaleString()} 》${await client.functions.utilities.parseLocale.run(locale.newGuild, { botUsername: client.user.username, guildName: guild.name })}.`);
+            logger.debug(`The bot has been joined to \"${guild.name}\"`);
 
         } else {
 
-            //Lanza una advertencia por consola
-            logger.info(await client.functions.utilities.parseLocale.run(locale.justOneGuild, { botUsername: client.user.username }));
-
             //Abandona la guild
             await guild.leave();
+
+            //Lanza una advertencia por consola
+            logger.debug(`The bot is not designed to work on more than one guild, so it quitted \"${guild.name}\"`);
         };
 
     } catch (error) {

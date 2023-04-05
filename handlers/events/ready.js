@@ -27,16 +27,16 @@ exports.run = async (event, client, locale) => {
                 if(guild.ownerId === client.user.id) return await guild.delete();
 
                 //Notifica que el bot no puede funcionar en más de una guild
-                logger.info(locale.justOneGuild);
+                logger.error('This bot is not designed to run on more than one guild, so it wont start until this situation is resolved');
 
                 //Aborta el proceso de manera limpia
-                process.exit();
+                process.exit(1);
             });
 
         } else if (validGuildsCount === 0) {   //Si la cantidad es 0
 
             //Notifica que el bot está esperando a que sea unido a una guild
-            return logger.info(locale.waitingGuild);
+            return logger.debug('Waiting for the bot to be joined to a guild');
         };
             
         //Comprueba si la config de la guild ya está almacenada o no

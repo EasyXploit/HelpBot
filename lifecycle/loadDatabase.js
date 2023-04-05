@@ -22,10 +22,10 @@ exports.run = async () => {
         };
 
         //Notifica el error por consola en función del tipo
-        logger.error(variableErrors[variable]);
+        logger.error(`${variableErrors[variable]}. The program will stop`);
 
         //Aborta el proceso de manera limpia
-        process.exit();
+        process.exit(1);
     };
 
     //Comprueba que se hayan proporcionado todos los parámetros necesarios para la conexión
@@ -62,10 +62,10 @@ exports.run = async () => {
             errorTracker.captureException(error);
 
             //Muestra un error por la consola
-            logger.error(`Could not connect to the database: ${error.stack}`)
+            logger.error(`Could not connect to the database, so the program will stop: ${error.stack}`)
 
             //Aborta el proceso de manera limpia
-            process.exit();
+            process.exit(1);
         });
 
     //Hace que las promesas de Mongoose estén disponibles globalmente

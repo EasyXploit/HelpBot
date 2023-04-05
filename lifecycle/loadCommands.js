@@ -1,9 +1,6 @@
 
 exports.run = async (client) => {
 
-    //Almacena las traducciones
-	const locale = client.locale.lifecycle.loadCommands;
-
     //Crea colecciones para almacenar los comandos
     client.commands = { chatCommands: {}, messageCommands: {}, userCommands: {} };
     Object.keys(client.commands).forEach(x => client.commands[x] = new client.Collection());

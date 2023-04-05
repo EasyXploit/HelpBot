@@ -1,5 +1,5 @@
 //Función para migrar documentos de la BD
-exports.run = async (locale, dbOptions, direction, targetMigration) => {
+exports.run = async (dbOptions, direction, targetMigration) => {
 
     try {
 

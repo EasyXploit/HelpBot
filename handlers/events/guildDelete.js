@@ -6,7 +6,7 @@ exports.run = async (guild, client, locale) => {
         if (guild.ownerId === client.user.id) return;
 
         //Notifica el abandono de la guild
-        logger.info(await client.functions.utilities.parseLocale.run(locale.abandonedGuild, { botUsername: client.user.username, guildName: guild.name }));
+        logger.debug(`The bot has been removed from \"${guild.name}\"`);
 
         //Carga el listado de guilds a las que el bot está unido
         const cachedGuilds = client.guilds.cache;
@@ -15,10 +15,10 @@ exports.run = async (guild, client, locale) => {
         if (cachedGuilds.size === 0) {
 
             //Notifica que se debe volver a iniciar al bot
-            logger.info(locale.shouldReboot);
+            logger.debug('The bot must be joined to a guild in order to work, so the program will finish and needs to be started again');
 
             //Aborta el proceso de manera limpia
-            process.exit();
+            process.exit(0);
         };
 
     } catch (error) {

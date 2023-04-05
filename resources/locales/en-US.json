@@ -1043,14 +1043,6 @@
                     "noDeletedDays": "None"
                 }
             },
-            "guildCreate": {
-                "newGuild": "{{botUsername}} has joined the guild \"{{guildName}}\"",
-                "justOneGuild": "WARNING: {{botUsername}} is not designed to run on more than one guild"
-            },
-            "guildDelete": {
-                "abandonedGuild": "NOTICE: {{botUsername}} has abandoned the guild \"{{guildName}}\"",
-                "shouldReboot": "NOTICE: To continue, you must restart the bot"
-            },
             "guildMemberAdd": {
                 "botLoggingEmbed": {
                     "title": "Logging - [BOTS]",
@@ -1133,10 +1125,6 @@
             },
             "messageCreate": {
                 "filteredDm": "via DM"
-            },
-            "ready": {
-                "justOneGuild": "WARNING: The bot is not designed to work on more than one guild (server).\nPlease kick the bot from all other guilds and restart the bot",
-                "waitingGuild": "WARNING: Waiting for the bot to join a guild"
             },
             "voiceStateUpdate": {
                 "voiceMovesLogging": {
@@ -1314,10 +1302,6 @@
         },
         "loadSystem": {
             "loadedCorrectly": "{{botUsername}} started successfully!"
-        },
-        "newGuild": {
-            "title": "{{botUsername}} added successfully!",
-            "description": "Use the CLI to adjust the bot to your liking.\nRemember that the bot will only be able to moderate those people who have a role below the role created by {{botUser}}.\nIf you need help, you can [check the wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)"
         },
         "splashLogo": {
             "description": "A Discord bot designed for automated community moderation, leveling, chat utilities and much more!"

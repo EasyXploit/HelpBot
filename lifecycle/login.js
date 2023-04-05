@@ -1,4 +1,4 @@
-exports.run = async (client, locale) => {
+exports.run = async (client) => {
 
     //Obtiene el token de inicio de sesión desde las variables de entorno o desde la BD
     let discordToken = process.env.DISCORD_TOKEN && process.env.DISCORD_TOKEN.length > 0 ? process.env.DISCORD_TOKEN : await client.functions.db.getConfig.run('system.discordToken');
@@ -7,10 +7,10 @@ exports.run = async (client, locale) => {
     if (!discordToken || discordToken.length === 0) {
 
         //Notifica el error por consola
-        logger.error('A Discord login token has not been provided');
+        logger.error('A Discord login token has not been provided. The program will stop');
 
         //Aborta el proceso de manera limpia
-        process.exit();
+        process.exit(1);
     };
 
     //Notifica el inicio de sesión en el cliente por consola

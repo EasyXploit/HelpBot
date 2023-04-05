@@ -1,4 +1,4 @@
-exports.run = async (client, locale) => {
+exports.run = async (client) => {
 
     try {
 

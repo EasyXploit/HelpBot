@@ -34,7 +34,7 @@ require('./lifecycle/splashLogo.js').run(locale.lifecycle.splashLogo);
 logger.info(`》${locale.index.startupMsg} ...`);
 
 //Carga el manejador de errores remoto, si está habilitado
-if (localConfig.errorTrackingStatus) require('./lifecycle/loadErrorTracker.js').run(locale.lifecycle.loadErrorTracker);
+if (localConfig.errorTrackingStatus) require('./lifecycle/loadErrorTracker.js').run();
 
 //Ejecuta el cargador de la base de datos
 require('./lifecycle/loadDatabase.js').run(locale);
@@ -84,7 +84,7 @@ client.locale = locale;
 ['functions', 'config', 'db', 'usersVoiceStates', 'userMessages'].forEach(x => client[x] = {});
 
 //Carga las funciones globales en el cliente
-require('./lifecycle/loadFunctions.js').run(client, locale.lifecycle.loadFunctions);
+require('./lifecycle/loadFunctions.js').run(client);
 
 //Carga los archivos de configuración (heredado)
 const configFiles = client.fs.readdirSync('./configs/', { withFileTypes: true });
@@ -107,7 +107,7 @@ databaseFiles.forEach(async file => {
 });
 
 //Carga los manejadores de eventos
-require('./lifecycle/loadEvents.js').run(client, locale.lifecycle.loadEvents);
+require('./lifecycle/loadEvents.js').run(client);
 
 //Carga el manejador de inicio de sesión
-require('./lifecycle/login.js').run(client, locale.lifecycle.login);
+require('./lifecycle/login.js').run(client);

@@ -69,7 +69,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (channel.id === interaction.channelId) setTimeout(() => interaction.deleteReply(), 5000);
 
         //Envía un registro al canal de registro
-        if (client.config.logging.purgedChannel) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+        await client.functions.managers.logging.run(client, 'purgedChannel', 'embed', new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
             .setDescription(await client.functions.utilities.parseLocale.run(locale.loggingEmbed.description, { authorTag: interaction.user.tag, deletedCount: msgsToDelete.size, channel: channel }))

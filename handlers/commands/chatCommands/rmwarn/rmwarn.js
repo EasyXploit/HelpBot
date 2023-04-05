@@ -159,7 +159,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (err) throw err;
 
             //Envía un registro al canal de registros
-            if (client.config.logging.warnRemoved) await client.functions.managers.logging.run(client, 'embed', loggingEmbed);
+            await client.functions.managers.logging.run(client, 'warnRemoved', 'embed', loggingEmbed);
 
             //Envía una notificación de la acción en el canal de invocación
             await interaction.reply({ embeds: [successEmbed] });

@@ -67,7 +67,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         };
 
         //Envía un mensaje al canal de registros
-        if (client.config.logging.unbannedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+        await client.functions.managers.logging.run(client, 'unbannedMember', 'embed', new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
             .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
             .addFields(

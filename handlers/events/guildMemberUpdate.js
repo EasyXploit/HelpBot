@@ -12,7 +12,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
             if (client.db.stats[newMember.id] && client.config.leveling.preserveStats) await client.functions.leveling.assignRewards.run(client, newMember, client.db.stats[newMember.id].level);
 
             //Almacena el modo de manejo de nuevos miembros
-            const newMemberMode = await client.functions.db.getConfig('welcomes.newMemberMode');
+            const newMemberMode = await client.functions.db.getConfig.run('welcomes.newMemberMode');
 
             //Ejecuta el manejador de nuevos miembros (si procede)
             if (newMemberMode === 1) await client.functions.managers.newMember.run(client, newMember);
@@ -64,7 +64,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
             if (newMember.communicationDisabledUntilTimestamp && newMember.communicationDisabledUntilTimestamp > Date.now()) {
 
                 //Envía un mensaje al canal de registros
-                if (client.config.logging.mutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                await client.functions.managers.logging.run(client, 'mutedMember', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.communicationDisabled.loggingEmbed.author, { memberTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true}) })
                     .addFields(
@@ -105,7 +105,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
                 };
 
                 //Envía un mensaje al canal de registros
-                if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                await client.functions.managers.logging.run(client, 'unmutedMember', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.communicationEnabled.loggingEmbed.author, { userTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true})})
                     .addFields(

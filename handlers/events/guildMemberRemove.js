@@ -24,7 +24,7 @@ exports.run = async (member, client, locale) => {
             if (kickLog.target.id !== member.id) {
 
                 //Envía un registro al canal de registros
-                if (client.config.logging.kickedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                await client.functions.managers.logging.run(client, 'kickedMember', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.inconclusiveLoggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                     .addFields(
@@ -42,7 +42,7 @@ exports.run = async (member, client, locale) => {
                 if (member.user.id === client.user.id) return;
 
                 //Envía un registro al canal de registros
-                if (client.config.logging.kickedBot) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                await client.functions.managers.logging.run(client, 'kickedBot', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.botLoggingEmbed.description, { memberTag: member.user.tag }))
@@ -67,7 +67,7 @@ exports.run = async (member, client, locale) => {
             };
 
             //Envía un registro al canal de registros
-            if (client.config.logging.kickedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+            await client.functions.managers.logging.run(client, 'kickedMember', 'embed', new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                 .addFields(
@@ -90,9 +90,9 @@ exports.run = async (member, client, locale) => {
 
             //Si no encontró un baneo en el primer resultado, o han pasado más de 5 segundos desde el último baneo
             if (!banLog || Date.now() > (banLog.createdTimestamp + 5000)) {
-                
+
                 //Envía un registro al canal de bienvenidas/despedidas (por que no se trató ni de una expulsión ni de un baneo)
-                if (client.config.logging.memberLeaved) await client.joinsAndLeavesChannel.send({ embeds: [ new client.MessageEmbed()
+                await client.functions.managers.logging.run(client, 'memberLeaved', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                     .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
                     .setAuthor({ name: locale.goodbyeEmbed.author, iconURL: 'attachment://out.png' })
@@ -100,8 +100,7 @@ exports.run = async (member, client, locale) => {
                     .addFields(
                         { name: `🆔 ${locale.goodbyeEmbed.memberId}`, value: member.user.id, inline: true },
                         { name: `📆 ${locale.goodbyeEmbed.antiquity}`, value: `\`${await client.functions.utilities.msToTime.run(client, Date.now() - member.joinedTimestamp)}\``, inline: true }
-                    )
-                ], files: ['./resources/images/out.png'] });
+                ), ['./resources/images/out.png']);
             };
         };
 

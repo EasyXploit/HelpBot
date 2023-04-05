@@ -5,123 +5,76 @@ exports.run = async (client, locale) => {
         //Notifica el inicio de la carga del sistema
         console.log(` - ${locale.loadingSystem} ...\n`);
 
-        //Carga en memoria de los recursos de la guild necesarios para el bot
-        const loadGuildSettings = new Promise(async (resolve, reject) => {
+        //Almacena la guild base en memoria
+        client.homeGuild = await client.guilds.cache.get(await client.functions.db.getConfig.run('system.homeGuildId'));
 
-            //Almacena la guild base en memoria
-            client.homeGuild = await client.guilds.cache.get(await client.functions.db.getConfig.run('system.homeGuildId'));
+        //Notifica que la carga de la guild base se ha completado
+        console.log(`\n - [OK] ${locale.homeGuildLoaded}.`);
 
-            //Carga cada una de las claves del objeto de config. main
-            const mainConfigs = Object.keys(client.config.main);
+        //Carga los customEmojis en el cliente
+        await require('./loadEmojis.js').run(client);
 
-            //Para cada una de las claves de configuración
-            for (let index = 0; index < mainConfigs.length; index++) {
+        //Carga de comandos en memoria
+        await require('./loadCommands.js').run(client);
 
-                //Almacena la configuración
-                const config = mainConfigs[index];
+        //Carga la presencia del bot
+        await client.user.setPresence({
+            status: client.config.presence.status,
+            activities: [{
+                name: client.config.presence.membersCount ? `${await client.functions.utilities.parseLocale.run(client.locale.lifecycle.loadIntervals.presence.name, { memberCount: await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}` : client.config.presence.name,
+                type: client.config.presence.type
+            }]
+        });
 
-                //Comprueba de qué forma tiene que cargar cada configuración
-                if (config.toLowerCase().includes('channel') && !config.toLowerCase().includes('channels')) { //Si es config. de canal
+        //Notifica la correcta carga de la presencia
+        console.log(` - [OK] ${locale.presenceLoaded}.`);
 
-                    try {
+        //Carga los scripts que funcionan a intervalos
+        await require('./loadIntervals.js').run(client);
 
-                        //Busca el canal y lo carga en memoria
-                        client[config] = await client.channels.fetch(client.config.main[config]);
+        //Carga los temporizadores configurados
+        await require('./loadTimers.js').run(client);
 
-                        //Notifica la resolución positiva de la carga
-                        console.log(` - [OK] [${config}] -> ${locale.configLoaded}`);
+        //Carga los estados de voz (si se su monitorización)
+        if (client.config.leveling.rewardVoice) {
 
-                    } catch (error) {
+            //Almacena la caché de los estados de voz
+            let voiceStates = client.homeGuild.voiceStates.cache;
 
-                        //Notifica la resolución negativa de la carga
-                        console.log(` - [ERROR] [${config}] -> ${locale.configNotLoaded}`);
+            //Para cada estado de voz
+            voiceStates.forEach(async voiceState => {
+
+                //Almacena el miembro, si lo encuentra
+                const member = await client.functions.utilities.fetch.run(client, 'member', voiceState.id);
+                if (!member) return;
+
+                //Comprueba si en el canal no se puede ganar XP
+                if (member.user.bot || (voiceState.guild.afkChannelId && voiceState.channelId === voiceState.guild.afkChannelId)) {
+                    if (client.usersVoiceStates[voiceState.id]) {
+
+                        //Borra el registro del miembro que ha dejado el canal de voz
+                        delete client.usersVoiceStates[voiceState.id];
                     };
-                    
-                } else { //Sino
-
-                    //Ignora si se trata de la config del idioma por defecto
-                    if (config === 'locale') continue;
-
-                    //Carga el objeto de config en memoria
-                    client[config] = client.config.main[config];
+                    return;
                 };
 
-                //Resuelve la promesa una vez acabado
-                if (index === mainConfigs.length -1) resolve();
-            };
-        });
-        
-        //Cuando se carguen en memoria todos los recursos
-        await loadGuildSettings.then(async () => {
-
-            //Notifica que la carga se ha completado
-            console.log(`\n - [OK] ${locale.guildConfigLoaded}.`);
-
-            //Carga los customEmojis en el cliente
-            await require('./loadEmojis.js').run(client);
-
-            //Carga de comandos en memoria
-            await require('./loadCommands.js').run(client);
-
-            //Carga la presencia del bot
-            await client.user.setPresence({
-                status: client.config.presence.status,
-                activities: [{
-                    name: client.config.presence.membersCount ? `${await client.functions.utilities.parseLocale.run(client.locale.lifecycle.loadIntervals.presence.name, { memberCount: await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}` : client.config.presence.name,
-                    type: client.config.presence.type
-                }]
+                //Crea el objeto de estado de voz
+                if (client.usersVoiceStates[voiceState.id]) client.usersVoiceStates[voiceState.id].channelId = voiceState.channelId
+                else  {
+                    client.usersVoiceStates[voiceState.id] = {
+                        guild: voiceState.guild.id,
+                        channelID: voiceState.channelId,
+                        lastXpReward: Date.now()
+                    };
+                };
             });
 
-            //Notifica la correcta carga de la presencia
-            console.log(` - [OK] ${locale.presenceLoaded}.`);
+            //Notifica la correcta carga de los estados de voz
+            console.log(` - [OK] ${locale.voiceStatesLoaded}.`);
+        };
 
-            //Carga los scripts que funcionan a intervalos
-            await require('./loadIntervals.js').run(client);
-
-            //Carga los temporizadores configurados
-            await require('./loadTimers.js').run(client);
-
-            //Carga los estados de voz (si se su monitorización)
-            if (client.config.leveling.rewardVoice) {
-
-                //Almacena la caché de los estados de voz
-                let voiceStates = client.homeGuild.voiceStates.cache;
-
-                //Para cada estado de voz
-                voiceStates.forEach(async voiceState => {
-
-                    //Almacena el miembro, si lo encuentra
-                    const member = await client.functions.utilities.fetch.run(client, 'member', voiceState.id);
-                    if (!member) return;
-
-                    //Comprueba si en el canal no se puede ganar XP
-                    if (member.user.bot || (voiceState.guild.afkChannelId && voiceState.channelId === voiceState.guild.afkChannelId)) {
-                        if (client.usersVoiceStates[voiceState.id]) {
-
-                            //Borra el registro del miembro que ha dejado el canal de voz
-                            delete client.usersVoiceStates[voiceState.id];
-                        };
-                        return;
-                    };
-
-                    //Crea el objeto de estado de voz
-                    if (client.usersVoiceStates[voiceState.id]) client.usersVoiceStates[voiceState.id].channelId = voiceState.channelId
-                    else  {
-                        client.usersVoiceStates[voiceState.id] = {
-                            guild: voiceState.guild.id,
-                            channelID: voiceState.channelId,
-                            lastXpReward: Date.now()
-                        };
-                    };
-                });
-
-                //Notifica la correcta carga de los estados de voz
-                console.log(` - [OK] ${locale.voiceStatesLoaded}.`);
-            };
-
-            //Notifica la correcta carga del bot
-            console.log(`\n 》${await client.functions.utilities.parseLocale.run(locale.loadedCorrectly, { botUsername: client.user.username })}.`);
-        });
+        //Notifica la correcta carga del bot
+        console.log(`\n 》${await client.functions.utilities.parseLocale.run(locale.loadedCorrectly, { botUsername: client.user.username })}.`);
 
     } catch (error) {
 

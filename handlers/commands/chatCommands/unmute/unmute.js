@@ -79,7 +79,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (!member) {
 
             //Envía un mensaje al canal de registros
-            if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+            await client.functions.managers.logging.run(client, 'unmutedMember', 'embed', new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
                 .setAuthor(locale.loggingEmbed.author)
                 .addFields(

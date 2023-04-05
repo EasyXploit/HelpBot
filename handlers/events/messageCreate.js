@@ -66,7 +66,7 @@ exports.run = async (message, client, locale) => {
     };
 
     //Almacena el tamaño del historial de mensajes de miembros
-    const messageHistorySize = await client.functions.db.getConfig('moderation.messageHistorySize');
+    const messageHistorySize = await client.functions.db.getConfig.run('moderation.messageHistorySize');
 
     //Si el historial está lleno, elimina el primer elemento del array
     if (userMessages.history.length >= messageHistorySize) userMessages.history.shift();  

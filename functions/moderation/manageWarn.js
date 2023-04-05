@@ -193,7 +193,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 if (err) throw err;
 
                 //Ejecuta el manejador de registro
-                if (client.config.logging.warnedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                await client.functions.managers.logging.run(client, 'warnedMember', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.warn.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                     .addFields(
@@ -207,7 +207,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 );
 
                 //Si procede, adjunta el mensaje filtrado
-                if (message && client.config.logging.warnedMember && client.config.moderation.attachFilteredMessages) await client.functions.managers.logging.run(client, 'file', new client.MessageAttachment(Buffer.from(filteredURL || message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
+                if (message && client.config.moderation.attachFilteredMessages) await client.functions.managers.logging.run(client, 'warnedMember', 'file', new client.MessageAttachment(Buffer.from(filteredURL || message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
             });
 
             //Banea temporalmente a los miembros que se acaban de unir al servidor y han mandado invitaciones

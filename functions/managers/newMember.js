@@ -31,18 +31,17 @@ exports.run = async (client, member) => {
         if (member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now()) welcomeEmbed.addFieldw({ name: `🔇 ${locale.actualSanction}`, value: `${locale.mutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>`, inline: false });
 
         //Se notifica en el canal de registro
-        if (client.config.logging.memberJoined) await client.joinsAndLeavesChannel.send({ embeds: [ welcomeEmbed ], files: ['./resources/images/in.png'] });
+        await client.functions.managers.logging.run(client, 'memberJoined', 'embed', welcomeEmbed, ['./resources/images/in.png']);
 
         //Almacena el ID del rol para nuevos miembros
-        const newMemberRoleId = await client.functions.db.getConfig('welcomes.newMemberRoleId');
+        const newMemberRoleId = await client.functions.db.getConfig.run('welcomes.newMemberRoleId');
 
         //Añade el rol de bienvenida para nuevos miembros (si no lo tiene ya)
-        if (member.roles.cache.has(newMemberRoleId)) await member.roles.add(newMemberRoleId);
+        if (newMemberRoleId.length > 0 && member.roles.cache.has(newMemberRoleId)) await member.roles.add(newMemberRoleId);
 
     } catch (error) {
 
         //Ignora si el miembro no permite que se le envíen MDs
         if (error.toString().includes('Cannot send messages to this user')) return;
-
     };
 };

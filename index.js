@@ -72,10 +72,10 @@ client.localConfig = localConfig;
 client.locale = locale;
 
 //Carga varios métodos de Discord.js en el cliente
-['MessageEmbed', 'MessageAttachment', 'MessageActionRow', 'MessageSelectMenu', 'TextInputComponent', 'MessageButton', 'Collection', 'Modal'].forEach(x => client[x] = discord[x]);
+['MessageEmbed', 'MessageAttachment', 'MessageActionRow', 'MessageSelectMenu', 'TextInputComponent', 'MessageButton', 'Collection', 'Modal', 'Permissions'].forEach(x => client[x] = discord[x]);
 
 //Crea varios objetos en el cliente para almacenar las configuraciones, bases de datos, cachés y funciones, entre otros
-['functions', 'config', 'db', 'usersVoiceStates', 'memberMessages'].forEach(x => client[x] = {});
+['functions', 'config', 'db', 'usersVoiceStates', 'userMessages'].forEach(x => client[x] = {});
 
 //Carga las funciones globales en el cliente
 require('./lifecycle/loadFunctions.js').run(client, locale.lifecycle.loadFunctions);

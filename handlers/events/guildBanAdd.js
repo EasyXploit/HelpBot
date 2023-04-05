@@ -21,7 +21,7 @@ exports.run = async (banData, client, locale) => {
         if (!loggingCache && (!banLog || banLog.target.id !== banData.user.id)) {
 
             //Envía un mensaje al canal de registros
-            if (client.config.logging.bannedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+            await client.functions.managers.logging.run(client, 'bannedMember', 'embed', new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.inconclusiveLoggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
                 .addFields(
@@ -69,15 +69,15 @@ exports.run = async (banData, client, locale) => {
                 if (banData.user.id === client.user.id) return;
 
                 //Envía un registro al canal de registros
-                return await client.channels.cache.get(client.config.main.loggingChannel).send({ embeds: [ new client.MessageEmbed()
+                await client.functions.managers.logging.run(client, 'bannedBot', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.botLoggingEmbed.description, { userTag: banData.user.tag }))
-                ]});
+                );
             };
 
             //Envía un mensaje al canal de registros
-            if (client.config.logging.bannedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+            await client.functions.managers.logging.run(client, 'bannedMember', 'embed', new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
                 .addFields(

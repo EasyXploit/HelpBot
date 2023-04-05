@@ -1,54 +1,69 @@
 //Función para gestionar el envío de registros al canal de registro
-exports.run = async (client, type, content) => {
+exports.run = async (client, logType, contentType, content, attachments) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.managers.logging;
 
-    //Comprobar si el canal está configurado y almacenado en memoria
-    if (client.config.main.loggingChannel && client.loggingChannel) {
+    try {
 
-        try {
+        //Almacena los ajustes para este registro
+        const logSettings = await client.functions.db.getConfig.run(`logging.${logType}`);
 
-            //Carga los permisos del bot en el canal de logging
-            const channelPermissions = client.loggingChannel.permissionsFor(client.user);
-            const missingPermission = ((channelPermissions & BigInt(0x800)) !== BigInt(0x800) || (channelPermissions & BigInt(0x4000)) !== BigInt(0x4000) || (channelPermissions & BigInt(0x8000)) !== BigInt(0x8000));
+        //Si el registro no está habilitado, aborta
+        if (!logSettings.enabled) return false;
 
-            //Comprueba si el bot tiene permisos para mandar el contenido
-            if (!missingPermission) {
+        //Busca el canal configurado para enviar el registro
+        const logChannel = await client.functions.utilities.fetch.run(client, 'channel', logSettings.channelId);
 
-                //Envía el contenido al canal, en función del tipo
-                switch (type) {
-                    case 'embed': await client.loggingChannel.send({ embeds: [content] }); break;
-                    case 'file': await client.loggingChannel.send({ files: [content] }); break;
-                    case 'text': await client.loggingChannel.send({ text: [content] }); break;
-                    default: break;
-                };
+        //Si el canal no se encuentra
+        if (!logChannel) {
 
-            } else {
+            //Deshabilita el registro
+            await client.functions.db.setConfig.run(`logging.${logType}.enabled`, false);
 
-                //Advertir por consola de que no se tienen permisos
-                console.error(`${new Date().toLocaleString()} 》${await client.functions.utilities.parseLocale.run(locale.cannotSend, { botUser: client.user.username })}.`);
-            };
+            //Elimina el ID del canal de la base de datos
+            await client.functions.db.setConfig.run(`logging.${logType}.channelId`, '');
 
-        } catch (error) {
+            //Advierte por consola de que el canal no existe
+            console.error(`${new Date().toLocaleString()} 》${locale.cannotAccess}.`);
 
-            //Si el canal no es accesible
-            if (error.toString().includes('Unknown Channel')) {
-
-                //Borrarlo de la config y descargarlo de la memoria
-                client.config.main.loggingChannel = '';
-                client.loggingChannel = null;
-
-                //Advertir por consola
-                console.error(`${new Date().toLocaleString()} 》${locale.cannotAccess}.`);
-
-                //Graba la nueva configuración en el almacenamiento
-                await client.fs.writeFile('./configs/main.json', JSON.stringify(client.config.main, null, 4), async err => { if (err) throw err });
-            } else {
-
-                //Muestra un error por consola
-                console.error(`${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
-            };
+            //Devuelve un estado incorrecto
+            return false;
         };
+
+        //Comprueba si al bot le faltan permisos en el canal de reportes
+        const missingPermissions = await client.functions.utilities.missingPermissions.run(client, logChannel, logChannel.guild.me, ['SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES']);
+
+        //Si le faltaron permisos al bot
+        if (missingPermissions) {
+
+            //Deshabilita el registro
+            await client.functions.db.setConfig.run(`logging.${logType}.enabled`, false);
+
+            //Advierte por consola de que no se tienen permisos
+            console.error(`${new Date().toLocaleString()} 》${await client.functions.utilities.parseLocale.run(locale.cannotSend, { botUser: client.user.username, missingPermissions: missingPermissions })}.`);
+
+            //Devuelve un estado incorrecto
+            return false;
+        };
+
+        //Envía el contenido al canal, en función del tipo
+        switch (contentType) {
+            case 'embed': await logChannel.send({ embeds: [content], files: [attachments ? attachments : null] }); break;
+            case 'text': await logChannel.send({ text: [content], files: [attachments ? attachments : null] }); break;
+            case 'file': await logChannel.send({ files: [content] }); break;
+            default: return false;
+        };
+
+    } catch (error) {
+
+        //Muestra un error por consola
+        console.error(`${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
+
+        //Devuelve un estado erróneo
+        return false;
     };
+
+    //Devuelve un estado correcto
+    return true;
 };

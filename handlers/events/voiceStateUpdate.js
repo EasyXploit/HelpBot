@@ -48,13 +48,16 @@ exports.run = async (oldState, newState, client, locale) => {
         };
 
         //Aborta el resto de la ejecución si no están habilitadas las recompensas de XP
-        if (!client.config.leveling.rewardVoice) return;
+        if (!await client.functions.db.getConfig.run('leveling.rewardVoice')) return;
 
         //Función para que el miembro deje de ganar XP
         async function endVoiceTime() {
 
+            //Almacena el intervalo de ganancia de puntos de EXP
+            const XPGainInterval = await client.functions.db.getConfig.run('leveling.XPGainInterval');
+
             //Si el timestamp actual es superior a los MS de intervalo de ganancia de XP configurado
-            if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].lastXpReward + client.config.leveling.XPGainInterval)) {
+            if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].lastXpReward + XPGainInterval)) {
 
                 //Almacena al miembro
                 const member = await client.functions.utilities.fetch.run(client, 'member', newState.id);
@@ -86,7 +89,7 @@ exports.run = async (oldState, newState, client, locale) => {
                 };
 
                 //Actualiza el tiempo de voz del miembro
-                client.db.stats[member.id].aproxVoiceTime += client.config.leveling.XPGainInterval;
+                client.db.stats[member.id].aproxVoiceTime += XPGainInterval;
 
                 //Guarda las nuevas estadísticas del miembro en la base de datos
                 client.fs.writeFile('./storage/databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {

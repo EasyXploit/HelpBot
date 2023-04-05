@@ -11,11 +11,14 @@ exports.run = async (client, interaction) => {
         //Almacena si el miembro puede ganar EXP
         let notAuthorized;
 
+        //Almacena los IDs que no pueden ganar punto de EXP
+        const wontEarnXP = await client.functions.db.getConfig.run('leveling.wontEarnXP')
+
         //Por cada uno de los roles que pueden ganar EXP
-        for (let index = 0; index < client.config.leveling.wontEarnXP.length; index++) {
+        for (let index = 0; index < wontEarnXP.length; index++) {
 
             //Comprueba si el miembro ejecutor lo tiene
-            if (member.roles.cache.has(client.config.leveling.wontEarnXP[index])) notAuthorized = true; break;
+            if (member.roles.cache.has(wontEarnXP[index])) notAuthorized = true; break;
         };
 
         //Si no está autorizado para ello, devuelve un mensaje de error

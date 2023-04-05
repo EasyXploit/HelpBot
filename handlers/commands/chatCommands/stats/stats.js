@@ -21,7 +21,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         const memberStats = client.db.stats[member.id];
 
         //Para comprobar si el rol puede ganar XP o no.
-        const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, member, { bypassIds: client.config.leveling.wontEarnXP });
+        const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, member, { bypassIds: await client.functions.db.getConfig.run('leveling.wontEarnXP') });
 
         //Función para comparar un array
         function compare(a, b) {
@@ -30,8 +30,11 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             return 0;
         };
 
+        //Almacena las recompensas por subir de nivel
+        const levelingRewards = await client.functions.db.getConfig.run('leveling.rewards');
+
         //Compara y ordena el array de recompensas
-        const sortedRewards = client.config.levelingRewards.sort(compare);
+        const sortedRewards = levelingRewards.sort(compare);
 
         //Almacena los próximos roles recompensados
         let nextRewardedRoles = {};

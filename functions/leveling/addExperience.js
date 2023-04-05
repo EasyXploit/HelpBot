@@ -5,13 +5,16 @@ exports.run = async (client, member, mode, channel) => {
     const locale = client.locale.functions.leveling.addExperience;
 
     //Para comprobar si el rol puede ganar XP o no.
-    const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, member, { bypassIds: client.config.leveling.wontEarnXP });
+    const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, member, { bypassIds: await client.functions.db.getConfig.run('leveling.wontEarnXP') });
 
     //Devuelve si no se puede ganar XP
     if (notAuthorizedToEarnXp) return;
 
+    //Almacena los canales que no pueden generar XP
+    const nonXPChannels = await client.functions.db.getConfig.run('leveling.nonXPChannels');
+
     //Si no se puede ganar XP en el canal, aborta
-    if (client.config.leveling.nonXPChannels.includes(channel.id)) return;
+    if (nonXPChannels.includes(channel.id)) return;
 
     //Si el miembro no tiene tabla de stats
     if (!client.db.stats[member.id]) {
@@ -34,7 +37,7 @@ exports.run = async (client, member, mode, channel) => {
     const memberStats = client.db.stats[member.id];
 
     //Genera XP aleatorio según los rangos
-    const newXp = await client.functions.utilities.randomIntBetween.run(client.config.leveling.minimumXpReward, client.config.leveling.maximumXpReward);
+    const newXp = await client.functions.utilities.randomIntBetween.run(await client.functions.db.getConfig.run('leveling.minimumXpReward'), await client.functions.db.getConfig.run('leveling.maximumXpReward'));
 
     //Añade el XP a la cantidad actual del miembro
     memberStats.experience += newXp;
@@ -90,9 +93,12 @@ exports.run = async (client, member, mode, channel) => {
             levelUpEmbed.addFields({ name: locale.levelUpEmbed.rewards, value: `\`${roleNames.join('`, `')}\`` });
         };
 
+        //Almacena la configuración global de niveles
+        const levelingConfig = await client.functions.db.getConfig.run('leveling');
+
         //Manda el mensaje de subida de nivel, si se ha configurado
-        if (mode === 'message' && client.config.leveling.notifylevelUpOnChat && memberStats.notifications.public) channel.send({ embeds: [levelUpEmbed] });
-        if (mode === 'voice' && client.config.leveling.notifylevelUpOnVoice && memberStats.notifications.private) member.send({ embeds: [levelUpEmbed], components: [buttonsRow] });
+        if (mode === 'message' && levelingConfig.notifylevelUpOnChat && memberStats.notifications.public) channel.send({ embeds: [levelUpEmbed] });
+        if (mode === 'voice' && levelingConfig.notifylevelUpOnVoice && memberStats.notifications.private) member.send({ embeds: [levelUpEmbed], components: [buttonsRow] });
     };
 
     //Guarda las nuevas estadísticas del miembro en la base de datos

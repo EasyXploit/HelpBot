@@ -27,7 +27,7 @@ exports.run = async (client, locale) => {
         await require('./loadTimers.js').run(client);
 
         //Carga los estados de voz (si se su monitorización)
-        if (client.config.leveling.rewardVoice) {
+        if (await client.functions.db.getConfig.run('leveling.rewardVoice')) {
 
             //Almacena la caché de los estados de voz
             let voiceStates = client.baseGuild.voiceStates.cache;

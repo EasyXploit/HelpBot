@@ -8,8 +8,11 @@ exports.run = async (client, member, memberLevel, updateSubsequents) => {
         return 0;
     };
 
+    //Almacena las recompensas por subir de nivel
+    const levelingRewards = await client.functions.db.getConfig.run('leveling.rewards');
+
     //Compara y ordena el array de recompensas
-    const sortedRewards = client.config.levelingRewards.sort(compare);
+    const sortedRewards = levelingRewards.sort(compare);
 
     //Almacena los roles de recompensa a asignar
     let toReward = [];
@@ -23,11 +26,14 @@ exports.run = async (client, member, memberLevel, updateSubsequents) => {
         //Si la recompensa sobrepasa el nivel del miembro, para el bucle
         if (!updateSubsequents && reward.requiredLevel > memberLevel) break;
 
+        //Almacena si se deben eliminar las recompensas anteriores
+        const removePreviousRewards = await client.functions.db.getConfig.run('leveling.removePreviousRewards');
+
         //Por cada uno de los roles de dicha recompensa
         reward.roles.forEach(async role => {
 
             //Si no se deben preservar viejas recompensas
-            if ((client.config.leveling.removePreviousRewards && !(sortedRewards[index + 1] && reward.requiredLevel < memberLevel && sortedRewards[index + 1].requiredLevel > memberLevel) && index !== (sortedRewards.length - 1)) || reward.requiredLevel > memberLevel) {
+            if ((removePreviousRewards && !(sortedRewards[index + 1] && reward.requiredLevel < memberLevel && sortedRewards[index + 1].requiredLevel > memberLevel) && index !== (sortedRewards.length - 1)) || reward.requiredLevel > memberLevel) {
 
                 //Le elimina el rol al miembro, si lo tiene
                 if (member.roles.cache.has(role)) await member.roles.remove(role);
@@ -38,10 +44,10 @@ exports.run = async (client, member, memberLevel, updateSubsequents) => {
         if (reward.requiredLevel > memberLevel) continue;
 
         //Si el miembro puede stackear todas las recompensas, o tiene el nivel de esta, se almacena
-        if (!client.config.leveling.removePreviousRewards || reward.requiredLevel === memberLevel || (reward.requiredLevel < memberLevel && index === (sortedRewards.length - 1))) toReward = toReward.concat(reward.roles);
+        if (!removePreviousRewards || reward.requiredLevel === memberLevel || (reward.requiredLevel < memberLevel && index === (sortedRewards.length - 1))) toReward = toReward.concat(reward.roles);
 
         //Si el miembro tiene cómo mínimo el nivel de la recompensa anterior, esta se almacena
-        if (client.config.leveling.removePreviousRewards && sortedRewards[index + 1] && reward.requiredLevel < memberLevel && memberLevel < sortedRewards[index + 1].requiredLevel) toReward = toReward.concat(reward.roles);
+        if (removePreviousRewards && sortedRewards[index + 1] && reward.requiredLevel < memberLevel && memberLevel < sortedRewards[index + 1].requiredLevel) toReward = toReward.concat(reward.roles);
     };
 
     //Si hubieron roles a asignar

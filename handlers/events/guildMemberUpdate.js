@@ -9,7 +9,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
         if (oldMember.pending && !newMember.pending) {
 
             //Si el miembro tiene entradas en la tabla de estadísticas, asigna las recompensas que le corresponda
-            if (client.db.stats[newMember.id] && client.config.leveling.preserveStats) await client.functions.leveling.assignRewards.run(client, newMember, client.db.stats[newMember.id].level);
+            if (client.db.stats[newMember.id] && await client.functions.db.getConfig.run('leveling.preserveStats')) await client.functions.leveling.assignRewards.run(client, newMember, client.db.stats[newMember.id].level);
 
             //Almacena el modo de manejo de nuevos miembros
             const newMemberMode = await client.functions.db.getConfig.run('welcomes.newMemberMode');

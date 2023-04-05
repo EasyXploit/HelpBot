@@ -317,7 +317,7 @@ exports.run = async (client) => {
             };
 
             //Actualiza el tiempo de voz del miembro
-            client.db.stats[member.id].aproxVoiceTime += client.config.leveling.XPGainInterval;
+            client.db.stats[member.id].aproxVoiceTime += await client.functions.db.getConfig.run('leveling.XPGainInterval');
 
             //Guarda las nuevas estadísticas del miembro en la base de datos
             client.fs.writeFile('./storage/databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
@@ -325,7 +325,7 @@ exports.run = async (client) => {
             });
         };
         
-    }, client.config.leveling.XPGainInterval);
+    }, await client.functions.db.getConfig.run('leveling.XPGainInterval'));
 
     //PRESENCIA
     //Actualización de miembros totales en presencia

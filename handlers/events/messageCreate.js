@@ -105,7 +105,7 @@ exports.run = async (message, client, locale) => {
         });
 
         //Si el último mensaje que generó EXP fue hace más del periodo establecido
-        if (client.config.leveling.rewardMessages && ((message.createdTimestamp - userMessages.lastValidTimestamp) > client.config.leveling.minimumTimeBetweenMessages)) {
+        if (await client.functions.db.getConfig.run('leveling.rewardMessages') && ((message.createdTimestamp - userMessages.lastValidTimestamp) > await client.functions.db.getConfig.run('leveling.minimumTimeBetweenMessages'))) {
 
             //Actualiza el valor del tiempo de última ganancia de EXP
             userMessages.lastValidTimestamp = message.createdTimestamp;

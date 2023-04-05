@@ -7,7 +7,7 @@ const localeConfig = require('../../config.json').locale;
 //Almacena las traducciones al idioma configurado
 const locale = require(`../../resources/locales/${localeConfig}.json`).models.config.automodFilters;
 
-//Crea un nuevo esquema
+//Crea un nuevo esquema para la moderación
 const schema = new mongoose.Schema({
     docType: {
         type: String,

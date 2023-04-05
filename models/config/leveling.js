@@ -1,7 +1,7 @@
 //Librería para interactuar con la BD
 const mongoose = require('mongoose');
 
-//Crea un nuevo esquema
+//Crea un nuevo esquema para el sistema de niveles
 const schema = new mongoose.Schema({
     docType: {
         type: String,

@@ -1,7 +1,7 @@
 //Librería para interactuar con la BD
 const mongoose = require('mongoose');
 
-//Crea un nuevo esquema para la guild
+//Crea un nuevo esquema para las bienvenidas
 const schema = new mongoose.Schema({
     docType: {
         type: String,

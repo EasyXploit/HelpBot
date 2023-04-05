@@ -14,8 +14,11 @@ exports.run = async (client) => {
     //Almacena el nombre seleccionado para los comandos 
     let localeForNames = client.locale;
 
+    //Almacena el locale al que se fuerzan las traducciones de los comandos
+    const forceNameLocale = await client.functions.db.getConfig.run('commands.forceNameLocale');
+
     //Si se ha seleccionado un locale diferente
-    if (client.config.commands.forceNameLocale.length > 0) {
+    if (forceNameLocale && forceNameLocale.length > 0) {
 
         //Almacena los nombres originales de los archivos
         let localeFiles = client.fs.readdirSync('./resources/locales/');
@@ -27,12 +30,15 @@ exports.run = async (client) => {
         for (let file = 0; file < localeFiles.length; file ++) availableLocales.push(localeFiles[file].replace('.json', ''));
 
         //Si hay un locale con ese nombre
-        if (availableLocales.includes(client.config.commands.forceNameLocale)) {
+        if (availableLocales.includes(forceNameLocale)) {
 
             //Reemplaza los nombres de los comandos por los de ese locale
-            localeForNames = require(`../resources/locales/${client.config.commands.forceNameLocale}.json`);
+            localeForNames = require(`../resources/locales/${forceNameLocale}.json`);
         };
     };
+
+    //Almacena la configuración local de comandos
+    const commandsConfig = await client.functions.db.getConfig.run('commands');
 
     //Carga de comandos - Lee el directorio de las categorías de comandos
     for (const commandType of await client.fs.readdirSync('./handlers/commands/')) {
@@ -53,7 +59,7 @@ exports.run = async (client) => {
         };
 
         //Almacena los nombres de los comandos ignorados
-        const ignoredCommands = client.config.commands.ignored;
+        const ignoredCommands = await client.functions.db.getConfig.run('commands.ignored');
 
         //Crea una colección con todos los comandos remotos
         const remoteCommands = clientCommands.concat(guildCommands);
@@ -167,7 +173,7 @@ exports.run = async (client) => {
             };
 
             //Almacena la configuración del comando
-            const userConfig = client.config.commands[commandType][commandName];
+            const userConfig = commandsConfig[commandType][commandName];
 
             //Omite si el comando no tiene fichero de configuración
             if (!userConfig) {

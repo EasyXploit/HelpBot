@@ -27,18 +27,6 @@ const automodRulesSchema = new mongoose.Schema({
     }
 });
 
-//Crea un nuevo esquema para las recompensas por subida de nivel
-const levelingRewardsSchema = new mongoose.Schema({ 
-    requiredLevel: {
-        type: Number,
-        required: true
-    },
-    roles: {
-        type: [String],
-        required: true
-    }
-});
-
 //Crea un nuevo esquema
 const schema = new mongoose.Schema({
     docType: {
@@ -81,7 +69,6 @@ const schema = new mongoose.Schema({
     },
     voiceMovesExcludedChannels: [String],
     automodRules: [automodRulesSchema],
-    levelingRewards: [levelingRewardsSchema],
     filters: {
         flood: {
             status: {

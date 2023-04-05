@@ -1,6 +1,18 @@
 //Librería para interactuar con la BD
 const mongoose = require('mongoose');
 
+//Crea un nuevo esquema para las recompensas por subida de nivel
+const levelingRewardsSchema = new mongoose.Schema({ 
+    requiredLevel: {
+        type: Number,
+        required: true
+    },
+    roles: {
+        type: [String],
+        required: true
+    }
+});
+
 //Crea un nuevo esquema
 const schema = new mongoose.Schema({
     docType: {
@@ -8,6 +20,7 @@ const schema = new mongoose.Schema({
         default: 'leveling',
         immutable: true
     },
+    levelingRewards: [levelingRewardsSchema],
     rewardMessages: {
         type: Boolean,
         default: true,

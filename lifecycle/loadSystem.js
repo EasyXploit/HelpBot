@@ -3,13 +3,13 @@ exports.run = async (client, locale) => {
     try {
 
         //Notifica el inicio de la carga del sistema
-        console.log(` - ${locale.loadingSystem} ...\n`);
+        logger.debug('Loading system ...');
 
         //Almacena la guild base en memoria
         client.baseGuild = await client.guilds.cache.get(await client.functions.db.getConfig.run('system.baseGuildId'));
 
         //Notifica que la carga de la guild base se ha completado
-        console.log(`\n - [OK] ${locale.baseGuildLoaded}.`);
+        logger.debug('Base guild loading completed');
 
         //Carga los customEmojis en el cliente
         await require('./loadEmojis.js').run(client);
@@ -27,7 +27,7 @@ exports.run = async (client, locale) => {
         });
 
         //Notifica la correcta carga de la presencia
-        console.log(` - [OK] ${locale.presenceLoaded}.`);
+        logger.debug('Presence loading completed');
 
         //Carga los scripts que funcionan a intervalos
         await require('./loadIntervals.js').run(client);
@@ -70,15 +70,15 @@ exports.run = async (client, locale) => {
             });
 
             //Notifica la correcta carga de los estados de voz
-            console.log(` - [OK] ${locale.voiceStatesLoaded}.`);
+            logger.debug('Voice states loading completed');
         };
 
         //Notifica la correcta carga del bot
-        console.log(`\n 》${await client.functions.utilities.parseLocale.run(locale.loadedCorrectly, { botUsername: client.user.username })}.`);
+        logger.info(`》${await client.functions.utilities.parseLocale.run(locale.loadedCorrectly, { botUsername: client.user.username })}\n`);
 
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} ${locale.error}:`, error.stack);
+        logger.error(error.stack);
     };
 };

@@ -25,7 +25,7 @@ exports.run = async (client) => {
         for (let file = 0; file < fileNames.length; file ++) localEmojis.push(fileNames[file].replace('.png', ''));
 
         //Si se excede el límite de emojis, devuelve un error
-        if (localEmojis.length > 50) return console.error(`${new Date().toLocaleString()} 》ERROR:`, client.locale.lifecycle.loadEmojis.maxExceeded);
+        if (localEmojis.length > 50) return logger.error('No more than 50 emojis can be loaded on the service guild');
 
         //Carga las emojis de la guild
         let remoteEmojis = await client.serviceGuild.emojis.fetch();
@@ -64,11 +64,11 @@ exports.run = async (client) => {
         });
 
         //Notifica la correcta carga de los emojis personalizados en el cliente
-        console.log(` - [OK] ${client.locale.lifecycle.loadEmojis.configLoaded}.`);
+        logger.debug('Custom emojis loading completed');
 
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》${client.locale.lifecycle.loadEmojis.error}:`, error.stack);
+        logger.error(error.stack);
     };
 };

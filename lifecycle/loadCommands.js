@@ -4,9 +4,6 @@ exports.run = async (client) => {
     //Almacena las traducciones
 	const locale = client.locale.lifecycle.loadCommands;
 
-    //Salta una línea en la consola
-    console.log('\n');
-
     //Crea colecciones para almacenar los comandos
     client.commands = { chatCommands: {}, messageCommands: {}, userCommands: {} };
     Object.keys(client.commands).forEach(x => client.commands[x] = new client.Collection());
@@ -80,13 +77,13 @@ exports.run = async (client) => {
 
                     //Borra el comando de la guild y lo notifica
                     await client.baseGuild.commands.delete(command[1]);
-                    console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.unregisteredFromGuild, { command: `[${commandType}/${command[1].name}]`, guildName: client.baseGuild.name })}.`);
+                    logger.debug(`Command [${commandType}/${command[1].name}] un-registered at ${client.baseGuild.name}`);
 
                 } else {
 
                     //Borra el comando del cliente y lo notifica
                     await client.application.commands.delete(command[1]);
-                    console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.unregisteredFromGlobal, { command: `[${commandType}/${command[1].name}]` })}.`);
+                    logger.debug(`Command [${commandType}/${command[1].name}] un-registered globally`);
                 };
 
             } else {
@@ -99,14 +96,14 @@ exports.run = async (client) => {
 
                     //Lo borra y lo notifica
                     await client.baseGuild.commands.delete(command[1]);
-                    console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.convertedToGlobal, { command: `[${commandType}/${command[1].name}]` })}.`);
+                    logger.debug(`Command [${commandType}/${command[1].name}] converted to \"global\" type`);
 
                 //Si es un comando global pero el tipo local ya no coincide
                 } else if (!command[1].guildId && appType === 'guild') {
 
                     //Lo borra y lo notifica
                     await client.application.commands.delete(command[1]);
-                    console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.convertedToGuild, { command: `[${commandType}/${command[1].name}]` })}.`);
+                    logger.debug(`Command [${commandType}/${command[1].name}] converted to \"guild\" type`);
                 };
             };
         };
@@ -177,14 +174,14 @@ exports.run = async (client) => {
 
             //Omite si el comando no tiene fichero de configuración
             if (!userConfig) {
-                console.log(` - [ERR] ${await client.functions.utilities.parseLocale.run(locale.convertedToGuild, { command: `[${commandType}/${commandName}]` })}.`);
+                logger.warn(`Command [${commandType}/${commandName}] has no configuration in commands.json`);
                 continue;
             };
 
             //Comprueba si hay conflictos con otros comandos que tengan el mismo nombre
             for (const type of Object.keys(client.commands)) {
                 if (client.commands[type].get(localCmd.appData.name)) {
-                    console.warn(`- [ERR] ${locale.sameCommandNamesError}: ${localCmd.appData.name}.`);
+                    logger.warn(`Two or more commands have the same name: ${localCmd.appData.name}`);
                     continue;
                 };
             };
@@ -204,7 +201,8 @@ exports.run = async (client) => {
                 if (!['global', 'guild'].includes(localCmd.type)) {
 
                     //Advierte y omite el comando
-                    console.log(` - [ERR] ${await client.functions.utilities.parseLocale.run(locale.invalidTypeError, { command: `[${commandType}/${commandName}]` })}.`);
+                    
+                    logger.warn(`The command [${commandType}/${commandName}] does not have a valid type`);
                     continue;
                 };
 
@@ -223,12 +221,11 @@ exports.run = async (client) => {
 
                 //Almacena el mensaje para la confirmación
                 const logString = localCmd.type === 'global' ? 
-                    await client.functions.utilities.parseLocale.run(locale.registeredOnGlobal, { command: `[${commandType}/${localCmd.appData.name}]` }) : 
-                    await client.functions.utilities.parseLocale.run(locale.registeredOnGuild, { command: `[${commandType}/${localCmd.appData.name}]`, guildName: client.baseGuild.name });
-                
+                    `Command [${commandType}/${localCmd.appData.name}] registered globally` :
+                    `Command [${commandType}/${localCmd.appData.name}] registered in ${client.baseGuild.name}`;
                 
                 //Envía un mensaje de confirmación por consola
-                console.log(` - [UP] ${logString}.`);
+                logger.debug(`${logString}`);
 
             } else {
 
@@ -252,7 +249,7 @@ exports.run = async (client) => {
                     });
     
                     //Envía un mensaje de confirmación por consola
-                    console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.parametersUpdated, { command: `[${commandType}/${localCmd.appData.name}]` })}.`);
+                    logger.debug(`The command [${commandType}/${localCmd.appData.name}] has updated its parameters`);
                 };
 
                 //Comprueba si el permiso por defecto almacenado es el mismo que el registrado
@@ -264,7 +261,7 @@ exports.run = async (client) => {
                     });
     
                     //Envía un mensaje de confirmación por consola
-                    console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.defaultPermUpdated, { command: `[${commandType}/${localCmd.appData.name}]` })}.`);
+                    logger.debug(`The command [${commandType}/${localCmd.appData.name}] has updated its default permission.`);
                 };
 
                 //Comprueba si el permiso de uso mediante MD es el mismo que el registrado
@@ -276,7 +273,7 @@ exports.run = async (client) => {
                     });
     
                     //Envía un mensaje de confirmación por consola
-                    console.log(` - [UP] ${await client.functions.utilities.parseLocale.run(locale.dmPermUpdated, { command: `[${commandType}/${localCmd.appData.name}]` })}.`);
+                    logger.debug(`The command [${commandType}/${localCmd.appData.name}] has updated its permission to be used via DM`);
                 };
             };
 
@@ -290,10 +287,7 @@ exports.run = async (client) => {
             await client.commands[commandType].set(localCmd.appData.name, commandData);
 
             //Manda un mensaje de confirmación
-            console.log(` - [OK] ${await client.functions.utilities.parseLocale.run(locale.loadedCorrectly, { command: `[${commandType}/${localCmd.appData.name}]` })}.`);
+            logger.debug(`Command [${commandType}/${localCmd.appData.name}] loaded successfully`);
         };
     };
-
-    //Salta una línea en la consola
-    console.log('\n');
 };

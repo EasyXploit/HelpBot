@@ -6,7 +6,7 @@ exports.run = async (locale) => {
         if (!process.env.SENTRY_DSN || process.env.SENTRY_DSN.length === 0) return;
 
         //Anuncia la carga del manejador de errores remoto
-        console.log(locale.loading);
+        logger.debug('Loading remote error tracker ...');
 
         //Almacena la librería de Sentry
         const sentry = require("@sentry/node");
@@ -22,11 +22,11 @@ exports.run = async (locale) => {
         });
 
         //Muestra un mensaje de confirmación en la consola
-        console.log(` - ${locale.tracesSampleRate}: ${process.env.NODE_ENV === 'production' ? 1.0 : 0}\n\n${locale.configLoaded}\n`);
+        logger.debug(`Traces sample rate: ${process.env.NODE_ENV === 'production' ? 1.0 : 0}. Remote error tracker load completed!`);
 
     } catch (error) {
 
         //Muestra un mensaje de error en la consola
-        console.error(` - ${locale.error}\n`);
+        logger.error(error.stack);
     };
 };

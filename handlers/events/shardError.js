@@ -1,3 +1,3 @@
 exports.run = (error, client, locale) => {
-    console.error(`${new Date().toLocaleString()} 》 `, error.stack);
+    logger.error(error.stack);
 };

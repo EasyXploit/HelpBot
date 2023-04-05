@@ -23,11 +23,11 @@ exports.run = async (client, locale) => {
         };
 
         //Muestra el resultado de la carga de funciones
-        console.log(` - [OK] ${locale.functionsLoaded}.`);
+        logger.debug('Global functions loading completed');
 
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} ${locale.error}:`, error.stack);
+        logger.error(error.stack);
     };
 };

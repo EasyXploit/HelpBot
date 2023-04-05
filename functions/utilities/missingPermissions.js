@@ -31,6 +31,6 @@ exports.run = async (client, targetChannel, targetMember, requiredPermissions) =
     } catch (error) {
 
         //Muestra un error por consola
-        console.error(`${new Date().toLocaleString()} 》`, error.stack);
+        logger.error(error.stack);
     };
 };

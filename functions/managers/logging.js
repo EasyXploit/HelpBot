@@ -1,9 +1,6 @@
 //Función para gestionar el envío de registros al canal de registro
 exports.run = async (client, logType, contentType, content, attachments) => {
 
-    //Almacena las traducciones
-    const locale = client.locale.functions.managers.logging;
-
     try {
 
         //Almacena los ajustes para este registro
@@ -25,7 +22,7 @@ exports.run = async (client, logType, contentType, content, attachments) => {
             await client.functions.db.setConfig.run(`logging.${logType}.channelId`, '');
 
             //Advierte por consola de que el canal no existe
-            console.error(`${new Date().toLocaleString()} 》${locale.cannotAccess}.`);
+            logger.warn(`Cannot access the ${logType} logging channel. The channel has been cleared from the configuration`);
 
             //Devuelve un estado incorrecto
             return false;
@@ -41,7 +38,7 @@ exports.run = async (client, logType, contentType, content, attachments) => {
             await client.functions.db.setConfig.run(`logging.${logType}.enabled`, false);
 
             //Advierte por consola de que no se tienen permisos
-            console.error(`${new Date().toLocaleString()} 》${await client.functions.utilities.parseLocale.run(locale.cannotSend, { botUser: client.user.username, missingPermissions: missingPermissions })}.`);
+            logger.warn(`Cannot send logs to the ${logType} logging channel. The bot must have the following permissions on the channel: ${missingPermissions}`);
 
             //Devuelve un estado incorrecto
             return false;
@@ -58,7 +55,7 @@ exports.run = async (client, logType, contentType, content, attachments) => {
     } catch (error) {
 
         //Muestra un error por consola
-        console.error(`${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
+        logger.error(error.stack);
 
         //Devuelve un estado erróneo
         return false;

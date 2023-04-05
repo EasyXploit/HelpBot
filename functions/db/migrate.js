@@ -33,29 +33,26 @@ exports.run = async (locale, dbOptions, direction, targetMigration) => {
         if (direction === 'up' && pendingMigrations.length === 0) {
 
             //Indica en consola que no hay migraciones pendientes
-            return console.log(`${locale.noPendingMigrations}\n`);
+            return logger.debug('There are no pending migrations');
 
         } else {
 
             //Indica en consola que hay migraciones pendientes
-            console.log(`${locale.pendingMigrations}: ${pendingMigrations.length}`);
+            logger.debug(`Migrations to be performed: ${pendingMigrations.length}`);
 
             //Por cada una de las migraciones pendientes
             pendingMigrations.forEach((migration) => {
 
                 //Muestra el nombre de la migración por consola
-                console.log(`- ${migration.fileName.replace('.js', '')}`);
+                logger.debug(`- ${migration.fileName.replace('.js', '')}`);
             });
-
-            //Añade un salto de línea a la consola
-            console.log('\n');
         };
     
         //Realiza todas las migraciones correspondientes, en función de la dirección proporcionada, y hasta una versión en específico
         await migrate[direction](mongoose.connection.db, targetMigration ? `${targetMigration}.js` : null);
 
         //Indica por consola que las migraciones se han completado
-        console.log(`\n${locale.migrationsDone}\n`);
+        logger.debug('All documents in the database have been migrated!')
 
     } catch (error) {
 
@@ -66,6 +63,6 @@ exports.run = async (locale, dbOptions, direction, targetMigration) => {
         errorTracker.captureException(error);
 
         //Notifica el error por consola
-        console.error(`${new Date().toLocaleString()} 》${locale.migrationsUncomplete}: ${error.stack}\n`)
+        logger.error(`An error occurred during the migration of the database documents: ${error.stack}`)
     };
 };

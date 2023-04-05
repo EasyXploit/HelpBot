@@ -100,6 +100,6 @@ exports.run = async (client, interaction, modalInteraction, reportReason, report
     } catch (error) {
 
         //Muestra un error por consola
-        console.error(`${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
+        logger.error(error.stack);
     };
 };

@@ -46,7 +46,7 @@ exports.run = async (configPath) => {
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》`, error.stack);
+        logger.error(error.stack);
     };
 };
 

@@ -8,7 +8,7 @@ exports.run = async (client, error, interaction) => {
     if (error.toString().includes('Cannot find module') || error.toString().includes('Cannot send messages to this user')) return;
 
     //Se muestra el error en consola
-    console.error(`\n${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
+    logger.error(error.stack);
 
     //Envía la excepción al manejador de errores remoto
     client.errorTracker.captureException(error);

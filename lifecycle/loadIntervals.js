@@ -104,7 +104,7 @@ exports.run = (client) => {
                     if (error.toString().includes('Unknown Ban')) return;
 
                     //Envía un mensaje de error a la consola
-                    console.error(`${new Date().toLocaleString()} 》${locale.bans.error}: `, error.stack);
+                    logger.error(error.stack);
                 };
             });
         };
@@ -121,7 +121,7 @@ exports.run = (client) => {
         if (actualPing > await client.functions.db.getConfig.run('system.pingMsTreshold')) {
 
             //Envía una advertencia a la consola
-            console.warn(`${new Date().toLocaleString()} 》${locale.ping.consoleMsg}: ${actualPing} ms\n`);
+            logger.warn(`High websocket response time: ${actualPing} ms\n`);
         };
     }, 60000);
 
@@ -356,5 +356,6 @@ exports.run = (client) => {
 
     }, 60000);
 
-    console.log(` - [OK] ${locale.configLoaded}.`);
+    //Muestra un mensaje en la consola
+    logger.debug('Intervals loading completed');
 };

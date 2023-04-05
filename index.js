@@ -4,6 +4,9 @@ require('dotenv').config();
 //Si la variable de entorno "NODE_ENV" no está establecida, la establece en modo de desarrollo
 if (!process.env.NODE_ENV) process.env.NODE_ENV = 'development';
 
+//Carga el manejador de logs
+require('./lifecycle/loadLogger.js').run();
+
 //Almacena la configuración local desde el fichero de configuración
 const localConfig = require('./config.json');
 
@@ -20,12 +23,15 @@ process.on('unhandledRejection', error => {
     if (!error.toString().includes('Cannot send messages to this user') && !error.toString().includes('Unknown Message')) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》${locale.index.unhandledRejection.consoleMsg}:`, error.stack);
+        logger.error(`Unhandled rejected promise: ${error.stack}`);
     };
 });
 
 //Muestra el logo de arranque en la consola
 require('./lifecycle/splashLogo.js').run(locale.lifecycle.splashLogo);
+
+//
+logger.info(`》${locale.index.startupMsg} ...`);
 
 //Carga el manejador de errores remoto, si está habilitado
 if (localConfig.errorTrackingStatus) require('./lifecycle/loadErrorTracker.js').run(locale.lifecycle.loadErrorTracker);
@@ -37,7 +43,7 @@ require('./lifecycle/loadDatabase.js').run(locale);
 const discord = require('discord.js');
 
 //Indica el inicio de la carga del cliente en la consola
-console.log(`${locale.index.startingClient} ...`);
+logger.debug('Starting the client ...');
 
 //Carga una nueva instancia de cliente de Discord
 const client = new discord.Client({
@@ -54,7 +60,7 @@ const client = new discord.Client({
 });
 
 //Indica la finalización de la carga del cliente en la consola
-console.log(`${locale.index.clientStarted}\n`);
+logger.debug('Client started successfully!');
 
 //Almacena la librería del manejador de errores remoto en el cliente 
 client.errorTracker = require('@sentry/node');
@@ -62,7 +68,7 @@ client.errorTracker = require('@sentry/node');
 //Almacena la librería para generar hashes MD5 en el cliente 
 client.md5 = require('md5');
 
-//Almacena la librería de acceso al sistema de archivos en el cliente 
+//Almacena la librería de acceso al sistema de archivos en el cliente
 client.fs = require('fs');
 
 //Almacena el la configuración local en el cliente

@@ -11,8 +11,16 @@ exports.run = async (locale) => {
     //Método para manejar variables de entorno inadecuadas
     const handleInvalidEnv = (variable) => {
 
+        //
+        const variableErrors = {
+            connectionString: "No database connection string provided",
+            username: "A username has not been provided for the database connection",
+            password: "A password has not been provided for the connection to the database",
+            authSource: "No database provided for authorization"
+        };
+
         //Notifica el error por consola
-        console.error(`${locale.lifecycle.loadDatabase.invalidEnv[variable]}.`);
+        logger.error(variableErrors[variable]);
 
         //Aborta el proceso de manera limpia
         process.exit();
@@ -25,12 +33,12 @@ exports.run = async (locale) => {
     if (!process.env.DB_AUTH_SOURCE || process.env.DB_AUTH_SOURCE.length === 0) return handleInvalidEnv('authSource');
 
     //Indica el estado inicial de la carga en la consola
-    console.log(`${locale.lifecycle.loadDatabase.connecting}: ${process.env.DB_AUTH_SOURCE}`);
+    logger.debug(`Starting connection to database: ${process.env.DB_AUTH_SOURCE}`);
 
     //Genera un objeto con las opciones necesarias para la conexión
     const options = {
         authSource: process.env.DB_AUTH_SOURCE, //La base de datos que contiene las credenciales del usuario 
-        user: process.env.DB_USERNAME,              //El nombre de usuario de la base de datos
+        user: process.env.DB_USERNAME,          //El nombre de usuario de la base de datos
         pass: process.env.DB_PASSWORD,          //La contraseña de usuario de la base de datos
         useNewUrlParser: true,                  //Para usar el nuevo analizador de cadenas de conexión
         useUnifiedTopology: true,               //Habilitado porque el motor de supervisión y detección de servidores está en desuso
@@ -47,7 +55,7 @@ exports.run = async (locale) => {
             errorTracker.captureException(error);
 
             //Muestra un error por la consola
-            console.error(`${new Date().toLocaleString()} 》${locale.lifecycle.loadDatabase.cantConnect}: \n ${error.stack}`)
+            logger.error(`Could not connect to the database: ${error.stack}`)
 
             //Aborta el proceso de manera limpia
             process.exit();
@@ -60,16 +68,16 @@ exports.run = async (locale) => {
     mongoose.connection.on('connected', async () => {
 
         //Lo notifica en la consola
-        console.log(`\n${locale.lifecycle.loadDatabase.onConnected}`);
+        logger.debug('Connection to the database successfully opened');
 
         //Si la versión del programa es de producción
         if (process.env.NODE_ENV === 'production') {
 
             //Notifica la migración de los documentos en la consola
-            console.log(`${locale.lifecycle.loadDatabase.checkIfMigrationNeeded} ...\n`);
+            logger.debug('Checking that all documents have the correct version ...');
     
             //Migra los documentos de la base de datos a la última versión
-            await require('../functions/db/migrate.js').run(locale.functions.db.migrate, options, 'up');
+            await require('../functions/db/migrate.js').run(options, 'up');
         };
     });
     
@@ -80,12 +88,12 @@ exports.run = async (locale) => {
         errorTracker.captureException(error);
 
         //Muestra un error por la consola
-        console.error(`${new Date().toLocaleString()} 》${locale.lifecycle.loadDatabase.onError}: \n ${error.stack}`)
+        logger.error(`Connection to the database error: ${error.stack}`);
     });
 
     //Alerta cuando el bot se desconecta de la base de datos
-    mongoose.connection.on('disconnected', () => console.warn(`\n${new Date().toLocaleString()} 》${locale.lifecycle.loadDatabase.onDisconnected}\n`));
+    mongoose.connection.on('disconnected', () => logger.warn('Connection to the database aborted'));
 
     //Alerta cuando falla el intento de reconexión a la base de datos
-    mongoose.connection.on('reconnected', () => console.log(`\n${new Date().toLocaleString()} 》${locale.lifecycle.loadDatabase.onReconnected}\n`));
+    mongoose.connection.on('reconnected', () => logger.debug('Connection to the database restablished'));
 };

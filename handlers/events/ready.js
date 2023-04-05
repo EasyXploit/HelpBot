@@ -27,7 +27,7 @@ exports.run = async (event, client, locale) => {
                 if(guild.ownerId === client.user.id) return await guild.delete();
 
                 //Notifica que el bot no puede funcionar en más de una guild
-                console.warn(`\n${new Date().toLocaleString()} 》${locale.justOneGuild}.`);
+                logger.info(locale.justOneGuild);
 
                 //Aborta el proceso de manera limpia
                 process.exit();
@@ -36,7 +36,7 @@ exports.run = async (event, client, locale) => {
         } else if (validGuildsCount === 0) {   //Si la cantidad es 0
 
             //Notifica que el bot está esperando a que sea unido a una guild
-            return console.warn(`\n${new Date().toLocaleString()} 》${locale.waitingGuild}.`);
+            return logger.info(locale.waitingGuild);
         };
             
         //Comprueba si la config de la guild ya está almacenada o no
@@ -54,6 +54,6 @@ exports.run = async (event, client, locale) => {
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
+        logger.error(error.stack);
     };
 };

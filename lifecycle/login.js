@@ -7,15 +7,15 @@ exports.run = async (client, locale) => {
     if (!discordToken || discordToken.length === 0) {
 
         //Notifica el error por consola
-        console.error(`${locale.tokenNotProvided}.`);
+        logger.error('A Discord login token has not been provided');
 
         //Aborta el proceso de manera limpia
         process.exit();
     };
 
     //Notifica el inicio de sesión en el cliente por consola
-    console.log(`\n- ${locale.loggingIn} ...\n`);
+    logger.debug('Logging in ...');
     client.login(discordToken)
-        .then(() => console.log(`\n - ${locale.loggedIn}.\n`))
-        .catch(() => console.error(`\n - ${locale.couldNotLogIn}.\n`));
+        .then(() => logger.debug('Logged in successfully!'))
+        .catch(() => logger.error('Login failed. Check if the login token is valid'));
 };

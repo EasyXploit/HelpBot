@@ -22,6 +22,6 @@ exports.run = async (client, guild) => {
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》${client.locale.lifecycle.newGuild.error}:`, error.stack);
+        logger.error(error.stack);
     };
 };

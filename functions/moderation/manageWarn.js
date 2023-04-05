@@ -260,6 +260,6 @@ exports.run = async (client, member, reason, action, moderator, message, interac
     } catch (error) {
 
         //Envía un mensaje de error a la consola
-        console.error(`${new Date().toLocaleString()} 》${client.locale.functions.moderation.manageWarn.error}:`, error.stack);
+        logger.error(error.stack);
     };
 };

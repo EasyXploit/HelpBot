@@ -286,5 +286,5 @@ exports.run = async (client) => {
     };
 
     //Envía una notificación a la consola
-    console.log(` - [OK] ${locale.configLoaded}.`);
+    logger.debug('Timers loading completed');
 };

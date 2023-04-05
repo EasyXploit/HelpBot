@@ -1,10 +1,6 @@
 {
     "index": {
-        "startingClient": "Starting client",
-        "clientStarted": "Client started successfully!",
-        "unhandledRejection": {
-            "consoleMsg": "ERROR: Unhandled rejected promise"
-        }
+        "startupMsg": "The bot is starting. Please wait"
     },
     "handlers": {
         "buttons": {
@@ -1017,10 +1013,6 @@
             "channelDelete": {
                 "missingLoggingChannel": "WARNING: The logging channel no longer exists or is inaccessible.\n It has been cleared from the configuration and unloaded from memory"
             },
-            "error": {
-                "econnresetError": "ERROR: The connection was closed unexpectedly",
-                "otherError": "ERROR"
-            },
             "guildBanAdd": {
                 "inconclusiveLoggingEmbed": {
                     "author": "{{userTag}} has been BANNED",
@@ -1053,13 +1045,11 @@
             },
             "guildCreate": {
                 "newGuild": "{{botUsername}} has joined the guild \"{{guildName}}\"",
-                "justOneGuild": "WARNING: {{botUsername}} is not designed to run on more than one guild",
-                "error": "ERROR:"
+                "justOneGuild": "WARNING: {{botUsername}} is not designed to run on more than one guild"
             },
             "guildDelete": {
                 "abandonedGuild": "NOTICE: {{botUsername}} has abandoned the guild \"{{guildName}}\"",
-                "shouldReboot": "NOTICE: To continue, you must restart the bot",
-                "error": "ERROR"
+                "shouldReboot": "NOTICE: To continue, you must restart the bot"
             },
             "guildMemberAdd": {
                 "botLoggingEmbed": {
@@ -1139,16 +1129,14 @@
                 }
             },
             "interactionCreate": {
-                "disabledCommand": "The command `{{commandName}}` has been disabled",
-                "error": "ERROR"
+                "disabledCommand": "The command `{{commandName}}` has been disabled"
             },
             "messageCreate": {
                 "filteredDm": "via DM"
             },
             "ready": {
                 "justOneGuild": "WARNING: The bot is not designed to work on more than one guild (server).\nPlease kick the bot from all other guilds and restart the bot",
-                "waitingGuild": "WARNING: Waiting for the bot to join a guild",
-                "error": "ERROR"
+                "waitingGuild": "WARNING: Waiting for the bot to join a guild"
             },
             "voiceStateUpdate": {
                 "voiceMovesLogging": {
@@ -1158,21 +1146,10 @@
                     "actualMembers": "Members of the new channel",
                     "embedAuthor": "{{memberTag}} has changed his voice channel"
                 }
-            },
-            "warn": {
-                "warnMessage": "WARNING"
             }
         }
     },
     "functions": {
-        "db": {
-            "migrate": {
-                "noPendingMigrations": "There are no pending migrations",
-                "pendingMigrations": "Migrations to be performed",
-                "migrationsDone": "All documents in the database have been migrated!",
-                "migrationsUncomplete": "An error occurred during the migration of the database documents"
-            }
-        },
         "leveling": {
             "addExperience": {
                 "levelUpEmbed": {
@@ -1187,20 +1164,11 @@
             "buttonNavigation": {
                 "cantUseNavigation": "You cannot control a menu invoked by another member"
             },
-            "eventError": {
-                "error": "ERROR"
-            },
             "interactionError": {
-                "error": "ERROR",
                 "notificationEmbed": {
                     "title": "Oops! Something went wrong",
                     "description": "We have reported it to the development team"
                 }
-            },
-            "logging": {
-                "cannotSend": "ERROR: Cannot send messages to the logging channel.\n{{botUsername}} must have the following permissions on the channel: Send Messages, Send Links, Attach Files",
-                "cannotAccess": "ERROR: Cannot access the logging channel.\n The channel has been cleared from the configuration and unloaded from memory",
-                "error": "ERROR: Error while executing the logging"
             },
             "newMember": {
                 "author": "New member",
@@ -1222,11 +1190,8 @@
                     "attachedFiles": "Attached files [{{currentChunk}}/{{totalChunks}}]",
                     "fileName": "File {{fileNumber}} [{{fileType}}]"
                 },
-                "cannotSend": "ERROR: Cannot send messages to the reports channel.\n{{botUsername}} must have the following permissions on the channel: Send Messages, Send Links, Attach Files",
                 "correct": "The report has been sent",
-                "temporaryError": "This feature is not available at this time.\nPlease try again later",
-                "cannotAccess": "ERROR: Cannot access the reports channel.\n The channel has been cleared from the configuration and unloaded from memory",
-                "error": "ERROR: Error while executing the report manager"
+                "temporaryError": "This feature is not available at this time.\nPlease try again later"
             }
         },
         "moderation": {
@@ -1277,8 +1242,7 @@
                         "channel": "Channel",
                         "infractions": "Infractions"
                     }
-                },
-                "error": "ERROR"
+                }
             },
             "checkUsername": {
                 "kickReason": "The username contained a banned word",
@@ -1303,35 +1267,6 @@
         }
     },
     "lifecycle": {
-        "loadDatabase": {
-            "connecting": "Starting connection to database",
-            "invalidEnv": {
-                "connectionString": "No database connection string provided",
-                "username": "A username has not been provided for the database connection",
-                "password": "A password has not been provided for the connection to the database",
-                "authSource": "No database provided for authorization"
-            },
-            "cantConnect": "Could not connect to the database",
-            "onConnected": "Connection to the database successfully opened",
-            "checkIfMigrationNeeded": "Checking that all documents have the correct version",
-            "onError": "Connection to the database error",
-            "onDisconnected": "Connection to the database aborted",
-            "onReconnected": "Connection to the database restablished"
-        },
-        "loadErrorTracker": {
-            "loading": "Loading remote error tracker ...",
-            "tracesSampleRate": "Traces sample rate",
-            "configLoaded": "Remote error tracker load completed!",
-            "error": "An error occurred while loading the remote error tracker, so it will not be used"
-        },
-        "loadEvents": {
-            "uncompleteEventsLoad": "ERROR: Failed to complete events load",
-            "event": "Event"
-        },
-        "loadFunctions": {
-            "functionsLoaded": "Global functions loading completed",
-            "error": "Global functions could not be loaded correctly"
-        },
         "loadIntervals": {
             "mutes": {
                 "loggingEmbed": {
@@ -1356,11 +1291,7 @@
                     "moderator": "Moderator",
                     "reason": "Reason"
                 },
-                "reason": "The sanction expired",
-                "error": "ERROR"
-            },
-            "ping": {
-                "consoleMsg": "WARNING: High websocket response time"
+                "reason": "The sanction expired"
             },
             "polls": {
                 "votesPercentage": "{{votesCount}} votes, the {{percentage}}%",
@@ -1379,54 +1310,17 @@
             },
             "presence": {
                 "name": "{{memberCount}} members"
-            },
-            "configLoaded": "Intervals loading completed"
-        },
-        "loadCommands": {
-            "unregisteredFromGuild": "Command {{command}} un-registered at {{guildName}}",
-            "unregisteredFromGlobal": "Command {{command}} un-registered globally",
-            "convertedToGlobal": "Command {{command}} converted to \"global\" type",
-            "convertedToGuild": "Command {{command}} converted to \"guild\" type",
-            "noConfigError": "Command {{command}} has no configuration in commands.json",
-            "sameCommandNamesError": "Two or more commands have the same name",
-            "invalidTypeError": "The command {{command}} does not have a valid type",
-            "registeredOnGlobal": "Command {{command}} globally registered",
-            "registeredOnGuild": "Command {{command}} registered in {{guildName}}",
-            "parametersUpdated": "The command {{command}} has updated its parameters",
-            "defaultPermUpdated": "The command {{command}} has updated its default permission",
-            "dmPermUpdated": "The command {{command}} has updated its permission to be used via MD",
-            "loadedCorrectly": "Command {{command}} loaded successfully"
+            }
         },
         "loadSystem": {
-            "loadingSystem": "Loading system",
-            "baseGuildLoaded": "Base guild loading completed",
-            "presenceLoaded": "Presence loading completed",
-            "voiceStatesLoaded": "Voice states loading completed",
-            "loadedCorrectly": "{{botUsername}} started successfully",
-            "error": "ERROR"
-        },
-        "loadTimers": {
-            "configLoaded": "Timers loading completed"
-        },
-        "login": {
-            "tokenNotProvided": "A Discord login token has not been provided.\nYou can get create an app and get a token from https://discord.com/developers/applications",
-            "loggingIn": "Logging in",
-            "loggedIn": "Logged in successfully!",
-            "couldNotLogIn": "Login failed. Check if the login token is valid"
-        },
-        "loadEmojis": {
-            "configLoaded": "Custom emojis loading completed",
-            "maxExceeded": "No more than 50 emojis can be loaded",
-            "error": "ERROR"
+            "loadedCorrectly": "{{botUsername}} started successfully!"
         },
         "newGuild": {
             "title": "{{botUsername}} added successfully!",
-            "description": "Use the CLI to adjust the bot to your liking.\nRemember that the bot will only be able to moderate those people who have a role below the role created by {{botUser}}.\nIf you need help, you can [check the wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)",
-            "error": "ERROR"
+            "description": "Use the CLI to adjust the bot to your liking.\nRemember that the bot will only be able to moderate those people who have a role below the role created by {{botUser}}.\nIf you need help, you can [check the wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)"
         },
         "splashLogo": {
-            "description": "I'm a bot designed for automated community moderation, leveling, chat utilities, and much more!",
-            "divider": "Starting application"
+            "description": "A Discord bot designed for automated community moderation, leveling, chat utilities and much more!"
         }
     },
     "models": {

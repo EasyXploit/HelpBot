@@ -4,7 +4,7 @@ exports.run = async (client, locale) => {
     await client.fs.readdir('./handlers/events/', async (error, files) => {
 
         //Si se genera un error, aborta la carga del resto de eventos
-        if (error) return console.error(`${new Date().toLocaleString()} 》${locale.uncompleteEventsLoad}.`, error.stack);
+        if (error) return logger.error(`Failed to complete events loading: ${error.stack}`);
         
         //Precarga cada uno de los eventos
         await files.forEach(file => {
@@ -16,7 +16,7 @@ exports.run = async (client, locale) => {
             client.on(eventName, (...arguments) => eventFunction.run(...arguments, client, client.locale.handlers.events[eventName]));
 
             //Notifica la carga en la consola
-            console.log(` - [OK] ${locale.event}: [${eventName}]`);
+            logger.debug(`Event [${eventName}] loaded successfully`);
         });
     });
 };

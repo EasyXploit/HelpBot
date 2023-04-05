@@ -1,4 +1,4 @@
 exports.run = (error, client, locale) => {
-    if (error.message.includes('ECONNRESET')) return console.error(`${new Date().toLocaleString()} 》${locale.econnresetError}.\n`);
-    console.error(`${new Date().toLocaleString()} 》${locale.otherError}:`, error.stack);
+    if (error.message.includes('ECONNRESET')) return logger.error('The connection to Discord was closed unexpectedly');
+    logger.error(error.stack);
 };

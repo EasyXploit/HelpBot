@@ -29,7 +29,8 @@
     "md5": "^2.3.0",
     "migrate-mongo": "^9.0.0",
     "mongoose": "^7.0.0",
-    "nanoid": "^4.0.0"
+    "nanoid": "^4.0.0",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "dotenv": "^16.0.3",

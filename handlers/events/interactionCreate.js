@@ -62,6 +62,6 @@ exports.run = async (interaction, client, locale) => {
     } catch (error) {
 
         //Devuelve un error en la consola
-        console.error(`${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
+        logger.error(error.stack);
     };
 };

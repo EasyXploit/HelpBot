@@ -1,20 +1,14 @@
 exports.run = () => {
 
     //Almacena la librería para generar logs
-    const winston = require('winston')
-
-    //Registra la librería de manera global
-    global.logger = winston;
-
-    //Si no es un entorno de producción, devuelve la cosola cómo logger
-    if (process.env.NODE_ENV !== 'production') return global.logger = console;
+    const winston = require('winston');
 
     //Carga la configuración del repositorio
     const packageConfig = require('../package.json');
 
     //Genera un formato para los logs de información
     const infoFormat = winston.format.printf(({ message }) => {
-        return `${message}`;
+        return `》${message}`;
     });
 
     //Genera un formato para los logs de depuración
@@ -27,42 +21,87 @@ exports.run = () => {
         return `${timestamp} [${label}] ${level}: ${message}`;
     });
 
-    //Registra los loggers con sus respectivas rutas y formatos
-    global.logger = winston.createLogger({
-        transports: [
-            new winston.transports.Console({
-                level: 'info',
-                format: winston.format.combine(
-                    infoFormat
-                ),
-            }),
-            new winston.transports.File({
-                filename: './logs/debug.log',
-                level: 'debug',
-                format: winston.format.combine(
-                    winston.format.label({ label: `V. ${packageConfig.version}` }),
-                    winston.format.timestamp(),
-                    debugFormat
-                ),
-            }),
-            new winston.transports.File({
-                filename: './logs/debug.log',
-                level: 'warn',
-                format: winston.format.combine(
-                    winston.format.label({ label: `V. ${packageConfig.version}` }),
-                    winston.format.timestamp(),
-                    debugFormat
-                ),
-            }),
-            new winston.transports.File({
-                filename: './logs/errors.log',
-                level: 'error',
-                format: winston.format.combine(
-                    winston.format.label({ label: `V. ${packageConfig.version}` }),
-                    winston.format.timestamp(),
-                    errorFormat
-                ),
-            })
-        ]
-    });
+    //En función del tipo de entorno
+    if (process.env.NODE_ENV !== 'production') {
+
+        //Registra los loggers con sus respectivas rutas y formatos
+        global.logger = winston.createLogger({
+            transports: [
+                new winston.transports.Console({
+                    level: 'debug',
+                    format: winston.format.combine(
+                        winston.format.colorize({
+                            all:true
+                        }),
+                        winston.format.label({ label: `v${packageConfig.version}` }),
+                        winston.format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
+                        debugFormat
+                    ),
+                }),
+                new winston.transports.Console({
+                    level: 'warn',
+                    format: winston.format.combine(
+                        winston.format.colorize({
+                            all:true
+                        }),
+                        winston.format.label({ label: `v${packageConfig.version}` }),
+                        winston.format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
+                        debugFormat
+                    ),
+                }),
+                new winston.transports.Console({
+                    level: 'error',
+                    format: winston.format.combine(
+                        winston.format.colorize({
+                            all:true
+                        }),
+                        winston.format.label({ label: `v${packageConfig.version}` }),
+                        winston.format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
+                        errorFormat
+                    ),
+                })
+            ]
+        });
+
+    } else {
+
+        //Registra los loggers con sus respectivas rutas y formatos
+        global.logger = winston.createLogger({
+            transports: [
+                new winston.transports.Console({
+                    level: 'info',
+                    format: winston.format.combine(
+                        infoFormat
+                    ),
+                }),
+                new winston.transports.File({
+                    filename: './logs/debug.log',
+                    level: 'debug',
+                    format: winston.format.combine(
+                        winston.format.label({ label: `v${packageConfig.version}` }),
+                        winston.format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
+                        debugFormat
+                    ),
+                }),
+                new winston.transports.File({
+                    filename: './logs/debug.log',
+                    level: 'warn',
+                    format: winston.format.combine(
+                        winston.format.label({ label: `v${packageConfig.version}` }),
+                        winston.format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
+                        debugFormat
+                    ),
+                }),
+                new winston.transports.File({
+                    filename: './logs/errors.log',
+                    level: 'error',
+                    format: winston.format.combine(
+                        winston.format.label({ label: `v${packageConfig.version}` }),
+                        winston.format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
+                        errorFormat
+                    ),
+                })
+            ]
+        });
+    };
 };

@@ -30,8 +30,8 @@ process.on('unhandledRejection', error => {
 //Muestra el logo de arranque en la consola
 require('./lifecycle/splashLogo.js').run(locale.lifecycle.splashLogo);
 
-//
-logger.info(`》${locale.index.startupMsg} ...`);
+//Indica que el bot se está iniciando
+logger.info(`${locale.index.startupMsg} ...`);
 
 //Carga el manejador de errores remoto, si está habilitado
 if (localConfig.errorTrackingStatus) require('./lifecycle/loadErrorTracker.js').run();

@@ -7,7 +7,7 @@ exports.run = (locale) => {
     const packageConfig = require('../package.json');
 
     //Muestra el arte ASCII
-    logger.info(
+    console.info(
         logo({
             name: packageConfig.normalizedName,
             font: 'Speed',
@@ -16,7 +16,7 @@ exports.run = (locale) => {
             margin: 2
         })
         .emptyLine()
-        .right(`V. ${packageConfig.version}`)
+        .right(`v${packageConfig.version}`)
         .emptyLine()
         .wrap(locale.description)
         .render(),

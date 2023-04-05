@@ -74,7 +74,7 @@ exports.run = async (client, locale) => {
         };
 
         //Notifica la correcta carga del bot
-        logger.info(`》${await client.functions.utilities.parseLocale.run(locale.loadedCorrectly, { botUsername: client.user.username })}\n`);
+        logger.info(`${await client.functions.utilities.parseLocale.run(locale.loadedCorrectly, { botUsername: client.user.username })}\n`);
 
     } catch (error) {
 

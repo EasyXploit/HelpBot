@@ -1,6 +1,6 @@
 
 //Exporta una función para conectarse a la BD
-exports.run = async (locale) => {
+exports.run = async () => {
 
     //Requiere el módulo para comunicarse con la BD
     const mongoose = require('mongoose');
@@ -11,15 +11,17 @@ exports.run = async (locale) => {
     //Método para manejar variables de entorno inadecuadas
     const handleInvalidEnv = (variable) => {
 
-        //
+        //Almacena los posibles mensajes de error
         const variableErrors = {
-            connectionString: "No database connection string provided",
+            ip: "No database IP direction has been provided",
+            port: "No database port has been provided, or it is not a number",
+            name: "No database name has been provided",
+            authSource: "No database provided for authorization",
             username: "A username has not been provided for the database connection",
-            password: "A password has not been provided for the connection to the database",
-            authSource: "No database provided for authorization"
+            password: "A password has not been provided for the connection to the database"
         };
 
-        //Notifica el error por consola
+        //Notifica el error por consola en función del tipo
         logger.error(variableErrors[variable]);
 
         //Aborta el proceso de manera limpia
@@ -27,10 +29,12 @@ exports.run = async (locale) => {
     };
 
     //Comprueba que se hayan proporcionado todos los parámetros necesarios para la conexión
-    if (!process.env.DB_CONNECTION_STRING || process.env.DB_CONNECTION_STRING.length === 0) return handleInvalidEnv('connectionString');
+    if (!process.env.DB_IP || process.env.DB_IP.length === 0) return handleInvalidEnv('ip');
+    if (!process.env.DB_PORT || process.env.DB_PORT.length === 0 || isNaN(process.env.DB_PORT)) return handleInvalidEnv('port');
+    if (!process.env.DB_NAME || process.env.DB_NAME.length === 0) return handleInvalidEnv('name');
+    if (!process.env.DB_AUTH_SOURCE || process.env.DB_AUTH_SOURCE.length === 0) return handleInvalidEnv('authSource');
     if (!process.env.DB_USERNAME || process.env.DB_USERNAME.length === 0) return handleInvalidEnv('username');
     if (!process.env.DB_PASSWORD || process.env.DB_PASSWORD.length === 0) return handleInvalidEnv('password');
-    if (!process.env.DB_AUTH_SOURCE || process.env.DB_AUTH_SOURCE.length === 0) return handleInvalidEnv('authSource');
 
     //Indica el estado inicial de la carga en la consola
     logger.debug(`Starting connection to database: ${process.env.DB_AUTH_SOURCE}`);
@@ -46,9 +50,12 @@ exports.run = async (locale) => {
         connectTimeoutMS: 10000,                //Cuánto tiempo esperará el controlador MongoDB antes de eliminar un socket debido a inactividad
         family: 4                               //Para conectarse usando IPv4
     };
+
+    //Genera la URI para la conexión con la BD
+    const connectionString = `mongodb://${process.env.DB_IP}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
     
     //Se conecta a la base de datos con las opciones proporcionadas
-    mongoose.connect(process.env.DB_CONNECTION_STRING, options)
+    mongoose.connect(connectionString, options)
         .catch(error => {
 
             //Captura la excepción y la envía al manejador de errores remoto

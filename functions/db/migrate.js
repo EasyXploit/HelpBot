@@ -15,7 +15,7 @@ exports.run = async (locale, dbOptions, direction, targetMigration) => {
         //Carga la configuración para las migraciones
         migrate.config.set({
             mongodb: {
-                url: process.env.DB_CONNECTION_STRING,
+                url : `mongodb://${process.env.DB_IP}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
                 options: dbOptions
             },
             migrationsDir: 'migrations',

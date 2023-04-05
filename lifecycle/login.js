@@ -14,8 +14,8 @@ exports.run = async (client) => {
     };
 
     //Notifica el inicio de sesión en el cliente por consola
-    logger.debug('Logging in ...');
+    logger.debug('Attempting to log in');
     client.login(discordToken)
-        .then(() => logger.debug('Logged in successfully!'))
+        .then(() => logger.debug('Logged in successfully'))
         .catch(() => logger.error('Login failed. Check if the login token is valid'));
 };

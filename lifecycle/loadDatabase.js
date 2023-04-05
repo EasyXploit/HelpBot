@@ -81,7 +81,7 @@ exports.run = async () => {
         if (process.env.NODE_ENV === 'production') {
 
             //Notifica la migración de los documentos en la consola
-            logger.debug('Checking that all documents have the correct version ...');
+            logger.debug('Checking that all DB documents have the correct version');
     
             //Migra los documentos de la base de datos a la última versión
             await require('../functions/db/migrate.js').run(options, 'up');
@@ -99,7 +99,7 @@ exports.run = async () => {
     });
 
     //Alerta cuando el bot se desconecta de la base de datos
-    mongoose.connection.on('disconnected', () => logger.warn('Connection to the database aborted'));
+    mongoose.connection.on('disconnected', () => logger.warn('Connection to the database aborted. Reconnection will be attempted'));
 
     //Alerta cuando falla el intento de reconexión a la base de datos
     mongoose.connection.on('reconnected', () => logger.debug('Connection to the database restablished'));

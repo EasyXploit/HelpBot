@@ -2,9 +2,6 @@ exports.run = async (client, locale) => {
 
     try {
 
-        //Notifica el inicio de la carga del sistema
-        logger.debug('Loading system ...');
-
         //Almacena la guild base en memoria
         client.baseGuild = await client.guilds.cache.get(await client.functions.db.getConfig.run('system.baseGuildId'));
 

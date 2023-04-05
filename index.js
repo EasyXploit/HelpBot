@@ -43,7 +43,7 @@ require('./lifecycle/loadDatabase.js').run(locale);
 const discord = require('discord.js');
 
 //Indica el inicio de la carga del cliente en la consola
-logger.debug('Starting the client ...');
+logger.debug('Starting the client');
 
 //Carga una nueva instancia de cliente de Discord
 const client = new discord.Client({
@@ -60,7 +60,7 @@ const client = new discord.Client({
 });
 
 //Indica la finalización de la carga del cliente en la consola
-logger.debug('Client started successfully!');
+logger.debug('Client started successfully');
 
 //Almacena la librería del manejador de errores remoto en el cliente 
 client.errorTracker = require('@sentry/node');

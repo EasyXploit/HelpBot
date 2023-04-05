@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const schema = new mongoose.Schema({ 
     action: {
         type: String,
-        enum: ['mute', 'kick', 'tempban', 'ban'],
+        enum: ['timeout', 'kick', 'tempban', 'ban'],
         required: true
     },
     duration: {

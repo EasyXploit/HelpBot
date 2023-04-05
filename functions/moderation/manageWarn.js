@@ -7,13 +7,13 @@ exports.run = async (client, member, reason, action, moderator, message, interac
         const locale = client.locale.functions.moderation.manageWarn;
 
         //Función para silenciar
-        async function mute(duration) {
+        async function timeout(duration) {
 
             //Almacena la anterior expiración del silenciamiento
-            const oldExpiration = client.db.mutes[member.id] ? client.db.mutes[member.id].until : null;
+            const oldExpiration = client.db.timeouts[member.id] ? client.db.timeouts[member.id].until : null;
 
             //Almacena el silenciamiento en la BD
-            client.db.mutes[member.id] = {
+            client.db.timeouts[member.id] = {
                 until: Date.now() + duration,
                 moderator: client.user.id
             };
@@ -23,25 +23,25 @@ exports.run = async (client, member, reason, action, moderator, message, interac
 
             //Crea una nueva entrada en la caché de registros
             client.loggingCache[member.id] = {
-                action: 'mute',
+                action: 'timeout',
                 executor: member.id,
-                reason: locale.muteFunction.reason
+                reason: locale.timeoutFunction.reason
             };
 
             //Sobreescribe el fichero de BD
-            client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
+            client.fs.writeFile('./storage/databases/timeouts.json', JSON.stringify(client.db.timeouts, null, 4), async err => {
 
                 //Si hubo algún error, lo lanza por consola
                 if (err) throw err;
 
                 //Deshabilita la comunicación del miembro en el servidor
-                await member.disableCommunicationUntil((Date.now() + duration), locale.muteFunction.reason);
+                await member.disableCommunicationUntil((Date.now() + duration), locale.timeoutFunction.reason);
             });
 
             //Envía un mensaje al canal de la infracción
             if (channel.type !== 'DM') await channel.send({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
-                .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(oldExpiration ? locale.muteFunction.notificationEmbed.extended : locale.muteFunction.notificationEmbed.initiated, { memberTag: member.user.tag })}`)
+                .setDescription(`${client.customEmojis.orangeTick} ${await client.functions.utilities.parseLocale.run(oldExpiration ? locale.timeoutFunction.notificationEmbed.extended : locale.timeoutFunction.notificationEmbed.initiated, { memberTag: member.user.tag })}`)
             ]});
         };
 
@@ -245,7 +245,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
 
                     //Ejecuta la acción de moderación que corresponda
                     switch (rule.action) {
-                        case 'mute':        mute(rule.duration);    break;
+                        case 'timeout':        timeout(rule.duration);    break;
                         case 'kick':        kick();                 break;
                         case 'tempban':     ban(rule.duration);     break;
                         case 'ban':         ban();                  break;

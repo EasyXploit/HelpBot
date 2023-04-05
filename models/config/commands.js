@@ -76,7 +76,7 @@ const schema = new mongoose.Schema({
                 required: true
             }
         },
-        mute: {
+        timeout: {
             enabled: {
                 type: Boolean,
                 default: true,
@@ -193,7 +193,7 @@ const schema = new mongoose.Schema({
             },
             reasonNotNeeded: [String]
         },
-        unmute: {
+        untimeout: {
             enabled: {
                 type: Boolean,
                 default: true,

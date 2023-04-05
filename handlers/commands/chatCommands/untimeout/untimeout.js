@@ -39,23 +39,23 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.badHierarchy, { interactionAuthor: interaction.member })}.`)
         ], ephemeral: true});
 
-        //Almacena si el miembro puede borrar cualquier muteo
+        //Almacena si el miembro puede borrar cualquier timeout
         const canRemoveAny = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
 
         //Devuelve el estado de autorización
-        if (!canRemoveAny && (!client.db.mutes[memberId] || client.db.mutes[memberId].moderator !== interaction.member.id)) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (!canRemoveAny && (!client.db.timeouts[memberId] || client.db.timeouts[memberId].moderator !== interaction.member.id)) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.cantRemoveAny, { interactionAuthor: interaction.member })}.`)
         ], ephemeral: true});
 
         //Si el silenciamiento estaba registrado en la base de datos
-        if (client.db.mutes[memberId]) {
+        if (client.db.timeouts[memberId]) {
 
             //Elimina la entrada de la base de datos
-            delete client.db.mutes[memberId];
+            delete client.db.timeouts[memberId];
 
             //Sobreescribe el fichero de la base de datos con los cambios
-            await client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
+            await client.fs.writeFile('./storage/databases/timeouts.json', JSON.stringify(client.db.timeouts, null, 4), async err => {
 
                 //Si hubo un error, lo lanza a la consola
                 if (err) throw err;
@@ -67,7 +67,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Crea una nueva entrada en la caché de registros
         if (member) client.loggingCache[memberId] = {
-            action: 'unmute',
+            action: 'untimeout',
             executor: interaction.member.id,
             reason: reason || locale.undefinedReason
         };
@@ -79,7 +79,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (!member) {
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.logging.run(client, 'unmutedMember', 'embed', new client.MessageEmbed()
+            await client.functions.managers.logging.run(client, 'untimeoutedMember', 'embed', new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
                 .setAuthor(locale.loggingEmbed.author)
                 .addFields(

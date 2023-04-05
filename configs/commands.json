@@ -32,7 +32,7 @@
             "enabled": true,
             "hideNotPresent": true
         },
-        "mute": {
+        "timeout": {
             "enabled": true,
             "unlimitedTime": [],
             "maxRegularTime": 86400000,
@@ -85,7 +85,7 @@
             "enabled": true,
             "reasonNotNeeded": []
         },
-        "unmute": {
+        "untimeout": {
             "enabled": true,
             "reasonNotNeeded": [],
             "removeAny": []

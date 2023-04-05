@@ -96,7 +96,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             };
 
             //Almacena la sanción actual, si aplica
-            const sanction = member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now() ? `${locale.mutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>` : `\`${locale.noMute}\``;
+            const sanction = member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now() ? `${locale.timeoutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>` : `\`${locale.noTimeout}\``;
 
             //Genera el embed de las infracciones
             let newPageEmbed = new client.MessageEmbed()

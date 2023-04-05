@@ -24,7 +24,7 @@ const schema = new mongoose.Schema({
         },
         channelId: String
     },
-    mutedMember: {
+    timeoutedMember: {
         enabled: {
             type: Boolean,
             default: false,
@@ -32,7 +32,7 @@ const schema = new mongoose.Schema({
         },
         channelId: String
     },
-    unmutedMember: {
+    untimeoutedMember: {
         enabled: {
             type: Boolean,
             default: false,

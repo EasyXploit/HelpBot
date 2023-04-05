@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 //Crea un nuevo esquema para el silenciamiento
-const muteSchema = new mongoose.Schema({
+const timeoutSchema = new mongoose.Schema({
     docType: {
         type: String,
-        default: 'mute',
+        default: 'timeout',
         immutable: true
     },
     userId: {
@@ -22,4 +22,4 @@ const muteSchema = new mongoose.Schema({
 });
 
 //Añade el esquema al modelo
-module.exports = mongoose.model('mute', muteSchema);
+module.exports = mongoose.model('timeout', timeoutSchema);

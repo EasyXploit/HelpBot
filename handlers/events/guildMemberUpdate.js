@@ -48,7 +48,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
             const loggingCache = (client.loggingCache && client.loggingCache[newMember.id]) ? client.loggingCache[newMember.id] : null;
         
             //Si se trata de una caché de usuario silenciao o dessilenciado
-            if (loggingCache && loggingCache.action.includes('mute')) {
+            if (loggingCache && loggingCache.action.includes('timeout')) {
 
                 //Almacena al moderador correcto
                 if (!executor) executor = await client.users.fetch(loggingCache.executor);
@@ -64,7 +64,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
             if (newMember.communicationDisabledUntilTimestamp && newMember.communicationDisabledUntilTimestamp > Date.now()) {
 
                 //Envía un mensaje al canal de registros
-                await client.functions.managers.logging.run(client, 'mutedMember', 'embed', new client.MessageEmbed()
+                await client.functions.managers.logging.run(client, 'timeoutedMember', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.communicationDisabled.loggingEmbed.author, { memberTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true}) })
                     .addFields(
@@ -91,13 +91,13 @@ exports.run = async (oldMember, newMember, client, locale) => {
             } else {
 
                 //Si el silenciamiento estaba registrado en la base de datos
-                if (client.db.mutes[newMember.id]) {
+                if (client.db.timeouts[newMember.id]) {
 
                     //Elimina la entrada de la base de datos
-                    delete client.db.mutes[newMember.id];
+                    delete client.db.timeouts[newMember.id];
 
                     //Sobreescribe el fichero de la base de datos con los cambios
-                    await client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
+                    await client.fs.writeFile('./storage/databases/timeouts.json', JSON.stringify(client.db.timeouts, null, 4), async err => {
 
                         //Si hubo un error, lo lanza a la consola
                         if (err) throw err;
@@ -105,7 +105,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
                 };
 
                 //Envía un mensaje al canal de registros
-                await client.functions.managers.logging.run(client, 'unmutedMember', 'embed', new client.MessageEmbed()
+                await client.functions.managers.logging.run(client, 'untimeoutedMember', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.communicationEnabled.loggingEmbed.author, { userTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true})})
                     .addFields(

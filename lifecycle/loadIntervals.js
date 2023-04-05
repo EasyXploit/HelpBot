@@ -8,10 +8,10 @@ exports.run = async (client) => {
     setInterval(async () => {
         
         //Para cada uno de los silencios temporales de la BD
-        for (let idKey in client.db.mutes) {
+        for (let idKey in client.db.timeouts) {
 
             //Almacena el tiempo de finalización del silenciamiento
-            const endTime = client.db.mutes[idKey].until;
+            const endTime = client.db.timeouts[idKey].until;
 
             //Omite si aún no ha expirado la sanción
             if (Date.now() < endTime) continue;
@@ -20,37 +20,37 @@ exports.run = async (client) => {
             const member = await client.functions.utilities.fetch.run(client, 'member', idKey);
 
             //Bora el silenciamiento de la base de datos
-            delete client.db.mutes[idKey];
+            delete client.db.timeouts[idKey];
 
             //Graba la nueva base de datos
-            client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
+            client.fs.writeFile('./storage/databases/timeouts.json', JSON.stringify(client.db.timeouts, null, 4), async err => {
 
                 //Si hubo un error, lo devuelve
                 if (err) throw err;
 
                 //Almacena el autor del embed para el logging
-                let authorProperty = { name: member ? await client.functions.utilities.parseLocale.run(locale.mutes.loggingEmbed.author, { userTag: member.user.tag }) : locale.mutes.loggingEmbed.authorNoMember };
+                let authorProperty = { name: member ? await client.functions.utilities.parseLocale.run(locale.timeouts.loggingEmbed.author, { userTag: member.user.tag }) : locale.timeouts.loggingEmbed.authorNoMember };
                 if (member) authorProperty.iconURL = member.user.displayAvatarURL({dynamic: true});
                 
                 //Ejecuta el manejador de registro
-                await client.functions.managers.logging.run(client, 'unmutedMember', 'embed', new client.MessageEmbed()
+                await client.functions.managers.logging.run(client, 'untimeoutedMember', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
                     .setAuthor(authorProperty)
                     .addFields(
-                        { name: locale.mutes.loggingEmbed.memberId, value: idKey.toString(), inline: true },
-                        { name: locale.mutes.loggingEmbed.moderator, value: `${client.user}`, inline: true },
-                        { name: locale.mutes.loggingEmbed.reason, value: locale.mutes.reason, inline: true }
+                        { name: locale.timeouts.loggingEmbed.memberId, value: idKey.toString(), inline: true },
+                        { name: locale.timeouts.loggingEmbed.moderator, value: `${client.user}`, inline: true },
+                        { name: locale.timeouts.loggingEmbed.reason, value: locale.timeouts.reason, inline: true }
                     )
                 );
                 
                 //Envía una confirmación al miembro
                 if (member) await member.send({ embeds: [ new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
-                    .setAuthor({ name: locale.mutes.privateEmbed.author, iconURL: client.baseGuild.iconURL({dynamic: true}) })
-                    .setDescription(await client.functions.utilities.parseLocale.run(locale.mutes.privateEmbed.description, { member: member, guildName: client.baseGuild.name }))
+                    .setAuthor({ name: locale.timeouts.privateEmbed.author, iconURL: client.baseGuild.iconURL({dynamic: true}) })
+                    .setDescription(await client.functions.utilities.parseLocale.run(locale.timeouts.privateEmbed.description, { member: member, guildName: client.baseGuild.name }))
                     .addFields(
-                        { name: locale.mutes.privateEmbed.moderator, value: `${client.user}`, inline: true },
-                        { name: locale.mutes.privateEmbed.reason, value: locale.mutes.reason, inline: true }
+                        { name: locale.timeouts.privateEmbed.moderator, value: `${client.user}`, inline: true },
+                        { name: locale.timeouts.privateEmbed.reason, value: locale.timeouts.reason, inline: true }
                     )
                 ]});
             });

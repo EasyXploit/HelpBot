@@ -66,7 +66,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         };
 
         //Guarda el silenciamiento en la base de datos
-        client.db.mutes[member.id] = {
+        client.db.timeouts[member.id] = {
             until: Date.now() + expiresAfter,
             moderator: interaction.member.id
         };
@@ -76,13 +76,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
         //Crea una nueva entrada en la caché de registros
         client.loggingCache[member.id] = {
-            action: 'mute',
+            action: 'timeout',
             executor: interaction.member.id,
             reason: reason || locale.undefinedReason
         };
 
         //Sobreescribe el fichero de la base de datos con los cambios
-        client.fs.writeFile('./storage/databases/mutes.json', JSON.stringify(client.db.mutes, null, 4), async err => {
+        client.fs.writeFile('./storage/databases/timeouts.json', JSON.stringify(client.db.timeouts, null, 4), async err => {
 
             //Si hubo un error, lo lanza a la consola
             if (err) throw err;

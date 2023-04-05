@@ -157,8 +157,8 @@
                     "nonPrivileged": "{{interactionAuthor}}, you do not have privileges to perform this operation",
                     "noBots": "You cannot get information from a bot",
                     "unknownModerator": "Unknown moderator",
-                    "mutedUntil": "Muted until",
-                    "noMute": "None",
+                    "timeoutedUntil": "Timeouted until",
+                    "noTimeout": "None",
                     "infractionsEmbed": {
                         "title": "Infractions",
                         "description": "Displaying infractions for member **{{member}}**.\nCurrent sanction: {{sanction}}",
@@ -250,9 +250,9 @@
                         "footer": "Page {{actualPage}} of {{totalPages}}"
                     }
                 },
-                "mute": {
+                "timeout": {
                     "appData": {
-                        "name": "mute",
+                        "name": "timeout",
                         "description": "Disable a member's communications on the server for a limited time",
                         "options": {
                             "user": {
@@ -285,13 +285,13 @@
                     },
                     "memberNotFound": "Member not found. You must mention a member or enter it's ID",
                     "noBots": "You cannot ban a bot",
-                    "badHierarchy": "You cannot mute a member with a role equal to or higher than yours",
-                    "exceededDuration": "You can only mute a maximum of `{{time}}`",
+                    "badHierarchy": "You cannot timeout a member with a role equal to or higher than yours",
+                    "exceededDuration": "You can only timeout a maximum of `{{time}}`",
                     "noReason": "You must provide a reason",
                     "undefinedReason": "Undefined",
                     "notificationEmbed": {
-                        "withReason": "**{{memberTag}}** has been muted due to __{{reason}}__, anyone else?",
-                        "withoutReason": "**{{memberTag}}** has been muted, anyone else?"
+                        "withReason": "**{{memberTag}}** has been timeouted due to __{{reason}}__, anyone else?",
+                        "withoutReason": "**{{memberTag}}** has been timeouted, anyone else?"
                     }
                 },
                 "notifications": {
@@ -755,9 +755,9 @@
                         "description": "Member **{{userTag}}** has been unbanned"
                     }
                 },
-                "unmute": {
+                "untimeout": {
                     "appData": {
-                        "name": "unmute",
+                        "name": "untimeout",
                         "description": "Unsilences a member",
                         "options": {
                             "user": {
@@ -771,19 +771,19 @@
                         }
                     },
                     "noReason": "You must provide a reason",
-                    "notSilenced": "This member is not muted",
-                    "badHierarchy": "{{interactionAuthor}}, you cannot un-mute someone with a role equal to or higher than yours",
-                    "cantRemoveAny": "{{interactionAuthor}}, you can't unmute someone you haven't muted yourself",
+                    "notSilenced": "This member is not timeouted",
+                    "badHierarchy": "{{interactionAuthor}}, you cannot un-timeout someone with a role equal to or higher than yours",
+                    "cantRemoveAny": "{{interactionAuthor}}, you can't untimeout someone you haven't timeouted yourself",
                     "undefinedReason": "Undefined",
                     "loggingEmbed": {
-                        "author": "A member has been UN-MUTED",
+                        "author": "A member has been UN-TIMEOUTED",
                         "memberId": "Member ID",
                         "moderator": "Moderator",
                         "reason": "Reason"
                     },
                     "notificationEmbed": {
                         "title": "Operation completed",
-                        "description": "The member **{{member}}** has been un-muted"
+                        "description": "The member **{{member}}** has been un-timeouted"
                     }
                 },
                 "userinfo": {
@@ -806,7 +806,7 @@
                         "regular": "Regular member"
                     },
                     "embed": {
-                        "mutedUntil": "Muted until",
+                        "timeoutedUntil": "Timeouted until",
                         "title": "Information about {{memberDisplayName}}",
                         "description": "Displaying information about **{{memberTag}}**",
                         "memberId": "Member ID",
@@ -1049,7 +1049,7 @@
                     "description": "The **BOT** {{memberTag}} was added to the server"
                 },
                 "communicationEnabled": {
-                    "reason": "Was unmuted while the memebr was not in the guild"
+                    "reason": "Was untimeouted while the memebr was not in the guild"
                 }
             },
             "guildMemberRemove": {
@@ -1083,7 +1083,7 @@
             "guildMemberUpdate": {
                 "communicationDisabled": {
                     "loggingEmbed": {
-                        "author": "{{memberTag}} has been MUTED",
+                        "author": "{{memberTag}} has been TIMEOUTED",
                         "memberId": "Member ID",
                         "moderator": "Moderator",
                         "unknownModerator": "Unknown",
@@ -1092,8 +1092,8 @@
                         "expiration": "Expiration"
                     },
                     "privateEmbed": {
-                        "author": "[MUTED]",
-                        "description": "{{member}}, you have been muted on {{guildName}}",
+                        "author": "[TIMEOUTED]",
+                        "description": "{{member}}, you have been timeouted on {{guildName}}",
                         "moderator": "Moderator",
                         "unknownModerator": "Unknown",
                         "reason": "Reason",
@@ -1103,7 +1103,7 @@
                 },
                 "communicationEnabled": {
                     "loggingEmbed": {
-                        "author": "{{userTag}} has been UN-MUTED",
+                        "author": "{{userTag}} has been UN-TIMEOUTED",
                         "memberId": "Member ID",
                         "moderator": "Moderator",
                         "unknownModerator": "Unknown",
@@ -1111,8 +1111,8 @@
                         "undefinedReason": "Undefined"
                     },
                     "privateEmbed": {
-                        "author": "[UN-MUTED]",
-                        "description": "{{member}}, you have been unmuted on {{guildName}}",
+                        "author": "[UN-TIMEOUTED]",
+                        "description": "{{member}}, you have been untimeouted on {{guildName}}",
                         "moderator": "Moderator",
                         "unknownModerator": "Unknown",
                         "reason": "Reason",
@@ -1164,7 +1164,7 @@
                 "memberId": "Member ID",
                 "registerDate": "Register date",
                 "actualSanction": "Current sanction",
-                "mutedUntil": "Muted until"
+                "timeoutedUntil": "Timeouted until"
             },
             "report": {
                 "reportEmbed": {
@@ -1187,11 +1187,11 @@
         },
         "moderation": {
             "manageWarn": {
-                "muteFunction": {
+                "timeoutFunction": {
                     "reason": "Too many warnings",
                     "notificationEmbed": {
-                        "initiated": "**{{memberTag}}** has been muted for accumulating __too many warnings__, anyone else?",
-                        "extended": "**{{memberTag}}**'s mute has been extended because it racked up __more warnings__, anyone else?"
+                        "initiated": "**{{memberTag}}** has been timeouted for accumulating __too many warnings__, anyone else?",
+                        "extended": "**{{memberTag}}**'s timeout has been extended because it racked up __more warnings__, anyone else?"
                     }
                 },
                 "kickFunction": {
@@ -1259,17 +1259,17 @@
     },
     "lifecycle": {
         "loadIntervals": {
-            "mutes": {
+            "timeouts": {
                 "loggingEmbed": {
-                    "author": "{{userTag}} has been UN-MUTED",
-                    "authorNoMember": "A member has been UN-MUTED",
+                    "author": "{{userTag}} has been UN-TIMEOUTED",
+                    "authorNoMember": "A member has been UN-TIMEOUTED",
                     "memberId": "Member ID",
                     "moderator": "Moderator",
                     "reason": "Reason"
                 },
                 "privateEmbed": {
-                    "author": "[UN-MUTED]",
-                    "description": "{{member}}, you have been unmuted on {{guildName}}",
+                    "author": "[UN-TIMEOUTED]",
+                    "description": "{{member}}, you have been untimeouted on {{guildName}}",
                     "moderator": "Moderator",
                     "reason": "Reason"
                 },

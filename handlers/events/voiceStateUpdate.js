@@ -62,7 +62,7 @@ exports.run = async (oldState, newState, client, locale) => {
                 //Almacena al miembro
                 const member = await client.functions.utilities.fetch.run(client, 'member', newState.id);
 
-                //Si el miembro está muteado o ensordecido, no hace nada
+                //Si el miembro está timeouteado o ensordecido, no hace nada
                 if (!member || member.voice.mute || member.voice.deaf) return;
 
                 //Almacena el canal

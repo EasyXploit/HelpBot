@@ -7,10 +7,10 @@ exports.run = async (client) => {
     if (!Array.isArray(client.config.timers)) return;
 
     //Crea un objeto para almacenar la config. de todos los timers
-    if (!client.db.timers.sents) client.db.timers.sents = {}
+    if (!client.db.timers.sents) client.db.timers.sents = {};
 
     //Crea un objeto para almacenar el historial de mensajes enviados
-    client.db.timers.messages = {}
+    client.db.timers.messages = {};
 
     //Por cada uno de los timers configurados
     for (const timer of client.config.timers) {
@@ -104,7 +104,7 @@ exports.run = async (client) => {
         //Omite si el contenido del mensaje sobrepasa el valor máximo permitido
         if ((timer.embed && timer.embed.enabled && timer.content.length > 4096) || timer.content > 2000) continue;
 
-        //Almacena el objecto con el contenido del mensaje en el formato deseado
+        //Almacena el objeto con el contenido del mensaje en el formato deseado
         timedMessage = timer.embed && timer.embed.enabled ? { embeds: [ new client.MessageEmbed().setDescription(timer.content) ]} : { content: timer.content };
 
         //Si se ha configurado como embed

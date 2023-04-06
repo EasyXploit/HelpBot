@@ -86,16 +86,6 @@ client.locale = locale;
 //Carga las funciones globales en el cliente
 require('./lifecycle/loadFunctions.js').run(client);
 
-//Carga los archivos de configuración (heredado)
-const configFiles = client.fs.readdirSync('./configs/', { withFileTypes: true });
-
-//Por cada uno de los archivos de config.
-configFiles.forEach(async file => {
-
-    //Almacena la configuración en memoria
-    client.config[file.name.replace('.json', '')] = require(`./configs/${file.name}`);
-});
-
 //Carga los archivos de bases de datos (deprecado)
 const databaseFiles = client.fs.readdirSync('./storage/databases/', { withFileTypes: true });
 

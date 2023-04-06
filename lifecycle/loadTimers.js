@@ -3,8 +3,11 @@ exports.run = async (client) => {
     //Aborta si los timers están deshabilitados
     if (!await client.functions.db.getConfig.run('system.modules.timedMessages')) return;
 
+    //Almacena la configuración de mensajes programados
+    const timedMessagesConfig = await client.functions.db.getConfig.run('timedMessages');
+
     //Aborta si los timers no son un array
-    if (!Array.isArray(client.config.timers)) return;
+    if (!Array.isArray(timedMessagesConfig.configuredMessages)) return;
 
     //Crea un objeto para almacenar la config. de todos los timers
     if (!client.db.timers.sents) client.db.timers.sents = {};
@@ -13,7 +16,7 @@ exports.run = async (client) => {
     client.db.timers.messages = {};
 
     //Por cada uno de los timers configurados
-    for (const timer of client.config.timers) {
+    for (const timer of timedMessagesConfig.configuredMessages) {
 
         //Omite si no se ha proporcionado correctamente el ID del canal
         if (!timer.channelId || isNaN(timer.channelId)) continue;

@@ -1,4 +1,4 @@
-exports.run = async (message, client, locale) => {
+exports.run = async (message, locale) => {
 
     //Aborta si no es un evento de la guild registrada
     if (message.guild && message.guild.id !== client.baseGuild.id) return;
@@ -72,7 +72,7 @@ exports.run = async (message, client, locale) => {
     if (userMessages.history.length >= messageHistorySize) userMessages.history.shift();  
 
     //Comprueba si el contenido del mensaje está permitido
-    const isPermitted = await client.functions.moderation.checkMessage.run(client, message);
+    const isPermitted = await client.functions.moderation.checkMessage.run(message);
 
     //Si se trata de un mensaje enviado en una guild y no fue filtrado
     if (message.member && isPermitted) {
@@ -111,7 +111,7 @@ exports.run = async (message, client, locale) => {
             userMessages.lastValidTimestamp = message.createdTimestamp;
 
             //Aumenta la cantidad de EXP del miembro
-            await client.functions.leveling.addExperience.run(client, message.member, 'message', message.channel);
+            await client.functions.leveling.addExperience.run(message.member, 'message', message.channel);
         };
     };
 };

@@ -1,9 +1,9 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
         
         //Busca y almacena el miembro
-        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se encontró al miembro
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -25,7 +25,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (mode === 'anonymous') {
 
             //Variable para saber si está autorizado
-            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.anonymousMode});
+            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.anonymousMode});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -132,7 +132,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         };
 
         //Envía un registro al canal de registro
-        await client.functions.managers.logging.run(client, 'sentDM', 'embed', new client.MessageEmbed()
+        await client.functions.managers.logging.run('sentDM', 'embed', new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
             .setDescription(await client.functions.utilities.parseLocale.run(locale.loggingEmbed.description, { authorTag: interaction.user.tag, memberTag: member.user.tag, botUser: client.user }))
@@ -153,7 +153,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         ], ephemeral: true});
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 

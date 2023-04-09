@@ -1,4 +1,4 @@
-exports.run = async (client, guild) => {
+exports.run = async (guild) => {
 
     try {
 
@@ -10,7 +10,7 @@ exports.run = async (client, guild) => {
         client.baseGuild = await client.guilds.cache.get(baseGuild);
         
         //Carga la config. en memoria y arranca el sistema
-        await require('./loadSystem.js').run(client, client.locale.lifecycle.loadSystem);
+        await require('./loadSystem.js').run(client.locale.lifecycle.loadSystem);
 
     } catch (error) {
 

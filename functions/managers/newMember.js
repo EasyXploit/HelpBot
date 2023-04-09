@@ -1,5 +1,5 @@
 //Función para gestionar nuevos miembros
-exports.run = async (client, member) => {
+exports.run = async (member) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.managers.newMember;
@@ -10,7 +10,7 @@ exports.run = async (client, member) => {
         if (await client.functions.db.getConfig.run('moderation.kickOnBadUsername')) {
 
             //Comprueba si el nombre de usuario del miembro es válido
-            const usernameIsValid = await client.functions.moderation.checkUsername.run(client, member);
+            const usernameIsValid = await client.functions.moderation.checkUsername.run(member);
 
             //Aborta si el nombre no era válido
             if (!usernameIsValid) return;
@@ -31,7 +31,7 @@ exports.run = async (client, member) => {
         if (member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now()) welcomeEmbed.addFieldw({ name: `🔇 ${locale.actualSanction}`, value: `${locale.timeoutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>`, inline: false });
 
         //Se notifica en el canal de registro
-        await client.functions.managers.logging.run(client, 'memberJoined', 'embed', welcomeEmbed, ['./resources/images/in.png']);
+        await client.functions.managers.logging.run('memberJoined', 'embed', welcomeEmbed, ['./resources/images/in.png']);
 
         //Almacena el ID del rol para nuevos miembros
         const newMemberRoleId = await client.functions.db.getConfig.run('welcomes.newMemberRoleId');

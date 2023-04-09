@@ -1,9 +1,9 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
 
         //Busca al miembro proporcionado
-        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se ha encontrado al miembro
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -36,7 +36,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (Date.now() - latestWarn.timestamp < commandConfig.minimumTimeDifference) {
 
                 //Almacena si el miembro puede saltarse el intervalo mínimo
-                const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedFrequency});
+                const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedFrequency});
 
                 //Si no está autorizado, devuelve un mensaje de error
                 if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -50,15 +50,15 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         const reason = interaction.options._hoistedOptions[1].value;
 
         //Almacena el canal de texto de la interacción
-        const interactionChannel = await client.functions.utilities.fetch.run(client, 'channel', interaction.channelId);
+        const interactionChannel = await client.functions.utilities.fetch.run('channel', interaction.channelId);
 
         //Llama al manejador de infracciones
-        await client.functions.moderation.manageWarn.run(client, member, reason, 2, interaction.user, null, interaction, interactionChannel);
+        await client.functions.moderation.manageWarn.run(member, reason, 2, interaction.user, null, interaction, interactionChannel);
 
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 

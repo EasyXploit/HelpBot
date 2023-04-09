@@ -1,10 +1,10 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
 
         //Almacena el ID del canal proporcionado, o el del actual
         const channelId = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : interaction.channelId;
-        const channel = await client.functions.utilities.fetch.run(client, 'channel', channelId);
+        const channel = await client.functions.utilities.fetch.run('channel', channelId);
 
         //Comprueba si el canal existe
         if (!channel || !['GUILD_TEXT', 'GUILD_NEWS', 'GUILD_STORE', 'GUILD_NEWS_THREAD', 'GUILD_PUBLIC_THREAD', 'GUILD_PRIVATE_THREAD'].includes(channel.type)) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -13,7 +13,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         ], ephemeral: true});
 
         //Comprueba si el miembro tiene permisos para ejecutar esta acción
-        const missingPermissions = await client.functions.utilities.missingPermissions.run(client, channel, interaction.user, ['MANAGE_MESSAGES'])
+        const missingPermissions = await client.functions.utilities.missingPermissions.run(channel, interaction.user, ['MANAGE_MESSAGES'])
         if (missingPermissions) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.noPermission, { channel: channel, missingPermissions: missingPermissions })}.`)
@@ -69,7 +69,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (channel.id === interaction.channelId) setTimeout(() => interaction.deleteReply(), 5000);
 
         //Envía un registro al canal de registro
-        await client.functions.managers.logging.run(client, 'purgedChannel', 'embed', new client.MessageEmbed()
+        await client.functions.managers.logging.run('purgedChannel', 'embed', new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
             .setDescription(await client.functions.utilities.parseLocale.run(locale.loggingEmbed.description, { authorTag: interaction.user.tag, deletedCount: msgsToDelete.size, channel: channel }))
@@ -78,7 +78,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 

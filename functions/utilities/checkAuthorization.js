@@ -1,5 +1,5 @@
 //Función para comprobar si un usuario está autorizado para ejecutar una acción
-exports.run = async (client, member, authorizations) => {
+exports.run = async (member, authorizations) => {
 
     //Parámetros admisibles:
     //{ guildOwner: true, botManagers: true, bypassIds: []}

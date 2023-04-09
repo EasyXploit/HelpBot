@@ -1,11 +1,11 @@
 //Función para añadir XP (mode = message || voice)
-exports.run = async (client, member, mode, channel) => {
+exports.run = async (member, mode, channel) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.leveling.addExperience;
 
     //Para comprobar si el rol puede ganar XP o no.
-    const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, member, { bypassIds: await client.functions.db.getConfig.run('leveling.wontEarnXP') });
+    const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(member, { bypassIds: await client.functions.db.getConfig.run('leveling.wontEarnXP') });
 
     //Devuelve si no se puede ganar XP
     if (notAuthorizedToEarnXp) return;
@@ -43,7 +43,7 @@ exports.run = async (client, member, mode, channel) => {
     memberStats.experience += newXp;
 
     //Calcula el XP necesario para subir al siguiente nivel
-    const neededExperience = await client.functions.leveling.getNeededExperience.run(client, memberStats.experience);
+    const neededExperience = await client.functions.leveling.getNeededExperience.run(memberStats.experience);
 
     //Comprueba si el miembro ha de subir de nivel
     if (neededExperience.nextLevel > memberStats.level) {
@@ -52,7 +52,7 @@ exports.run = async (client, member, mode, channel) => {
         memberStats.level++;
 
         //Asigna las recompensas correspondientes al nivel (si corresponde), y almacena los roles recompensados
-        const rewardedRoles = await client.functions.leveling.assignRewards.run(client, member, memberStats.level);
+        const rewardedRoles = await client.functions.leveling.assignRewards.run(member, memberStats.level);
 
         //Genera un embed de subida de nivel
         let levelUpEmbed = new client.MessageEmbed()
@@ -83,7 +83,7 @@ exports.run = async (client, member, mode, channel) => {
             for (const roleId of rewardedRoles) {
 
                 //Busca el rol en la guild
-                const fetchedRole = await client.functions.utilities.fetch.run(client, 'role', roleId);
+                const fetchedRole = await client.functions.utilities.fetch.run('role', roleId);
 
                 //Sube al array de nombre, el nombre del rol iterado
                 roleNames.push(fetchedRole.name);

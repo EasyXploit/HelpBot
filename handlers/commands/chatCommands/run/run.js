@@ -1,4 +1,4 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
 
@@ -14,7 +14,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 ], ephemeral: true});
 
                 //Busca el miembro en la guild
-                const targetWelcomeMember = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[1].value);
+                const targetWelcomeMember = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[1].value);
 
                 //Devuelve un error si no se ha proporcionado un miembro válido
                 if (!targetWelcomeMember) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -43,7 +43,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 ], ephemeral: true});
 
                 //Busca el miembro en la guild
-                const targetGoodybeMember = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[1].value);
+                const targetGoodybeMember = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[1].value);
 
                 //Devuelve un error si no se ha proporcionado un miembro válido
                 if (!targetGoodybeMember) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -77,7 +77,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 

@@ -1,5 +1,5 @@
 //Función para gestionar el envío de registros al canal de registro
-exports.run = async (client, logType, contentType, content, attachments) => {
+exports.run = async (logType, contentType, content, attachments) => {
 
     try {
 
@@ -10,7 +10,7 @@ exports.run = async (client, logType, contentType, content, attachments) => {
         if (!logSettings.enabled) return false;
 
         //Busca el canal configurado para enviar el registro
-        const logChannel = await client.functions.utilities.fetch.run(client, 'channel', logSettings.channelId);
+        const logChannel = await client.functions.utilities.fetch.run('channel', logSettings.channelId);
 
         //Si el canal no se encuentra
         if (!logChannel) {
@@ -29,7 +29,7 @@ exports.run = async (client, logType, contentType, content, attachments) => {
         };
 
         //Comprueba si al bot le faltan permisos en el canal de reportes
-        const missingPermissions = await client.functions.utilities.missingPermissions.run(client, logChannel, logChannel.guild.me, ['SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES']);
+        const missingPermissions = await client.functions.utilities.missingPermissions.run(logChannel, logChannel.guild.me, ['SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES']);
 
         //Si le faltaron permisos al bot
         if (missingPermissions) {

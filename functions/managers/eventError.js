@@ -1,5 +1,5 @@
 //Función para gestionar los errores en los eventos
-exports.run = async (client, error) => {
+exports.run = async (error) => {
 
     //Se muestra el error en consola
     logger.error(error.stack);

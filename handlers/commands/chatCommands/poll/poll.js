@@ -1,4 +1,4 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
 
     try {
 
@@ -15,10 +15,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             ], ephemeral: true});
 
             //Busca y almacena el canal de la encuesta
-            const pollChannel = await client.functions.utilities.fetch.run(client, 'channel', pollData.channel);
+            const pollChannel = await client.functions.utilities.fetch.run('channel', pollData.channel);
 
             //Busca y almacena el mensaje de la encuesta (si se pudo encontrar el canal)
-            const pollMessage = pollChannel ? await client.functions.utilities.fetch.run(client, 'message', pollData.message, pollChannel) : null;
+            const pollMessage = pollChannel ? await client.functions.utilities.fetch.run('message', pollData.message, pollChannel) : null;
 
             //Si el canal o el mensaje de la encuesta ya no existen
             if (!pollChannel || !pollMessage) {
@@ -37,7 +37,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (interaction.member.id !== pollData.author) {
 
                 //Variable para saber si está autorizado
-                const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canEndAny});
+                const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canEndAny});
 
                 //Si no se permitió la ejecución, manda un mensaje de error
                 if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -95,7 +95,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         interaction.reply({ content: `${locale.startingAssistant}...`});
 
         //Almacena el canal de la interacción
-        const interactionChannel = await client.functions.utilities.fetch.run(client, 'channel', interaction.channelId);
+        const interactionChannel = await client.functions.utilities.fetch.run('channel', interaction.channelId);
 
         //Envía el assistantEmbed del título
         interactionChannel.send({ embeds: [ new client.MessageEmbed()
@@ -278,7 +278,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                         });
                         
                         //Envía un mensaje al canal de registros
-                        await client.functions.managers.logging.run(client, 'pollStarted', 'embed', new client.MessageEmbed()
+                        await client.functions.managers.logging.run('pollStarted', 'embed', new client.MessageEmbed()
                             .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
                             .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { memberTag: interaction.member.user.tag }), iconURL: interaction.user.displayAvatarURL({dynamic: true}) })
                             .addFields(
@@ -295,7 +295,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 

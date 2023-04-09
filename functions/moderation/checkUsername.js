@@ -1,5 +1,5 @@
 //Función para comprobar los nombres de usuario de los miembros
-exports.run = async (client, member) => {
+exports.run = async (member) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.moderation.checkUsername;

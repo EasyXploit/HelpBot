@@ -1,9 +1,9 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
 
     try {
 
         //Busca al miembro objetivo
-        const reportedMember = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0].value);
+        const reportedMember = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se ha encontrado al miembro
         if (!reportedMember) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -50,7 +50,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             const reportReason = modalInteraction.fields.getField('body').value;
 
             //Ejecuta el manejador de reportes
-            await client.functions.managers.report.run(client, interaction, modalInteraction, reportReason, reportedMember);
+            await client.functions.managers.report.run(interaction, modalInteraction, reportReason, reportedMember);
             
         }).catch(() => { null; });
 
@@ -60,7 +60,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 

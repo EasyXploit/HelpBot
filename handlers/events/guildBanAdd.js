@@ -1,4 +1,4 @@
-exports.run = async (banData, client, locale) => {
+exports.run = async (banData, locale) => {
 
     try {
 
@@ -21,7 +21,7 @@ exports.run = async (banData, client, locale) => {
         if (!loggingCache && (!banLog || banLog.target.id !== banData.user.id)) {
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.logging.run(client, 'bannedMember', 'embed', new client.MessageEmbed()
+            await client.functions.managers.logging.run('bannedMember', 'embed', new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.inconclusiveLoggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
                 .addFields(
@@ -69,7 +69,7 @@ exports.run = async (banData, client, locale) => {
                 if (banData.user.id === client.user.id) return;
 
                 //Envía un registro al canal de registros
-                await client.functions.managers.logging.run(client, 'bannedBot', 'embed', new client.MessageEmbed()
+                await client.functions.managers.logging.run('bannedBot', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.botLoggingEmbed.description, { userTag: banData.user.tag }))
@@ -77,7 +77,7 @@ exports.run = async (banData, client, locale) => {
             };
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.logging.run(client, 'bannedMember', 'embed', new client.MessageEmbed()
+            await client.functions.managers.logging.run('bannedMember', 'embed', new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
                 .addFields(
@@ -93,6 +93,6 @@ exports.run = async (banData, client, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.eventError.run(client, error);
+        await client.functions.managers.eventError.run(error);
     };
 };

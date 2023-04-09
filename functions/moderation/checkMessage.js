@@ -1,5 +1,5 @@
 //Función para comprobar el contenido de los mensajes enviados
-exports.run = async (client, message) => {
+exports.run = async (message) => {
         
     //Omite si el autor del mensaje es el propietario de la guild
     if (message.author.id === client.baseGuild.ownerId) return true;
@@ -261,7 +261,7 @@ exports.run = async (client, message) => {
             const reason = message.channel.type === 'DM' ? `${filterCfg.reason} (${locale.filteredDm})` : filterCfg.reason; 
         
             //Ejecuta el manejador de infracciones
-            await client.functions.moderation.manageWarn.run(client, message.member, reason, filterCfg.action, client.user, message, null, message.channel, message.content.length === 0 ? filteredURL : null);
+            await client.functions.moderation.manageWarn.run(message.member, reason, filterCfg.action, client.user, message, null, message.channel, message.content.length === 0 ? filteredURL : null);
 
             //Para el resto del bucle
             break;

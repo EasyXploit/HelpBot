@@ -1,5 +1,5 @@
 //Función para evaluar si el bot o un miembro tiene un conjunto de permisos en un canal o la guild
-exports.run = async (client, targetChannel, targetMember, requiredPermissions) => {
+exports.run = async (targetChannel, targetMember, requiredPermissions) => {
 
     try {
 

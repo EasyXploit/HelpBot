@@ -46,7 +46,7 @@ const discord = require('discord.js');
 logger.debug('Starting the client');
 
 //Carga una nueva instancia de cliente de Discord
-const client = new discord.Client({
+global.client = new discord.Client({
     intents: [
         discord.Intents.FLAGS.GUILDS,
         discord.Intents.FLAGS.GUILD_MESSAGES,
@@ -84,7 +84,7 @@ client.locale = locale;
 ['functions', 'config', 'db', 'usersVoiceStates', 'userMessages'].forEach(x => client[x] = {});
 
 //Carga las funciones globales en el cliente
-require('./lifecycle/loadFunctions.js').run(client);
+require('./lifecycle/loadFunctions.js').run();
 
 //Carga los archivos de bases de datos (deprecado)
 const databaseFiles = client.fs.readdirSync('./storage/databases/', { withFileTypes: true });
@@ -97,7 +97,7 @@ databaseFiles.forEach(async file => {
 });
 
 //Carga los manejadores de eventos
-require('./lifecycle/loadEvents.js').run(client);
+require('./lifecycle/loadEvents.js').run();
 
 //Carga el manejador de inicio de sesión
-require('./lifecycle/login.js').run(client);
+require('./lifecycle/login.js').run();

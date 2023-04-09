@@ -1,5 +1,5 @@
 //Función para gestionar los errores en las interacciones
-exports.run = async (client, error, interaction) => {
+exports.run = async (error, interaction) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.managers.interactionError;
@@ -27,7 +27,7 @@ exports.run = async (client, error, interaction) => {
     } catch (error) {
 
         //Almacena el canal de texto de la interacción
-        const interactionChannel = await client.functions.utilities.fetch.run(client, 'channel', interaction.channelId);
+        const interactionChannel = await client.functions.utilities.fetch.run('channel', interaction.channelId);
 
         //Envía el embed al canal de texto
         interactionChannel.send({ embeds: [notificationEmbed]});

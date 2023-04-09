@@ -1,4 +1,4 @@
-exports.run = async (interaction, client, locale) => {
+exports.run = async (interaction, locale) => {
 
     try {
         
@@ -27,7 +27,7 @@ exports.run = async (interaction, client, locale) => {
             ], ephemeral: true});
             
             //Ejecuta el comando
-            command.run(client, interaction, command.userConfig, client.locale.handlers.commands[commandType][command.fileName]);
+            command.run(interaction, command.userConfig, client.locale.handlers.commands[commandType][command.fileName]);
         };
 
         //Si la interacción era de autocompletado
@@ -38,7 +38,7 @@ exports.run = async (interaction, client, locale) => {
             if (!command || !command.autocomplete) return; //Aborta si no lo encuentra
 
             //Ejecuta el método de autocompletado
-            command.autocomplete(client, interaction, command, client.locale.handlers.commands.chatCommands[command.fileName]);
+            command.autocomplete(interaction, command, client.locale.handlers.commands.chatCommands[command.fileName]);
         };
 
         //Si la interacción era un botón
@@ -50,7 +50,7 @@ exports.run = async (interaction, client, locale) => {
                 const handlerFile = require(`../buttons/${interaction.customId}.js`);
 
                 //Ejecuta el manejador de la interacción
-                handlerFile.run(client, interaction);
+                handlerFile.run(interaction);
 
             } catch (error) {
 

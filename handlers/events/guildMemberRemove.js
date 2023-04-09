@@ -1,4 +1,4 @@
-exports.run = async (member, client, locale) => {
+exports.run = async (member, locale) => {
     
     try {
 
@@ -24,7 +24,7 @@ exports.run = async (member, client, locale) => {
             if (kickLog.target.id !== member.id) {
 
                 //Envía un registro al canal de registros
-                await client.functions.managers.logging.run(client, 'kickedMember', 'embed', new client.MessageEmbed()
+                await client.functions.managers.logging.run('kickedMember', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.inconclusiveLoggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                     .addFields(
@@ -42,7 +42,7 @@ exports.run = async (member, client, locale) => {
                 if (member.user.id === client.user.id) return;
 
                 //Envía un registro al canal de registros
-                await client.functions.managers.logging.run(client, 'kickedBot', 'embed', new client.MessageEmbed()
+                await client.functions.managers.logging.run('kickedBot', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.botLoggingEmbed.description, { memberTag: member.user.tag }))
@@ -67,7 +67,7 @@ exports.run = async (member, client, locale) => {
             };
 
             //Envía un registro al canal de registros
-            await client.functions.managers.logging.run(client, 'kickedMember', 'embed', new client.MessageEmbed()
+            await client.functions.managers.logging.run('kickedMember', 'embed', new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                 .addFields(
@@ -92,14 +92,14 @@ exports.run = async (member, client, locale) => {
             if (!banLog || Date.now() > (banLog.createdTimestamp + 5000)) {
 
                 //Envía un registro al canal de bienvenidas/despedidas (por que no se trató ni de una expulsión ni de un baneo)
-                await client.functions.managers.logging.run(client, 'memberLeaved', 'embed', new client.MessageEmbed()
+                await client.functions.managers.logging.run('memberLeaved', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                     .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
                     .setAuthor({ name: locale.goodbyeEmbed.author, iconURL: 'attachment://out.png' })
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.goodbyeEmbed.description, { memberTag: member.user.tag }))
                     .addFields(
                         { name: `🆔 ${locale.goodbyeEmbed.memberId}`, value: member.user.id, inline: true },
-                        { name: `📆 ${locale.goodbyeEmbed.antiquity}`, value: `\`${await client.functions.utilities.msToTime.run(client, Date.now() - member.joinedTimestamp)}\``, inline: true }
+                        { name: `📆 ${locale.goodbyeEmbed.antiquity}`, value: `\`${await client.functions.utilities.msToTime.run(Date.now() - member.joinedTimestamp)}\``, inline: true }
                 ), ['./resources/images/out.png']);
             };
         };
@@ -124,6 +124,6 @@ exports.run = async (member, client, locale) => {
         if (member.user.id === client.user.id) return;
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.eventError.run(client, error);
+        await client.functions.managers.eventError.run(error);
     };
 };

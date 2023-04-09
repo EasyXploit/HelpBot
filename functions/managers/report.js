@@ -1,5 +1,5 @@
 //Función para gestionar el envío de reportes al canal de reportes
-exports.run = async (client, interaction, modalInteraction, reportReason, reportedMember) => {
+exports.run = async (interaction, modalInteraction, reportReason, reportedMember) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.managers.report;
@@ -78,7 +78,7 @@ exports.run = async (client, interaction, modalInteraction, reportReason, report
         };
 
         //Se formatea y envía un registro al canal de reportes especificado en la configuración
-        const deliveryStatus = await client.functions.managers.logging.run(client, 'memberReports', 'embed', reportEmbed);
+        const deliveryStatus = await client.functions.managers.logging.run('memberReports', 'embed', reportEmbed);
 
         //Envía un mensaje de confirmación si se pudo entregar
         if (deliveryStatus) {

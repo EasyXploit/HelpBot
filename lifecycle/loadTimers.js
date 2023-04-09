@@ -1,4 +1,4 @@
-exports.run = async (client) => {
+exports.run = async () => {
 
     //Aborta si los timers están deshabilitados
     if (!await client.functions.db.getConfig.run('system.modules.timedMessages')) return;
@@ -255,7 +255,7 @@ exports.run = async (client) => {
         const timerConfig = client.db.timers.messages[hash]; 
 
         //Busca el canal especificado en la config.
-        const channel = await client.functions.utilities.fetch.run(client, 'channel', timerConfig.channelId);
+        const channel = await client.functions.utilities.fetch.run('channel', timerConfig.channelId);
 
         //Omite la iteración si no encuentra el mensaje
         if (!channel) continue;

@@ -1,5 +1,5 @@
 //Función para gestionar la navegación por menús en los embeds
-exports.run = async (client, interaction, customId, actualPage, totalPages, generatedPageMessage, latestInteraction, attachedFiles) => {
+exports.run = async (interaction, customId, actualPage, totalPages, generatedPageMessage, latestInteraction, attachedFiles) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.managers.buttonNavigation;

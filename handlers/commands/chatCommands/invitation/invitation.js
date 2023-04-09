@@ -1,4 +1,4 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
 
@@ -12,7 +12,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             let inviteChannel;
             
             //Comprueba si hay canal de reglas y si se tiene permiso para crear la invitación
-            if (client.baseGuild.rulesChannel && !(await client.functions.utilities.missingPermissions.run(client, client.baseGuild.rulesChannel, client.user, ['CREATE_INSTANT_INVITE']))) {
+            if (client.baseGuild.rulesChannel && !(await client.functions.utilities.missingPermissions.run(client.baseGuild.rulesChannel, client.user, ['CREATE_INSTANT_INVITE']))) {
 
                 //Almacena el canal de reglas
                 inviteChannel = client.baseGuild.rulesChannel;
@@ -35,7 +35,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                         const channel = channels.get(channelIds[index]);
 
                         //Si tiene permisos, graba la invitación
-                        if(!await client.functions.utilities.missingPermissions.run(client, channel, client.user, ['CREATE_INSTANT_INVITE'])) return inviteChannel = channel;
+                        if(!await client.functions.utilities.missingPermissions.run(channel, client.user, ['CREATE_INSTANT_INVITE'])) return inviteChannel = channel;
                     };
                 });
             };
@@ -91,7 +91,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 

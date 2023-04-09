@@ -1,10 +1,10 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
 
         //Almacena el ID del canal proporcionado, o el del actual
         const destinationChannelId = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : interaction.channelId;
-        const destinationChannel = await client.functions.utilities.fetch.run(client, 'channel', destinationChannelId);
+        const destinationChannel = await client.functions.utilities.fetch.run('channel', destinationChannelId);
 
         //Comprueba si el canal existe
         if (!destinationChannel || !['GUILD_TEXT', 'GUILD_NEWS', 'GUILD_STORE', 'GUILD_NEWS_THREAD', 'GUILD_PUBLIC_THREAD', 'GUILD_PRIVATE_THREAD'].includes(destinationChannel.type)) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -13,7 +13,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         ], ephemeral: true});
 
         //Comprueba si el miembro tiene permisos para ejecutar esta acción
-        const missingPermissions = await client.functions.utilities.missingPermissions.run(client, channel, interaction.user, ['SEND_MESSAGES'])
+        const missingPermissions = await client.functions.utilities.missingPermissions.run(channel, interaction.user, ['SEND_MESSAGES'])
         if (missingPermissions) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.noPermission, { channel: destinationChannel, missingPermissions: missingPermissions })}.`)
@@ -87,7 +87,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 

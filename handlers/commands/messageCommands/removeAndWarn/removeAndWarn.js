@@ -1,16 +1,16 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
 
     try {
 
         //Si el ejecutor no tiene permisos para borrar mensajes, envía un error
-        const missingPermissions = await client.functions.utilities.missingPermissions.run(client, channel, interaction.user, ['MANAGE_MESSAGES'])
+        const missingPermissions = await client.functions.utilities.missingPermissions.run(channel, interaction.user, ['MANAGE_MESSAGES'])
         if (missingPermissions) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantDeleteMessages}.`)
         ], ephemeral: true});
 
         //Busca al miembro objetivo
-        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0].message.author.id);
+        const member = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0].message.author.id);
 
         //Devuelve un error si no se ha encontrado al miembro
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -43,7 +43,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (Date.now() - latestWarn.timestamp < commandConfig.minimumTimeDifference) {
 
                 //Almacena si el miembro puede saltarse el intervalo mínimo
-                const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedFrequency});
+                const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedFrequency});
 
                 //Si no está autorizado, devuelve un mensaje de error
                 if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -100,12 +100,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         const warnedMessage = interaction.options._hoistedOptions[0].message;
 
         //Ejecuta el manejador de infracciones
-        await client.functions.moderation.manageWarn.run(client, member, reason, 3, interaction.user, warnedMessage, null, warnedMessage.channel);
+        await client.functions.moderation.manageWarn.run(member, reason, 3, interaction.user, warnedMessage, null, warnedMessage.channel);
 
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 

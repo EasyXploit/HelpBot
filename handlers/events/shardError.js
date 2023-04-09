@@ -1,3 +1,3 @@
-exports.run = (error, client, locale) => {
+exports.run = (error, locale) => {
     logger.error(error.stack);
 };

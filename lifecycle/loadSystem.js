@@ -1,4 +1,4 @@
-exports.run = async (client, locale) => {
+exports.run = async (locale) => {
 
     try {
 
@@ -9,22 +9,22 @@ exports.run = async (client, locale) => {
         logger.debug('Base guild loading completed');
 
         //Carga los customEmojis en el cliente
-        await require('./loadEmojis.js').run(client);
+        await require('./loadEmojis.js').run();
 
         //Carga de comandos en memoria
-        await require('./loadCommands.js').run(client);
+        await require('./loadCommands.js').run();
 
         //Carga la presencia del bot
-        await require('../functions/managers/updatePresence.js').run(client);
+        await require('../functions/managers/updatePresence.js').run();
 
         //Notifica la correcta carga de la presencia
         logger.debug('Presence loading completed');
 
         //Carga los scripts que funcionan a intervalos
-        await require('./loadIntervals.js').run(client);
+        await require('./loadIntervals.js').run();
 
         //Carga los temporizadores configurados
-        await require('./loadTimers.js').run(client);
+        await require('./loadTimers.js').run();
 
         //Carga los estados de voz (si se su monitorización)
         if (await client.functions.db.getConfig.run('leveling.rewardVoice')) {
@@ -36,7 +36,7 @@ exports.run = async (client, locale) => {
             voiceStates.forEach(async voiceState => {
 
                 //Almacena el miembro, si lo encuentra
-                const member = await client.functions.utilities.fetch.run(client, 'member', voiceState.id);
+                const member = await client.functions.utilities.fetch.run('member', voiceState.id);
                 if (!member) return;
 
                 //Comprueba si en el canal no se puede ganar XP

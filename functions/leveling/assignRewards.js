@@ -1,5 +1,5 @@
 //Función para asignar recompensas
-exports.run = async (client, member, memberLevel, updateSubsequents) => {
+exports.run = async (member, memberLevel, updateSubsequents) => {
 
     //Función para comparar un array
     function compare(a, b) {

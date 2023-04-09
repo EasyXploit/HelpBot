@@ -1,3 +1,3 @@
-exports.run = (warn, client, locale) => {
+exports.run = (warn, locale) => {
     logger.warn(warn);
 };

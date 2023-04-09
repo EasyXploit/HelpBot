@@ -1,5 +1,5 @@
 
-exports.run = async (client) => {
+exports.run = async () => {
 
     //Crea colecciones para almacenar los comandos
     client.commands = { chatCommands: {}, messageCommands: {}, userCommands: {} };

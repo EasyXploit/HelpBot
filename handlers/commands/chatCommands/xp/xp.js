@@ -1,4 +1,4 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
 
@@ -6,7 +6,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         const subcommand = interaction.options._subcommand;
 
         //Almacena el miembro proporcionado
-        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0].value);
 
         //Comprueba si se ha proporcionado un miembro válido
         if (!member && !client.db.stats[interaction.options._hoistedOptions[0].value]) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -57,7 +57,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         ], ephemeral: true});
 
         //Almacena si se omite la comprobación de jerarquía
-        const byPassed = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true });
+        const byPassed = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true });
 
         //Si no se omitió y el rol del miembro es mayor o igual que el del ejecutor
         if (!byPassed && member && interaction.member.roles.highest.position <= member.roles.highest.position) {
@@ -144,7 +144,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         };
 
         //Almacena el nivel correspondiente al XP especificado
-        const neededExperience = await client.functions.leveling.getNeededExperience.run(client, newValue);
+        const neededExperience = await client.functions.leveling.getNeededExperience.run(newValue);
 
         //Almacena el nuevo nivel del miembro
         newLevel = neededExperience.nextLevel;
@@ -156,7 +156,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             memberStats.level = newLevel;
 
             //Asigna las recompensas del nivel al miembro (y elimina las que no le corresponde)
-            await client.functions.leveling.assignRewards.run(client, member, newLevel, true);
+            await client.functions.leveling.assignRewards.run(member, newLevel, true);
         };
 
         //Sobreescribe el fichero de la base de datos con los cambios
@@ -166,7 +166,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (err) throw err;
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.logging.run(client, 'experienceModified', 'embed',  new client.MessageEmbed()
+            await client.functions.managers.logging.run('experienceModified', 'embed',  new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
                 .setTitle(`📑 ${locale.loggingEmbed.title}`)
                 .setDescription(`${await client.functions.utilities.parseLocale.run(locale.loggingEmbed.description, { memberTag: member.user.tag })}.`)
@@ -220,7 +220,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 

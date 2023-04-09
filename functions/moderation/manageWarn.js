@@ -1,5 +1,5 @@
 //Función para manejar las infracciones generadas
-exports.run = async (client, member, reason, action, moderator, message, interaction, channel, filteredURL) => {
+exports.run = async (member, reason, action, moderator, message, interaction, channel, filteredURL) => {
 
     try {
 
@@ -193,7 +193,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 if (err) throw err;
 
                 //Ejecuta el manejador de registro
-                await client.functions.managers.logging.run(client, 'warnedMember', 'embed', new client.MessageEmbed()
+                await client.functions.managers.logging.run('warnedMember', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.warn.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                     .addFields(
@@ -207,7 +207,7 @@ exports.run = async (client, member, reason, action, moderator, message, interac
                 );
 
                 //Si procede, adjunta el mensaje filtrado
-                if (message && await client.functions.db.getConfig.run('moderation.attachFilteredMessages')) await client.functions.managers.logging.run(client, 'warnedMember', 'file', new client.MessageAttachment(Buffer.from(filteredURL || message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
+                if (message && await client.functions.db.getConfig.run('moderation.attachFilteredMessages')) await client.functions.managers.logging.run('warnedMember', 'file', new client.MessageAttachment(Buffer.from(filteredURL || message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
             });
 
             //Banea temporalmente a los miembros que se acaban de unir al servidor y han mandado invitaciones

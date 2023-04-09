@@ -1,9 +1,9 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
 
         //Almacena si el miembro puede ganar EXP
-        const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { bypassIds: await client.functions.db.getConfig.run('leveling.wontEarnXP') });
+        const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(interaction.member, { bypassIds: await client.functions.db.getConfig.run('leveling.wontEarnXP') });
 
         //Si no está autorizado para ello, devuelve un mensaje de error
         if (notAuthorizedToEarnXp) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -78,7 +78,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 

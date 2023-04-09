@@ -1,9 +1,9 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
 
         //Busca al miembro proporcionado
-        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0].value);
 
         //Almacena el ID del miembro
         const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
@@ -18,7 +18,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (!reason) {
 
             //Almacena si el miembro puede omitir la razón
-            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
+            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -40,7 +40,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         ], ephemeral: true});
 
         //Almacena si el miembro puede borrar cualquier timeout
-        const canRemoveAny = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
+        const canRemoveAny = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
 
         //Devuelve el estado de autorización
         if (!canRemoveAny && (!client.db.timeouts[memberId] || client.db.timeouts[memberId].moderator !== interaction.member.id)) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -79,7 +79,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (!member) {
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.logging.run(client, 'untimeoutedMember', 'embed', new client.MessageEmbed()
+            await client.functions.managers.logging.run('untimeoutedMember', 'embed', new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
                 .setAuthor(locale.loggingEmbed.author)
                 .addFields(
@@ -100,7 +100,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 

@@ -1,9 +1,9 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
 
         //Almacena el canal de texto de la interacción
-        const interactionChannel = await client.functions.utilities.fetch.run(client, 'channel', interaction.channelId);
+        const interactionChannel = await client.functions.utilities.fetch.run('channel', interaction.channelId);
 
         //Almacena los segundos proporcionados
         const argument = interaction.options._hoistedOptions[0].value;
@@ -21,7 +21,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             await interactionChannel.setRateLimitPerUser(0);
 
             //Envía un mensaje al canal de registros
-            if (client.config.logging.slowmodeChanged) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+            if (client.config.logging.slowmodeChanged) await client.functions.managers.logging.run('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle(`📑 ${locale.disabledLoggingEmbed.title}`)
                 .setDescription(locale.disabledLoggingEmbed.description)
@@ -41,7 +41,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         } else { //Si se debe activar el modo lento
 
             //Almacena si el miembro puede usar tiempo ilimitado
-            const canUseUnlimitedTime = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
+            const canUseUnlimitedTime = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
 
             //Comprueba si los segundos excedieron el máximo configurado
             if (!canUseUnlimitedTime && argument > commandConfig.maxRegularSeconds) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -59,7 +59,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (!reason && interaction.member.id !== interaction.guild.ownerId) {
 
                 //Almacena si el miembro puede omitir la razón
-                const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
+                const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
                 //Si no está autorizado, devuelve un mensaje de error
                 if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -72,7 +72,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             await interactionChannel.setRateLimitPerUser(argument, reason || locale.undefinedReason);
 
             //Envía un mensaje al canal de registros
-            if (client.config.logging.slowmodeChanged) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+            if (client.config.logging.slowmodeChanged) await client.functions.managers.logging.run('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle(`📑 ${locale.enabledLoggingEmbed.title}`)
                 .setDescription(locale.enabledLoggingEmbed.description)
@@ -95,13 +95,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 
 module.exports.config = {
     type: 'global',
-    defaultPermission: false,
+    defaultMemberPermissions: new client.Permissions('MODERATE_MEMBERS'),
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

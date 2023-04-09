@@ -1,9 +1,9 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
 
     try {
 
         //Busca el miembro en la guild
-        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
+        const member = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
 
         //Comprueba si se ha proporcionado un miembro válido
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -15,7 +15,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (interaction.member.id !== member.id) {
 
             //Variable para saber si está autorizado
-            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSeeAny});
+            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSeeAny});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -56,13 +56,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 
 module.exports.config = {
     type: 'global',
-    defaultPermission: true,
+    defaultMemberPermissions: null,
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

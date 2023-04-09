@@ -1,5 +1,5 @@
 //Función para gestionar los errores en los eventos
-exports.run = async (client, error) => {
+exports.run = async (error) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.managers.eventError;

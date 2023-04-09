@@ -1,4 +1,4 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
 
     try {
 
@@ -53,13 +53,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 
 module.exports.config = {
     type: 'global',
-    defaultPermission: false,
+    defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT'

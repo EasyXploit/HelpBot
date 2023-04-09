@@ -1,10 +1,10 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
 
         //Almacena el ID del canal proporcionado, o el del actual
         const channelId = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : interaction.channelId;
-        const channel = await client.functions.utilities.fetch.run(client, 'channel', channelId);
+        const channel = await client.functions.utilities.fetch.run('channel', channelId);
 
         //Comprueba si el canal existe
         if (!channel || !['GUILD_TEXT', 'GUILD_NEWS', 'GUILD_STORE', 'GUILD_NEWS_THREAD', 'GUILD_PUBLIC_THREAD', 'GUILD_PRIVATE_THREAD'].includes(channel.type)) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -69,7 +69,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (channel.id === interaction.channelId) setTimeout(() => interaction.deleteReply(), 5000);
 
         //Envía un registro al canal de registro
-        if (client.config.logging.purgedChannel) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+        if (client.config.logging.purgedChannel) await client.functions.managers.logging.run('embed', new client.MessageEmbed()
             .setColor(client.config.colors.logging)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
             .setDescription(await client.functions.utilities.parseLocale.run(locale.loggingEmbed.description, { authorTag: interaction.user.tag, deletedCount: msgsToDelete.size, channel: channel }))
@@ -78,7 +78,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 
@@ -86,7 +86,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
 
 module.exports.config = {
     type: 'global',
-    defaultPermission: false,
+    defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

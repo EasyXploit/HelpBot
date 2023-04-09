@@ -17,7 +17,7 @@ exports.run = (client) => {
             if (Date.now() < endTime) continue;
             
             //Busca el miembro
-            const member = await client.functions.utilities.fetch.run(client, 'member', idKey);
+            const member = await client.functions.utilities.fetch.run('member', idKey);
 
             //Bora el silenciamiento de la base de datos
             delete client.db.mutes[idKey];
@@ -33,7 +33,7 @@ exports.run = (client) => {
                 if (member) authorProperty.iconURL = member.user.displayAvatarURL({dynamic: true});
                 
                 //Ejecuta el manejador de registro
-                if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                if (client.config.logging.unmutedMember) await client.functions.managers.logging.run('embed', new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
                     .setAuthor(authorProperty)
                     .addFields(
@@ -88,7 +88,7 @@ exports.run = (client) => {
                     if (user) await client.homeGuild.members.unban(idKey);
 
                     //Ejecuta el manejador de registro
-                    if (client.config.logging.unbannedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                    if (client.config.logging.unbannedMember) await client.functions.managers.logging.run('embed', new client.MessageEmbed()
                         .setColor(client.config.colors.correct)
                         .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.bans.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
                         .addFields(
@@ -133,7 +133,7 @@ exports.run = (client) => {
         await client.homeGuild.members.cache.forEach(async guildMember => {
 
             //Comprueba si el nombre de usuario (visible) del miembro es válido
-            await client.functions.moderation.checkUsername.run(client, guildMember);
+            await client.functions.moderation.checkUsername.run(guildMember);
         });
 
     }, 120000);
@@ -152,10 +152,10 @@ exports.run = (client) => {
             if (!storedPoll.expiration) continue;
 
             //Busca el canal de la encuesta
-            const channel = await client.functions.utilities.fetch.run(client, 'channel', storedPoll.channel);
+            const channel = await client.functions.utilities.fetch.run('channel', storedPoll.channel);
 
             //Busca el mensaje de la encuesta
-            const poll = await client.functions.utilities.fetch.run(client, 'message', storedPoll.message, channel);
+            const poll = await client.functions.utilities.fetch.run('message', storedPoll.message, channel);
 
             //Si no se encontró el canal o la encuesta
             if (!channel || !poll) {
@@ -223,7 +223,7 @@ exports.run = (client) => {
                 ], files: ['./resources/images/endFlag.png']}).then(async poll => {
 
                     //Envía una notificación al canal de registro
-                    if (client.config.logging.pollEnded) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                    if (client.config.logging.pollEnded) await client.functions.managers.logging.run('embed', new client.MessageEmbed()
                         .setColor(client.config.colors.logging)
                         .setTitle(`📑 ${locale.polls.loggingEmbed.title}`)
                         .setDescription(`${await client.functions.utilities.parseLocale.run(locale.polls.loggingEmbed.description, { poll: `[${storedPoll.title}](${poll.url})`, channel: channel })}.`)
@@ -278,7 +278,7 @@ exports.run = (client) => {
         for (let idKey in client.usersVoiceStates) {
 
             //Almacena el miembro
-            const member = await client.functions.utilities.fetch.run(client, 'member', idKey);
+            const member = await client.functions.utilities.fetch.run('member', idKey);
 
             //Elimina el miembro de los estados de voz si ya no se encuentra voz
             if (!member || !member.voice.channelId) {
@@ -294,7 +294,7 @@ exports.run = (client) => {
             if (member.voice.mute || member.voice.deaf || member.voice.channel.members.filter(member => !member.user.bot).size === 1) return;
 
             //Añade XP al miembro
-            await client.functions.leveling.addExperience.run(client, member, 'voice', member.voice.channel);
+            await client.functions.leveling.addExperience.run(member, 'voice', member.voice.channel);
 
             //Actualiza el timestamp de la última recompensa de XP obtenida
             client.usersVoiceStates[member.id].lastXpReward = Date.now();

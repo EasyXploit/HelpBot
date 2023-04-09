@@ -1,9 +1,9 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
 
         //Busca el miembro en la guild
-        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
+        const member = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
 
         //Si no se encuentra, devuelve un error
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -21,7 +21,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         const memberStats = client.db.stats[member.id];
 
         //Para comprobar si el rol puede ganar XP o no.
-        const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(client, member, { bypassIds: client.config.leveling.wontEarnXP });
+        const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(member, { bypassIds: client.config.leveling.wontEarnXP });
 
         //Función para comparar un array
         function compare(a, b) {
@@ -86,10 +86,10 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         };
 
         //Almacena el tiempo de voz aproximado
-        const aproxVoiceTime = memberStats.aproxVoiceTime > 0 ? `\`${await client.functions.utilities.msToTime.run(client, memberStats.aproxVoiceTime)}\`` : '\`00:00:00\`';
+        const aproxVoiceTime = memberStats.aproxVoiceTime > 0 ? `\`${await client.functions.utilities.msToTime.run(memberStats.aproxVoiceTime)}\`` : '\`00:00:00\`';
 
         //Calcula el XP necesario por defecto para el siguiente nivel
-        const neededExperience = await client.functions.leveling.getNeededExperience.run(client, memberStats.experience);
+        const neededExperience = await client.functions.leveling.getNeededExperience.run(memberStats.experience);
 
         //Envía el mensaje con las estadísticas
         await interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -103,7 +103,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 { name: locale.statsEmbed.xpToNextLevel, value: notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noXpToNextLevel}\`` : `\`${neededExperience.experience}\``, inline: true },
                 { name: locale.statsEmbed.messagesCount, value: `\`${memberStats.messagesCount}\``, inline: true },
                 { name: locale.statsEmbed.voiceTime, value: `\`${aproxVoiceTime}\``, inline: true },
-                { name: locale.statsEmbed.antiquity, value: `\`${await client.functions.utilities.msToTime.run(client, Date.now() - member.joinedTimestamp)}\``, inline: true },
+                { name: locale.statsEmbed.antiquity, value: `\`${await client.functions.utilities.msToTime.run(Date.now() - member.joinedTimestamp)}\``, inline: true },
                 { name: locale.statsEmbed.nextRewards, value: notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noNextRewards}\`` : `\`${nextRewards}\``, inline: true }
             )
         ]});
@@ -111,13 +111,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 
 module.exports.config = {
     type: 'global',
-    defaultPermission: true,
+    defaultMemberPermissions: null,
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

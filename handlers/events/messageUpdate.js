@@ -1,4 +1,4 @@
-exports.run = async (oldMessage, newMessage, client, locale) => {
+exports.run = async (oldMessage, newMessage,locale) => {
 
     //Aborta si no es un evento de la guild registrada
     if (newMessage.guild && newMessage.guild.id !== client.homeGuild.id) return;
@@ -10,5 +10,5 @@ exports.run = async (oldMessage, newMessage, client, locale) => {
     if(oldMessage.content === newMessage.content) return;
 
     //Comprueba si el contenido del mensaje estaba permitido
-    await client.functions.moderation.checkMessage.run(client, newMessage);
+    await client.functions.moderation.checkMessage.run(newMessage);
 };

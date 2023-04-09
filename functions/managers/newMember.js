@@ -1,5 +1,5 @@
 //Función para gestionar nuevos miembros
-exports.run = async (client, member) => {
+exports.run = async (member) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.managers.newMember;
@@ -10,7 +10,7 @@ exports.run = async (client, member) => {
         if (client.configkickOnBadUsername) {
 
             //Comprueba si el nombre de usuario del miembro es válido
-            const usernameIsValid = await client.functions.moderation.checkUsername.run(client, member);
+            const usernameIsValid = await client.functions.moderation.checkUsername.run(member);
 
             //Aborta si el nombre no era válido
             if (!usernameIsValid) return;

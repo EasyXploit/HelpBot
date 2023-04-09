@@ -217,7 +217,7 @@ exports.run = async (client) => {
                     description: localCmd.appData.description,
                     type: localCmd.appData.type,
                     options: localCmd.appData.options,
-                    defaultPermission: localCmd.defaultPermission,
+                    defaultMemberPermissions: localCmd.defaultMemberPermissions,
                     dmPermission: localCmd.dmPermission
                 });
 
@@ -256,11 +256,11 @@ exports.run = async (client) => {
                 };
 
                 //Comprueba si el permiso por defecto almacenado es el mismo que el registrado
-                if (remoteCmd.defaultPermission !== localCmd.defaultPermission) {
+                if (remoteCmd.defaultMemberPermissions?.bitfield !== localCmd.defaultMemberPermissions?.bitfield) {
                     
                     //Actualiza el permiso por defecto
                     await remoteCmd.edit({
-                        defaultPermission: localCmd.defaultPermission
+                        defaultMemberPermissions: localCmd.defaultMemberPermissions
                     });
     
                     //Envía un mensaje de confirmación por consola

@@ -1,9 +1,9 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
 
         //Busca al usuario proporcionado
-        const user = await client.functions.utilities.fetch.run(client, 'user', interaction.options._hoistedOptions[0].value);
+        const user = await client.functions.utilities.fetch.run('user', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se ha encontrado al usuario
         if (!user) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -21,7 +21,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (!reason && interaction.member.id !== interaction.guild.ownerId) {
 
             //Almacena si el miembro puede omitir la razón
-            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
+            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -67,7 +67,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         };
 
         //Envía un mensaje al canal de registros
-        if (client.config.logging.unbannedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+        if (client.config.logging.unbannedMember) await client.functions.managers.logging.run('embed', new client.MessageEmbed()
             .setColor(client.config.colors.correct)
             .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
             .addFields(
@@ -87,13 +87,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 
 module.exports.config = {
     type: 'global',
-    defaultPermission: false,
+    defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

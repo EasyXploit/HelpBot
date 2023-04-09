@@ -1,4 +1,4 @@
-exports.run = async (member, client, locale) => {
+exports.run = async (member,locale) => {
     
     try {
 
@@ -24,7 +24,7 @@ exports.run = async (member, client, locale) => {
             if (kickLog.target.id !== member.id) {
 
                 //Envía un registro al canal de registros
-                if (client.config.logging.kickedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                if (client.config.logging.kickedMember) await client.functions.managers.logging.run('embed', new client.MessageEmbed()
                     .setColor(client.config.colors.error)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.inconclusiveLoggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                     .addFields(
@@ -42,7 +42,7 @@ exports.run = async (member, client, locale) => {
                 if (member.user.id === client.user.id) return;
 
                 //Envía un registro al canal de registros
-                if (client.config.logging.kickedBot) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                if (client.config.logging.kickedBot) await client.functions.managers.logging.run('embed', new client.MessageEmbed()
                     .setColor(client.config.colors.warning)
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.botLoggingEmbed.description, { memberTag: member.user.tag }))
@@ -67,7 +67,7 @@ exports.run = async (member, client, locale) => {
             };
 
             //Envía un registro al canal de registros
-            if (client.config.logging.kickedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+            if (client.config.logging.kickedMember) await client.functions.managers.logging.run('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.error)
                 .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                 .addFields(
@@ -99,7 +99,7 @@ exports.run = async (member, client, locale) => {
                     .setDescription(await client.functions.utilities.parseLocale.run(locale.goodbyeEmbed.description, { memberTag: member.user.tag }))
                     .addFields(
                         { name: `🆔 ${locale.goodbyeEmbed.memberId}`, value: member.user.id, inline: true },
-                        { name: `📆 ${locale.goodbyeEmbed.antiquity}`, value: `\`${await client.functions.utilities.msToTime.run(client, Date.now() - member.joinedTimestamp)}\``, inline: true }
+                        { name: `📆 ${locale.goodbyeEmbed.antiquity}`, value: `\`${await client.functions.utilities.msToTime.run(Date.now() - member.joinedTimestamp)}\``, inline: true }
                     )
                 ], files: ['./resources/images/out.png'] });
             };
@@ -125,6 +125,6 @@ exports.run = async (member, client, locale) => {
         if (member.user.id === client.user.id) return;
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.eventError.run(client, error);
+        await client.functions.managers.eventError.run(error);
     };
 };

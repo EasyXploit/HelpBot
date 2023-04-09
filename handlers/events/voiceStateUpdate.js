@@ -1,4 +1,4 @@
-exports.run = async (oldState, newState, client, locale) => {
+exports.run = async (oldState, newState,locale) => {
     
     try {
 
@@ -54,16 +54,16 @@ exports.run = async (oldState, newState, client, locale) => {
             if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].lastXpReward + client.config.leveling.XPGainInterval)) {
 
                 //Almacena al miembro
-                const member = await client.functions.utilities.fetch.run(client, 'member', newState.id);
+                const member = await client.functions.utilities.fetch.run('member', newState.id);
 
                 //Si el miembro está muteado o ensordecido, no hace nada
                 if (!member || member.voice.mute || member.voice.deaf) return;
 
                 //Almacena el canal
-                const channel = await client.functions.utilities.fetch.run(client, 'channel', oldState.channelId);
+                const channel = await client.functions.utilities.fetch.run('channel', oldState.channelId);
 
                 //Añade XP al miembro por última vez
-                await client.functions.leveling.addExperience.run(client, member, 'voice', channel);
+                await client.functions.leveling.addExperience.run(member, 'voice', channel);
 
                 //Si el miembro no tiene tabla de stats
                 if (!client.db.stats[member.id]) {
@@ -143,6 +143,6 @@ exports.run = async (oldState, newState, client, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.eventError.run(client, error);
+        await client.functions.managers.eventError.run(error);
     };
 };

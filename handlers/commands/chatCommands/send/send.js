@@ -1,10 +1,10 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
 
         //Almacena el ID del canal proporcionado, o el del actual
         const destinationChannelId = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : interaction.channelId;
-        const destinationChannel = await client.functions.utilities.fetch.run(client, 'channel', destinationChannelId);
+        const destinationChannel = await client.functions.utilities.fetch.run('channel', destinationChannelId);
 
         //Comprueba si el canal existe
         if (!destinationChannel || !['GUILD_TEXT', 'GUILD_NEWS', 'GUILD_STORE', 'GUILD_NEWS_THREAD', 'GUILD_PUBLIC_THREAD', 'GUILD_PRIVATE_THREAD'].includes(destinationChannel.type)) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -87,13 +87,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 
 module.exports.config = {
     type: 'global',
-    defaultPermission: false,
+    defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

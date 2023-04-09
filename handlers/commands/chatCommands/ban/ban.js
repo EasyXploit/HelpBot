@@ -1,9 +1,9 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
         
         //Busca al usuario proporcionado
-        const user = await client.functions.utilities.fetch.run(client, 'user', interaction.options._hoistedOptions[0].value);
+        const user = await client.functions.utilities.fetch.run('user', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se ha encontrado al usuario
         if (!user) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -15,7 +15,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (user.bot) {
 
             //Almacena si el miembro puede banear bots
-            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.botsAllowed});
+            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.botsAllowed});
 
             //Si no está autorizado para ello, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -25,7 +25,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         };
 
         //Busca al miembro proporcionado
-        const member = await client.functions.utilities.fetch.run(client, 'member', user.id);
+        const member = await client.functions.utilities.fetch.run('member', user.id);
 
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
         if (member && ((interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) || !member.bannable)) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -54,7 +54,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (!providedDuration) {
 
             //Almacena si el miembro puede banear indefinidamente
-            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
+            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -85,12 +85,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             ], ephemeral: true});
 
             //Almacena si el miembro puede banear
-            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
+            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized && milliseconds > commandConfig.maxRegularTime) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(client.config.colors.secondaryError)
-                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.exceededDuration, { time: await client.functions.utilities.msToTime.run(client, commandConfig.maxRegularTime) })}.`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.exceededDuration, { time: await client.functions.utilities.msToTime.run(commandConfig.maxRegularTime) })}.`)
             ], ephemeral: true});
         };
 
@@ -102,7 +102,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (deletedDays) {
 
             //Almacena si el miembro puede banear indefinidamente
-            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSoftBan});
+            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSoftBan});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -122,7 +122,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (!reason && interaction.member.id !== interaction.guild.ownerId) {
 
             //Almacena si el miembro puede omitir la razón
-            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
+            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -196,13 +196,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 
 module.exports.config = {
     type: 'global',
-    defaultPermission: false,
+    defaultMemberPermissions: new client.Permissions('BAN_MEMBERS'),
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

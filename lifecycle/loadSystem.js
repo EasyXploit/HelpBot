@@ -1,4 +1,4 @@
-exports.run = async (client, locale) => {
+exports.run = async (locale) => {
 
     try {
 
@@ -120,7 +120,7 @@ exports.run = async (client, locale) => {
                 voiceStates.forEach(async voiceState => {
 
                     //Almacena el miembro, si lo encuentra
-                    const member = await client.functions.utilities.fetch.run(client, 'member', voiceState.id);
+                    const member = await client.functions.utilities.fetch.run('member', voiceState.id);
                     if (!member) return;
 
                     //Comprueba si en el canal no se puede ganar XP

@@ -1,5 +1,5 @@
 //Función para gestionar el envío de registros al canal de registro
-exports.run = async (client, type, content) => {
+exports.run = async (type, content) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.managers.logging;

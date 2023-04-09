@@ -17,7 +17,7 @@ const errorTrackingEnabled = require('./configs/errorTracker.json').enabled ? re
 //Carga una nueva instancia de cliente en Discord
 console.log(`${locale.index.startingClient} ...`);
 const discord = require('discord.js');  //Carga el wrapper para interactuar con la API de Discord
-const client = new discord.Client({     //Inicia el cliente con el array de intentos necesarios
+global.client = new discord.Client({     //Inicia el cliente con el array de intentos necesarios
     intents: [
         discord.Intents.FLAGS.GUILDS,
         discord.Intents.FLAGS.GUILD_MESSAGES,
@@ -36,7 +36,7 @@ if (errorTrackingEnabled) client.errorTracker = require('@sentry/node');
 
 //CARGA DE ESTRUCTURAS ADICIONALES
 //Carga de módulos, objetos y colecciones en el cliente
-['MessageEmbed', 'MessageAttachment', 'MessageActionRow', 'MessageSelectMenu', 'TextInputComponent', 'MessageButton', 'Collection', 'Modal'].forEach(x => client[x] = discord[x]);       //Carga de métodos de Discord.js en el cliente
+['MessageEmbed', 'MessageAttachment', 'MessageActionRow', 'MessageSelectMenu', 'TextInputComponent', 'MessageButton', 'Collection', 'Modal', 'Permissions'].forEach(x => client[x] = discord[x]);       //Carga de métodos de Discord.js en el cliente
 ['config', 'db', 'usersVoiceStates', 'userMessages'].forEach(x => client[x] = {});                                                          //Creación de objetos para almacenar las configuraciones, bases de datos y cachés
 
 //Dependencia para generar hashes MD5
@@ -91,7 +91,7 @@ client.fs.readdir('./handlers/events/', async (error, files) => {
         const eventName = file.split('.')[0];               //Almacena el nombre del evento
 
         //Añade un listener para el evento en cuestión (usando spread syntax)
-        client.on(eventName, (...arguments) => eventFunction.run(...arguments, client, locale.handlers.events[eventName]));
+        client.on(eventName, (...arguments) => eventFunction.run(...arguments,locale.handlers.events[eventName]));
 
         //Notifica la carga en la consola
         console.log(` - [OK] ${locale.index.eventLoaded}: [${eventName}]`);

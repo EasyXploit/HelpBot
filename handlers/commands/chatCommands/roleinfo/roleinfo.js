@@ -1,9 +1,9 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
 
     try {
 
         //Busca el rol en la guild
-        const role = await client.functions.utilities.fetch.run(client, 'role', interaction.options._hoistedOptions[0].value);
+        const role = await client.functions.utilities.fetch.run('role', interaction.options._hoistedOptions[0].value);
 
         //Si el rol no existe, devuelve un error
         if (!role) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -32,13 +32,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 
 module.exports.config = {
     type: 'global',
-    defaultPermission: false,
+    defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

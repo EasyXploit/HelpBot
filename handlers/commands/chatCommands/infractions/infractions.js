@@ -1,9 +1,9 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
 
     try {
 
         //Busca el miembro en cuestión
-        const member = interaction.options._hoistedOptions[0] ? await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0].value || interaction.member.id): null;
+        const member = interaction.options._hoistedOptions[0] ? await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0].value || interaction.member.id): null;
 
         //Almacena el ID del miembro
         const memberId = member ? interaction.options._hoistedOptions[0].value : interaction.member.id;
@@ -12,7 +12,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (interaction.member.id !== memberId) {
 
             //Variable para saber si está autorizado
-            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSeeAny});
+            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSeeAny});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -89,7 +89,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
                 let warn = Object.values(memberWarns[index])[0];
 
                 //Busca y almacena el moderador que aplicó la sanción
-                const moderator = await client.functions.utilities.fetch.run(client, 'member', warn.moderator) || locale.unknownModerator;
+                const moderator = await client.functions.utilities.fetch.run('member', warn.moderator) || locale.unknownModerator;
 
                 //Añade una nueva fila con los detalles de la advertencia
                 board += `\`${Object.keys(memberWarns[index])[0]}\` • ${moderator} • <t:${Math.round(new Date(parseInt(warn.timestamp)) / 1000)}>\n${warn.reason}\n\n`;
@@ -115,7 +115,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (member) newPageEmbed.setThumbnail(member.user.displayAvatarURL({dynamic: true}));
 
             //Invoca el gestor de navegación mediante botones
-            const buttonNavigationResult = await client.functions.managers.buttonNavigation.run(client, interaction, 'infractions', actualPage, totalPages, newPageEmbed, latestInteraction, null);
+            const buttonNavigationResult = await client.functions.managers.buttonNavigation.run(interaction, 'infractions', actualPage, totalPages, newPageEmbed, latestInteraction, null);
 
             //Almacena la última interacción
             latestInteraction = buttonNavigationResult.latestInteraction;
@@ -129,13 +129,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 
 module.exports.config = {
     type: 'global',
-    defaultPermission: true,
+    defaultMemberPermissions: null,
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

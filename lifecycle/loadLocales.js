@@ -86,11 +86,6 @@ exports.run = (desiredLocaleName) => {
     //Fusiona las traducciones en una sola
     const mergedLocale = mergeObject(defaultLocale, desiredLocale);
 
-    
-    //EXPERIMENTAL ---- LUEGO ELIMINAR
-    fs.writeFileSync(`./resources/locales/${desiredLocaleName}.json`, JSON.stringify(mergedLocale, null, 4));
-
-
     //Devuelve las nuevas traducciones
     return mergedLocale;
 };

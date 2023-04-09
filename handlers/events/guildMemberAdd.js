@@ -1,4 +1,4 @@
-exports.run = async (member, client, locale) => {
+exports.run = async (member,locale) => {
     
     try {
 
@@ -33,7 +33,7 @@ exports.run = async (member, client, locale) => {
             if (!member.roles.cache.has(client.config.main.newBotRole)) await member.roles.add(client.config.main.newBotRole);
 
             //Envía un mensaje al canal de registro
-            if (client.config.logging.botJoined) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+            if (client.config.logging.botJoined) await client.functions.managers.logging.run('embed', new client.MessageEmbed()
                 .setColor(client.config.colors.logging)
                 .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
                 .setDescription(`${await client.functions.utilities.parseLocale.run(locale.botLoggingEmbed.description, { memberTag: member.user.tag })}.`)
@@ -44,11 +44,11 @@ exports.run = async (member, client, locale) => {
         };
 
         //Ejecuta el manejador de nuevos miembros (si procede)
-        if (client.config.main.newMemberMode === 0) await client.functions.managers.newMember.run(client, member);
+        if (client.config.main.newMemberMode === 0) await client.functions.managers.newMember.run(member);
 
     } catch (error) {
 
         //Invoca el manejador de errores
-        await client.functions.managers.eventError.run(client, error);
+        await client.functions.managers.eventError.run(error);
     };
 };

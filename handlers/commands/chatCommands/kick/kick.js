@@ -1,9 +1,9 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
 
         //Busca al miembro proporcionado
-        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se ha encontrado al miembro
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -15,7 +15,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (member.user.bot) {
 
             //Almacena si el miembro puede expulsar bots
-            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.botsAllowed});
+            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.botsAllowed});
 
             //Si no está autorizado para ello, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -40,7 +40,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (!reason && interaction.member.id !== interaction.guild.ownerId) {
 
             //Almacena si el miembro puede omitir la razón
-            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
+            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -85,13 +85,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 
 module.exports.config = {
     type: 'global',
-    defaultPermission: false,
+    defaultMemberPermissions: new client.Permissions('KICK_MEMBERS'),
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

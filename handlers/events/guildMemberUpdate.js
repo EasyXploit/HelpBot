@@ -1,4 +1,4 @@
-exports.run = async (oldMember, newMember, client, locale) => {
+exports.run = async (oldMember, newMember,locale) => {
     
     try {
 
@@ -9,10 +9,10 @@ exports.run = async (oldMember, newMember, client, locale) => {
         if (oldMember.pending && !newMember.pending) {
 
             //Si el miembro tiene entradas en la tabla de estadísticas, asigna las recompensas que le corresponda
-            if (client.db.stats[newMember.id] && client.config.leveling.preserveStats) await client.functions.leveling.assignRewards.run(client, newMember, client.db.stats[newMember.id].level);
+            if (client.db.stats[newMember.id] && client.config.leveling.preserveStats) await client.functions.leveling.assignRewards.run(newMember, client.db.stats[newMember.id].level);
 
             //Ejecuta el manejador de nuevos miembros (si procede)
-            if (client.config.main.newMemberMode === 1) await client.functions.managers.newMember.run(client, newMember);
+            if (client.config.main.newMemberMode === 1) await client.functions.managers.newMember.run(newMember);
         };
 
         //Si el miembro ha sido silenciado o dessilenciado
@@ -61,7 +61,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
             if (newMember.communicationDisabledUntilTimestamp && newMember.communicationDisabledUntilTimestamp > Date.now()) {
 
                 //Envía un mensaje al canal de registros
-                if (client.config.logging.mutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                if (client.config.logging.mutedMember) await client.functions.managers.logging.run('embed', new client.MessageEmbed()
                     .setColor(client.config.colors.error)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.communicationDisabled.loggingEmbed.author, { memberTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true}) })
                     .addFields(
@@ -102,7 +102,7 @@ exports.run = async (oldMember, newMember, client, locale) => {
                 };
 
                 //Envía un mensaje al canal de registros
-                if (client.config.logging.unmutedMember) await client.functions.managers.logging.run(client, 'embed', new client.MessageEmbed()
+                if (client.config.logging.unmutedMember) await client.functions.managers.logging.run('embed', new client.MessageEmbed()
                     .setColor(client.config.colors.correct)
                     .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.communicationEnabled.loggingEmbed.author, { userTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true})})
                     .addFields(
@@ -128,6 +128,6 @@ exports.run = async (oldMember, newMember, client, locale) => {
     } catch (error) {
 
         //Invoca el manejador de errores
-        await client.functions.managers.eventError.run(client, error);
+        await client.functions.managers.eventError.run(error);
     };
 };

@@ -1,9 +1,9 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
             
         //Busca el canal en la guild
-        const channel = interaction.options._hoistedOptions[1] ? await client.functions.utilities.fetch.run(client, 'channel', interaction.options._hoistedOptions[1].value) : null;
+        const channel = interaction.options._hoistedOptions[1] ? await client.functions.utilities.fetch.run('channel', interaction.options._hoistedOptions[1].value) : null;
 
         //Devuelve un error si no se ha encontrado el canal
         if (interaction.options._hoistedOptions[1] && !channel) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -12,7 +12,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         ], ephemeral: true});
         
         //Busca el mensaje en el canal
-        const msg = await client.functions.utilities.fetch.run(client, 'message', interaction.options._hoistedOptions[0].value, channel)
+        const msg = await client.functions.utilities.fetch.run('message', interaction.options._hoistedOptions[0].value, channel)
         if (!msg) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(client.config.colors.error)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.msgNotFound, { msgId: interaction.options._hoistedOptions[0].value })}.`)
@@ -90,13 +90,13 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 
 module.exports.config = {
     type: 'global',
-    defaultPermission: false,
+    defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

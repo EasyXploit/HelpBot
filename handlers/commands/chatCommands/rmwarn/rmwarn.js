@@ -1,9 +1,9 @@
-exports.run = async (client, interaction, commandConfig, locale) => {
+exports.run = async (interaction, commandConfig, locale) => {
     
     try {
 
         //Busca al miembro proporcionado
-        const member = await client.functions.utilities.fetch.run(client, 'member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0].value);
 
         //Almacena el ID del miembro
         const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
@@ -26,7 +26,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         if (!reason && interaction.member.id !== interaction.guild.ownerId) {
 
             //Almacena si el miembro puede omitir la razón
-            const authorized = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
+            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -48,7 +48,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
         ], ephemeral: true});
 
         //Almacena si el miembro puede borrar cualquiera
-        const canRemoveAny = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
+        const canRemoveAny = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
 
         //Crear variables para almacenar los embeds a enviar
         let successEmbed, loggingEmbed, toDMEmbed;
@@ -159,7 +159,7 @@ exports.run = async (client, interaction, commandConfig, locale) => {
             if (err) throw err;
 
             //Envía un registro al canal de registros
-            if (client.config.logging.warnRemoved) await client.functions.managers.logging.run(client, 'embed', loggingEmbed);
+            if (client.config.logging.warnRemoved) await client.functions.managers.logging.run('embed', loggingEmbed);
 
             //Envía una notificación de la acción en el canal de invocación
             await interaction.reply({ embeds: [successEmbed] });
@@ -171,12 +171,12 @@ exports.run = async (client, interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 
 //Exporta la función de autocompletado
-exports.autocomplete = async (client, interaction, command, locale) => {
+exports.autocomplete = async (interaction, command, locale) => {
 
     try {
 
@@ -193,7 +193,7 @@ exports.autocomplete = async (client, interaction, command, locale) => {
         if (!userWarns || Object.keys(userWarns).length === 0) return await interaction.respond(null);
 
         //Almacena si el miembro puede borrar cualquier advertencia
-        const canRemoveAny = await client.functions.utilities.checkAuthorization.run(client, interaction.member, { guildOwner: true, botManagers: true, bypassIds: command.userConfig.removeAny});
+        const canRemoveAny = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: command.userConfig.removeAny});
 
         //Almacena los IDs de manera cronológica inversa
         const reversedIds = Object.keys(userWarns).reverse();
@@ -217,7 +217,7 @@ exports.autocomplete = async (client, interaction, command, locale) => {
             const dateString = `${warnDate.getDate()}/${warnDate.getMonth() + 1}/${warnDate.getFullYear()} ${warnDate.getHours()}:${warnDate.getMinutes()}:${warnDate.getSeconds()}`;
 
             //Obtiene el moderador de la advertencia, o una cadena genérica
-            const moderatorUser = await client.functions.utilities.fetch.run(client, 'user', warnData.moderator) || locale.autocomplete.unknownModerator;
+            const moderatorUser = await client.functions.utilities.fetch.run('user', warnData.moderator) || locale.autocomplete.unknownModerator;
 
             //Genera una cadena para mostrarla cómo resultado
             let warnString = `${warnId} • ${moderatorUser.tag} • ${dateString} • ${warnData.reason}`;
@@ -244,13 +244,13 @@ exports.autocomplete = async (client, interaction, command, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(client, error, interaction);
+        await client.functions.managers.interactionError.run(error, interaction);
     };
 };
 
 module.exports.config = {
     type: 'global',
-    defaultPermission: false,
+    defaultMemberPermissions: new client.Permissions('MODERATE_MEMBERS'),
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

@@ -1,4 +1,4 @@
-exports.run = async (channel, client, locale) => {
+exports.run = async (channel,locale) => {
 
     try {
 
@@ -26,6 +26,6 @@ exports.run = async (channel, client, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.eventError.run(client, error);
+        await client.functions.managers.eventError.run(error);
     };
 };

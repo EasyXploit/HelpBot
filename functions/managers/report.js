@@ -1,5 +1,5 @@
 //Función para gestionar el envío de reportes al canal de reportes
-exports.run = async (client, interaction, modalInteraction, reportReason, reportedMember) => {
+exports.run = async (interaction, modalInteraction, reportReason, reportedMember) => {
 
     //Comprobar si el canal de reportes está configurado y almacenado en memoria
     if (client.config.main.reportsChannel && client.reportsChannel) {

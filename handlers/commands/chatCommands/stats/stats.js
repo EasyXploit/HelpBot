@@ -120,7 +120,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 
 module.exports.config = {
     type: 'global',
-    defaultPermission: true,
+    defaultMemberPermissions: null,
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

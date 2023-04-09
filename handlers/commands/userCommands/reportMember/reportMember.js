@@ -66,7 +66,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 
 module.exports.config = {
     type: 'global',
-    defaultPermission: false,
+    defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,
     appData: {
         type: 'USER'

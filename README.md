@@ -15,7 +15,7 @@
 
 | :bangbang: | This repository <ins>does not have a stable version yet</ins>, so it is possible that there are bugs and partially implemented features.<br />I'm still making fixes and improvements until the first release, so "watch" this repository to know when the first release comes out. |
 | :--------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 🛟 | Need help? Want to discuss the development? Join the [official Discord server](https://discord.gg/6U7rsnD2zu)! |
+| 🛟 | Need help? Want to discuss the development? Join the [official Discord server](https://discord.gg/g2PNKhT8Zr)! |
 
 ## About
 [**HelpBot**](https://github.com/EasyXploit/HelpBot) is a [Discord](https://discord.com/) self-hosted bot designed to run on a [Node.js](https://nodejs.org) server, whose main functions are automated community moderation, leveling, chat utilities and much more!<br /><br />

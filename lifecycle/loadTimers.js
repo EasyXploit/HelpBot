@@ -183,7 +183,7 @@ module.exports = async () => {
         };
 
         //Sobreescribe la base de datos
-        client.fs.writeFile('./storage/databases/timers.json', JSON.stringify(client.db.timers, null, 4), async err => {
+        client.fs.writeFile('./databases/timers.json', JSON.stringify(client.db.timers, null, 4), async err => {
 
             //Si hubo un error, lo devuelve
             if (err) throw err;
@@ -241,7 +241,7 @@ module.exports = async () => {
         };
 
         //Sobreescribe la base de datos
-        client.fs.writeFile('./storage/databases/timers.json', JSON.stringify(client.db.timers, null, 4), async err => {
+        client.fs.writeFile('./databases/timers.json', JSON.stringify(client.db.timers, null, 4), async err => {
 
             //Si hubo un error, lo devuelve
             if (err) throw err;
@@ -277,7 +277,7 @@ module.exports = async () => {
             delete client.db.timers.sents[hash];
 
             //Sobreescribe la base de datos
-            client.fs.writeFile('./storage/databases/timers.json', JSON.stringify(client.db.timers, null, 4), async err => {
+            client.fs.writeFile('./databases/timers.json', JSON.stringify(client.db.timers, null, 4), async err => {
 
                 //Si hubo un error, lo devuelve
                 if (err) throw err;

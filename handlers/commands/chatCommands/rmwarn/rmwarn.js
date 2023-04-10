@@ -153,7 +153,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         };
 
         //Escribe el resultado en el JSON
-        client.fs.writeFile('./storage/databases/warns.json', JSON.stringify(client.db.warns, null, 4), async err => {
+        client.fs.writeFile('./databases/warns.json', JSON.stringify(client.db.warns, null, 4), async err => {
 
             //Si hubo un error, lo lanza a la consola
             if (err) throw err;

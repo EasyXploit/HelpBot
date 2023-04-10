@@ -179,7 +179,7 @@ module.exports = async (member, reason, action, moderator, message, interaction,
             };
 
             //Sobreescribe la base de datos con los nuevos datos
-            client.fs.writeFile('./storage/databases/warns.json', JSON.stringify(client.db.warns, null, 4), async err => {
+            client.fs.writeFile('./databases/warns.json', JSON.stringify(client.db.warns, null, 4), async err => {
 
                 //Si ocurrió un error, lo lanza a la consola
                 if (err) throw err;

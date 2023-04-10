@@ -33,10 +33,7 @@ const pollSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    expirationTimestamp: {
-        type: Number,
-        required: true
-    }
+    expirationTimestamp: Number
 });
 
 //Genera un modelo a partir del esquema y lo exporta como módulo

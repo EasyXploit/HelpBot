@@ -6,7 +6,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (interaction.options._hoistedOptions[0]) {
 
             //Busca la encuesta en la base de datos
-            const pollData = client.db.polls[interaction.options._hoistedOptions[0].value];
+            const pollData = await client.functions.db.getData('poll', interaction.options._hoistedOptions[0].value);
 
             //Si la encuesta no existe, devuelve un error
             if (!pollData) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -15,16 +15,16 @@ exports.run = async (interaction, commandConfig, locale) => {
             ], ephemeral: true});
 
             //Busca y almacena el canal de la encuesta
-            const pollChannel = await client.functions.utilities.fetch('channel', pollData.channel);
+            const pollChannel = await client.functions.utilities.fetch('channel', pollData.channelId);
 
             //Busca y almacena el mensaje de la encuesta (si se pudo encontrar el canal)
-            const pollMessage = pollChannel ? await client.functions.utilities.fetch('message', pollData.message, pollChannel) : null;
+            const pollMessage = pollChannel ? await client.functions.utilities.fetch('message', pollData.messageId, pollChannel) : null;
 
             //Si el canal o el mensaje de la encuesta ya no existen
             if (!pollChannel || !pollMessage) {
 
                 //Elimina la encuesta de la base de datos
-                delete client.db.polls[interaction.options._hoistedOptions[0].value];
+                await client.functions.db.deltData('poll', interaction.options._hoistedOptions[0].value);
             
                 //Notifica del error al miembro
                 return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -34,7 +34,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             };
 
             //Comprueba, si corresponde, que el miembro tenga permiso para finalizar cualquier encuesta
-            if (interaction.member.id !== pollData.author) {
+            if (interaction.member.id !== pollData.authorId) {
 
                 //Variable para saber si está autorizado
                 const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canEndAny});
@@ -47,24 +47,14 @@ exports.run = async (interaction, commandConfig, locale) => {
             };
 
             //Fuerza la expiración de la encuesta
-            pollData.expiration = Date.now();
+            pollData.expirationTimestamp = Date.now();
 
-            //Sobreescribe el fichero de la base de datos con los cambios
-            client.fs.writeFile('./storage/databases/polls.json', JSON.stringify(client.db.polls), async err => {
-
-                //Si hubo un error, lo lanza a la consola
-                if (err) throw err;
-
-                //Envía una confirmación al miembro
-                return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
-                    .setTitle(`${client.customEmojis.greenTick} ${locale.endedPollEmbed.title}`)
-                    .setDescription(`${await client.functions.utilities.parseLocale(locale.endedPollEmbed.description, { poll: `[${pollData.title}](${pollMessage.url})`, pollChannel: pollChannel })}.`)
-                ], ephemeral: true});
-            });
-
-            //Aborta el resto del código
-            return;
+            //Envía una confirmación al miembro
+            return interaction.reply({ embeds: [ new client.MessageEmbed()
+                .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
+                .setTitle(`${client.customEmojis.greenTick} ${locale.endedPollEmbed.title}`)
+                .setDescription(`${await client.functions.utilities.parseLocale(locale.endedPollEmbed.description, { poll: `[${pollData.title}](${pollMessage.url})`, pollChannel: pollChannel })}.`)
+            ], ephemeral: true});
         };
 
         //Función para esperar mensajes del miembro
@@ -259,23 +249,17 @@ exports.run = async (interaction, commandConfig, locale) => {
                         };
 
                         //Almacena la encuesta en la base de datos
-                        client.db.polls[pollId] = {
-                            channel: interactionChannel.id,
-                            message: pollEmbed.id,
-                            author: interaction.member.id,
+                        await client.functions.db.genData('poll', {
+                            pollId: pollId,
+                            channelId: interactionChannel.id,
+                            messageId: pollEmbed.id,
+                            authorId: interaction.member.id,
                             title: title,
                             options: formattedOptions
-                        };
+                        });
 
                         //Si la encuesta expira, almacena dicho timestamp
-                        if (duration !== 0) client.db.polls[pollId].expiration = Date.now() + duration;
-                
-                        //Sobreescribe el fichero de la base de datos con los cambios
-                        client.fs.writeFile('./storage/databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
-
-                            //Si hubo un error, lo lanza a la consola
-                            if (err) throw err;
-                        });
+                        if (duration !== 0) await client.functions.db.setData('poll', pollId, { expirationTimestamp: Date.now() + duration });
                         
                         //Envía un mensaje al canal de registros
                         await client.functions.managers.sendLog('pollStarted', 'embed', new client.MessageEmbed()

@@ -128,37 +128,33 @@ module.exports = async () => {
     //Comprobación de encuestas expiradas
     setInterval(async () => {
 
+        //Almacena la lista de encuestas en marcha
+        const currentPolls = await client.functions.db.getData('poll');
+
         //Para cada una de las encuestas en la BD
-        for (let idKey in client.db.polls) {
+        for (let pollData in currentPolls) {
 
             //Almacena la info. de la encuesta
-            const storedPoll = client.db.polls[idKey];
+            const storedPoll = currentPolls[pollData.pollId];
 
             //Omite esta encuesta si no tiene expiración
-            if (!storedPoll.expiration) continue;
+            if (!storedPoll.expirationTimestamp) continue;
 
             //Busca el canal de la encuesta
-            const channel = await client.functions.utilities.fetch('channel', storedPoll.channel);
+            const channel = await client.functions.utilities.fetch('channel', storedPoll.channelId);
 
             //Busca el mensaje de la encuesta
-            const poll = await client.functions.utilities.fetch('message', storedPoll.message, channel);
+            const poll = await client.functions.utilities.fetch('message', storedPoll.messageId, channel);
 
             //Si no se encontró el canal o la encuesta
             if (!channel || !poll) {
 
                 //Elimina la encuesta de la BD
-                delete client.db.polls[idKey];
-
-                //Actualiza el fichero de la BD
-                return client.fs.writeFile('./storage/databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
-
-                    //Si encuentra un error, lo lanza por consola
-                    if (err) throw err;
-                });
+                await client.functions.db.delData('poll', pollData.pollId);
             };
 
             //Si la encuesta ya ha expirado
-            if (Date.now() > storedPoll.expiration) {
+            if (Date.now() > storedPoll.expirationTimestamp) {
 
                 //Almacena los votos realizados
                 let votes = [];
@@ -220,14 +216,7 @@ module.exports = async () => {
                 await poll.delete();
 
                 //Elimina la encuesta de la BD
-                delete client.db.polls[idKey];
-
-                //Actualiza el fichero de la BD
-                client.fs.writeFile('./storage/databases/polls.json', JSON.stringify(client.db.polls, null, 4), async err => {
-
-                    //Si encuentra un error, lo lanza por consola
-                    if (err) throw err;
-                });
+                await client.functions.db.delData('poll', pollData.pollId);
 
             } else { //Si la encuesta aún no ha expirado
 

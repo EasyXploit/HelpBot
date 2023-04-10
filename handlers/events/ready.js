@@ -5,45 +5,70 @@ module.exports = async (event, locale) => {
         //Carga el listado de guilds a las que el bot está unido
         const cachedGuilds = client.guilds.cache;
 
+        //Muestra por consola una lista de las guilds a las que el bot está unido
+        logger.debug('List of guilds the bot is attached to');
+        await cachedGuilds.forEach(async guild => {
+            logger.debug(`⤷ ${guild.name} (${guild.id})`);
+        });
+
         //Carga el ID de la guild base
         const baseGuildId = await client.functions.db.getConfig('system.baseGuildId');
 
         //Carga el ID de la guild de servicio
         const serviceGuildId = await client.functions.db.getConfig('system.serviceGuildId');
 
-        //Almacena el número de guilds válidas (descontando las de servicio)
-        const validGuildsCount = await cachedGuilds.filter(guild => guild.id !== serviceGuildId);
+        //Almacena el número de guilds elegibles (descontando las de servicio)
+        const elegibleGuilds = await cachedGuilds.filter(guild => guild.id !== serviceGuildId);
+
+        //Almacena el recuento de guilds elegibles
+        let elegibleGuildsCount = elegibleGuilds.size;
         
         //Comprueba cuantas guilds hay disponibles
-        if (validGuildsCount > 1) {    //Si la cantidad es superior a 1
+        if (elegibleGuildsCount > 1) { //Si la cantidad es superior a 1
 
             //Por cada guild en caché
-            await cachedGuilds.forEach(async guild => {
-                
-                //Omite la iteración si la guild es la configurada o es del propio bot
-                if (guild.id === serviceGuildId || guild.id === baseGuildId) return;
+            await elegibleGuilds.forEach(async guild => {
 
-                //Elimina la guild si es del bot pero no es la de servicio almacenada
-                if(guild.ownerId === client.user.id) return await guild.delete();
+                //Si la guild es del bot
+                if(guild.ownerId === client.user.id) {
 
-                //Notifica que el bot no puede funcionar en más de una guild
-                logger.error('This bot is not designed to run on more than one guild, so it wont start until this situation is resolved');
+                    try {
 
-                //Aborta el proceso de manera limpia
-                process.exit(1);
+                        //Decrementa el recuento de guild elegibles
+                        elegibleGuildsCount--;
+    
+                        //Elimina la guild
+                        return await guild.delete();
+                        
+                    } catch (error) {
+
+                        //Muestra un error en la consola
+                        logger.error(error.stack);
+                    };
+                };
             });
 
-        } else if (validGuildsCount === 0) {   //Si la cantidad es 0
+        } else if (elegibleGuildsCount === 0) { //Si la cantidad es 0
 
             //Notifica que el bot está esperando a que sea unido a una guild
             return logger.debug('Waiting for the bot to be joined to a guild');
         };
-            
-        //Comprueba si la config de la guild ya está almacenada o no
+
+        //Si el recuento de guilds elegibles es exáctamente 1
+        if (elegibleGuildsCount !== 1) {
+
+            //Notifica que el bot no puede funcionar en más de una guild
+            logger.error('This bot is not designed to run on more than one guild, so it wont start until this situation is resolved');
+
+            //Aborta el proceso de manera limpia
+            return process.exit(1);
+        };
+  
+        //Comprueba si la config de la guild base ya está almacenada o no
         if (!baseGuildId || baseGuildId !== cachedGuilds.first().id) {
 
             //Almacena la nueva configuración
-            await require('../../lifecycle/newGuild.js')(cachedGuilds.first());
+            await require('../../lifecycle/newGuild.js')(await cachedGuilds.filter(guild => guild.ownerId !== client.user.id));
             
         } else {
 

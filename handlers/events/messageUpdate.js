@@ -10,5 +10,5 @@ exports.run = async (oldMessage, newMessage, locale) => {
     if(oldMessage.content === newMessage.content) return;
 
     //Comprueba si el contenido del mensaje estaba permitido
-    await client.functions.moderation.checkMessage.run(newMessage);
+    await client.functions.moderation.checkMessage(newMessage);
 };

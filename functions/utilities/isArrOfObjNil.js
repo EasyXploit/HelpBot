@@ -30,4 +30,4 @@ const isArrOfObjNil = async (array, lodash) => {
 };
 
 //Exporta la función
-exports.run = isArrOfObjNil;
+module.exports = isArrOfObjNil;

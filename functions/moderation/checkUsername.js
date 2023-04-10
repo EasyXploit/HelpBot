@@ -1,16 +1,16 @@
 //Función para comprobar los nombres de usuario de los miembros
-exports.run = async (member) => {
+module.exports = async (member) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.moderation.checkUsername;
 
     //Almacena las listas de palabras prohibidas
-    const forbiddenNames = await client.functions.db.getConfig.run('moderation.newMemberForbiddenNames');
-    const bannedWords = await client.functions.db.getConfig.run('moderation.bannedWords');
+    const forbiddenNames = await client.functions.db.getConfig('moderation.newMemberForbiddenNames');
+    const bannedWords = await client.functions.db.getConfig('moderation.bannedWords');
 
     //Si procede, comprueba si han de comprobarse los nombres de usuario
     const containsForbiddenNames = forbiddenNames.some(word => member.displayName.toLowerCase().includes(word));
-    const containsBannedWords = await client.functions.db.getConfig.run('moderation.includeBannedWords') ? bannedWords.some(word => member.displayName.toLowerCase().includes(word)) : false;
+    const containsBannedWords = await client.functions.db.getConfig('moderation.includeBannedWords') ? bannedWords.some(word => member.displayName.toLowerCase().includes(word)) : false;
 
     //Si contiene alguna palabra prohibida
     if (containsForbiddenNames || containsBannedWords) {
@@ -27,9 +27,9 @@ exports.run = async (member) => {
 
         //Alerta al miembro de que ha sido expulsado
         await member.user.send({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setAuthor({ name: locale.privateEmbed.author, iconURL: member.guild.iconURL({dynamic: true}) })
-            .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.description, { member: member, guildName: member.guild.name })}.`)
+            .setDescription(`${await client.functions.utilities.parseLocale(locale.privateEmbed.description, { member: member, guildName: member.guild.name })}.`)
             .addFields(
                 { name: locale.privateEmbed.moderator, value: `${client.user}`, inline: true },
                 { name: reasonTitle, value: `${locale.privateEmbed.reasonDescription}.`, inline: true }

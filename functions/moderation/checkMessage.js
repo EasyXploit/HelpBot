@@ -1,5 +1,5 @@
 //Función para comprobar el contenido de los mensajes enviados
-exports.run = async (message) => {
+module.exports = async (message) => {
         
     //Omite si el autor del mensaje es el propietario de la guild
     if (message.author.id === client.baseGuild.ownerId) return true;
@@ -8,7 +8,7 @@ exports.run = async (message) => {
     const locale = client.locale.functions.moderation.checkMessage;
 
     //Carga los filtros de automoderación
-    const filters = await client.functions.db.getConfig.run('moderation.filters');
+    const filters = await client.functions.db.getConfig('moderation.filters');
 
     //Almacena si el mensaje está permitido
     let isPermitted = true;
@@ -114,7 +114,7 @@ exports.run = async (message) => {
             case 'bannedWords':
 
                 //Almacena las palabras prohibidas
-                const bannedWords = await client.functions.db.getConfig.run('moderation.bannedWords');
+                const bannedWords = await client.functions.db.getConfig('moderation.bannedWords');
 
                 //Comprueba si el mensaje contenía palabras prohibidas
                 if (bannedWords.some(word => message.content.toLowerCase().includes(word))) match = true;
@@ -261,7 +261,7 @@ exports.run = async (message) => {
             const reason = message.channel.type === 'DM' ? `${filterCfg.reason} (${locale.filteredDm})` : filterCfg.reason; 
         
             //Ejecuta el manejador de infracciones
-            await client.functions.moderation.manageWarn.run(message.member, reason, filterCfg.action, client.user, message, null, message.channel, message.content.length === 0 ? filteredURL : null);
+            await client.functions.moderation.manageWarn(message.member, reason, filterCfg.action, client.user, message, null, message.channel, message.content.length === 0 ? filteredURL : null);
 
             //Para el resto del bucle
             break;

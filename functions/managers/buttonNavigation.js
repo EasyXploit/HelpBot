@@ -1,5 +1,5 @@
 //Función para gestionar la navegación por menús en los embeds
-exports.run = async (interaction, customId, actualPage, totalPages, generatedPageMessage, latestInteraction, attachedFiles) => {
+module.exports = async (interaction, customId, actualPage, totalPages, generatedPageMessage, latestInteraction, attachedFiles) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.managers.buttonNavigation;
@@ -94,7 +94,7 @@ exports.run = async (interaction, customId, actualPage, totalPages, generatedPag
 
         //Si el botón no fue pulsado por el ejecutor del comando, devuelve un error
         return buttonInteraction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantUseNavigation}.`)
         ], ephemeral: true});
     };

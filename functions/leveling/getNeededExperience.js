@@ -1,5 +1,5 @@
 //Función para calcular la experiencia necesaria para alcanzar el siguiente nivel en base a la experiencia
-exports.run = async (experience) => {
+module.exports = async (experience) => {
 
     //Almacena el 
     let iteratedLevel = 0;

@@ -1,5 +1,5 @@
 //Función para asignar recompensas
-exports.run = async (member, memberLevel, updateSubsequents) => {
+module.exports = async (member, memberLevel, updateSubsequents) => {
 
     //Función para comparar un array
     function compare(a, b) {
@@ -9,7 +9,7 @@ exports.run = async (member, memberLevel, updateSubsequents) => {
     };
 
     //Almacena las recompensas por subir de nivel
-    const levelingRewards = await client.functions.db.getConfig.run('leveling.rewards');
+    const levelingRewards = await client.functions.db.getConfig('leveling.rewards');
 
     //Compara y ordena el array de recompensas
     const sortedRewards = levelingRewards.sort(compare);
@@ -27,7 +27,7 @@ exports.run = async (member, memberLevel, updateSubsequents) => {
         if (!updateSubsequents && reward.requiredLevel > memberLevel) break;
 
         //Almacena si se deben eliminar las recompensas anteriores
-        const removePreviousRewards = await client.functions.db.getConfig.run('leveling.removePreviousRewards');
+        const removePreviousRewards = await client.functions.db.getConfig('leveling.removePreviousRewards');
 
         //Por cada uno de los roles de dicha recompensa
         reward.roles.forEach(async role => {

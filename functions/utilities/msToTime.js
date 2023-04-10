@@ -1,5 +1,5 @@
 //Función para convertir de MS a tiempo formateado
-exports.run = async (ms) => {
+module.exports = async (ms) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.utilities.msToTime;

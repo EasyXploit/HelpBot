@@ -34,7 +34,7 @@ exports.run = async (message, locale) => {
     };
     
     //Si el mensaje tiene adjuntos y se desean filtrar
-    if (await client.functions.db.getConfig.run('moderation.filters.crossPost').filterFiles && message.attachments.size > 0) {
+    if (await client.functions.db.getConfig('moderation.filters.crossPost').filterFiles && message.attachments.size > 0) {
 
         //Se genera un array a partir de los valores de los adjuntos
         const attachmentsArray = Array.from(message.attachments.values());
@@ -66,13 +66,13 @@ exports.run = async (message, locale) => {
     };
 
     //Almacena el tamaño del historial de mensajes de miembros
-    const messageHistorySize = await client.functions.db.getConfig.run('moderation.messageHistorySize');
+    const messageHistorySize = await client.functions.db.getConfig('moderation.messageHistorySize');
 
     //Si el historial está lleno, elimina el primer elemento del array
     if (userMessages.history.length >= messageHistorySize) userMessages.history.shift();  
 
     //Comprueba si el contenido del mensaje está permitido
-    const isPermitted = await client.functions.moderation.checkMessage.run(message);
+    const isPermitted = await client.functions.moderation.checkMessage(message);
 
     //Si se trata de un mensaje enviado en una guild y no fue filtrado
     if (message.member && isPermitted) {
@@ -105,13 +105,13 @@ exports.run = async (message, locale) => {
         });
 
         //Si el último mensaje que generó EXP fue hace más del periodo establecido
-        if (await client.functions.db.getConfig.run('leveling.rewardMessages') && ((message.createdTimestamp - userMessages.lastValidTimestamp) > await client.functions.db.getConfig.run('leveling.minimumTimeBetweenMessages'))) {
+        if (await client.functions.db.getConfig('leveling.rewardMessages') && ((message.createdTimestamp - userMessages.lastValidTimestamp) > await client.functions.db.getConfig('leveling.minimumTimeBetweenMessages'))) {
 
             //Actualiza el valor del tiempo de última ganancia de EXP
             userMessages.lastValidTimestamp = message.createdTimestamp;
 
             //Aumenta la cantidad de EXP del miembro
-            await client.functions.leveling.addExperience.run(message.member, 'message', message.channel);
+            await client.functions.leveling.addExperience(message.member, 'message', message.channel);
         };
     };
 };

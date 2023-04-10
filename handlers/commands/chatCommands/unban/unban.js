@@ -3,11 +3,11 @@ exports.run = async (interaction, commandConfig, locale) => {
     try {
 
         //Busca al usuario proporcionado
-        const user = await client.functions.utilities.fetch.run('user', interaction.options._hoistedOptions[0].value);
+        const user = await client.functions.utilities.fetch('user', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se ha encontrado al usuario
         if (!user) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.userNotFound}.`)
         ], ephemeral: true});
 
@@ -21,11 +21,11 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (!reason && interaction.member.id !== interaction.guild.ownerId) {
 
             //Almacena si el miembro puede omitir la razón
-            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
+            const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
+                .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ], ephemeral: true});
         };
@@ -45,7 +45,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 
         //Si el usuario no estaba baneado, devuelve un error
         if (!banned) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.notBanned}.`)
         ], ephemeral: true});
 
@@ -67,9 +67,9 @@ exports.run = async (interaction, commandConfig, locale) => {
         };
 
         //Envía un mensaje al canal de registros
-        await client.functions.managers.logging.run('unbannedMember', 'embed', new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
-            .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
+        await client.functions.managers.sendLog('unbannedMember', 'embed', new client.MessageEmbed()
+            .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
+            .setAuthor({ name: await client.functions.utilities.parseLocale(locale.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
             .addFields(
                 { name: locale.loggingEmbed.userId, value: user.id.toString(), inline: true },
                 { name: locale.loggingEmbed.moderator, value: interaction.user.tag, inline: true },
@@ -79,15 +79,15 @@ exports.run = async (interaction, commandConfig, locale) => {
 
         //Notifica la acción en el canal de invocación
         await interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
             .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbed.title}`)
-            .setDescription(await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { userTag: user.tag }))
+            .setDescription(await client.functions.utilities.parseLocale(locale.loggingEmbed.author, { userTag: user.tag }))
         ]});
         
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(error, interaction);
+        await client.functions.managers.interactionError(error, interaction);
     };
 };
 

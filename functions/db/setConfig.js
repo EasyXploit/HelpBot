@@ -1,5 +1,5 @@
 //Función para obtener un documento de configuración de la base de datos
-exports.run = async (configPath, newValue) => {
+module.exports = async (configPath, newValue) => {
 
     try {
 
@@ -16,7 +16,7 @@ exports.run = async (configPath, newValue) => {
         let configDoc = await ConfigModel.findOne({ docType: configName }).exec();
     
         //Si no encuentra el documento, lo genera
-        if (!configDoc) configDoc = await require('./genConfig.js').run(configName);
+        if (!configDoc) configDoc = await require('./genConfig.js')(configName);
 
         //Elimina el nombre del documento de la ruta
         configPath.shift();

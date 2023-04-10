@@ -1,5 +1,5 @@
 //Función para gestionar nuevos miembros
-exports.run = async (member) => {
+module.exports = async (member) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.managers.newMember;
@@ -7,10 +7,10 @@ exports.run = async (member) => {
     try {
 
         //Si hay que explicar a los miembros con un nombre de usuario prohibido
-        if (await client.functions.db.getConfig.run('moderation.kickOnBadUsername')) {
+        if (await client.functions.db.getConfig('moderation.kickOnBadUsername')) {
 
             //Comprueba si el nombre de usuario del miembro es válido
-            const usernameIsValid = await client.functions.moderation.checkUsername.run(member);
+            const usernameIsValid = await client.functions.moderation.checkUsername(member);
 
             //Aborta si el nombre no era válido
             if (!usernameIsValid) return;
@@ -18,10 +18,10 @@ exports.run = async (member) => {
 
         //Genera un embed con el registro de bienvenida
         let welcomeEmbed = new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
             .setAuthor({ name: locale.author, iconURL: 'attachment://in.png' })
-            .setDescription(await client.functions.utilities.parseLocale.run(locale.description, { memberTag: member.user.tag }))
+            .setDescription(await client.functions.utilities.parseLocale(locale.description, { memberTag: member.user.tag }))
             .addFields(
                 { name: `🆔 ${locale.memberId}`, value: member.user.id, inline: true },
                 { name: `📝 ${locale.registerDate}`, value: `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, inline: true }
@@ -31,10 +31,10 @@ exports.run = async (member) => {
         if (member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now()) welcomeEmbed.addFieldw({ name: `🔇 ${locale.actualSanction}`, value: `${locale.timeoutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>`, inline: false });
 
         //Se notifica en el canal de registro
-        await client.functions.managers.logging.run('memberJoined', 'embed', welcomeEmbed, ['./resources/images/in.png']);
+        await client.functions.managers.sendLog('memberJoined', 'embed', welcomeEmbed, ['./resources/images/in.png']);
 
         //Almacena el ID del rol para nuevos miembros
-        const newMemberRoleId = await client.functions.db.getConfig.run('welcomes.newMemberRoleId');
+        const newMemberRoleId = await client.functions.db.getConfig('welcomes.newMemberRoleId');
 
         //Añade el rol de bienvenida para nuevos miembros (si no lo tiene ya)
         if (newMemberRoleId.length > 0 && member.roles.cache.has(newMemberRoleId)) await member.roles.add(newMemberRoleId);

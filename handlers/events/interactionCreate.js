@@ -22,8 +22,8 @@ exports.run = async (interaction, locale) => {
 
             //Aborta si el comando está deshabilitado
             if (!command.userConfig.enabled) return interaction.reply({embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.information')}`)
-                .setDescription(`${client.customEmojis.grayTick} ${await client.functions.utilities.parseLocale.run(locale.disabledCommand, { commandName: interaction.commandName })}.`)
+                .setColor(`${await client.functions.db.getConfig('colors.information')}`)
+                .setDescription(`${client.customEmojis.grayTick} ${await client.functions.utilities.parseLocale(locale.disabledCommand, { commandName: interaction.commandName })}.`)
             ], ephemeral: true});
             
             //Ejecuta el comando

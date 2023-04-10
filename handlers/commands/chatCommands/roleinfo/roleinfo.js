@@ -3,19 +3,19 @@ exports.run = async (interaction, commandConfig, locale) => {
     try {
 
         //Busca el rol en la guild
-        const role = await client.functions.utilities.fetch.run('role', interaction.options._hoistedOptions[0].value);
+        const role = await client.functions.utilities.fetch('role', interaction.options._hoistedOptions[0].value);
 
         //Si el rol no existe, devuelve un error
         if (!role) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.roleNotFound, { role: interaction.options._hoistedOptions[0].value })}.`)
+            .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.roleNotFound, { role: interaction.options._hoistedOptions[0].value })}.`)
         ], ephemeral: true});
 
         //Envía un embed con la información del rol
         await interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(role.hexColor)
             .setTitle(`🔖 ${locale.resultEmbed.title}`)
-            .setDescription(await client.functions.utilities.parseLocale.run(locale.resultEmbed.description, { role: role }))
+            .setDescription(await client.functions.utilities.parseLocale(locale.resultEmbed.description, { role: role }))
             .setThumbnail(role.iconURL())
             .addFields(
                 { name: `🏷 ${locale.resultEmbed.roleName}`, value: `${role.name}${role.unicodeEmoji ? ` ${role.unicodeEmoji}` : ''}`, inline: true },
@@ -32,7 +32,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(error, interaction);
+        await client.functions.managers.interactionError(error, interaction);
     };
 };
 

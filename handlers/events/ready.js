@@ -6,10 +6,10 @@ exports.run = async (event, locale) => {
         const cachedGuilds = client.guilds.cache;
 
         //Carga el ID de la guild base
-        const baseGuildId = await client.functions.db.getConfig.run('system.baseGuildId');
+        const baseGuildId = await client.functions.db.getConfig('system.baseGuildId');
 
         //Carga el ID de la guild de servicio
-        const serviceGuildId = await client.functions.db.getConfig.run('system.serviceGuildId');
+        const serviceGuildId = await client.functions.db.getConfig('system.serviceGuildId');
 
         //Almacena el número de guilds válidas (descontando las de servicio)
         const validGuildsCount = await cachedGuilds.filter(guild => guild.id !== serviceGuildId);

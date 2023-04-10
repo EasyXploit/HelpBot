@@ -3,25 +3,25 @@ exports.run = async (interaction, commandConfig, locale) => {
     try {
 
         //Busca el miembro en la guild
-        const member = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
+        const member = await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
 
         //Si no se encuentra, devuelve un error
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.unknownMember}.`)
         ], ephemeral: true});
 
         //Devuelve un error si el miembro no tiene stats
         if (!client.db.stats[member.id]) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.noXp, { member: member })}.`)
+            .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.noXp, { member: member })}.`)
         ], ephemeral: true});
         
         //Almacena las stats del miembro
         const memberStats = client.db.stats[member.id];
 
         //Para comprobar si el rol puede ganar XP o no.
-        const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(member, { bypassIds: await client.functions.db.getConfig.run('leveling.wontEarnXP') });
+        const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization(member, { bypassIds: await client.functions.db.getConfig('leveling.wontEarnXP') });
 
         //Función para comparar un array
         function compare(a, b) {
@@ -31,7 +31,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         };
 
         //Almacena las recompensas por subir de nivel
-        const levelingRewards = await client.functions.db.getConfig.run('leveling.rewards');
+        const levelingRewards = await client.functions.db.getConfig('leveling.rewards');
 
         //Compara y ordena el array de recompensas
         const sortedRewards = levelingRewards.sort(compare);
@@ -89,16 +89,16 @@ exports.run = async (interaction, commandConfig, locale) => {
         };
 
         //Almacena el tiempo de voz aproximado
-        const aproxVoiceTime = memberStats.aproxVoiceTime > 0 ? `\`${await client.functions.utilities.msToTime.run(memberStats.aproxVoiceTime)}\`` : '\`00:00:00\`';
+        const aproxVoiceTime = memberStats.aproxVoiceTime > 0 ? `\`${await client.functions.utilities.msToTime(memberStats.aproxVoiceTime)}\`` : '\`00:00:00\`';
 
         //Calcula el XP necesario por defecto para el siguiente nivel
-        const neededExperience = await client.functions.leveling.getNeededExperience.run(memberStats.experience);
+        const neededExperience = await client.functions.leveling.getNeededExperience(memberStats.experience);
 
         //Envía el mensaje con las estadísticas
         await interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
             .setTitle(`🥇 ${locale.statsEmbed.title}`)
-            .setDescription(await client.functions.utilities.parseLocale.run(locale.statsEmbed.description, { memberTag: member.user.tag }))
+            .setDescription(await client.functions.utilities.parseLocale(locale.statsEmbed.description, { memberTag: member.user.tag }))
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
             .addFields(
                 { name: locale.statsEmbed.actualLevel, value: `\`${memberStats.level}\``, inline: true },
@@ -106,7 +106,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                 { name: locale.statsEmbed.xpToNextLevel, value: notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noXpToNextLevel}\`` : `\`${neededExperience.experience}\``, inline: true },
                 { name: locale.statsEmbed.messagesCount, value: `\`${memberStats.messagesCount}\``, inline: true },
                 { name: locale.statsEmbed.voiceTime, value: `\`${aproxVoiceTime}\``, inline: true },
-                { name: locale.statsEmbed.antiquity, value: `\`${await client.functions.utilities.msToTime.run(Date.now() - member.joinedTimestamp)}\``, inline: true },
+                { name: locale.statsEmbed.antiquity, value: `\`${await client.functions.utilities.msToTime(Date.now() - member.joinedTimestamp)}\``, inline: true },
                 { name: locale.statsEmbed.nextRewards, value: notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noNextRewards}\`` : `\`${nextRewards}\``, inline: true }
             )
         ]});
@@ -114,7 +114,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(error, interaction);
+        await client.functions.managers.interactionError(error, interaction);
     };
 };
 

@@ -6,7 +6,7 @@ exports.run = async (oldState, newState, locale) => {
         if (oldState.guild.id !== client.baseGuild.id) return;
 
         //
-        const excludedChannels = await client.functions.db.getConfig.run('moderation.voiceMovesExcludedChannels');
+        const excludedChannels = await client.functions.db.getConfig('moderation.voiceMovesExcludedChannels');
 
         //Si no ocurrió un cambio entre canales ignorados
         voiceMovesIf: if (!(excludedChannels.includes(oldState.channelId) && excludedChannels.includes(newState.channelId))) {
@@ -19,13 +19,13 @@ exports.run = async (oldState, newState, locale) => {
             if (!newState.channelId && excludedChannels.includes(oldState.channelId)) break voiceMovesIf;
 
             //Almacena los campos de anterior y nuevo canal, ofuscando los canales ignorados
-            const oldChannel = oldState.channelId && !excludedChannels.includes(oldState.channelId) ? `<#${oldState.channel.id}>` : `\`${await client.functions.utilities.parseLocale.run(locale.voiceMovesLogging.noChannel)}\``;
-            const newChannel = newState.channelId && !excludedChannels.includes(newState.channelId) ? `<#${newState.channel.id}>` : `\`${await client.functions.utilities.parseLocale.run(locale.voiceMovesLogging.noChannel)}\``;
+            const oldChannel = oldState.channelId && !excludedChannels.includes(oldState.channelId) ? `<#${oldState.channel.id}>` : `\`${await client.functions.utilities.parseLocale(locale.voiceMovesLogging.noChannel)}\``;
+            const newChannel = newState.channelId && !excludedChannels.includes(newState.channelId) ? `<#${newState.channel.id}>` : `\`${await client.functions.utilities.parseLocale(locale.voiceMovesLogging.noChannel)}\``;
 
             //Genera los campos de anterior y nuevo canal para el embed de registros
             let embedFields = [
-                { name: await client.functions.utilities.parseLocale.run(locale.voiceMovesLogging.oldChannel), value: oldChannel, inline: true },
-                { name: await client.functions.utilities.parseLocale.run(locale.voiceMovesLogging.newChannel), value: newChannel, inline: true }
+                { name: await client.functions.utilities.parseLocale(locale.voiceMovesLogging.oldChannel), value: oldChannel, inline: true },
+                { name: await client.functions.utilities.parseLocale(locale.voiceMovesLogging.newChannel), value: newChannel, inline: true }
             ];
 
             //Si hay un nuevo canal para el miemmbro y este no está ignorado
@@ -35,41 +35,41 @@ exports.run = async (oldState, newState, locale) => {
                 const channelMembers = Array.from(newState.channel.members, member => newState.channel.members.get(member[0]));
 
                 //Añade un bloque de código con los tags de los miembros del canal al embed de registro
-                embedFields.push({ name: `${await client.functions.utilities.parseLocale.run(locale.voiceMovesLogging.actualMembers)} (${newState.channel.members.size}/${newState.channel.userLimit != 0 ? newState.channel.userLimit : '∞'})`, value: `${channelMembers.join(', ')}`});
+                embedFields.push({ name: `${await client.functions.utilities.parseLocale(locale.voiceMovesLogging.actualMembers)} (${newState.channel.members.size}/${newState.channel.userLimit != 0 ? newState.channel.userLimit : '∞'})`, value: `${channelMembers.join(', ')}`});
             };
             
             //Se formatea y envía un registro al canal especificado en la configuración
-            await client.functions.managers.logging.run('voiceMoves', 'embed', new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
-                .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.voiceMovesLogging.embedAuthor, { memberTag: newState.member.user.tag }), iconURL: newState.member.user.displayAvatarURL({dynamic: true}) })
+            await client.functions.managers.sendLog('voiceMoves', 'embed', new client.MessageEmbed()
+                .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
+                .setAuthor({ name: await client.functions.utilities.parseLocale(locale.voiceMovesLogging.embedAuthor, { memberTag: newState.member.user.tag }), iconURL: newState.member.user.displayAvatarURL({dynamic: true}) })
                 .setFields(embedFields)
                 .setTimestamp()
             );
         };
 
         //Aborta el resto de la ejecución si no están habilitadas las recompensas de XP
-        if (!await client.functions.db.getConfig.run('leveling.rewardVoice')) return;
+        if (!await client.functions.db.getConfig('leveling.rewardVoice')) return;
 
         //Función para que el miembro deje de ganar XP
         async function endVoiceTime() {
 
             //Almacena el intervalo de ganancia de puntos de EXP
-            const XPGainInterval = await client.functions.db.getConfig.run('leveling.XPGainInterval');
+            const XPGainInterval = await client.functions.db.getConfig('leveling.XPGainInterval');
 
             //Si el timestamp actual es superior a los MS de intervalo de ganancia de XP configurado
             if (client.usersVoiceStates[newState.id] && Date.now() > (client.usersVoiceStates[newState.id].lastXpReward + XPGainInterval)) {
 
                 //Almacena al miembro
-                const member = await client.functions.utilities.fetch.run('member', newState.id);
+                const member = await client.functions.utilities.fetch('member', newState.id);
 
                 //Si el miembro está timeouteado o ensordecido, no hace nada
                 if (!member || member.voice.mute || member.voice.deaf) return;
 
                 //Almacena el canal
-                const channel = await client.functions.utilities.fetch.run('channel', oldState.channelId);
+                const channel = await client.functions.utilities.fetch('channel', oldState.channelId);
 
                 //Añade XP al miembro por última vez
-                await client.functions.leveling.addExperience.run(member, 'voice', channel);
+                await client.functions.leveling.addExperience(member, 'voice', channel);
 
                 //Si el miembro no tiene tabla de stats
                 if (!client.db.stats[member.id]) {
@@ -149,6 +149,6 @@ exports.run = async (oldState, newState, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.eventError.run(error);
+        await client.functions.managers.eventError(error);
     };
 };

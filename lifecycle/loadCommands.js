@@ -15,7 +15,7 @@ exports.run = async () => {
     let localeForNames = client.locale;
 
     //Almacena el locale al que se fuerzan las traducciones de los comandos
-    const forceNameLocale = await client.functions.db.getConfig.run('commands.forceNameLocale');
+    const forceNameLocale = await client.functions.db.getConfig('commands.forceNameLocale');
 
     //Si se ha seleccionado un locale diferente
     if (forceNameLocale && forceNameLocale.length > 0) {
@@ -38,7 +38,7 @@ exports.run = async () => {
     };
 
     //Almacena la configuración local de comandos
-    const commandsConfig = await client.functions.db.getConfig.run('commands');
+    const commandsConfig = await client.functions.db.getConfig('commands');
 
     //Carga de comandos - Lee el directorio de las categorías de comandos
     for (const commandType of await client.fs.readdirSync('./handlers/commands/')) {
@@ -59,7 +59,7 @@ exports.run = async () => {
         };
 
         //Almacena los nombres de los comandos ignorados
-        const ignoredCommands = await client.functions.db.getConfig.run('commands.ignored');
+        const ignoredCommands = await client.functions.db.getConfig('commands.ignored');
 
         //Crea una colección con todos los comandos remotos
         const remoteCommands = clientCommands.concat(guildCommands);
@@ -236,7 +236,7 @@ exports.run = async () => {
                 let lodash = require('lodash');
 
                 //Elimina las claves nulas o indefinidas de las opciones remotas
-                let remoteCmdOptions = await client.functions.utilities.isArrOfObjNil.run(remoteCmd.options, lodash);
+                let remoteCmdOptions = await client.functions.utilities.isArrOfObjNil(remoteCmd.options, lodash);
 
                 //Si hay opciones locales, las almacena, sino crea un objeto vacío
                 const localCmdOptions = localCmd.appData.options ? localCmd.appData.options : [];

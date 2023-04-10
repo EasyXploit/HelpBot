@@ -3,11 +3,11 @@ exports.run = async (interaction, commandConfig, locale) => {
     try {
 
         //Almacena si el miembro puede ganar EXP
-        const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(interaction.member, { bypassIds: await client.functions.db.getConfig.run('leveling.wontEarnXP') });
+        const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization(interaction.member, { bypassIds: await client.functions.db.getConfig('leveling.wontEarnXP') });
 
         //Si no está autorizado para ello, devuelve un mensaje de error
         if (notAuthorizedToEarnXp) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
             .setDescription(`${client.customEmojis.orangeTick} ${locale.cantGainXp}.`)
         ], ephemeral: true});
 
@@ -42,7 +42,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 
             //Si ya estaba activado, notifica el error
             if (memberSettings[modality]) return interaction.reply({embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
+                .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.alreadyEnabled}.`)
             ], ephemeral: true});
 
@@ -54,7 +54,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 
             //Si ya estaba desactivado, notifica el error
             if (!memberSettings[modality]) return interaction.reply({embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
+                .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.alreadyDisabled}.`)
             ], ephemeral: true});
 
@@ -70,7 +70,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 
             //Notifica el resultado de la acción
             interaction.reply({embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
+                .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${locale[`${modality}${status.charAt(0).toUpperCase()}${status.slice(1)}`]}.`)
             ], ephemeral: true})
         });
@@ -78,7 +78,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(error, interaction);
+        await client.functions.managers.interactionError(error, interaction);
     };
 };
 

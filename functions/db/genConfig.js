@@ -1,5 +1,5 @@
 //Función para generar o regenerar un documento de configuración en la base de datos
-exports.run = async (configName) => {
+module.exports = async (configName) => {
 
     try {
 

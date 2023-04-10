@@ -10,15 +10,15 @@ exports.run = async (interaction, commandConfig, locale) => {
 
             //Si la encuesta no existe, devuelve un error
             if (!pollData) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
-                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.unknownPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
+                .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.unknownPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
             ], ephemeral: true});
 
             //Busca y almacena el canal de la encuesta
-            const pollChannel = await client.functions.utilities.fetch.run('channel', pollData.channel);
+            const pollChannel = await client.functions.utilities.fetch('channel', pollData.channel);
 
             //Busca y almacena el mensaje de la encuesta (si se pudo encontrar el canal)
-            const pollMessage = pollChannel ? await client.functions.utilities.fetch.run('message', pollData.message, pollChannel) : null;
+            const pollMessage = pollChannel ? await client.functions.utilities.fetch('message', pollData.message, pollChannel) : null;
 
             //Si el canal o el mensaje de la encuesta ya no existen
             if (!pollChannel || !pollMessage) {
@@ -28,8 +28,8 @@ exports.run = async (interaction, commandConfig, locale) => {
             
                 //Notifica del error al miembro
                 return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
-                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.deletedPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
+                    .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.deletedPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
                 ], ephemeral: true});
             };
 
@@ -37,11 +37,11 @@ exports.run = async (interaction, commandConfig, locale) => {
             if (interaction.member.id !== pollData.author) {
 
                 //Variable para saber si está autorizado
-                const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canEndAny});
+                const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canEndAny});
 
                 //Si no se permitió la ejecución, manda un mensaje de error
                 if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
+                    .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.onlyYours}.`)
                 ], ephemeral: true});
             };
@@ -57,9 +57,9 @@ exports.run = async (interaction, commandConfig, locale) => {
 
                 //Envía una confirmación al miembro
                 return interaction.reply({ embeds: [ new client.MessageEmbed()
-                    .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
+                    .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                     .setTitle(`${client.customEmojis.greenTick} ${locale.endedPollEmbed.title}`)
-                    .setDescription(`${await client.functions.utilities.parseLocale.run(locale.endedPollEmbed.description, { poll: `[${pollData.title}](${pollMessage.url})`, pollChannel: pollChannel })}.`)
+                    .setDescription(`${await client.functions.utilities.parseLocale(locale.endedPollEmbed.description, { poll: `[${pollData.title}](${pollMessage.url})`, pollChannel: pollChannel })}.`)
                 ], ephemeral: true});
             });
 
@@ -95,11 +95,11 @@ exports.run = async (interaction, commandConfig, locale) => {
         interaction.reply({ content: `${locale.startingAssistant}...`});
 
         //Almacena el canal de la interacción
-        const interactionChannel = await client.functions.utilities.fetch.run('channel', interaction.channelId);
+        const interactionChannel = await client.functions.utilities.fetch('channel', interaction.channelId);
 
         //Envía el assistantEmbed del título
         interactionChannel.send({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
             .setTitle(`📊 ${locale.titleEmbed.title}`)
             .setDescription(locale.titleEmbed.description)
         ]}).then(async assistantEmbed => {
@@ -112,7 +112,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 
                 //Edita el asistente para preguntar por la duración
                 assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
-                    .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
+                    .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                     .setTitle(`⏱ ${locale.durationEmbed.title}`)
                     .setDescription(locale.durationEmbed.description)
                 ]});
@@ -130,7 +130,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                         const parameters = duration.split(' ');
 
                         //Convierte y almacena las magnitudes en milisegundos
-                        duration = await client.functions.utilities.magnitudesToMs.run(parameters);
+                        duration = await client.functions.utilities.magnitudesToMs(parameters);
 
                         //Si no se puedieron obtener milisegundos
                         if (!duration) {
@@ -143,7 +143,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 
                             //Devuelve un error
                             return interactionChannel.send({ embeds: [ new client.MessageEmbed()
-                                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
+                                .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                                 .setDescription(`${client.customEmojis.redTick} ${locale.invalidDuration}.`)
                             ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
                         };
@@ -152,7 +152,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 
                     //Edita el asistente para preguntar por un campo
                     assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
-                        .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
+                        .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                         .setTitle(`:one: ${locale.firstFieldEmbed.title}`)
                         .setDescription(locale.firstFieldEmbed.description)
                     ]});
@@ -177,9 +177,9 @@ exports.run = async (interaction, commandConfig, locale) => {
 
                             //Edita el asistente para preguntar por otro campo
                             assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
-                                .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
+                                .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                                 .setTitle(`${emojiOptions[index + 1]} ${locale.newFieldEmbed.title}`)
-                                .setDescription(`${await client.functions.utilities.parseLocale.run(locale.newFieldEmbed.description, { remaining: 10 - index - 1 })}${ index > 0 ? `.\n${locale.newFieldEmbed.endAssistant}.` : ''}`)
+                                .setDescription(`${await client.functions.utilities.parseLocale(locale.newFieldEmbed.description, { remaining: 10 - index - 1 })}${ index > 0 ? `.\n${locale.newFieldEmbed.endAssistant}.` : ''}`)
                             ]});
                         });
 
@@ -224,11 +224,11 @@ exports.run = async (interaction, commandConfig, locale) => {
                     };
 
                     //Almacena un nuevo ID para la encuesta
-                    const pollId = await client.functions.utilities.generateSid.run();
+                    const pollId = await client.functions.utilities.generateSid();
                     
                     //Envía la encuesta generada al canal de invocación
                     interactionChannel.send({ embeds: [ new client.MessageEmbed()
-                        .setColor(`${await client.functions.db.getConfig.run('colors.polls')}`)
+                        .setColor(`${await client.functions.db.getConfig('colors.polls')}`)
                         .setAuthor({ name: locale.pollEmbed.author, iconURL: 'attachment://poll.png' })
                         .setDescription(`${title}\n\n${formattedOptions}`)
                         .setFooter({ text: `ID: ${pollId} - ${locale.pollEmbed.duration}: ${remainingTime}` })
@@ -278,9 +278,9 @@ exports.run = async (interaction, commandConfig, locale) => {
                         });
                         
                         //Envía un mensaje al canal de registros
-                        await client.functions.managers.logging.run('pollStarted', 'embed', new client.MessageEmbed()
-                            .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
-                            .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { memberTag: interaction.member.user.tag }), iconURL: interaction.user.displayAvatarURL({dynamic: true}) })
+                        await client.functions.managers.sendLog('pollStarted', 'embed', new client.MessageEmbed()
+                            .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
+                            .setAuthor({ name: await client.functions.utilities.parseLocale(locale.loggingEmbed.author, { memberTag: interaction.member.user.tag }), iconURL: interaction.user.displayAvatarURL({dynamic: true}) })
                             .addFields(
                                 { name: locale.loggingEmbed.title, value: `__[${title}](${pollEmbed.url})__`, inline: true },
                                 { name: locale.loggingEmbed.channel, value: `${interactionChannel}`, inline: true },
@@ -295,7 +295,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(error, interaction);
+        await client.functions.managers.interactionError(error, interaction);
     };
 };
 

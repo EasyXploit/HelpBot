@@ -84,7 +84,7 @@ exports.run = async () => {
             logger.debug('Checking that all DB documents have the correct version');
     
             //Migra los documentos de la base de datos a la última versión
-            await require('../functions/db/migrate.js').run(options, 'up');
+            await require('../functions/db/migrate.js')(options, 'up');
         };
     });
     

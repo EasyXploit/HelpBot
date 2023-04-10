@@ -3,7 +3,7 @@ exports.run = async () => {
     try {
 
         //Busca y almacena la guild de servicio para emojis
-        client.serviceGuild = client.guilds.cache.get(await client.functions.db.getConfig.run('system.serviceGuildId'));
+        client.serviceGuild = client.guilds.cache.get(await client.functions.db.getConfig('system.serviceGuildId'));
 
         //Si no hay guild de servicio
         if (!client.serviceGuild) {
@@ -12,7 +12,7 @@ exports.run = async () => {
             client.serviceGuild = await client.guilds.create(`${client.user.username}-serviceGuild`);
 
             //Almacena en la config. el ID de la guild de servicio
-            await client.functions.db.setConfig.run('system.serviceGuildId', client.serviceGuild.id);
+            await client.functions.db.setConfig('system.serviceGuildId', client.serviceGuild.id);
         };
 
         //Almacena los nombres originales de los archivos de emojis

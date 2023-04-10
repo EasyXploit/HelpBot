@@ -3,17 +3,17 @@ exports.run = async (interaction, commandConfig, locale) => {
     try {
         
         //Busca y almacena el miembro
-        const member = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se encontró al miembro
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.unknownMember}.`)
         ], ephemeral: true});
         
         //Devuelve un error si el miembro es un bot
         if (member.user.bot) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
 
@@ -25,17 +25,17 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (mode === 'anonymous') {
 
             //Variable para saber si está autorizado
-            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.anonymousMode});
+            const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.anonymousMode});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
-                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.unauthorized, { interactionAuthor: interaction.user })}.`)
+                .setColor(`${await client.functions.db.getConfig('colors.error')}`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.unauthorized, { interactionAuthor: interaction.user })}.`)
             ], ephemeral: true});
         };
 
         //Almacena un string de autoría (por si fuese necesario)
-        const authoryString = `**${await client.functions.utilities.parseLocale.run(locale.normalFrom, { authorTag: interaction.user.tag })}:**\n`;
+        const authoryString = `**${await client.functions.utilities.parseLocale(locale.normalFrom, { authorTag: interaction.user.tag })}:**\n`;
 
         //Almacena la longitud máxima del campo del modal
         const fieldLength = type === 'embed' ? 4000 : type === 'normal' && mode === 'author'? 2000 - authoryString.length : 2000;
@@ -72,7 +72,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 
             //Envía un mensaje de confirmación
             await modalInteraction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
+                .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${locale.notificationEmbed}`)
             ], ephemeral: true});
 
@@ -96,7 +96,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                     //Envía el mensaje al miembro
                     await member.user.send({ embeds: [ new client.MessageEmbed()
                         .setAuthor({ name: `${locale.embedFrom}: ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() })
-                        .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
+                        .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                         .setDescription(body)
                     ]});
 
@@ -117,7 +117,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 
                     //Envía el mensaje al miembro
                     await member.user.send({ embeds: [ new client.MessageEmbed()
-                        .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
+                        .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                         .setDescription(body)
                     ]});
 
@@ -132,10 +132,10 @@ exports.run = async (interaction, commandConfig, locale) => {
         };
 
         //Envía un registro al canal de registro
-        await client.functions.managers.logging.run('sentDM', 'embed', new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
+        await client.functions.managers.sendLog('sentDM', 'embed', new client.MessageEmbed()
+            .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
-            .setDescription(await client.functions.utilities.parseLocale.run(locale.loggingEmbed.description, { authorTag: interaction.user.tag, memberTag: member.user.tag, botUser: client.user }))
+            .setDescription(await client.functions.utilities.parseLocale(locale.loggingEmbed.description, { authorTag: interaction.user.tag, memberTag: member.user.tag, botUser: client.user }))
             .addFields(
                 { name: locale.loggingEmbed.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
                 { name: locale.loggingEmbed.mode, value: mode, inline: true },
@@ -148,12 +148,12 @@ exports.run = async (interaction, commandConfig, locale) => {
 
         //Maneja si un miembro no admite mensajes directos del bot (por la razón que sea)
         if (error.toString().includes('Cannot send messages to this user')) return await interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.cantReceiveDms, { botUser: client.user })}.`)
+            .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.cantReceiveDms, { botUser: client.user })}.`)
         ], ephemeral: true});
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(error, interaction);
+        await client.functions.managers.interactionError(error, interaction);
     };
 };
 

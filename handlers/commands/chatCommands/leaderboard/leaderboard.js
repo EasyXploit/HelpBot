@@ -4,7 +4,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 
         //Devuelve un error si no hay tabla de clasificación
         if (!client.db.stats || !Object.keys(client.db.stats).length) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noLeaderboard}.`)
         ], ephemeral: true});
 
@@ -31,7 +31,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             const memberStats = client.db.stats[memberId];
 
             //Busca el miembro en la guild, pasándole caché a la función
-            const member = await client.functions.utilities.fetch.run('member', memberId, null, guildMembers);
+            const member = await client.functions.utilities.fetch('member', memberId, null, guildMembers);
 
             //Si el miembro no estaba en la guild y no se debe mostrar, lo omite
             if (commandConfig.hideNotPresent && !member) continue;
@@ -110,7 +110,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                     case 'aproxVoiceTime':
 
                         //Genera la tabla de tiempo de voz
-                        board += `\n**#${index + 1}** • \`${await client.functions.utilities.msToTime.run(entry.aproxVoiceTime)}\` • ${entry.memberTag}`;
+                        board += `\n**#${index + 1}** • \`${await client.functions.utilities.msToTime(entry.aproxVoiceTime)}\` • ${entry.memberTag}`;
                         
                         //Para el switch
                         break;
@@ -128,7 +128,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                     case 'antiquity':
 
                         //Genera la tabla de antigüedad
-                        board += `\n**#${index + 1}** • \`${await client.functions.utilities.msToTime.run(Date.now() - entry.antiquity)}\` • ${entry.memberTag}`;
+                        board += `\n**#${index + 1}** • \`${await client.functions.utilities.msToTime(Date.now() - entry.antiquity)}\` • ${entry.memberTag}`;
                         
                         //Para el switch
                         break;
@@ -137,13 +137,13 @@ exports.run = async (interaction, commandConfig, locale) => {
 
             //Genera un embed a modo de página
             const newPageEmbed = new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
+                .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setTitle(`:trophy: ${locale.embed.title[type]}`)
                 .setDescription(board)
-                .setFooter({ text: await client.functions.utilities.parseLocale.run(locale.embed.footer, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.baseGuild.iconURL({dynamic: true}) });
+                .setFooter({ text: await client.functions.utilities.parseLocale(locale.embed.footer, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.baseGuild.iconURL({dynamic: true}) });
 
             //Invoca el gestor de navegación mediante botones
-            const buttonNavigationResult = await client.functions.managers.buttonNavigation.run(interaction, 'leaderboard', actualPage, totalPages, newPageEmbed, latestInteraction, null);
+            const buttonNavigationResult = await client.functions.managers.buttonNavigation(interaction, 'leaderboard', actualPage, totalPages, newPageEmbed, latestInteraction, null);
 
             //Almacena la última interacción
             latestInteraction = buttonNavigationResult.latestInteraction;
@@ -157,7 +157,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(error, interaction);
+        await client.functions.managers.interactionError(error, interaction);
     };
 };
 

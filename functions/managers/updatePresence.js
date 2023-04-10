@@ -1,4 +1,5 @@
-exports.run = async () => {
+//Función para refrescar la presencia del bot
+module.exports = async () => {
 
     try {
 
@@ -6,7 +7,7 @@ exports.run = async () => {
         const locale = client.locale.functions.managers.updatePresence;
 
         //Almacena la configuración de presencia
-        const presenceConfig = await client.functions.db.getConfig.run('presence');
+        const presenceConfig = await client.functions.db.getConfig('presence');
 
         //Genera el nuevo string para la actividad
         const presenceName = (async () => {
@@ -21,7 +22,7 @@ exports.run = async () => {
                 const membersCount = await client.baseGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size);
 
                 //Concatena el string traducido a la cadena de resultado
-                showText += await client.functions.utilities.parseLocale.run(locale.membersCount, { memberCount: membersCount });
+                showText += await client.functions.utilities.parseLocale(locale.membersCount, { memberCount: membersCount });
             };
 
             //Si el string tendrá dos campos, añade un separador

@@ -1,10 +1,10 @@
 exports.run = async () => {
 
     //Aborta si los timers están deshabilitados
-    if (!await client.functions.db.getConfig.run('system.modules.timedMessages')) return;
+    if (!await client.functions.db.getConfig('system.modules.timedMessages')) return;
 
     //Almacena la configuración de mensajes programados
-    const timedMessagesConfig = await client.functions.db.getConfig.run('timedMessages');
+    const timedMessagesConfig = await client.functions.db.getConfig('timedMessages');
 
     //Aborta si los timers no son un array
     if (!Array.isArray(timedMessagesConfig.configuredMessages)) return;
@@ -94,7 +94,7 @@ exports.run = async () => {
                 };
 
                 //Cambia los placeholders por sus valores reales
-                return await client.functions.utilities.parseLocale.run(string, wildcards);
+                return await client.functions.utilities.parseLocale(string, wildcards);
             };
 
             //Devuelve la cadena sin modificar
@@ -255,7 +255,7 @@ exports.run = async () => {
         const timerConfig = client.db.timers.messages[hash]; 
 
         //Busca el canal especificado en la config.
-        const channel = await client.functions.utilities.fetch.run('channel', timerConfig.channelId);
+        const channel = await client.functions.utilities.fetch('channel', timerConfig.channelId);
 
         //Omite la iteración si no encuentra el mensaje
         if (!channel) continue;

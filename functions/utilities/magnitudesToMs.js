@@ -1,5 +1,5 @@
 //Función para convertir magnitudes a milisegundos
-exports.run = async duration => {
+module.exports = async duration => {
 
     //Almacena el resultado
     let result = 0;

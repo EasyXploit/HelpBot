@@ -12,7 +12,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             let inviteChannel;
             
             //Comprueba si hay canal de reglas y si se tiene permiso para crear la invitación
-            if (client.baseGuild.rulesChannel && !(await client.functions.utilities.missingPermissions.run(client.baseGuild.rulesChannel, client.user, ['CREATE_INSTANT_INVITE']))) {
+            if (client.baseGuild.rulesChannel && !(await client.functions.utilities.missingPermissions(client.baseGuild.rulesChannel, client.user, ['CREATE_INSTANT_INVITE']))) {
 
                 //Almacena el canal de reglas
                 inviteChannel = client.baseGuild.rulesChannel;
@@ -35,23 +35,23 @@ exports.run = async (interaction, commandConfig, locale) => {
                         const channel = channels.get(channelIds[index]);
 
                         //Si tiene permisos, graba la invitación
-                        if(!await client.functions.utilities.missingPermissions.run(channel, client.user, ['CREATE_INSTANT_INVITE'])) return inviteChannel = channel;
+                        if(!await client.functions.utilities.missingPermissions(channel, client.user, ['CREATE_INSTANT_INVITE'])) return inviteChannel = channel;
                     };
                 });
             };
 
             //Crea una invitación permanente en el canal
-            await inviteChannel.createInvite({maxAge: 0, reason: await client.functions.utilities.parseLocale.run(locale.inviteReason, { botTag: client.user.tag })}).then(async invite => { foundInvite = invite.code; });
+            await inviteChannel.createInvite({maxAge: 0, reason: await client.functions.utilities.parseLocale(locale.inviteReason, { botTag: client.user.tag })}).then(async invite => { foundInvite = invite.code; });
 
             //Graba la invitación en la BD
-            await client.functions.db.setConfig.run('system.inviteCode', foundInvite);
+            await client.functions.db.setConfig('system.inviteCode', foundInvite);
         };
 
         //Almacena la invitación obtenida
         let obtainedInvite;
 
         //Almacena el código de invitación
-        const inviteCode = await client.functions.db.getConfig.run('system.inviteCode');
+        const inviteCode = await client.functions.db.getConfig('system.inviteCode');
 
         //Si no hay una invitación grabada
         if (!inviteCode) {
@@ -82,7 +82,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 
         //Genera el embed y lo envía, buscando el contenido necesario con la función
         await interaction.reply({ embeds: [new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
             .setAuthor({ name: locale.embed.author, iconURL: client.baseGuild.iconURL({dynamic: true}) })
             .setDescription(obtainedInvite)
             .setFooter({ text: `${locale.embed.footer}.` })
@@ -91,7 +91,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(error, interaction);
+        await client.functions.managers.interactionError(error, interaction);
     };
 };
 

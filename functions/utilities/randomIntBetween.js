@@ -1,5 +1,5 @@
 //Función para generar números enteros aleatorios dentro de un rango
-exports.run = async (min, max) => {
+module.exports = async (min, max) => {
 
     //Redondea a la baja el mínimo
     min = Math.ceil(min);

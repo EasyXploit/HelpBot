@@ -21,9 +21,9 @@ exports.run = async (banData, locale) => {
         if (!loggingCache && (!banLog || banLog.target.id !== banData.user.id)) {
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.logging.run('bannedMember', 'embed', new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
-                .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.inconclusiveLoggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
+            await client.functions.managers.sendLog('bannedMember', 'embed', new client.MessageEmbed()
+                .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
+                .setAuthor({ name: await client.functions.utilities.parseLocale(locale.inconclusiveLoggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
                 .addFields(
                     { name: locale.inconclusiveLoggingEmbed.memberId, value: banData.user.id, inline: true },
                     { name: locale.inconclusiveLoggingEmbed.moderator, value: locale.inconclusiveLoggingEmbed.unknownModerator, inline: true },
@@ -69,17 +69,17 @@ exports.run = async (banData, locale) => {
                 if (banData.user.id === client.user.id) return;
 
                 //Envía un registro al canal de registros
-                await client.functions.managers.logging.run('bannedBot', 'embed', new client.MessageEmbed()
-                    .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
+                await client.functions.managers.sendLog('bannedBot', 'embed', new client.MessageEmbed()
+                    .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
-                    .setDescription(await client.functions.utilities.parseLocale.run(locale.botLoggingEmbed.description, { userTag: banData.user.tag }))
+                    .setDescription(await client.functions.utilities.parseLocale(locale.botLoggingEmbed.description, { userTag: banData.user.tag }))
                 );
             };
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.logging.run('bannedMember', 'embed', new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
-                .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.loggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
+            await client.functions.managers.sendLog('bannedMember', 'embed', new client.MessageEmbed()
+                .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
+                .setAuthor({ name: await client.functions.utilities.parseLocale(locale.loggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
                 .addFields(
                     { name: locale.loggingEmbed.memberId, value: banData.user.id, inline: true },
                     { name: locale.loggingEmbed.moderator, value: executor ? executor.tag : locale.loggingEmbed.unknownModerator, inline: true },
@@ -93,6 +93,6 @@ exports.run = async (banData, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.eventError.run(error);
+        await client.functions.managers.eventError(error);
     };
 };

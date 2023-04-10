@@ -1,5 +1,5 @@
 //Función para buscar miembros
-exports.run = async (mode, target, channel, fetchCache) => {
+module.exports = async (mode, target, channel, fetchCache) => {
 
     try {
 
@@ -71,7 +71,7 @@ exports.run = async (mode, target, channel, fetchCache) => {
                 if (channel) {
 
                     //Busca dicho canal en la guild
-                    const fetchedChannel = fetchCache ? fetchCache : await client.functions.utilities.fetch.run('channel', channel);
+                    const fetchedChannel = fetchCache ? fetchCache : await client.functions.utilities.fetch('channel', channel);
 
                     //Si hubo canal, busca dicho mensaje en el canal
                     if (fetchedChannel && !isNaN(target)) result = fetchCache ? fetchCache : await fetchedChannel.messages.fetch(target);

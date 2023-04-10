@@ -30,16 +30,16 @@ exports.run = async (member, locale) => {
         if (member.user.bot) {
 
             //Almacena el ID del rol para nuevos bots
-            const newBotRoleId = await client.functions.db.getConfig.run('welcomes.newBotRoleId');
+            const newBotRoleId = await client.functions.db.getConfig('welcomes.newBotRoleId');
 
             //Añade el rol de bienvenida para nuevos bots (si no lo tiene ya)
             if (!member.roles.cache.has(newBotRoleId)) await member.roles.add(newBotRoleId);
 
             //Envía un mensaje al canal de registro
-            await client.functions.managers.logging.run('botJoined', 'embed', new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
+            await client.functions.managers.sendLog('botJoined', 'embed', new client.MessageEmbed()
+                .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
                 .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
-                .setDescription(`${await client.functions.utilities.parseLocale.run(locale.botLoggingEmbed.description, { memberTag: member.user.tag })}.`)
+                .setDescription(`${await client.functions.utilities.parseLocale(locale.botLoggingEmbed.description, { memberTag: member.user.tag })}.`)
             );
 
             //Aborta el resto del script
@@ -47,7 +47,7 @@ exports.run = async (member, locale) => {
         };
         
         //Almacena el modo de manejo de nuevos miembros
-        const newMemberMode = await client.functions.db.getConfig.run('welcomes.newMemberMode');
+        const newMemberMode = await client.functions.db.getConfig('welcomes.newMemberMode');
 
         //Ejecuta el manejador de nuevos miembros (si procede)
         if (newMemberMode === 0) await client.functions.managers.newMember.run(member);
@@ -55,6 +55,6 @@ exports.run = async (member, locale) => {
     } catch (error) {
 
         //Invoca el manejador de errores
-        await client.functions.managers.eventError.run(error);
+        await client.functions.managers.eventError(error);
     };
 };

@@ -3,17 +3,17 @@ exports.run = async (interaction, commandConfig, locale) => {
     try {
 
         //Busca al miembro objetivo
-        const reportedMember = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0].message.author.id);
+        const reportedMember = await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0].message.author.id);
 
         //Devuelve un error si no se ha encontrado al miembro
         if (!reportedMember) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ], ephemeral: true});
 
         //Devuelve un error si el meimbro ha intentado reportarse a sí mismo
         if (reportedMember.id === interaction.member.id) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantReportYourself}.`)
         ], ephemeral: true});
 
@@ -50,7 +50,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             const reportReason = modalInteraction.fields.getField('body').value;
 
             //Ejecuta el manejador de reportes
-            await client.functions.managers.report.run(interaction, modalInteraction, reportReason, reportedMember);
+            await client.functions.managers.sendReport(interaction, modalInteraction, reportReason, reportedMember);
             
         }).catch(() => { null; });
 
@@ -60,7 +60,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(error, interaction);
+        await client.functions.managers.interactionError(error, interaction);
     };
 };
 

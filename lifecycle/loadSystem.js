@@ -3,7 +3,7 @@ exports.run = async (locale) => {
     try {
 
         //Almacena la guild base en memoria
-        client.baseGuild = await client.guilds.cache.get(await client.functions.db.getConfig.run('system.baseGuildId'));
+        client.baseGuild = await client.guilds.cache.get(await client.functions.db.getConfig('system.baseGuildId'));
 
         //Notifica que la carga de la guild base se ha completado
         logger.debug('Base guild loading completed');
@@ -15,7 +15,7 @@ exports.run = async (locale) => {
         await require('./loadCommands.js').run();
 
         //Carga la presencia del bot
-        await require('../functions/managers/updatePresence.js').run();
+        await require('../functions/managers/updatePresence.js')();
 
         //Notifica la correcta carga de la presencia
         logger.debug('Presence loading completed');
@@ -27,7 +27,7 @@ exports.run = async (locale) => {
         await require('./loadTimers.js').run();
 
         //Carga los estados de voz (si se su monitorización)
-        if (await client.functions.db.getConfig.run('leveling.rewardVoice')) {
+        if (await client.functions.db.getConfig('leveling.rewardVoice')) {
 
             //Almacena la caché de los estados de voz
             let voiceStates = client.baseGuild.voiceStates.cache;
@@ -36,7 +36,7 @@ exports.run = async (locale) => {
             voiceStates.forEach(async voiceState => {
 
                 //Almacena el miembro, si lo encuentra
-                const member = await client.functions.utilities.fetch.run('member', voiceState.id);
+                const member = await client.functions.utilities.fetch('member', voiceState.id);
                 if (!member) return;
 
                 //Comprueba si en el canal no se puede ganar XP
@@ -65,7 +65,7 @@ exports.run = async (locale) => {
         };
 
         //Notifica la correcta carga del bot
-        logger.info(`${await client.functions.utilities.parseLocale.run(locale.loadedCorrectly, { botUsername: client.user.username })}\n`);
+        logger.info(`${await client.functions.utilities.parseLocale(locale.loadedCorrectly, { botUsername: client.user.username })}\n`);
 
     } catch (error) {
 

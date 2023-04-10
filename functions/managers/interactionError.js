@@ -1,5 +1,5 @@
 //Función para gestionar los errores en las interacciones
-exports.run = async (error, interaction) => {
+module.exports = async (error, interaction) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.managers.interactionError;
@@ -15,7 +15,7 @@ exports.run = async (error, interaction) => {
 
     //Genera un embed de notificación
     const notificationEmbed = new client.MessageEmbed()
-        .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
+        .setColor(`${await client.functions.db.getConfig('colors.error')}`)
         .setTitle(`${client.customEmojis.redTick} ${locale.notificationEmbed.title} ...`)
         .setDescription(locale.notificationEmbed.description);
 
@@ -27,7 +27,7 @@ exports.run = async (error, interaction) => {
     } catch (error) {
 
         //Almacena el canal de texto de la interacción
-        const interactionChannel = await client.functions.utilities.fetch.run('channel', interaction.channelId);
+        const interactionChannel = await client.functions.utilities.fetch('channel', interaction.channelId);
 
         //Envía el embed al canal de texto
         interactionChannel.send({ embeds: [notificationEmbed]});

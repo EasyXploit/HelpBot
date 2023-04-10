@@ -17,7 +17,7 @@ exports.run = async () => {
             if (Date.now() < endTime) continue;
             
             //Busca el miembro
-            const member = await client.functions.utilities.fetch.run('member', idKey);
+            const member = await client.functions.utilities.fetch('member', idKey);
 
             //Bora el silenciamiento de la base de datos
             delete client.db.timeouts[idKey];
@@ -29,12 +29,12 @@ exports.run = async () => {
                 if (err) throw err;
 
                 //Almacena el autor del embed para el logging
-                let authorProperty = { name: member ? await client.functions.utilities.parseLocale.run(locale.timeouts.loggingEmbed.author, { userTag: member.user.tag }) : locale.timeouts.loggingEmbed.authorNoMember };
+                let authorProperty = { name: member ? await client.functions.utilities.parseLocale(locale.timeouts.loggingEmbed.author, { userTag: member.user.tag }) : locale.timeouts.loggingEmbed.authorNoMember };
                 if (member) authorProperty.iconURL = member.user.displayAvatarURL({dynamic: true});
                 
                 //Ejecuta el manejador de registro
-                await client.functions.managers.logging.run('untimeoutedMember', 'embed', new client.MessageEmbed()
-                    .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
+                await client.functions.managers.sendLog('untimeoutedMember', 'embed', new client.MessageEmbed()
+                    .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
                     .setAuthor(authorProperty)
                     .addFields(
                         { name: locale.timeouts.loggingEmbed.memberId, value: idKey.toString(), inline: true },
@@ -45,9 +45,9 @@ exports.run = async () => {
                 
                 //Envía una confirmación al miembro
                 if (member) await member.send({ embeds: [ new client.MessageEmbed()
-                    .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
+                    .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
                     .setAuthor({ name: locale.timeouts.privateEmbed.author, iconURL: client.baseGuild.iconURL({dynamic: true}) })
-                    .setDescription(await client.functions.utilities.parseLocale.run(locale.timeouts.privateEmbed.description, { member: member, guildName: client.baseGuild.name }))
+                    .setDescription(await client.functions.utilities.parseLocale(locale.timeouts.privateEmbed.description, { member: member, guildName: client.baseGuild.name }))
                     .addFields(
                         { name: locale.timeouts.privateEmbed.moderator, value: `${client.user}`, inline: true },
                         { name: locale.timeouts.privateEmbed.reason, value: locale.timeouts.reason, inline: true }
@@ -88,9 +88,9 @@ exports.run = async () => {
                     if (user) await client.baseGuild.members.unban(idKey);
 
                     //Ejecuta el manejador de registro
-                    await client.functions.managers.logging.run('unbannedMember', 'embed', new client.MessageEmbed()
-                        .setColor(`${await client.functions.db.getConfig.run('colors.correct')}`)
-                        .setAuthor({ name: await client.functions.utilities.parseLocale.run(locale.bans.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
+                    await client.functions.managers.sendLog('unbannedMember', 'embed', new client.MessageEmbed()
+                        .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
+                        .setAuthor({ name: await client.functions.utilities.parseLocale(locale.bans.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
                         .addFields(
                             { name: locale.bans.loggingEmbed.user, value: user.tag, inline: true },
                             { name: locale.bans.loggingEmbed.moderator, value: `${client.user}`, inline: true },
@@ -118,7 +118,7 @@ exports.run = async () => {
         const actualPing = Math.round(client.ping);
 
         //Si el ping desciende del umbral establecido
-        if (actualPing > await client.functions.db.getConfig.run('system.pingMsTreshold')) {
+        if (actualPing > await client.functions.db.getConfig('system.pingMsTreshold')) {
 
             //Envía una advertencia a la consola
             logger.warn(`High websocket response time: ${actualPing} ms\n`);
@@ -127,13 +127,13 @@ exports.run = async () => {
 
     //NOMBRES DE USUARIO
     //Comprobación de nombres de usuario de miembros
-    if (await client.functions.db.getConfig.run('moderation.kickOnBadUsername')) setInterval(async () => {
+    if (await client.functions.db.getConfig('moderation.kickOnBadUsername')) setInterval(async () => {
 
         //Por cada uno de los miembros de la guild
         await client.baseGuild.members.cache.forEach(async guildMember => {
 
             //Comprueba si el nombre de usuario (visible) del miembro es válido
-            await client.functions.moderation.checkUsername.run(guildMember);
+            await client.functions.moderation.checkUsername(guildMember);
         });
 
     }, 120000);
@@ -152,10 +152,10 @@ exports.run = async () => {
             if (!storedPoll.expiration) continue;
 
             //Busca el canal de la encuesta
-            const channel = await client.functions.utilities.fetch.run('channel', storedPoll.channel);
+            const channel = await client.functions.utilities.fetch('channel', storedPoll.channel);
 
             //Busca el mensaje de la encuesta
-            const poll = await client.functions.utilities.fetch.run('message', storedPoll.message, channel);
+            const poll = await client.functions.utilities.fetch('message', storedPoll.message, channel);
 
             //Si no se encontró el canal o la encuesta
             if (!channel || !poll) {
@@ -212,7 +212,7 @@ exports.run = async () => {
                     if(isNaN(roundedPercentage)) roundedPercentage = 0;
 
                     //Añade la cadena del resultado al array de resultados
-                    results.push(`🞄 ${votes[index].emoji} ${await client.functions.utilities.parseLocale.run(locale.polls.votesPercentage, { votesCount: count, percentage: roundedPercentage })}`);
+                    results.push(`🞄 ${votes[index].emoji} ${await client.functions.utilities.parseLocale(locale.polls.votesPercentage, { votesCount: count, percentage: roundedPercentage })}`);
                 };
 
                 //Envía los resultados al canal de la encuesta
@@ -223,10 +223,10 @@ exports.run = async () => {
                 ], files: ['./resources/images/endFlag.png']}).then(async poll => {
 
                     //Envía una notificación al canal de registro
-                    await client.functions.managers.logging.run('pollEnded', 'embed', new client.MessageEmbed()
-                        .setColor(`${await client.functions.db.getConfig.run('colors.logging')}`)
+                    await client.functions.managers.sendLog('pollEnded', 'embed', new client.MessageEmbed()
+                        .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
                         .setTitle(`📑 ${locale.polls.loggingEmbed.title}`)
-                        .setDescription(`${await client.functions.utilities.parseLocale.run(locale.polls.loggingEmbed.description, { poll: `[${storedPoll.title}](${poll.url})`, channel: channel })}.`)
+                        .setDescription(`${await client.functions.utilities.parseLocale(locale.polls.loggingEmbed.description, { poll: `[${storedPoll.title}](${poll.url})`, channel: channel })}.`)
                     );
                 });
                 
@@ -257,11 +257,11 @@ exports.run = async () => {
                 const oldRemainingTime = poll.footer;
 
                 //Genera el string del nuevo footer
-                const newRemainingTime = `ID: ${idKey} - ${await client.functions.utilities.parseLocale.run(locale.polls.progressEmbed.remaining, { remainingDays: remainingDays, remainingHours: remainingHours, remainingMinutes: remainingMinutes })}`;
+                const newRemainingTime = `ID: ${idKey} - ${await client.functions.utilities.parseLocale(locale.polls.progressEmbed.remaining, { remainingDays: remainingDays, remainingHours: remainingHours, remainingMinutes: remainingMinutes })}`;
 
                 //Si el string de tiempo debería cambiar, edita el mensaje de la encuesta
                 if (oldRemainingTime !== newRemainingTime) await poll.edit({ embeds: [ new client.MessageEmbed()
-                    .setColor(`${await client.functions.db.getConfig.run('colors.polls')}`)
+                    .setColor(`${await client.functions.db.getConfig('colors.polls')}`)
                     .setAuthor({ name: locale.polls.progressEmbed.author, iconURL: 'attachment://poll.png' })
                     .setDescription(`${storedPoll.title}\n\n${storedPoll.options}`)
                     .setFooter({ text: newRemainingTime })
@@ -278,7 +278,7 @@ exports.run = async () => {
         for (let idKey in client.usersVoiceStates) {
 
             //Almacena el miembro
-            const member = await client.functions.utilities.fetch.run('member', idKey);
+            const member = await client.functions.utilities.fetch('member', idKey);
 
             //Elimina el miembro de los estados de voz si ya no se encuentra voz
             if (!member || !member.voice.channelId) {
@@ -294,7 +294,7 @@ exports.run = async () => {
             if (member.voice.mute || member.voice.deaf || member.voice.channel.members.filter(member => !member.user.bot).size === 1) return;
 
             //Añade XP al miembro
-            await client.functions.leveling.addExperience.run(member, 'voice', member.voice.channel);
+            await client.functions.leveling.addExperience(member, 'voice', member.voice.channel);
 
             //Actualiza el timestamp de la última recompensa de XP obtenida
             client.usersVoiceStates[member.id].lastXpReward = Date.now();
@@ -317,7 +317,7 @@ exports.run = async () => {
             };
 
             //Actualiza el tiempo de voz del miembro
-            client.db.stats[member.id].aproxVoiceTime += await client.functions.db.getConfig.run('leveling.XPGainInterval');
+            client.db.stats[member.id].aproxVoiceTime += await client.functions.db.getConfig('leveling.XPGainInterval');
 
             //Guarda las nuevas estadísticas del miembro en la base de datos
             client.fs.writeFile('./storage/databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
@@ -325,14 +325,14 @@ exports.run = async () => {
             });
         };
         
-    }, await client.functions.db.getConfig.run('leveling.XPGainInterval'));
+    }, await client.functions.db.getConfig('leveling.XPGainInterval'));
 
     //PRESENCIA
     //Actualización de miembros totales en presencia
     setInterval(async () => {
 
         //Actualiza la presencia del bot
-        await require('../functions/managers/updatePresence.js').run();
+        await require('../functions/managers/updatePresence.js')();
 
     }, 60000);
 

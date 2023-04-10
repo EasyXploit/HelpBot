@@ -3,11 +3,11 @@ exports.run = async (interaction, commandConfig, locale) => {
     try {
 
         //Busca al miembro proporcionado
-        const member = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se ha encontrado al miembro
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ], ephemeral: true});
 
@@ -15,18 +15,18 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (member.user.bot) {
 
             //Almacena si el miembro puede expulsar bots
-            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.botsAllowed});
+            const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.botsAllowed});
 
             //Si no está autorizado para ello, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
+                .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
             ], ephemeral: true});
         };
         
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
         if ((interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) || !member.bannable) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ], ephemeral: true});
 
@@ -40,11 +40,11 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (!reason && interaction.member.id !== interaction.guild.ownerId) {
 
             //Almacena si el miembro puede omitir la razón
-            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
+            const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
+                .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ], ephemeral: true});
         };
@@ -60,19 +60,19 @@ exports.run = async (interaction, commandConfig, locale) => {
         };
 
         //Genera una descripción para el embed de notificación
-        const notificationEmbedDescription = reason ? await client.functions.utilities.parseLocale.run(locale.notificationEmbed.withReason, { memberTag: member.user.tag, reason: reason }) : await client.functions.utilities.parseLocale.run(locale.notificationEmbed.withoutReason, { memberTag: member.user.tag })
+        const notificationEmbedDescription = reason ? await client.functions.utilities.parseLocale(locale.notificationEmbed.withReason, { memberTag: member.user.tag, reason: reason }) : await client.functions.utilities.parseLocale(locale.notificationEmbed.withoutReason, { memberTag: member.user.tag })
 
         //Notifica la acción en el canal de invocación
         await interaction.reply({embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
             .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
         ]});
         
         //Envía una notificación al miembro
         await member.send({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-            .setDescription(await client.functions.utilities.parseLocale.run(locale.privateEmbed.description, { member: member, guildName: interaction.guild.name }))
+            .setDescription(await client.functions.utilities.parseLocale(locale.privateEmbed.description, { member: member, guildName: interaction.guild.name }))
             .addFields(
                 { name: locale.privateEmbed.moderator, value: interaction.user.tag, inline: true },
                 { name: locale.privateEmbed.reason, value: reason || locale.undefinedReason, inline: true }
@@ -85,7 +85,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(error, interaction);
+        await client.functions.managers.interactionError(error, interaction);
     };
 };
 

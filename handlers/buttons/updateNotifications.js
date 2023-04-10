@@ -6,13 +6,13 @@ exports.run = async (interaction) => {
         const locale = client.locale.handlers.buttons.updateNotifications;
 
         //Almacena el miembro de la interacción
-        const member = await client.functions.utilities.fetch.run('member', interaction.user.id);
+        const member = await client.functions.utilities.fetch('member', interaction.user.id);
 
         //Almacena si el miembro puede ganar EXP
         let notAuthorized;
 
         //Almacena los IDs que no pueden ganar punto de EXP
-        const wontEarnXP = await client.functions.db.getConfig.run('leveling.wontEarnXP')
+        const wontEarnXP = await client.functions.db.getConfig('leveling.wontEarnXP')
 
         //Por cada uno de los roles que pueden ganar EXP
         for (let index = 0; index < wontEarnXP.length; index++) {
@@ -23,7 +23,7 @@ exports.run = async (interaction) => {
 
         //Si no está autorizado para ello, devuelve un mensaje de error
         if (notAuthorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
             .setDescription(`${client.customEmojis.orangeTick} ${locale.cantGainXp}.`)
         ], ephemeral: true});
 
@@ -68,6 +68,6 @@ exports.run = async (interaction) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(error, interaction);
+        await client.functions.managers.interactionError(error, interaction);
     };
 };

@@ -1,17 +1,17 @@
 //Función para añadir XP (mode = message || voice)
-exports.run = async (member, mode, channel) => {
+module.exports = async (member, mode, channel) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.leveling.addExperience;
 
     //Para comprobar si el rol puede ganar XP o no.
-    const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization.run(member, { bypassIds: await client.functions.db.getConfig.run('leveling.wontEarnXP') });
+    const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization(member, { bypassIds: await client.functions.db.getConfig('leveling.wontEarnXP') });
 
     //Devuelve si no se puede ganar XP
     if (notAuthorizedToEarnXp) return;
 
     //Almacena los canales que no pueden generar XP
-    const nonXPChannels = await client.functions.db.getConfig.run('leveling.nonXPChannels');
+    const nonXPChannels = await client.functions.db.getConfig('leveling.nonXPChannels');
 
     //Si no se puede ganar XP en el canal, aborta
     if (nonXPChannels.includes(channel.id)) return;
@@ -37,13 +37,13 @@ exports.run = async (member, mode, channel) => {
     const memberStats = client.db.stats[member.id];
 
     //Genera XP aleatorio según los rangos
-    const newXp = await client.functions.utilities.randomIntBetween.run(await client.functions.db.getConfig.run('leveling.minimumXpReward'), await client.functions.db.getConfig.run('leveling.maximumXpReward'));
+    const newXp = await client.functions.utilities.randomIntBetween(await client.functions.db.getConfig('leveling.minimumXpReward'), await client.functions.db.getConfig('leveling.maximumXpReward'));
 
     //Añade el XP a la cantidad actual del miembro
     memberStats.experience += newXp;
 
     //Calcula el XP necesario para subir al siguiente nivel
-    const neededExperience = await client.functions.leveling.getNeededExperience.run(memberStats.experience);
+    const neededExperience = await client.functions.leveling.getNeededExperience(memberStats.experience);
 
     //Comprueba si el miembro ha de subir de nivel
     if (neededExperience.nextLevel > memberStats.level) {
@@ -52,13 +52,13 @@ exports.run = async (member, mode, channel) => {
         memberStats.level++;
 
         //Asigna las recompensas correspondientes al nivel (si corresponde), y almacena los roles recompensados
-        const rewardedRoles = await client.functions.leveling.assignRewards.run(member, memberStats.level);
+        const rewardedRoles = await client.functions.leveling.assignRewards(member, memberStats.level);
 
         //Genera un embed de subida de nivel
         let levelUpEmbed = new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
             .setAuthor({ name: locale.levelUpEmbed.author, iconURL: member.user.displayAvatarURL({dynamic: true}) })
-            .setDescription(`${await client.functions.utilities.parseLocale.run(locale.levelUpEmbed.description, { member: member, memberLevel: memberStats.level })}.`);
+            .setDescription(`${await client.functions.utilities.parseLocale(locale.levelUpEmbed.description, { member: member, memberLevel: memberStats.level })}.`);
 
         //Genera una fila de botones
         const buttonsRow = new client.MessageActionRow();
@@ -83,7 +83,7 @@ exports.run = async (member, mode, channel) => {
             for (const roleId of rewardedRoles) {
 
                 //Busca el rol en la guild
-                const fetchedRole = await client.functions.utilities.fetch.run('role', roleId);
+                const fetchedRole = await client.functions.utilities.fetch('role', roleId);
 
                 //Sube al array de nombre, el nombre del rol iterado
                 roleNames.push(fetchedRole.name);
@@ -94,7 +94,7 @@ exports.run = async (member, mode, channel) => {
         };
 
         //Almacena la configuración global de niveles
-        const levelingConfig = await client.functions.db.getConfig.run('leveling');
+        const levelingConfig = await client.functions.db.getConfig('leveling');
 
         //Manda el mensaje de subida de nivel, si se ha configurado
         if (mode === 'message' && levelingConfig.notifylevelUpOnChat && memberStats.notifications.public) channel.send({ embeds: [levelUpEmbed] });

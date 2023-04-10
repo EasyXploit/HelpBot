@@ -1,5 +1,5 @@
 //Función para gestionar el envío de reportes al canal de reportes
-exports.run = async (interaction, modalInteraction, reportReason, reportedMember) => {
+module.exports = async (interaction, modalInteraction, reportReason, reportedMember) => {
 
     //Almacena las traducciones
     const locale = client.locale.functions.managers.report;
@@ -7,11 +7,11 @@ exports.run = async (interaction, modalInteraction, reportReason, reportedMember
     try {
 
         //Comprobar si el canal de reportes está configurado y almacenado en memoria
-        if (!await client.functions.db.getConfig.run('system.modules.memberReports.enabled')) {
+        if (!await client.functions.db.getConfig('system.modules.memberReports.enabled')) {
 
             //Envía un mensaje de aviso al usuario
             return await (modalInteraction ? modalInteraction : interaction).reply({ embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.information')}`)
+                .setColor(`${await client.functions.db.getConfig('colors.information')}`)
                 .setDescription(`${client.customEmojis.infoTick} ${locale.featureDisabled}.`)
             ], ephemeral: true});
         };
@@ -21,8 +21,8 @@ exports.run = async (interaction, modalInteraction, reportReason, reportedMember
 
         //Se genera un embed base para el reporte
         let reportEmbed = new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.warning')}`)
-            .setAuthor({ name: `${await client.functions.utilities.parseLocale.run(locale.reportEmbed.author, { memberTag: interaction.member.user.tag })}:`, iconURL: interaction.member.user.displayAvatarURL({dynamic: true}) })
+            .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
+            .setAuthor({ name: `${await client.functions.utilities.parseLocale(locale.reportEmbed.author, { memberTag: interaction.member.user.tag })}:`, iconURL: interaction.member.user.displayAvatarURL({dynamic: true}) })
             .setFields([
                 { name: locale.reportEmbed.reportReason, value: reportReason, inline: true },
                 { name: locale.reportEmbed.reportChannel, value: `<#${interaction.channelId}>`, inline: true }
@@ -66,25 +66,25 @@ exports.run = async (interaction, modalInteraction, reportReason, reportedMember
                     if (index >= attachmentsArray.length) break;
 
                     //Genera un string enlazado a la descarga del fichero para añadirla al campo
-                    attachments.push(`[${await client.functions.utilities.parseLocale.run(locale.reportEmbed.fileName, { fileNumber: index + 1, fileType: attachmentsArray[index].contentType})}](${attachmentsArray[index].url})`)
+                    attachments.push(`[${await client.functions.utilities.parseLocale(locale.reportEmbed.fileName, { fileNumber: index + 1, fileType: attachmentsArray[index].contentType})}](${attachmentsArray[index].url})`)
                 };
 
                 //Adjunta todos los campos generados para los adjuntos al embed del reporte
                 reportEmbed.addFields([
-                    { name: await client.functions.utilities.parseLocale.run(locale.reportEmbed.attachedFiles, { currentChunk: currentChunk, totalChunks: totalChunks}), value: attachments.join(', '), inline: false }
+                    { name: await client.functions.utilities.parseLocale(locale.reportEmbed.attachedFiles, { currentChunk: currentChunk, totalChunks: totalChunks}), value: attachments.join(', '), inline: false }
                     
                 ]);
             };
         };
 
         //Se formatea y envía un registro al canal de reportes especificado en la configuración
-        const deliveryStatus = await client.functions.managers.logging.run('memberReports', 'embed', reportEmbed);
+        const deliveryStatus = await client.functions.managers.sendLog('memberReports', 'embed', reportEmbed);
 
         //Envía un mensaje de confirmación si se pudo entregar
         if (deliveryStatus) {
 
             await (modalInteraction ? modalInteraction : interaction).reply({ embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
+                .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${locale.correct}.`)
             ], ephemeral: true});
 
@@ -92,7 +92,7 @@ exports.run = async (interaction, modalInteraction, reportReason, reportedMember
         
             //Envía un mensaje de error al usuario
             await (modalInteraction ? modalInteraction : interaction).reply({ embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
+                .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.temporaryError}.`)
             ], ephemeral: true});
         };

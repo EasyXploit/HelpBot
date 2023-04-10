@@ -3,24 +3,24 @@ exports.run = async (interaction, commandConfig, locale) => {
     try {
             
         //Busca el canal en la guild
-        const channel = interaction.options._hoistedOptions[1] ? await client.functions.utilities.fetch.run('channel', interaction.options._hoistedOptions[1].value) : null;
+        const channel = interaction.options._hoistedOptions[1] ? await client.functions.utilities.fetch('channel', interaction.options._hoistedOptions[1].value) : null;
 
         //Devuelve un error si no se ha encontrado el canal
         if (interaction.options._hoistedOptions[1] && !channel) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.noChannel, { id: interaction.options._hoistedOptions[1].value })}.`)
+            .setColor(`${await client.functions.db.getConfig('colors.error')}`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.noChannel, { id: interaction.options._hoistedOptions[1].value })}.`)
         ], ephemeral: true});
         
         //Busca el mensaje en el canal
-        const msg = await client.functions.utilities.fetch.run('message', interaction.options._hoistedOptions[0].value, channel)
+        const msg = await client.functions.utilities.fetch('message', interaction.options._hoistedOptions[0].value, channel)
         if (!msg) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.msgNotFound, { msgId: interaction.options._hoistedOptions[0].value })}.`)
+            .setColor(`${await client.functions.db.getConfig('colors.error')}`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.msgNotFound, { msgId: interaction.options._hoistedOptions[0].value })}.`)
         ], ephemeral: true});
 
         //Comprueba si el mensaje es del bot
         if (msg.author.id !== client.user.id) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantEdit}.`)
         ], ephemeral: true});
 
@@ -59,7 +59,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 
             //Responde a la interacción con una confirmación
             await modalInteraction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.secondaryCorrect')}`)
+                .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.correctEmbed.title}`)
                 .setDescription(`${locale.correctEmbed.description}.`)
             ], ephemeral: true});
@@ -77,7 +77,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 
             //Edita el embed con el nuevo contenido
             msg.edit({ embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
+                .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setDescription(newContent)
             ]});
 
@@ -90,7 +90,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(error, interaction);
+        await client.functions.managers.interactionError(error, interaction);
     };
 };
 

@@ -1,5 +1,5 @@
 //Función para comprobar si un usuario está autorizado para ejecutar una acción
-exports.run = async (member, authorizations) => {
+module.exports = async (member, authorizations) => {
 
     //Parámetros admisibles:
     //{ guildOwner: true, botManagers: true, bypassIds: []}
@@ -23,7 +23,7 @@ exports.run = async (member, authorizations) => {
         } else if (parameter === 'botManager' && typeof parameterValue == 'boolean') {
 
             //Por cada uno de los IDs (de rol o usuario) administradores del bot
-            for (const botManagerId of await client.functions.db.getConfig.run('system.botManagers')) {
+            for (const botManagerId of await client.functions.db.getConfig('system.botManagers')) {
 
                 //Si no es un un número, omite la iteración
                 if (isNaN(botManagerId)) continue;

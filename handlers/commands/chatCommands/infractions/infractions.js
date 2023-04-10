@@ -3,7 +3,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     try {
 
         //Busca el miembro en cuestión
-        const member = interaction.options._hoistedOptions[0] ? await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0].value || interaction.member.id): null;
+        const member = interaction.options._hoistedOptions[0] ? await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0].value || interaction.member.id): null;
 
         //Almacena el ID del miembro
         const memberId = member ? interaction.options._hoistedOptions[0].value : interaction.member.id;
@@ -12,18 +12,18 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (interaction.member.id !== memberId) {
 
             //Variable para saber si está autorizado
-            const authorized = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSeeAny});
+            const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSeeAny});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.error')}`)
-                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale.run(locale.nonPrivileged, { interactionAuthor: interaction.member })}.`)
+                .setColor(`${await client.functions.db.getConfig('colors.error')}`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.nonPrivileged, { interactionAuthor: interaction.member })}.`)
             ], ephemeral: true});
         };
 
         //Comprueba si se trata de un bot
         if (member && member.user.bot) return interaction.reply({ embeds: [ new client.MessageEmbed()
-            .setColor(`${await client.functions.db.getConfig.run('colors.secondaryError')}`)
+            .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
 
@@ -89,7 +89,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                 let warn = Object.values(memberWarns[index])[0];
 
                 //Busca y almacena el moderador que aplicó la sanción
-                const moderator = await client.functions.utilities.fetch.run('member', warn.moderator) || locale.unknownModerator;
+                const moderator = await client.functions.utilities.fetch('member', warn.moderator) || locale.unknownModerator;
 
                 //Añade una nueva fila con los detalles de la advertencia
                 board += `\`${Object.keys(memberWarns[index])[0]}\` • ${moderator} • <t:${Math.round(new Date(parseInt(warn.timestamp)) / 1000)}>\n${warn.reason}\n\n`;
@@ -100,22 +100,22 @@ exports.run = async (interaction, commandConfig, locale) => {
 
             //Genera el embed de las infracciones
             let newPageEmbed = new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig.run('colors.primary')}`)
+                .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setTitle(`⚠ ${locale.infractionsEmbed.title}`)
-                .setDescription(`${await client.functions.utilities.parseLocale.run(locale.infractionsEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)`, sanction: sanction })}.`)
+                .setDescription(`${await client.functions.utilities.parseLocale(locale.infractionsEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)`, sanction: sanction })}.`)
                 .addFields(
                     { name: locale.infractionsEmbed.last24h, value: onDay.toString(), inline: true },
                     { name: locale.infractionsEmbed.last7d, value: onWeek.toString(), inline: true },
                     { name: locale.infractionsEmbed.total, value: total.toString(), inline: true },
                     { name: locale.infractionsEmbed.list, value: total > 0 ? board : locale.infractionsEmbed.noList, inline: false }
                 )
-                .setFooter({ text: await client.functions.utilities.parseLocale.run(locale.infractionsEmbed.page, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.baseGuild.iconURL({dynamic: true}) });
+                .setFooter({ text: await client.functions.utilities.parseLocale(locale.infractionsEmbed.page, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.baseGuild.iconURL({dynamic: true}) });
 
             //Si se encontró el miembro, muestra su avatar en el embed
             if (member) newPageEmbed.setThumbnail(member.user.displayAvatarURL({dynamic: true}));
 
             //Invoca el gestor de navegación mediante botones
-            const buttonNavigationResult = await client.functions.managers.buttonNavigation.run(interaction, 'infractions', actualPage, totalPages, newPageEmbed, latestInteraction, null);
+            const buttonNavigationResult = await client.functions.managers.buttonNavigation(interaction, 'infractions', actualPage, totalPages, newPageEmbed, latestInteraction, null);
 
             //Almacena la última interacción
             latestInteraction = buttonNavigationResult.latestInteraction;
@@ -129,7 +129,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     } catch (error) {
 
         //Ejecuta el manejador de errores
-        await client.functions.managers.interactionError.run(error, interaction);
+        await client.functions.managers.interactionError(error, interaction);
     };
 };
 

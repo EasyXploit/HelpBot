@@ -3,8 +3,8 @@ exports.run = async (guild) => {
     try {
 
         //Reestablece algunas variables de config. globales
-        const baseGuild = await client.functions.db.setConfig.run('system.baseGuildId', guild.id);
-        await client.functions.db.setConfig.run('system.inviteCode', '');
+        const baseGuild = await client.functions.db.setConfig('system.baseGuildId', guild.id);
+        await client.functions.db.setConfig('system.inviteCode', '');
 
         //Carga de guild base en memoria
         client.baseGuild = await client.guilds.cache.get(baseGuild);

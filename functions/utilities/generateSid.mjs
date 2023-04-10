@@ -1,5 +1,5 @@
 //Función para generar sIDs
-export async function run(length) {
+export default async (length) => {
         
     //Requiere el generador de IDs con un alfabeto personalizado
     const { customAlphabet } = await import('nanoid');

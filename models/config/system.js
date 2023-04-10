@@ -33,5 +33,5 @@ const schema = new mongoose.Schema({
     }
 });
 
-//Genera un modelo a partir del esquema y lo exporta como módulo por defecto
-module.exports.default = mongoose.model('system', schema, 'configs');
+//Genera un modelo a partir del esquema y lo exporta como módulo
+module.exports = mongoose.model('system', schema, 'configs');

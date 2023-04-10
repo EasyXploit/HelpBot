@@ -4,7 +4,7 @@ module.exports = async (configName) => {
     try {
 
         //Importa el script correspondiente al modelo requerido
-        const ConfigModel = require(`../../models/config/${configName}.js`).default;
+        const ConfigModel = require(`../../models/config/${configName}.js`);
     
         //Genera un nuevo documento de la configuración 
         const newConfigDoc = new ConfigModel();

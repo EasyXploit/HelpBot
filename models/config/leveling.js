@@ -1,6 +1,19 @@
 //Librería para interactuar con la BD
 const mongoose = require('mongoose');
 
+//Crea un nuevo esquema para las recompensas por subir de nivel
+const levelingRewardSchema = new mongoose.Schema({ 
+    requiredLevel: {
+        type: Number,
+        required: true,
+        min: 1
+    },
+    roles: {
+        type: [String],
+        required: true
+    }
+});
+
 //Crea un nuevo esquema para el sistema de niveles
 const schema = new mongoose.Schema({
     docType: {
@@ -8,10 +21,7 @@ const schema = new mongoose.Schema({
         default: 'leveling',
         immutable: true
     },
-    rewards: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'levelingReward'
-    }],
+    rewards: [levelingRewardSchema],
     rewardMessages: {
         type: Boolean,
         default: true,
@@ -66,21 +76,5 @@ const schema = new mongoose.Schema({
     }
 });
 
-//Crea un nuevo esquema para las recompensas por subir de nivel
-const levelingRewardSchema = new mongoose.Schema({ 
-    requiredLevel: {
-        type: Number,
-        required: true,
-        min: 1
-    },
-    roles: {
-        type: [String],
-        required: true
-    }
-});
-
-//Genera modelos a partir de los esquemas y los exporta
-module.exports = {
-    default: mongoose.model('leveling', schema, 'configs'),
-    levelingReward: mongoose.model('levelingReward', levelingRewardSchema)
-};
+//Genera un modelo a partir del esquema y lo exporta como módulo
+module.exports = mongoose.model('leveling', schema, 'configs');

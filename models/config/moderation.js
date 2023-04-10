@@ -7,6 +7,30 @@ const localeConfig = require('../../config.json').locale;
 //Almacena las traducciones al idioma configurado
 const locale = require(`../../resources/locales/${localeConfig}.json`).models.config.automodFilters;
 
+//Crea un nuevo esquema para las reglas de automoderación
+const automodRuleSchema = new mongoose.Schema({ 
+    action: {
+        type: String,
+        enum: ['timeout', 'kick', 'tempban', 'ban'],
+        required: true
+    },
+    duration: {
+        type: Number,
+        required: true,
+        min: 5000
+    },
+    quantity: {
+        type: Number,
+        required: true,
+        min: 1
+    },
+    age: {
+        type: Number,
+        required: true,
+        min: 5000
+    }
+});
+
 //Crea un nuevo esquema para la moderación
 const schema = new mongoose.Schema({
     docType: {
@@ -48,10 +72,7 @@ const schema = new mongoose.Schema({
         required: true
     },
     voiceMovesExcludedChannels: [String],
-    automodRules: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'automodRule'
-    }],
+    automodRules: [automodRuleSchema],
     filters: {
         flood: {
             status: {
@@ -311,32 +332,5 @@ const schema = new mongoose.Schema({
     }
 });
 
-//Crea un nuevo esquema para las reglas de automoderación
-const automodRuleSchema = new mongoose.Schema({ 
-    action: {
-        type: String,
-        enum: ['timeout', 'kick', 'tempban', 'ban'],
-        required: true
-    },
-    duration: {
-        type: Number,
-        required: true,
-        min: 5000
-    },
-    quantity: {
-        type: Number,
-        required: true,
-        min: 1
-    },
-    age: {
-        type: Number,
-        required: true,
-        min: 5000
-    }
-});
-
-//Genera modelos a partir de los esquemas y los exporta
-module.exports = {
-    default: mongoose.model('moderation', schema, 'configs'),
-    automodRule: mongoose.model('automodRule', automodRuleSchema)
-};
+//Genera un modelo a partir del esquema y lo exporta como módulo
+module.exports = mongoose.model('moderation', schema, 'configs');

@@ -1,17 +1,20 @@
 //Librería para interactuar con la BD
 const mongoose = require('mongoose');
 
-//Crea un nuevo esquema para los mensajes programados
-const schema = new mongoose.Schema({
-    docType: {
+//Crea un nuevo esquema para un campo de un mensaje programado
+const timedMessageFieldSchema = new mongoose.Schema({ 
+    name: {
         type: String,
-        default: 'timedMessages',
-        immutable: true
+        required: true
     },
-    configuredMessages: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'timedMessage'
-    }]
+    value: { //{{memberCount}}
+        type: String,
+        required: true
+    },
+    inline: {
+        type: Boolean,
+        default: true
+    }
 });
 
 //Crea un nuevo esquema para un mensaje programado
@@ -44,10 +47,7 @@ const timedMessageSchema = new mongoose.Schema({
         },
         color: String,
         title: String,
-        fields: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'timedMessageField'
-        }],
+        fields: [timedMessageFieldSchema],
         footer: String
     },
     linkButton: {
@@ -58,25 +58,15 @@ const timedMessageSchema = new mongoose.Schema({
     messageHash: String
 });
 
-//Crea un nuevo esquema para un campo de un mensaje programado
-const timedMessageFieldSchema = new mongoose.Schema({ 
-    name: {
+//Crea un nuevo esquema para los mensajes programados
+const schema = new mongoose.Schema({
+    docType: {
         type: String,
-        required: true
+        default: 'timedMessages',
+        immutable: true
     },
-    value: { //{{memberCount}}
-        type: String,
-        required: true
-    },
-    inline: {
-        type: Boolean,
-        default: true
-    }
+    configuredMessages: [timedMessageSchema]
 });
 
-//Genera modelos a partir de los esquemas y los exporta
-module.exports = {
-    default: mongoose.model('timedMessages', schema, 'configs'),
-    timedMessage: mongoose.model('timedMessage', timedMessageSchema),
-    timedMessageField: mongoose.model('timedMessageField', timedMessageFieldSchema)
-};
+//Genera un modelo a partir del esquema y lo exporta como módulo
+module.exports = mongoose.model('timedMessages', schema, 'configs');

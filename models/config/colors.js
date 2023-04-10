@@ -55,5 +55,5 @@ const schema = new mongoose.Schema({
     }
 });
 
-//Genera un modelo a partir del esquema y lo exporta como módulo por defecto
-module.exports.default = mongoose.model('colors', schema, 'configs');
+//Genera un modelo a partir del esquema y lo exporta como módulo
+module.exports = mongoose.model('colors', schema, 'configs');

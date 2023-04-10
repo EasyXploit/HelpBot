@@ -171,4 +171,4 @@ const schema = new mongoose.Schema({
 });
 
 //Genera un modelo a partir del esquema y lo exporta como módulo por defecto
-module.exports.default = mongoose.model('logging', schema, 'configs');
+module.exports = mongoose.model('logging', schema, 'configs');

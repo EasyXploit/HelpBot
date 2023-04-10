@@ -50,7 +50,7 @@ exports.run = async (interaction, locale) => {
                 const handlerFile = require(`../buttons/${interaction.customId}.js`);
 
                 //Ejecuta el manejador de la interacción
-                handlerFile.run(interaction);
+                handlerFile(interaction);
 
             } catch (error) {
 

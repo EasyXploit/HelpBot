@@ -1,3 +1,4 @@
+//Librería para interactuar con la BD
 const mongoose = require('mongoose');
 
 //Crea un nuevo esquema para la encuesta
@@ -6,6 +7,11 @@ const pollSchema = new mongoose.Schema({
         type: String,
         default: 'poll',
         immutable: true
+    },
+    pollId: {
+        type: String,
+        required: true, 
+        unique: true
     },
     channelId: {
         type: String,
@@ -33,5 +39,5 @@ const pollSchema = new mongoose.Schema({
     }
 });
 
-//Añade el esquema al modelo
+//Genera un modelo a partir del esquema y lo exporta como módulo
 module.exports = mongoose.model('poll', pollSchema);

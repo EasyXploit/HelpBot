@@ -55,7 +55,10 @@ const timedMessageSchema = new mongoose.Schema({
         emoji: String,
         url: String
     },
-    messageHash: String
+    messageHash: {
+        type: String,
+        immutable: true
+    }
 });
 
 //Crea un nuevo esquema para los mensajes programados

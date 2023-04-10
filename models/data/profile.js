@@ -1,15 +1,34 @@
+//Librería para interactuar con la BD
 const mongoose = require('mongoose');
 
-//Crea un nuevo esquema para la estadística de miembro
-const statSchema = new mongoose.Schema({
+//Crea un nuevo esquema para las advertencias de un miembro
+const warnSchema = new mongoose.Schema({
+    timestamp: {
+        type: Number,
+        required: true
+    },
+    reason: {
+        type: String,
+        required: true
+    },
+    moderatorId: {
+        type: String,
+        required: true
+    }
+});
+
+//Crea un nuevo esquema para el perfil del miembro
+const profileSchema = new mongoose.Schema({
     docType: {
         type: String,
-        default: 'stat',
+        default: 'profile',
         immutable: true
     },
     userId: {
         type: String,
-        required: true
+        required: true, 
+        unique: true,
+        immutable: true
     },
     experience: {
         type: Number,
@@ -42,8 +61,11 @@ const statSchema = new mongoose.Schema({
             default: true,
             required: true
         }
+    },
+    moderationLog: {
+        warns: [warnSchema]
     }
 });
 
-//Añade el esquema al modelo
-module.exports = mongoose.model('stat', statSchema);
+//Genera un modelo a partir del esquema y lo exporta como módulo
+module.exports = mongoose.model('profile', profileSchema);

@@ -1,3 +1,4 @@
+//Librería para interactuar con la BD
 const mongoose = require('mongoose');
 
 //Crea un nuevo esquema para el envío
@@ -9,7 +10,8 @@ const sentSchema = new mongoose.Schema({
     },
     messageHash: {
         type: String,
-        required: true
+        required: true,
+        immutable: true
     },
     messageId: {
         type: String,
@@ -21,5 +23,5 @@ const sentSchema = new mongoose.Schema({
     }
 });
 
-//Añade el esquema al modelo
+//Genera un modelo a partir del esquema y lo exporta como módulo
 module.exports = mongoose.model('sent', sentSchema);

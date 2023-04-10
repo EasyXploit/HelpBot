@@ -50,7 +50,7 @@ exports.run = async (member, locale) => {
         const newMemberMode = await client.functions.db.getConfig('welcomes.newMemberMode');
 
         //Ejecuta el manejador de nuevos miembros (si procede)
-        if (newMemberMode === 0) await client.functions.managers.newMember.run(member);
+        if (newMemberMode === 0) await client.functions.managers.newMember(member);
 
     } catch (error) {
 

@@ -15,7 +15,7 @@ exports.run = async (oldMember, newMember, locale) => {
             const newMemberMode = await client.functions.db.getConfig('welcomes.newMemberMode');
 
             //Ejecuta el manejador de nuevos miembros (si procede)
-            if (newMemberMode === 1) await client.functions.managers.newMember.run(newMember);
+            if (newMemberMode === 1) await client.functions.managers.newMember(newMember);
         };
 
         //Si el miembro ha sido silenciado o dessilenciado

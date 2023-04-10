@@ -10,7 +10,7 @@ module.exports = async (configPath) => {
         const configName = configPath[0];
 
         //Importa el script correspondiente al modelo requerido
-        const ConfigModel = await require(`../../models/config/${configName}.js`);
+        const ConfigModel = await require(`../../models/config/${configName}.js`).default;
     
         //Busca el documento de configuración por su modelo y nombre
         let configDoc = await ConfigModel.findOne({ docType: configName }).exec();

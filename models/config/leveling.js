@@ -66,5 +66,21 @@ const schema = new mongoose.Schema({
     }
 });
 
-//Añade el esquema al modelo
-module.exports = mongoose.model('leveling', schema, 'configs');
+//Crea un nuevo esquema para las recompensas por subir de nivel
+const levelingRewardSchema = new mongoose.Schema({ 
+    requiredLevel: {
+        type: Number,
+        required: true,
+        min: 1
+    },
+    roles: {
+        type: [String],
+        required: true
+    }
+});
+
+//Genera modelos a partir de los esquemas y los exporta
+module.exports = {
+    default: mongoose.model('leveling', schema, 'configs'),
+    levelingReward: mongoose.model('levelingReward', levelingRewardSchema)
+};

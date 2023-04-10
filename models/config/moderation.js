@@ -311,5 +311,32 @@ const schema = new mongoose.Schema({
     }
 });
 
-//Añade el esquema al modelo
-module.exports = mongoose.model('moderation', schema, 'configs');
+//Crea un nuevo esquema para las reglas de automoderación
+const automodRuleSchema = new mongoose.Schema({ 
+    action: {
+        type: String,
+        enum: ['timeout', 'kick', 'tempban', 'ban'],
+        required: true
+    },
+    duration: {
+        type: Number,
+        required: true,
+        min: 5000
+    },
+    quantity: {
+        type: Number,
+        required: true,
+        min: 1
+    },
+    age: {
+        type: Number,
+        required: true,
+        min: 5000
+    }
+});
+
+//Genera modelos a partir de los esquemas y los exporta
+module.exports = {
+    default: mongoose.model('moderation', schema, 'configs'),
+    automodRule: mongoose.model('automodRule', automodRuleSchema)
+};

@@ -282,5 +282,5 @@ const schema = new mongoose.Schema({
     }
 });
 
-//Añade el esquema al modelo
-module.exports = mongoose.model('commands', schema, 'configs');
+//Genera un modelo a partir del esquema y lo exporta como módulo por defecto
+module.exports.default = mongoose.model('commands', schema, 'configs');

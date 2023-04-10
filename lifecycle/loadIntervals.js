@@ -1,4 +1,4 @@
-exports.run = async () => {
+module.exports = async () => {
 
     //Traducciones de los intervalos
     const locale = client.locale.lifecycle.loadIntervals;

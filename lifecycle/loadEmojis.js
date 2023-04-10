@@ -1,4 +1,4 @@
-exports.run = async () => {
+module.exports = async () => {
 
     try {
 

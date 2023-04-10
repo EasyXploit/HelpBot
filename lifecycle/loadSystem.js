@@ -1,4 +1,4 @@
-exports.run = async (locale) => {
+module.exports = async (locale) => {
 
     try {
 
@@ -9,10 +9,10 @@ exports.run = async (locale) => {
         logger.debug('Base guild loading completed');
 
         //Carga los customEmojis en el cliente
-        await require('./loadEmojis.js').run();
+        await require('./loadEmojis.js')();
 
         //Carga de comandos en memoria
-        await require('./loadCommands.js').run();
+        await require('./loadCommands.js')();
 
         //Carga la presencia del bot
         await require('../functions/managers/updatePresence.js')();
@@ -21,10 +21,10 @@ exports.run = async (locale) => {
         logger.debug('Presence loading completed');
 
         //Carga los scripts que funcionan a intervalos
-        await require('./loadIntervals.js').run();
+        await require('./loadIntervals.js')();
 
         //Carga los temporizadores configurados
-        await require('./loadTimers.js').run();
+        await require('./loadTimers.js')();
 
         //Carga los estados de voz (si se su monitorización)
         if (await client.functions.db.getConfig('leveling.rewardVoice')) {

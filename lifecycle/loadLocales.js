@@ -1,4 +1,4 @@
-exports.run = (desiredLocaleName) => {
+module.exports = (desiredLocaleName) => {
 
     //Librería para interactuar con el sistema de archivos
     const fs = require('fs');

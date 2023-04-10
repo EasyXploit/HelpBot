@@ -43,12 +43,12 @@ exports.run = async (event, locale) => {
         if (!baseGuildId || baseGuildId !== cachedGuilds.first().id) {
 
             //Almacena la nueva configuración
-            await require('../../lifecycle/newGuild.js').run(cachedGuilds.first());
+            await require('../../lifecycle/newGuild.js')(cachedGuilds.first());
             
         } else {
 
             //Carga la config. en memoria y arranca el sistema
-            await require('../../lifecycle/loadSystem.js').run(client.locale.lifecycle.loadSystem);
+            await require('../../lifecycle/loadSystem.js')(client.locale.lifecycle.loadSystem);
         };
 
     } catch (error) {

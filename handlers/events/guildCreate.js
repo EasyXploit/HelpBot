@@ -12,7 +12,7 @@ exports.run = async (guild, locale) => {
         if (cachedGuilds.size === 1) {
 
             //Almacena la nueva configuración de la guild
-            await require('../../lifecycle/newGuild.js').run(cachedGuilds.first());
+            await require('../../lifecycle/newGuild.js')(cachedGuilds.first());
 
             //Notifica por consola que el bot se ha unido a la guild
             logger.debug(`The bot has been joined to \"${guild.name}\"`);

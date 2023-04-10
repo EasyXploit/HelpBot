@@ -5,7 +5,7 @@ require('dotenv').config();
 if (!process.env.NODE_ENV) process.env.NODE_ENV = 'development';
 
 //Carga el manejador de logs
-require('./lifecycle/loadLogger.js').run();
+require('./lifecycle/loadLogger.js')();
 
 //Almacena la configuración local desde el fichero de configuración
 const localConfig = require('./config.json');
@@ -14,7 +14,7 @@ const localConfig = require('./config.json');
 let locale = require(`./resources/locales/${localConfig.locale}.json`);
 
 //Uniforma las traducciones si no se corresponden con las del idioma por defecto
-locale = require('./lifecycle/loadLocales.js').run(localConfig.locale);
+locale = require('./lifecycle/loadLocales.js')(localConfig.locale);
 
 //Gestión de promesas rechazadas y no manejadas
 process.on('unhandledRejection', error => {
@@ -28,16 +28,16 @@ process.on('unhandledRejection', error => {
 });
 
 //Muestra el logo de arranque en la consola
-require('./lifecycle/splashLogo.js').run(locale.lifecycle.splashLogo);
+require('./lifecycle/splashLogo.js')(locale.lifecycle.splashLogo);
 
 //Indica que el bot se está iniciando
 logger.info(`${locale.index.startupMsg} ...`);
 
 //Carga el manejador de errores remoto, si está habilitado
-if (localConfig.errorTrackingStatus) require('./lifecycle/loadErrorTracker.js').run();
+if (localConfig.errorTrackingStatus) require('./lifecycle/loadErrorTracker.js')();
 
 //Ejecuta el cargador de la base de datos
-require('./lifecycle/loadDatabase.js').run(locale);
+require('./lifecycle/loadDatabase.js')(locale);
 
 //Carga el wrapper para interactuar con la API de Discord
 const discord = require('discord.js');
@@ -84,7 +84,7 @@ client.locale = locale;
 ['functions', 'config', 'db', 'usersVoiceStates', 'userMessages'].forEach(x => client[x] = {});
 
 //Carga las funciones globales en el cliente
-require('./lifecycle/loadFunctions.js').run();
+require('./lifecycle/loadFunctions.js')();
 
 //Carga los archivos de bases de datos (deprecado)
 const databaseFiles = client.fs.readdirSync('./storage/databases/', { withFileTypes: true });
@@ -97,7 +97,7 @@ databaseFiles.forEach(async file => {
 });
 
 //Carga los manejadores de eventos
-require('./lifecycle/loadEvents.js').run();
+require('./lifecycle/loadEvents.js')();
 
 //Carga el manejador de inicio de sesión
-require('./lifecycle/login.js').run();
+require('./lifecycle/login.js')();

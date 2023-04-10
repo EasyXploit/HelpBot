@@ -1,4 +1,4 @@
-exports.run = async () => {
+module.exports = async () => {
 
     //Obtiene el token de inicio de sesión desde las variables de entorno o desde la BD
     let discordToken = process.env.DISCORD_TOKEN && process.env.DISCORD_TOKEN.length > 0 ? process.env.DISCORD_TOKEN : await client.functions.db.getConfig('system.discordToken');

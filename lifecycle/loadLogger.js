@@ -1,4 +1,4 @@
-exports.run = () => {
+module.exports = () => {
 
     //Almacena la librería para generar logs
     const winston = require('winston');

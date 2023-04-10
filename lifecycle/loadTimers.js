@@ -1,4 +1,4 @@
-exports.run = async () => {
+module.exports = async () => {
 
     //Aborta si los timers están deshabilitados
     if (!await client.functions.db.getConfig('system.modules.timedMessages')) return;

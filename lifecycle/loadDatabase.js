@@ -1,6 +1,6 @@
 
 //Exporta una función para conectarse a la BD
-exports.run = async () => {
+module.exports = async () => {
 
     //Requiere el módulo para comunicarse con la BD
     const mongoose = require('mongoose');

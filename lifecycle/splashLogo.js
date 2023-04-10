@@ -1,4 +1,4 @@
-exports.run = (locale) => {
+module.exports = (locale) => {
 
     //Dependencia para generar arte ASCII
     const logo = require('asciiart-logo');

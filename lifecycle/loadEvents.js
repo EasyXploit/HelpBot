@@ -1,4 +1,4 @@
-exports.run = async () => {
+module.exports = async () => {
 
     //Lee el directorio de los manejadores de eventos
     await client.fs.readdir('./handlers/events/', async (error, files) => {

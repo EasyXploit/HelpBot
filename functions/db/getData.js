@@ -18,9 +18,8 @@ module.exports = async (dataType, dataId) => {
             //Selecciona la propiedad a buscar en función del modelo
             switch (dataType) {
                 case 'ban':
-                case 'stat':
+                case 'profile':
                 case 'timeout':
-                case 'warn':
                     idType = 'userId';
                     break;   
                 case 'poll':

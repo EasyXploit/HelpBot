@@ -1,4 +1,4 @@
-exports.run = async (oldState, newState, locale) => {
+module.exports = async (oldState, newState, locale) => {
     
     try {
 

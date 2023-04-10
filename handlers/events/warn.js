@@ -1,3 +1,3 @@
-exports.run = (warn, locale) => {
+module.exports = (warn, locale) => {
     logger.warn(warn);
 };

@@ -1,4 +1,4 @@
-exports.run = async (oldMember, newMember, locale) => {
+module.exports = async (oldMember, newMember, locale) => {
     
     try {
 

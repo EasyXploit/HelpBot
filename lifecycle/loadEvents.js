@@ -13,7 +13,7 @@ module.exports = async () => {
             const eventName = file.split('.')[0];                           //Almacena el nombre del evento
 
             //Añade un listener para el evento en cuestión (usando spread syntax)
-            client.on(eventName, (...arguments) => eventFunction.run(...arguments, client.locale.handlers.events[eventName]));
+            client.on(eventName, (...arguments) => eventFunction(...arguments, client.locale.handlers.events[eventName]));
 
             //Notifica la carga en la consola
             logger.debug(`Event [${eventName}] loaded successfully`);

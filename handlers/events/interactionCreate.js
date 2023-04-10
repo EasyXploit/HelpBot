@@ -1,4 +1,4 @@
-exports.run = async (interaction, locale) => {
+module.exports = async (interaction, locale) => {
 
     try {
         

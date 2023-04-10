@@ -1,4 +1,4 @@
-exports.run = async (oldMessage, newMessage, locale) => {
+module.exports = async (oldMessage, newMessage, locale) => {
 
     //Aborta si no es un evento de la guild registrada
     if (newMessage.guild && newMessage.guild.id !== client.baseGuild.id) return;

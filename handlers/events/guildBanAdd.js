@@ -1,4 +1,4 @@
-exports.run = async (banData, locale) => {
+module.exports = async (banData, locale) => {
 
     try {
 

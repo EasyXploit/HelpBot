@@ -150,15 +150,10 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (providedDuration) {
 
             //Registra el baneo en la base de datos
-            client.db.bans[user.id] = {
-                until: Date.now() + milliseconds
-            };
-
-            //Sobreescribe el fichero de la base de datos con los cambios
-            client.fs.writeFile('./storage/databases/bans.json', JSON.stringify(client.db.bans, null, 4), async err => {
-
-                //Si hubo un error, lo lanza a la consola
-                if (err) throw err;
+            await client.functions.db.genData('ban', {
+                userId: user.id,
+                moderatorId: interaction.member.id,
+                untilTimestamp: Date.now() + milliseconds
             });
         };
 

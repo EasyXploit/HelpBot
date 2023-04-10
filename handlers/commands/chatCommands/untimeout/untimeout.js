@@ -42,24 +42,20 @@ exports.run = async (interaction, commandConfig, locale) => {
         //Almacena si el miembro puede borrar cualquier timeout
         const canRemoveAny = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
 
+        //Almacena el aislamiento del miembro
+        const memberTimeout = await client.functions.db.getData('timeout', memberId);
+
         //Devuelve el estado de autorización
-        if (!canRemoveAny && (!client.db.timeouts[memberId] || client.db.timeouts[memberId].moderator !== interaction.member.id)) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (!canRemoveAny && (!memberTimeout || memberTimeout.moderatorId !== interaction.member.id)) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.cantRemoveAny, { interactionAuthor: interaction.member })}.`)
         ], ephemeral: true});
 
-        //Si el silenciamiento estaba registrado en la base de datos
-        if (client.db.timeouts[memberId]) {
+        //Si el aislamiento estaba registrado en la base de datos
+        if (memberTimeout) {
 
             //Elimina la entrada de la base de datos
-            delete client.db.timeouts[memberId];
-
-            //Sobreescribe el fichero de la base de datos con los cambios
-            await client.fs.writeFile('./storage/databases/timeouts.json', JSON.stringify(client.db.timeouts, null, 4), async err => {
-
-                //Si hubo un error, lo lanza a la consola
-                if (err) throw err;
-            });
+            await client.functions.db.delData('timeout', memberId);
         };
 
         //Si no hay caché de registros

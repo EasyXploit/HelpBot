@@ -65,11 +65,12 @@ exports.run = async (interaction, commandConfig, locale) => {
             ], ephemeral: true});
         };
 
-        //Guarda el silenciamiento en la base de datos
-        client.db.timeouts[member.id] = {
-            until: Date.now() + expiresAfter,
-            moderator: interaction.member.id
-        };
+        //Guarda el aislamiento en la base de datos
+        await client.functions.db.genData('timeout', {
+            userId: member.id,
+            moderatorId: interaction.member.id,
+            untilTimestamp: Date.now() + expiresAfter
+        });
 
         //Si no hay caché de registros
         if (!client.loggingCache) client.loggingCache = {};
@@ -81,24 +82,17 @@ exports.run = async (interaction, commandConfig, locale) => {
             reason: reason || locale.undefinedReason
         };
 
-        //Sobreescribe el fichero de la base de datos con los cambios
-        client.fs.writeFile('./storage/databases/timeouts.json', JSON.stringify(client.db.timeouts, null, 4), async err => {
+        //Deshabilita la comunicación del miembro en el servidor
+        await member.disableCommunicationUntil((Date.now() + expiresAfter), reason || locale.undefinedReason);
 
-            //Si hubo un error, lo lanza a la consola
-            if (err) throw err;
+        //Genera una descripción para el embed de notificación
+        const notificationEmbedDescription = reason ? await client.functions.utilities.parseLocale(locale.notificationEmbed.withReason, { memberTag: member.user.tag, reason: reason }) : await client.functions.utilities.parseLocale(locale.notificationEmbed.withoutReason, { memberTag: member.user.tag })
 
-            //Deshabilita la comunicación del miembro en el servidor
-            await member.disableCommunicationUntil((Date.now() + expiresAfter), reason || locale.undefinedReason);
-
-            //Genera una descripción para el embed de notificación
-            const notificationEmbedDescription = reason ? await client.functions.utilities.parseLocale(locale.notificationEmbed.withReason, { memberTag: member.user.tag, reason: reason }) : await client.functions.utilities.parseLocale(locale.notificationEmbed.withoutReason, { memberTag: member.user.tag })
-
-            //Notifica la acción en el canal de invocación
-            await interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
-                .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
-            ]});
-        });
+        //Notifica la acción en el canal de invocación
+        await interaction.reply({ embeds: [ new client.MessageEmbed()
+            .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
+            .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
+        ]});
         
     } catch (error) {
 

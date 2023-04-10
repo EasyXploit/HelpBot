@@ -6,54 +6,47 @@ module.exports = async () => {
     //SILENCIADOS
     //Comprobación de miembros silenciados temporalmente
     setInterval(async () => {
+
+        //Almacena los aislamiento del miembro 
+        const memberTimeouts = await client.functions.db.getData('timeout');
         
         //Para cada uno de los silencios temporales de la BD
-        for (let idKey in client.db.timeouts) {
-
-            //Almacena el tiempo de finalización del silenciamiento
-            const endTime = client.db.timeouts[idKey].until;
+        for (let timeoutData in memberTimeouts) {
 
             //Omite si aún no ha expirado la sanción
-            if (Date.now() < endTime) continue;
+            if (Date.now() < timeoutData.untilTimestamp) continue;
             
             //Busca el miembro
-            const member = await client.functions.utilities.fetch('member', idKey);
+            const member = await client.functions.utilities.fetch('member', timeoutData.userId);
 
-            //Bora el silenciamiento de la base de datos
-            delete client.db.timeouts[idKey];
+            //Bora el aislamiento de la base de datos
+            await client.functions.db.delData('timeout', timeoutData.userId);
 
-            //Graba la nueva base de datos
-            client.fs.writeFile('./storage/databases/timeouts.json', JSON.stringify(client.db.timeouts, null, 4), async err => {
-
-                //Si hubo un error, lo devuelve
-                if (err) throw err;
-
-                //Almacena el autor del embed para el logging
-                let authorProperty = { name: member ? await client.functions.utilities.parseLocale(locale.timeouts.loggingEmbed.author, { userTag: member.user.tag }) : locale.timeouts.loggingEmbed.authorNoMember };
-                if (member) authorProperty.iconURL = member.user.displayAvatarURL({dynamic: true});
-                
-                //Ejecuta el manejador de registro
-                await client.functions.managers.sendLog('untimeoutedMember', 'embed', new client.MessageEmbed()
-                    .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
-                    .setAuthor(authorProperty)
-                    .addFields(
-                        { name: locale.timeouts.loggingEmbed.memberId, value: idKey.toString(), inline: true },
-                        { name: locale.timeouts.loggingEmbed.moderator, value: `${client.user}`, inline: true },
-                        { name: locale.timeouts.loggingEmbed.reason, value: locale.timeouts.reason, inline: true }
-                    )
-                );
-                
-                //Envía una confirmación al miembro
-                if (member) await member.send({ embeds: [ new client.MessageEmbed()
-                    .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
-                    .setAuthor({ name: locale.timeouts.privateEmbed.author, iconURL: client.baseGuild.iconURL({dynamic: true}) })
-                    .setDescription(await client.functions.utilities.parseLocale(locale.timeouts.privateEmbed.description, { member: member, guildName: client.baseGuild.name }))
-                    .addFields(
-                        { name: locale.timeouts.privateEmbed.moderator, value: `${client.user}`, inline: true },
-                        { name: locale.timeouts.privateEmbed.reason, value: locale.timeouts.reason, inline: true }
-                    )
-                ]});
-            });
+            //Almacena el autor del embed para el logging
+            let authorProperty = { name: member ? await client.functions.utilities.parseLocale(locale.timeouts.loggingEmbed.author, { userTag: member.user.tag }) : locale.timeouts.loggingEmbed.authorNoMember };
+            if (member) authorProperty.iconURL = member.user.displayAvatarURL({dynamic: true});
+            
+            //Ejecuta el manejador de registro
+            await client.functions.managers.sendLog('untimeoutedMember', 'embed', new client.MessageEmbed()
+                .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
+                .setAuthor(authorProperty)
+                .addFields(
+                    { name: locale.timeouts.loggingEmbed.memberId, value: timeoutData.userId.toString(), inline: true },
+                    { name: locale.timeouts.loggingEmbed.moderator, value: `${client.user}`, inline: true },
+                    { name: locale.timeouts.loggingEmbed.reason, value: locale.timeouts.reason, inline: true }
+                )
+            );
+            
+            //Envía una confirmación al miembro
+            if (member) await member.send({ embeds: [ new client.MessageEmbed()
+                .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
+                .setAuthor({ name: locale.timeouts.privateEmbed.author, iconURL: client.baseGuild.iconURL({dynamic: true}) })
+                .setDescription(await client.functions.utilities.parseLocale(locale.timeouts.privateEmbed.description, { member: member, guildName: client.baseGuild.name }))
+                .addFields(
+                    { name: locale.timeouts.privateEmbed.moderator, value: `${client.user}`, inline: true },
+                    { name: locale.timeouts.privateEmbed.reason, value: locale.timeouts.reason, inline: true }
+                )
+            ]});
         };
     }, 5000);
 
@@ -61,52 +54,45 @@ module.exports = async () => {
     //Comprobación de miembros baneados temporalmente
     setInterval(async () => {
 
-        //Para cada uno de los baneos temporales de la BD
-        for (let idKey in client.db.bans) {
+        //Almacena la lista de baneos temporales
+        const temporalBans = await client.functions.db.getData('ban');
 
-            //Almacena el tiempo de finalización
-            const endTime = client.db.bans[idKey].until;
+        //Para cada uno de los baneos temporales de la BD
+        for (let banData in temporalBans) {
 
             //Omite si aún no se ha de desbanear
-            if (Date.now() < endTime) continue;
+            if (Date.now() < banData.untilTimestamp) continue;
 
             //Busca el usuario de Discord
-            const user = await client.users.fetch(idKey);
+            const user = await client.users.fetch(banData.userId);
 
-            //Elimina la entrada del baneo en la BD
-            delete client.db.bans[idKey];
+            try {
 
-            //Vuelve a grabar la base de datos
-            client.fs.writeFile('./storage/databases/bans.json', JSON.stringify(client.db.bans, null, 4), async err => {
+                //Desbanea al usuario (si existe)
+                if (user) await client.baseGuild.members.unban(banData.userId);
 
-                //Si se genera un error, lo lanza
-                if (err) throw err;
+                //Elimina la entrada del baneo en la BD
+                await client.functions.db.delData(banData.userId);
 
-                try {
+                //Ejecuta el manejador de registro
+                await client.functions.managers.sendLog('unbannedMember', 'embed', new client.MessageEmbed()
+                    .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
+                    .setAuthor({ name: await client.functions.utilities.parseLocale(locale.bans.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
+                    .addFields(
+                        { name: locale.bans.loggingEmbed.user, value: user.tag, inline: true },
+                        { name: locale.bans.loggingEmbed.moderator, value: `${client.user}`, inline: true },
+                        { name: locale.bans.loggingEmbed.reason, value: locale.bans.reason, inline: true }
+                    )
+                );
 
-                    //Desbanea al usuario (si existe)
-                    if (user) await client.baseGuild.members.unban(idKey);
+            } catch (error) {
 
-                    //Ejecuta el manejador de registro
-                    await client.functions.managers.sendLog('unbannedMember', 'embed', new client.MessageEmbed()
-                        .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
-                        .setAuthor({ name: await client.functions.utilities.parseLocale(locale.bans.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
-                        .addFields(
-                            { name: locale.bans.loggingEmbed.user, value: user.tag, inline: true },
-                            { name: locale.bans.loggingEmbed.moderator, value: `${client.user}`, inline: true },
-                            { name: locale.bans.loggingEmbed.reason, value: locale.bans.reason, inline: true }
-                        )
-                    );
+                //Omite el error si el ban se eliminó manualmente
+                if (error.toString().includes('Unknown Ban')) return;
 
-                } catch (error) {
-
-                    //Omite el error si el ban se eliminó manualmente
-                    if (error.toString().includes('Unknown Ban')) return;
-
-                    //Envía un mensaje de error a la consola
-                    logger.error(error.stack);
-                };
-            });
+                //Envía un mensaje de error a la consola
+                logger.error(error.stack);
+            };
         };
     }, 5000);
 

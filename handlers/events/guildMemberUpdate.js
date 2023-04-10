@@ -21,13 +21,13 @@ module.exports = async (oldMember, newMember, locale) => {
         //Si el miembro ha sido silenciado o dessilenciado
         if (oldMember.communicationDisabledUntilTimestamp !== newMember.communicationDisabledUntilTimestamp) {
 
-            //Almacena la expiración del silenciamiento
+            //Almacena la expiración del aislamiento
             let expiration = newMember.communicationDisabledUntilTimestamp;
             
             //Genera variables para almacenar los campos de los embeds
             let executor = null, reason = null;
 
-            //Busca el último silenciamiento en el registro de auditoría
+            //Busca el último aislamiento en el registro de auditoría
             const fetchedLogs = await newMember.guild.fetchAuditLogs({
                 limit: 1,
                 type: 'MEMBER_UPDATE',
@@ -36,7 +36,7 @@ module.exports = async (oldMember, newMember, locale) => {
             //Almacena el primer resultado de la búsqueda
             const timeoutLog = fetchedLogs.entries.first();
             
-            //Si se encontró un silenciamiento en el primer resultado, y han pasado menos de 5 segundos
+            //Si se encontró un aislamiento en el primer resultado, y han pasado menos de 5 segundos
             if (timeoutLog && (timeoutLog.createdTimestamp > (Date.now() - 5000)) && timeoutLog.target.id === newMember.id) {
 
                 //Actualiza los campos de ejecutor y razón
@@ -90,18 +90,14 @@ module.exports = async (oldMember, newMember, locale) => {
             //Si se ha dessilenciado
             } else {
 
-                //Si el silenciamiento estaba registrado en la base de datos
-                if (client.db.timeouts[newMember.id]) {
+                //Almacena el aislamiento del miembro 
+                const memberTimeout = await client.functions.db.getData('timeout', newMember.id);
+
+                //Si el aislamiento estaba registrado en la base de datos
+                if (memberTimeout) {
 
                     //Elimina la entrada de la base de datos
-                    delete client.db.timeouts[newMember.id];
-
-                    //Sobreescribe el fichero de la base de datos con los cambios
-                    await client.fs.writeFile('./storage/databases/timeouts.json', JSON.stringify(client.db.timeouts, null, 4), async err => {
-
-                        //Si hubo un error, lo lanza a la consola
-                        if (err) throw err;
-                    });
+                    await client.functions.db.delData('timeout', newMember.id);
                 };
 
                 //Envía un mensaje al canal de registros

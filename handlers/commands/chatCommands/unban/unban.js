@@ -53,17 +53,10 @@ exports.run = async (interaction, commandConfig, locale) => {
         await interaction.guild.members.unban(user.id);
         
         //Si el baneo estaba registrado en la base de datos
-        if (client.db.bans[user.id]) {
+        if (await client.functions.db.getData('ban', user.id)) {
 
             //Elimina la entrada de la base de datos
-            delete client.db.bans[user.id];
-
-            //Sobreescribe el fichero de la base de datos con los cambios
-            await client.fs.writeFile('./storage/databases/bans.json', JSON.stringify(client.db.bans), async err => {
-
-                //Si hubo un error, lo lanza a la consola
-                if (err) throw err;
-            });
+            await client.functions.db.delData('ban', user.id);
         };
 
         //Envía un mensaje al canal de registros

@@ -9,14 +9,18 @@ module.exports = async (member, reason, action, moderator, message, interaction,
         //Función para silenciar
         async function timeout(duration) {
 
-            //Almacena la anterior expiración del silenciamiento
-            const oldExpiration = client.db.timeouts[member.id] ? client.db.timeouts[member.id].until : null;
+            //Almacena el timeout del miembro, si tiene
+            const memberTimeout = await client.functions.db.getData('timeout', member.id);
 
-            //Almacena el silenciamiento en la BD
-            client.db.timeouts[member.id] = {
-                until: Date.now() + duration,
-                moderator: client.user.id
-            };
+            //Almacena la anterior expiración del aislamiento
+            const oldExpiration = memberTimeout ? memberTimeout.untilTimestamp : null;
+
+            //Almacena el aislamiento en la BD
+            await client.functions.db.genData('timeout', {
+                userId: member.id,
+                moderatorId: client.user.id,
+                untilTimestamp: Date.now() + duration
+            });
 
             //Si no hay caché de registros
             if (!client.loggingCache) client.loggingCache = {};
@@ -24,19 +28,12 @@ module.exports = async (member, reason, action, moderator, message, interaction,
             //Crea una nueva entrada en la caché de registros
             client.loggingCache[member.id] = {
                 action: 'timeout',
-                executor: member.id,
+                executor: client.user.id,
                 reason: locale.timeoutFunction.reason
             };
-
-            //Sobreescribe el fichero de BD
-            client.fs.writeFile('./storage/databases/timeouts.json', JSON.stringify(client.db.timeouts, null, 4), async err => {
-
-                //Si hubo algún error, lo lanza por consola
-                if (err) throw err;
-
-                //Deshabilita la comunicación del miembro en el servidor
-                await member.disableCommunicationUntil((Date.now() + duration), locale.timeoutFunction.reason);
-            });
+            
+            //Deshabilita la comunicación del miembro en el servidor
+            await member.disableCommunicationUntil((Date.now() + duration), locale.timeoutFunction.reason);
 
             //Envía un mensaje al canal de la infracción
             if (channel.type !== 'DM') await channel.send({ embeds: [ new client.MessageEmbed()
@@ -76,15 +73,10 @@ module.exports = async (member, reason, action, moderator, message, interaction,
             if (duration) {
 
                 //Almacena el baneo en la BD
-                client.db.bans[member.id] = {
-                    until: Date.now() + duration
-                };
-        
-                //Sobreescribe el fichero de BD
-                client.fs.writeFile('./storage/databases/bans.json', JSON.stringify(client.db.bans, null, 4), async err => {
-
-                    //Si hubo algún error, lo lanza por consola
-                    if (err) throw err;
+                await client.functions.db.genData('ban', {
+                    userId: member.id,
+                    moderatorId: client.user.id,
+                    untilTimestamp: Date.now() + duration
                 });
             };
 

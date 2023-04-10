@@ -1,7 +1,7 @@
 //Librería para interactuar con la BD
 const mongoose = require('mongoose');
 
-//Crea un nuevo esquema para el silenciamiento
+//Crea un nuevo esquema para el aislamiento
 const timeoutSchema = new mongoose.Schema({
     docType: {
         type: String,

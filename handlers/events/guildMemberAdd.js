@@ -5,24 +5,20 @@ module.exports = async (member, locale) => {
         //Aborta si no es un evento de la guild registrada
         if (member.guild.id !== client.baseGuild.id) return;
 
-        //Si el miembro tiene un silenciamiento en vigor y se le debe retirar, o no lo tiene y se tiene que desregistrar
-        if ((member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now() && !client.db.timeouts[member.id]) || (!member.communicationDisabledUntilTimestamp && client.db.timeouts[member.id])) {
+        //Almacena el aislamiento del miembro 
+        const memberTimeout = await client.functions.db.getData('timeout', member.id);
+
+        //Si el miembro tiene un aislamiento en vigor y se le debe retirar, o no lo tiene y se tiene que desregistrar
+        if ((member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now() && !memberTimeout) || (!member.communicationDisabledUntilTimestamp && memberTimeout)) {
 
             //Habilita la comunicación del miembro en el servidor
             await member.disableCommunicationUntil(null, locale.communicationEnabled.reason);
 
-            //Si tiene registrado el silenciamiento
-            if (client.db.timeouts[member.id]) {
+            //Si tiene registrado el aislamiento
+            if (memberTimeout) {
 
                 //Elimina la entrada de la base de datos
-                delete client.db.timeouts[member.id];
-
-                //Sobreescribe el fichero de la base de datos con los cambios
-                await client.fs.writeFile('./storage/databases/timeouts.json', JSON.stringify(client.db.timeouts, null, 4), async err => {
-
-                    //Si hubo un error, lo lanza a la consola
-                    if (err) throw err;
-                });
+                await client.functions.db.delData('timeout', member.id);
             };
         };
 

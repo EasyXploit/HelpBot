@@ -70,7 +70,7 @@ module.exports = async () => {
             await client.functions.db.setConfig('timedMessages.configuredMessages', configuredMessages);
 
             //Informa de la situación
-            logger.info('The bot didn\'t have sufficient permissions to send a timed message in its configured channel, so it has been disabled. The following permissions are needed: Send Messages, Embed Links, Attach Files and Read Message History');
+            logger.warn('The bot didn\'t have sufficient permissions to send a timed message in its configured channel, so it has been disabled. The following permissions are needed: Send Messages, Embed Links, Attach Files and Read Message History');
 
             //Aborta el resto de la función
             return false;

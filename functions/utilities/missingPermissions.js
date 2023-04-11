@@ -1,10 +1,13 @@
 //Función para evaluar si el bot o un miembro tiene un conjunto de permisos en un canal o la guild
-module.exports = async (targetChannel, targetMember, requiredPermissions) => {
+module.exports = async (targetChannel, targetMember, requiredPermissions, defaultLocale) => {
 
     try {
 
         //Devuelve "falso" si no se han proporcionado los campos requeridos
-        if (!client || !requiredPermissions) return false;
+        if (!requiredPermissions) return false;
+
+        //Almacena las traducciones de los permisos, o su versión pro defecto si se especifica
+        const locale = defaultLocale ? require('../../resources/locales/en-us.json').permissions : client.locale.permissions;
 
         //Crea un array para los permisos no disponibles para el miembro
         let permissionsNotGranted = [];
@@ -18,8 +21,8 @@ module.exports = async (targetChannel, targetMember, requiredPermissions) => {
             //Almacena los permisos del miembro en el canal objetivo o en la guild si no se proporciona canal
             const memberPermissions = targetChannel ? targetMember.permissionsIn(targetChannel) : targetMember.permissions;
 
-            //Si el miembro no tiene ese permiso en el canal/guild, almacena el permiso traducido (o sin  traducir si no se encuentra)
-            if ((memberPermissions & permissionBits) !== permissionBits) permissionsNotGranted.push(client.locale.permissions[permission] ? client.locale.permissions[permission] : permission);
+            //Si el miembro no tiene ese permiso en el canal/guild, almacena el permiso traducido (o sin traducir si no se encuentra)
+            if ((memberPermissions & permissionBits) !== permissionBits) permissionsNotGranted.push(locale[permission] ? locale[permission] : client.functions.utilities.capitalize(permission));
         });
         
         //Si hubieron permisos indisponibles, los devuelve

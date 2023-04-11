@@ -58,7 +58,7 @@ module.exports = async () => {
         });
 
         //Comprueba si el bot tiene permiso para enviar mensajes en el canal
-        const missingPermissions = await client.functions.utilities.missingPermissions(channel, channel.guild.me, ['SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES', 'READ_MESSAGE_HISTORY']);
+        const missingPermissions = await client.functions.utilities.missingPermissions(channel, channel.guild.me, ['SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES', 'READ_MESSAGE_HISTORY'], true);
 
         //Si el bot no disponía de los permisos necesarios
         if (missingPermissions) {

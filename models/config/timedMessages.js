@@ -82,11 +82,6 @@ const timedMessageSchema = new mongoose.Schema({
         max: 4096
     },
     embed: {
-        enabled: {
-            type: Boolean,
-            default: true,
-            required: true
-        },
         color: String,
         author: {
             name: {

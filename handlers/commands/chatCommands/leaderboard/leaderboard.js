@@ -28,7 +28,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         const guildMembers = await client.baseGuild.members.fetch();
 
         //Por cada miembro en la base de datos de perfiles
-        for (const memberProfile in memberProfiles) {
+        for (const memberProfile of memberProfiles) {
 
             //Busca el miembro en la guild, pasándole caché a la función
             const member = await client.functions.utilities.fetch('member', memberProfile.userId, null, guildMembers);

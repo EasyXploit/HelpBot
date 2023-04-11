@@ -11,7 +11,7 @@ module.exports = async () => {
         const memberTimeouts = await client.functions.db.getData('timeout');
         
         //Para cada uno de los silencios temporales de la BD
-        for (let timeoutData in memberTimeouts) {
+        for (let timeoutData of memberTimeouts) {
 
             //Omite si aún no ha expirado la sanción
             if (Date.now() < timeoutData.untilTimestamp) continue;
@@ -58,7 +58,7 @@ module.exports = async () => {
         const temporalBans = await client.functions.db.getData('ban');
 
         //Para cada uno de los baneos temporales de la BD
-        for (let banData in temporalBans) {
+        for (let banData of temporalBans) {
 
             //Omite si aún no se ha de desbanear
             if (Date.now() < banData.untilTimestamp) continue;
@@ -132,7 +132,7 @@ module.exports = async () => {
         const currentPolls = await client.functions.db.getData('poll');
 
         //Para cada una de las encuestas en la BD
-        for (let pollData in currentPolls) {
+        for (let pollData of currentPolls) {
 
             //Almacena la info. de la encuesta
             const storedPoll = currentPolls[pollData.pollId];

@@ -151,7 +151,7 @@ module.exports = async () => {
     const sentTimedMessaged = await client.functions.db.getData('sent');
 
     //Por cada uno de los mensajes enviados
-    for (const sent in sentTimedMessaged) {
+    for (const sent of sentTimedMessaged) {
 
         //Si la configuración asociada ta no existe
         if (!configuredMessages[sent.hash]) {

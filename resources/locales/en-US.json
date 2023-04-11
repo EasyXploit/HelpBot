@@ -221,7 +221,8 @@
                         "description": "Generates or retrieves a permanent invite link in the rules channel, or in the first text channel that allows it"
                     },
                     "inviteReason": "{{botTag}} routine",
-                    "embed": {
+                    "noTargetChannel": "There are no channels for which the bot has permission to create invites",
+                    "resultEmbed": {
                         "author": "Permanent invite",
                         "footer": "This link never expires and has unlimited uses"
                     }

@@ -134,17 +134,14 @@ module.exports = async () => {
         //Para cada una de las encuestas en la BD
         for (let pollData of currentPolls) {
 
-            //Almacena la info. de la encuesta
-            const storedPoll = currentPolls[pollData.pollId];
-
             //Omite esta encuesta si no tiene expiración
-            if (!storedPoll.expirationTimestamp) continue;
+            if (!pollData.expirationTimestamp) continue;
 
             //Busca el canal de la encuesta
-            const channel = await client.functions.utilities.fetch('channel', storedPoll.channelId);
+            const channel = await client.functions.utilities.fetch('channel', pollData.channelId);
 
             //Busca el mensaje de la encuesta
-            const poll = await client.functions.utilities.fetch('message', storedPoll.messageId, channel);
+            const poll = await client.functions.utilities.fetch('message', pollData.messageId, channel);
 
             //Si no se encontró el canal o la encuesta
             if (!channel || !poll) {
@@ -154,7 +151,7 @@ module.exports = async () => {
             };
 
             //Si la encuesta ya ha expirado
-            if (Date.now() > storedPoll.expirationTimestamp) {
+            if (Date.now() > pollData.expirationTimestamp) {
 
                 //Almacena los votos realizados
                 let votes = [];
@@ -200,7 +197,7 @@ module.exports = async () => {
                 //Envía los resultados al canal de la encuesta
                 await poll.channel.send({ embeds: [ new client.MessageEmbed()
                     .setAuthor({ name: locale.polls.finishedEmbed.author, iconURL: 'attachment://endFlag.png' })
-                    .setDescription(`${storedPoll.title}\n\n${storedPoll.options}`)
+                    .setDescription(`${pollData.title}\n\n${pollData.options}`)
                     .addFields({ name: locale.polls.finishedEmbed.results, value: results.join(' '), inline: false })
                 ], files: ['./resources/images/endFlag.png']}).then(async poll => {
 
@@ -208,7 +205,7 @@ module.exports = async () => {
                     await client.functions.managers.sendLog('pollEnded', 'embed', new client.MessageEmbed()
                         .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
                         .setTitle(`📑 ${locale.polls.loggingEmbed.title}`)
-                        .setDescription(`${await client.functions.utilities.parseLocale(locale.polls.loggingEmbed.description, { poll: `[${storedPoll.title}](${poll.url})`, channel: channel })}.`)
+                        .setDescription(`${await client.functions.utilities.parseLocale(locale.polls.loggingEmbed.description, { poll: `[${pollData.title}](${poll.url})`, channel: channel })}.`)
                     );
                 });
                 
@@ -221,7 +218,7 @@ module.exports = async () => {
             } else { //Si la encuesta aún no ha expirado
 
                 //Calcula el tiempo restante
-                const remainingTime = storedPoll.expiration - Date.now();
+                const remainingTime = pollData.expiration - Date.now();
 
                 //Calcula el formato del tiempo restante
                 const remainingDays = Math.floor(remainingTime / (60 * 60 * 24 * 1000));
@@ -238,7 +235,7 @@ module.exports = async () => {
                 if (oldRemainingTime !== newRemainingTime) await poll.edit({ embeds: [ new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.polls')}`)
                     .setAuthor({ name: locale.polls.progressEmbed.author, iconURL: 'attachment://poll.png' })
-                    .setDescription(`${storedPoll.title}\n\n${storedPoll.options}`)
+                    .setDescription(`${pollData.title}\n\n${pollData.options}`)
                     .setFooter({ text: newRemainingTime })
                 ]});
             };

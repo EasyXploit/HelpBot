@@ -18,7 +18,7 @@ module.exports = async () => {
                 const path = `../functions/${functionType}/${functionFile}`;
 
                 //Carga la función de ejecución de cada archivo, en función del cargador de módulos a emplear (CommonJS o ESM)
-                client.functions[functionType][functionFile.split('.').shift()] = fileExtension === 'mjs' ? import(path) : require(path);
+                client.functions[functionType][functionFile.split('.').shift()] = fileExtension === 'mjs' ? await import(path) : require(path);
             };
         };
 

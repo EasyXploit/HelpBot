@@ -172,7 +172,7 @@ module.exports = async (member, reason, action, moderator, message, interaction,
             let memberWarns = memberProfile.moderationLog.warnsHistory;
 
             //Genera un Id para la infracción
-            const warnId = await client.functions.utilities.generateSid();
+            const warnId = await client.functions.utilities.generateSid.default();
 
             //Genera un array para almacenar el contenido filtrado
             let filteredContent = [];

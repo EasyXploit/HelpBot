@@ -68,7 +68,7 @@ module.exports = async (event, locale) => {
         if (!baseGuildId || baseGuildId !== cachedGuilds.first().id) {
 
             //Almacena la nueva configuración
-            await require('../../lifecycle/newGuild.js')(await cachedGuilds.filter(guild => guild.ownerId !== client.user.id));
+            await require('../../lifecycle/newGuild.js')(await cachedGuilds.filter(guild => guild.ownerId !== client.user.id).first());
             
         } else {
 

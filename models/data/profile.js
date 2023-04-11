@@ -22,10 +22,6 @@ const warnDataSchema = new mongoose.Schema({
     }
 });
 
-        required: true
-    }
-});
-
 //Crea un nuevo esquema para el perfil del miembro
 const profileSchema = new mongoose.Schema({
     docType: {

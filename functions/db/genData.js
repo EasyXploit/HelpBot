@@ -1,5 +1,5 @@
 //Función para generar un documento de datos en la base de datos
-module.exports = async (dataType, data) => {
+module.exports = async (dataType, newData) => {
 
     try {
 
@@ -10,13 +10,13 @@ module.exports = async (dataType, data) => {
         let newDataDoc = new DataModel();
 
         //Por cada uno de los datos de inicialización
-        for (const key in data) {
+        for (const key in newData) {
 
             //Comprueba si lo puede añadir al documento
-            if (Object.hasOwnProperty.call(data, key)) {
+            if (Object.hasOwnProperty.call(newData, key)) {
 
                 //Lo añade al documento
-                newDataDoc.set(key, data[key]);
+                newDataDoc.set(key, newData[key]);
             };
         };
     

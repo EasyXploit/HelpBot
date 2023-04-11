@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 //Crea un nuevo esquema para las advertencias de un miembro
-const warnSchema = new mongoose.Schema({
+const warnDataSchema = new mongoose.Schema({
     timestamp: {
         type: Number,
         required: true
@@ -11,8 +11,17 @@ const warnSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    moderatorId: {
-        type: String,
+    content: String,
+    executor: {
+        type: {
+            type: String,
+            enum: ['system', 'bot', 'member'],
+            required: true
+        },
+        memberId: String
+    }
+});
+
         required: true
     }
 });
@@ -65,7 +74,7 @@ const profileSchema = new mongoose.Schema({
         }
     },
     moderationLog: {
-        warns: [warnSchema]
+        warnsHistory: [warnDataSchema],
     }
 });
 

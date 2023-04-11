@@ -2,8 +2,11 @@ exports.run = async (interaction, commandConfig, locale) => {
 
     try {
 
+        //Almacena todos los perfiles de los miembros
+        const memberProfiles = await client.functions.db.getData('profile');
+
         //Devuelve un error si no hay tabla de clasificación
-        if (!client.db.stats || !Object.keys(client.db.stats).length) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (!memberProfiles || memberProfiles.length === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noLeaderboard}.`)
         ], ephemeral: true});
@@ -24,14 +27,11 @@ exports.run = async (interaction, commandConfig, locale) => {
         //Almacena la caché de los miembros de la guild
         const guildMembers = await client.baseGuild.members.fetch();
 
-        //Por cada miembro en la base de datos de stats
-        for (const memberId in client.db.stats) {
-
-            //Almacena las stats del miembro iterado
-            const memberStats = client.db.stats[memberId];
+        //Por cada miembro en la base de datos de perfiles
+        for (const memberProfile in memberProfiles) {
 
             //Busca el miembro en la guild, pasándole caché a la función
-            const member = await client.functions.utilities.fetch('member', memberId, null, guildMembers);
+            const member = await client.functions.utilities.fetch('member', memberProfile.userId, null, guildMembers);
 
             //Si el miembro no estaba en la guild y no se debe mostrar, lo omite
             if (commandConfig.hideNotPresent && !member) continue;
@@ -41,13 +41,13 @@ exports.run = async (interaction, commandConfig, locale) => {
                 
             //Sube una entrada al array de entradas
             entries.push({
-                memberId: memberId,
+                memberId: memberProfile.userId,
                 memberTag: member ? `**${member.user.tag}**` : locale.unknownMember,
-                experience: memberStats.experience,
-                aproxVoiceTime: memberStats.aproxVoiceTime,
-                messagesCount: memberStats.messagesCount,
+                experience: memberProfile.stats.experience,
+                aproxVoiceTime: memberProfile.stats.aproxVoiceTime,
+                messagesCount: memberProfile.stats.messagesCount,
                 antiquity: member.joinedTimestamp,
-                lvl: memberStats.level
+                lvl: memberProfile.stats.level
             });
         };
 

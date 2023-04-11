@@ -77,32 +77,14 @@ module.exports = async (message, locale) => {
     //Si se trata de un mensaje enviado en una guild y no fue filtrado
     if (message.member && isPermitted) {
 
-        //Si el miembro no tiene tabla de estadísticas
-        if (!client.db.stats[message.member.id]) {
-
-            //Crea la tabla del miembro
-            client.db.stats[message.member.id] = {
-                experience: 0,
-                level: 0,
-                aproxVoiceTime: 0,
-                messagesCount: 0,
-                notifications: {
-                    public: true,
-                    private: true
-                }
-            };
-        };
-
-        //Almacena las stats del miembro
-        const memberStats = client.db.stats[message.member.id];
+        //Almacena el perfil del miembro, o lo crea
+        let memberProfile = await client.functions.db.getData('profile', message.member.id) || await client.functions.db.genData('profile', { userId: message.member.id });
 
         //Incrementa el contador de mensajes enviados del miembro
-        memberStats.messagesCount++;
+        memberProfile.stats.messagesCount++;
         
         //Guarda las nuevas estadísticas del miembro en la base de datos
-        client.fs.writeFile('./databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
-            if (err) throw err;
-        });
+        await client.functions.db.setData('profile', message.member.id, memberProfile);
 
         //Si el último mensaje que generó EXP fue hace más del periodo establecido
         if (await client.functions.db.getConfig('leveling.rewardMessages') && ((message.createdTimestamp - userMessages.lastValidTimestamp) > await client.functions.db.getConfig('leveling.minimumTimeBetweenMessages'))) {

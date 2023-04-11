@@ -30,8 +30,11 @@ module.exports = async (interaction) => {
         //Almacena la acción a realizar determinada por el estilo del botón
         const buttonAction = interaction.message.components[0].components[0].style === 'SECONDARY' ? false : true;
 
+        //Almacena el perfil del miembro, o lo crea
+        let memberProfile = await client.functions.db.getData('profile', interaction.user.id) || await client.functions.db.genData('profile', { userId: interaction.user.id });
+
         //Almacena los ajustes de notificacion del miembro
-        let memberSetting = client.db.stats[interaction.user.id].notifications.private;
+        let memberSetting = memberProfile.notifications.private;
 
         //Si la config. ya estaba aplicada
         if ((!buttonAction && !memberSetting) || (buttonAction && memberSetting)) {
@@ -42,28 +45,22 @@ module.exports = async (interaction) => {
         } else {
 
             //Sino, modifica la base de datos con los cambios
-            client.db.stats[interaction.user.id].notifications.private = buttonAction;
+            memberSetting.notifications.private = buttonAction;
+            await client.functions.db.setData('profile', interaction.user.id, memberProfile);
         };
 
-        //Sobreescribe el fichero de la base de datos con los cambios
-        client.fs.writeFile('./databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
+        //Genera una nueva fila para los botones
+        const buttonsRow = new client.MessageActionRow().addComponents(
 
-            //Si hubo un error, lo lanza a la consola
-            if (err) throw err;
+            //Genera el nuevo botón
+            new client.MessageButton()
+                .setLabel(buttonAction ? locale.newButon.disable : locale.newButon.enable)
+                .setStyle(buttonAction ? 'SECONDARY' : 'SUCCESS')
+                .setCustomId('updateNotifications')
+        );
 
-            //Genera una nueva fila para los botones
-            const buttonsRow = new client.MessageActionRow().addComponents(
-
-                //Genera el nuevo botón
-                new client.MessageButton()
-                    .setLabel(buttonAction ? locale.newButon.disable : locale.newButon.enable)
-                    .setStyle(buttonAction ? 'SECONDARY' : 'SUCCESS')
-                    .setCustomId('updateNotifications')
-            );
-
-            //Edita la interacción con el nuevo botón
-            await interaction.update({ components: [buttonsRow] });
-        });
+        //Edita la interacción con el nuevo botón
+        await interaction.update({ components: [buttonsRow] });
 
     } catch (error) {
 

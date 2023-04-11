@@ -274,30 +274,14 @@ module.exports = async () => {
             //Actualiza el timestamp de la última recompensa de XP obtenida
             client.usersVoiceStates[member.id].lastXpReward = Date.now();
 
-            //Si el miembro no tiene tabla de stats
-            if (!client.db.stats[member.id]) {
-
-                //Crea la tabla del miembro
-                client.db.stats[member.id] = {
-                    experience: 0,
-                    level: 0,
-                    lastMessage: 0,
-                    aproxVoiceTime: 0,
-                    messagesCount: 0,
-                    notifications: {
-                        public: true,
-                        private: true
-                    }
-                };
-            };
+            //Almacena el perfil del miembro, o lo crea
+            let memberProfile = await client.functions.db.getData('profile', member.id) || await client.functions.db.genData('profile', { userId: member.id });
 
             //Actualiza el tiempo de voz del miembro
-            client.db.stats[member.id].aproxVoiceTime += await client.functions.db.getConfig('leveling.XPGainInterval');
+            memberProfile.stats.aproxVoiceTime += await client.functions.db.getConfig('leveling.XPGainInterval');
 
             //Guarda las nuevas estadísticas del miembro en la base de datos
-            client.fs.writeFile('./databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
-                if (err) throw err;
-            });
+            await client.functions.db.setData('profile', member.id, memberProfile);
         };
         
     }, await client.functions.db.getConfig('leveling.XPGainInterval'));

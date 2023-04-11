@@ -16,25 +16,11 @@ module.exports = async (member, mode, channel) => {
     //Si no se puede ganar XP en el canal, aborta
     if (nonXPChannels.includes(channel.id)) return;
 
-    //Si el miembro no tiene tabla de stats
-    if (!client.db.stats[member.id]) {
-
-        //Crea la tabla del miembro
-        client.db.stats[member.id] = {
-            experience: 0,
-            level: 0,
-            lastMessage: 0,
-            aproxVoiceTime: 0,
-            messagesCount: 0,
-            notifications: {
-                public: true,
-                private: true
-            }
-        };
-    };
-
-    //Almacena las stats del miembro
-    const memberStats = client.db.stats[member.id];
+    //Almacena el perfil del miembro, o lo crea
+    let memberProfile = await client.functions.db.getData('profile', member.id) || await client.functions.db.genData('profile', { userId: member.id });
+    
+    //Almacena las estadísticas del miembro
+    let memberStats = memberProfile.stats;
 
     //Genera XP aleatorio según los rangos
     const newXp = await client.functions.utilities.randomIntBetween(await client.functions.db.getConfig('leveling.minimumXpReward'), await client.functions.db.getConfig('leveling.maximumXpReward'));
@@ -97,12 +83,10 @@ module.exports = async (member, mode, channel) => {
         const levelingConfig = await client.functions.db.getConfig('leveling');
 
         //Manda el mensaje de subida de nivel, si se ha configurado
-        if (mode === 'message' && levelingConfig.notifylevelUpOnChat && memberStats.notifications.public) channel.send({ embeds: [levelUpEmbed] });
-        if (mode === 'voice' && levelingConfig.notifylevelUpOnVoice && memberStats.notifications.private) member.send({ embeds: [levelUpEmbed], components: [buttonsRow] });
+        if (mode === 'message' && levelingConfig.notifylevelUpOnChat && memberProfile.notifications.public) channel.send({ embeds: [levelUpEmbed] });
+        if (mode === 'voice' && levelingConfig.notifylevelUpOnVoice && memberProfile.notifications.private) member.send({ embeds: [levelUpEmbed], components: [buttonsRow] });
     };
 
     //Guarda las nuevas estadísticas del miembro en la base de datos
-    client.fs.writeFile('./databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
-        if (err) throw err;
-    });
+    await client.functions.db.setData('profile', member.id, memberProfile);
 };

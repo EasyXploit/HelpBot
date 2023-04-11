@@ -30,25 +30,27 @@ const profileSchema = new mongoose.Schema({
         unique: true,
         immutable: true
     },
-    experience: {
-        type: Number,
-        default: 0,
-        required: true
-    },
-    level: {
-        type: Number,
-        default: 0,
-        required: true
-    },
-    aproxVoiceTime: {
-        type: Number,
-        default: 0,
-        required: true
-    },
-    messagesCount: {
-        type: Number,
-        default: 0,
-        required: true
+    stats: {
+        experience: {
+            type: Number,
+            default: 0,
+            required: true
+        },
+        level: {
+            type: Number,
+            default: 0,
+            required: true
+        },
+        aproxVoiceTime: {
+            type: Number,
+            default: 0,
+            required: true
+        },
+        messagesCount: {
+            type: Number,
+            default: 0,
+            required: true
+        }
     },
     notifications: {
         public: {

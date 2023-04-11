@@ -105,17 +105,10 @@ module.exports = async (member, locale) => {
         };
 
         //Si el miembro tiene estadísticas y no se desea preservarlas
-        if (client.db.stats[member.id] && !await client.functions.db.getConfig('leveling.preserveStats')) {
+        if (await client.functions.db.getData('profile', member.id) && !await client.functions.db.getConfig('leveling.preserveStats')) {
 
             //Borra la entrada de la base de datos
-            delete client.db.stats[member.id];
-
-            //Sobreescribe el fichero de la base de datos con los cambios
-            client.fs.writeFile('./databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
-
-                //Si hubo un error, lo lanza a la consola
-                if (err) throw err;
-            });
+            await client.functions.db.delData('profile', member.id);
         };
 
     } catch (error) {

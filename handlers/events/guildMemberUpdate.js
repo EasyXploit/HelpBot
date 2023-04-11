@@ -8,8 +8,11 @@ module.exports = async (oldMember, newMember, locale) => {
         //Si el miembro ha pasado la pantalla de verificación
         if (oldMember.pending && !newMember.pending) {
 
+            //Almacena el perfil del miembro, si es que existe
+            let memberProfile = await client.functions.db.getData('profile', member.id);
+
             //Si el miembro tiene entradas en la tabla de estadísticas, asigna las recompensas que le corresponda
-            if (client.db.stats[newMember.id] && await client.functions.db.getConfig('leveling.preserveStats')) await client.functions.leveling.assignRewards(newMember, client.db.stats[newMember.id].level);
+            if (memberProfile && await client.functions.db.getConfig('leveling.preserveStats')) await client.functions.leveling.assignRewards(newMember, memberProfile.stats.level);
 
             //Almacena el modo de manejo de nuevos miembros
             const newMemberMode = await client.functions.db.getConfig('welcomes.newMemberMode');

@@ -71,30 +71,14 @@ module.exports = async (oldState, newState, locale) => {
                 //Añade XP al miembro por última vez
                 await client.functions.leveling.addExperience(member, 'voice', channel);
 
-                //Si el miembro no tiene tabla de stats
-                if (!client.db.stats[member.id]) {
-
-                    //Crea la tabla del miembro
-                    client.db.stats[member.id] = {
-                        experience: 0,
-                        level: 0,
-                        lastMessage: 0,
-                        aproxVoiceTime: 0,
-                        messagesCount: 0,
-                        notifications: {
-                            public: true,
-                            private: true
-                        }
-                    };
-                };
+                //Almacena el perfil del miembro, o lo crea
+                let memberProfile = await client.functions.db.getData('profile', member.id) || await client.functions.db.genData('profile', { userId: member.id });
 
                 //Actualiza el tiempo de voz del miembro
-                client.db.stats[member.id].aproxVoiceTime += XPGainInterval;
+                memberProfile.stats.aproxVoiceTime += XPGainInterval;
 
                 //Guarda las nuevas estadísticas del miembro en la base de datos
-                client.fs.writeFile('./databases/stats.json', JSON.stringify(client.db.stats, null, 4), async err => {
-                    if (err) throw err;
-                });
+                await client.functions.db.setData('profile', member.id, memberProfile);
             };
             
             //Borra el registro del miembro que ha dejado el canal de voz

@@ -3,10 +3,10 @@ exports.run = async (interaction, commandConfig, locale) => {
     try {
 
         //Busca el miembro en cuestión
-        const member = interaction.options._hoistedOptions[0] ? await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0].value || interaction.member.id): null;
+        const member = interaction.options._hoistedOptions[0] ? await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0].value): await client.functions.utilities.fetch('member', interaction.member.id);
 
         //Almacena el ID del miembro
-        const memberId = member ? interaction.options._hoistedOptions[0].value : interaction.member.id;
+        const memberId = member ? interaction.member.id : interaction.options._hoistedOptions[0].value;
 
         //Comprueba, si corresponde, que el miembro tenga permiso para ver el historial de otros
         if (interaction.member.id !== memberId) {
@@ -34,7 +34,16 @@ exports.run = async (interaction, commandConfig, locale) => {
         let onDay = 0, onWeek = 0, total = 0;
 
         //Almacena el perfil del miembro, o lo crea
-        let memberProfile = await client.functions.db.getData('profile', memberId) || await client.functions.db.genData('profile', { userId: memberId });
+        let memberProfile = await client.functions.db.getData('profile', memberId);
+
+        //Si el miembro no está en el servidor y no tiene perfil, devuelve un error
+        if (!memberProfile && !member) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
+        ], ephemeral: true});
+
+        //Crea el perfil del miembro si no lo tiene
+        if (!memberProfile) memberProfile = await client.functions.db.genData('profile', { userId: memberId })
 
         //Almacena las advertencias del miembro
         let memberWarns = memberProfile.moderationLog.warnsHistory;
@@ -89,7 +98,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             };
 
             //Almacena la sanción actual, si aplica
-            const sanction = member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now() ? `${locale.timeoutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>` : `\`${locale.noTimeout}\``;
+            const sanction = member && member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now() ? `${locale.timeoutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>` : `\`${locale.noTimeout}\``;
 
             //Genera el embed de las infracciones
             let newPageEmbed = new client.MessageEmbed()
@@ -102,7 +111,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                     { name: locale.infractionsEmbed.total, value: total.toString(), inline: true },
                     { name: locale.infractionsEmbed.list, value: total > 0 ? board : locale.infractionsEmbed.noList, inline: false }
                 )
-                .setFooter({ text: await client.functions.utilities.parseLocale(locale.infractionsEmbed.page, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.baseGuild.iconURL({dynamic: true}) });
+                .setFooter({ text: await client.functions.utilities.parseLocale(locale.infractionsEmbed.page, { actualPage: actualPage, totalPages: totalPages > 0 ? totalPages : 1 }), iconURL: client.baseGuild.iconURL({dynamic: true}) });
 
             //Si se encontró el miembro, muestra su avatar en el embed
             if (member) newPageEmbed.setThumbnail(member.user.displayAvatarURL({dynamic: true}));

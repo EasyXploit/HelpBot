@@ -200,6 +200,7 @@
                     },
                     "nonPrivileged": "{{interactionAuthor}}, you do not have privileges to perform this operation",
                     "noBots": "You cannot get information from a bot",
+                    "memberNotFound": "No data for this member has been found",
                     "warnSystemExecutor": "Integrated moderation",
                     "unknownModerator": "Unknown moderator",
                     "timeoutedUntil": "Timeouted until",

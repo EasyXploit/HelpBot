@@ -1212,7 +1212,7 @@
                 "actualSanction": "Current sanction",
                 "timeoutedUntil": "Timeouted until"
             },
-            "report": {
+            "sendReport": {
                 "reportEmbed": {
                     "author": "{{memberTag}} has reported the following",
                     "reportReason": "Report reason",
@@ -1225,7 +1225,7 @@
                     "fileName": "File {{fileNumber}} [{{fileType}}]"
                 },
                 "correct": "The report has been sent",
-                "temporaryError": "This feature is not available at this time.\nPlease try again later"
+                "featureDisabled": "This feature is not available at this time.\nPlease try again later"
             },
             "updatePresence": {
                 "membersCount": "{{memberCount}} members"

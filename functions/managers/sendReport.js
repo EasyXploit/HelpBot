@@ -2,17 +2,17 @@
 module.exports = async (interaction, modalInteraction, reportReason, reportedMember) => {
 
     //Almacena las traducciones
-    const locale = client.locale.functions.managers.report;
+    const locale = client.locale.functions.managers.sendReport;
 
     try {
 
         //Comprobar si el canal de reportes está configurado y almacenado en memoria
-        if (!await client.functions.db.getConfig('system.modules.memberReports.enabled')) {
+        if (!await client.functions.db.getConfig('system.modules.memberReports')) {
 
             //Envía un mensaje de aviso al usuario
             return await (modalInteraction ? modalInteraction : interaction).reply({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.information')}`)
-                .setDescription(`${client.customEmojis.infoTick} ${locale.featureDisabled}.`)
+                .setDescription(`${client.customEmojis.grayTick} ${locale.featureDisabled}.`)
             ], ephemeral: true});
         };
 

@@ -162,7 +162,7 @@ module.exports = async (assembleData) => {
                 resultData.components[rowNumber] = new client.MessageActionRow();
 
                 //Almacena los botones para esa fila
-                let rowButtons = assembleData.actionRows[rowNumber];
+                let rowButtons = assembleData.actionRows[rowNumber].buttons;
 
                 //Si la fila contiene botones
                 if (rowButtons.length > 0) {

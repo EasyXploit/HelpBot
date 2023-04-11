@@ -8,19 +8,12 @@ const sentSchema = new mongoose.Schema({
         default: 'sent',
         immutable: true
     },
-    messageHash: {
-        type: String,
-        required: true,
-        immutable: true
-    },
-    messageId: {
+    hash: {
         type: String,
         required: true
     },
-    lastSentTimestamp: {
-        type: Number,
-        required: true
-    }
+    messageId: String,
+    lastSentTimestamp: Number
 });
 
 //Genera un modelo a partir del esquema y lo exporta como módulo

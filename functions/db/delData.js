@@ -26,7 +26,7 @@ module.exports = async (dataType, dataId) => {
                     idType = 'pollId';
                     break;
                 case 'sent':
-                    idType = 'messageHash';
+                    idType = 'hash';
                     break;
             };
 

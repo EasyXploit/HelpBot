@@ -33,36 +33,29 @@ exports.run = async (interaction, commandConfig, locale) => {
         //Almacena el total de sanciones, en 1 día y 1 semana, y las páginas totales
         let onDay = 0, onWeek = 0, total = 0;
 
+        //Almacena el perfil del miembro, o lo crea
+        let memberProfile = await client.functions.db.getData('profile', memberId) || await client.functions.db.genData('profile', { userId: memberId });
+
         //Almacena las advertencias del miembro
-        let memberWarns = client.db.warns[memberId];
+        let memberWarns = memberProfile.moderationLog.warnsHistory;
 
-        //Si el miembro tenía advertencias
-        if (client.db.warns[memberId]) {
+        //Invierte el orden de aparición de las advertencias
+        memberWarns = memberWarns.reverse();
 
-            //Mapea las advertencias del miembro
-            memberWarns = Object.entries(client.db.warns[memberId]).reverse().map((warn) => ({ [warn[0]]: warn[1] }));
+        //Almacena el total de ellas
+        total = memberWarns.length;
 
-            //Almacena el total de ellas
-            total = memberWarns.length
+        //Almacena el total de páginas
+        totalPages = Math.ceil(memberWarns.length / 10);
 
-            //Almacena el total de páginas
-            totalPages = Math.ceil(memberWarns.length / 10);
+        //Por cada advertencia del miembro
+        for (const warn of memberWarns) {
 
-            //Por cada advertencia del miembro
-            Object.values(memberWarns).forEach(warn => {
+            //Si ocurrió en un día o menos, lo contabiliza
+            if ((Date.now() - warn.timestamp) <= 86400000) onDay++;
 
-                //
-                const warnId = Object.keys(warn)[0];
-
-                //
-                const warnData = warn[warnId];
-
-                //Si ocurrió en un día o menos, lo contabiliza
-                if ((Date.now() - warnData.timestamp) <= 86400000) onDay++;
-
-                //Si ocurrió en una semana o menos, lo contabiliza
-                if ((Date.now() - warnData.timestamp) <= 604800000) onWeek++;
-            });
+            //Si ocurrió en una semana o menos, lo contabiliza
+            if ((Date.now() - warn.timestamp) <= 604800000) onWeek++;
         };
 
         //Almacena la última interacción del comando
@@ -86,13 +79,13 @@ exports.run = async (interaction, commandConfig, locale) => {
                 if (!memberWarns[index]) break;
 
                 //Almacena las claves de la advertencia
-                let warn = Object.values(memberWarns[index])[0];
+                const warn = memberWarns[index];
 
                 //Busca y almacena el moderador que aplicó la sanción
-                const moderator = await client.functions.utilities.fetch('member', warn.moderator) || locale.unknownModerator;
+                const moderator = warn.executor.type === 'system' ? locale.warnSystemExecutor : await client.functions.utilities.fetch('member', warn.executor) || locale.unknownModerator;
 
                 //Añade una nueva fila con los detalles de la advertencia
-                board += `\`${Object.keys(memberWarns[index])[0]}\` • ${moderator} • <t:${Math.round(new Date(parseInt(warn.timestamp)) / 1000)}>\n${warn.reason}\n\n`;
+                board += `\`${warn.warnId}\` • ${moderator} • <t:${Math.round(new Date(parseInt(warn.timestamp)) / 1000)}>\n${warn.reason}\n\n`;
             };
 
             //Almacena la sanción actual, si aplica

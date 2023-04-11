@@ -29,15 +29,18 @@ exports.run = async (interaction, commandConfig, locale) => {
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ], ephemeral: true});
+        
+        //Almacena el perfil del miembro
+        const memberProfile = await client.functions.db.getData('profile', member.id);
+
+        //Almacena las advertencias del miembro
+        const memberWarns = memberProfile ? memberProfile.moderationLog.warnsHistory : null;
 
         //Si el miembro tenía advertencias previas y el ejecutor no es el owner de la guild
-        if (client.db.warns[member.id] && interaction.member.id !== interaction.guild.ownerId) {
-            
-            //Almacena las claves de cada uno de los warns del miembro
-            const warnsKeys = Object.keys(client.db.warns[member.id]);
+        if (memberWarns && interaction.member.id !== interaction.guild.ownerId) {
 
             //Almacena el último warn del miembro
-            const latestWarn = client.db.warns[member.id][warnsKeys[warnsKeys.length - 1]];
+            const latestWarn = memberWarns[memberWarns.length - 1];
 
             //Si no ha pasado el tiempo mínimo entre advertencias
             if (Date.now() - latestWarn.timestamp < commandConfig.minimumTimeDifference) {

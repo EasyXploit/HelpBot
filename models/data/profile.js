@@ -11,7 +11,7 @@ const warnDataSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    content: String,
+    content: [String],
     executor: {
         type: {
             type: String,

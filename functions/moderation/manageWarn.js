@@ -165,48 +165,68 @@ module.exports = async (member, reason, action, moderator, message, interaction,
         //Advierte si se ha de hacer
         if (action === 2 || action === 3) {
 
-            //Añade una nueva tabla de infracciones para el miembro
-            if (!client.db.warns[member.id]) client.db.warns[member.id] = {};
+            //Almacena el perfil del miembro, o lo crea
+            let memberProfile = await client.functions.db.getData('profile', member.id) || await client.functions.db.genData('profile', { userId: member.id });
 
-            //Genera un ID para la infracción
-            const warnID = await client.functions.utilities.generateSid();
-            
-            //Graba la infracción en la base de datos
-            client.db.warns[member.id][warnID] = {
-                timestamp: Date.now(),
-                reason: warnReason,
-                moderator: moderator.id
+            //Almacena las advertencias del miembro
+            let memberWarns = memberProfile.moderationLog.warnsHistory;
+
+            //Genera un Id para la infracción
+            const warnId = await client.functions.utilities.generateSid();
+
+            //Genera un array para almacenar el contenido filtrado
+            let filteredContent = [];
+
+            //Si se advirtió un mensaje y tenía contenido, lo almacena
+            if (message && message.content) messageContent.push(message.content);
+
+            //Si se advirtió un mensaje y tenía adjuntos
+            if (message && message.attachments.size > 0) {
+
+                //Obtiene un array con los adjuntos del mensaje filtrado
+                const attachmentsArray = Array.from(message.attachments.values());
+
+                //Sube la URL de cada adjunto  al array de contenido filtrado
+                for (const attachment of attachmentsArray) filteredContent.push(attachment.url);
             };
 
-            //Sobreescribe la base de datos con los nuevos datos
-            client.fs.writeFile('./databases/warns.json', JSON.stringify(client.db.warns, null, 4), async err => {
-
-                //Si ocurrió un error, lo lanza a la consola
-                if (err) throw err;
-
-                //Ejecuta el manejador de registro
-                await client.functions.managers.sendLog('warnedMember', 'embed', new client.MessageEmbed()
-                    .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
-                    .setAuthor({ name: await client.functions.utilities.parseLocale(locale.warn.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
-                    .addFields(
-                        { name: locale.warn.loggingEmbed.memberId, value: member.id, inline: true },
-                        { name: locale.warn.loggingEmbed.moderator, value: moderator.tag, inline: true },
-                        { name: locale.warn.loggingEmbed.reason, value: warnReason, inline: true },
-                        { name: locale.warn.loggingEmbed.warnId, value: warnID, inline: true },
-                        { name: locale.warn.loggingEmbed.channel, value: `${channel}`, inline: true },
-                        { name: locale.warn.loggingEmbed.infractions, value: (Object.keys(client.db.warns[member.id]).length).toString(), inline: true }
-                    )
-                );
-
-                //Si procede, adjunta el mensaje filtrado
-                if (message && await client.functions.db.getConfig('moderation.attachFilteredMessages')) await client.functions.managers.sendLog('warnedMember', 'file', new client.MessageAttachment(Buffer.from(filteredURL || message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
+            //Añade la advertencia a la lista
+            memberWarns.push({
+                warnId: warnId,
+                timestamp: Date.now(),
+                reason: warnReason,
+                content: filteredContent.length > 0 ? filteredContent : null,
+                executor: {
+                    type: client.user.id === moderator.id ? 'bot' : 'member',
+                    memberId: moderator.id
+                }
             });
+            
+            //Graba la advertencia en la base de datos
+            await client.functions.db.setData('profile', member.id, memberProfile);
 
-            //Banea temporalmente a los miembros que se acaban de unir al servidor y han mandado invitaciones
+            //Ejecuta el manejador de registro
+            await client.functions.managers.sendLog('warnedMember', 'embed', new client.MessageEmbed()
+                .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
+                .setAuthor({ name: await client.functions.utilities.parseLocale(locale.warn.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                .addFields(
+                    { name: locale.warn.loggingEmbed.memberId, value: member.id, inline: true },
+                    { name: locale.warn.loggingEmbed.moderator, value: moderator.tag, inline: true },
+                    { name: locale.warn.loggingEmbed.reason, value: warnReason, inline: true },
+                    { name: locale.warn.loggingEmbed.warnId, value: warnId, inline: true },
+                    { name: locale.warn.loggingEmbed.channel, value: `${channel}`, inline: true },
+                    { name: locale.warn.loggingEmbed.infractions, value: (memberWarns.length).toString(), inline: true }
+                )
+            );
+
+            //Si procede, adjunta el mensaje filtrado
+            if (message && await client.functions.db.getConfig('moderation.attachFilteredMessages')) await client.functions.managers.sendLog('warnedMember', 'file', new client.MessageAttachment(Buffer.from(filteredURL || message.content, 'utf-8'), `filtered-${Date.now()}.txt`));
+
+            //Banea temporalmente a los miembros que se acaban de unir al servidor y han incumplido las normas
             if (message && channel.type === 'DM' && (member.joinedTimestamp + await client.functions.db.getConfig('moderation.newMemberTimeDelimiter')) < Date.now()) {
 
                 //Ejecuta la función de baneo
-                return ban(await client.functions.db.getConfig('moderation.newSpammerMemberBanDuration'));
+                return ban(await client.functions.db.getConfig('moderation.newInfractorBanDuration'));
             };
 
             //Función para comparar un array
@@ -227,18 +247,18 @@ module.exports = async (member, reason, action, moderator, message, interaction,
                 let warnsCount = 0;
 
                 //Por cada una de las infracciones del miembro
-                Object.keys(client.db.warns[member.id]).forEach(entry => {
+                for (const entry of memberWarns) {
 
                     //Si no este supera el umbral de edad de la regla, lo añade al recuento
-                    if (Date.now() - client.db.warns[member.id][entry].timestamp <= rule.age) warnsCount++;
-                });
+                    if (Date.now() - entry.timestamp <= rule.age) warnsCount++;
+                };
 
                 //Si se iguala o excede la cantidad máxima de la regla
                 if (warnsCount >= rule.quantity) {
 
                     //Ejecuta la acción de moderación que corresponda
                     switch (rule.action) {
-                        case 'timeout':        timeout(rule.duration);    break;
+                        case 'timeout':     timeout(rule.duration); break;
                         case 'kick':        kick();                 break;
                         case 'tempban':     ban(rule.duration);     break;
                         case 'ban':         ban();                  break;

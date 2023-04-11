@@ -86,16 +86,6 @@ client.locale = locale;
 //Carga las funciones globales en el cliente
 require('./lifecycle/loadFunctions.js')();
 
-//Carga los archivos de bases de datos (deprecado)
-const databaseFiles = client.fs.readdirSync('./databases/', { withFileTypes: true });
-
-//Por cada uno de los archivos de BD
-databaseFiles.forEach(async file => {
-
-    //Almacena la base de datos en memoria
-    client.db[file.name.replace('.json', '')] = JSON.parse(client.fs.readFileSync(`./databases/${file.name}`));
-});
-
 //Carga los manejadores de eventos
 require('./lifecycle/loadEvents.js')();
 

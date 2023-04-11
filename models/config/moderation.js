@@ -55,7 +55,7 @@ const schema = new mongoose.Schema({
         default: 1800000,
         required: true
     },
-    newSpammerMemberBanDuration: {
+    newInfractorBanDuration: {
         type: Number,
         default: 1209600000,
         required: true

@@ -40,12 +40,18 @@ exports.run = async (interaction, commandConfig, locale) => {
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ], ephemeral: true});
+        
+        //Almacena el perfil del miembro
+        let memberProfile = await client.functions.db.getData('profile', member.id);
 
         //Comprueba si el miembro tiene warns
-        if (!client.db.warns[memberId]) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (!memberProfile || memberProfile.moderationLog.warnsHistory.length === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noWarns}`)
         ], ephemeral: true});
+
+        //Almacena las advertencias del miembro
+        let memberWarns = memberProfile.moderationLog.warnsHistory;
 
         //Almacena si el miembro puede borrar cualquiera
         const canRemoveAny = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
@@ -93,19 +99,42 @@ exports.run = async (interaction, commandConfig, locale) => {
                     { name: locale.privateEmbedAll.reason, value: reason || locale.undefinedReason, inline: true }
                 );
 
-            //Elimina la entrada de la base de datos
-            delete client.db.warns[memberId];
+            //Vacía el array de advertencias
+            memberWarns = [];
+
+            //Actualiza la base de datos con los cambios
+            await client.functions.db.setData('profile', member.id, memberProfile);
 
         } else { //Si solo hay que eliminar una infracción
 
-            //Comprueba si la advertencia existe en la BD
-            if (!client.db.warns[memberId][warnId]) return interaction.reply({ embeds: [new client.MessageEmbed()
+            //Almacena la advertencia, si la encuentra
+            let foundWarn = false;
+
+            //Por cada una de las advertencias del miembro
+            for (let index = 0; index < memberWarns.length; index++) {
+
+                //Si el Id coincide con la búsqueda
+                if (memberWarns[index].warnId === warnId) {
+
+                    //Almacena la advertencia
+                    foundWarn = memberWarns[index];
+
+                    //Elimina la entrada de la lista
+                    memberWarns.splice(index, 1);
+
+                    //Para el bucle
+                    break;
+                };
+            };
+
+            //Envía un mensaje de error si no se encuentra la advertencia
+            if (!foundWarn) return interaction.reply({ embeds: [new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.warnNotFound, { warnId: warnId })}`)
             ], ephemeral: true});
 
             //Comprueba si puede borrar esta advertencia
-            if (client.db.warns[memberId][warnId].moderator !== interaction.member.id && !canRemoveAny) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            if ((foundWarn.executor.type === 'system' || foundWarn.executor.moderatorId !== interaction.member.id) && !canRemoveAny) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantRemoveAny}.`)
             ], ephemeral: true});
@@ -119,7 +148,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                     { name: locale.loggingEmbedSingle.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
                     { name: locale.loggingEmbedSingle.moderator, value: interaction.user.tag, inline: true },
                     { name: locale.loggingEmbedSingle.warnId, value: warnId, inline: true },
-                    { name: locale.loggingEmbedSingle.warn, value: client.db.warns[memberId][warnId].reason, inline: true },
+                    { name: locale.loggingEmbedSingle.warn, value: foundWarn.reason, inline: true },
                     { name: locale.loggingEmbedSingle.reason, value: reason || locale.undefinedReason, inline: true },
                     { name: locale.loggingEmbedSingle.memberId, value: memberId.toString(), inline: true }
                 );
@@ -141,32 +170,22 @@ exports.run = async (interaction, commandConfig, locale) => {
                 .addFields(
                     { name: locale.privateEmbedSingle.moderator, value: interaction.user.tag, inline: true },
                     { name: locale.privateEmbedSingle.warnId, value: warnId, inline: true },
-                    { name: locale.privateEmbedSingle.warn, value: client.db.warns[memberId][warnId].reason, inline: true },
+                    { name: locale.privateEmbedSingle.warn, value: foundWarn.reason, inline: true },
                     { name: locale.privateEmbedSingle.reason, value: reason || locale.undefinedReason, inline: true }
                 );
 
-            //Resta el warn indicado
-            delete client.db.warns[memberId][warnId];
-            
-            //Si se queda en 0 warns, se borra la entrada del JSON
-            if (Object.keys(client.db.warns[memberId]).length === 0) delete client.db.warns[memberId];
+            //Actualiza la base de datos con los cambios
+            await client.functions.db.setData('profile', member.id, memberProfile);
         };
 
-        //Escribe el resultado en el JSON
-        client.fs.writeFile('./databases/warns.json', JSON.stringify(client.db.warns, null, 4), async err => {
+        //Envía un registro al canal de registros
+        await client.functions.managers.sendLog('warnRemoved', 'embed', loggingEmbed);
 
-            //Si hubo un error, lo lanza a la consola
-            if (err) throw err;
+        //Envía una notificación de la acción en el canal de invocación
+        await interaction.reply({ embeds: [successEmbed] });
 
-            //Envía un registro al canal de registros
-            await client.functions.managers.sendLog('warnRemoved', 'embed', loggingEmbed);
-
-            //Envía una notificación de la acción en el canal de invocación
-            await interaction.reply({ embeds: [successEmbed] });
-
-            //Envía un mensaje de confirmación al miembro
-            if (member) await member.send({ embeds: [toDMEmbed] });
-        });
+        //Envía un mensaje de confirmación al miembro
+        if (member) await member.send({ embeds: [toDMEmbed] });
         
     } catch (error) {
 
@@ -180,35 +199,35 @@ exports.autocomplete = async (interaction, command, locale) => {
 
     try {
 
-        //Almacena el ID del usuario objetivo
-        const userId = interaction.options._hoistedOptions[0].value;
+        //Almacena el ID del miembro objetivo
+        const memberId = interaction.options._hoistedOptions[0].value;
 
         //Almacena el valor parcial que ha introducido el usuario
         const focusedValue = interaction.options.getFocused();
 
-        //Almacena los warns del usuario objetivo
-        const userWarns = client.db.warns[userId];
+        //Almacena el perfil del miembro
+        let memberProfile = await client.functions.db.getData('profile', memberId);
+
+        //Almacena las advertencias del miembro
+        let memberWarns = memberProfile ? memberProfile.moderationLog.warnsHistory : null;
         
         //Envía una lista vacía si el usuario no tiene warns
-        if (!userWarns || Object.keys(userWarns).length === 0) return await interaction.respond(null);
+        if (!memberWarns || memberWarns.length === 0) return await interaction.respond(null);
 
         //Almacena si el miembro puede borrar cualquier advertencia
         const canRemoveAny = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: command.userConfig.removeAny});
 
-        //Almacena los IDs de manera cronológica inversa
-        const reversedIds = Object.keys(userWarns).reverse();
+        //Almacena las advertencias de manera cronológica inversa
+        const reversedWarns = memberWarns.reverse();
 
         //Crea un objeto para almacenar los warns mapeados y ordenados
         const sortedWarnsObject = {};
 
-        //Por cada uno de los IDs del array de IDs coronológicos
-        for (const warnId of reversedIds) {
-
-            //Almacena la información de la advertencia
-            const warnData = userWarns[warnId];
+        //Por cada uno de los warns del array de warns coronológicos
+        for (const warnData of reversedWarns) {
 
             //Omite esta advertencia si no fue emitida por el ejecutor del comando, y no tiene permiso para eliminar todas
-            if (!canRemoveAny && warnData.moderator !== interaction.member.id) continue;
+            if (!canRemoveAny && (warnData.executor.type === 'system' || warnData.executor.moderatorId !== interaction.member.id)) continue;
 
             //Genera una fecha a partir de la advertencia
             const warnDate = new Date(warnData.timestamp);
@@ -217,16 +236,16 @@ exports.autocomplete = async (interaction, command, locale) => {
             const dateString = `${warnDate.getDate()}/${warnDate.getMonth() + 1}/${warnDate.getFullYear()} ${warnDate.getHours()}:${warnDate.getMinutes()}:${warnDate.getSeconds()}`;
 
             //Obtiene el moderador de la advertencia, o una cadena genérica
-            const moderatorUser = await client.functions.utilities.fetch('user', warnData.moderator) || locale.autocomplete.unknownModerator;
+            const moderatorUser = warnData.executor.type === 'system' ? locale.autocomplete.systemModerator : await client.functions.utilities.fetch('user', warnData.moderator) || locale.autocomplete.unknownModerator;
 
             //Genera una cadena para mostrarla cómo resultado
-            let warnString = `${warnId} • ${moderatorUser.tag} • ${dateString} • ${warnData.reason}`;
+            let warnString = `${warnData.warnId} • ${moderatorUser.tag ? moderatorUser.tag : moderatorUser} • ${dateString} • ${warnData.reason}`;
 
             //Recorta la cadena si es necesario
             warnString = warnString.length > 100 ? `${warnString.slice(0, 96)} ...` : warnString;
 
             //Si no se ha proporcionado valor a buscar, o el proporcionado encaja parcialmente, lo almacena en el objeto de warns
-            if (focusedValue.length === 0 || warnString.toLowerCase().includes(focusedValue.toLowerCase())) sortedWarnsObject[warnId] = warnString;
+            if (focusedValue.length === 0 || warnString.toLowerCase().includes(focusedValue.toLowerCase())) sortedWarnsObject[warnData.warnId] = warnString;
         };
 
         //Genera un array mapeado a partir del objeto de warns

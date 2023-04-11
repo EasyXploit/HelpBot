@@ -34,6 +34,12 @@ exports.run = async (interaction, commandConfig, locale) => {
         //Almacena la sanción actual, si aplica
         const sanction = member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now() ? `${locale.embed.timeoutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>` : locale.embed.noSanction;
 
+        //Almacena el perfil del miembro
+        const memberProfile = await client.functions.db.getData('profile', member.id);
+
+        //Almacena las advertencias del miembro
+        const memberWarns = memberProfile ? memberProfile.moderationLog.warnsHistory : null;
+
         //Envía un embed con el resultado del comando
         await interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(member.displayHexColor)
@@ -47,7 +53,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                 { name: `👑 ${locale.embed.status}`, value: status.join(', '), inline: true },
                 { name: `💎 ${locale.embed.nitroBooster}`, value: member.premiumSince ? await client.functions.utilities.parseLocale(locale.embed.isBooster, { time: `<t:${Math.round(member.premiumSinceTimestamp / 1000)}>` }) : locale.embed.isntBooster, inline: true },
                 { name: `🎖 ${locale.embed.highestRole}`, value: member.roles.highest.name, inline: true },
-                { name: `⚖ ${locale.embed.infractions}`, value: client.db.warns[member.id] ? (Object.keys(client.db.warns[member.id]).length).toString() : '0', inline: true },
+                { name: `⚖ ${locale.embed.infractions}`, value: memberWarns ? (memberWarns.length).toString() : '0', inline: true },
                 { name: `📓 ${locale.embed.verification}`, value: member.pending ? locale.embed.isntVerified : locale.embed.isVerified, inline: true },
                 { name: `⚠️ ${locale.embed.actualSanction}`, value: sanction, inline: true }
             )

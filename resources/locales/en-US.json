@@ -76,9 +76,25 @@
                                 "name": "days_to_delete",
                                 "description": "Write a quantity between 1 and 7"
                             },
-                            "duration": {
-                                "name": "duration",
-                                "description": "Enter a duration in the format: days\"D\" | minutes\"M\" | hours\"H\" | seconds\"S\""
+                            "expiration": {
+                                "name": "expiration",
+                                "description": "Select when the ban will expire",
+                                "choices": {
+                                    "fiveMinutes": "5 minutes",
+                                    "fifteenMinutes": "15 minutes",
+                                    "thirtyMinutes": "30 minutes",
+                                    "oneHour": "1 hour",
+                                    "sixHours": "6 hours",
+                                    "twelveHours": "12 hours",
+                                    "oneDay": "1 day",
+                                    "threeDays": "3 days",
+                                    "oneWeek": "1 week",
+                                    "oneMonth": "1 month",
+                                    "threeMonths": "3 months",
+                                    "sixMonths": "6 months",
+                                    "nineMonths": "9 months",
+                                    "oneYear": "1 year"
+                                }
                             }
                         }
                     },
@@ -87,7 +103,6 @@
                     "badHierarchy": "You cannot ban a member with a role equal to or higher than yours",
                     "alreadyBanned": "This user has already been banned",
                     "cantPermaBan": "You do not have permission to permanently ban",
-                    "wrongMagnitudes": "You have to write a duration with the format: days\"D\" | minutes\"M\" | hours\"H\" | seconds\"S\"",
                     "exceededDuration": "You can only ban a maximum of `{{time}}`",
                     "noReason": "You must provide a reason",
                     "cantSoftBan": "You do not have permission to delete messages while banning",

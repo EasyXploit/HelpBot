@@ -47,7 +47,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         };
 
         //Almacena la duración provista
-        const durationOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.duration.name);
+        const durationOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.expiration.name);
         const providedDuration = durationOption ? durationOption.value : null;
 
         //Si no se ha proporcionado una duración
@@ -63,32 +63,14 @@ exports.run = async (interaction, commandConfig, locale) => {
             ], ephemeral: true});
         };
 
-        //Almacena los milisegundos de la duración
-        let milliseconds;
-
         //Si se ha proporcionado una duración para el baneo
         if (providedDuration) {
-
-            //Comprueba la longitud del tiempo proporcionado
-            if (providedDuration.length < 2) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                .setDescription(`${client.customEmojis.redTick} ${locale.wrongMagnitudes}.`)
-            ], ephemeral: true});
-
-            //Calcula el tiempo estimado en milisegundos
-            milliseconds = await client.functions.utilities.magnitudesToMs(providedDuration);
-
-            //Comprueba si se ha proporcionado un tiempo válido
-            if (!milliseconds) return interaction.reply({ embeds: [ new client.MessageEmbed()
-                .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                .setDescription(`${client.customEmojis.redTick} ${locale.wrongMagnitudes}.`)
-            ], ephemeral: true});
 
             //Almacena si el miembro puede banear
             const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
 
             //Si no se permitió la ejecución, manda un mensaje de error
-            if (!authorized && milliseconds > commandConfig.maxRegularTime) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            if (!authorized && providedDuration > commandConfig.maxRegularTime) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.exceededDuration, { time: await client.functions.utilities.msToTime(commandConfig.maxRegularTime) })}.`)
             ], ephemeral: true});
@@ -132,7 +114,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         };
 
         //Almacena la expiración del baneo
-        const expiration = milliseconds ? Date.now() + milliseconds : null;
+        const expiration = providedDuration ? Date.now() + providedDuration : null;
 
         //Si no hay caché de registros
         if (!client.loggingCache) client.loggingCache = {};
@@ -153,7 +135,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             await client.functions.db.genData('ban', {
                 userId: user.id,
                 moderatorId: interaction.member.id,
-                untilTimestamp: Date.now() + milliseconds
+                untilTimestamp: Date.now() + providedDuration
             });
         };
 
@@ -220,9 +202,67 @@ module.exports.config = {
                 required: false
             },
             {
-                optionName: 'duration',
-                type: 'STRING',
-                required: false
+                optionName: 'expiration',
+                type: 'NUMBER',
+                required: false,
+                choices: [
+                    {
+                        choiceName: 'fiveMinutes',
+                        value: 300000
+                    },
+                    {
+                        choiceName: 'fifteenMinutes',
+                        value: 900000
+                    },
+                    {
+                        choiceName: 'thirtyMinutes',
+                        value: 1800000
+                    },
+                    {
+                        choiceName: 'oneHour',
+                        value: 3600000
+                    },
+                    {
+                        choiceName: 'sixHours',
+                        value: 21600000
+                    },
+                    {
+                        choiceName: 'twelveHours',
+                        value: 43200000
+                    },
+                    {
+                        choiceName: 'oneDay',
+                        value: 86400000
+                    },
+                    {
+                        choiceName: 'threeDays',
+                        value: 259200000
+                    },
+                    {
+                        choiceName: 'oneWeek',
+                        value: 604800016
+                    },
+                    {
+                        choiceName: 'oneMonth',
+                        value: 2629800000
+                    },
+                    {
+                        choiceName: 'threeMonths',
+                        value: 7889400000
+                    },
+                    {
+                        choiceName: 'sixMonths',
+                        value: 15778800000
+                    },
+                    {
+                        choiceName: 'nineMonths',
+                        value: 23668200000
+                    },
+                    {
+                        choiceName: 'oneYear',
+                        value: 31557600000
+                    }
+                ]
             }
         ]
     }

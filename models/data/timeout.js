@@ -3,11 +3,6 @@ const mongoose = require('mongoose');
 
 //Crea un nuevo esquema para el aislamiento
 const timeoutSchema = new mongoose.Schema({
-    docType: {
-        type: String,
-        default: 'timeout',
-        immutable: true
-    },
     userId: {
         type: String,
         required: true, 

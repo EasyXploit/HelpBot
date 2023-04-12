@@ -24,11 +24,6 @@ const warnDataSchema = new mongoose.Schema({
 
 //Crea un nuevo esquema para el perfil del miembro
 const profileSchema = new mongoose.Schema({
-    docType: {
-        type: String,
-        default: 'profile',
-        immutable: true
-    },
     userId: {
         type: String,
         required: true, 

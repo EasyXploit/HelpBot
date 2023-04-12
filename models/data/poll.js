@@ -3,11 +3,6 @@ const mongoose = require('mongoose');
 
 //Crea un nuevo esquema para la encuesta
 const pollSchema = new mongoose.Schema({
-    docType: {
-        type: String,
-        default: 'poll',
-        immutable: true
-    },
     pollId: {
         type: String,
         required: true, 

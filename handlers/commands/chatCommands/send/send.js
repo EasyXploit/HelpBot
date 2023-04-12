@@ -13,7 +13,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         ], ephemeral: true});
 
         //Comprueba si el miembro tiene permisos para ejecutar esta acción
-        const missingPermissions = await client.functions.utilities.missingPermissions(channel, interaction.member, ['SEND_MESSAGES'])
+        const missingPermissions = await client.functions.utilities.missingPermissions(destinationChannel, interaction.member, ['SEND_MESSAGES'])
         if (missingPermissions) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.noPermission, { channel: destinationChannel, missingPermissions: missingPermissions })}.`)

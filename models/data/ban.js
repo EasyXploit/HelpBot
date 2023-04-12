@@ -4,11 +4,6 @@ const mongoose = require('mongoose');
 
 //Crea un nuevo esquema para el baneo
 const banSchema = new mongoose.Schema({
-    docType: {
-        type: String,
-        default: 'ban',
-        immutable: true
-    },
     userId: {
         type: String,
         required: true, 

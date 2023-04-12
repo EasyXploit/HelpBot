@@ -3,11 +3,6 @@ const mongoose = require('mongoose');
 
 //Crea un nuevo esquema para el envío
 const sentSchema = new mongoose.Schema({
-    docType: {
-        type: String,
-        default: 'sent',
-        immutable: true
-    },
     hash: {
         type: String,
         required: true

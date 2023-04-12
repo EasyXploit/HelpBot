@@ -100,10 +100,10 @@ exports.run = async (interaction, commandConfig, locale) => {
                 );
 
             //Vacía el array de advertencias
-            memberWarns = [];
+            memberProfile.moderationLog.warnsHistory = [];
 
             //Actualiza la base de datos con los cambios
-            await client.functions.db.setData('profile', member.id, memberProfile);
+            await client.functions.db.setData('profile', memberId, memberProfile);
 
         } else { //Si solo hay que eliminar una infracción
 

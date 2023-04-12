@@ -3,16 +3,13 @@ exports.run = async (interaction, commandConfig, locale) => {
     try {
             
         //Busca el canal en la guild
-        const channel = interaction.options._hoistedOptions[1] ? await client.functions.utilities.fetch('channel', interaction.options._hoistedOptions[1].value) : null;
+        const channel = await client.functions.utilities.fetch('channel', interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : interaction.channelId);
 
         //Devuelve un error si no se ha encontrado el canal
         if (interaction.options._hoistedOptions[1] && !channel) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.noChannel, { id: interaction.options._hoistedOptions[1].value })}.`)
         ], ephemeral: true});
-
-        //Pospone la respuesta del bot si debe buscar el canal
-        if (!channel) await interaction.deferReply();
         
         //Busca el mensaje en el canal
         const msg = await client.functions.utilities.fetch('message', interaction.options._hoistedOptions[0].value, channel);

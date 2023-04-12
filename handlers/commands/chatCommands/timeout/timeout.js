@@ -31,7 +31,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         ], ephemeral: true});
 
         //Almacena la expiración provista
-        const expiresAfter = interaction.options._hoistedOptions[1].value
+        const expiresAfter = interaction.options._hoistedOptions[1].value;
 
         //Si la expiración supera el umbral permitido para todos
         if (expiresAfter > commandConfig.maxRegularTime) {

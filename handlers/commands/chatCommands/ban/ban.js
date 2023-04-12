@@ -163,9 +163,6 @@ exports.run = async (interaction, commandConfig, locale) => {
         //Si se ha proporcionado borrado de mensajes, almacena el parámetro
         if (deletedDays) banParameters.days = deletedDays;
 
-        //Banea al usuario
-        await interaction.guild.members.ban(user, banParameters);
-
         //Genera una descripción para el embed de notificación
         const notificationEmbedDescription = reason ? await client.functions.utilities.parseLocale(locale.notificationEmbed.withReason, { userTag: user.tag, reason: reason }) : await client.functions.utilities.parseLocale(locale.notificationEmbed.withoutReason, { userTag: user.tag })
 
@@ -187,6 +184,9 @@ exports.run = async (interaction, commandConfig, locale) => {
                 { name: locale.privateEmbed.deletedDays, value: deletedDays ? deletedDays.toString() : `\`${locale.privateEmbed.noDeletedDays}\``, inline: true }
             )
         ]});
+
+        //Banea al usuario
+        await interaction.guild.members.ban(user, banParameters);
         
     } catch (error) {
 

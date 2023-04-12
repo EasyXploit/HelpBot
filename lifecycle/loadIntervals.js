@@ -72,7 +72,7 @@ module.exports = async () => {
                 if (user) await client.baseGuild.members.unban(banData.userId);
 
                 //Elimina la entrada del baneo en la BD
-                await client.functions.db.delData(banData.userId);
+                await client.functions.db.delData('ban', banData.userId);
 
                 //Ejecuta el manejador de registro
                 await client.functions.managers.sendLog('unbannedMember', 'embed', new client.MessageEmbed()

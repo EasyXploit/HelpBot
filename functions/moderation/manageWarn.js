@@ -178,7 +178,7 @@ module.exports = async (member, reason, action, moderator, message, interaction,
             let filteredContent = [];
 
             //Si se advirtió un mensaje y tenía contenido, lo almacena
-            if (message && message.content) messageContent.push(message.content);
+            if (message && message.content) filteredContent.push(message.content);
 
             //Si se advirtió un mensaje y tenía adjuntos
             if (message && message.attachments.size > 0) {

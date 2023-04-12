@@ -8,7 +8,10 @@ module.exports = async (message) => {
     const locale = client.locale.functions.moderation.checkMessage;
 
     //Carga los filtros de automoderación
-    const filters = await client.functions.db.getConfig('moderation.filters');
+    let filters = await client.functions.db.getConfig('moderation.filters');
+
+    //Convierte los filtros a un array
+    filters = Object.entries(filters).map((filter) => ( { [filter[0]]: filter[1] } ));
 
     //Almacena si el mensaje está permitido
     let isPermitted = true;
@@ -17,10 +20,13 @@ module.exports = async (message) => {
     let filteredURL;
 
     //Por cada uno de los filtros de automoderación
-    filtersLoop: for (const filter in filters) {
+    filtersLoop: for (const filterIndex in filters) {
+
+        //Almacena el nombre del filtro
+        const filterName = Object.keys(filters[filterIndex])[0];
 
         //Almacena la configuración del filtro
-        const filterCfg = filters[filter];
+        const filterCfg = filters[filterIndex][filterName];
 
         //Lo omite si está desactivado
         if (!filterCfg.status) continue;
@@ -41,7 +47,7 @@ module.exports = async (message) => {
         let match;
 
         //En función del filtro iterado
-        switch (filter) {
+        switch (filterName) {
 
             //Filtro de inundación de canales con muchos mensajes
             case 'flood':
@@ -163,10 +169,10 @@ module.exports = async (message) => {
             case 'uppercase':
 
                 //Comprueba si el mensaje alcanza la longitud mínima para ejecutar el filtro
-                if (message.content.length < filters.uppercase.minimumLength) break;
+                if (message.content.length < filterCfg.minimumLength) break;
 
                 //Comprueba si superan el umbral máximo permitido
-                if (message.content.replace(new RegExp(/[^A-Z]/g), '').length > (message.content.length / 100) * filters.uppercase.percentage) match = true;
+                if (message.content.replace(new RegExp(/[^A-Z]/g), '').length > (message.content.length / 100) * filterCfg.percentage) match = true;
                 
                 //Para el switch
                 break;
@@ -206,7 +212,7 @@ module.exports = async (message) => {
                 const emojiCount = (countEmojis(message.content) - countEmojis(stringWithoutUTFEmojis)) + serverEmojis;
 
                 //Comprueba si superan el umbral máximo permitido
-                if (emojiCount > filters.massEmojis.quantity) match = true;
+                if (emojiCount > filterCfg.quantity) match = true;
                 
                 //Para el switch
                 break;
@@ -218,7 +224,7 @@ module.exports = async (message) => {
                 const mentionCount = (message.content.match(new RegExp(/<@!?(\d+)>/g)) || []).length;
 
                 //Comprueba si superan el umbral máximo permitido
-                if (mentionCount > filters.massMentions.quantity) match = true;
+                if (mentionCount > filterCfg.quantity) match = true;
                 
                 //Para el switch
                 break;
@@ -230,7 +236,7 @@ module.exports = async (message) => {
                 const spoilerCount = (message.content.match(new RegExp(/\|\|.*?\|\|/g)) || []).length;
 
                 //Comprueba si superan el umbral máximo permitido
-                if (spoilerCount > filters.massSpoilers.quantity) match =  true;
+                if (spoilerCount > filterCfg.quantity) match =  true;
                 
                 //Para el switch
                 break;
@@ -245,7 +251,7 @@ module.exports = async (message) => {
                 const messageWithoutEmojis = messageWithoutUTFEmojis.replace(new RegExp(/<:.+?:\d+>/g), "");
 
                 //Comprueba si el mensaje contenía texto repetitivo
-                match = new RegExp(`^(.+)(?: +\\1){${filters.repeatedText.maxRepetitions}}`).test(messageWithoutEmojis);
+                match = new RegExp(`^(.+)(?: +\\1){${filterCfg.maxRepetitions}}`).test(messageWithoutEmojis);
                 
                 //Para el switch
                 break;

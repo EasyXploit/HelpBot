@@ -1,7 +1,7 @@
 {
   "name": "helpbot",
   "normalizedName": "HelpBot",
-  "version": "23.01",
+  "version": "1.0.0",
   "description": "I'm a bot designed for automated community moderation, music reproduction, leveling, and much more!",
   "main": "index.js",
   "scripts": {

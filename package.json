@@ -38,11 +38,7 @@
   },
   "nodemonConfig": {
     "ignore": [
-      "/databases/*"
-    ],
-    "watch": [
-      ".",
-      ".env"
+      "config.json"
     ]
   }
 }

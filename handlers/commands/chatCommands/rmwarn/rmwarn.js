@@ -134,7 +134,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             ], ephemeral: true});
 
             //Comprueba si puede borrar esta advertencia
-            if ((foundWarn.executor.type === 'system' || foundWarn.executor.moderatorId !== interaction.member.id) && !canRemoveAny) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            if ((foundWarn.executor.type === 'system' || foundWarn.executor.memberId !== interaction.member.id) && !canRemoveAny) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantRemoveAny}.`)
             ], ephemeral: true});
@@ -227,7 +227,7 @@ exports.autocomplete = async (interaction, command, locale) => {
         for (const warnData of reversedWarns) {
 
             //Omite esta advertencia si no fue emitida por el ejecutor del comando, y no tiene permiso para eliminar todas
-            if (!canRemoveAny && (warnData.executor.type === 'system' || warnData.executor.moderatorId !== interaction.member.id)) continue;
+            if (!canRemoveAny && (warnData.executor.type === 'system' || warnData.executor.memberId !== interaction.member.id)) continue;
 
             //Genera una fecha a partir de la advertencia
             const warnDate = new Date(warnData.timestamp);
@@ -236,7 +236,7 @@ exports.autocomplete = async (interaction, command, locale) => {
             const dateString = `${warnDate.getDate()}/${warnDate.getMonth() + 1}/${warnDate.getFullYear()} ${warnDate.getHours()}:${warnDate.getMinutes()}:${warnDate.getSeconds()}`;
 
             //Obtiene el moderador de la advertencia, o una cadena genérica
-            const moderatorUser = warnData.executor.type === 'system' ? locale.autocomplete.systemModerator : await client.functions.utilities.fetch('user', warnData.moderator) || locale.autocomplete.unknownModerator;
+            const moderatorUser = warnData.executor.type === 'system' ? locale.autocomplete.systemModerator : await client.functions.utilities.fetch('user', warnData.executor.memberId) || locale.autocomplete.unknownModerator;
 
             //Genera una cadena para mostrarla cómo resultado
             let warnString = `${warnData.warnId} • ${moderatorUser.tag ? moderatorUser.tag : moderatorUser} • ${dateString} • ${warnData.reason}`;

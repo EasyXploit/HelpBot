@@ -6,7 +6,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         const member = interaction.options._hoistedOptions[0] ? await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0].value): await client.functions.utilities.fetch('member', interaction.member.id);
 
         //Almacena el ID del miembro
-        const memberId = member ? interaction.member.id : interaction.options._hoistedOptions[0].value;
+        const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
 
         //Comprueba, si corresponde, que el miembro tenga permiso para ver el historial de otros
         if (interaction.member.id !== memberId) {
@@ -43,7 +43,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         ], ephemeral: true});
 
         //Crea el perfil del miembro si no lo tiene
-        if (!memberProfile) memberProfile = await client.functions.db.genData('profile', { userId: memberId })
+        if (!memberProfile) memberProfile = await client.functions.db.genData('profile', { userId: memberId });
 
         //Almacena las advertencias del miembro
         let memberWarns = memberProfile.moderationLog.warnsHistory;
@@ -91,7 +91,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                 const warn = memberWarns[index];
 
                 //Busca y almacena el moderador que aplicó la sanción
-                const moderator = warn.executor.type === 'system' ? locale.warnSystemExecutor : await client.functions.utilities.fetch('member', warn.executor) || locale.unknownModerator;
+                const moderator = warn.executor.type === 'system' ? locale.warnSystemExecutor : await client.functions.utilities.fetch('member', warn.executor.memberId) || locale.unknownModerator;
 
                 //Añade una nueva fila con los detalles de la advertencia
                 board += `\`${warn.warnId}\` • ${moderator} • <t:${Math.round(new Date(parseInt(warn.timestamp)) / 1000)}>\n${warn.reason}\n\n`;

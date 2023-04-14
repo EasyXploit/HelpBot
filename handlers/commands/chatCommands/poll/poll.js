@@ -1,4 +1,4 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
 
     try {
 
@@ -11,14 +11,14 @@ exports.run = async (interaction, commandConfig, locale) => {
             //Si la encuesta no existe, devuelve un error
             if (!pollData) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.unknownPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.unknownPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
             ], ephemeral: true});
 
             //Busca y almacena el canal de la encuesta
-            const pollChannel = await client.functions.utilities.fetch('channel', pollData.channelId);
+            const pollChannel = await client.functions.utils.fetch('channel', pollData.channelId);
 
             //Busca y almacena el mensaje de la encuesta (si se pudo encontrar el canal)
-            const pollMessage = pollChannel ? await client.functions.utilities.fetch('message', pollData.messageId, pollChannel) : null;
+            const pollMessage = pollChannel ? await client.functions.utils.fetch('message', pollData.messageId, pollChannel) : null;
 
             //Si el canal o el mensaje de la encuesta ya no existen
             if (!pollChannel || !pollMessage) {
@@ -29,7 +29,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                 //Notifica del error al miembro
                 return interaction.reply({ embeds: [ new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.deletedPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.deletedPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
                 ], ephemeral: true});
             };
 
@@ -37,7 +37,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             if (interaction.member.id !== pollData.authorId) {
 
                 //Variable para saber si está autorizado
-                const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canEndAny});
+                const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canEndAny});
 
                 //Si no se permitió la ejecución, manda un mensaje de error
                 if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -53,7 +53,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.endedPollEmbed.title}`)
-                .setDescription(`${await client.functions.utilities.parseLocale(locale.endedPollEmbed.description, { poll: `[${pollData.title}](${pollMessage.url})`, pollChannel: pollChannel })}.`)
+                .setDescription(`${await client.functions.utils.parseLocale(locale.endedPollEmbed.description, { poll: `[${pollData.title}](${pollMessage.url})`, pollChannel: pollChannel })}.`)
             ], ephemeral: true});
         };
 
@@ -85,7 +85,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         interaction.reply({ content: `${locale.startingAssistant}...`});
 
         //Almacena el canal de la interacción
-        const interactionChannel = await client.functions.utilities.fetch('channel', interaction.channelId);
+        const interactionChannel = await client.functions.utils.fetch('channel', interaction.channelId);
 
         //Envía el assistantEmbed del título
         interactionChannel.send({ embeds: [ new client.MessageEmbed()
@@ -120,7 +120,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                         const parameters = duration.split(' ');
 
                         //Convierte y almacena las magnitudes en milisegundos
-                        duration = await client.functions.utilities.magnitudesToMs(parameters);
+                        duration = await client.functions.utils.magnitudesToMs(parameters);
 
                         //Si no se puedieron obtener milisegundos
                         if (!duration) {
@@ -169,7 +169,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                             assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
                                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                                 .setTitle(`${emojiOptions[index + 1]} ${locale.newFieldEmbed.title}`)
-                                .setDescription(`${await client.functions.utilities.parseLocale(locale.newFieldEmbed.description, { remaining: 10 - index - 1 })}${ index > 0 ? `.\n${locale.newFieldEmbed.endAssistant}.` : ''}`)
+                                .setDescription(`${await client.functions.utils.parseLocale(locale.newFieldEmbed.description, { remaining: 10 - index - 1 })}${ index > 0 ? `.\n${locale.newFieldEmbed.endAssistant}.` : ''}`)
                             ]});
                         });
 
@@ -214,7 +214,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                     };
 
                     //Almacena un nuevo ID para la encuesta
-                    const pollId = await client.functions.utilities.generateSid.default();
+                    const pollId = await client.functions.utils.generateSid.default();
                     
                     //Envía la encuesta generada al canal de invocación
                     interactionChannel.send({ embeds: [ new client.MessageEmbed()
@@ -264,7 +264,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                         //Envía un mensaje al canal de registros
                         await client.functions.managers.sendLog('pollStarted', 'embed', new client.MessageEmbed()
                             .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
-                            .setAuthor({ name: await client.functions.utilities.parseLocale(locale.loggingEmbed.author, { memberTag: interaction.member.user.tag }), iconURL: interaction.user.displayAvatarURL({dynamic: true}) })
+                            .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { memberTag: interaction.member.user.tag }), iconURL: interaction.user.displayAvatarURL({dynamic: true}) })
                             .addFields(
                                 { name: locale.loggingEmbed.title, value: `__[${title}](${pollEmbed.url})__`, inline: true },
                                 { name: locale.loggingEmbed.channel, value: `${interactionChannel}`, inline: true },
@@ -283,7 +283,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: null,
     dmPermission: false,

@@ -21,4 +21,4 @@ const banSchema = new mongoose.Schema({
 });
 
 //Genera un modelo a partir del esquema y lo exporta como módulo
-module.exports = mongoose.model('ban', banSchema);
+export default mongoose.model('ban', banSchema);

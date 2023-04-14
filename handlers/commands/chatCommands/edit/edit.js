@@ -1,21 +1,21 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
     
     try {
             
         //Busca el canal en la guild
-        const channel = await client.functions.utilities.fetch('channel', interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : interaction.channelId);
+        const channel = await client.functions.utils.fetch('channel', interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : interaction.channelId);
 
         //Devuelve un error si no se ha encontrado el canal
         if (interaction.options._hoistedOptions[1] && !channel) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.noChannel, { id: interaction.options._hoistedOptions[1].value })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noChannel, { id: interaction.options._hoistedOptions[1].value })}.`)
         ], ephemeral: true});
         
         //Busca el mensaje en el canal
-        const msg = await client.functions.utilities.fetch('message', interaction.options._hoistedOptions[0].value, channel);
+        const msg = await client.functions.utils.fetch('message', interaction.options._hoistedOptions[0].value, channel);
         if (!msg) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.msgNotFound, { msgId: interaction.options._hoistedOptions[0].value })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.msgNotFound, { msgId: interaction.options._hoistedOptions[0].value })}.`)
         ], ephemeral: true});
 
         //Comprueba si el mensaje es del bot
@@ -94,7 +94,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,

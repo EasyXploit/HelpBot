@@ -1,4 +1,4 @@
-module.exports = async (interaction) => {
+export default async (interaction) => {
     
     try {
 
@@ -6,7 +6,7 @@ module.exports = async (interaction) => {
         const locale = client.locale.handlers.buttons.updateNotifications;
 
         //Almacena el miembro de la interacción
-        const member = await client.functions.utilities.fetch('member', interaction.user.id);
+        const member = await client.functions.utils.fetch('member', interaction.user.id);
 
         //Almacena si el miembro puede ganar EXP
         let notAuthorized;

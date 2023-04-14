@@ -151,4 +151,4 @@ const schema = new mongoose.Schema({
 });
 
 //Genera un modelo a partir del esquema y lo exporta como módulo
-module.exports = mongoose.model('timedMessages', schema, 'configs');
+export default mongoose.model('timedMessages', schema, 'configs');

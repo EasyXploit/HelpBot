@@ -70,4 +70,4 @@ const profileSchema = new mongoose.Schema({
 });
 
 //Genera un modelo a partir del esquema y lo exporta como módulo
-module.exports = mongoose.model('profile', profileSchema);
+export default mongoose.model('profile', profileSchema);

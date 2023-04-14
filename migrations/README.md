@@ -6,7 +6,7 @@ o viejas versiones, tal y cómo se describe en: https://www.npmjs.com/package/mi
 Los scripts deben contener código de la siguiente forma:
  
  ```js
-module.exports = {
+export default {
     async up(db) {
         //await db.collection('configs').updateOne({ docType: 'system'}, { $set: { test: '' } });
     },

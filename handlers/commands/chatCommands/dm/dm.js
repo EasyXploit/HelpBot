@@ -1,9 +1,9 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
     
     try {
         
         //Busca y almacena el miembro
-        const member = await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se encontró al miembro
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -25,17 +25,17 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (mode === 'anonymous') {
 
             //Variable para saber si está autorizado
-            const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.anonymousMode});
+            const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.anonymousMode});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.unauthorized, { interactionAuthor: interaction.user })}.`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.unauthorized, { interactionAuthor: interaction.user })}.`)
             ], ephemeral: true});
         };
 
         //Almacena un string de autoría (por si fuese necesario)
-        const authoryString = `**${await client.functions.utilities.parseLocale(locale.normalFrom, { authorTag: interaction.user.tag })}:**\n`;
+        const authoryString = `**${await client.functions.utils.parseLocale(locale.normalFrom, { authorTag: interaction.user.tag })}:**\n`;
 
         //Almacena la longitud máxima del campo del modal
         const fieldLength = type === 'embed' ? 4000 : type === 'normal' && mode === 'author'? 2000 - authoryString.length : 2000;
@@ -135,7 +135,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         await client.functions.managers.sendLog('sentDM', 'embed', new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
-            .setDescription(await client.functions.utilities.parseLocale(locale.loggingEmbed.description, { authorTag: interaction.user.tag, memberTag: member.user.tag, botUser: client.user }))
+            .setDescription(await client.functions.utils.parseLocale(locale.loggingEmbed.description, { authorTag: interaction.user.tag, memberTag: member.user.tag, botUser: client.user }))
             .addFields(
                 { name: locale.loggingEmbed.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
                 { name: locale.loggingEmbed.mode, value: mode, inline: true },
@@ -149,7 +149,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         //Maneja si un miembro no admite mensajes directos del bot (por la razón que sea)
         if (error.toString().includes('Cannot send messages to this user')) return await interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.cantReceiveDms, { botUser: client.user })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cantReceiveDms, { botUser: client.user })}.`)
         ], ephemeral: true});
 
         //Ejecuta el manejador de errores
@@ -157,7 +157,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,

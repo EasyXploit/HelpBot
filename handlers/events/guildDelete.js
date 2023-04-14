@@ -1,4 +1,4 @@
-module.exports = async (guild, locale) => {
+export default async (guild, locale) => {
     
     try {
 

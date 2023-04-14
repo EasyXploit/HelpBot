@@ -1,9 +1,9 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
     
     try {
 
         //Busca al miembro proporcionado
-        const member = await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se ha encontrado al miembro
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -39,12 +39,12 @@ exports.run = async (interaction, commandConfig, locale) => {
             if (Date.now() - latestWarn.timestamp < commandConfig.minimumTimeDifference) {
 
                 //Almacena si el miembro puede saltarse el intervalo mínimo
-                const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedFrequency});
+                const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedFrequency});
 
                 //Si no está autorizado, devuelve un mensaje de error
                 if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.cooldown, { member: member })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cooldown, { member: member })}.`)
                 ], ephemeral: true});
             };
         };
@@ -53,7 +53,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         const reason = interaction.options._hoistedOptions[1].value;
 
         //Almacena el canal de texto de la interacción
-        const interactionChannel = await client.functions.utilities.fetch('channel', interaction.channelId);
+        const interactionChannel = await client.functions.utils.fetch('channel', interaction.channelId);
 
         //Llama al manejador de infracciones
         await client.functions.moderation.manageWarn(member, reason, 2, interaction.user, null, interaction, interactionChannel);
@@ -65,7 +65,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: new client.Permissions('MODERATE_MEMBERS'),
     dmPermission: false,

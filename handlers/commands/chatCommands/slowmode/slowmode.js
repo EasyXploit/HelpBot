@@ -1,9 +1,9 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
     
     try {
 
         //Almacena el canal de texto de la interacción
-        const interactionChannel = await client.functions.utilities.fetch('channel', interaction.channelId);
+        const interactionChannel = await client.functions.utils.fetch('channel', interaction.channelId);
 
         //Almacena los segundos proporcionados
         const argument = interaction.options._hoistedOptions[0].value;
@@ -41,12 +41,12 @@ exports.run = async (interaction, commandConfig, locale) => {
         } else { //Si se debe activar el modo lento
 
             //Almacena si el miembro puede usar tiempo ilimitado
-            const canUseUnlimitedTime = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
+            const canUseUnlimitedTime = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
 
             //Comprueba si los segundos excedieron el máximo configurado
             if (!canUseUnlimitedTime && argument > commandConfig.maxRegularSeconds) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.privateEmbedSingle.description, { max: commandConfig.maxRegularSeconds })}`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.privateEmbedSingle.description, { max: commandConfig.maxRegularSeconds })}`)
             ], ephemeral: true});
 
             //Almacena la razón
@@ -59,7 +59,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             if (!reason && interaction.member.id !== interaction.guild.ownerId) {
 
                 //Almacena si el miembro puede omitir la razón
-                const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
+                const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
                 //Si no está autorizado, devuelve un mensaje de error
                 if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -78,7 +78,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                 .setDescription(locale.enabledLoggingEmbed.description)
                 .addFields(
                     { name: locale.enabledLoggingEmbed.moderator, value: interaction.user.tag, inline: true },
-                    { name: locale.enabledLoggingEmbed.delay, value: await client.functions.utilities.parseLocale(locale.enabledLoggingEmbed.delayed, { seconds: argument }), inline: true },
+                    { name: locale.enabledLoggingEmbed.delay, value: await client.functions.utils.parseLocale(locale.enabledLoggingEmbed.delayed, { seconds: argument }), inline: true },
                     { name: locale.enabledLoggingEmbed.channel, value: `${interactionChannel}`, inline: true },
                     { name: locale.enabledLoggingEmbed.reason, value: reason || locale.undefinedReason, inline: true }
                 )
@@ -88,7 +88,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             await interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.enabledNotificationEmbed.title}`)
-                .setDescription(await client.functions.utilities.parseLocale(locale.enabledNotificationEmbed.description, { seconds: argument }))
+                .setDescription(await client.functions.utils.parseLocale(locale.enabledNotificationEmbed.description, { seconds: argument }))
             ], ephemeral: true});
         };
         
@@ -99,7 +99,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: new client.Permissions('MODERATE_MEMBERS'),
     dmPermission: false,

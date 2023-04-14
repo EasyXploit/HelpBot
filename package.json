@@ -4,6 +4,10 @@
   "version": "1.0.0",
   "description": "I'm a bot designed for automated community moderation, music reproduction, leveling, and much more!",
   "main": "index.js",
+  "type": "module",
+  "exports": {
+    "./loaders": "./lib/loaders/index.js"
+  },
   "scripts": {
     "start": "node --no-warnings index.js",
     "devStart": "nodemon --no-warnings index.js"

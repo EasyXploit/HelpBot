@@ -28,4 +28,4 @@ const schema = new mongoose.Schema({
 });
 
 //Genera un modelo a partir del esquema y lo exporta como módulo
-module.exports = mongoose.model('presence', schema, 'configs');
+export default mongoose.model('presence', schema, 'configs');

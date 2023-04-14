@@ -1,4 +1,8 @@
-module.exports = async (guild, locale) => {
+//Importa el cargador de sistema
+import { newGuild } from 'helpbot/loaders';
+
+//Exporta la función de manejo del evento
+export default async (guild, locale) => {
     
     try {
 
@@ -12,7 +16,7 @@ module.exports = async (guild, locale) => {
         if (cachedGuilds.size === 1) {
 
             //Almacena la nueva configuración de la guild
-            await require('../../lifecycle/newGuild.js')(cachedGuilds.first());
+            await newGuild(cachedGuilds.first());
 
             //Notifica por consola que el bot se ha unido a la guild
             logger.debug(`The bot has been joined to \"${guild.name}\"`);

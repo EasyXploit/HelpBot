@@ -1,4 +1,4 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
     
     try {
 
@@ -12,7 +12,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             let targetChannel;
 
             //Almacena si faltan permisos en el canal de reglas
-            const missingPermissionOnRulesChannel = await client.functions.utilities.missingPermissions(client.baseGuild.rulesChannel, client.baseGuild.me, ['CREATE_INSTANT_INVITE'], true)
+            const missingPermissionOnRulesChannel = await client.functions.utils.missingPermissions(client.baseGuild.rulesChannel, client.baseGuild.me, ['CREATE_INSTANT_INVITE'], true)
             
             //Comprueba si hay canal de reglas y si se tiene permiso para crear la invitación
             if (client.baseGuild.rulesChannel && !missingPermissionOnRulesChannel) {
@@ -38,7 +38,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                         const channel = channels.get(channelIds[index]);
 
                         //Almacena si faltan permisos en el canal
-                        const missingPermission = await client.functions.utilities.missingPermissions(channel, client.baseGuild.me, ['CREATE_INSTANT_INVITE'], true);
+                        const missingPermission = await client.functions.utils.missingPermissions(channel, client.baseGuild.me, ['CREATE_INSTANT_INVITE'], true);
 
                         //Si tiene permisos, graba la invitación
                         if(!missingPermission) return targetChannel = channel;
@@ -60,7 +60,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             };
 
             //Crea una invitación permanente en el canal
-            await targetChannel.createInvite({maxAge: 0, reason: await client.functions.utilities.parseLocale(locale.inviteReason, { botTag: client.user.tag })}).then(async invite => { inviteCode = invite.code; });
+            await targetChannel.createInvite({maxAge: 0, reason: await client.functions.utils.parseLocale(locale.inviteReason, { botTag: client.user.tag })}).then(async invite => { inviteCode = invite.code; });
 
             //Graba la invitación en la BD
             await client.functions.db.setConfig('system.inviteCode', inviteCode);
@@ -123,7 +123,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,

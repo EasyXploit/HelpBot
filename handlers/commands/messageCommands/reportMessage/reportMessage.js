@@ -1,9 +1,9 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
 
     try {
 
         //Busca al miembro objetivo
-        const reportedMember = await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0].message.author.id);
+        const reportedMember = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].message.author.id);
 
         //Devuelve un error si no se ha encontrado al miembro
         if (!reportedMember) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -64,7 +64,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,

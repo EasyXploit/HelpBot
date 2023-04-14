@@ -1,4 +1,4 @@
-module.exports = async (member, locale) => {
+export default async (member, locale) => {
     
     try {
 
@@ -26,7 +26,7 @@ module.exports = async (member, locale) => {
                 //Envía un registro al canal de registros
                 await client.functions.managers.sendLog('kickedMember', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                    .setAuthor({ name: await client.functions.utilities.parseLocale(locale.inconclusiveLoggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                    .setAuthor({ name: await client.functions.utils.parseLocale(locale.inconclusiveLoggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                     .addFields(
                         { name: locale.inconclusiveLoggingEmbed.memberId, value: member.id, inline: true },
                         { name: locale.inconclusiveLoggingEmbed.moderator, value: locale.inconclusiveLoggingEmbed.unknownModerator, inline: true },
@@ -45,7 +45,7 @@ module.exports = async (member, locale) => {
                 await client.functions.managers.sendLog('kickedBot', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
-                    .setDescription(await client.functions.utilities.parseLocale(locale.botLoggingEmbed.description, { memberTag: member.user.tag }))
+                    .setDescription(await client.functions.utils.parseLocale(locale.botLoggingEmbed.description, { memberTag: member.user.tag }))
                 );
             };
 
@@ -63,13 +63,13 @@ module.exports = async (member, locale) => {
                 reason = loggingCache.reason;
 
                 //Borra la caché de registros del miembro
-                delete loggingCache;
+                loggingCache = null;
             };
 
             //Envía un registro al canal de registros
             await client.functions.managers.sendLog('kickedMember', 'embed', new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                .setAuthor({ name: await client.functions.utilities.parseLocale(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
                 .addFields(
                     { name: locale.loggingEmbed.memberId, value: member.id, inline: true },
                     { name: locale.loggingEmbed.moderator, value: executor ? executor.tag : locale.loggingEmbed.unknownModerator, inline: true },
@@ -96,10 +96,10 @@ module.exports = async (member, locale) => {
                     .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
                     .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
                     .setAuthor({ name: locale.goodbyeEmbed.author, iconURL: 'attachment://out.png' })
-                    .setDescription(await client.functions.utilities.parseLocale(locale.goodbyeEmbed.description, { memberTag: member.user.tag }))
+                    .setDescription(await client.functions.utils.parseLocale(locale.goodbyeEmbed.description, { memberTag: member.user.tag }))
                     .addFields(
                         { name: `🆔 ${locale.goodbyeEmbed.memberId}`, value: member.user.id, inline: true },
-                        { name: `📆 ${locale.goodbyeEmbed.antiquity}`, value: `\`${await client.functions.utilities.msToTime(Date.now() - member.joinedTimestamp)}\``, inline: true }
+                        { name: `📆 ${locale.goodbyeEmbed.antiquity}`, value: `\`${await client.functions.utils.msToTime(Date.now() - member.joinedTimestamp)}\``, inline: true }
                 ), ['./resources/images/out.png']);
             };
         };

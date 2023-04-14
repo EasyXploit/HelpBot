@@ -1,9 +1,9 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
     
     try {
 
         //Busca al miembro proporcionado
-        const member = await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
 
         //Almacena el ID del miembro
         const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
@@ -26,7 +26,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (!reason && interaction.member.id !== interaction.guild.ownerId) {
 
             //Almacena si el miembro puede omitir la razón
-            const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
+            const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -54,7 +54,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         let memberWarns = memberProfile.moderationLog.warnsHistory;
 
         //Almacena si el miembro puede borrar cualquiera
-        const canRemoveAny = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
+        const canRemoveAny = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
 
         //Crear variables para almacenar los embeds a enviar
         let successEmbed, loggingEmbed, toDMEmbed;
@@ -84,7 +84,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             successEmbed = new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbedAll.title}`)
-                .setDescription(await client.functions.utilities.parseLocale(locale.notificationEmbedAll.description, { member: member ? member.user.tag : `${memberId} (ID)` }));
+                .setDescription(await client.functions.utils.parseLocale(locale.notificationEmbedAll.description, { member: member ? member.user.tag : `${memberId} (ID)` }));
 
             //Si se encontró al miembro, añade su tag al registro
             member ? loggingEmbed.addFields({ name: locale.loggingEmbedAll.member, value: member.user.tag, inline: true }) : null;
@@ -93,7 +93,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             if (member) toDMEmbed = new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
                 .setAuthor({ name: locale.privateEmbedAll.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-                .setDescription(await client.functions.utilities.parseLocale(locale.privateEmbedAll.description, { member: member }))
+                .setDescription(await client.functions.utils.parseLocale(locale.privateEmbedAll.description, { member: member }))
                 .addFields(
                     { name: locale.privateEmbedAll.moderator, value: interaction.user.tag, inline: true },
                     { name: locale.privateEmbedAll.reason, value: reason || locale.undefinedReason, inline: true }
@@ -130,7 +130,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             //Envía un mensaje de error si no se encuentra la advertencia
             if (!foundWarn) return interaction.reply({ embeds: [new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.warnNotFound, { warnId: warnId })}`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.warnNotFound, { warnId: warnId })}`)
             ], ephemeral: true});
 
             //Comprueba si puede borrar esta advertencia
@@ -157,7 +157,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             successEmbed = new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbedSingle.title}`)
-                .setDescription(await client.functions.utilities.parseLocale(locale.notificationEmbedSingle.description, { warnId: warnId, member: member ? member.user.tag : `${memberId} (ID)` }));
+                .setDescription(await client.functions.utils.parseLocale(locale.notificationEmbedSingle.description, { warnId: warnId, member: member ? member.user.tag : `${memberId} (ID)` }));
 
             //Si se encontró al miembro, añade su tag al registro
             member ? loggingEmbed.addFields({ name: locale.loggingEmbedSingle.member, value: member.user.tag, inline: true }) : null;
@@ -166,7 +166,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             if (member) toDMEmbed = new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
                 .setAuthor({ name: locale.privateEmbedSingle.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-                .setDescription(await client.functions.utilities.parseLocale(locale.privateEmbedSingle.description, { member: member, warnId: warnId }))
+                .setDescription(await client.functions.utils.parseLocale(locale.privateEmbedSingle.description, { member: member, warnId: warnId }))
                 .addFields(
                     { name: locale.privateEmbedSingle.moderator, value: interaction.user.tag, inline: true },
                     { name: locale.privateEmbedSingle.warnId, value: warnId, inline: true },
@@ -195,7 +195,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 };
 
 //Exporta la función de autocompletado
-exports.autocomplete = async (interaction, command, locale) => {
+export async function autocomplete(interaction, command, locale) {
 
     try {
 
@@ -215,7 +215,7 @@ exports.autocomplete = async (interaction, command, locale) => {
         if (!memberWarns || memberWarns.length === 0) return await interaction.respond(null);
 
         //Almacena si el miembro puede borrar cualquier advertencia
-        const canRemoveAny = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: command.userConfig.removeAny});
+        const canRemoveAny = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: command.userConfig.removeAny});
 
         //Almacena las advertencias de manera cronológica inversa
         const reversedWarns = memberWarns.reverse();
@@ -236,7 +236,7 @@ exports.autocomplete = async (interaction, command, locale) => {
             const dateString = `${warnDate.getDate()}/${warnDate.getMonth() + 1}/${warnDate.getFullYear()} ${warnDate.getHours()}:${warnDate.getMinutes()}:${warnDate.getSeconds()}`;
 
             //Obtiene el moderador de la advertencia, o una cadena genérica
-            const moderatorUser = warnData.executor.type === 'system' ? locale.autocomplete.systemModerator : await client.functions.utilities.fetch('user', warnData.executor.memberId) || locale.autocomplete.unknownModerator;
+            const moderatorUser = warnData.executor.type === 'system' ? locale.autocomplete.systemModerator : await client.functions.utils.fetch('user', warnData.executor.memberId) || locale.autocomplete.unknownModerator;
 
             //Genera una cadena para mostrarla cómo resultado
             let warnString = `${warnData.warnId} • ${moderatorUser.tag ? moderatorUser.tag : moderatorUser} • ${dateString} • ${warnData.reason}`;
@@ -267,7 +267,7 @@ exports.autocomplete = async (interaction, command, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: new client.Permissions('MODERATE_MEMBERS'),
     dmPermission: false,

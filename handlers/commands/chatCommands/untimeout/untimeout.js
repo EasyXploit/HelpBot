@@ -1,9 +1,9 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
     
     try {
 
         //Busca al miembro proporcionado
-        const member = await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
 
         //Almacena el ID del miembro
         const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
@@ -18,7 +18,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (!reason) {
 
             //Almacena si el miembro puede omitir la razón
-            const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
+            const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -36,11 +36,11 @@ exports.run = async (interaction, commandConfig, locale) => {
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
         if (member && interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= sortedRoles[0].position) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.badHierarchy, { interactionAuthor: interaction.member })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.badHierarchy, { interactionAuthor: interaction.member })}.`)
         ], ephemeral: true});
 
         //Almacena si el miembro puede borrar cualquier timeout
-        const canRemoveAny = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
+        const canRemoveAny = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
 
         //Almacena el aislamiento del miembro
         const memberTimeout = await client.functions.db.getData('timeout', memberId);
@@ -48,7 +48,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         //Devuelve el estado de autorización
         if (!canRemoveAny && (!memberTimeout || memberTimeout.moderatorId !== interaction.member.id)) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.cantRemoveAny, { interactionAuthor: interaction.member })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cantRemoveAny, { interactionAuthor: interaction.member })}.`)
         ], ephemeral: true});
 
         //Si el aislamiento estaba registrado en la base de datos
@@ -90,7 +90,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         await interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
             .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbed.title}`)
-            .setDescription(await client.functions.utilities.parseLocale(locale.notificationEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)` }))
+            .setDescription(await client.functions.utils.parseLocale(locale.notificationEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)` }))
         ]});
         
     } catch (error) {
@@ -100,7 +100,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: new client.Permissions('MODERATE_MEMBERS'),
     dmPermission: false,

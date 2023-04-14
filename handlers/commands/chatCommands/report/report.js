@@ -1,10 +1,10 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
 
     try {
 
         //Almacena el mimebro reportado si se proporciona cómo parámetro
         const reportedMemberOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.member.name);
-        const reportedMember = reportedMemberOption ? await client.functions.utilities.fetch('member', reportedMemberOption.value) : null;
+        const reportedMember = reportedMemberOption ? await client.functions.utils.fetch('member', reportedMemberOption.value) : null;
 
         //Almacena el reporte si se proporciona cómo parámetro
         const reportOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.body.name);
@@ -59,7 +59,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: null,
     dmPermission: false,

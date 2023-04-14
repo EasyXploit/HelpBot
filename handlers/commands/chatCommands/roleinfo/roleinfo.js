@@ -1,21 +1,21 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
 
     try {
 
         //Busca el rol en la guild
-        const role = await client.functions.utilities.fetch('role', interaction.options._hoistedOptions[0].value);
+        const role = await client.functions.utils.fetch('role', interaction.options._hoistedOptions[0].value);
 
         //Si el rol no existe, devuelve un error
         if (!role) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.roleNotFound, { role: interaction.options._hoistedOptions[0].value })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.roleNotFound, { role: interaction.options._hoistedOptions[0].value })}.`)
         ], ephemeral: true});
 
         //Envía un embed con la información del rol
         await interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(role.hexColor)
             .setTitle(`🔖 ${locale.resultEmbed.title}`)
-            .setDescription(await client.functions.utilities.parseLocale(locale.resultEmbed.description, { role: role }))
+            .setDescription(await client.functions.utils.parseLocale(locale.resultEmbed.description, { role: role }))
             .setThumbnail(role.iconURL())
             .addFields(
                 { name: `🏷 ${locale.resultEmbed.roleName}`, value: `${role.name}${role.unicodeEmoji ? ` ${role.unicodeEmoji}` : ''}`, inline: true },
@@ -36,7 +36,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,

@@ -1,9 +1,9 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
 
     try {
 
         //Busca el miembro en la guild
-        const member = await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
+        const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
 
         //Comprueba si se ha proporcionado un miembro válido
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -15,7 +15,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (interaction.member.id !== member.id) {
 
             //Variable para saber si está autorizado
-            const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSeeAny});
+            const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSeeAny});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -43,15 +43,15 @@ exports.run = async (interaction, commandConfig, locale) => {
         //Envía un embed con el resultado del comando
         await interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(member.displayHexColor)
-            .setTitle(await client.functions.utilities.parseLocale(locale.embed.title, { memberDisplayName: member.displayName }))
-            .setDescription(await client.functions.utilities.parseLocale(locale.embed.description, { memberTag: member.user.tag }))
+            .setTitle(await client.functions.utils.parseLocale(locale.embed.title, { memberDisplayName: member.displayName }))
+            .setDescription(await client.functions.utils.parseLocale(locale.embed.description, { memberTag: member.user.tag }))
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
             .addFields(
                 { name: `🆔 ${locale.embed.memberId}`, value: member.id, inline: true },
                 { name: `📝 ${locale.embed.registerDate}`, value: `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, inline: true },
                 { name: `↙ ${locale.embed.joinDate}`, value: `<t:${Math.round(member.joinedTimestamp / 1000)}>`, inline: true },
                 { name: `👑 ${locale.embed.status}`, value: status.join(', '), inline: true },
-                { name: `💎 ${locale.embed.nitroBooster}`, value: member.premiumSince ? await client.functions.utilities.parseLocale(locale.embed.isBooster, { time: `<t:${Math.round(member.premiumSinceTimestamp / 1000)}>` }) : locale.embed.isntBooster, inline: true },
+                { name: `💎 ${locale.embed.nitroBooster}`, value: member.premiumSince ? await client.functions.utils.parseLocale(locale.embed.isBooster, { time: `<t:${Math.round(member.premiumSinceTimestamp / 1000)}>` }) : locale.embed.isntBooster, inline: true },
                 { name: `🎖 ${locale.embed.highestRole}`, value: member.roles.highest.name, inline: true },
                 { name: `⚖ ${locale.embed.infractions}`, value: memberWarns ? (memberWarns.length).toString() : '0', inline: true },
                 { name: `📓 ${locale.embed.verification}`, value: member.pending ? locale.embed.isntVerified : locale.embed.isVerified, inline: true },
@@ -66,7 +66,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: null,
     dmPermission: false,

@@ -20,4 +20,4 @@ const timeoutSchema = new mongoose.Schema({
 });
 
 //Genera un modelo a partir del esquema y lo exporta como módulo
-module.exports = mongoose.model('timeout', timeoutSchema);
+export default mongoose.model('timeout', timeoutSchema);

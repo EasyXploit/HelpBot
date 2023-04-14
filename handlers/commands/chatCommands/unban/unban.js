@@ -1,9 +1,9 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
     
     try {
 
         //Busca al usuario proporcionado
-        const user = await client.functions.utilities.fetch('user', interaction.options._hoistedOptions[0].value);
+        const user = await client.functions.utils.fetch('user', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se ha encontrado al usuario
         if (!user) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -21,7 +21,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (!reason && interaction.member.id !== interaction.guild.ownerId) {
 
             //Almacena si el miembro puede omitir la razón
-            const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
+            const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -62,7 +62,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         //Envía un mensaje al canal de registros
         await client.functions.managers.sendLog('unbannedMember', 'embed', new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
-            .setAuthor({ name: await client.functions.utilities.parseLocale(locale.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
+            .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
             .addFields(
                 { name: locale.loggingEmbed.userId, value: user.id.toString(), inline: true },
                 { name: locale.loggingEmbed.moderator, value: interaction.user.tag, inline: true },
@@ -74,7 +74,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         await interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
             .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbed.title}`)
-            .setDescription(await client.functions.utilities.parseLocale(locale.loggingEmbed.author, { userTag: user.tag }))
+            .setDescription(await client.functions.utils.parseLocale(locale.loggingEmbed.author, { userTag: user.tag }))
         ]});
         
     } catch (error) {
@@ -84,7 +84,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,

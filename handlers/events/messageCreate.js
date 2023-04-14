@@ -1,4 +1,4 @@
-module.exports = async (message, locale) => {
+export default async (message, locale) => {
 
     //Aborta si no es un evento de la guild registrada
     if (message.guild && message.guild.id !== client.baseGuild.id) return;

@@ -1,4 +1,8 @@
-module.exports = async (event, locale) => {
+//Importa los cargadores
+import { newGuild, loadSystem } from 'helpbot/loaders';
+
+//Exporta la funcion por defecto del evento
+export default async (event, locale) => {
 
     try {
         
@@ -68,12 +72,12 @@ module.exports = async (event, locale) => {
         if (!baseGuildId || baseGuildId !== cachedGuilds.first().id) {
 
             //Almacena la nueva configuración
-            await require('../../lifecycle/newGuild.js')(await cachedGuilds.filter(guild => guild.ownerId !== client.user.id).first());
+            await newGuild(await cachedGuilds.filter(guild => guild.ownerId !== client.user.id).first());
             
         } else {
 
             //Carga la config. en memoria y arranca el sistema
-            await require('../../lifecycle/loadSystem.js')(client.locale.lifecycle.loadSystem);
+            await loadSystem(client.locale.lifecycle.loadSystem);
         };
 
     } catch (error) {

@@ -1,20 +1,31 @@
+//Importa globalmente la capacidad de requerir módulos CommonJS
+import { createRequire } from 'module';
+global.require = createRequire(import.meta.url);
+
 //Carga las variables de entorno desde el fichero .env (si existe)
 require('dotenv').config();
+
+//Importa globalmente la capacidad de acceder al sistema de archivos
+import * as fs from 'fs';
+global.fs = fs;
 
 //Si la variable de entorno "NODE_ENV" no está establecida, la establece en modo de desarrollo
 if (!process.env.NODE_ENV) process.env.NODE_ENV = 'development';
 
+//Importa los cargadores
+import { loadLogger, loadLocales, splashLogo, loadErrorTracker, loadDatabase, loadFunctions, loadEvents, login } from 'helpbot/loaders';
+
 //Carga el manejador de logs
-require('./lifecycle/loadLogger.js')();
+await loadLogger();
 
 //Almacena la configuración local desde el fichero de configuración
 const localConfig = require('./config.json');
 
 //Almacena las traducciones al idioma configurado
-let locale = require(`./resources/locales/${localConfig.locale}.json`);
+let locale = await require(`./resources/locales/${localConfig.locale}.json`);
 
 //Uniforma las traducciones si no se corresponden con las del idioma por defecto
-locale = require('./lifecycle/loadLocales.js')(localConfig.locale);
+locale = await loadLocales(localConfig.locale);
 
 //Gestión de promesas rechazadas y no manejadas
 process.on('unhandledRejection', error => {
@@ -28,16 +39,16 @@ process.on('unhandledRejection', error => {
 });
 
 //Muestra el logo de arranque en la consola
-require('./lifecycle/splashLogo.js')(locale.lifecycle.splashLogo);
+await splashLogo(locale.lifecycle.splashLogo);
 
 //Indica que el bot se está iniciando
 logger.info(`${locale.index.startupMsg} ...`);
 
 //Carga el manejador de errores remoto, si está habilitado
-if (localConfig.errorTrackingStatus) require('./lifecycle/loadErrorTracker.js')();
+if (localConfig.errorTrackingStatus) loadErrorTracker();
 
 //Ejecuta el cargador de la base de datos
-require('./lifecycle/loadDatabase.js')(locale);
+await loadDatabase(locale);
 
 //Carga el wrapper para interactuar con la API de Discord
 const discord = require('discord.js');
@@ -68,9 +79,6 @@ client.errorTracker = require('@sentry/node');
 //Almacena la librería para generar hashes MD5 en el cliente 
 client.md5 = require('md5');
 
-//Almacena la librería de acceso al sistema de archivos en el cliente
-client.fs = require('fs');
-
 //Almacena el la configuración local en el cliente
 client.localConfig = localConfig;
 
@@ -84,10 +92,10 @@ client.locale = locale;
 ['functions', 'config', 'db', 'usersVoiceStates', 'userMessages'].forEach(x => client[x] = {});
 
 //Carga las funciones globales en el cliente
-require('./lifecycle/loadFunctions.js')();
+await loadFunctions();
 
 //Carga los manejadores de eventos
-require('./lifecycle/loadEvents.js')();
+await loadEvents();
 
 //Carga el manejador de inicio de sesión
-require('./lifecycle/login.js')();
+await login();

@@ -32,4 +32,4 @@ const pollSchema = new mongoose.Schema({
 });
 
 //Genera un modelo a partir del esquema y lo exporta como módulo
-module.exports = mongoose.model('poll', pollSchema);
+export default mongoose.model('poll', pollSchema);

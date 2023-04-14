@@ -1312,7 +1312,7 @@
                 "filteredDm": "via DM"
             }
         },
-        "utilities": {
+        "utils": {
             "msToTime": {
                 "years": "year/s",
                 "months": "month/s",

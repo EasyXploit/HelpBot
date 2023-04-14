@@ -1,4 +1,4 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
     
     try {
 
@@ -14,7 +14,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                 ], ephemeral: true});
 
                 //Busca el miembro en la guild
-                const targetWelcomeMember = await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[1].value);
+                const targetWelcomeMember = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[1].value);
 
                 //Devuelve un error si no se ha proporcionado un miembro válido
                 if (!targetWelcomeMember) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -43,7 +43,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                 ], ephemeral: true});
 
                 //Busca el miembro en la guild
-                const targetGoodybeMember = await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[1].value);
+                const targetGoodybeMember = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[1].value);
 
                 //Devuelve un error si no se ha proporcionado un miembro válido
                 if (!targetGoodybeMember) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -81,7 +81,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,

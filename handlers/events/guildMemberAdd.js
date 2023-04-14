@@ -1,4 +1,4 @@
-module.exports = async (member, locale) => {
+export default async (member, locale) => {
     
     try {
 
@@ -35,7 +35,7 @@ module.exports = async (member, locale) => {
             await client.functions.managers.sendLog('botJoined', 'embed', new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
                 .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
-                .setDescription(`${await client.functions.utilities.parseLocale(locale.botLoggingEmbed.description, { memberTag: member.user.tag })}.`)
+                .setDescription(`${await client.functions.utils.parseLocale(locale.botLoggingEmbed.description, { memberTag: member.user.tag })}.`)
             );
 
             //Aborta el resto del script

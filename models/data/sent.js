@@ -12,4 +12,4 @@ const sentSchema = new mongoose.Schema({
 });
 
 //Genera un modelo a partir del esquema y lo exporta como módulo
-module.exports = mongoose.model('sent', sentSchema);
+export default mongoose.model('sent', sentSchema);

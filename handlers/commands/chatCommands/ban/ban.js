@@ -1,9 +1,9 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
     
     try {
         
         //Busca al usuario proporcionado
-        const user = await client.functions.utilities.fetch('user', interaction.options._hoistedOptions[0].value);
+        const user = await client.functions.utils.fetch('user', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se ha encontrado al usuario
         if (!user) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -15,7 +15,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (user.bot) {
 
             //Almacena si el miembro puede banear bots
-            const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.botsAllowed});
+            const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.botsAllowed});
 
             //Si no está autorizado para ello, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -25,7 +25,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         };
 
         //Busca al miembro proporcionado
-        const member = await client.functions.utilities.fetch('member', user.id);
+        const member = await client.functions.utils.fetch('member', user.id);
 
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
         if (member && ((interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) || !member.bannable)) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -54,7 +54,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (!providedDuration) {
 
             //Almacena si el miembro puede banear indefinidamente
-            const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
+            const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -67,12 +67,12 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (providedDuration) {
 
             //Almacena si el miembro puede banear
-            const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
+            const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized && providedDuration > commandConfig.maxRegularTime) return interaction.reply({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.exceededDuration, { time: await client.functions.utilities.msToTime(commandConfig.maxRegularTime) })}.`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.exceededDuration, { time: await client.functions.utils.msToTime(commandConfig.maxRegularTime) })}.`)
             ], ephemeral: true});
         };
 
@@ -84,7 +84,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (deletedDays) {
 
             //Almacena si el miembro puede banear indefinidamente
-            const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSoftBan});
+            const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSoftBan});
 
             //Si no se permitió la ejecución, manda un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -104,7 +104,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (!reason && interaction.member.id !== interaction.guild.ownerId) {
 
             //Almacena si el miembro puede omitir la razón
-            const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
+            const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
             //Si no está autorizado, devuelve un mensaje de error
             if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -146,7 +146,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (deletedDays) banParameters.days = deletedDays;
 
         //Genera una descripción para el embed de notificación
-        const notificationEmbedDescription = reason ? await client.functions.utilities.parseLocale(locale.notificationEmbed.withReason, { userTag: user.tag, reason: reason }) : await client.functions.utilities.parseLocale(locale.notificationEmbed.withoutReason, { userTag: user.tag })
+        const notificationEmbedDescription = reason ? await client.functions.utils.parseLocale(locale.notificationEmbed.withReason, { userTag: user.tag, reason: reason }) : await client.functions.utils.parseLocale(locale.notificationEmbed.withoutReason, { userTag: user.tag })
 
         //Envía una confirmación como respuesta a la interacción
         await interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -158,7 +158,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (member) await user.send({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-            .setDescription(await client.functions.utilities.parseLocale(locale.privateEmbed.description, { user: user, guildName: interaction.guild.name }))
+            .setDescription(await client.functions.utils.parseLocale(locale.privateEmbed.description, { user: user, guildName: interaction.guild.name }))
             .addFields(
                 { name: locale.privateEmbed.moderator, value: interaction.user.tag, inline: true },
                 { name: locale.privateEmbed.reason, value: reason || locale.undefinedReason, inline: true },
@@ -177,7 +177,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: new client.Permissions('BAN_MEMBERS'),
     dmPermission: false,

@@ -1,16 +1,16 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
 
     try {
 
         //Si el ejecutor no tiene permisos para borrar mensajes, envía un error
-        const missingPermissions = await client.functions.utilities.missingPermissions(channel, interaction.member, ['MANAGE_MESSAGES'])
+        const missingPermissions = await client.functions.utils.missingPermissions(channel, interaction.member, ['MANAGE_MESSAGES'])
         if (missingPermissions) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantDeleteMessages}.`)
         ], ephemeral: true});
 
         //Busca al miembro objetivo
-        const member = await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0].message.author.id);
+        const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].message.author.id);
 
         //Devuelve un error si no se ha encontrado al miembro
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -46,12 +46,12 @@ exports.run = async (interaction, commandConfig, locale) => {
             if (Date.now() - latestWarn.timestamp < commandConfig.minimumTimeDifference) {
 
                 //Almacena si el miembro puede saltarse el intervalo mínimo
-                const authorized = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedFrequency});
+                const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedFrequency});
 
                 //Si no está autorizado, devuelve un mensaje de error
                 if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.cooldown, { member: member })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cooldown, { member: member })}.`)
                 ], ephemeral: true});
             };
         };
@@ -112,7 +112,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: new client.Permissions('MODERATE_MEMBERS'),
     dmPermission: false,

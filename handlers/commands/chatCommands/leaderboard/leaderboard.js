@@ -1,4 +1,4 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
 
     try {
 
@@ -31,7 +31,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         for (const memberProfile of memberProfiles) {
 
             //Busca el miembro en la guild, pasándole caché a la función
-            const member = await client.functions.utilities.fetch('member', memberProfile.userId, null, guildMembers);
+            const member = await client.functions.utils.fetch('member', memberProfile.userId, null, guildMembers);
 
             //Si el miembro no estaba en la guild y no se debe mostrar, lo omite
             if (commandConfig.hideNotPresent && !member) continue;
@@ -110,7 +110,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                     case 'aproxVoiceTime':
 
                         //Genera la tabla de tiempo de voz
-                        board += `\n**#${index + 1}** • \`${await client.functions.utilities.msToTime(entry.aproxVoiceTime)}\` • ${entry.memberTag}`;
+                        board += `\n**#${index + 1}** • \`${await client.functions.utils.msToTime(entry.aproxVoiceTime)}\` • ${entry.memberTag}`;
                         
                         //Para el switch
                         break;
@@ -128,7 +128,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                     case 'antiquity':
 
                         //Genera la tabla de antigüedad
-                        board += `\n**#${index + 1}** • \`${await client.functions.utilities.msToTime(Date.now() - entry.antiquity)}\` • ${entry.memberTag}`;
+                        board += `\n**#${index + 1}** • \`${await client.functions.utils.msToTime(Date.now() - entry.antiquity)}\` • ${entry.memberTag}`;
                         
                         //Para el switch
                         break;
@@ -140,7 +140,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setTitle(`:trophy: ${locale.embed.title[type]}`)
                 .setDescription(board)
-                .setFooter({ text: await client.functions.utilities.parseLocale(locale.embed.footer, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.baseGuild.iconURL({dynamic: true}) });
+                .setFooter({ text: await client.functions.utils.parseLocale(locale.embed.footer, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.baseGuild.iconURL({dynamic: true}) });
 
             //Invoca el gestor de navegación mediante botones
             const buttonNavigationResult = await client.functions.managers.buttonNavigation(interaction, 'leaderboard', actualPage, totalPages, newPageEmbed, latestInteraction, null);
@@ -161,7 +161,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: null,
     dmPermission: false,

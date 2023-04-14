@@ -1,4 +1,4 @@
-module.exports = async (interaction, locale) => {
+export default async (interaction, locale) => {
 
     try {
         
@@ -23,7 +23,7 @@ module.exports = async (interaction, locale) => {
             //Aborta si el comando está deshabilitado
             if (!command.userConfig.enabled) return interaction.reply({embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.information')}`)
-                .setDescription(`${client.customEmojis.grayTick} ${await client.functions.utilities.parseLocale(locale.disabledCommand, { commandName: interaction.commandName })}.`)
+                .setDescription(`${client.customEmojis.grayTick} ${await client.functions.utils.parseLocale(locale.disabledCommand, { commandName: interaction.commandName })}.`)
             ], ephemeral: true});
             
             //Ejecuta el comando
@@ -47,10 +47,10 @@ module.exports = async (interaction, locale) => {
             try {
 
                 //Carga el archivo correspondiente para manejar el botón
-                const handlerFile = require(`../buttons/${interaction.customId}.js`);
+                const handlerFile = import(`../buttons/${interaction.customId}.js`);
 
                 //Ejecuta el manejador de la interacción
-                handlerFile(interaction);
+                handlerFile.default(interaction);
 
             } catch (error) {
 

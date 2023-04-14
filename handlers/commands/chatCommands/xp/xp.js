@@ -1,4 +1,4 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
     
     try {
 
@@ -6,7 +6,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         const subcommand = interaction.options._subcommand;
 
         //Almacena el miembro proporcionado
-        const member = await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
 
         //Comprueba si se ha proporcionado un miembro válido
         if (!member && !await client.functions.db.getData('profile', interaction.options._hoistedOptions[0].value)) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -45,7 +45,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         ], ephemeral: true});
 
         //Almacena si se omite la comprobación de jerarquía
-        const byPassed = await client.functions.utilities.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true });
+        const byPassed = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true });
 
         //Si no se omitió y el rol del miembro es mayor o igual que el del ejecutor
         if (!byPassed && member && interaction.member.roles.highest.position <= member.roles.highest.position) {
@@ -97,7 +97,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                 for (max = providedValue; max != 0; max--) {
 
                     //Genera XP aleatorio y actualiza la variable del total
-                    generatedXp += await client.functions.utilities.randomIntBetween(await client.functions.db.getConfig('leveling.minimumXpReward'), await client.functions.db.getConfig('leveling.maximumXpReward'));
+                    generatedXp += await client.functions.utils.randomIntBetween(await client.functions.db.getConfig('leveling.minimumXpReward'), await client.functions.db.getConfig('leveling.maximumXpReward'));
                 };
 
                 //Almacena el nuevo XP
@@ -154,7 +154,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         await client.functions.managers.sendLog('experienceModified', 'embed',  new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
-            .setDescription(`${await client.functions.utilities.parseLocale(locale.loggingEmbed.description, { memberTag: member.user.tag })}.`)
+            .setDescription(`${await client.functions.utils.parseLocale(locale.loggingEmbed.description, { memberTag: member.user.tag })}.`)
             .addFields(
                 { name: locale.loggingEmbed.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
                 { name: locale.loggingEmbed.moderator, value: interaction.user.tag, inline: true },
@@ -167,7 +167,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         //Notifica la acción en el canal de invocación
         await interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
-            .setDescription(`${client.customEmojis.greenTick} ${await client.functions.utilities.parseLocale(locale.notificationEmbed, { memberTag: member.user.tag })}.`)
+            .setDescription(`${client.customEmojis.greenTick} ${await client.functions.utils.parseLocale(locale.notificationEmbed, { memberTag: member.user.tag })}.`)
         ], ephemeral: true});
 
         //Si se le han vaciado los puntos de EXP al miembro
@@ -177,7 +177,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setAuthor({ name: locale.privateEmbed.reset.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-                .setDescription(`${await client.functions.utilities.parseLocale(locale.privateEmbed.reset.description, { moderatorTag: interaction.user.tag })}.`)
+                .setDescription(`${await client.functions.utils.parseLocale(locale.privateEmbed.reset.description, { moderatorTag: interaction.user.tag })}.`)
             ]});
 
         //Si se le han aumentado los puntos de EXP al miembro
@@ -187,7 +187,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setAuthor({ name: locale.privateEmbed.increased.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-                .setDescription(`${await client.functions.utilities.parseLocale(locale.privateEmbed.increased.description, { moderatorTag: interaction.user.tag, givenExp: providedValue, newXP: newValue.toString() })}.`)
+                .setDescription(`${await client.functions.utils.parseLocale(locale.privateEmbed.increased.description, { moderatorTag: interaction.user.tag, givenExp: providedValue, newXP: newValue.toString() })}.`)
             ]});
 
         //Si se le han reducido los puntos de EXP al miembro
@@ -197,7 +197,7 @@ exports.run = async (interaction, commandConfig, locale) => {
             await member.send({ embeds: [ new client.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setAuthor({ name: locale.privateEmbed.decreased.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-                .setDescription(`${await client.functions.utilities.parseLocale(locale.privateEmbed.decreased.description, { moderatorTag: interaction.user.tag, removedXP: providedValue, newXP: newValue.toString() })}.`)
+                .setDescription(`${await client.functions.utils.parseLocale(locale.privateEmbed.decreased.description, { moderatorTag: interaction.user.tag, removedXP: providedValue, newXP: newValue.toString() })}.`)
             ]});
         };
         
@@ -208,7 +208,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,

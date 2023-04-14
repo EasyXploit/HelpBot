@@ -1,9 +1,9 @@
-exports.run = async (interaction, commandConfig, locale) => {
+export async function run(interaction, commandConfig, locale) {
     
     try {
 
         //Busca el miembro en la guild
-        const member = await client.functions.utilities.fetch('member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
+        const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
 
         //Si no se encuentra, devuelve un error
         if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
@@ -17,11 +17,11 @@ exports.run = async (interaction, commandConfig, locale) => {
         //Devuelve un error si el miembro no tiene perfil
         if (!memberProfile) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utilities.parseLocale(locale.noXp, { member: member })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noXp, { member: member })}.`)
         ], ephemeral: true});
 
         //Para comprobar si el rol puede ganar XP o no.
-        const notAuthorizedToEarnXp = await client.functions.utilities.checkAuthorization(member, { bypassIds: await client.functions.db.getConfig('leveling.wontEarnXP') });
+        const notAuthorizedToEarnXp = await client.functions.utils.checkAuthorization(member, { bypassIds: await client.functions.db.getConfig('leveling.wontEarnXP') });
 
         //Función para comparar un array
         function compare(a, b) {
@@ -89,7 +89,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         };
 
         //Almacena el tiempo de voz aproximado
-        const aproxVoiceTime = memberProfile.stats.aproxVoiceTime > 0 ? `\`${await client.functions.utilities.msToTime(memberProfile.stats.aproxVoiceTime)}\`` : '\`00:00:00\`';
+        const aproxVoiceTime = memberProfile.stats.aproxVoiceTime > 0 ? `\`${await client.functions.utils.msToTime(memberProfile.stats.aproxVoiceTime)}\`` : '\`00:00:00\`';
 
         //Calcula el XP necesario por defecto para el siguiente nivel
         const neededExperience = await client.functions.leveling.getNeededExperience(memberProfile.stats.experience);
@@ -98,7 +98,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         await interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
             .setTitle(`🥇 ${locale.statsEmbed.title}`)
-            .setDescription(await client.functions.utilities.parseLocale(locale.statsEmbed.description, { memberTag: member.user.tag }))
+            .setDescription(await client.functions.utils.parseLocale(locale.statsEmbed.description, { memberTag: member.user.tag }))
             .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
             .addFields(
                 { name: locale.statsEmbed.actualLevel, value: `\`${memberProfile.stats.level}\``, inline: true },
@@ -106,7 +106,7 @@ exports.run = async (interaction, commandConfig, locale) => {
                 { name: locale.statsEmbed.xpToNextLevel, value: notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noXpToNextLevel}\`` : `\`${neededExperience.experience}\``, inline: true },
                 { name: locale.statsEmbed.messagesCount, value: `\`${memberProfile.stats.messagesCount}\``, inline: true },
                 { name: locale.statsEmbed.voiceTime, value: `\`${aproxVoiceTime}\``, inline: true },
-                { name: locale.statsEmbed.antiquity, value: `\`${await client.functions.utilities.msToTime(Date.now() - member.joinedTimestamp)}\``, inline: true },
+                { name: locale.statsEmbed.antiquity, value: `\`${await client.functions.utils.msToTime(Date.now() - member.joinedTimestamp)}\``, inline: true },
                 { name: locale.statsEmbed.nextRewards, value: notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noNextRewards}\`` : `\`${nextRewards}\``, inline: true }
             )
         ]});
@@ -118,7 +118,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     };
 };
 
-module.exports.config = {
+export let config = {
     type: 'global',
     defaultMemberPermissions: null,
     dmPermission: false,

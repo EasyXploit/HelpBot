@@ -1,4 +1,4 @@
-module.exports = async (oldMember, newMember, locale) => {
+export default async (oldMember, newMember, locale) => {
     
     try {
 
@@ -69,7 +69,7 @@ module.exports = async (oldMember, newMember, locale) => {
                 //Envía un mensaje al canal de registros
                 await client.functions.managers.sendLog('timeoutedMember', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                    .setAuthor({ name: await client.functions.utilities.parseLocale(locale.communicationDisabled.loggingEmbed.author, { memberTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true}) })
+                    .setAuthor({ name: await client.functions.utils.parseLocale(locale.communicationDisabled.loggingEmbed.author, { memberTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true}) })
                     .addFields(
                         { name: locale.communicationDisabled.loggingEmbed.memberId, value: newMember.id, inline: true },
                         { name: locale.communicationDisabled.loggingEmbed.moderator, value: executor ? executor.tag : locale.communicationDisabled.loggingEmbed.unknownModerator, inline: true },
@@ -82,7 +82,7 @@ module.exports = async (oldMember, newMember, locale) => {
                 await newMember.send({ embeds: [ new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setAuthor({ name: locale.communicationDisabled.privateEmbed.author, iconURL: newMember.guild.iconURL({ dynamic: true}) })
-                    .setDescription(await client.functions.utilities.parseLocale(locale.communicationDisabled.privateEmbed.description, { member: newMember, guildName: newMember.guild.name }))
+                    .setDescription(await client.functions.utils.parseLocale(locale.communicationDisabled.privateEmbed.description, { member: newMember, guildName: newMember.guild.name }))
                     .addFields(
                         { name: locale.communicationDisabled.privateEmbed.moderator, value: executor ? executor.tag : locale.communicationDisabled.loggingEmbed.unknownModerator, inline: true },
                         { name: locale.communicationDisabled.privateEmbed.reason, value: reason || locale.communicationDisabled.privateEmbed.undefinedReason, inline: true },
@@ -106,7 +106,7 @@ module.exports = async (oldMember, newMember, locale) => {
                 //Envía un mensaje al canal de registros
                 await client.functions.managers.sendLog('untimeoutedMember', 'embed', new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
-                    .setAuthor({ name: await client.functions.utilities.parseLocale(locale.communicationEnabled.loggingEmbed.author, { userTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true})})
+                    .setAuthor({ name: await client.functions.utils.parseLocale(locale.communicationEnabled.loggingEmbed.author, { userTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true})})
                     .addFields(
                         { name: locale.communicationEnabled.loggingEmbed.memberId, value: newMember.id.toString(), inline: true },
                         { name: locale.communicationEnabled.loggingEmbed.moderator, value: executor ? executor.tag : locale.communicationEnabled.loggingEmbed.unknownModerator, inline: true },
@@ -118,7 +118,7 @@ module.exports = async (oldMember, newMember, locale) => {
                 await newMember.send({ embeds: [ new client.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
                     .setAuthor({ name: locale.communicationEnabled.privateEmbed.author, iconURL: newMember.guild.iconURL({ dynamic: true}) })
-                    .setDescription(await client.functions.utilities.parseLocale(locale.communicationEnabled.privateEmbed.description, { member: newMember, guildName: newMember.guild.name }))
+                    .setDescription(await client.functions.utils.parseLocale(locale.communicationEnabled.privateEmbed.description, { member: newMember, guildName: newMember.guild.name }))
                     .addFields(
                         { name: locale.communicationEnabled.privateEmbed.moderator, value: executor ? executor.tag : locale.communicationEnabled.privateEmbed.unknownModerator, inline: true },
                         { name: locale.communicationEnabled.privateEmbed.reason, value: reason || locale.communicationEnabled.privateEmbed.undefinedReason, inline: true }

@@ -3,6 +3,11 @@ const mongoose = require('mongoose');
 
 //Crea un nuevo esquema para las advertencias de un miembro
 const warnDataSchema = new mongoose.Schema({
+    warnId: {
+        type: String,
+        required: true,
+        inmutable: true
+    },
     timestamp: {
         type: Number,
         required: true

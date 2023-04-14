@@ -214,7 +214,7 @@ export async function run(interaction, commandConfig, locale) {
                     };
 
                     //Almacena un nuevo ID para la encuesta
-                    const pollId = await client.functions.utils.generateSid.default();
+                    const pollId = await client.functions.utils.generateSid();
                     
                     //Envía la encuesta generada al canal de invocación
                     interactionChannel.send({ embeds: [ new client.MessageEmbed()

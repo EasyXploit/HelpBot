@@ -6,6 +6,9 @@ export default async (message, locale) => {
     //Previene la ejecución si el mensaje fue enviado por un bot o por el sistema
     if (message.author.bot || message.type !== 'DEFAULT') return;
 
+    //Crea un objeto en el cliente para los mensajes de usuarios
+    if (!client.userMessages) client.userMessages = {};
+
     //Si el miembro no tiene entrada en el objeto de mensajes de miembros, la crea
     if (!client.userMessages[message.author.id]) client.userMessages[message.author.id] = {
         history: [],

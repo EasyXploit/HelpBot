@@ -21,6 +21,9 @@ await loadLogger();
 //Almacena la configuración local desde el fichero de configuración
 const localConfig = require('./config.json');
 
+//Carga el manejador de errores remoto, si está habilitado
+if (localConfig.errorTrackingStatus) loadErrorTracker();
+
 //Almacena las traducciones al idioma configurado
 let locale = await require(`./resources/locales/${localConfig.locale}.json`);
 
@@ -31,11 +34,10 @@ locale = await loadLocales(localConfig.locale);
 process.on('unhandledRejection', error => {
 
     //Omite determinados errores que no se espera manejar
-    if (!error.toString().includes('Cannot send messages to this user') && !error.toString().includes('Unknown Message')) {
+    if (error.toString().includes('Cannot send messages to this user') || error.toString().includes('Unknown Message')) return;
 
-        //Envía un mensaje de error a la consola
-        logger.error(`Unhandled rejected promise: ${error.stack}`);
-    };
+    //Envía un mensaje de error a la consola
+    logger.error(`Unhandled rejected promise: ${error.stack}`);
 });
 
 //Muestra el logo de arranque en la consola
@@ -44,11 +46,8 @@ await splashLogo(locale.lifecycle.splashLogo);
 //Indica que el bot se está iniciando
 logger.info(`${locale.index.startupMsg} ...`);
 
-//Carga el manejador de errores remoto, si está habilitado
-if (localConfig.errorTrackingStatus) loadErrorTracker();
-
 //Ejecuta el cargador de la base de datos
-await loadDatabase(locale);
+await loadDatabase();
 
 //Carga el wrapper para interactuar con la API de Discord
 const discord = require('discord.js');
@@ -87,9 +86,6 @@ client.locale = locale;
 
 //Carga varios métodos de Discord.js en el cliente
 ['MessageEmbed', 'MessageAttachment', 'MessageActionRow', 'MessageSelectMenu', 'TextInputComponent', 'MessageButton', 'Collection', 'Modal', 'Permissions'].forEach(x => client[x] = discord[x]);
-
-//Crea varios objetos en el cliente para almacenar las configuraciones, bases de datos, cachés y funciones, entre otros
-['functions', 'config', 'db', 'usersVoiceStates', 'userMessages'].forEach(x => client[x] = {});
 
 //Carga las funciones globales en el cliente
 await loadFunctions();

@@ -50,6 +50,9 @@ export default async (oldState, newState, locale) => {
         //Aborta el resto de la ejecución si no están habilitadas las recompensas de XP
         if (!await client.functions.db.getConfig('leveling.rewardVoice')) return;
 
+        //Crea un objeto en el cliente para los estados de voz de los usuarios
+        if (!client.usersVoiceStates) client.usersVoiceStates = {};
+
         //Función para que el miembro deje de ganar XP
         async function endVoiceTime() {
 

@@ -1072,7 +1072,7 @@
                     "description": "The **BOT** {{memberTag}} was added to the server"
                 },
                 "communicationEnabled": {
-                    "reason": "Was unmuted while the memebr was not in the guild"
+                    "reason": "Was unmuted while the member was not in the guild"
                 }
             },
             "guildMemberRemove": {

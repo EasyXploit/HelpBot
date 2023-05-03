@@ -1,5 +1,8 @@
 //Función para comprobar el contenido de los mensajes enviados
 exports.run = async (message) => {
+
+    //Almacena el miembro del mensaje
+    const member = await client.functions.utilities.fetch.run('member', message.author.id);
         
     //Omite si el autor del mensaje es el propietario de la guild
     if (message.author.id === client.homeGuild.ownerId) return true;
@@ -35,7 +38,7 @@ exports.run = async (message) => {
         if (message.channel && bypassIds.includes(message.channel.id)) continue;
 
         //Lo omite si el miembro o alguno de sus roles tiene el filtro desactivado
-        for (let index = 0; index < bypassIds.length; index++) if (message.member.id === bypassIds[index] || message.member.roles.cache.has(bypassIds[index])) continue filtersLoop;
+        for (let index = 0; index < bypassIds.length; index++) if (member.id === bypassIds[index] || member.roles.cache.has(bypassIds[index])) continue filtersLoop;
 
         //Almacena si un filtro ha encajado
         let match;
@@ -47,7 +50,7 @@ exports.run = async (message) => {
             case 'flood':
 
                 //Almacena el historial de mensajes del miembro
-                const history = client.userMessages[message.member.id] ? client.userMessages[message.member.id].history : [];
+                const history = client.userMessages[member.id] ? client.userMessages[member.id].history : [];
 
                 //Omite si el historial no es lo suficientemente amplio
                 if (history.length < filterCfg.triggerLimit) break;
@@ -77,7 +80,7 @@ exports.run = async (message) => {
             case 'crossPost':
 
                 //Almacena el historial de mensajes del miembro
-                const messagesHistory = client.userMessages[message.member.id].history;
+                const messagesHistory = client.userMessages[member.id].history;
 
                 //Omite si el historial no es lo suficientemente amplio
                 if (messagesHistory.length < filterCfg.triggerLimit) break;
@@ -261,7 +264,7 @@ exports.run = async (message) => {
             const reason = message.channel.type === 'DM' ? `${filterCfg.reason} (${locale.filteredDm})` : filterCfg.reason; 
         
             //Ejecuta el manejador de infracciones
-            await client.functions.moderation.manageWarn.run(message.member, reason, filterCfg.action, client.user, message, null, message.channel, message.content.length === 0 ? filteredURL : null);
+            await client.functions.moderation.manageWarn.run(member, reason, filterCfg.action, client.user, message, null, message.channel, message.content.length === 0 ? filteredURL : null);
 
             //Para el resto del bucle
             break;

@@ -3,10 +3,10 @@ exports.run = async (interaction, commandConfig, locale) => {
     try {
 
         //Busca el miembro en cuestión
-        const member = interaction.options._hoistedOptions[0] ? await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0].value || interaction.member.id): null;
+        const member = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
 
         //Almacena el ID del miembro
-        const memberId = member ? interaction.options._hoistedOptions[0].value : interaction.member.id;
+        const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
 
         //Comprueba, si corresponde, que el miembro tenga permiso para ver el historial de otros
         if (interaction.member.id !== memberId) {
@@ -78,6 +78,9 @@ exports.run = async (interaction, commandConfig, locale) => {
 
             //Almacena la lista de advertencias
             let board = '';
+
+            //Pospone la respuesta del bot
+            await interaction.deferReply();
 
             //Por cada una de los índices del rango
             if (memberWarns) for (let index = fromRange - 1; index < toRange; index++) {

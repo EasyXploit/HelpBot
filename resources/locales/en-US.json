@@ -73,7 +73,7 @@
                                 "description": "Provide a reason for action"
                             },
                             "days": {
-                                "name": "days_to_delete",
+                                "name": "days to delete",
                                 "description": "Write a quantity between 1 and 7"
                             },
                             "expiration": {
@@ -401,7 +401,7 @@
                         "description": "Starts an interactive wizard to create a poll or ends an ongoing one",
                         "options": {
                             "end": {
-                                "name": "end_id",
+                                "name": "end id",
                                 "description": "Enter the ID of the survey to finish"
                             }
                         }

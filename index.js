@@ -25,7 +25,7 @@ const localConfig = require('./config.json');
 if (localConfig.errorTrackingStatus) loadErrorTracker();
 
 //Almacena las traducciones al idioma configurado
-let locale = await require(`./resources/locales/${localConfig.locale}.json`);
+let locale = await require(`./locales/${localConfig.locale}.json`);
 
 //Uniforma las traducciones si no se corresponden con las del idioma por defecto
 locale = await loadLocales(localConfig.locale);

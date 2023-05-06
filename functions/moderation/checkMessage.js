@@ -3,6 +3,9 @@ exports.run = async (message) => {
 
     //Almacena el miembro del mensaje
     const member = await client.functions.utilities.fetch.run('member', message.author.id);
+
+    //Omite si no se encuentra al miembro en la guild base
+    if (!member) return true;
         
     //Omite si el autor del mensaje es el propietario de la guild
     if (message.author.id === client.homeGuild.ownerId) return true;

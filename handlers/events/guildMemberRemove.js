@@ -100,7 +100,7 @@ export default async (member, locale) => {
                     .addFields(
                         { name: `🆔 ${locale.goodbyeEmbed.memberId}`, value: member.user.id, inline: true },
                         { name: `📆 ${locale.goodbyeEmbed.antiquity}`, value: `\`${await client.functions.utils.msToTime(Date.now() - member.joinedTimestamp)}\``, inline: true }
-                ), ['./resources/images/out.png']);
+                ), ['./assets/images/out.png']);
             };
         };
 

@@ -222,7 +222,7 @@ export async function run(interaction, commandConfig, locale) {
                         .setAuthor({ name: locale.pollEmbed.author, iconURL: 'attachment://poll.png' })
                         .setDescription(`${title}\n\n${formattedOptions}`)
                         .setFooter({ text: `ID: ${pollId} - ${locale.pollEmbed.duration}: ${remainingTime}` })
-                    ], files: ['./resources/images/poll.png'] }).then(async pollEmbed => {
+                    ], files: ['./assets/images/poll.png'] }).then(async pollEmbed => {
 
                         //Borra el embed del asistente
                         assistantEmbed.delete();

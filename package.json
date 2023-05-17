@@ -29,6 +29,7 @@
     "asciiart-logo": "^0.2.7",
     "bufferutil": "^4.0.6",
     "discord.js": "^13.16.0",
+    "inquirer": "^9.2.3",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
     "migrate-mongo": "^9.0.0",

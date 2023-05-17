@@ -12,7 +12,7 @@ export async function run(interaction, commandConfig, locale) {
             let targetChannel;
 
             //Almacena si faltan permisos en el canal de reglas
-            const missingPermissionOnRulesChannel = await client.functions.utils.missingPermissions(client.baseGuild.rulesChannel, client.baseGuild.me, ['CREATE_INSTANT_INVITE'], true)
+            const missingPermissionOnRulesChannel = await client.functions.utils.missingPermissions(client.baseGuild.rulesChannel, client.baseGuild.me, ['CREATE_INSTANT_INVITE'], true);
             
             //Comprueba si hay canal de reglas y si se tiene permiso para crear la invitación
             if (client.baseGuild.rulesChannel && !missingPermissionOnRulesChannel) {
@@ -103,7 +103,7 @@ export async function run(interaction, commandConfig, locale) {
         };
 
         //Aborta el resto del comando si no se pudo generar una invitación
-        if (!inviteCode) return;
+        if (!inviteCode) return 
 
         //Almacena la URL de la invitación
         const resultInviteURL = `https://discord.gg/${inviteCode}`;
@@ -125,6 +125,10 @@ export async function run(interaction, commandConfig, locale) {
 
 export let config = {
     type: 'global',
+    neededBotPermissions: {
+        guild: [],
+        channel: ['USE_EXTERNAL_EMOJIS']
+    },
     defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,
     appData: {

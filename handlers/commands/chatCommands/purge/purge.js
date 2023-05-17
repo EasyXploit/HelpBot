@@ -13,7 +13,7 @@ export async function run(interaction, commandConfig, locale) {
         ], ephemeral: true});
 
         //Comprueba si el miembro tiene permisos para ejecutar esta acción
-        const missingPermissions = await client.functions.utils.missingPermissions(channel, interaction.member, ['MANAGE_MESSAGES'])
+        const missingPermissions = await client.functions.utils.missingPermissions(channel, interaction.member, ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
         if (missingPermissions) return interaction.reply({ embeds: [ new client.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noPermission, { channel: channel, missingPermissions: missingPermissions })}.`)
@@ -86,6 +86,10 @@ export async function run(interaction, commandConfig, locale) {
 
 export let config = {
     type: 'global',
+    neededBotPermissions: {
+        guild: [],
+        channel: ['USE_EXTERNAL_EMOJIS']
+    },
     defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,
     appData: {

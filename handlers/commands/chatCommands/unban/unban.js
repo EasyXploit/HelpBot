@@ -86,6 +86,10 @@ export async function run(interaction, commandConfig, locale) {
 
 export let config = {
     type: 'global',
+    neededBotPermissions: {
+        guild: [],
+        channel: ['USE_EXTERNAL_EMOJIS', 'BAN_MEMBERS']
+    },
     defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
     dmPermission: false,
     appData: {

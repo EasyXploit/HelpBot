@@ -190,6 +190,7 @@
                         }
                     },
                     "noChannel": "Channel with ID `{{id}}` does not exist",
+                    "noBotPermission": "The bot needs the following permissions on {{channel}} to be able to edit the message: {{missingPermissions}}",
                     "msgNotFound": "The message with ID `{{msgId}}` does not exist",
                     "cantEdit": "I can't edit a message I haven't sent",
                     "bodyModal": {

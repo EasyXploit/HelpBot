@@ -285,6 +285,10 @@ export async function run(interaction, commandConfig, locale) {
 
 export let config = {
     type: 'global',
+    neededBotPermissions: {
+        guild: [],
+        channel: ['USE_EXTERNAL_EMOJIS', 'VIEW_CHANNEL', 'SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES', 'READ_MESSAGE_HISTORY']
+    },
     defaultMemberPermissions: null,
     dmPermission: false,
     appData: {

@@ -40,6 +40,10 @@ export async function run(interaction, commandConfig, locale) {
 
 export let config = {
     type: 'global',
+    neededBotPermissions: {
+        guild: [],
+        channel: []
+    },
     defaultMemberPermissions: null,
     dmPermission: false,
     appData: {

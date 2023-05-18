@@ -11,6 +11,10 @@ export default async (member, locale) => {
         //Si el miembro tiene un aislamiento en vigor y se le debe retirar, o no lo tiene y se tiene que desregistrar
         if ((member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now() && !memberTimeout) || (!member.communicationDisabledUntilTimestamp && memberTimeout)) {
 
+            //Comprueba si el bot tiene los permisos requeridos
+            const missingPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.me, ['MODERATE_MEMBERS']);
+            if (missingPermissions) return logger.warn(`The bot could not un-timeout ${member.user.tag} (${member.id}) because it did not have permission to do so`);
+
             //Habilita la comunicación del miembro en el servidor
             await member.disableCommunicationUntil(null, locale.communicationEnabled.reason);
 
@@ -28,8 +32,14 @@ export default async (member, locale) => {
             //Almacena el ID del rol para nuevos bots
             const newBotRoleId = await client.functions.db.getConfig('welcomes.newBotRoleId');
 
-            //Añade el rol de bienvenida para nuevos bots (si no lo tiene ya)
-            if (!member.roles.cache.has(newBotRoleId)) await member.roles.add(newBotRoleId);
+            //Si hay un rol configurado
+            if (newBotRoleId && newBotRoleId.length > 0) {
+
+                //Comprueba si el bot tiene los permisos requeridos
+                const missingPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.me, ['MANAGE_ROLES']);
+                if (missingPermissions) logger.warn(`The bot could not add the welcome role to the bot ${member.user.tag} (${member.id}) because it did not have permission to do so`);
+                else if (!member.roles.cache.has(newBotRoleId)) await member.roles.add(newBotRoleId); //Añade el rol de bienvenida para nuevos bots (si no lo tiene ya)
+            };
 
             //Envía un mensaje al canal de registro
             await client.functions.managers.sendLog('botJoined', 'embed', new client.MessageEmbed()

@@ -32,7 +32,7 @@ exports.run = async (member) => {
             .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.description, { member: member, guildName: member.guild.name })}.`)
             .addFields(
                 { name: locale.privateEmbed.moderator, value: `${client.user}`, inline: true },
-                { name: reasonTitle, value: `${locale.privateEmbed.reasonDescription}.`, inline: true }
+                { name: locale.privateEmbed.reasonTitle, value: `${locale.privateEmbed.reasonDescription}.`, inline: true }
             )
         ]});
 

@@ -190,7 +190,7 @@ exports.autocomplete = async (interaction, command, locale) => {
         const userWarns = client.db.warns[userId];
         
         //Envía una lista vacía si el usuario no tiene warns
-        if (!userWarns || Object.keys(userWarns).length === 0) return await interaction.respond(null);
+        if (!userWarns || Object.keys(userWarns).length === 0) return await interaction.respond([]);
 
         //Almacena si el miembro puede borrar cualquier advertencia
         const canRemoveAny = await client.functions.utilities.checkAuthorization.run(interaction.member, { guildOwner: true, botManagers: true, bypassIds: command.userConfig.removeAny});

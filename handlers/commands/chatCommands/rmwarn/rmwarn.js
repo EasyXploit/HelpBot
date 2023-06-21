@@ -212,7 +212,7 @@ export async function autocomplete(interaction, command, locale) {
         let memberWarns = memberProfile ? memberProfile.moderationLog.warnsHistory : null;
         
         //Envía una lista vacía si el usuario no tiene warns
-        if (!memberWarns || memberWarns.length === 0) return await interaction.respond(null);
+        if (!memberWarns || memberWarns.length === 0) return await interaction.respond([]);
 
         //Almacena si el miembro puede borrar cualquier advertencia
         const canRemoveAny = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: command.userConfig.removeAny});

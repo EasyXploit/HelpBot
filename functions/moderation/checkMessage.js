@@ -251,8 +251,14 @@ exports.run = async (message) => {
                 const messageWithoutEmojis = messageWithoutUTFEmojis.replace(new RegExp(/<:.+?:\d+>/g), "");
 
                 //Comprueba si el mensaje contenía texto repetitivo
-                match = new RegExp(`^(.+)(?: +\\1){${filters.repeatedText.maxRepetitions}}`).test(messageWithoutEmojis);
-                
+                let matchedText = new RegExp(`^(.+)(?: +\\1){${filters.repeatedText.maxRepetitions}}`).exec(messageWithoutEmojis);
+
+                //Elimina los caracteres de dirección
+                let normalizedText = matchedText != null ? matchedText[1].replace(/\u200E/g, '') : null;
+
+                //Devuelve un resultado positivo si se identificó
+                if (normalizedText != null && normalizedText.length > 0) match = true;
+
                 //Para el switch
                 break;
         };

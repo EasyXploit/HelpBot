@@ -2,7 +2,7 @@
 exports.run = async (member, authorizations) => {
 
     //Parámetros admisibles:
-    //{ guildOwner: true, botManagers: true, bypassIds: []}
+    //{ guildOwner: true, bypassIds: []}
 
     //Almacena el estado de autorización
     let authorizationStatus = false;
@@ -17,7 +17,7 @@ exports.run = async (member, authorizations) => {
         if (parameter === 'guildOwner' && typeof parameterValue == 'boolean') {
 
             //Si el miembro es el dueño de la guild, autoriza la operación y aborta el bucle
-            if (client.homeGuild.ownerId === member.id) return authorizationStatus = true;
+            if (parameterValue === true && client.homeGuild.ownerId === member.id) return authorizationStatus = true;
 
         //Si se trata del parámetro "botManager" y tiene un valor booleano
         } else if (parameter === 'botManager' && typeof parameterValue == 'boolean') {

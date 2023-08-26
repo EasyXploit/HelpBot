@@ -7,7 +7,7 @@ export async function run(interaction, commandConfig, locale) {
         const destinationChannel = await client.functions.utils.fetch('channel', destinationChannelId);
 
         //Comprueba si el canal existe
-        if (!destinationChannel || !['GuildText', 'GuildNews', 'GuildNewsThread', 'GuildPublicThread', 'GuildPrivateThread'].includes(destinationChannel.type)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
+        if (!destinationChannel || ![discord.ChannelType.GuildText, discord.ChannelType.GuildNews, discord.ChannelType.GuildNewsThread, discord.ChannelType.GuildPublicThread, discord.ChannelType.GuildPrivateThread].includes(destinationChannel.type)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidChannel}.`)
         ], ephemeral: true});

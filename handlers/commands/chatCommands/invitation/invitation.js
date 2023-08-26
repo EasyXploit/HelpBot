@@ -26,7 +26,7 @@ export async function run(interaction, commandConfig, locale) {
                 await client.baseGuild.channels.fetch().then(async channels => {
 
                     //Filtra los canales para que solo se incluyan los de texto
-                    channels = await channels.filter(channel => channel.type === 'GuildText');
+                    channels = await channels.filter(channel => channel.type === discord.ChannelType.GuildText);
 
                     //Hace un mapa de las IDs de los canales
                     const channelIds = channels.map(channel => channel.id);

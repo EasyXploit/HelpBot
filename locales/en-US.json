@@ -1,9 +1,9 @@
 {
     "permissions": {
         "CREATE_INSTANT_INVITE": "Create Instant Invite",
-        "KICK_MEMBERS": "Kick Members",
-        "BAN_MEMBERS": "Ban Members",
-        "ADMINISTRATOR": "Administrator",
+        "KickMembers": "Kick Members",
+        "BanMembers": "Ban Members",
+        "Administrator": "Administrator",
         "MANAGE_CHANNELS": "Manage Channels",
         "MANAGE_GUILD": "Manage Guild",
         "ADD_REACTIONS": "Add Reactions",
@@ -18,7 +18,7 @@
         "ATTACH_FILES": "Attach Files",
         "READ_MESSAGE_HISTORY": "Read Message History",
         "MENTION_EVERYONE": "Mention Everyone",
-        "USE_EXTERNAL_EMOJIS": "Use External Emojis",
+        "UseExternalEmojis": "Use External Emojis",
         "VIEW_GUILD_INSIGHTS": "View Guild Insights",
         "CONNECT": "Connect",
         "MUTE_MEMBERS": "Mute Members",
@@ -39,7 +39,7 @@
         "USE_EXTERNAL_STICKERS": "Use External Stickers",
         "SEND_MESSAGES_IN_THREADS": "Send Messages In Threads",
         "USE_EMBEDDED_ACTIVITIES": "Use Embedded Activities",
-        "MODERATE_MEMBERS": "Moderate Members",
+        "ModerateMembers": "Moderate Members",
         "VIEW_CREATOR_MONETIZATION_ANALYTICS": "View Creator Monetization Analytics",
         "USE_SOUNDBOARD": "Use Soundboard"
     },

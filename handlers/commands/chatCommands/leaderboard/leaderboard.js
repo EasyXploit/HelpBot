@@ -165,16 +165,16 @@ export let config = {
     type: 'global',
     neededBotPermissions: {
         guild: [],
-        channel: ['USE_EXTERNAL_EMOJIS']
+        channel: ['UseExternalEmojis']
     },
     defaultMemberPermissions: null,
     dmPermission: false,
     appData: {
-        type: 'CHAT_INPUT',
+        type: discord.ApplicationCommandType.ChatInput,
         options: [
             {
                 optionName: 'type',
-                type: 'STRING',
+                type: discord.ApplicationCommandOptionType.String,
                 required: false,
                 choices: [
                     {
@@ -197,7 +197,7 @@ export let config = {
             },
             {
                 optionName: 'page',
-                type: 'INTEGER',
+                type: discord.ApplicationCommandOptionType.Integer,
                 minValue: 1,
                 required: false
             }

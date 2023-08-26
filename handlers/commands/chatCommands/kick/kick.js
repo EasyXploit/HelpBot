@@ -92,22 +92,22 @@ export async function run(interaction, commandConfig, locale) {
 export let config = {
     type: 'global',
     neededBotPermissions: {
-        guild: ['KICK_MEMBERS'],
-        channel: ['USE_EXTERNAL_EMOJIS']
+        guild: ['KickMembers'],
+        channel: ['UseExternalEmojis']
     },
-    defaultMemberPermissions: new discord.Permissions('KICK_MEMBERS'),
+    defaultMemberPermissions: new discord.PermissionsBitField('KickMembers'),
     dmPermission: false,
     appData: {
-        type: 'CHAT_INPUT',
+        type: discord.ApplicationCommandType.ChatInput,
         options: [
             {
                 optionName: 'user',
-                type: 'USER',
+                type: discord.ApplicationCommandOptionType.User,
                 required: true
             },
             {
                 optionName: 'reason',
-                type: 'STRING',
+                type: discord.ApplicationCommandOptionType.String,
                 required: false
             }
         ]

@@ -68,16 +68,16 @@ export let config = {
     type: 'global',
     neededBotPermissions: {
         guild: [],
-        channel: ['USE_EXTERNAL_EMOJIS']
+        channel: ['UseExternalEmojis']
     },
     defaultMemberPermissions: null,
     dmPermission: false,
     appData: {
-        type: 'CHAT_INPUT',
+        type: discord.ApplicationCommandType.ChatInput,
         options: [
             {
                 optionName: 'modality',
-                type: 'STRING',
+                type: discord.ApplicationCommandOptionType.String,
                 required: true,
                 choices: [
                     {
@@ -92,7 +92,7 @@ export let config = {
             },
             {
                 optionName: 'status',
-                type: 'STRING',
+                type: discord.ApplicationCommandOptionType.String,
                 required: true,
                 choices: [
                     {

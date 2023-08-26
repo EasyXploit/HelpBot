@@ -103,23 +103,23 @@ export let config = {
     type: 'global',
     neededBotPermissions: {
         guild: [],
-        channel: ['USE_EXTERNAL_EMOJIS', 'MANAGE_CHANNELS']
+        channel: ['UseExternalEmojis', 'ManageChannels']
     },
-    defaultMemberPermissions: new discord.Permissions('MODERATE_MEMBERS'),
+    defaultMemberPermissions: new discord.PermissionsBitField('ModerateMembers'),
     dmPermission: false,
     appData: {
-        type: 'CHAT_INPUT',
+        type: discord.ApplicationCommandType.ChatInput,
         options: [
             {
                 optionName: 'seconds',
-                type: 'INTEGER',
+                type: discord.ApplicationCommandOptionType.Integer,
                 minValue: 0,
                 maxValue: 21600,
                 required: true
             },
             {
                 optionName: 'reason',
-                type: 'STRING',
+                type: discord.ApplicationCommandOptionType.String,
                 required: false
             }
         ]

@@ -47,6 +47,6 @@ export let config = {
     defaultMemberPermissions: null,
     dmPermission: false,
     appData: {
-        type: 'CHAT_INPUT'
+        type: discord.ApplicationCommandType.ChatInput
     }
 };

@@ -104,21 +104,21 @@ export let config = {
     type: 'global',
     neededBotPermissions: {
         guild: [],
-        channel: ['USE_EXTERNAL_EMOJIS', 'MODERATE_MEMBERS']
+        channel: ['UseExternalEmojis', 'ModerateMembers']
     },
-    defaultMemberPermissions: new discord.Permissions('MODERATE_MEMBERS'),
+    defaultMemberPermissions: new discord.PermissionsBitField('ModerateMembers'),
     dmPermission: false,
     appData: {
-        type: 'CHAT_INPUT',
+        type: discord.ApplicationCommandType.ChatInput,
         options: [
             {
                 optionName: 'user',
-                type: 'USER',
+                type: discord.ApplicationCommandOptionType.User,
                 required: true
             },
             {
                 optionName: 'reason',
-                type: 'STRING',
+                type: discord.ApplicationCommandOptionType.String,
                 required: false
             }
         ]

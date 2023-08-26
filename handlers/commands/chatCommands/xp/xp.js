@@ -212,84 +212,84 @@ export let config = {
     type: 'global',
     neededBotPermissions: {
         guild: [],
-        channel: ['USE_EXTERNAL_EMOJIS']
+        channel: ['UseExternalEmojis']
     },
-    defaultMemberPermissions: new discord.Permissions('ADMINISTRATOR'),
+    defaultMemberPermissions: new discord.PermissionsBitField('Administrator'),
     dmPermission: false,
     appData: {
-        type: 'CHAT_INPUT',
+        type: discord.ApplicationCommandType.ChatInput,
         options: [
             {
                 optionName: 'set',
-                type: 'SUB_COMMAND',
+                type: discord.ApplicationCommandOptionType.Subcommand,
                 options: [
                     {
                         optionName: 'user',
-                        type: 'USER',
+                        type: discord.ApplicationCommandOptionType.User,
                         required: true
                     },
                     {
                         optionName: 'quantity',
-                        type: 'INTEGER',
+                        type: discord.ApplicationCommandOptionType.Integer,
                         required: true
                     }
                 ]
             },
             {
                 optionName: 'add',
-                type: 'SUB_COMMAND',
+                type: discord.ApplicationCommandOptionType.Subcommand,
                 options: [
                     {
                         optionName: 'user',
-                        type: 'USER',
+                        type: discord.ApplicationCommandOptionType.User,
                         required: true
                     },
                     {
                         optionName: 'quantity',
-                        type: 'INTEGER',
+                        type: discord.ApplicationCommandOptionType.Integer,
                         required: true
                     }
                 ]
             },
             {
                 optionName: 'addrandom',
-                type: 'SUB_COMMAND',
+                type: discord.ApplicationCommandOptionType.Subcommand,
                 options: [
                     {
                         optionName: 'user',
-                        type: 'USER',
+                        type: discord.ApplicationCommandOptionType.User,
                         required: true
                     },
                     {
                         optionName: 'times',
-                        type: 'INTEGER',
+                        type: discord.ApplicationCommandOptionType.Integer,
                         required: true
                     }
                 ]
             },
             {
                 optionName: 'remove',
-                type: 'SUB_COMMAND',
+                type: discord.ApplicationCommandOptionType.Subcommand,
                 options: [
                     {
                         optionName: 'user',
-                        type: 'USER',
+                        type: discord.ApplicationCommandOptionType.User,
                         required: true
                     },
                     {
                         optionName: 'quantity',
-                        type: 'INTEGER',
+                        type: discord.ApplicationCommandOptionType.Integer,
                         required: true
                     }
                 ]
             },
             {
                 optionName: 'clear',
-                type: 'SUB_COMMAND',
+                type: discord.ApplicationCommandOptionType.Subcommand,
                 options: [
                     {
                         optionName: 'user',
-                        type: 'USER',
+                        type: discord.ApplicationCommandOptionType.User,
                         required: true
                     }
                 ]

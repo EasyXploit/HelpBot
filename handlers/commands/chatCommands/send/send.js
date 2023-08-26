@@ -95,16 +95,16 @@ export let config = {
     type: 'global',
     neededBotPermissions: {
         guild: [],
-        channel: ['USE_EXTERNAL_EMOJIS']
+        channel: ['UseExternalEmojis']
     },
-    defaultMemberPermissions: new discord.Permissions('ADMINISTRATOR'),
+    defaultMemberPermissions: new discord.PermissionsBitField('Administrator'),
     dmPermission: false,
     appData: {
-        type: 'CHAT_INPUT',
+        type: discord.ApplicationCommandType.ChatInput,
         options: [
             {
                 optionName: 'type',
-                type: 'STRING',
+                type: discord.ApplicationCommandOptionType.String,
                 required: true,
                 choices: [
                     {
@@ -119,7 +119,7 @@ export let config = {
             },
             {
                 optionName: 'channel',
-                type: 'CHANNEL',
+                type: discord.ApplicationCommandOptionType.Channel,
                 required: false
             }
         ]

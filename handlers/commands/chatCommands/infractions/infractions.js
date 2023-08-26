@@ -139,16 +139,16 @@ export let config = {
     type: 'global',
     neededBotPermissions: {
         guild: [],
-        channel: ['USE_EXTERNAL_EMOJIS']
+        channel: ['UseExternalEmojis']
     },
     defaultMemberPermissions: null,
     dmPermission: false,
     appData: {
-        type: 'CHAT_INPUT',
+        type: discord.ApplicationCommandType.ChatInput,
         options: [
             {
                 optionName: 'user',
-                type: 'USER',
+                type: discord.ApplicationCommandOptionType.User,
                 required: false
             }
         ]

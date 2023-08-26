@@ -58,14 +58,18 @@ logger.debug('Starting the client');
 //Carga una nueva instancia de cliente de Discord
 global.client = new discord.Client({
     intents: [
-        discord.Intents.FLAGS.GUILDS,
-        discord.Intents.FLAGS.GUILD_MESSAGES,
-        discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-        discord.Intents.FLAGS.GUILD_MEMBERS,
-        discord.Intents.FLAGS.GUILD_BANS,
-        discord.Intents.FLAGS.DIRECT_MESSAGES,
-        discord.Intents.FLAGS.GUILD_VOICE_STATES],
-    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+        discord.GatewayIntentBits.Guilds,
+        discord.GatewayIntentBits.GuildMessages,
+        discord.GatewayIntentBits.GuildMessageReactions,
+        discord.GatewayIntentBits.GuildMembers,
+        discord.GatewayIntentBits.GuildBans,
+        discord.GatewayIntentBits.DirectMessages,
+        discord.GatewayIntentBits.GuildVoiceStates],
+    partials: [
+        discord.Partials.Message, 
+        discord.Partials.Channel, 
+        discord.Partials.Reaction
+    ],
     retryLimit: Infinity 
 });
 

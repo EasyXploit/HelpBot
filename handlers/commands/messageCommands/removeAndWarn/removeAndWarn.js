@@ -116,11 +116,11 @@ export let config = {
     type: 'global',
     neededBotPermissions: {
         guild: [],
-        channel: ['USE_EXTERNAL_EMOJIS', 'MANAGE_MESSAGES']
+        channel: ['UseExternalEmojis', 'MANAGE_MESSAGES']
     },
-    defaultMemberPermissions: new discord.Permissions('MODERATE_MEMBERS'),
+    defaultMemberPermissions: new discord.PermissionsBitField('ModerateMembers'),
     dmPermission: false,
     appData: {
-        type: 'MESSAGE'
+        type: discord.ApplicationCommandType.Message
     }
 };

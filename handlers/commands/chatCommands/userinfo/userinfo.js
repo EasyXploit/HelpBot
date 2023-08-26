@@ -27,7 +27,7 @@ export async function run(interaction, commandConfig, locale) {
         //Comprueba los status de los que dispone el miembro
         let status = [];
         if (member.id === interaction.guild.ownerId) status.push(locale.memberType.owner);
-        if (member.permissions.has('ADMINISTRATOR')) status.push(locale.memberType.administrator);
+        if (member.permissions.has('Administrator')) status.push(locale.memberType.Administrator);
         if (member.permissions.has('MANAGE_MESSAGES')) status.push(locale.memberType.moderator);
         if (status.length < 1) status.push(locale.memberType.regular);
 
@@ -70,16 +70,16 @@ export let config = {
     type: 'global',
     neededBotPermissions: {
         guild: [],
-        channel: ['USE_EXTERNAL_EMOJIS']
+        channel: ['UseExternalEmojis']
     },
     defaultMemberPermissions: null,
     dmPermission: false,
     appData: {
-        type: 'CHAT_INPUT',
+        type: discord.ApplicationCommandType.ChatInput,
         options: [
             {
                 optionName: 'user',
-                type: 'USER',
+                type: discord.ApplicationCommandOptionType.User,
                 required: false
             }
         ]

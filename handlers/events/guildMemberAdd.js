@@ -12,7 +12,7 @@ export default async (member, locale) => {
         if ((member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now() && !memberTimeout) || (!member.communicationDisabledUntilTimestamp && memberTimeout)) {
 
             //Comprueba si el bot tiene los permisos requeridos
-            const missingPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.me, ['MODERATE_MEMBERS']);
+            const missingPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.me, ['ModerateMembers']);
             if (missingPermissions) return logger.warn(`The bot could not un-timeout ${member.user.tag} (${member.id}) because it did not have permission to do so`);
 
             //Habilita la comunicación del miembro en el servidor

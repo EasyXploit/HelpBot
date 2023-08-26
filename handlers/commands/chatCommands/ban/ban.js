@@ -180,34 +180,34 @@ export async function run(interaction, commandConfig, locale) {
 export let config = {
     type: 'global',
     neededBotPermissions: {
-        guild: ['BAN_MEMBERS'],
-        channel: ['USE_EXTERNAL_EMOJIS']
+        guild: ['BanMembers'],
+        channel: ['UseExternalEmojis']
     },
-    defaultMemberPermissions: new discord.Permissions('BAN_MEMBERS'),
+    defaultMemberPermissions: new discord.PermissionsBitField('BanMembers'),
     dmPermission: false,
     appData: {
-        type: 'CHAT_INPUT',
+        type: discord.ApplicationCommandType.ChatInput,
         options: [
             {
                 optionName: 'user',
-                type: 'USER',
+                type: discord.ApplicationCommandOptionType.User,
                 required: true
             },
             {
                 optionName: 'reason',
-                type: 'STRING',
+                type: discord.ApplicationCommandOptionType.String,
                 required: false
             },
             {
                 optionName: 'days',
-                type: 'INTEGER',
+                type: discord.ApplicationCommandOptionType.Integer,
                 minValue: 1,
                 maxValue: 7,
                 required: false
             },
             {
                 optionName: 'expiration',
-                type: 'NUMBER',
+                type: discord.ApplicationCommandOptionType.Number,
                 required: false,
                 choices: [
                     {

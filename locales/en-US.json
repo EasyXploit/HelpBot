@@ -733,7 +733,7 @@
                     },
                     "notEnabled": "Slow mode is not enabled",
                     "disabledLoggingEmbed": {
-                        "title": "Logging - [SLow MODE]",
+                        "title": "Logging - [SLOW MODE]",
                         "description": "Slow mode has been disabled",
                         "moderator": "Moderator",
                         "channel": "Channel"
@@ -746,7 +746,7 @@
                     "noReason": "You must provide a reason",
                     "undefinedReason": "Undefined",
                     "enabledLoggingEmbed": {
-                        "title": "Logging - [SLow MODE]",
+                        "title": "Logging - [SLOW MODE]",
                         "description": "Slow mode has been enabled",
                         "moderator": "Moderator",
                         "delay": "Delay",

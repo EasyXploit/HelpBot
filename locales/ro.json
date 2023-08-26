@@ -657,7 +657,7 @@
                     },
                     "notEnabled": "Modul lent nu este activat",
                     "disabledLoggingEmbed": {
-                        "title": "Înregistrare - [SLow MODE]",
+                        "title": "Înregistrare - [SLOW MODE]",
                         "description": "Modul lent a fost dezactivat",
                         "moderator": "Moderator",
                         "channel": "Canal"
@@ -670,7 +670,7 @@
                     "noReason": "Trebuie să oferiți un motiv",
                     "undefinedReason": "Nedefinit",
                     "enabledLoggingEmbed": {
-                        "title": "Înregistrare - [SLow MODE]",
+                        "title": "Înregistrare - [SLOW MODE]",
                         "description": "Modul lent a fost activat",
                         "moderator": "Moderator",
                         "delay": "Întârziere",

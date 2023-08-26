@@ -12,7 +12,7 @@ export async function run(interaction, commandConfig, locale) {
         if (argument === 0) {
 
             //Si el modo lento no estaba activado, envía un error
-            if (!interactionChannel.rateLimitPerUser) return await interaction.reply({ embeds: [ new client.MessageEmbed()
+            if (!interactionChannel.rateLimitPerUser) return await interaction.reply({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.notEnabled}`)
             ], ephemeral: true});
@@ -21,7 +21,7 @@ export async function run(interaction, commandConfig, locale) {
             await interactionChannel.setRateLimitPerUser(0);
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.sendLog('slowmodeChanged', 'embed', new client.MessageEmbed()
+            await client.functions.managers.sendLog('slowmodeChanged', 'embed', new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
                 .setTitle(`📑 ${locale.disabledLoggingEmbed.title}`)
                 .setDescription(locale.disabledLoggingEmbed.description)
@@ -32,7 +32,7 @@ export async function run(interaction, commandConfig, locale) {
             );
 
             //Notifica la acción en el canal de invocación
-            await interaction.reply({ embeds: [ new client.MessageEmbed()
+            await interaction.reply({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.disabledNotificationEmbed.title}`)
                 .setDescription(locale.disabledNotificationEmbed.description)
@@ -44,7 +44,7 @@ export async function run(interaction, commandConfig, locale) {
             const canUseUnlimitedTime = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
 
             //Comprueba si los segundos excedieron el máximo configurado
-            if (!canUseUnlimitedTime && argument > commandConfig.maxRegularSeconds) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            if (!canUseUnlimitedTime && argument > commandConfig.maxRegularSeconds) return interaction.reply({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.privateEmbedSingle.description, { max: commandConfig.maxRegularSeconds })}`)
             ], ephemeral: true});
@@ -62,7 +62,7 @@ export async function run(interaction, commandConfig, locale) {
                 const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
                 //Si no está autorizado, devuelve un mensaje de error
-                if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
+                if (!authorized) return interaction.reply({ embeds: [ new discord.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.noReason}`)
                 ], ephemeral: true});
@@ -72,7 +72,7 @@ export async function run(interaction, commandConfig, locale) {
             await interactionChannel.setRateLimitPerUser(argument, reason || locale.undefinedReason);
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.sendLog('slowmodeChanged', 'embed', new client.MessageEmbed()
+            await client.functions.managers.sendLog('slowmodeChanged', 'embed', new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
                 .setTitle(`📑 ${locale.enabledLoggingEmbed.title}`)
                 .setDescription(locale.enabledLoggingEmbed.description)
@@ -85,7 +85,7 @@ export async function run(interaction, commandConfig, locale) {
             );
 
             //Notifica la acción en el canal de invocación
-            await interaction.reply({ embeds: [ new client.MessageEmbed()
+            await interaction.reply({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.enabledNotificationEmbed.title}`)
                 .setDescription(await client.functions.utils.parseLocale(locale.enabledNotificationEmbed.description, { seconds: argument }))
@@ -105,7 +105,7 @@ export let config = {
         guild: [],
         channel: ['USE_EXTERNAL_EMOJIS', 'MANAGE_CHANNELS']
     },
-    defaultMemberPermissions: new client.Permissions('MODERATE_MEMBERS'),
+    defaultMemberPermissions: new discord.Permissions('MODERATE_MEMBERS'),
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

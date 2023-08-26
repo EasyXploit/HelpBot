@@ -49,8 +49,8 @@ logger.info(`${locale.index.startupMsg} ...`);
 //Ejecuta el cargador de la base de datos
 await loadDatabase();
 
-//Carga el wrapper para interactuar con la API de Discord
-const discord = require('discord.js');
+//Carga globalmente el wrapper para interactuar con la API de Discord
+global.discord = require('discord.js');
 
 //Indica el inicio de la carga del cliente en la consola
 logger.debug('Starting the client');
@@ -83,9 +83,6 @@ client.localConfig = localConfig;
 
 //Almacena el idioma preferido en el cliente
 client.locale = locale;
-
-//Carga varios métodos de Discord.js en el cliente
-['MessageEmbed', 'MessageAttachment', 'MessageActionRow', 'MessageSelectMenu', 'TextInputComponent', 'MessageButton', 'Collection', 'Modal', 'Permissions'].forEach(x => client[x] = discord[x]);
 
 //Carga las funciones globales en el cliente
 await loadFunctions();

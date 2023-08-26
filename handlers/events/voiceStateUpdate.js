@@ -39,7 +39,7 @@ export default async (oldState, newState, locale) => {
             };
             
             //Se formatea y envía un registro al canal especificado en la configuración
-            await client.functions.managers.sendLog('voiceMoves', 'embed', new client.MessageEmbed()
+            await client.functions.managers.sendLog('voiceMoves', 'embed', new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
                 .setAuthor({ name: await client.functions.utils.parseLocale(locale.voiceMovesLogging.embedAuthor, { memberTag: newState.member.user.tag }), iconURL: newState.member.user.displayAvatarURL({dynamic: true}) })
                 .setFields(embedFields)

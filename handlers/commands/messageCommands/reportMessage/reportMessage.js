@@ -6,27 +6,27 @@ export async function run(interaction, commandConfig, locale) {
         const reportedMember = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].message.author.id);
 
         //Devuelve un error si no se ha encontrado al miembro
-        if (!reportedMember) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (!reportedMember) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ], ephemeral: true});
 
         //Devuelve un error si el meimbro ha intentado reportarse a sí mismo
-        if (reportedMember.id === interaction.member.id) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (reportedMember.id === interaction.member.id) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantReportYourself}.`)
         ], ephemeral: true});
 
         //Genera un nuevo modal
-        const reasonModal = new client.Modal()
+        const reasonModal = new discord.Modal()
             .setTitle(locale.bodyModal.title)
             .setCustomId('reportMessageReason');
 
         //Genera la única fila del modal
-        const bodyRow = new client.MessageActionRow().addComponents(
+        const bodyRow = new discord.MessageActionRow().addComponents(
 
             //Añade un campo de texto a la fila
-            new client.TextInputComponent()
+            new discord.TextInputComponent()
                 .setCustomId('body')
                 .setLabel(locale.bodyModal.fieldTitle)
                 .setPlaceholder(locale.bodyModal.fieldPlaceholder)
@@ -70,7 +70,7 @@ export let config = {
         guild: [],
         channel: ['USE_EXTERNAL_EMOJIS']
     },
-    defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
+    defaultMemberPermissions: new discord.Permissions('ADMINISTRATOR'),
     dmPermission: false,
     appData: {
         type: 'MESSAGE'

@@ -6,7 +6,7 @@ export async function run(interaction, commandConfig, locale) {
         const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
 
         //Si no se encuentra, devuelve un error
-        if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (!member) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.unknownMember}.`)
         ], ephemeral: true});
@@ -15,7 +15,7 @@ export async function run(interaction, commandConfig, locale) {
         const memberProfile = await client.functions.db.getData('profile', member.id);
 
         //Devuelve un error si el miembro no tiene perfil
-        if (!memberProfile) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (!memberProfile) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noXp, { member: member })}.`)
         ], ephemeral: true});
@@ -95,7 +95,7 @@ export async function run(interaction, commandConfig, locale) {
         const neededExperience = await client.functions.leveling.getNeededExperience(memberProfile.stats.experience);
 
         //Envía el mensaje con las estadísticas
-        await interaction.reply({ embeds: [ new client.MessageEmbed()
+        await interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
             .setTitle(`🥇 ${locale.statsEmbed.title}`)
             .setDescription(await client.functions.utils.parseLocale(locale.statsEmbed.description, { memberTag: member.user.tag }))

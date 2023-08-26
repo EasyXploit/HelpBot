@@ -42,7 +42,7 @@ export default async (member, locale) => {
             };
 
             //Envía un mensaje al canal de registro
-            await client.functions.managers.sendLog('botJoined', 'embed', new client.MessageEmbed()
+            await client.functions.managers.sendLog('botJoined', 'embed', new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
                 .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
                 .setDescription(`${await client.functions.utils.parseLocale(locale.botLoggingEmbed.description, { memberTag: member.user.tag })}.`)

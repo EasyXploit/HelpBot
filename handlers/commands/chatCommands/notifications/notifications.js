@@ -6,7 +6,7 @@ export async function run(interaction, commandConfig, locale) {
         const notAuthorizedToEarnXp = await client.functions.utils.checkAuthorization(interaction.member, { bypassIds: await client.functions.db.getConfig('leveling.wontEarnXP') });
 
         //Si no está autorizado para ello, devuelve un mensaje de error
-        if (notAuthorizedToEarnXp) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (notAuthorizedToEarnXp) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
             .setDescription(`${client.customEmojis.orangeTick} ${locale.cantGainXp}.`)
         ], ephemeral: true});
@@ -27,7 +27,7 @@ export async function run(interaction, commandConfig, locale) {
         if (status === 'enabled') {
 
             //Si ya estaba activado, notifica el error
-            if (memberSettings[modality]) return interaction.reply({embeds: [ new client.MessageEmbed()
+            if (memberSettings[modality]) return interaction.reply({embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.alreadyEnabled}.`)
             ], ephemeral: true});
@@ -39,7 +39,7 @@ export async function run(interaction, commandConfig, locale) {
         } else if (status === 'disabled') {
 
             //Si ya estaba desactivado, notifica el error
-            if (!memberSettings[modality]) return interaction.reply({embeds: [ new client.MessageEmbed()
+            if (!memberSettings[modality]) return interaction.reply({embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.alreadyDisabled}.`)
             ], ephemeral: true});
@@ -52,7 +52,7 @@ export async function run(interaction, commandConfig, locale) {
         await client.functions.db.setData('profile', interaction.member.id, memberProfile);
 
         //Notifica el resultado de la acción
-        interaction.reply({embeds: [ new client.MessageEmbed()
+        interaction.reply({embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
             .setDescription(`${client.customEmojis.greenTick} ${locale[`${modality}${status.charAt(0).toUpperCase()}${status.slice(1)}`]}.`)
         ], ephemeral: true})

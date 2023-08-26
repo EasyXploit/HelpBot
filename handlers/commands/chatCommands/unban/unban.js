@@ -6,7 +6,7 @@ export async function run(interaction, commandConfig, locale) {
         const user = await client.functions.utils.fetch('user', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se ha encontrado al usuario
-        if (!user) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (!user) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.userNotFound}.`)
         ], ephemeral: true});
@@ -24,7 +24,7 @@ export async function run(interaction, commandConfig, locale) {
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
             //Si no está autorizado, devuelve un mensaje de error
-            if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            if (!authorized) return interaction.reply({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ], ephemeral: true});
@@ -44,7 +44,7 @@ export async function run(interaction, commandConfig, locale) {
         };
 
         //Si el usuario no estaba baneado, devuelve un error
-        if (!banned) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (!banned) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.notBanned}.`)
         ], ephemeral: true});
@@ -60,7 +60,7 @@ export async function run(interaction, commandConfig, locale) {
         };
 
         //Envía un mensaje al canal de registros
-        await client.functions.managers.sendLog('unbannedMember', 'embed', new client.MessageEmbed()
+        await client.functions.managers.sendLog('unbannedMember', 'embed', new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
             .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
             .addFields(
@@ -71,7 +71,7 @@ export async function run(interaction, commandConfig, locale) {
         );
 
         //Notifica la acción en el canal de invocación
-        await interaction.reply({ embeds: [ new client.MessageEmbed()
+        await interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
             .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbed.title}`)
             .setDescription(await client.functions.utils.parseLocale(locale.loggingEmbed.author, { userTag: user.tag }))
@@ -90,7 +90,7 @@ export let config = {
         guild: [],
         channel: ['USE_EXTERNAL_EMOJIS', 'BAN_MEMBERS']
     },
-    defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
+    defaultMemberPermissions: new discord.Permissions('ADMINISTRATOR'),
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

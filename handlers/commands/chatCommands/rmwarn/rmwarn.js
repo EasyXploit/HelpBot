@@ -9,7 +9,7 @@ export async function run(interaction, commandConfig, locale) {
         const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
 
         //Devuelve un error si se ha proporcionado un bot
-        if (member && member.user.bot) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (member && member.user.bot) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
@@ -29,14 +29,14 @@ export async function run(interaction, commandConfig, locale) {
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
             //Si no está autorizado, devuelve un mensaje de error
-            if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            if (!authorized) return interaction.reply({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ], ephemeral: true});
         };
         
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
-        if (member && interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (member && interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ], ephemeral: true});
@@ -45,7 +45,7 @@ export async function run(interaction, commandConfig, locale) {
         let memberProfile = await client.functions.db.getData('profile', member.id);
 
         //Comprueba si el miembro tiene warns
-        if (!memberProfile || memberProfile.moderationLog.warnsHistory.length === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (!memberProfile || memberProfile.moderationLog.warnsHistory.length === 0) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noWarns}`)
         ], ephemeral: true});
@@ -63,13 +63,13 @@ export async function run(interaction, commandConfig, locale) {
         if (!warnId) {
 
             //Comprueba si el miembro puede eliminar cualquier advertencia
-            if (!canRemoveAny) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            if (!canRemoveAny) return interaction.reply({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantRemoveAny}.`)
             ], ephemeral: true});
 
             //Genera un mensaje para el canal de registros
-            loggingEmbed = new client.MessageEmbed()
+            loggingEmbed = new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
                 .setTitle(`📑 ${locale.loggingEmbedAll.title}`)
                 .setDescription(locale.loggingEmbedAll.description)
@@ -81,7 +81,7 @@ export async function run(interaction, commandConfig, locale) {
                 );
 
             //Genera una notificación de la acción para el canal de invocación
-            successEmbed = new client.MessageEmbed()
+            successEmbed = new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbedAll.title}`)
                 .setDescription(await client.functions.utils.parseLocale(locale.notificationEmbedAll.description, { member: member ? member.user.tag : `${memberId} (ID)` }));
@@ -90,7 +90,7 @@ export async function run(interaction, commandConfig, locale) {
             member ? loggingEmbed.addFields({ name: locale.loggingEmbedAll.member, value: member.user.tag, inline: true }) : null;
 
             //Genera una notificación para el miembro
-            if (member) toDMEmbed = new client.MessageEmbed()
+            if (member) toDMEmbed = new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
                 .setAuthor({ name: locale.privateEmbedAll.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
                 .setDescription(await client.functions.utils.parseLocale(locale.privateEmbedAll.description, { member: member }))
@@ -128,19 +128,19 @@ export async function run(interaction, commandConfig, locale) {
             };
 
             //Envía un mensaje de error si no se encuentra la advertencia
-            if (!foundWarn) return interaction.reply({ embeds: [new client.MessageEmbed()
+            if (!foundWarn) return interaction.reply({ embeds: [new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.warnNotFound, { warnId: warnId })}`)
             ], ephemeral: true});
 
             //Comprueba si puede borrar esta advertencia
-            if ((foundWarn.executor.type === 'system' || foundWarn.executor.memberId !== interaction.member.id) && !canRemoveAny) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            if ((foundWarn.executor.type === 'system' || foundWarn.executor.memberId !== interaction.member.id) && !canRemoveAny) return interaction.reply({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantRemoveAny}.`)
             ], ephemeral: true});
 
             //Genera un mensaje para el canal de registros
-            loggingEmbed = new client.MessageEmbed()
+            loggingEmbed = new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
                 .setTitle(`📑 ${locale.loggingEmbedSingle.title}`)
                 .setDescription(locale.loggingEmbedSingle.description)
@@ -154,7 +154,7 @@ export async function run(interaction, commandConfig, locale) {
                 );
 
             //Genera una notificación de la acción para el canal de invocación
-            successEmbed = new client.MessageEmbed()
+            successEmbed = new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbedSingle.title}`)
                 .setDescription(await client.functions.utils.parseLocale(locale.notificationEmbedSingle.description, { warnId: warnId, member: member ? member.user.tag : `${memberId} (ID)` }));
@@ -163,7 +163,7 @@ export async function run(interaction, commandConfig, locale) {
             member ? loggingEmbed.addFields({ name: locale.loggingEmbedSingle.member, value: member.user.tag, inline: true }) : null;
 
             //Genera una notificación para el miembro
-            if (member) toDMEmbed = new client.MessageEmbed()
+            if (member) toDMEmbed = new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
                 .setAuthor({ name: locale.privateEmbedSingle.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
                 .setDescription(await client.functions.utils.parseLocale(locale.privateEmbedSingle.description, { member: member, warnId: warnId }))
@@ -273,7 +273,7 @@ export let config = {
         guild: [],
         channel: ['USE_EXTERNAL_EMOJIS']
     },
-    defaultMemberPermissions: new client.Permissions('MODERATE_MEMBERS'),
+    defaultMemberPermissions: new discord.Permissions('MODERATE_MEMBERS'),
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

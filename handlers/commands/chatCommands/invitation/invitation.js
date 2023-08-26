@@ -50,7 +50,7 @@ export async function run(interaction, commandConfig, locale) {
             if (!targetChannel) {
 
                 //Muestra un error al usuario
-                await interaction.reply({ embeds: [new client.MessageEmbed()
+                await interaction.reply({ embeds: [new discord.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.noTargetChannel}`)
                 ]});
@@ -109,7 +109,7 @@ export async function run(interaction, commandConfig, locale) {
         const resultInviteURL = `https://discord.gg/${inviteCode}`;
 
         //Genera el embed y lo envía, buscando el contenido necesario con la función
-        await interaction.reply({ embeds: [new client.MessageEmbed()
+        await interaction.reply({ embeds: [new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
             .setAuthor({ name: locale.resultEmbed.author, iconURL: client.baseGuild.iconURL({dynamic: true}) })
             .setDescription(resultInviteURL)
@@ -129,7 +129,7 @@ export let config = {
         guild: [],
         channel: ['USE_EXTERNAL_EMOJIS']
     },
-    defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
+    defaultMemberPermissions: new discord.Permissions('ADMINISTRATOR'),
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT'

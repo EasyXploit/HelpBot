@@ -9,7 +9,7 @@ export async function run(interaction, commandConfig, locale) {
             const pollData = await client.functions.db.getData('poll', interaction.options._hoistedOptions[0].value);
 
             //Si la encuesta no existe, devuelve un error
-            if (!pollData) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            if (!pollData) return interaction.reply({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.unknownPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
             ], ephemeral: true});
@@ -27,7 +27,7 @@ export async function run(interaction, commandConfig, locale) {
                 await client.functions.db.deltData('poll', interaction.options._hoistedOptions[0].value);
             
                 //Notifica del error al miembro
-                return interaction.reply({ embeds: [ new client.MessageEmbed()
+                return interaction.reply({ embeds: [ new discord.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                     .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.deletedPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
                 ], ephemeral: true});
@@ -40,7 +40,7 @@ export async function run(interaction, commandConfig, locale) {
                 const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canEndAny});
 
                 //Si no se permitió la ejecución, manda un mensaje de error
-                if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
+                if (!authorized) return interaction.reply({ embeds: [ new discord.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.onlyYours}.`)
                 ], ephemeral: true});
@@ -50,7 +50,7 @@ export async function run(interaction, commandConfig, locale) {
             pollData.expirationTimestamp = Date.now();
 
             //Envía una confirmación al miembro
-            return interaction.reply({ embeds: [ new client.MessageEmbed()
+            return interaction.reply({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.endedPollEmbed.title}`)
                 .setDescription(`${await client.functions.utils.parseLocale(locale.endedPollEmbed.description, { poll: `[${pollData.title}](${pollMessage.url})`, pollChannel: pollChannel })}.`)
@@ -88,7 +88,7 @@ export async function run(interaction, commandConfig, locale) {
         const interactionChannel = await client.functions.utils.fetch('channel', interaction.channelId);
 
         //Envía el assistantEmbed del título
-        interactionChannel.send({ embeds: [ new client.MessageEmbed()
+        interactionChannel.send({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
             .setTitle(`📊 ${locale.titleEmbed.title}`)
             .setDescription(locale.titleEmbed.description)
@@ -101,7 +101,7 @@ export async function run(interaction, commandConfig, locale) {
                 if (!title) return;
 
                 //Edita el asistente para preguntar por la duración
-                assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
+                assistantEmbed.edit({ embeds: [ new discord.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                     .setTitle(`⏱ ${locale.durationEmbed.title}`)
                     .setDescription(locale.durationEmbed.description)
@@ -132,7 +132,7 @@ export async function run(interaction, commandConfig, locale) {
                             interaction.deleteReply();
 
                             //Devuelve un error
-                            return interactionChannel.send({ embeds: [ new client.MessageEmbed()
+                            return interactionChannel.send({ embeds: [ new discord.MessageEmbed()
                                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                                 .setDescription(`${client.customEmojis.redTick} ${locale.invalidDuration}.`)
                             ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
@@ -141,7 +141,7 @@ export async function run(interaction, commandConfig, locale) {
                     } else duration = 0; //Si es indefinido, se establece "0" cómo duración
 
                     //Edita el asistente para preguntar por un campo
-                    assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
+                    assistantEmbed.edit({ embeds: [ new discord.MessageEmbed()
                         .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                         .setTitle(`:one: ${locale.firstFieldEmbed.title}`)
                         .setDescription(locale.firstFieldEmbed.description)
@@ -166,7 +166,7 @@ export async function run(interaction, commandConfig, locale) {
                             options[index] = option;
 
                             //Edita el asistente para preguntar por otro campo
-                            assistantEmbed.edit({ embeds: [ new client.MessageEmbed()
+                            assistantEmbed.edit({ embeds: [ new discord.MessageEmbed()
                                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                                 .setTitle(`${emojiOptions[index + 1]} ${locale.newFieldEmbed.title}`)
                                 .setDescription(`${await client.functions.utils.parseLocale(locale.newFieldEmbed.description, { remaining: 10 - index - 1 })}${ index > 0 ? `.\n${locale.newFieldEmbed.endAssistant}.` : ''}`)
@@ -217,7 +217,7 @@ export async function run(interaction, commandConfig, locale) {
                     const pollId = await client.functions.utils.generateSid();
                     
                     //Envía la encuesta generada al canal de invocación
-                    interactionChannel.send({ embeds: [ new client.MessageEmbed()
+                    interactionChannel.send({ embeds: [ new discord.MessageEmbed()
                         .setColor(`${await client.functions.db.getConfig('colors.polls')}`)
                         .setAuthor({ name: locale.pollEmbed.author, iconURL: 'attachment://poll.png' })
                         .setDescription(`${title}\n\n${formattedOptions}`)
@@ -262,7 +262,7 @@ export async function run(interaction, commandConfig, locale) {
                         if (duration !== 0) await client.functions.db.setData('poll', pollId, { expirationTimestamp: Date.now() + duration });
                         
                         //Envía un mensaje al canal de registros
-                        await client.functions.managers.sendLog('pollStarted', 'embed', new client.MessageEmbed()
+                        await client.functions.managers.sendLog('pollStarted', 'embed', new discord.MessageEmbed()
                             .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
                             .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { memberTag: interaction.member.user.tag }), iconURL: interaction.user.displayAvatarURL({dynamic: true}) })
                             .addFields(

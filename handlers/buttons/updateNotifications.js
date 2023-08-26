@@ -22,7 +22,7 @@ export default async (interaction) => {
         };
 
         //Si no está autorizado para ello, devuelve un mensaje de error
-        if (notAuthorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (notAuthorized) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
             .setDescription(`${client.customEmojis.orangeTick} ${locale.cantGainXp}.`)
         ], ephemeral: true});
@@ -50,10 +50,10 @@ export default async (interaction) => {
         };
 
         //Genera una nueva fila para los botones
-        const buttonsRow = new client.MessageActionRow().addComponents(
+        const buttonsRow = new discord.MessageActionRow().addComponents(
 
             //Genera el nuevo botón
-            new client.MessageButton()
+            new discord.MessageButton()
                 .setLabel(buttonAction ? locale.newButon.disable : locale.newButon.enable)
                 .setStyle(buttonAction ? 'SECONDARY' : 'SUCCESS')
                 .setCustomId('updateNotifications')

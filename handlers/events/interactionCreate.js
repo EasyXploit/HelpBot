@@ -21,21 +21,21 @@ export default async (interaction, locale) => {
             if (!command) return; //Aborta si no lo encuentra
 
             //Aborta si el comando está deshabilitado
-            if (!command.userConfig.enabled) return interaction.reply({embeds: [ new client.MessageEmbed()
+            if (!command.userConfig.enabled) return interaction.reply({embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.information')}`)
                 .setDescription(`${client.customEmojis.grayTick} ${await client.functions.utils.parseLocale(locale.disabledCommand, { commandName: interaction.commandName })}.`)
             ], ephemeral: true});
 
             //Comprueba si el bot tiene los permisos de canal requeridos
             const missingChannelPermissions = await client.functions.utils.missingPermissions(interaction.channel, client.baseGuild.me, command.config.neededBotPermissions.channel);
-            if (missingChannelPermissions) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            if (missingChannelPermissions) return interaction.reply({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${await client.functions.utils.parseLocale(locale.missingChannelPermissions, { missingPermissions: missingChannelPermissions })}.`)
             ], ephemeral: true});
 
             //Comprueba si el bot tiene los permisos de guild requeridos
             const missingGuildPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.me, command.config.neededBotPermissions.guild);
-            if (missingGuildPermissions) return interaction.reply({ embeds: [ new client.MessageEmbed()
+            if (missingGuildPermissions) return interaction.reply({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${await client.functions.utils.parseLocale(locale.missingGuildPermissions, { missingPermissions: missingGuildPermissions })}.`)
             ], ephemeral: true});

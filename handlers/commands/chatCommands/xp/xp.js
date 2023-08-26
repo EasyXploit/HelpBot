@@ -9,7 +9,7 @@ export async function run(interaction, commandConfig, locale) {
         const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
 
         //Comprueba si se ha proporcionado un miembro válido
-        if (!member && !await client.functions.db.getData('profile', interaction.options._hoistedOptions[0].value)) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (!member && !await client.functions.db.getData('profile', interaction.options._hoistedOptions[0].value)) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidMember}.`)
         ], ephemeral: true});
@@ -18,7 +18,7 @@ export async function run(interaction, commandConfig, locale) {
         const memberId = member ? member.id : interaction.options._hoistedOptions[1].value;
 
         //Si el miembro era un bot
-        if (member && member.user.bot) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (member && member.user.bot) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
@@ -33,13 +33,13 @@ export async function run(interaction, commandConfig, locale) {
         let memberStats = memberProfile.stats;
 
         //Comprueba si se le puede restar esa cantidad al miembro
-        if (subcommand === locale.appData.options.remove.name && memberStats.experience < providedValue) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (subcommand === locale.appData.options.remove.name && memberStats.experience < providedValue) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidQuantity}.`)
         ], ephemeral: true});
 
         //Comprueba si se le puede quitar el XP al miembro
-        if (subcommand === locale.appData.options.clear.name && memberStats.experience === 0) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (subcommand === locale.appData.options.clear.name && memberStats.experience === 0) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.hasNoXp}.`)
         ], ephemeral: true});
@@ -51,7 +51,7 @@ export async function run(interaction, commandConfig, locale) {
         if (!byPassed && member && interaction.member.roles.highest.position <= member.roles.highest.position) {
 
             //Devuelve un mensaje de error
-            return interaction.reply({ embeds: [ new client.MessageEmbed()
+            return interaction.reply({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.unauthorizedModify}.`)
             ], ephemeral: true});
@@ -151,7 +151,7 @@ export async function run(interaction, commandConfig, locale) {
         await client.functions.db.setData('profile', member.id, memberProfile);
 
         //Envía un mensaje al canal de registros
-        await client.functions.managers.sendLog('experienceModified', 'embed',  new client.MessageEmbed()
+        await client.functions.managers.sendLog('experienceModified', 'embed',  new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
             .setDescription(`${await client.functions.utils.parseLocale(locale.loggingEmbed.description, { memberTag: member.user.tag })}.`)
@@ -165,7 +165,7 @@ export async function run(interaction, commandConfig, locale) {
         );
 
         //Notifica la acción en el canal de invocación
-        await interaction.reply({ embeds: [ new client.MessageEmbed()
+        await interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
             .setDescription(`${client.customEmojis.greenTick} ${await client.functions.utils.parseLocale(locale.notificationEmbed, { memberTag: member.user.tag })}.`)
         ], ephemeral: true});
@@ -174,7 +174,7 @@ export async function run(interaction, commandConfig, locale) {
         if (newValue === 0) {
 
             //Envía al miembro una notificación por mensaje privado
-            await member.send({ embeds: [ new client.MessageEmbed()
+            await member.send({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setAuthor({ name: locale.privateEmbed.reset.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
                 .setDescription(`${await client.functions.utils.parseLocale(locale.privateEmbed.reset.description, { moderatorTag: interaction.user.tag })}.`)
@@ -184,7 +184,7 @@ export async function run(interaction, commandConfig, locale) {
         } else if (newValue > oldValue) {
 
             //Envía al miembro una notificación por mensaje privado
-            await member.send({ embeds: [ new client.MessageEmbed()
+            await member.send({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setAuthor({ name: locale.privateEmbed.increased.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
                 .setDescription(`${await client.functions.utils.parseLocale(locale.privateEmbed.increased.description, { moderatorTag: interaction.user.tag, givenExp: providedValue, newXP: newValue.toString() })}.`)
@@ -194,7 +194,7 @@ export async function run(interaction, commandConfig, locale) {
         } else if (newValue < oldValue) {
 
             //Envía al miembro una notificación por mensaje privado
-            await member.send({ embeds: [ new client.MessageEmbed()
+            await member.send({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setAuthor({ name: locale.privateEmbed.decreased.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
                 .setDescription(`${await client.functions.utils.parseLocale(locale.privateEmbed.decreased.description, { moderatorTag: interaction.user.tag, removedXP: providedValue, newXP: newValue.toString() })}.`)
@@ -214,7 +214,7 @@ export let config = {
         guild: [],
         channel: ['USE_EXTERNAL_EMOJIS']
     },
-    defaultMemberPermissions: new client.Permissions('ADMINISTRATOR'),
+    defaultMemberPermissions: new discord.Permissions('ADMINISTRATOR'),
     dmPermission: false,
     appData: {
         type: 'CHAT_INPUT',

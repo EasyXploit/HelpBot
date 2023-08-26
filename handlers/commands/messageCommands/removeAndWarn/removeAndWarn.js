@@ -4,7 +4,7 @@ export async function run(interaction, commandConfig, locale) {
 
         //Si el ejecutor no tiene permisos para borrar mensajes, envía un error
         const missingPermissions = await client.functions.utils.missingPermissions(channel, interaction.member, ['MANAGE_MESSAGES'])
-        if (missingPermissions) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (missingPermissions) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantDeleteMessages}.`)
         ], ephemeral: true});
@@ -13,19 +13,19 @@ export async function run(interaction, commandConfig, locale) {
         const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].message.author.id);
 
         //Devuelve un error si no se ha encontrado al miembro
-        if (!member) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (!member) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ], ephemeral: true});
 
         //Devuelve un error si se ha proporcionado un bot
-        if (member.user.bot) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (member.user.bot) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
         
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
-        if (interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new client.MessageEmbed()
+        if (interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ], ephemeral: true});
@@ -49,7 +49,7 @@ export async function run(interaction, commandConfig, locale) {
                 const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedFrequency});
 
                 //Si no está autorizado, devuelve un mensaje de error
-                if (!authorized) return interaction.reply({ embeds: [ new client.MessageEmbed()
+                if (!authorized) return interaction.reply({ embeds: [ new discord.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cooldown, { member: member })}.`)
                 ], ephemeral: true});
@@ -57,15 +57,15 @@ export async function run(interaction, commandConfig, locale) {
         };
 
         //Genera un nuevo modal
-        const reasonModal = new client.Modal()
+        const reasonModal = new discord.Modal()
             .setTitle(locale.bodyModal.title)
             .setCustomId('removeAndWarnReason');
 
         //Genera la única fila del modal
-        const bodyRow = new client.MessageActionRow().addComponents(
+        const bodyRow = new discord.MessageActionRow().addComponents(
 
             //Añade un campo de texto a la fila
-            new client.TextInputComponent()
+            new discord.TextInputComponent()
                 .setCustomId('body')
                 .setLabel(locale.bodyModal.fieldTitle)
                 .setPlaceholder(locale.bodyModal.fieldPlaceholder)
@@ -86,7 +86,7 @@ export async function run(interaction, commandConfig, locale) {
         const reason = await interaction.awaitModalSubmit({ filter: modalsFilter, time: 300000 }).then(async modalInteraction => {
 
             //Envía un mensaje de confirmación
-            await modalInteraction.reply({ embeds: [ new client.MessageEmbed()
+            await modalInteraction.reply({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${locale.correct}`)
             ], ephemeral: true});
@@ -118,7 +118,7 @@ export let config = {
         guild: [],
         channel: ['USE_EXTERNAL_EMOJIS', 'MANAGE_MESSAGES']
     },
-    defaultMemberPermissions: new client.Permissions('MODERATE_MEMBERS'),
+    defaultMemberPermissions: new discord.Permissions('MODERATE_MEMBERS'),
     dmPermission: false,
     appData: {
         type: 'MESSAGE'

@@ -67,7 +67,7 @@ export default async (oldMember, newMember, locale) => {
             if (newMember.communicationDisabledUntilTimestamp && newMember.communicationDisabledUntilTimestamp > Date.now()) {
 
                 //Envía un mensaje al canal de registros
-                await client.functions.managers.sendLog('timeoutedMember', 'embed', new client.MessageEmbed()
+                await client.functions.managers.sendLog('timeoutedMember', 'embed', new discord.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setAuthor({ name: await client.functions.utils.parseLocale(locale.communicationDisabled.loggingEmbed.author, { memberTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true}) })
                     .addFields(
@@ -79,7 +79,7 @@ export default async (oldMember, newMember, locale) => {
                 );
 
                 //Envía una notificación al miembro
-                await newMember.send({ embeds: [ new client.MessageEmbed()
+                await newMember.send({ embeds: [ new discord.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setAuthor({ name: locale.communicationDisabled.privateEmbed.author, iconURL: newMember.guild.iconURL({ dynamic: true}) })
                     .setDescription(await client.functions.utils.parseLocale(locale.communicationDisabled.privateEmbed.description, { member: newMember, guildName: newMember.guild.name }))
@@ -104,7 +104,7 @@ export default async (oldMember, newMember, locale) => {
                 };
 
                 //Envía un mensaje al canal de registros
-                await client.functions.managers.sendLog('untimeoutedMember', 'embed', new client.MessageEmbed()
+                await client.functions.managers.sendLog('untimeoutedMember', 'embed', new discord.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
                     .setAuthor({ name: await client.functions.utils.parseLocale(locale.communicationEnabled.loggingEmbed.author, { userTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true})})
                     .addFields(
@@ -115,7 +115,7 @@ export default async (oldMember, newMember, locale) => {
                 );
 
                 //Envía una notificación al miembro
-                await newMember.send({ embeds: [ new client.MessageEmbed()
+                await newMember.send({ embeds: [ new discord.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
                     .setAuthor({ name: locale.communicationEnabled.privateEmbed.author, iconURL: newMember.guild.iconURL({ dynamic: true}) })
                     .setDescription(await client.functions.utils.parseLocale(locale.communicationEnabled.privateEmbed.description, { member: newMember, guildName: newMember.guild.name }))

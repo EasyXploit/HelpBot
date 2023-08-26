@@ -48,7 +48,7 @@ export async function run(interaction, commandConfig, locale) {
         await channel.bulkDelete(msgsToDelete);
 
         //Almacena la descripción del embed de confirmación
-        successEmbedDescription = `${locale.successEmbed.description}: \`${msgsToDelete.size}\``;
+        let successEmbedDescription = `${locale.successEmbed.description}: \`${msgsToDelete.size}\``;
 
         //Almacena el mensaje de confirmación
         let successEmbed = new discord.EmbedBuilder()

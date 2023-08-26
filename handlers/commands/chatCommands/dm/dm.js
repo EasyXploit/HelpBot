@@ -53,7 +53,7 @@ export async function run(interaction, commandConfig, locale) {
                 .setCustomId('body')
                 .setLabel(locale.bodyModal.fieldTitle)
                 .setPlaceholder(locale.bodyModal.fieldPlaceholder)
-                .setStyle('PARAGRAPH')
+                .setStyle(discord.TextInputStyle.Paragraph)
                 .setMaxLength(fieldLength)
                 .setRequired(true)
         );

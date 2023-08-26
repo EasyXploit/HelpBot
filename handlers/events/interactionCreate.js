@@ -6,7 +6,7 @@ export default async (interaction, locale) => {
         if (interaction.guild && interaction.guild.id !== client.baseGuild.id) return;
 
         //Si la interacción es un comando
-        if (interaction.isCommand() || interaction.isContextMenu()) {
+        if (interaction.isCommand() || interaction.isContextMenuCommand()) {
 
             //variable para almacenar el tipo de comando
             let commandType;

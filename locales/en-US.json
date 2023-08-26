@@ -101,6 +101,7 @@
                     "userNotFound": "User not found. You must mention a member or write it's ID.\nIf the user is not on the server, you must specify it's ID",
                     "noBots": "You cannot ban a bot",
                     "badHierarchy": "You cannot ban a member with a role equal to or higher than yours",
+                    "badBotHierarchy": "You cannot ban a member with a role equal to or higher than the bot's one",
                     "alreadyBanned": "This user has already been banned",
                     "cantPermaBan": "You do not have permission to permanently ban",
                     "exceededDuration": "You can only ban a maximum of `{{time}}`",
@@ -262,6 +263,7 @@
                     "memberNotFound": "Member not found. You must mention a member or enter it's ID",
                     "noBots": "You cannot kick a bot",
                     "badHierarchy": "You cannot kick a member with a role equal to or higher than yours",
+                    "badBotHierarchy": "You cannot kick a member with a role equal to or higher than the bot's one",
                     "noReason": "You must provide a reason",
                     "undefinedReason": "Undefined",
                     "privateEmbed": {
@@ -349,6 +351,7 @@
                     "memberNotFound": "Member not found. You must mention a member or enter it's ID",
                     "noBots": "You cannot ban a bot",
                     "badHierarchy": "You cannot timeout a member with a role equal to or higher than yours",
+                    "badBotHierarchy": "You cannot timeout a member with a role equal to or higher than the bot's one",
                     "exceededDuration": "You can only timeout a maximum of `{{time}}`",
                     "noReason": "You must provide a reason",
                     "undefinedReason": "Undefined",
@@ -837,6 +840,7 @@
                     "noReason": "You must provide a reason",
                     "notSilenced": "This member is not timeouted",
                     "badHierarchy": "{{interactionAuthor}}, you cannot un-timeout someone with a role equal to or higher than yours",
+                    "badBotHierarchy": "{{interactionAuthor}}, you cannot un-timeout someone with a role equal to or higher than the bot's one",
                     "cantRemoveAny": "{{interactionAuthor}}, you can't untimeout someone you haven't timeouted yourself",
                     "undefinedReason": "Undefined",
                     "loggingEmbed": {

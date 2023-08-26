@@ -30,6 +30,12 @@ export async function run(interaction, commandConfig, locale) {
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ], ephemeral: true});
 
+        //Se comprueba si el rol del bot es más bajo que el del miembro objetivo
+        if (interaction.guild.members.me.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
+            .setColor(`${await client.functions.db.getConfig('colors.error')}`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.badBotHierarchy}`)
+        ], ephemeral: true});
+
         //Almacena la expiración provista
         const expiresAfter = interaction.options._hoistedOptions[1].value;
 

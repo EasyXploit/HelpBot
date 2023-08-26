@@ -50,6 +50,7 @@
                     "userNotFound": "未找到用户。你必须提到一个成员或写出它的ID。\n如果该用户不在服务器上，你必须指定它的ID",
                     "noBots": "你无法禁止机器人",
                     "badHierarchy": "你无法禁止一个权力等于或高于你的成员",
+                    "badBotHierarchy": "You cannot ban a member with a role equal to or higher than the bot's one",
                     "alreadyBanned": "该用户已被禁止",
                     "cantPermaBan": "你不具备永久禁止权限",
                     "wrongMagnitudes": "你必须写一个持续时间，格式为：天 \"D\"|分钟 \"M\"|小时 \"H\"|秒 \"S\"",
@@ -208,6 +209,7 @@
                     "memberNotFound": "Member not found. You must mention a member or enter it's ID",
                     "noBots": "You cannot kick a bot",
                     "badHierarchy": "You cannot kick a member with a role equal to or higher than yours",
+                    "badBotHierarchy": "You cannot kick a member with a role equal to or higher than the bot's one",
                     "noReason": "You must provide a reason",
                     "undefinedReason": "Undefined",
                     "privateEmbed": {
@@ -295,6 +297,7 @@
                     "memberNotFound": "Member not found. You must mention a member or enter it's ID",
                     "noBots": "You cannot ban a bot",
                     "badHierarchy": "You cannot mute a member with a role equal to or higher than yours",
+                    "badBotHierarchy": "You cannot timeout a member with a role equal to or higher than the bot's one",
                     "noReason": "You must provide a reason",
                     "undefinedReason": "Undefined",
                     "notificationEmbed": {
@@ -761,6 +764,7 @@
                     "noReason": "You must provide a reason",
                     "notSilenced": "This member is not muted",
                     "badHierarchy": "{{interactionAuthor}}, you cannot un-mute someone with a role equal to or higher than yours",
+                    "badBotHierarchy": "{{interactionAuthor}}, you cannot un-timeout someone with a role equal to or higher than the bot's one",
                     "cantRemoveAny": "{{interactionAuthor}}, you can't unmute someone you haven't muted yourself",
                     "undefinedReason": "Undefined",
                     "loggingEmbed": {

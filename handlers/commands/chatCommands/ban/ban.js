@@ -32,6 +32,12 @@ export async function run(interaction, commandConfig, locale) {
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}`)
         ], ephemeral: true});
+
+        //Se comprueba si el rol del bot es más bajo que el del miembro objetivo
+        if (member && (interaction.guild.members.me.roles.highest.position <= member.roles.highest.position)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
+            .setColor(`${await client.functions.db.getConfig('colors.error')}`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.badBotHierarchy}`)
+        ], ephemeral: true});
         
         //Se comprueba si el usuario ya estaba baneado
         const guildBans = await interaction.guild.bans.fetch();

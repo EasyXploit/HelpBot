@@ -50,6 +50,7 @@
                     "userNotFound": "Utente non trovato. Devi menzionare un membro o scrivere il suo ID.\nSe l'utente non si trova sul server devi specificare il suo ID",
                     "noBots": "Non puoi bannare un bot",
                     "badHierarchy": "Non puoi bannare un membro con un ruolo equivalente o superiore al tuo",
+                    "badBotHierarchy": "You cannot ban a member with a role equal to or higher than the bot's one",
                     "alreadyBanned": "Questo utente è gia stato bannato",
                     "cantPermaBan": "Non hai permessi per bannare permanentemente",
                     "wrongMagnitudes": "Definire una durazione con il formato seguente: giorni\"D\" | minuti\"M\" | ore\"H\" | secondi\"S\"",
@@ -208,6 +209,7 @@
                     "memberNotFound": "Membro non trovato. Devi menzionare un membro o scrivere il suo ID",
                     "noBots": "Non puoi espellere un bot",
                     "badHierarchy": "Non puoi espellere un membro con un ruolo equivalente o superiore al tuo",
+                    "badBotHierarchy": "You cannot kick a member with a role equal to or higher than the bot's one",
                     "noReason": "Devi fornire un motivo",
                     "undefinedReason": "Indefinita",
                     "privateEmbed": {
@@ -295,6 +297,7 @@
                     "memberNotFound": "Membro non trovato. Devi menzionare un membro o scrivere il suo ID",
                     "noBots": "Non puoi silenziare un bot",
                     "badHierarchy": "Non puoi silenziare un membro con un ruolo equivalente o superiore al tuo",
+                    "badBotHierarchy": "You cannot timeout a member with a role equal to or higher than the bot's one",
                     "noReason": "Devi fornire un motivo",
                     "undefinedReason": "Indefinita",
                     "notificationEmbed": {
@@ -761,6 +764,7 @@
                     "noReason": "Devi fornire un motivo",
                     "notSilenced": "This member is not muted",
                     "badHierarchy": "{{interactionAuthor}}, you cannot un-mute someone with a role equal to or higher than yours",
+                    "badBotHierarchy": "{{interactionAuthor}}, you cannot un-mute someone with a role equal to or higher than the bot's one",
                     "cantRemoveAny": "{{interactionAuthor}}, you can't unmute someone you haven't muted yourself",
                     "undefinedReason": "Indefinita",
                     "loggingEmbed": {

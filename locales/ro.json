@@ -50,6 +50,7 @@
                     "userNotFound": "Utilizator nu a fost găsit. Trebuie să menționați un membru sau să-i scrieți ID-ul.\nDacă utilizatorul nu se află pe server, trebuie să specificați ID-ul lui",
                     "noBots": "Nu poți interzice un bot",
                     "badHierarchy": "Nu poți interzice un membru cu un rol egal sau mai mare decât al tău",
+                    "badBotHierarchy": "You cannot ban a member with a role equal to or higher than the bot's one",
                     "alreadyBanned": "Acest utilizator a fost deja interzis",
                     "cantPermaBan": "Nu aveți permisiunea de a interzice definitiv",
                     "wrongMagnitudes": "Trebuie să scrieți o durată cu formatul: zile \"S\" | minute\"M\" | ore\"H\" | Zile \"D\"",
@@ -208,6 +209,7 @@
                     "memberNotFound": "Membrul nu a fost găsit. Trebuie să menționați un membru sau să introduceți ID-ul lui",
                     "noBots": "Nu poți da afară un bot",
                     "badHierarchy": "Nu poți da afară un membru cu un rol egal sau mai mare decât al tău",
+                    "badBotHierarchy": "You cannot kick a member with a role equal to or higher than the bot's one",
                     "noReason": "Trebuie să oferiți un motiv",
                     "undefinedReason": "Undefined",
                     "privateEmbed": {
@@ -295,6 +297,7 @@
                     "memberNotFound": "Membrul nu a fost găsit. Trebuie să menționați un membru sau să introduceți ID-ul lui",
                     "noBots": "Nu poți interzice un bot",
                     "badHierarchy": "Nu poți suprima un membru cu un rol egal sau mai mare decât al tău",
+                    "badBotHierarchy": "You cannot timeout a member with a role equal to or higher than the bot's one",
                     "noReason": "Trebuie să oferiți un motiv",
                     "undefinedReason": "Undefined",
                     "notificationEmbed": {
@@ -761,6 +764,7 @@
                     "noReason": "Trebuie să oferiți un motiv",
                     "notSilenced": "Acest membru nu este amuțit",
                     "badHierarchy": "{{interactionAuthor}}, nu poți anula sunetul pe cineva cu un rol egal sau mai mare decât al tău",
+                    "badBotHierarchy": "{{interactionAuthor}}, you cannot un-timeout someone with a role equal to or higher than the bot's one",
                     "cantRemoveAny": "{{interactionAuthor}}, nu poți activa sunetul unei persoane pe care tu nu ai amuțit-o",
                     "undefinedReason": "Undefined",
                     "loggingEmbed": {

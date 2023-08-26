@@ -33,7 +33,7 @@ export default async (oldMember, newMember, locale) => {
             //Busca el último aislamiento en el registro de auditoría
             const fetchedLogs = await newMember.guild.fetchAuditLogs({
                 limit: 1,
-                type: 'MemberUpdate',
+                type: discord.AuditLogEvent.MemberUpdate,
             });
 
             //Almacena el primer resultado de la búsqueda

@@ -11,7 +11,7 @@ export default async (member, locale) => {
         //Busca la última expulsión en el registro de auditoría
         const fetchedLogs = await member.guild.fetchAuditLogs({
             limit: 1,
-            type: 'MemberKick',
+            type: discord.AuditLogEvent.MemberKick,
         });
 
         //Almacena el primer resultado de la búsqueda
@@ -82,7 +82,7 @@ export default async (member, locale) => {
             //Busca el último baneo en el registro de auditoría
             const fetchedBans = await member.guild.fetchAuditLogs({
                 limit: 1,
-                type: 'MemberBanAdd',
+                type: discord.AuditLogEvent.MemberBanAdd,
             });
 
             //Almacena el primer resultado de la búsqueda

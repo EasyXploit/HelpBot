@@ -24,22 +24,22 @@
   "license": "MIT",
   "homepage": "https://github.com/EasyXploit/HelpBot#readme",
   "dependencies": {
-    "@sentry/node": "^7.29.0",
-    "@sentry/tracing": "^7.29.0",
+    "@sentry/node": "^7.64.0",
+    "@sentry/tracing": "^7.64.0",
     "asciiart-logo": "^0.2.7",
-    "bufferutil": "^4.0.6",
-    "discord.js": "^13.16.0",
-    "inquirer": "^9.2.3",
+    "bufferutil": "^4.0.7",
+    "discord.js": "^14.13.0",
+    "inquirer": "^9.2.10",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
-    "migrate-mongo": "^9.0.0",
-    "mongoose": "^7.0.0",
-    "nanoid": "^4.0.0",
-    "winston": "^3.8.2"
+    "migrate-mongo": "^10.0.0",
+    "mongoose": "^7.4.5",
+    "nanoid": "^4.0.2",
+    "winston": "^3.10.0"
   },
   "devDependencies": {
-    "dotenv": "^16.0.3",
-    "nodemon": "^2.0.19"
+    "dotenv": "^16.3.1",
+    "nodemon": "^3.0.1"
   },
   "nodemonConfig": {
     "ignore": [

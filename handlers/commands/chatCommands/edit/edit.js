@@ -12,7 +12,7 @@ export async function run(interaction, commandConfig, locale) {
         ], ephemeral: true});
 
         //Almacena si faltan permisos en el canal objetivo
-        const missingPermissions = await client.functions.utils.missingPermissions(channel, client.baseGuild.me, ['VIEW_CHANNEL', 'READ_MESSAGE_HISTORY']);
+        const missingPermissions = await client.functions.utils.missingPermissions(channel, client.baseGuild.members.me, ['VIEW_CHANNEL', 'READ_MESSAGE_HISTORY']);
         if (missingPermissions) return interaction.reply({ embeds: [ new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noBotPermission, { channel: channel, missingPermissions: missingPermissions })}.`)

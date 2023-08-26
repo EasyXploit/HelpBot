@@ -99,7 +99,7 @@ export async function run(interaction, commandConfig, locale) {
             .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
             .setTitle(`🥇 ${locale.statsEmbed.title}`)
             .setDescription(await client.functions.utils.parseLocale(locale.statsEmbed.description, { memberTag: member.user.tag }))
-            .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
+            .setThumbnail(member.user.displayAvatarURL())
             .addFields(
                 { name: locale.statsEmbed.actualLevel, value: `\`${memberProfile.stats.level}\``, inline: true },
                 { name: locale.statsEmbed.experience, value: `\`${memberProfile.stats.experience}\``, inline: true },

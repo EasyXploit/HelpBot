@@ -27,14 +27,14 @@ export default async (interaction, locale) => {
             ], ephemeral: true});
 
             //Comprueba si el bot tiene los permisos de canal requeridos
-            const missingChannelPermissions = await client.functions.utils.missingPermissions(interaction.channel, client.baseGuild.me, command.config.neededBotPermissions.channel);
+            const missingChannelPermissions = await client.functions.utils.missingPermissions(interaction.channel, client.baseGuild.members.me, command.config.neededBotPermissions.channel);
             if (missingChannelPermissions) return interaction.reply({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${await client.functions.utils.parseLocale(locale.missingChannelPermissions, { missingPermissions: missingChannelPermissions })}.`)
             ], ephemeral: true});
 
             //Comprueba si el bot tiene los permisos de guild requeridos
-            const missingGuildPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.me, command.config.neededBotPermissions.guild);
+            const missingGuildPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.members.me, command.config.neededBotPermissions.guild);
             if (missingGuildPermissions) return interaction.reply({ embeds: [ new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${await client.functions.utils.parseLocale(locale.missingGuildPermissions, { missingPermissions: missingGuildPermissions })}.`)

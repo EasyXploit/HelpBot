@@ -45,7 +45,7 @@ export async function run(interaction, commandConfig, locale) {
             .setColor(member.displayHexColor)
             .setTitle(await client.functions.utils.parseLocale(locale.embed.title, { memberDisplayName: member.displayName }))
             .setDescription(await client.functions.utils.parseLocale(locale.embed.description, { memberTag: member.user.tag }))
-            .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
+            .setThumbnail(member.user.displayAvatarURL())
             .addFields(
                 { name: `🆔 ${locale.embed.memberId}`, value: member.id, inline: true },
                 { name: `📝 ${locale.embed.registerDate}`, value: `<t:${Math.round(member.user.createdTimestamp / 1000)}>`, inline: true },

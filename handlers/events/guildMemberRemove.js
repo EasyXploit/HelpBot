@@ -26,7 +26,7 @@ export default async (member, locale) => {
                 //Envía un registro al canal de registros
                 await client.functions.managers.sendLog('kickedMember', 'embed', new discord.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                    .setAuthor({ name: await client.functions.utils.parseLocale(locale.inconclusiveLoggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                    .setAuthor({ name: await client.functions.utils.parseLocale(locale.inconclusiveLoggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL() })
                     .addFields(
                         { name: locale.inconclusiveLoggingEmbed.memberId, value: member.id, inline: true },
                         { name: locale.inconclusiveLoggingEmbed.moderator, value: locale.inconclusiveLoggingEmbed.unknownModerator, inline: true },
@@ -69,7 +69,7 @@ export default async (member, locale) => {
             //Envía un registro al canal de registros
             await client.functions.managers.sendLog('kickedMember', 'embed', new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL({dynamic: true}) })
+                .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL() })
                 .addFields(
                     { name: locale.loggingEmbed.memberId, value: member.id, inline: true },
                     { name: locale.loggingEmbed.moderator, value: executor ? executor.tag : locale.loggingEmbed.unknownModerator, inline: true },
@@ -94,7 +94,7 @@ export default async (member, locale) => {
                 //Envía un registro al canal de bienvenidas/despedidas (por que no se trató ni de una expulsión ni de un baneo)
                 await client.functions.managers.sendLog('memberLeaved', 'embed', new discord.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
-                    .setThumbnail(member.user.displayAvatarURL({dynamic: true}))
+                    .setThumbnail(member.user.displayAvatarURL())
                     .setAuthor({ name: locale.goodbyeEmbed.author, iconURL: 'attachment://out.png' })
                     .setDescription(await client.functions.utils.parseLocale(locale.goodbyeEmbed.description, { memberTag: member.user.tag }))
                     .addFields(

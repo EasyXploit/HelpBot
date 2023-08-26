@@ -12,7 +12,7 @@ export async function run(interaction, commandConfig, locale) {
             let targetChannel;
 
             //Almacena si faltan permisos en el canal de reglas
-            const missingPermissionOnRulesChannel = await client.functions.utils.missingPermissions(client.baseGuild.rulesChannel, client.baseGuild.me, ['CREATE_INSTANT_INVITE'], true);
+            const missingPermissionOnRulesChannel = await client.functions.utils.missingPermissions(client.baseGuild.rulesChannel, client.baseGuild.members.me, ['CREATE_INSTANT_INVITE'], true);
             
             //Comprueba si hay canal de reglas y si se tiene permiso para crear la invitación
             if (client.baseGuild.rulesChannel && !missingPermissionOnRulesChannel) {
@@ -38,7 +38,7 @@ export async function run(interaction, commandConfig, locale) {
                         const channel = channels.get(channelIds[index]);
 
                         //Almacena si faltan permisos en el canal
-                        const missingPermission = await client.functions.utils.missingPermissions(channel, client.baseGuild.me, ['CREATE_INSTANT_INVITE'], true);
+                        const missingPermission = await client.functions.utils.missingPermissions(channel, client.baseGuild.members.me, ['CREATE_INSTANT_INVITE'], true);
 
                         //Si tiene permisos, graba la invitación
                         if(!missingPermission) return targetChannel = channel;

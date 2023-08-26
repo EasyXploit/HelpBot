@@ -69,7 +69,7 @@ export default async (oldMember, newMember, locale) => {
                 //Envía un mensaje al canal de registros
                 await client.functions.managers.sendLog('timeoutedMember', 'embed', new discord.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                    .setAuthor({ name: await client.functions.utils.parseLocale(locale.communicationDisabled.loggingEmbed.author, { memberTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true}) })
+                    .setAuthor({ name: await client.functions.utils.parseLocale(locale.communicationDisabled.loggingEmbed.author, { memberTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL() })
                     .addFields(
                         { name: locale.communicationDisabled.loggingEmbed.memberId, value: newMember.id, inline: true },
                         { name: locale.communicationDisabled.loggingEmbed.moderator, value: executor ? executor.tag : locale.communicationDisabled.loggingEmbed.unknownModerator, inline: true },
@@ -106,7 +106,7 @@ export default async (oldMember, newMember, locale) => {
                 //Envía un mensaje al canal de registros
                 await client.functions.managers.sendLog('untimeoutedMember', 'embed', new discord.MessageEmbed()
                     .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
-                    .setAuthor({ name: await client.functions.utils.parseLocale(locale.communicationEnabled.loggingEmbed.author, { userTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL({dynamic: true})})
+                    .setAuthor({ name: await client.functions.utils.parseLocale(locale.communicationEnabled.loggingEmbed.author, { userTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL()})
                     .addFields(
                         { name: locale.communicationEnabled.loggingEmbed.memberId, value: newMember.id.toString(), inline: true },
                         { name: locale.communicationEnabled.loggingEmbed.moderator, value: executor ? executor.tag : locale.communicationEnabled.loggingEmbed.unknownModerator, inline: true },

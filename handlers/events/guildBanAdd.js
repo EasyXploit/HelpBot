@@ -23,7 +23,7 @@ export default async (banData, locale) => {
             //Envía un mensaje al canal de registros
             await client.functions.managers.sendLog('bannedMember', 'embed', new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-                .setAuthor({ name: await client.functions.utils.parseLocale(locale.inconclusiveLoggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
+                .setAuthor({ name: await client.functions.utils.parseLocale(locale.inconclusiveLoggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL() })
                 .addFields(
                     { name: locale.inconclusiveLoggingEmbed.memberId, value: banData.user.id, inline: true },
                     { name: locale.inconclusiveLoggingEmbed.moderator, value: locale.inconclusiveLoggingEmbed.unknownModerator, inline: true },
@@ -79,7 +79,7 @@ export default async (banData, locale) => {
             //Envía un mensaje al canal de registros
             await client.functions.managers.sendLog('bannedMember', 'embed', new discord.MessageEmbed()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-                .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL({dynamic: true}) })
+                .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL() })
                 .addFields(
                     { name: locale.loggingEmbed.memberId, value: banData.user.id, inline: true },
                     { name: locale.loggingEmbed.moderator, value: executor ? executor.tag : locale.loggingEmbed.unknownModerator, inline: true },

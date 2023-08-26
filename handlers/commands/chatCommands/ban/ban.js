@@ -142,8 +142,8 @@ export async function run(interaction, commandConfig, locale) {
         //Almacena los parámetros para el baneo
         const banParameters = { reason: reason || locale.undefinedReason };
 
-        //Si se ha proporcionado borrado de mensajes, almacena el parámetro
-        if (deletedDays) banParameters.days = deletedDays;
+        //Si se ha proporcionado borrado de mensajes (en días), almacena el parámetro convertido a segundos
+        if (deletedDays) banParameters.deleteMessageSeconds = deletedDays * 24 * 60 * 60;
 
         //Genera una descripción para el embed de notificación
         const notificationEmbedDescription = reason ? await client.functions.utils.parseLocale(locale.notificationEmbed.withReason, { userTag: user.tag, reason: reason }) : await client.functions.utils.parseLocale(locale.notificationEmbed.withoutReason, { userTag: user.tag })

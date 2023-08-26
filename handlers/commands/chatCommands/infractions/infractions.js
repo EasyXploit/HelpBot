@@ -114,7 +114,7 @@ export async function run(interaction, commandConfig, locale) {
                 .setFooter({ text: await client.functions.utils.parseLocale(locale.infractionsEmbed.page, { actualPage: actualPage, totalPages: totalPages > 0 ? totalPages : 1 }), iconURL: client.baseGuild.iconURL({dynamic: true}) });
 
             //Si se encontró el miembro, muestra su avatar en el embed
-            if (member) newPageEmbed.setThumbnail(member.user.displayAvatarURL({dynamic: true}));
+            if (member) newPageEmbed.setThumbnail(member.user.displayAvatarURL());
 
             //Invoca el gestor de navegación mediante botones
             const buttonNavigationResult = await client.functions.managers.buttonNavigation(interaction, 'infractions', actualPage, totalPages, newPageEmbed, latestInteraction, null);

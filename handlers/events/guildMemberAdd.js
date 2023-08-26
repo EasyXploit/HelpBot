@@ -12,7 +12,7 @@ export default async (member, locale) => {
         if ((member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now() && !memberTimeout) || (!member.communicationDisabledUntilTimestamp && memberTimeout)) {
 
             //Comprueba si el bot tiene los permisos requeridos
-            const missingPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.me, ['ModerateMembers']);
+            const missingPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.members.me, ['ModerateMembers']);
             if (missingPermissions) return logger.warn(`The bot could not un-timeout ${member.user.tag} (${member.id}) because it did not have permission to do so`);
 
             //Habilita la comunicación del miembro en el servidor
@@ -36,7 +36,7 @@ export default async (member, locale) => {
             if (newBotRoleId && newBotRoleId.length > 0) {
 
                 //Comprueba si el bot tiene los permisos requeridos
-                const missingPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.me, ['MANAGE_ROLES']);
+                const missingPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.members.me, ['MANAGE_ROLES']);
                 if (missingPermissions) logger.warn(`The bot could not add the welcome role to the bot ${member.user.tag} (${member.id}) because it did not have permission to do so`);
                 else if (!member.roles.cache.has(newBotRoleId)) await member.roles.add(newBotRoleId); //Añade el rol de bienvenida para nuevos bots (si no lo tiene ya)
             };

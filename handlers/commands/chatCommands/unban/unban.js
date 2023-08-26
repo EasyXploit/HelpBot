@@ -62,7 +62,7 @@ export async function run(interaction, commandConfig, locale) {
         //Envía un mensaje al canal de registros
         await client.functions.managers.sendLog('unbannedMember', 'embed', new discord.MessageEmbed()
             .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
-            .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL({dynamic: true}) })
+            .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL() })
             .addFields(
                 { name: locale.loggingEmbed.userId, value: user.id.toString(), inline: true },
                 { name: locale.loggingEmbed.moderator, value: interaction.user.tag, inline: true },

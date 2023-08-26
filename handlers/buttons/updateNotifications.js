@@ -28,7 +28,7 @@ export default async (interaction) => {
         ], ephemeral: true});
 
         //Almacena la acción a realizar determinada por el estilo del botón
-        const buttonAction = interaction.message.components[0].components[0].style === 'SECONDARY' ? false : true;
+        const buttonAction = interaction.message.components[0].components[0].style === discord.ButtonStyle.Secondary ? false : true;
 
         //Almacena el perfil del miembro, o lo crea
         let memberProfile = await client.functions.db.getData('profile', interaction.user.id) || await client.functions.db.genData('profile', { userId: interaction.user.id });
@@ -55,7 +55,7 @@ export default async (interaction) => {
             //Genera el nuevo botón
             new discord.MessageButton()
                 .setLabel(buttonAction ? locale.newButon.disable : locale.newButon.enable)
-                .setStyle(buttonAction ? 'SECONDARY' : 'SUCCESS')
+                .setStyle(buttonAction ? discord.ButtonStyle.Secondary : discord.ButtonStyle.Success)
                 .setCustomId('updateNotifications')
         );
 

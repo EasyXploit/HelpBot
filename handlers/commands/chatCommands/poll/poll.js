@@ -264,7 +264,7 @@ export async function run(interaction, commandConfig, locale) {
                         //Envía un mensaje al canal de registros
                         await client.functions.managers.sendLog('pollStarted', 'embed', new discord.MessageEmbed()
                             .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
-                            .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { memberTag: interaction.member.user.tag }), iconURL: interaction.user.displayAvatarURL({dynamic: true}) })
+                            .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { memberTag: interaction.member.user.tag }), iconURL: interaction.user.displayAvatarURL() })
                             .addFields(
                                 { name: locale.loggingEmbed.title, value: `__[${title}](${pollEmbed.url})__`, inline: true },
                                 { name: locale.loggingEmbed.channel, value: `${interactionChannel}`, inline: true },

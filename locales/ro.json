@@ -588,22 +588,22 @@
                         "description": "Afișează informații despre server"
                     },
                     "guildTiers": {
-                        "NONE": "Nivelul 0",
-                        "TIER_1": "Nivelul 1",
-                        "TIER_2": "Nivelul 2",
-                        "TIER_3": "Nivelul 3"
+                        "None": "Nivelul 0",
+                        "Tier1": "Nivelul 1",
+                        "Tier2": "Nivelul 2",
+                        "Tier3": "Nivelul 3"
                     },
-                    "guildNsfwLevel": {
-                        "DISABLED": "Dezactivat",
-                        "MEMBERS_WITHOUT_ROLES": "Supravegherea membrilor fără rol",
-                        "ALL_MEMBERS": "Supravegherea tuturor"
+                    "explicitContentFilter": {
+                        "0": "Disabled",
+                        "1": "Members without roles",
+                        "2": "All members"
                     },
-                    "guildverificationLevel": {
-                        "NONE": "Dezactivat",
-                        "LOW": "Scăzut",
-                        "MEDIUM": "Mediu",
-                        "HIGH": "Ridicat",
-                        "VERY_HIGH": "Foarte ridicat"
+                    "guildVerificationLevel": {
+                        "0": "Disabled",
+                        "1": "Low",
+                        "2": "Medium",
+                        "3": "High",
+                        "4": "Very high"
                     },
                     "embed": {
                         "author": "Informații despre {{guildName}}",
@@ -612,7 +612,7 @@
                         "region": "Regiune",
                         "creationDate": "Data crearii",
                         "owner": "Proprietar",
-                        "nsfwFilter": "filtru NSFW",
+                        "explicitContentFilter": "Explicit content filter",
                         "tier": "Nivelul de creștere",
                         "boostsCount": "{{boostsCount}} creșteri",
                         "verification": "Nivel de verificare",
@@ -654,7 +654,7 @@
                     },
                     "notEnabled": "Modul lent nu este activat",
                     "disabledLoggingEmbed": {
-                        "title": "Înregistrare - [SLOW MODE]",
+                        "title": "Înregistrare - [SLow MODE]",
                         "description": "Modul lent a fost dezactivat",
                         "moderator": "Moderator",
                         "channel": "Canal"
@@ -667,7 +667,7 @@
                     "noReason": "Trebuie să oferiți un motiv",
                     "undefinedReason": "Nedefinit",
                     "enabledLoggingEmbed": {
-                        "title": "Înregistrare - [SLOW MODE]",
+                        "title": "Înregistrare - [SLow MODE]",
                         "description": "Modul lent a fost activat",
                         "moderator": "Moderator",
                         "delay": "Întârziere",

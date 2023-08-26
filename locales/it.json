@@ -588,22 +588,22 @@
                         "description": "Displays information about the server"
                     },
                     "guildTiers": {
-                        "NONE": "Tier 0",
-                        "TIER_1": "Tier 1",
-                        "TIER_2": "Tier 2",
-                        "TIER_3": "Tier 3"
+                        "None": "Tier 0",
+                        "Tier1": "Tier 1",
+                        "Tier2": "Tier 2",
+                        "Tier3": "Tier 3"
                     },
-                    "guildNsfwLevel": {
-                        "DISABLED": "Disabled",
-                        "MEMBERS_WITHOUT_ROLES": "Monitoring members without role",
-                        "ALL_MEMBERS": "Monitoring everyone"
+                    "explicitContentFilter": {
+                        "0": "Disabled",
+                        "1": "Members without roles",
+                        "2": "All members"
                     },
-                    "guildverificationLevel": {
-                        "NONE": "Disabled",
-                        "LOW": "Low",
-                        "MEDIUM": "Medium",
-                        "HIGH": "High",
-                        "VERY_HIGH": "Very high"
+                    "guildVerificationLevel": {
+                        "0": "Disabled",
+                        "1": "Low",
+                        "2": "Medium",
+                        "3": "High",
+                        "4": "Very high"
                     },
                     "embed": {
                         "author": "Information about {{guildName}}",
@@ -612,7 +612,7 @@
                         "region": "Region",
                         "creationDate": "Data di creazione",
                         "owner": "Owner",
-                        "nsfwFilter": "NSFW filter",
+                        "explicitContentFilter": "Explicit content filter",
                         "tier": "Boost level",
                         "boostsCount": "{{boostsCount}} boosts",
                         "verification": "Verification level",
@@ -654,7 +654,7 @@
                     },
                     "notEnabled": "Slow mode is not enabled",
                     "disabledLoggingEmbed": {
-                        "title": "Logging - [SLOW MODE]",
+                        "title": "Logging - [SLow MODE]",
                         "description": "Slow mode has been disabled",
                         "moderator": "Moderatore",
                         "channel": "Canale"
@@ -667,7 +667,7 @@
                     "noReason": "Devi fornire un motivo",
                     "undefinedReason": "Indefinita",
                     "enabledLoggingEmbed": {
-                        "title": "Logging - [SLOW MODE]",
+                        "title": "Logging - [SLow MODE]",
                         "description": "Slow mode has been enabled",
                         "moderator": "Moderatore",
                         "delay": "Delay",

@@ -604,22 +604,22 @@
                         "description": "Muestra información sobre el servidor"
                     },
                     "guildTiers": {
-                        "NONE": "Nivel 0",
-                        "TIER_1": "Nivel 1",
-                        "TIER_2": "Nivel 2",
-                        "TIER_3": "Nivel 3"
+                        "None": "Nivel 0",
+                        "Tier1": "Nivel 1",
+                        "Tier2": "Nivel 2",
+                        "Tier3": "Nivel 3"
                     },
-                    "guildNsfwLevel": {
-                        "DISABLED": "Deshabilitado",
-                        "MEMBERS_WITHOUT_ROLES": "Supervisando a miembros sin rol",
-                        "ALL_MEMBERS": "Supervisando a todo el mundo"
+                    "explicitContentFilter": {
+                        "0": "Disabled",
+                        "1": "Members without roles",
+                        "2": "All members"
                     },
-                    "guildverificationLevel": {
-                        "NONE": "Deshabilitado",
-                        "LOW": "Bajo",
-                        "MEDIUM": "Medio",
-                        "HIGH": "Alto",
-                        "VERY_HIGH": "Muy alto"
+                    "guildVerificationLevel": {
+                        "0": "Disabled",
+                        "1": "Low",
+                        "2": "Medium",
+                        "3": "High",
+                        "4": "Very high"
                     },
                     "embed": {
                         "author": "Información sobre {{guildName}}",
@@ -628,7 +628,7 @@
                         "region": "Región",
                         "creationDate": "Fecha de creación",
                         "owner": "Propietario",
-                        "nsfwFilter": "Filtro NSFW",
+                        "explicitContentFilter": "Explicit content filter",
                         "tier": "Nivel de mejora",
                         "boostsCount": "{{boostsCount}} mejoras",
                         "verification": "Nivel de verificación",

@@ -11,7 +11,7 @@ export default async (banData, locale) => {
         //Busca el último baneo en el registro de auditoría
         const fetchedLogs = await banData.guild.fetchAuditLogs({
             limit: 1,
-            type: 'MEMBER_BAN_ADD',
+            type: 'MemberBanAdd',
         });
 
         //Almacena el primer resultado de la búsqueda

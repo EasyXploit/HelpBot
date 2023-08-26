@@ -15,14 +15,14 @@ export async function run(interaction, commandConfig, locale) {
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSeeAny});
 
             //Si no se permitió la ejecución, manda un mensaje de error
-            if (!authorized) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+            if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.nonPrivileged, { interactionAuthor: interaction.member })}.`)
             ], ephemeral: true});
         };
 
         //Comprueba si se trata de un bot
-        if (member && member.user.bot) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (member && member.user.bot) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
@@ -37,7 +37,7 @@ export async function run(interaction, commandConfig, locale) {
         let memberProfile = await client.functions.db.getData('profile', memberId);
 
         //Si el miembro no está en el servidor y no tiene perfil, devuelve un error
-        if (!memberProfile && !member) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (!memberProfile && !member) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ], ephemeral: true});
@@ -101,7 +101,7 @@ export async function run(interaction, commandConfig, locale) {
             const sanction = member && member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now() ? `${locale.timeoutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>` : `\`${locale.noTimeout}\``;
 
             //Genera el embed de las infracciones
-            let newPageEmbed = new discord.MessageEmbed()
+            let newPageEmbed = new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setTitle(`⚠ ${locale.infractionsEmbed.title}`)
                 .setDescription(`${await client.functions.utils.parseLocale(locale.infractionsEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)`, sanction: sanction })}.`)

@@ -24,7 +24,7 @@ export default async (member, locale) => {
             if (kickLog.target.id !== member.id) {
 
                 //Envía un registro al canal de registros
-                await client.functions.managers.sendLog('kickedMember', 'embed', new discord.MessageEmbed()
+                await client.functions.managers.sendLog('kickedMember', 'embed', new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setAuthor({ name: await client.functions.utils.parseLocale(locale.inconclusiveLoggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL() })
                     .addFields(
@@ -42,7 +42,7 @@ export default async (member, locale) => {
                 if (member.user.id === client.user.id) return;
 
                 //Envía un registro al canal de registros
-                await client.functions.managers.sendLog('kickedBot', 'embed', new discord.MessageEmbed()
+                await client.functions.managers.sendLog('kickedBot', 'embed', new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
                     .setDescription(await client.functions.utils.parseLocale(locale.botLoggingEmbed.description, { memberTag: member.user.tag }))
@@ -67,7 +67,7 @@ export default async (member, locale) => {
             };
 
             //Envía un registro al canal de registros
-            await client.functions.managers.sendLog('kickedMember', 'embed', new discord.MessageEmbed()
+            await client.functions.managers.sendLog('kickedMember', 'embed', new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL() })
                 .addFields(
@@ -92,7 +92,7 @@ export default async (member, locale) => {
             if (!banLog || Date.now() > (banLog.createdTimestamp + 5000)) {
 
                 //Envía un registro al canal de bienvenidas/despedidas (por que no se trató ni de una expulsión ni de un baneo)
-                await client.functions.managers.sendLog('memberLeaved', 'embed', new discord.MessageEmbed()
+                await client.functions.managers.sendLog('memberLeaved', 'embed', new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
                     .setThumbnail(member.user.displayAvatarURL())
                     .setAuthor({ name: locale.goodbyeEmbed.author, iconURL: 'attachment://out.png' })

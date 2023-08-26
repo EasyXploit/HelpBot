@@ -21,7 +21,7 @@ export default async (banData, locale) => {
         if (!loggingCache && (!banLog || banLog.target.id !== banData.user.id)) {
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.sendLog('bannedMember', 'embed', new discord.MessageEmbed()
+            await client.functions.managers.sendLog('bannedMember', 'embed', new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setAuthor({ name: await client.functions.utils.parseLocale(locale.inconclusiveLoggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL() })
                 .addFields(
@@ -69,7 +69,7 @@ export default async (banData, locale) => {
                 if (banData.user.id === client.user.id) return;
 
                 //Envía un registro al canal de registros
-                await client.functions.managers.sendLog('bannedBot', 'embed', new discord.MessageEmbed()
+                await client.functions.managers.sendLog('bannedBot', 'embed', new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
                     .setDescription(await client.functions.utils.parseLocale(locale.botLoggingEmbed.description, { userTag: banData.user.tag }))
@@ -77,7 +77,7 @@ export default async (banData, locale) => {
             };
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.sendLog('bannedMember', 'embed', new discord.MessageEmbed()
+            await client.functions.managers.sendLog('bannedMember', 'embed', new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL() })
                 .addFields(

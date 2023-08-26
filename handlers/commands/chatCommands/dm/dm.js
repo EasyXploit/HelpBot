@@ -6,13 +6,13 @@ export async function run(interaction, commandConfig, locale) {
         const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se encontró al miembro
-        if (!member) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (!member) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.unknownMember}.`)
         ], ephemeral: true});
         
         //Devuelve un error si el miembro es un bot
-        if (member.user.bot) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (member.user.bot) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
@@ -28,7 +28,7 @@ export async function run(interaction, commandConfig, locale) {
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.anonymousMode});
 
             //Si no se permitió la ejecución, manda un mensaje de error
-            if (!authorized) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+            if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.unauthorized, { interactionAuthor: interaction.user })}.`)
             ], ephemeral: true});
@@ -41,15 +41,15 @@ export async function run(interaction, commandConfig, locale) {
         const fieldLength = type === 'embed' ? 4000 : type === 'normal' && mode === 'author'? 2000 - authoryString.length : 2000;
 
         //Genera un nuevo modal
-        const messageContentModal = new discord.Modal()
+        const messageContentModal = new discord.ModalBuilder()
             .setTitle(locale.bodyModal.title)
             .setCustomId('dm-body');
 
         //Genera la única fila del modal
-        const bodyRow = new discord.MessageActionRow().addComponents(
+        const bodyRow = new discord.ActionRowBuilder().addComponents(
 
             //Añade un campo de texto a la fila
-            new discord.TextInputComponent()
+            new discord.TextInputBuilder()
                 .setCustomId('body')
                 .setLabel(locale.bodyModal.fieldTitle)
                 .setPlaceholder(locale.bodyModal.fieldPlaceholder)
@@ -71,7 +71,7 @@ export async function run(interaction, commandConfig, locale) {
         const body = await interaction.awaitModalSubmit({ filter: modalsFilter, time: 300000 }).then(async modalInteraction => {
 
             //Envía un mensaje de confirmación
-            await modalInteraction.reply({ embeds: [ new discord.MessageEmbed()
+            await modalInteraction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${locale.notificationEmbed}`)
             ], ephemeral: true});
@@ -94,7 +94,7 @@ export async function run(interaction, commandConfig, locale) {
                 if (type === 'embed') {
 
                     //Envía el mensaje al miembro
-                    await member.user.send({ embeds: [ new discord.MessageEmbed()
+                    await member.user.send({ embeds: [ new discord.EmbedBuilder()
                         .setAuthor({ name: `${locale.embedFrom}: ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() })
                         .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                         .setDescription(body)
@@ -116,7 +116,7 @@ export async function run(interaction, commandConfig, locale) {
                 if (type === 'embed') {
 
                     //Envía el mensaje al miembro
-                    await member.user.send({ embeds: [ new discord.MessageEmbed()
+                    await member.user.send({ embeds: [ new discord.EmbedBuilder()
                         .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                         .setDescription(body)
                     ]});
@@ -132,7 +132,7 @@ export async function run(interaction, commandConfig, locale) {
         };
 
         //Envía un registro al canal de registro
-        await client.functions.managers.sendLog('sentDM', 'embed', new discord.MessageEmbed()
+        await client.functions.managers.sendLog('sentDM', 'embed', new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
             .setDescription(await client.functions.utils.parseLocale(locale.loggingEmbed.description, { authorTag: interaction.user.tag, memberTag: member.user.tag, botUser: client.user }))
@@ -147,7 +147,7 @@ export async function run(interaction, commandConfig, locale) {
     } catch (error) {
 
         //Maneja si un miembro no admite mensajes directos del bot (por la razón que sea)
-        if (error.toString().includes('Cannot send messages to this user')) return await interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (error.toString().includes('Cannot send messages to this user')) return await interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cantReceiveDms, { botUser: client.user })}.`)
         ], ephemeral: true});

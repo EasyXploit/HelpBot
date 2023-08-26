@@ -22,7 +22,7 @@ export async function run(interaction, commandConfig, locale) {
         });
 
         //Genera un embed con el resultado
-        let resultEmbed = new discord.MessageEmbed()
+        let resultEmbed = new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
             .setAuthor({ name: await client.functions.utils.parseLocale(locale.embed.author, { guildName: interaction.guild.name }), iconURL: interaction.guild.iconURL({dynamic: true}) })
             .setThumbnail(interaction.guild.iconURL({dynamic: true}))

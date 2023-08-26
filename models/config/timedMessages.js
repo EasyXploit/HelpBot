@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 //Crea un nuevo esquema para un campo de un mensaje programado
-const timedMessageButtonSchema = new mongoose.Schema({ 
+const timedButtonBuilderSchema = new mongoose.Schema({ 
     label: {
         type: String,
         min: 1,
@@ -22,7 +22,7 @@ const timedMessageButtonSchema = new mongoose.Schema({
 //Crea un nuevo esquema para un botón de un mensaje programado
 const timedMessageRowSchema = new mongoose.Schema({ 
     buttons: {
-        type: [timedMessageButtonSchema],
+        type: [timedButtonBuilderSchema],
         max: 5
     }
 });

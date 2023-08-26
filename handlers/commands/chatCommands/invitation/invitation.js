@@ -12,7 +12,7 @@ export async function run(interaction, commandConfig, locale) {
             let targetChannel;
 
             //Almacena si faltan permisos en el canal de reglas
-            const missingPermissionOnRulesChannel = await client.functions.utils.missingPermissions(client.baseGuild.rulesChannel, client.baseGuild.members.me, ['CREATE_INSTANT_INVITE'], true);
+            const missingPermissionOnRulesChannel = await client.functions.utils.missingPermissions(client.baseGuild.rulesChannel, client.baseGuild.members.me, ['CreateInstantInvite'], true);
             
             //Comprueba si hay canal de reglas y si se tiene permiso para crear la invitación
             if (client.baseGuild.rulesChannel && !missingPermissionOnRulesChannel) {
@@ -38,7 +38,7 @@ export async function run(interaction, commandConfig, locale) {
                         const channel = channels.get(channelIds[index]);
 
                         //Almacena si faltan permisos en el canal
-                        const missingPermission = await client.functions.utils.missingPermissions(channel, client.baseGuild.members.me, ['CREATE_INSTANT_INVITE'], true);
+                        const missingPermission = await client.functions.utils.missingPermissions(channel, client.baseGuild.members.me, ['CreateInstantInvite'], true);
 
                         //Si tiene permisos, graba la invitación
                         if(!missingPermission) return targetChannel = channel;
@@ -50,7 +50,7 @@ export async function run(interaction, commandConfig, locale) {
             if (!targetChannel) {
 
                 //Muestra un error al usuario
-                await interaction.reply({ embeds: [new discord.MessageEmbed()
+                await interaction.reply({ embeds: [new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.noTargetChannel}`)
                 ]});
@@ -109,7 +109,7 @@ export async function run(interaction, commandConfig, locale) {
         const resultInviteURL = `https://discord.gg/${inviteCode}`;
 
         //Genera el embed y lo envía, buscando el contenido necesario con la función
-        await interaction.reply({ embeds: [new discord.MessageEmbed()
+        await interaction.reply({ embeds: [new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
             .setAuthor({ name: locale.resultEmbed.author, iconURL: client.baseGuild.iconURL({dynamic: true}) })
             .setDescription(resultInviteURL)

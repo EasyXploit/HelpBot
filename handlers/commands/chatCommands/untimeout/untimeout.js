@@ -21,20 +21,20 @@ export async function run(interaction, commandConfig, locale) {
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
             //Si no está autorizado, devuelve un mensaje de error
-            if (!authorized) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+            if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ], ephemeral: true});
         };
 
         //Comprueba si el miembro no estaba silenciado
-        if (member && (!member.communicationDisabledUntilTimestamp || member.communicationDisabledUntilTimestamp <= Date.now())) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (member && (!member.communicationDisabledUntilTimestamp || member.communicationDisabledUntilTimestamp <= Date.now())) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.notSilenced}.`)
         ], ephemeral: true});
 
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
-        if (member && interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= sortedRoles[0].position) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (member && interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= sortedRoles[0].position) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.badHierarchy, { interactionAuthor: interaction.member })}.`)
         ], ephemeral: true});
@@ -46,7 +46,7 @@ export async function run(interaction, commandConfig, locale) {
         const memberTimeout = await client.functions.db.getData('timeout', memberId);
 
         //Devuelve el estado de autorización
-        if (!canRemoveAny && (!memberTimeout || memberTimeout.moderatorId !== interaction.member.id)) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (!canRemoveAny && (!memberTimeout || memberTimeout.moderatorId !== interaction.member.id)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cantRemoveAny, { interactionAuthor: interaction.member })}.`)
         ], ephemeral: true});
@@ -75,7 +75,7 @@ export async function run(interaction, commandConfig, locale) {
         if (!member) {
 
             //Envía un mensaje al canal de registros
-            await client.functions.managers.sendLog('untimeoutedMember', 'embed', new discord.MessageEmbed()
+            await client.functions.managers.sendLog('untimeoutedMember', 'embed', new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
                 .setAuthor(locale.loggingEmbed.author)
                 .addFields(
@@ -87,7 +87,7 @@ export async function run(interaction, commandConfig, locale) {
         };
 
         //Notifica la acción en el canal de invocación
-        await interaction.reply({ embeds: [ new discord.MessageEmbed()
+        await interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
             .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbed.title}`)
             .setDescription(await client.functions.utils.parseLocale(locale.notificationEmbed.description, { member: member ? member.user.tag : `${memberId} (ID)` }))

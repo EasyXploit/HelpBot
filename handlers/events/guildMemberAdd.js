@@ -36,13 +36,13 @@ export default async (member, locale) => {
             if (newBotRoleId && newBotRoleId.length > 0) {
 
                 //Comprueba si el bot tiene los permisos requeridos
-                const missingPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.members.me, ['MANAGE_ROLES']);
+                const missingPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.members.me, ['ManageRoles']);
                 if (missingPermissions) logger.warn(`The bot could not add the welcome role to the bot ${member.user.tag} (${member.id}) because it did not have permission to do so`);
                 else if (!member.roles.cache.has(newBotRoleId)) await member.roles.add(newBotRoleId); //Añade el rol de bienvenida para nuevos bots (si no lo tiene ya)
             };
 
             //Envía un mensaje al canal de registro
-            await client.functions.managers.sendLog('botJoined', 'embed', new discord.MessageEmbed()
+            await client.functions.managers.sendLog('botJoined', 'embed', new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
                 .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
                 .setDescription(`${await client.functions.utils.parseLocale(locale.botLoggingEmbed.description, { memberTag: member.user.tag })}.`)

@@ -7,14 +7,14 @@ export async function run(interaction, commandConfig, locale) {
         const channel = await client.functions.utils.fetch('channel', channelId);
 
         //Comprueba si el canal existe
-        if (!channel || !['GUILD_TEXT', 'GUILD_NEWS', 'GUILD_STORE', 'GUILD_NEWS_THREAD', 'GUILD_PUBLIC_THREAD', 'GUILD_PRIVATE_THREAD'].includes(channel.type)) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (!channel || !['GUILD_TEXT', 'GUILD_NEWS', 'GUILD_STORE', 'GUILD_NEWS_THREAD', 'GUILD_PUBLIC_THREAD', 'GUILD_PRIVATE_THREAD'].includes(channel.type)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidChannel}.`)
         ], ephemeral: true});
 
         //Comprueba si el miembro tiene permisos para ejecutar esta acción
-        const missingPermissions = await client.functions.utils.missingPermissions(channel, interaction.member, ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
-        if (missingPermissions) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        const missingPermissions = await client.functions.utils.missingPermissions(channel, interaction.member, ['ManageMessages', 'ReadMessageHistory'])
+        if (missingPermissions) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noPermission, { channel: channel, missingPermissions: missingPermissions })}.`)
         ], ephemeral: true});
@@ -23,7 +23,7 @@ export async function run(interaction, commandConfig, locale) {
         const messages = await channel.messages.fetch({limit: parseInt(interaction.options._hoistedOptions[0].value)});
 
         //Si no se encontraron mensajes en el canal, devuelve un error
-        if (messages.size === 0) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (messages.size === 0) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noMessages, { channel: channel })}.`)
         ], ephemeral: true});
@@ -39,7 +39,7 @@ export async function run(interaction, commandConfig, locale) {
         });
 
         //Si ningún mensaje era lo suficientemente reciente, devuelve un error
-        if (msgsToDelete.size === 0) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (msgsToDelete.size === 0) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.expiredMessages}.`)
         ], ephemeral: true});
@@ -51,7 +51,7 @@ export async function run(interaction, commandConfig, locale) {
         successEmbedDescription = `${locale.successEmbed.description}: \`${msgsToDelete.size}\``;
 
         //Almacena el mensaje de confirmación
-        let successEmbed = new discord.MessageEmbed()
+        let successEmbed = new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
             .setTitle(`${client.customEmojis.greenTick} ${locale.successEmbed.title}`)
             .setDescription(successEmbedDescription);
@@ -69,7 +69,7 @@ export async function run(interaction, commandConfig, locale) {
         if (channel.id === interaction.channelId) setTimeout(() => interaction.deleteReply(), 5000);
 
         //Envía un registro al canal de registro
-        await client.functions.managers.sendLog('purgedChannel', 'embed', new discord.MessageEmbed()
+        await client.functions.managers.sendLog('purgedChannel', 'embed', new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
             .setDescription(await client.functions.utils.parseLocale(locale.loggingEmbed.description, { authorTag: interaction.user.tag, deletedCount: msgsToDelete.size, channel: channel }))

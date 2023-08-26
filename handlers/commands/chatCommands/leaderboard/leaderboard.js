@@ -6,7 +6,7 @@ export async function run(interaction, commandConfig, locale) {
         const memberProfiles = await client.functions.db.getData('profile');
 
         //Devuelve un error si no hay tabla de clasificación
-        if (!memberProfiles || memberProfiles.length === 0) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (!memberProfiles || memberProfiles.length === 0) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noLeaderboard}.`)
         ], ephemeral: true});
@@ -136,7 +136,7 @@ export async function run(interaction, commandConfig, locale) {
             };
 
             //Genera un embed a modo de página
-            const newPageEmbed = new discord.MessageEmbed()
+            const newPageEmbed = new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setTitle(`:trophy: ${locale.embed.title[type]}`)
                 .setDescription(board)

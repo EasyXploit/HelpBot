@@ -6,27 +6,27 @@ export async function run(interaction, commandConfig, locale) {
         const reportedMember = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].message.author.id);
 
         //Devuelve un error si no se ha encontrado al miembro
-        if (!reportedMember) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (!reportedMember) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ], ephemeral: true});
 
         //Devuelve un error si el meimbro ha intentado reportarse a sí mismo
-        if (reportedMember.id === interaction.member.id) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (reportedMember.id === interaction.member.id) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantReportYourself}.`)
         ], ephemeral: true});
 
         //Genera un nuevo modal
-        const reasonModal = new discord.Modal()
+        const reasonModal = new discord.ModalBuilder()
             .setTitle(locale.bodyModal.title)
             .setCustomId('reportMessageReason');
 
         //Genera la única fila del modal
-        const bodyRow = new discord.MessageActionRow().addComponents(
+        const bodyRow = new discord.ActionRowBuilder().addComponents(
 
             //Añade un campo de texto a la fila
-            new discord.TextInputComponent()
+            new discord.TextInputBuilder()
                 .setCustomId('body')
                 .setLabel(locale.bodyModal.fieldTitle)
                 .setPlaceholder(locale.bodyModal.fieldPlaceholder)

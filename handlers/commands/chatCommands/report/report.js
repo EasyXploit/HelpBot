@@ -13,15 +13,15 @@ export async function run(interaction, commandConfig, locale) {
         if (reportOption) return await client.functions.managers.sendReport(interaction, null, reportOption.value, reportedMember);
 
         //Genera un nuevo modal
-        const reasonModal = new discord.Modal()
+        const reasonModal = new discord.ModalBuilder()
             .setTitle(locale.bodyModal.title)
             .setCustomId('reportReason');
 
         //Genera la única fila del modal
-        const bodyRow = new discord.MessageActionRow().addComponents(
+        const bodyRow = new discord.ActionRowBuilder().addComponents(
 
             //Añade un campo de texto a la fila
-            new discord.TextInputComponent()
+            new discord.TextInputBuilder()
                 .setCustomId('body')
                 .setLabel(locale.bodyModal.fieldTitle)
                 .setPlaceholder(locale.bodyModal.fieldPlaceholder)

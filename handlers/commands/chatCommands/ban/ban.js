@@ -6,7 +6,7 @@ export async function run(interaction, commandConfig, locale) {
         const user = await client.functions.utils.fetch('user', interaction.options._hoistedOptions[0].value);
 
         //Devuelve un error si no se ha encontrado al usuario
-        if (!user) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (!user) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.userNotFound}`)
         ], ephemeral: true});
@@ -18,7 +18,7 @@ export async function run(interaction, commandConfig, locale) {
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.botsAllowed});
 
             //Si no está autorizado para ello, devuelve un mensaje de error
-            if (!authorized) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+            if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noBots}`)
             ], ephemeral: true});
@@ -28,7 +28,7 @@ export async function run(interaction, commandConfig, locale) {
         const member = await client.functions.utils.fetch('member', user.id);
 
         //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
-        if (member && ((interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) || !member.bannable)) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (member && ((interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) || !member.bannable)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}`)
         ], ephemeral: true});
@@ -40,7 +40,7 @@ export async function run(interaction, commandConfig, locale) {
         for (const bans of guildBans) {
 
             //Si el usuario ya estaba baneado, devuelve un error
-            if (bans[0] === user.id) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+            if (bans[0] === user.id) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.alreadyBanned}`)
             ], ephemeral: true});
@@ -57,7 +57,7 @@ export async function run(interaction, commandConfig, locale) {
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
 
             //Si no se permitió la ejecución, manda un mensaje de error
-            if (!authorized) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+            if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantPermaBan}.`)
             ], ephemeral: true});
@@ -70,7 +70,7 @@ export async function run(interaction, commandConfig, locale) {
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
 
             //Si no se permitió la ejecución, manda un mensaje de error
-            if (!authorized && providedDuration > commandConfig.maxRegularTime) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+            if (!authorized && providedDuration > commandConfig.maxRegularTime) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.exceededDuration, { time: await client.functions.utils.msToTime(commandConfig.maxRegularTime) })}.`)
             ], ephemeral: true});
@@ -87,7 +87,7 @@ export async function run(interaction, commandConfig, locale) {
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSoftBan});
 
             //Si no se permitió la ejecución, manda un mensaje de error
-            if (!authorized) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+            if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantSoftBan}.`)
             ], ephemeral: true});
@@ -107,7 +107,7 @@ export async function run(interaction, commandConfig, locale) {
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
             //Si no está autorizado, devuelve un mensaje de error
-            if (!authorized) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+            if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}`)
             ], ephemeral: true});
@@ -149,13 +149,13 @@ export async function run(interaction, commandConfig, locale) {
         const notificationEmbedDescription = reason ? await client.functions.utils.parseLocale(locale.notificationEmbed.withReason, { userTag: user.tag, reason: reason }) : await client.functions.utils.parseLocale(locale.notificationEmbed.withoutReason, { userTag: user.tag })
 
         //Envía una confirmación como respuesta a la interacción
-        await interaction.reply({ embeds: [ new discord.MessageEmbed()
+        await interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
             .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
         ]});
         
         //Envía una notificación al miembro
-        if (member) await user.send({ embeds: [ new discord.MessageEmbed()
+        if (member) await user.send({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
             .setDescription(await client.functions.utils.parseLocale(locale.privateEmbed.description, { user: user, guildName: interaction.guild.name }))

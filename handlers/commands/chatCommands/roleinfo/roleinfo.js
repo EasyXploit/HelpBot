@@ -6,13 +6,13 @@ export async function run(interaction, commandConfig, locale) {
         const role = await client.functions.utils.fetch('role', interaction.options._hoistedOptions[0].value);
 
         //Si el rol no existe, devuelve un error
-        if (!role) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (!role) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.roleNotFound, { role: interaction.options._hoistedOptions[0].value })}.`)
         ], ephemeral: true});
 
         //Envía un embed con la información del rol
-        await interaction.reply({ embeds: [ new discord.MessageEmbed()
+        await interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(role.hexColor)
             .setTitle(`🔖 ${locale.resultEmbed.title}`)
             .setDescription(await client.functions.utils.parseLocale(locale.resultEmbed.description, { role: role }))

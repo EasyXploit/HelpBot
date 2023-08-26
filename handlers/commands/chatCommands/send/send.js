@@ -7,14 +7,14 @@ export async function run(interaction, commandConfig, locale) {
         const destinationChannel = await client.functions.utils.fetch('channel', destinationChannelId);
 
         //Comprueba si el canal existe
-        if (!destinationChannel || !['GUILD_TEXT', 'GUILD_NEWS', 'GUILD_STORE', 'GUILD_NEWS_THREAD', 'GUILD_PUBLIC_THREAD', 'GUILD_PRIVATE_THREAD'].includes(destinationChannel.type)) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        if (!destinationChannel || !['GUILD_TEXT', 'GUILD_NEWS', 'GUILD_STORE', 'GUILD_NEWS_THREAD', 'GUILD_PUBLIC_THREAD', 'GUILD_PRIVATE_THREAD'].includes(destinationChannel.type)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidChannel}.`)
         ], ephemeral: true});
 
         //Comprueba si el miembro tiene permisos para ejecutar esta acción
-        const missingPermissions = await client.functions.utils.missingPermissions(destinationChannel, interaction.member, ['SEND_MESSAGES'])
-        if (missingPermissions) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+        const missingPermissions = await client.functions.utils.missingPermissions(destinationChannel, interaction.member, ['SendMessages'])
+        if (missingPermissions) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noPermission, { channel: destinationChannel, missingPermissions: missingPermissions })}.`)
         ], ephemeral: true});
@@ -23,15 +23,15 @@ export async function run(interaction, commandConfig, locale) {
         const type = interaction.options._hoistedOptions[0].value;
 
         //Genera un nuevo modal
-        const messageContentModal = new discord.Modal()
+        const messageContentModal = new discord.ModalBuilder()
             .setTitle(locale.bodyModal.title)
             .setCustomId('edit-body');
 
         //Genera la única fila del modal
-        const bodyRow = new discord.MessageActionRow().addComponents(
+        const bodyRow = new discord.ActionRowBuilder().addComponents(
 
             //Añade un campo de texto a la fila
-            new discord.TextInputComponent()
+            new discord.TextInputBuilder()
                 .setCustomId('body')
                 .setLabel(locale.bodyModal.fieldTitle)
                 .setPlaceholder(locale.bodyModal.fieldPlaceholder)
@@ -53,7 +53,7 @@ export async function run(interaction, commandConfig, locale) {
         const body = await interaction.awaitModalSubmit({ filter: modalsFilter, time: 300000 }).then(async modalInteraction => {
 
             //Envía un mensaje de confirmación
-            await modalInteraction.reply({ embeds: [ new discord.MessageEmbed()
+            await modalInteraction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${locale.correct}`)
             ]});
@@ -73,7 +73,7 @@ export async function run(interaction, commandConfig, locale) {
         if (type === 'embed') {
 
             //Envía un embed con el mensaje
-            await destinationChannel.send({ embeds: [ new discord.MessageEmbed()
+            await destinationChannel.send({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setDescription(body)]
             });

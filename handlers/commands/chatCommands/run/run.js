@@ -8,7 +8,7 @@ export async function run(interaction, commandConfig, locale) {
             case 'welcome': //Emite el evento "guildMemberAdd"
                 
                 //Devuelve un error si no se ha proporcionado un miembro
-                if (!interaction.options._hoistedOptions[1]) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+                if (!interaction.options._hoistedOptions[1]) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.welcome.memberNotProvided}.`)
                 ], ephemeral: true});
@@ -17,7 +17,7 @@ export async function run(interaction, commandConfig, locale) {
                 const targetWelcomeMember = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[1].value);
 
                 //Devuelve un error si no se ha proporcionado un miembro válido
-                if (!targetWelcomeMember) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+                if (!targetWelcomeMember) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.welcome.invalidMember}.`)
                 ], ephemeral: true});
@@ -26,7 +26,7 @@ export async function run(interaction, commandConfig, locale) {
                 await client.emit('guildMemberAdd', targetWelcomeMember);
 
                 //Envía un mensaje de confirmación
-                await interaction.reply({ embeds: [ new discord.MessageEmbed()
+                await interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                     .setDescription(`${client.customEmojis.greenTick} ${locale.welcome.done}`)
                 ], ephemeral: true});
@@ -37,7 +37,7 @@ export async function run(interaction, commandConfig, locale) {
             case 'goodbye': //Emite el evento "guildMemberRemove"
                 
                 //Devuelve un error si no se ha proporcionado un miembro
-                if (!interaction.options._hoistedOptions[1]) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+                if (!interaction.options._hoistedOptions[1]) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.goodbye.memberNotProvided}.`)
                 ], ephemeral: true});
@@ -46,7 +46,7 @@ export async function run(interaction, commandConfig, locale) {
                 const targetGoodybeMember = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[1].value);
 
                 //Devuelve un error si no se ha proporcionado un miembro válido
-                if (!targetGoodybeMember) return interaction.reply({ embeds: [ new discord.MessageEmbed()
+                if (!targetGoodybeMember) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.goodbye.invalidMember}.`)
                 ], ephemeral: true});
@@ -55,7 +55,7 @@ export async function run(interaction, commandConfig, locale) {
                 await client.emit('guildMemberRemove', targetGoodybeMember);
 
                 //Envía un mensaje de confirmación
-                await interaction.reply({ embeds: [ new discord.MessageEmbed()
+                await interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                     .setDescription(`${client.customEmojis.greenTick} ${locale.goodbye.done}`)
                 ], ephemeral: true});
@@ -66,7 +66,7 @@ export async function run(interaction, commandConfig, locale) {
             default: //En caso de que no se haya proporcionado un comando existente
 
                 //Envía un mensaje de error
-                await interaction.reply({ embeds: [ new discord.MessageEmbed()
+                await interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.invalidCommand}.`)
                 ], ephemeral: true});

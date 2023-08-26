@@ -6,7 +6,7 @@ export async function run(interaction, commandConfig, locale) {
         const botPing = new Date().getTime() - interaction.createdTimestamp;
 
         //Genera un embed para el tiempo de respuesta
-        let botPingEmbed = new discord.MessageEmbed()
+        let botPingEmbed = new discord.EmbedBuilder()
             .setTitle(`${locale.botResponseTime}: `)
             .setDescription(`:stopwatch: | ${botPing} ms`);
 
@@ -19,7 +19,7 @@ export async function run(interaction, commandConfig, locale) {
         const websocketPing = Math.floor(client.ws.ping);
 
         //Genera un embed para el tiempo de respuesta
-        let websocketPingEmbed = new discord.MessageEmbed()
+        let websocketPingEmbed = new discord.EmbedBuilder()
             .setTitle(`${locale.websocketResponseTime}: `)
             .setDescription(`:stopwatch: | ${websocketPing} ms`);
 

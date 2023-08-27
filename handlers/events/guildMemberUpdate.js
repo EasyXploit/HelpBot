@@ -78,17 +78,25 @@ export default async (oldMember, newMember, locale) => {
                     )
                 );
 
-                //Envía una notificación al miembro
-                await newMember.send({ embeds: [ new discord.EmbedBuilder()
-                    .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                    .setAuthor({ name: locale.communicationDisabled.privateEmbed.author, iconURL: newMember.guild.iconURL({ dynamic: true}) })
-                    .setDescription(await client.functions.utils.parseLocale(locale.communicationDisabled.privateEmbed.description, { member: newMember, guildName: newMember.guild.name }))
-                    .addFields(
-                        { name: locale.communicationDisabled.privateEmbed.moderator, value: executor ? executor.tag : locale.communicationDisabled.loggingEmbed.unknownModerator, inline: true },
-                        { name: locale.communicationDisabled.privateEmbed.reason, value: reason || locale.communicationDisabled.privateEmbed.undefinedReason, inline: true },
-                        { name: locale.communicationDisabled.privateEmbed.expiration, value: `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>`, inline: true }
-                    )
-                ]});
+                try {
+
+                    //Envía una notificación al miembro
+                    await newMember.send({ embeds: [ new discord.EmbedBuilder()
+                        .setColor(`${await client.functions.db.getConfig('colors.error')}`)
+                        .setAuthor({ name: locale.communicationDisabled.privateEmbed.author, iconURL: newMember.guild.iconURL({ dynamic: true}) })
+                        .setDescription(await client.functions.utils.parseLocale(locale.communicationDisabled.privateEmbed.description, { member: newMember, guildName: newMember.guild.name }))
+                        .addFields(
+                            { name: locale.communicationDisabled.privateEmbed.moderator, value: executor ? executor.tag : locale.communicationDisabled.loggingEmbed.unknownModerator, inline: true },
+                            { name: locale.communicationDisabled.privateEmbed.reason, value: reason || locale.communicationDisabled.privateEmbed.undefinedReason, inline: true },
+                            { name: locale.communicationDisabled.privateEmbed.expiration, value: `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>`, inline: true }
+                        )
+                    ]});
+
+                } catch (error) {
+        
+                    //Si no se trata de un error por que no se pudo enviar el MD, muestra el error
+                    if (!error.toString().includes('Cannot send messages to this user')) logger.error(error.stack);
+                };
 
             //Si se ha dessilenciado
             } else {
@@ -113,17 +121,25 @@ export default async (oldMember, newMember, locale) => {
                         { name: locale.communicationEnabled.loggingEmbed.reason, value: reason || locale.communicationEnabled.loggingEmbed.undefinedReason, inline: true }
                     )
                 );
+                
+                try {
 
-                //Envía una notificación al miembro
-                await newMember.send({ embeds: [ new discord.EmbedBuilder()
-                    .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
-                    .setAuthor({ name: locale.communicationEnabled.privateEmbed.author, iconURL: newMember.guild.iconURL({ dynamic: true}) })
-                    .setDescription(await client.functions.utils.parseLocale(locale.communicationEnabled.privateEmbed.description, { member: newMember, guildName: newMember.guild.name }))
-                    .addFields(
-                        { name: locale.communicationEnabled.privateEmbed.moderator, value: executor ? executor.tag : locale.communicationEnabled.privateEmbed.unknownModerator, inline: true },
-                        { name: locale.communicationEnabled.privateEmbed.reason, value: reason || locale.communicationEnabled.privateEmbed.undefinedReason, inline: true }
-                    )
-                ]});
+                    //Envía una notificación al miembro
+                    await newMember.send({ embeds: [ new discord.EmbedBuilder()
+                        .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
+                        .setAuthor({ name: locale.communicationEnabled.privateEmbed.author, iconURL: newMember.guild.iconURL({ dynamic: true}) })
+                        .setDescription(await client.functions.utils.parseLocale(locale.communicationEnabled.privateEmbed.description, { member: newMember, guildName: newMember.guild.name }))
+                        .addFields(
+                            { name: locale.communicationEnabled.privateEmbed.moderator, value: executor ? executor.tag : locale.communicationEnabled.privateEmbed.unknownModerator, inline: true },
+                            { name: locale.communicationEnabled.privateEmbed.reason, value: reason || locale.communicationEnabled.privateEmbed.undefinedReason, inline: true }
+                        )
+                    ]});
+
+                } catch (error) {
+        
+                    //Si no se trata de un error por que no se pudo enviar el MD, muestra el error
+                    if (!error.toString().includes('Cannot send messages to this user')) logger.error(error.stack);
+                };
             };
         };
 

@@ -6,7 +6,7 @@ export default async (member, locale) => {
         if (member.guild.id !== client.baseGuild.id) return;
 
         //Almacena la caché de registros del usuario expulsado, si existe
-        const loggingCache = (client.loggingCache && client.loggingCache[member.id]) ? client.loggingCache[member.id] : null;
+        let loggingCache = (client.loggingCache && client.loggingCache[member.id]) ? client.loggingCache[member.id] : null;
         
         //Busca la última expulsión en el registro de auditoría
         const fetchedLogs = await member.guild.fetchAuditLogs({

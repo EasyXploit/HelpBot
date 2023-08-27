@@ -159,19 +159,27 @@ export async function run(interaction, commandConfig, locale) {
             .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
             .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
         ]});
+
+        try {
         
-        //Envía una notificación al miembro
-        if (member) await user.send({ embeds: [ new discord.EmbedBuilder()
-            .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-            .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-            .setDescription(await client.functions.utils.parseLocale(locale.privateEmbed.description, { user: user, guildName: interaction.guild.name }))
-            .addFields(
-                { name: locale.privateEmbed.moderator, value: interaction.user.tag, inline: true },
-                { name: locale.privateEmbed.reason, value: reason || locale.undefinedReason, inline: true },
-                { name: locale.privateEmbed.expiration, value: expiration ? `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>` : locale.privateEmbed.noExpiration, inline: true },
-                { name: locale.privateEmbed.deletedDays, value: deletedDays ? deletedDays.toString() : `\`${locale.privateEmbed.noDeletedDays}\``, inline: true }
-            )
-        ]});
+            //Envía una notificación al miembro
+            if (member) await user.send({ embeds: [ new discord.EmbedBuilder()
+                .setColor(`${await client.functions.db.getConfig('colors.error')}`)
+                .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
+                .setDescription(await client.functions.utils.parseLocale(locale.privateEmbed.description, { user: user, guildName: interaction.guild.name }))
+                .addFields(
+                    { name: locale.privateEmbed.moderator, value: interaction.user.tag, inline: true },
+                    { name: locale.privateEmbed.reason, value: reason || locale.undefinedReason, inline: true },
+                    { name: locale.privateEmbed.expiration, value: expiration ? `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>` : locale.privateEmbed.noExpiration, inline: true },
+                    { name: locale.privateEmbed.deletedDays, value: deletedDays ? deletedDays.toString() : `\`${locale.privateEmbed.noDeletedDays}\``, inline: true }
+                )
+            ]});
+
+        } catch (error) {
+
+            //Si no se trata de un error por que no se pudo enviar el MD, ejecuta el manejador de errores
+            if (!error.toString().includes('Cannot send messages to this user')) await client.functions.managers.interactionError(error, interaction);
+        };
 
         //Banea al usuario
         await interaction.guild.members.ban(user, banParameters);

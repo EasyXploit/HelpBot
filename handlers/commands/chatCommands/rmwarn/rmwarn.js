@@ -184,8 +184,16 @@ export async function run(interaction, commandConfig, locale) {
         //Envía una notificación de la acción en el canal de invocación
         await interaction.reply({ embeds: [successEmbed] });
 
-        //Envía un mensaje de confirmación al miembro
-        if (member) await member.send({ embeds: [toDMEmbed] });
+        try {
+
+            //Envía un mensaje de confirmación al miembro
+            if (member) await member.send({ embeds: [toDMEmbed] });
+
+        } catch (error) {
+
+            //Si no se trata de un error por que no se pudo enviar el MD, muestra el error
+            if (!error.toString().includes('Cannot send messages to this user')) logger.error(error.stack);
+        };
         
     } catch (error) {
 

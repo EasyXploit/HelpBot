@@ -170,35 +170,43 @@ export async function run(interaction, commandConfig, locale) {
             .setDescription(`${client.customEmojis.greenTick} ${await client.functions.utils.parseLocale(locale.notificationEmbed, { memberTag: member.user.tag })}.`)
         ], ephemeral: true});
 
-        //Si se le han vaciado los puntos de EXP al miembro
-        if (newValue === 0) {
+        try {
 
-            //Envía al miembro una notificación por mensaje privado
-            await member.send({ embeds: [ new discord.EmbedBuilder()
-                .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
-                .setAuthor({ name: locale.privateEmbed.reset.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-                .setDescription(`${await client.functions.utils.parseLocale(locale.privateEmbed.reset.description, { moderatorTag: interaction.user.tag })}.`)
-            ]});
+            //Si se le han vaciado los puntos de EXP al miembro
+            if (newValue === 0) {
+    
+                //Envía al miembro una notificación por mensaje privado
+                await member.send({ embeds: [ new discord.EmbedBuilder()
+                    .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
+                    .setAuthor({ name: locale.privateEmbed.reset.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
+                    .setDescription(`${await client.functions.utils.parseLocale(locale.privateEmbed.reset.description, { moderatorTag: interaction.user.tag })}.`)
+                ]});
+    
+            //Si se le han aumentado los puntos de EXP al miembro
+            } else if (newValue > oldValue) {
+    
+                //Envía al miembro una notificación por mensaje privado
+                await member.send({ embeds: [ new discord.EmbedBuilder()
+                    .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
+                    .setAuthor({ name: locale.privateEmbed.increased.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
+                    .setDescription(`${await client.functions.utils.parseLocale(locale.privateEmbed.increased.description, { moderatorTag: interaction.user.tag, givenExp: providedValue, newXP: newValue.toString() })}.`)
+                ]});
+    
+            //Si se le han reducido los puntos de EXP al miembro
+            } else if (newValue < oldValue) {
+    
+                //Envía al miembro una notificación por mensaje privado
+                await member.send({ embeds: [ new discord.EmbedBuilder()
+                    .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
+                    .setAuthor({ name: locale.privateEmbed.decreased.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
+                    .setDescription(`${await client.functions.utils.parseLocale(locale.privateEmbed.decreased.description, { moderatorTag: interaction.user.tag, removedXP: providedValue, newXP: newValue.toString() })}.`)
+                ]});
+            };
 
-        //Si se le han aumentado los puntos de EXP al miembro
-        } else if (newValue > oldValue) {
+        } catch (error) {
 
-            //Envía al miembro una notificación por mensaje privado
-            await member.send({ embeds: [ new discord.EmbedBuilder()
-                .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
-                .setAuthor({ name: locale.privateEmbed.increased.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-                .setDescription(`${await client.functions.utils.parseLocale(locale.privateEmbed.increased.description, { moderatorTag: interaction.user.tag, givenExp: providedValue, newXP: newValue.toString() })}.`)
-            ]});
-
-        //Si se le han reducido los puntos de EXP al miembro
-        } else if (newValue < oldValue) {
-
-            //Envía al miembro una notificación por mensaje privado
-            await member.send({ embeds: [ new discord.EmbedBuilder()
-                .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
-                .setAuthor({ name: locale.privateEmbed.decreased.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-                .setDescription(`${await client.functions.utils.parseLocale(locale.privateEmbed.decreased.description, { moderatorTag: interaction.user.tag, removedXP: providedValue, newXP: newValue.toString() })}.`)
-            ]});
+            //Si no se trata de un error por que no se pudo enviar el MD, muestra el error
+            if (!error.toString().includes('Cannot send messages to this user')) logger.error(error.stack);
         };
         
     } catch (error) {

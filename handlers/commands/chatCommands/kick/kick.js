@@ -73,17 +73,25 @@ export async function run(interaction, commandConfig, locale) {
             .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
             .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
         ]});
+
+        try {
         
-        //Envía una notificación al miembro
-        await member.send({ embeds: [ new discord.EmbedBuilder()
-            .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-            .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-            .setDescription(await client.functions.utils.parseLocale(locale.privateEmbed.description, { member: member, guildName: interaction.guild.name }))
-            .addFields(
-                { name: locale.privateEmbed.moderator, value: interaction.user.tag, inline: true },
-                { name: locale.privateEmbed.reason, value: reason || locale.undefinedReason, inline: true }
-            )
-        ]});
+            //Envía una notificación al miembro
+            await member.send({ embeds: [ new discord.EmbedBuilder()
+                .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
+                .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
+                .setDescription(await client.functions.utils.parseLocale(locale.privateEmbed.description, { member: member, guildName: interaction.guild.name }))
+                .addFields(
+                    { name: locale.privateEmbed.moderator, value: interaction.user.tag, inline: true },
+                    { name: locale.privateEmbed.reason, value: reason || locale.undefinedReason, inline: true }
+                )
+            ]});
+
+        } catch (error) {
+
+            //Si no se trata de un error por que no se pudo enviar el MD, ejecuta el manejador de errores
+            if (!error.toString().includes('Cannot send messages to this user')) await client.functions.managers.interactionError(error, interaction);
+        };
 
         //Expulsa al miembro
         await member.kick(reason || locale.undefinedReason);

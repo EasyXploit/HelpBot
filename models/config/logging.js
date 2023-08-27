@@ -36,7 +36,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     untimeoutedMember: {
         enabled: {

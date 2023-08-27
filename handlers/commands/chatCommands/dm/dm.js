@@ -68,96 +68,104 @@ export async function run(interaction, commandConfig, locale) {
         const modalsFilter = (interaction) => interaction.customId === 'dm-body';
 
         //Espera a que se rellene el modal
-        const body = await interaction.awaitModalSubmit({ filter: modalsFilter, time: 300000 }).then(async modalInteraction => {
+        const bodyMessageModalInteraction = await interaction.awaitModalSubmit({ filter: modalsFilter, time: 300000 }).then(async modalInteraction => {
+
+            //Devuelve la interacción resultante
+            return modalInteraction;
+            
+        }).catch(() => { null; });
+
+        //Obtiene el campo del cuerpo
+        const messageBody = bodyMessageModalInteraction.fields.getField('body').value;
+
+        //Aborta si no se proporcionó un cuerpo en el tiempo esperado
+        if (!messageBody) return;
+
+        try {
+
+            //En función del modo seleccionado
+            switch (mode) {
+
+                //Si se desea enviar en modo "autor"
+                case 'author':
+
+                    //Si se desea enviar un mensaje de tipo "embed"
+                    if (type === 'embed') {
+
+                        //Envía el mensaje al miembro
+                        await member.user.send({ embeds: [ new discord.EmbedBuilder()
+                            .setAuthor({ name: `${locale.embedFrom}: ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() })
+                            .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
+                            .setDescription(messageBody)
+                        ]});
+
+                    } else if (type === 'normal') { //Si se desea enviar un mensaje de tipo "normal"
+
+                        //Envía el mensaje al miembro
+                        await member.user.send({ content: authoryString + messageBody });
+                    };
+
+                    //Aborta el switch
+                    break;
+
+                //Si se desea enviar en modo "anónimo"
+                case 'anonymous':
+
+                    //Si se desea enviar un mensaje de tipo "embed"
+                    if (type === 'embed') {
+
+                        //Envía el mensaje al miembro
+                        await member.user.send({ embeds: [ new discord.EmbedBuilder()
+                            .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
+                            .setDescription(messageBody)
+                        ]});
+
+                    } else if (type === 'normal') { //Si se desea enviar un mensaje de tipo "normal"
+
+                        //Envía el mensaje al miembro
+                        await member.user.send({ content: messageBody });
+                    };
+
+                    //Aborta el switch
+                    break;
+            };
+
+            //Envía un registro al canal de registro
+            await client.functions.managers.sendLog('sentDM', 'embed', new discord.EmbedBuilder()
+                .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
+                .setTitle(`📑 ${locale.loggingEmbed.title}`)
+                .setDescription(await client.functions.utils.parseLocale(locale.loggingEmbed.description, { authorTag: interaction.user.tag, memberTag: member.user.tag, botUser: client.user }))
+                .addFields(
+                    { name: locale.loggingEmbed.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
+                    { name: locale.loggingEmbed.mode, value: mode, inline: true },
+                    { name: locale.loggingEmbed.type, value: type, inline: true },
+                    { name: locale.loggingEmbed.content, value: `\`\`\`${messageBody.length > 1014 ? `${messageBody.slice(0, 1014)} ...` : messageBody}\`\`\``, inline: false }
+                )
+            );
 
             //Envía un mensaje de confirmación
-            await modalInteraction.reply({ embeds: [ new discord.EmbedBuilder()
+            await bodyMessageModalInteraction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${locale.notificationEmbed}`)
             ], ephemeral: true});
 
-            //Devuelve el campo del cuerpo
-            return modalInteraction.fields.getField('body').value;
-            
-        }).catch(() => { null; });
+        } catch (error) {
 
-        //Aborta si no se proporcionó un cuerpo en el tiempo esperado
-        if (!body) return;
-
-        //En función del modo seleccionado
-        switch (mode) {
-
-            //Si se desea enviar en modo "autor"
-            case 'author':
-
-                //Si se desea enviar un mensaje de tipo "embed"
-                if (type === 'embed') {
-
-                    //Envía el mensaje al miembro
-                    await member.user.send({ embeds: [ new discord.EmbedBuilder()
-                        .setAuthor({ name: `${locale.embedFrom}: ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() })
-                        .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
-                        .setDescription(body)
-                    ]});
-
-                } else if (type === 'normal') { //Si se desea enviar un mensaje de tipo "normal"
-
-                    //Envía el mensaje al miembro
-                    await member.user.send({ content: authoryString + body });
-                };
-
-                //Aborta el switch
-                break;
-
-            //Si se desea enviar en modo "anónimo"
-            case 'anonymous':
-
-                //Si se desea enviar un mensaje de tipo "embed"
-                if (type === 'embed') {
-
-                    //Envía el mensaje al miembro
-                    await member.user.send({ embeds: [ new discord.EmbedBuilder()
-                        .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
-                        .setDescription(body)
-                    ]});
-
-                } else if (type === 'normal') { //Si se desea enviar un mensaje de tipo "normal"
-
-                    //Envía el mensaje al miembro
-                    await member.user.send({ content: body });
-                };
-
-                //Aborta el switch
-                break;
+            //Maneja los errores ocurridos cuando no se puede entregar un mensaje privado
+            if (error.toString().includes('Cannot send messages to this user')) {
+    
+                //Envía un log a la consola
+                logger.warn(`The bot was unable to deliver a custom DM message to @${member.user.username} (${member.id}) due to an API restriction`);
+    
+                //Muestra un error al usuario que intentó enviar el mensaje
+                return await bodyMessageModalInteraction.reply({ embeds: [ new discord.EmbedBuilder()
+                    .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cantReceiveDms, { botUser: client.user })}.`)
+                ], ephemeral: true});
+            };
         };
-
-        //Envía un registro al canal de registro
-        await client.functions.managers.sendLog('sentDM', 'embed', new discord.EmbedBuilder()
-            .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
-            .setTitle(`📑 ${locale.loggingEmbed.title}`)
-            .setDescription(await client.functions.utils.parseLocale(locale.loggingEmbed.description, { authorTag: interaction.user.tag, memberTag: member.user.tag, botUser: client.user }))
-            .addFields(
-                { name: locale.loggingEmbed.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
-                { name: locale.loggingEmbed.mode, value: mode, inline: true },
-                { name: locale.loggingEmbed.type, value: type, inline: true },
-                { name: locale.loggingEmbed.content, value: `\`\`\`${body.length > 1014 ? `${body.slice(0, 1014)} ...` : body}\`\`\``, inline: false }
-            )
-        );
         
     } catch (error) {
-
-        //Maneja los errores ocurridos cuando no se puede entregar un mensaje privado
-        if (error.toString().includes('Cannot send messages to this user')) {
-
-            //Envía un log a la consola
-            logger.warn(`The bot was unable to deliver a custom DM message to @${member.user.username} (${member.id}) due to an API restriction`);
-
-            //Muestra un error al usuario que intentó enviar el mensaje
-            return await interaction.reply({ embeds: [ new discord.EmbedBuilder()
-                .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cantReceiveDms, { botUser: client.user })}.`)
-            ], ephemeral: true});
-        };
 
         //Ejecuta el manejador de errores
         await client.functions.managers.interactionError(error, interaction);

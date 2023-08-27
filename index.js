@@ -60,11 +60,13 @@ global.client = new discord.Client({
     intents: [
         discord.GatewayIntentBits.Guilds,
         discord.GatewayIntentBits.GuildMessages,
+        discord.GatewayIntentBits.MessageContent,
         discord.GatewayIntentBits.GuildMessageReactions,
         discord.GatewayIntentBits.GuildMembers,
         discord.GatewayIntentBits.GuildBans,
         discord.GatewayIntentBits.DirectMessages,
-        discord.GatewayIntentBits.GuildVoiceStates],
+        discord.GatewayIntentBits.GuildVoiceStates
+    ],
     partials: [
         discord.Partials.Message, 
         discord.Partials.Channel, 

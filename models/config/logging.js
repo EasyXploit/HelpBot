@@ -14,7 +14,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     warnRemoved: {
         enabled: {
@@ -22,7 +25,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     timeoutedMember: {
         enabled: {
@@ -38,7 +44,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     kickedMember: {
         enabled: {
@@ -46,7 +55,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     kickedBot: {
         enabled: {
@@ -54,7 +66,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     bannedMember: {
         enabled: {
@@ -62,7 +77,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     bannedBot: {
         enabled: {
@@ -70,7 +88,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     unbannedMember: {
         enabled: {
@@ -78,7 +99,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     sentDM: {
         enabled: {
@@ -86,7 +110,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     pollStarted: {
         enabled: {
@@ -94,7 +121,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     pollEnded: {
         enabled: {
@@ -102,7 +132,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     purgedChannel: {
         enabled: {
@@ -110,7 +143,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     slowmodeChanged: {
         enabled: {
@@ -118,7 +154,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     experienceModified: {
         enabled: {
@@ -126,7 +165,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     memberJoined: {
         enabled: {
@@ -134,7 +176,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     botJoined: {
         enabled: {
@@ -142,7 +187,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     memberLeaved: {
         enabled: {
@@ -150,7 +198,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     voiceMoves: {
         enabled: {
@@ -158,7 +209,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     },
     memberReports: {
         enabled: {
@@ -166,7 +220,10 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
-        channelId: String
+        channelId: {
+            type: String,
+            default: ''
+        }
     }
 });
 

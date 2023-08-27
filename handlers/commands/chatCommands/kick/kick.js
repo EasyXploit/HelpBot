@@ -89,8 +89,9 @@ export async function run(interaction, commandConfig, locale) {
 
         } catch (error) {
 
-            //Si no se trata de un error por que no se pudo enviar el MD, ejecuta el manejador de errores
-            if (!error.toString().includes('Cannot send messages to this user')) await client.functions.managers.interactionError(error, interaction);
+            //Maneja los errores ocurridos cuando no se puede entregar un mensaje privado
+            if (error.toString().includes('Cannot send messages to this user')) logger.warn(`The bot was unable to deliver a "kick log" message to @${member.user.username} (${member.id}) due to an API restriction`);
+            else await client.functions.managers.interactionError(error, interaction);
         };
 
         //Expulsa al miembro

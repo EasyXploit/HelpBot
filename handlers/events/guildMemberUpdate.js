@@ -94,8 +94,9 @@ export default async (oldMember, newMember, locale) => {
 
                 } catch (error) {
         
-                    //Si no se trata de un error por que no se pudo enviar el MD, muestra el error
-                    if (!error.toString().includes('Cannot send messages to this user')) logger.error(error.stack);
+                    //Maneja los errores ocurridos cuando no se puede entregar un mensaje privado
+                    if (!error.toString().includes('Cannot send messages to this user')) logger.warn(`The bot was unable to deliver a "muted log" message to @${newMember.user.username} (${newMember.id}) due to an API restriction`);
+                    else logger.error(error.stack);
                 };
 
             //Si se ha dessilenciado
@@ -137,8 +138,9 @@ export default async (oldMember, newMember, locale) => {
 
                 } catch (error) {
         
-                    //Si no se trata de un error por que no se pudo enviar el MD, muestra el error
-                    if (!error.toString().includes('Cannot send messages to this user')) logger.error(error.stack);
+                    //Maneja los errores ocurridos cuando no se puede entregar un mensaje privado
+                    if (!error.toString().includes('Cannot send messages to this user')) logger.warn(`The bot was unable to deliver a "unmuted log" message to @${newMember.user.username} (${newMember.id}) due to an API restriction`);
+                    else logger.error(error.stack);
                 };
             };
         };

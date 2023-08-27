@@ -146,11 +146,18 @@ export async function run(interaction, commandConfig, locale) {
         
     } catch (error) {
 
-        //Maneja si un miembro no admite mensajes directos del bot (por la razón que sea)
-        if (error.toString().includes('Cannot send messages to this user')) return await interaction.reply({ embeds: [ new discord.EmbedBuilder()
-            .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cantReceiveDms, { botUser: client.user })}.`)
-        ], ephemeral: true});
+        //Maneja los errores ocurridos cuando no se puede entregar un mensaje privado
+        if (error.toString().includes('Cannot send messages to this user')) {
+
+            //Envía un log a la consola
+            logger.warn(`The bot was unable to deliver a custom DM message to @${member.user.username} (${member.id}) due to an API restriction`);
+
+            //Muestra un error al usuario que intentó enviar el mensaje
+            return await interaction.reply({ embeds: [ new discord.EmbedBuilder()
+                .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cantReceiveDms, { botUser: client.user })}.`)
+            ], ephemeral: true});
+        };
 
         //Ejecuta el manejador de errores
         await client.functions.managers.interactionError(error, interaction);

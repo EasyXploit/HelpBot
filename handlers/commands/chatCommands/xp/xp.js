@@ -205,8 +205,9 @@ export async function run(interaction, commandConfig, locale) {
 
         } catch (error) {
 
-            //Si no se trata de un error por que no se pudo enviar el MD, muestra el error
-            if (!error.toString().includes('Cannot send messages to this user')) logger.error(error.stack);
+            //Maneja los errores ocurridos cuando no se puede entregar un mensaje privado
+            if (error.toString().includes('Cannot send messages to this user')) logger.warn(`The bot was unable to deliver a "changed xp" message to @${member.user.username} (${member.id}) due to an API restriction`);
+            logger.error(error.stack);
         };
         
     } catch (error) {

@@ -34,7 +34,7 @@ locale = await loadLocales(localConfig.locale);
 process.on('unhandledRejection', error => {
 
     //Omite determinados errores que no se espera manejar
-    if (error.toString().includes('Cannot send messages to this user') || error.toString().includes('Unknown Message')) return;
+    if (error.toString().includes('Cannot send messages to this user') || error.toString().includes('Unknown Message')) return logger.warn(`The bot was unable to deliver a message to a user due to an API restriction`);;
 
     //Envía un mensaje de error a la consola
     logger.error(`Unhandled rejected promise: ${error.stack}`);

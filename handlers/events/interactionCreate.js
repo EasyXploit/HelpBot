@@ -12,9 +12,9 @@ export default async (interaction, locale) => {
             let commandType;
 
             //En función del tipo de interacción, se almacenará el tipo adecuado
-            if (!interaction.targetType) commandType = 'chatCommands'
-            else if (interaction.targetType === discord.ApplicationCommandType.Message) commandType = 'messageCommands'
-            else if (interaction.targetType === discord.ApplicationCommandType.User) commandType = 'userCommands';
+            if (interaction.isMessageContextMenuCommand()) commandType = 'messageCommands'
+            else if (interaction.isUserContextMenuCommand()) commandType = 'userCommands';
+            else commandType = 'chatCommands'
 
             //Busca el comando por su nombre
             const command = client.commands[commandType].get(interaction.commandName);

@@ -1218,6 +1218,13 @@
                 }
             }
         },
+        "loaders": {
+            "login": {
+                "tokenPrompt": "Introduce a login token",
+                "invalidPromptedToken": "The token entered is not valid.\nNeed help? Visit: {{tokenHelpURL}}",
+                "invalidStoredToken": "The specified token is invalid"
+            }
+        },
         "managers": {
             "buttonNavigation": {
                 "cantUseNavigation": "You cannot control a menu invoked by another member"

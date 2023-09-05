@@ -44,6 +44,7 @@
   "nodemonConfig": {
     "ignore": [
       "config.json"
-    ]
+    ],
+    "stdin": false
   }
 }

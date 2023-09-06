@@ -1220,9 +1220,11 @@
         },
         "loaders": {
             "login": {
+                "provideTokenHeader": "You have to provide the account token that the bot will use to log into Discord",
+                "provideTokenHelp": "To find out how to obtain a token, visit: {{tokenHelpURL}}",
                 "tokenPrompt": "Introduce a login token",
-                "invalidPromptedToken": "The entered token is not valid.\nNeed help? Visit: {{tokenHelpURL}}",
-                "invalidStoredToken": "The specified token is invalid.\nNeed help? Visit: {{tokenHelpURL}}"
+                "invalidEnteredToken": "Invalid token",
+                "invalidProvidedToken": "The provided token was rejected by Discord, probably due to a typo or API failure"
             }
         },
         "managers": {

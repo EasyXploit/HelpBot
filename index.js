@@ -22,7 +22,7 @@ await loadLogger();
 const localConfig = require('./config.json');
 
 //Carga el manejador de errores remoto, si está habilitado
-if (localConfig.errorTrackingStatus) loadErrorTracker();
+if (localConfig.errorTracking.enabled || process.env.NODE_ENV !== 'production') loadErrorTracker(localConfig);
 
 //Almacena las traducciones al idioma configurado
 let locale = await require(`./locales/${localConfig.locale}.json`);

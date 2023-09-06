@@ -24,11 +24,37 @@ const localConfig = require('./config.json');
 //Carga el manejador de errores remoto, si está habilitado
 if (localConfig.errorTracking.enabled || process.env.NODE_ENV !== 'production') loadErrorTracker(localConfig);
 
+//Caraga el idioma objetivo desde las variables de entorno, o desde la configuración local
+let targetLocale = process.env.LOCALE && process.env.LOCALE.length > 0 ? process.env.LOCALE : localConfig.locale;
+
+//Si el fichero de traducciones paar ese idioma no existe
+if (!fs.existsSync(`./locales/${targetLocale}.json`)) {
+
+    //Manda un aviso a la consola
+    logger.warn(`There is no locale file for the selected language (${targetLocale}), so "en-us" will be used instead`);
+
+    //Reemplaza el idioma objetivo por el por defecto
+    targetLocale = 'en-us';
+
+    //Si el idioma venía por configuración
+    if (!process.env.LOCALE || process.env.LOCALE.length === 0) {
+
+        //Lo reemplaza por el por defecto
+        localConfig.locale = targetLocale;
+
+        //Actualiza el fichero de configuración con los cambios
+        fs.writeFile('./config.json', JSON.stringify(localConfig, null, 4), async err => { if (err) throw err; });
+
+        //Manda un aviso a la consola
+        logger.warn('The language has been replaced by the default one (en-us) in the local configuration file');
+    };
+};
+
 //Almacena las traducciones al idioma configurado
-let locale = await require(`./locales/${localConfig.locale}.json`);
+let locale = await require(`./locales/${targetLocale}.json`);
 
 //Uniforma las traducciones si no se corresponden con las del idioma por defecto
-locale = await loadLocales(localConfig.locale);
+locale = await loadLocales(targetLocale);
 
 //Gestión de promesas rechazadas y no manejadas
 process.on('unhandledRejection', error => {

@@ -11,9 +11,18 @@ export default async (guild, locale) => {
 
         //Listado de guilds a las que el bot está unido
         const cachedGuilds = client.guilds.cache;
-        
+
+        //Carga el ID de la guild de servicio
+        const serviceGuildId = await client.functions.db.getConfig('system.serviceGuildId');
+
+        //Almacena el número de guilds elegibles (descontando las de servicio)
+        const elegibleGuilds = await cachedGuilds.filter(guild => guild.id !== serviceGuildId);
+
+        //Almacena el recuento de guilds elegibles
+        let elegibleGuildsCount = elegibleGuilds.size;
+
         //Comprueba cuantas guilds hay disponibles
-        if (cachedGuilds.size === 1) {
+        if (elegibleGuildsCount === 1) {
 
             //Almacena la nueva configuración de la guild
             await newBaseGuild(cachedGuilds.first());

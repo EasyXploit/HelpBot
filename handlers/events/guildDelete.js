@@ -1,3 +1,4 @@
+//Exporta la función de manejo del evento
 export default async (guild, locale) => {
     
     try {

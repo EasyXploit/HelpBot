@@ -2,6 +2,9 @@
 import { createRequire } from 'module';
 global.require = createRequire(import.meta.url);
 
+//Almacena el estado de disponibilidad global del bot
+global.readyStatus = false;
+
 //Carga las variables de entorno desde el fichero .env (si existe)
 require('dotenv').config();
 

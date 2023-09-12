@@ -1,6 +1,10 @@
+//Exporta la función de manejo del evento
 export default async (member, locale) => {
     
     try {
+
+        //Comprueba si el bot está listo para manejar eventos
+        if (!global.readyStatus) return;
 
         //Aborta si no es un evento de la guild registrada
         if (member.guild.id !== client.baseGuild.id) return;

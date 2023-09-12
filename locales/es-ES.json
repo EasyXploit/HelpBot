@@ -1,10 +1,50 @@
 {
+    "permissions": {
+        "CreateInstantInvite": "Create Instant Invite",
+        "KickMembers": "Kick Members",
+        "BanMembers": "Ban Members",
+        "Administrator": "Administrator",
+        "ManageChannels": "Manage Channels",
+        "ManageGuild": "Manage Guild",
+        "AddReactions": "Add Reactions",
+        "ViewAuditLog": "View Audit Log",
+        "PrioritySpeaker": "Priority Speaker",
+        "Stream": "Stream",
+        "ViewChannel": "View Channel",
+        "SendMessages": "Send Messages",
+        "SendTTSMessages": "Send TTS Messages",
+        "ManageMessages": "Manage Messages",
+        "EmbedLinks": "Embed Links",
+        "AttachFiles": "Attach Files",
+        "ReadMessageHistory": "Read Message History",
+        "MentionEveryone": "Mention Everyone",
+        "UseExternalEmojis": "Use External Emojis",
+        "ViewGuildInsights": "View Guild Insights",
+        "Connect": "Connect",
+        "MuteMembers": "Mute Members",
+        "DeafenMembers": "Deafen Members",
+        "MoveMembers": "Move Members",
+        "UseVAD": "Use Voice Activity",
+        "ChangeNickname": "Change Nickname",
+        "ManageNicknames": "Manage Nicknames",
+        "ManageRoles": "Manage Roles",
+        "ManageWebhooks": "Manage Webhooks",
+        "ManageGuildExpressions": "Manage Guild Expressions",	
+        "UseApplicationCommands": "Use Application Commands",
+        "RequestToSpeak": "Request To Speak",
+        "ManageEvents": "Manage Events",
+        "ManageThreads": "Manage Threads",
+        "CreatePublicThreads": "Create Public Threads",
+        "CreatePrivateThreads": "Create Private Threads",
+        "UseExternalStickers": "Use External Stickers",
+        "SendMessagesInThreads": "Send Messages In Threads",
+        "UseEmbeddedActivities": "Use Embedded Activities",
+        "ModerateMembers": "Moderate Members",
+        "ViewCreatorMonetizationAnalytics": "View Creator Monetization Analytics",
+        "UseSoundboard": "Use Soundboard"
+    },
     "index": {
-        "startingClient": "Iniciando cliente",
-        "clientStarted": "¡Cliente iniciado correctamente!",
-        "unhandledRejection": {
-            "consoleMsg": "ERROR: Promesa rechazada no manejada"
-        }
+        "startupMsg": "The bot is starting. Please wait"
     },
     "handlers": {
         "buttons": {
@@ -1018,13 +1058,6 @@
             }
         },
         "events": {
-            "channelDelete": {
-                "missingLoggingChannel": "AVISO: El canal de registro ya no existe o no se puede tener acceso.\n Se ha borrado de la configuración y se ha descargado de la memoria"
-            },
-            "error": {
-                "econnresetError": "ERROR: La conexión fue cerrada inesperadamente",
-                "otherError": "ERROR"
-            },
             "guildBanAdd": {
                 "inconclusiveLoggingEmbed": {
                     "author": "{{userTag}} ha sido BANEADO",
@@ -1054,16 +1087,6 @@
                     "deletedDays": "Días de mensajes borrados",
                     "noDeletedDays": "Ninguno"
                 }
-            },
-            "guildCreate": {
-                "newGuild": "{{botUsername}} se ha unido a la guild \"{{guildName}}\"",
-                "justOneGuild": "AVISO: {{botUsername}} no está diseñado para funcionar en más de un servidor",
-                "error": "ERROR:"
-            },
-            "guildDelete": {
-                "abandonedGuild": "AVISO: {{botUsername}} ha abandonado la guild \"{{guildName}}\"",
-                "shouldReboot": "AVISO: Para continuar, debes volver a iniciar al bot",
-                "error": "ERROR"
             },
             "guildMemberAdd": {
                 "botLoggingEmbed": {
@@ -1149,11 +1172,6 @@
             "messageCreate": {
                 "filteredDm": "vía MD"
             },
-            "ready": {
-                "justOneGuild": "AVISO: El bot no está diseñado para funcionar en más de una guild (servidor).\nExpulse al bot del resto de guilds y reinicie al bot",
-                "waitingGuild": "AVISO: Esperando a que el bot se una a una guild",
-                "error": "ERROR"
-            },
             "voiceStateUpdate": {
                 "voiceMovesLogging": {
                     "noChannel": "Ninguno",
@@ -1162,21 +1180,10 @@
                     "actualMembers": "Miembros del nuevo canal",
                     "embedAuthor": "{{memberTag}} ha modificado su canal de voz"
                 }
-            },
-            "warn": {
-                "warnMessage": "AVISO"
             }
         }
     },
-    "functions": {
-        "db": {
-            "migrate": {
-                "noPendingMigrations": "No hay migraciones pendientes",
-                "pendingMigrations": "Migraciones que se realizarán",
-                "migrationsDone": "¡Se han migrado todos los documentos de la base de datos!",
-                "migrationsUncomplete": "Ocurrió un error durante la migración de los documentos de la base de datos"
-            }
-        },
+    "lib": {
         "leveling": {
             "addExperience": {
                 "levelUpEmbed": {
@@ -1187,15 +1194,68 @@
                 }
             }
         },
+        "loaders": {
+            "intervals": {
+                "timeouts": {
+                    "loggingEmbed": {
+                        "author": "{{userTag}} ha sido DES-SILENCIADO",
+                        "authorNoMember": "Un miembro ha sido DES-SILENCIADO",
+                        "memberId": "ID del miembro",
+                        "moderator": "Moderador",
+                        "reason": "Razón"
+                    },
+                    "privateEmbed": {
+                        "author": "[DES-SILENCIADO]",
+                        "description": "{{member}}, has sido des-silenciado en {{guildName}}",
+                        "moderator": "Moderador",
+                        "reason": "Razón"
+                    },
+                    "reason": "Venció la amonestación"
+                },
+                "bans": {
+                    "loggingEmbed": {
+                        "author": "{{userTag}} ha sido DES-BANEADO",
+                        "user": "Usuario",
+                        "moderator": "Moderador",
+                        "reason": "Razón"
+                    },
+                    "reason": "Venció la amonestación",
+                    "error": "ERROR"
+                },
+                "polls": {
+                    "votesPercentage": "{{votesCount}} votos, el {{percentage}}%",
+                    "finishedEmbed": {
+                        "author": "Encuesta finalizada",
+                        "results": "Resultados"
+                    },
+                    "loggingEmbed": {
+                        "title": "Registro - [ENCUESTAS]",
+                        "description": "La encuesta \"__{{poll}}__\" ha finalizado en el canal {{channel}}"
+                    },
+                    "progressEmbed": {
+                        "author": "Encuesta disponible",
+                        "remaining": "Restante: {{remainingDays}}d {{remainingHours}}h {{remainingMinutes}}m"
+                    }
+                }
+            },
+            "login": {
+                "tokenNotProvided": "No se ha proporcionado un token de inicio de sesión de Discord.\nPuedes obtener crear una aplicacion y obtener un token desde https://discord.com/developers/applications.",
+                "loggingIn": "Iniciando sesión",
+                "loggedIn": "¡Sesion iniciada correctamente!",
+                "couldNotLogIn": "No ha sido posible iniciar sesión. Comprueba si el token de inicio de sesión es válido"
+            },
+            "system": {
+                "loadedCorrectly": "{{botUsername}} iniciado correctamente"
+            },
+            "splashLogo": {
+                "description": "Soy un bot diseñado para moderación de comunidades automatizada, gestión de niveles, utilidades de chat ¡y mucho más!"
+            }
+        },
         "managers": {
             "buttonNavigation": {
                 "cantUseNavigation": "No puedes controlar un menú invocado por otro miembro"
             },
-            "eventError": {
-                "error": "ERROR"
-            },
             "interactionError": {
-                "error": "ERROR",
                 "notificationEmbed": {
                     "title": "¡Vaya! Algo fue mal",
                     "description": "Lo hemos reportado al equipo de desarrollo"
@@ -1306,135 +1366,6 @@
             }
         }
     },
-    "lifecycle": {
-        "loadDatabase": {
-            "connecting": "Iniciando conexión con la base de datos",
-            "invalidEnv": {
-                "connectionString": "No se ha proporcionado una cadena de conexión a base de datos",
-                "username": "No se ha proporcionado un usuario para la conexión a base de datos",
-                "password": "No se ha proporcionado una contraseña para la conexión a la base de datos",
-                "authSource": "No se ha proporcionado una base de datos para la autorización"
-            },
-            "cantConnect": "No se pudo conectar con la base de datos",
-            "onConnected": "Conexión a la base de datos establecida con éxito",
-            "checkIfMigrationNeeded": "Comprobando que todos los documentos tienen la versión adecuada",
-            "onError": "Error de conexión a la base de datos",
-            "onDisconnected": "Conexión a la base de datos abortada",
-            "onReconnected": "Conexión a la base de datos restablecida"
-        },
-        "loadErrorTracker": {
-            "loading": "Cargando el rastreador de errores remoto...",
-            "tracesSampleRate": "Tasa de muestreo de trazas",
-            "configLoaded": "¡Carga del rastreador de errores remoto completada!",
-            "error": "Ocurrió un error durante la carga del rastreador de errores remoto, por lo que no se utilizará"
-        },
-        "loadEvents": {
-            "uncompleteEventsLoad": "ERROR: No se ha podido completar la carga del evento:",
-            "event": "Evento"
-        },
-        "loadFunctions": {
-            "functionsLoaded": "Carga de funciones globales completada",
-            "error": "Las funciones globales no pudieron ser cargadas correctamente"
-        },
-        "loadIntervals": {
-            "mutes": {
-                "loggingEmbed": {
-                    "author": "{{userTag}} ha sido DES-SILENCIADO",
-                    "authorNoMember": "Un miembro ha sido DES-SILENCIADO",
-                    "memberId": "ID del miembro",
-                    "moderator": "Moderador",
-                    "reason": "Razón"
-                },
-                "privateEmbed": {
-                    "author": "[DES-SILENCIADO]",
-                    "description": "{{member}}, has sido des-silenciado en {{guildName}}",
-                    "moderator": "Moderador",
-                    "reason": "Razón"
-                },
-                "reason": "Venció la amonestación"
-            },
-            "bans": {
-                "loggingEmbed": {
-                    "author": "{{userTag}} ha sido DES-BANEADO",
-                    "user": "Usuario",
-                    "moderator": "Moderador",
-                    "reason": "Razón"
-                },
-                "reason": "Venció la amonestación",
-                "error": "ERROR"
-            },
-            "ping": {
-                "consoleMsg": "AVISO: Tiempo de respuesta del websocket elevado"
-            },
-            "polls": {
-                "votesPercentage": "{{votesCount}} votos, el {{percentage}}%",
-                "finishedEmbed": {
-                    "author": "Encuesta finalizada",
-                    "results": "Resultados"
-                },
-                "loggingEmbed": {
-                    "title": "Registro - [ENCUESTAS]",
-                    "description": "La encuesta \"__{{poll}}__\" ha finalizado en el canal {{channel}}"
-                },
-                "progressEmbed": {
-                    "author": "Encuesta disponible",
-                    "remaining": "Restante: {{remainingDays}}d {{remainingHours}}h {{remainingMinutes}}m"
-                }
-            },
-            "presence": {
-                "name": "{{memberCount}} miembros"
-            },
-            "configLoaded": "Carga de intervalos completada"
-        },
-        "loadCommands": {
-            "unregisteredFromGuild": "Comando {{command}} des-registrado en {{guildName}}",
-            "unregisteredFromGlobal": "Comando {{command}} des-registrado globalmente",
-            "convertedToGlobal": "Comando {{command}} convertido al tipo \"global\"",
-            "convertedToGuild": "Comando {{command}} convertido al tipo \"guild\"",
-            "noConfigError": "El comando {{command}} no tiene configuración en commands.json",
-            "sameCommandNamesError": "Dos comandos o más comandos tienen el mismo nombre",
-            "invalidTypeError": "El comando {{command}} no tiene un tipo válido",
-            "registeredOnGlobal": "Comando {{command}} registrado globalmente",
-            "registeredOnGuild": "Comando {{command}} registrado en {{guildName}}",
-            "parametersUpdated": "El comando {{command}} ha actualizado sus parámetros",
-            "defaultPermUpdated": "El comando {{command}} ha actualizado su permiso por defecto",
-            "dmPermUpdated": "El comando {{command}} ha actualizado su permiso para ser usado mediante MD",
-            "loadedCorrectly": "Comando {{command}} cargado correctamente"
-        },
-        "loadSystem": {
-            "loadingSystem": "Cargando el sistema",
-            "configLoaded": "Cargado correctamente",
-            "configNotLoaded": "No se pudo cargar",
-            "guildConfigLoaded": "Carga de configuración de la guild completada",
-            "presenceLoaded": "Carga de presencia completada",
-            "voiceStatesLoaded": "Carga de estados de voz completada",
-            "loadedCorrectly": "{{botUsername}} iniciado correctamente",
-            "error": "ERROR"
-        },
-        "loadTimers": {
-            "configLoaded": "Carga de temporizadores completada"
-        },
-        "login": {
-            "tokenNotProvided": "No se ha proporcionado un token de inicio de sesión de Discord.\nPuedes obtener crear una aplicacion y obtener un token desde https://discord.com/developers/applications.",
-            "loggingIn": "Iniciando sesión",
-            "loggedIn": "¡Sesion iniciada correctamente!",
-            "couldNotLogIn": "No ha sido posible iniciar sesión. Comprueba si el token de inicio de sesión es válido"
-        },
-        "loadEmojis": {
-            "configLoaded": "Carga de emojis personalizados completada",
-            "maxExceeded": "No se pueden cargar más de 50 emojis",
-            "error": "ERROR"
-        },
-        "newGuild": {
-            "title": "¡{{botUsername}} añadido correctamente!",
-            "description": "Usa los ficheros de configuración para ajustarlo al bot a tu gusto.\nRecuerda que el bot solo podrá moderar a aquellas personas que tengan un rol por debajo del rol creado por {{botUser}}.\nSi necesitas ayuda, puedes [consultar la wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)",
-            "error": "ERROR"
-        },
-        "splashLogo": {
-            "description": "Soy un bot diseñado para moderación de comunidades automatizada, gestión de niveles, utilidades de chat ¡y mucho más!",
-            "divider": "Iniciando aplicación"
-        }
-    },
     "models": {
         "config": {
             "automodFilters": {
@@ -1468,9 +1399,6 @@
                 "repeatedText": {
                     "reason": "Texto repetitivo"
                 }
-            },
-            "presence": {
-                "name": "¡Hola!"
             }
         }
     }

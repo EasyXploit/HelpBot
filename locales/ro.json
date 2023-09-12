@@ -1,15 +1,50 @@
 {
+    "permissions": {
+        "CreateInstantInvite": "Create Instant Invite",
+        "KickMembers": "Kick Members",
+        "BanMembers": "Ban Members",
+        "Administrator": "Administrator",
+        "ManageChannels": "Manage Channels",
+        "ManageGuild": "Manage Guild",
+        "AddReactions": "Add Reactions",
+        "ViewAuditLog": "View Audit Log",
+        "PrioritySpeaker": "Priority Speaker",
+        "Stream": "Stream",
+        "ViewChannel": "View Channel",
+        "SendMessages": "Send Messages",
+        "SendTTSMessages": "Send TTS Messages",
+        "ManageMessages": "Manage Messages",
+        "EmbedLinks": "Embed Links",
+        "AttachFiles": "Attach Files",
+        "ReadMessageHistory": "Read Message History",
+        "MentionEveryone": "Mention Everyone",
+        "UseExternalEmojis": "Use External Emojis",
+        "ViewGuildInsights": "View Guild Insights",
+        "Connect": "Connect",
+        "MuteMembers": "Mute Members",
+        "DeafenMembers": "Deafen Members",
+        "MoveMembers": "Move Members",
+        "UseVAD": "Use Voice Activity",
+        "ChangeNickname": "Change Nickname",
+        "ManageNicknames": "Manage Nicknames",
+        "ManageRoles": "Manage Roles",
+        "ManageWebhooks": "Manage Webhooks",
+        "ManageGuildExpressions": "Manage Guild Expressions",	
+        "UseApplicationCommands": "Use Application Commands",
+        "RequestToSpeak": "Request To Speak",
+        "ManageEvents": "Manage Events",
+        "ManageThreads": "Manage Threads",
+        "CreatePublicThreads": "Create Public Threads",
+        "CreatePrivateThreads": "Create Private Threads",
+        "UseExternalStickers": "Use External Stickers",
+        "SendMessagesInThreads": "Send Messages In Threads",
+        "UseEmbeddedActivities": "Use Embedded Activities",
+        "ModerateMembers": "Moderate Members",
+        "ViewCreatorMonetizationAnalytics": "View Creator Monetization Analytics",
+        "UseSoundboard": "Use Soundboard"
+    },
     "index": {
-        "startingClient": "Pornind clientul",
-        "clientStarted": "¡Client pornit corect!",
-        "unhandledRejection": {
-            "consoleMsg": "EROARE: Promisiune reprinsă nu folosită"
-        },
-        "uncompleteEventsLoad": "EROARE: Nu s-a putut completa încarcarea eventelor",
-        "eventLoaded": "Event",
-        "loggingIn": "Logare",
-        "loggedIn": "¡Logare cu succes!",
-        "couldNotLogIn": "Autentificare eșuată. Verificați dacă simbolul de conectare este valid"
+        "startupMsg": "The bot is starting. Please wait"
     },
     "handlers": {
         "buttons": {
@@ -1023,13 +1058,6 @@
             }
         },
         "events": {
-            "channelDelete": {
-                "missingLoggingChannel": "AVERTISMENT: Canalul de jurnal nu mai există sau este inaccesibil.\nA fost șters din configurație și descărcat din memorie"
-            },
-            "error": {
-                "econnresetError": "EROARE: conexiunea a fost închisă în mod neașteptat",
-                "otherError": "EROARE"
-            },
             "guildBanAdd": {
                 "botLoggingEmbed": {
                     "title": "Registu - [BOTS]",
@@ -1059,16 +1087,6 @@
                     "deletedDays": "Zile de mesaje șterse",
                     "unknownDeletedDays": "Necunoscut"
                 }
-            },
-            "guildCreate": {
-                "newGuild": "{{botUsername}} s-a alăturat breaslei \"{{guildName}}\"",
-                "justOneGuild": "AVERTISMENT: {{botUsername}} nu este proiectat să funcționeze pe mai mult de un server",
-                "error": "EROARE:"
-            },
-            "guildDelete": {
-                "abandonedGuild": "AVERTISMENT: {{botUsername}} a părăsit breasla \"{{guildName}}\"",
-                "shouldReboot": "AVERTISMENT: Pentru a continua, trebuie să reporniți botul",
-                "error": "EROARE"
             },
             "guildMemberAdd": {
                 "botLoggingEmbed": {
@@ -1113,14 +1131,6 @@
             },
             "messageCreate": {
                 "filteredDm": "prin DM"
-            },
-            "ready": {
-                "justOneGuild": "ADVERTISMENT: Botul nu este proiectat să funcționeze în mai mult de o breaslă (server).\nExpulzați botul din toate celelalte bresle și reporniți-l",
-                "waitingGuild": "ADVERTISMENT: Se așteaptă ca botul să se alăture unei bresle",
-                "error": "EROARE"
-            },
-            "warn": {
-                "warnMessage": "ADVERTISMENT"
             },
             "guildMemberUpdate": {
                 "communicationDisabled": {
@@ -1173,7 +1183,7 @@
             }
         }
     },
-    "functions": {
+    "lib": {
         "leveling": {
             "addExperience": {
                 "levelUpEmbed": {
@@ -1184,12 +1194,66 @@
                 }
             }
         },
-        "managers": {
-            "eventError": {
-                "error": "EROARE"
+        "loaders": {
+            "intervals": {
+                "timeouts": {
+                    "loggingEmbed": {
+                        "author": "{{userTag}} a fost DEZAMUȚIT",
+                        "authorNoMember": "Un membru a fost DEZAMUȚIT",
+                        "memberId": "ID-ul membrului",
+                        "moderator": "Moderator",
+                        "reason": "Motiv"
+                    },
+                    "privateEmbed": {
+                        "author": "[DEZAMUȚIT]",
+                        "description": "{{member}}, ați fost dezamuțit pe {{guildName}}",
+                        "moderator": "Moderator",
+                        "reason": "Motiv"
+                    },
+                    "reason": "Sancțiunea a expirat"
+                },
+                "bans": {
+                    "loggingEmbed": {
+                        "author": "{{userTag}} a fost UN-BANNAT",
+                        "user": "Utilizator",
+                        "moderator": "Moderator",
+                        "reason": "Motiv"
+                    },
+                    "reason": "Sancțiunea a expirat",
+                    "error": "EROARE"
+                },
+                "polls": {
+                    "votesPercentage": "{{votesCount}} voturi, {{percentage}}%",
+                    "finishedEmbed": {
+                        "author": "Sondajul s-a terminat",
+                        "results": "Rezultate"
+                    },
+                    "loggingEmbed": {
+                        "title": "Înregistrare - [POLLS]",
+                        "description": "Sondajul „__{{poll}}__” s-a încheiat pe canalul {{channel}}"
+                    },
+                    "progressEmbed": {
+                        "author": "Sondaj disponibil",
+                        "remaining": "Au rămas: {{remainingDays}}d {{remainingHours}}h {{remainingMinutes}}m"
+                    }
+                }
             },
+            "login": {
+                "provideTokenHeader": "You have to provide the account token that the bot will use to log into Discord",
+                "provideTokenHelp": "To find out how to obtain a token, visit: {{tokenHelpURL}}",
+                "tokenPrompt": "Introduce a login token",
+                "invalidEnteredToken": "Invalid token",
+                "invalidProvidedToken": "The provided token was rejected by Discord, probably due to a typo or API failure"
+            },
+            "system": {
+                "loadedCorrectly": "{{botUsername}} a început cu succes"
+            },
+            "splashLogo": {
+                "description": "Sunt un bot conceput pentru moderarea automată a comunității, nivelare, utilități de chat și multe altele!"
+            }
+        },
+        "managers": {
             "interactionError": {
-                "error": "EROARE",
                 "notificationEmbed": {
                     "title": "Hopa! Ceva n-a mers bine",
                     "description": "Am raportat-o celor responsabili de bot"
@@ -1303,108 +1367,39 @@
             }
         }
     },
-    "lifecycle": {
-        "loadIntervals": {
-            "mutes": {
-                "loggingEmbed": {
-                    "author": "{{userTag}} a fost DEZAMUȚIT",
-                    "moderator": "Moderator",
-                    "reason": "Motiv",
-                    "authorNoMember": "Un membru a fost DEZAMUȚIT",
-                    "memberId": "ID-ul membrului"
+    "models": {
+        "config": {
+            "automodFilters": {
+                "flood": {
+                    "reason": "Channel flooding"
                 },
-                "privateEmbed": {
-                    "author": "[DEZAMUȚIT]",
-                    "description": "{{member}}, ați fost dezamuțit pe {{guildName}}",
-                    "moderator": "Moderator",
-                    "reason": "Motiv"
+                "crossPost": {
+                    "reason": "Repeated posts"
                 },
-                "reason": "Sancțiunea a expirat"
-            },
-            "bans": {
-                "loggingEmbed": {
-                    "author": "{{userTag}} a fost UN-BANNAT",
-                    "user": "Utilizator",
-                    "moderator": "Moderator",
-                    "reason": "Motiv"
+                "bannedWords": {
+                    "reason": "Banned word"
                 },
-                "reason": "Sancțiunea a expirat",
-                "error": "EROARE"
-            },
-            "ping": {
-                "consoleMsg": "AVERTISMENT: Timp mare de răspuns la socket web"
-            },
-            "polls": {
-                "votesPercentage": "{{votesCount}} voturi, {{percentage}}%",
-                "finishedEmbed": {
-                    "author": "Sondajul s-a terminat",
-                    "results": "Rezultate"
+                "invites": {
+                    "reason": "Invitation not allowed"
                 },
-                "loggingEmbed": {
-                    "title": "Înregistrare - [POLLS]",
-                    "description": "Sondajul „__{{poll}}__” s-a încheiat pe canalul {{channel}}"
+                "uppercase": {
+                    "reason": "Too many capital letters"
                 },
-                "progressEmbed": {
-                    "author": "Sondaj disponibil",
-                    "remaining": "Au rămas: {{remainingDays}}d {{remainingHours}}h {{remainingMinutes}}m"
+                "links": {
+                    "reason": "Link not allowed"
+                },
+                "massEmojis": {
+                    "reason": "Too many emojis"
+                },
+                "massMentions": {
+                    "reason": "Too many mentions"
+                },
+                "massSpoilers": {
+                    "reason": "Too many spoilers"
+                },
+                "repeatedText": {
+                    "reason": "Repetitive text"
                 }
-            },
-            "presence": {
-                "name": "{{memberCount}} membri"
-            },
-            "configLoaded": "Încărcarea intervalelor s-a încheiat"
-        },
-        "loadCommands": {
-            "unregisteredFromGuild": "Comanda {{command}} neînregistrată la {{guildName}}",
-            "unregisteredFromGlobal": "Comanda {{command}} neînregistrată la nivel global",
-            "convertedToGlobal": "Comanda {{command}} convertită în tipul \"global\"",
-            "convertedToGuild": "Comanda {{command}} a fost convertită în tipul \"breaslă\"",
-            "noConfigError": "Comanda {{command}} nu are nicio configurație în commands.json",
-            "sameCommandNamesError": "Două sau mai multe comenzi au același nume",
-            "invalidTypeError": "Comanda {{command}} nu are un tip valid",
-            "registeredOnGlobal": "Comanda {{command}} înregistrată la nivel global",
-            "registeredOnGuild": "Comanda {{command}} înregistrată în {{guildName}}",
-            "parametersUpdated": "Comanda {{command}} și-a actualizat parametrii",
-            "defaultPermUpdated": "Comanda {{command}} și-a actualizat permisiunea implicită",
-            "loadedCorrectly": "Comanda {{command}} a fost încărcată cu succes",
-            "dmPermUpdated": "Comanda {{command}} și-a actualizat permisiunea de a fi utilizată prin MD"
-        },
-        "loadSystem": {
-            "loadingSystem": "Sistemul se incarcă",
-            "configLoaded": "Încărcat cu succes",
-            "configNotLoaded": "Nu s-a putut incărca",
-            "guildConfigLoaded": "Încărcarea configurației breslei a fost finalizată",
-            "presenceLoaded": "Încărcarea prezenței a fost finalizată",
-            "voiceStatesLoaded": "Încărcarea stărilor vocale s-a încheiat",
-            "loadedCorrectly": "{{botUsername}} a început cu succes",
-            "error": "EROARE",
-            "functionsLoaded": "Încărcarea funcțiilor globale a fost finalizată"
-        },
-        "loadTimers": {
-            "configLoaded": "Încărcarea temporizatoarelor s-a încheiat"
-        },
-        "loadEmojis": {
-            "configLoaded": "Încărcarea emoji-urilor personalizate a fost finalizată",
-            "maxExceeded": "Nu pot fi încărcate mai mult de 50 de emoji",
-            "error": "EROARE"
-        },
-        "newGuild": {
-            "title": "{{botUsername}} a fost adăugat cu succes!",
-            "description": "Utilizați fișierele de configurare pentru a ajusta botul după bunul plac.\nRețineți că bot-ul va putea să modereze doar acele persoane care au un rol sub rolul creat de {{botUser}}.\nDacă aveți nevoie de ajutor, puteți [verifica wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)",
-            "error": "EROARE"
-        },
-        "splashLogo": {
-            "description": "Sunt un bot conceput pentru moderarea automată a comunității, nivelare, utilități de chat și multe altele!",
-            "divider": "Lansarea aplicației"
-        },
-        "loadErrorTracker": {
-            "loading": "Se încarcă urmărirea erorilor de la distanță prin Sentry...",
-            "configLoaded": "Încărcarea de urmărire a erorilor de la distanță a fost finalizată!",
-            "tracesSampleRate": "Urmărește rata de eșantionare",
-            "errors": {
-                "invalidDSN": "Nu ați specificat un DSN Sentry valid. Urmărirea erorilor de la distanță nu va fi utilizată",
-                "smallTracesSampleRate": "Nu ați specificat o rată de eșantionare validă. 0 va fi folosit în schimb (minimul)",
-                "largeTracesSampleRate": "Nu ați specificat o rată de eșantionare validă. 1.0 va fi folosit în schimb (maximum)"
             }
         }
     }

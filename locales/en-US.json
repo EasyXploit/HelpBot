@@ -1078,9 +1078,6 @@
             }
         },
         "events": {
-            "channelDelete": {
-                "missingLoggingChannel": "WARNING: The logging channel no longer exists or is inaccessible.\n It has been cleared from the configuration and unloaded from memory"
-            },
             "guildBanAdd": {
                 "inconclusiveLoggingEmbed": {
                     "author": "{{userTag}} has been BANNED",
@@ -1207,7 +1204,7 @@
             }
         }
     },
-    "functions": {
+    "lib": {
         "leveling": {
             "addExperience": {
                 "levelUpEmbed": {
@@ -1219,12 +1216,61 @@
             }
         },
         "loaders": {
+            "intervals": {
+                "timeouts": {
+                    "loggingEmbed": {
+                        "author": "{{userTag}} has been UN-TIMEOUTED",
+                        "authorNoMember": "A member has been UN-TIMEOUTED",
+                        "memberId": "Member ID",
+                        "moderator": "Moderator",
+                        "reason": "Reason"
+                    },
+                    "privateEmbed": {
+                        "author": "[UN-TIMEOUTED]",
+                        "description": "{{member}}, you have been untimeouted on {{guildName}}",
+                        "moderator": "Moderator",
+                        "reason": "Reason"
+                    },
+                    "reason": "The sanction expired"
+                },
+                "bans": {
+                    "loggingEmbed": {
+                        "author": "{{userTag}} has been UN-BANNED",
+                        "user": "User",
+                        "moderator": "Moderator",
+                        "reason": "Reason"
+                    },
+                    "reason": "The sanction expired"
+                },
+                "polls": {
+                    "votesPercentage": "{{votesCount}} votes, the {{percentage}}%",
+                    "finishedEmbed": {
+                        "author": "Poll finished",
+                        "results": "Results"
+                    },
+                    "loggingEmbed": {
+                        "title": "Logging - [POLLS]",
+                        "description": "Poll \"__{{poll}}__\" has ended on channel {{channel}}"
+                    },
+                    "progressEmbed": {
+                        "author": "Poll available",
+                        "remaining": "Remaining: {{remainingDays}}d {{remainingHours}}h {{remainingMinutes}}m"
+                    }
+                }
+                
+            },
             "login": {
                 "provideTokenHeader": "You have to provide the account token that the bot will use to log into Discord",
                 "provideTokenHelp": "To find out how to obtain a token, visit: {{tokenHelpURL}}",
                 "tokenPrompt": "Introduce a login token",
                 "invalidEnteredToken": "Invalid token",
                 "invalidProvidedToken": "The provided token was rejected by Discord, probably due to a typo or API failure"
+            },
+            "system": {
+                "loadedCorrectly": "{{botUsername}} started successfully!"
+            },
+            "splashLogo": {
+                "description": "A Discord bot designed for automated community moderation, leveling, chat utilities and much more!"
             }
         },
         "managers": {
@@ -1334,57 +1380,6 @@
                 "months": "month/s",
                 "days": "day/s"
             }
-        }
-    },
-    "lifecycle": {
-        "loadIntervals": {
-            "timeouts": {
-                "loggingEmbed": {
-                    "author": "{{userTag}} has been UN-TIMEOUTED",
-                    "authorNoMember": "A member has been UN-TIMEOUTED",
-                    "memberId": "Member ID",
-                    "moderator": "Moderator",
-                    "reason": "Reason"
-                },
-                "privateEmbed": {
-                    "author": "[UN-TIMEOUTED]",
-                    "description": "{{member}}, you have been untimeouted on {{guildName}}",
-                    "moderator": "Moderator",
-                    "reason": "Reason"
-                },
-                "reason": "The sanction expired"
-            },
-            "bans": {
-                "loggingEmbed": {
-                    "author": "{{userTag}} has been UN-BANNED",
-                    "user": "User",
-                    "moderator": "Moderator",
-                    "reason": "Reason"
-                },
-                "reason": "The sanction expired"
-            },
-            "polls": {
-                "votesPercentage": "{{votesCount}} votes, the {{percentage}}%",
-                "finishedEmbed": {
-                    "author": "Poll finished",
-                    "results": "Results"
-                },
-                "loggingEmbed": {
-                    "title": "Logging - [POLLS]",
-                    "description": "Poll \"__{{poll}}__\" has ended on channel {{channel}}"
-                },
-                "progressEmbed": {
-                    "author": "Poll available",
-                    "remaining": "Remaining: {{remainingDays}}d {{remainingHours}}h {{remainingMinutes}}m"
-                }
-            }
-            
-        },
-        "loadSystem": {
-            "loadedCorrectly": "{{botUsername}} started successfully!"
-        },
-        "splashLogo": {
-            "description": "A Discord bot designed for automated community moderation, leveling, chat utilities and much more!"
         }
     },
     "models": {

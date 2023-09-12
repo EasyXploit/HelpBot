@@ -1,15 +1,50 @@
 {
+    "permissions": {
+        "CreateInstantInvite": "Create Instant Invite",
+        "KickMembers": "Kick Members",
+        "BanMembers": "Ban Members",
+        "Administrator": "Administrator",
+        "ManageChannels": "Manage Channels",
+        "ManageGuild": "Manage Guild",
+        "AddReactions": "Add Reactions",
+        "ViewAuditLog": "View Audit Log",
+        "PrioritySpeaker": "Priority Speaker",
+        "Stream": "Stream",
+        "ViewChannel": "View Channel",
+        "SendMessages": "Send Messages",
+        "SendTTSMessages": "Send TTS Messages",
+        "ManageMessages": "Manage Messages",
+        "EmbedLinks": "Embed Links",
+        "AttachFiles": "Attach Files",
+        "ReadMessageHistory": "Read Message History",
+        "MentionEveryone": "Mention Everyone",
+        "UseExternalEmojis": "Use External Emojis",
+        "ViewGuildInsights": "View Guild Insights",
+        "Connect": "Connect",
+        "MuteMembers": "Mute Members",
+        "DeafenMembers": "Deafen Members",
+        "MoveMembers": "Move Members",
+        "UseVAD": "Use Voice Activity",
+        "ChangeNickname": "Change Nickname",
+        "ManageNicknames": "Manage Nicknames",
+        "ManageRoles": "Manage Roles",
+        "ManageWebhooks": "Manage Webhooks",
+        "ManageGuildExpressions": "Manage Guild Expressions",	
+        "UseApplicationCommands": "Use Application Commands",
+        "RequestToSpeak": "Request To Speak",
+        "ManageEvents": "Manage Events",
+        "ManageThreads": "Manage Threads",
+        "CreatePublicThreads": "Create Public Threads",
+        "CreatePrivateThreads": "Create Private Threads",
+        "UseExternalStickers": "Use External Stickers",
+        "SendMessagesInThreads": "Send Messages In Threads",
+        "UseEmbeddedActivities": "Use Embedded Activities",
+        "ModerateMembers": "Moderate Members",
+        "ViewCreatorMonetizationAnalytics": "View Creator Monetization Analytics",
+        "UseSoundboard": "Use Soundboard"
+    },
     "index": {
-        "startingClient": "Iniziando client",
-        "clientStarted": "Client iniziato correttamente!",
-        "unhandledRejection": {
-            "consoleMsg": "ERRORE: Promessa rifiutata non gestita"
-        },
-        "uncompleteEventsLoad": "ERRORE: Non si è riuscito a caricare gli eventi",
-        "eventLoaded": "Evento",
-        "loggingIn": "Iniziando sessione",
-        "loggedIn": "Sessione iniziata correttamente!",
-        "couldNotLogIn": "Login failed. Check if the login token is valid"
+        "startupMsg": "The bot is starting. Please wait"
     },
     "handlers": {
         "buttons": {
@@ -1023,13 +1058,6 @@
             }
         },
         "events": {
-            "channelDelete": {
-                "missingLoggingChannel": "WARNING: The logging channel no longer exists or is inaccessible.\n It has been cleared from the configuration and unloaded from memory"
-            },
-            "error": {
-                "econnresetError": "ERROR: The connection was closed unexpectedly",
-                "otherError": "ERROR"
-            },
             "guildBanAdd": {
                 "botLoggingEmbed": {
                     "title": "Logging - [BOTS]",
@@ -1059,16 +1087,6 @@
                     "deletedDays": "Giorni di messaggi eliminati",
                     "unknownDeletedDays": "Sconosciuti"
                 }
-            },
-            "guildCreate": {
-                "newGuild": "{{botUsername}} has joined the guild \"{{guildName}}\"",
-                "justOneGuild": "WARNING: {{botUsername}} is not designed to run on more than one guild",
-                "error": "ERROR:"
-            },
-            "guildDelete": {
-                "abandonedGuild": "NOTICE: {{botUsername}} has abandoned the guild \"{{guildName}}\"",
-                "shouldReboot": "NOTICE: To continue, you must restart the bot",
-                "error": "ERROR"
             },
             "guildMemberAdd": {
                 "botLoggingEmbed": {
@@ -1113,14 +1131,6 @@
             },
             "messageCreate": {
                 "filteredDm": "via DM"
-            },
-            "ready": {
-                "justOneGuild": "WARNING: The bot is not designed to work on more than one guild (server).\nPlease kick the bot from all other guilds and restart the bot",
-                "waitingGuild": "WARNING: Waiting for the bot to join a guild",
-                "error": "ERROR"
-            },
-            "warn": {
-                "warnMessage": "WARNING"
             },
             "guildMemberUpdate": {
                 "communicationDisabled": {
@@ -1173,7 +1183,7 @@
             }
         }
     },
-    "functions": {
+    "lib": {
         "leveling": {
             "addExperience": {
                 "levelUpEmbed": {
@@ -1184,12 +1194,66 @@
                 }
             }
         },
-        "managers": {
-            "eventError": {
-                "error": "ERROR"
+        "loaders": {
+            "intervals": {
+                "timeouts": {
+                    "loggingEmbed": {
+                        "author": "{{userTag}} è stato SMUTATO",
+                        "authorNoMember": "Un membro è stato SMUTATO",
+                        "memberId": "ID del Membro",
+                        "moderator": "Moderatore",
+                        "reason": "Motivo"
+                    },
+                    "privateEmbed": {
+                        "author": "[SMUTATO]",
+                        "description": "{{member}}, è stato smutato in {{guildName}}",
+                        "moderator": "Moderatore",
+                        "reason": "Motivo"
+                    },
+                    "reason": "The sanction expired"
+                },
+                "bans": {
+                    "loggingEmbed": {
+                        "author": "{{userTag}} has been UN-BANNED",
+                        "user": "Utente",
+                        "moderator": "Moderatore",
+                        "reason": "Motivo"
+                    },
+                    "reason": "The sanction expired",
+                    "error": "ERROR"
+                },
+                "polls": {
+                    "votesPercentage": "{{votesCount}} votes, the {{percentage}}%",
+                    "finishedEmbed": {
+                        "author": "Sondaggio finito",
+                        "results": "Results"
+                    },
+                    "loggingEmbed": {
+                        "title": "Registro - [SONDAGGI]",
+                        "description": "Il sondaggio \"__{{poll}}__\" ha finalizzato nel canale {{channel}}"
+                    },
+                    "progressEmbed": {
+                        "author": "Sondaggio disponibile",
+                        "remaining": "Remaining: {{remainingDays}}d {{remainingHours}}h {{remainingMinutes}}m"
+                    }
+                }
             },
+            "login": {
+                "provideTokenHeader": "You have to provide the account token that the bot will use to log into Discord",
+                "provideTokenHelp": "To find out how to obtain a token, visit: {{tokenHelpURL}}",
+                "tokenPrompt": "Introduce a login token",
+                "invalidEnteredToken": "Invalid token",
+                "invalidProvidedToken": "The provided token was rejected by Discord, probably due to a typo or API failure"
+            },
+            "system": {
+                "loadedCorrectly": "{{botUsername}} started successfully"
+            },
+            "splashLogo": {
+                "description": "Sono un bot disegnato per moderare community automatizzate, riproduzione di musica, gestione di livelli e molto altro!"
+            }
+        },
+        "managers": {
             "interactionError": {
-                "error": "ERROR",
                 "notificationEmbed": {
                     "title": "Oops! Something went wrong",
                     "description": "We have reported it to those responsible for the bot"
@@ -1303,108 +1367,39 @@
             }
         }
     },
-    "lifecycle": {
-        "loadIntervals": {
-            "mutes": {
-                "loggingEmbed": {
-                    "author": "{{userTag}} è stato SMUTATO",
-                    "moderator": "Moderatore",
-                    "reason": "Motivo",
-                    "authorNoMember": "Un membro è stato SMUTATO",
-                    "memberId": "ID del Membro"
+    "models": {
+        "config": {
+            "automodFilters": {
+                "flood": {
+                    "reason": "Channel flooding"
                 },
-                "privateEmbed": {
-                    "author": "[SMUTATO]",
-                    "description": "{{member}}, è stato smutato in {{guildName}}",
-                    "moderator": "Moderatore",
-                    "reason": "Motivo"
+                "crossPost": {
+                    "reason": "Repeated posts"
                 },
-                "reason": "The sanction expired"
-            },
-            "bans": {
-                "loggingEmbed": {
-                    "author": "{{userTag}} has been UN-BANNED",
-                    "user": "Utente",
-                    "moderator": "Moderatore",
-                    "reason": "Motivo"
+                "bannedWords": {
+                    "reason": "Banned word"
                 },
-                "reason": "The sanction expired",
-                "error": "ERROR"
-            },
-            "ping": {
-                "consoleMsg": "AVVISO: Tempo di risposta del Websocket elevato"
-            },
-            "polls": {
-                "votesPercentage": "{{votesCount}} votes, the {{percentage}}%",
-                "finishedEmbed": {
-                    "author": "Sondaggio finito",
-                    "results": "Results"
+                "invites": {
+                    "reason": "Invitation not allowed"
                 },
-                "loggingEmbed": {
-                    "title": "Registro - [SONDAGGI]",
-                    "description": "Il sondaggio \"__{{poll}}__\" ha finalizzato nel canale {{channel}}"
+                "uppercase": {
+                    "reason": "Too many capital letters"
                 },
-                "progressEmbed": {
-                    "author": "Sondaggio disponibile",
-                    "remaining": "Remaining: {{remainingDays}}d {{remainingHours}}h {{remainingMinutes}}m"
+                "links": {
+                    "reason": "Link not allowed"
+                },
+                "massEmojis": {
+                    "reason": "Too many emojis"
+                },
+                "massMentions": {
+                    "reason": "Too many mentions"
+                },
+                "massSpoilers": {
+                    "reason": "Too many spoilers"
+                },
+                "repeatedText": {
+                    "reason": "Repetitive text"
                 }
-            },
-            "presence": {
-                "name": "{{memberCount}} members"
-            },
-            "configLoaded": "Intervals loading completed"
-        },
-        "loadCommands": {
-            "unregisteredFromGuild": "Command {{command}} un-registered at {{guildName}}",
-            "unregisteredFromGlobal": "Command {{command}} un-registered globally",
-            "convertedToGlobal": "Commando {{command}} convertito al tipo \"global\"",
-            "convertedToGuild": "Commando {{command}} convertito al tipo \"guild\"",
-            "noConfigError": "Command {{command}} has no configuration in commands.json",
-            "sameCommandNamesError": "Two or more commands have the same name",
-            "invalidTypeError": "Il commando {{command}} non ha un tipo válido",
-            "registeredOnGlobal": "Command {{command}} globally registered",
-            "registeredOnGuild": "Command {{command}} registered in {{guildName}}",
-            "parametersUpdated": "The command {{command}} has updated its parameters",
-            "defaultPermUpdated": "The command {{command}} has updated its default permission",
-            "loadedCorrectly": "Command {{command}} loaded successfully",
-            "dmPermUpdated": "The command {{command}} has updated its permission to be used via MD"
-        },
-        "loadSystem": {
-            "loadingSystem": "Loading system",
-            "configLoaded": "Loaded successfully",
-            "configNotLoaded": "Could not load",
-            "guildConfigLoaded": "Guild config loading completed",
-            "presenceLoaded": "Presence loading completed",
-            "voiceStatesLoaded": "Voice states loading completed",
-            "loadedCorrectly": "{{botUsername}} started successfully",
-            "error": "ERROR",
-            "functionsLoaded": "Global functions loading completed"
-        },
-        "loadTimers": {
-            "configLoaded": "Timers loading completed"
-        },
-        "loadEmojis": {
-            "configLoaded": "Custom emojis loading completed",
-            "maxExceeded": "No more than 50 emojis can be loaded",
-            "error": "ERROR"
-        },
-        "newGuild": {
-            "title": "{{botUsername}} added successfully!",
-            "description": "Use the configuration files to adjust the bot to your liking.\nRemember that the bot will only be able to moderate those people who have a role below the role created by {{botUser}}.\nIf you need help, you can [check the wiki](https://github.com/EasyXploit/HelpBot/wiki/Configuration)",
-            "error": "ERROR"
-        },
-        "splashLogo": {
-            "description": "Sono un bot disegnato per moderare community automatizzate, riproduzione di musica, gestione di livelli e molto altro!",
-            "divider": "Inizio applicazione"
-        },
-        "loadErrorTracker": {
-            "loading": "Loading remote error tracking via Sentry ...",
-            "configLoaded": "Remote error tracking load completed!",
-            "tracesSampleRate": "Traces sample rate",
-            "errors": {
-                "invalidDSN": "You have not specified a valid Sentry DSN. Remote error tracking will not be used",
-                "smallTracesSampleRate": "You have not specified a valid sample rate. 0 will be used instead (the minimum)",
-                "largeTracesSampleRate": "You have not specified a valid sample rate. 1.0 will be used instead (the maximum)"
             }
         }
     }

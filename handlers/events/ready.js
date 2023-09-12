@@ -1,5 +1,5 @@
 //Importa los cargadores
-import { newGuild, loadSystem } from 'helpbot/loaders';
+import { newBaseGuild, loadSystem } from 'helpbot/loaders';
 
 //Exporta la funcion por defecto del evento
 export default async (event, locale) => {
@@ -72,7 +72,7 @@ export default async (event, locale) => {
         if (!baseGuildId || baseGuildId !== cachedGuilds.first().id) {
 
             //Almacena la nueva configuración
-            await newGuild(await cachedGuilds.filter(guild => guild.ownerId !== client.user.id).first());
+            await newBaseGuild(await cachedGuilds.filter(guild => guild.ownerId !== client.user.id).first());
             
         } else {
 

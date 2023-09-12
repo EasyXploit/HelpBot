@@ -1,5 +1,5 @@
 //Importa el cargador de sistema
-import { newGuild } from 'helpbot/loaders';
+import { newBaseGuild } from 'helpbot/loaders';
 
 //Exporta la función de manejo del evento
 export default async (guild, locale) => {
@@ -16,7 +16,7 @@ export default async (guild, locale) => {
         if (cachedGuilds.size === 1) {
 
             //Almacena la nueva configuración de la guild
-            await newGuild(cachedGuilds.first());
+            await newBaseGuild(cachedGuilds.first());
 
             //Notifica por consola que el bot se ha unido a la guild
             logger.debug(`The bot has been joined to \"${guild.name}\"`);

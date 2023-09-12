@@ -36,7 +36,7 @@ export default async (guild, locale) => {
             await guild.leave();
 
             //Lanza una advertencia por consola
-            logger.debug(`The bot is not designed to work on more than one guild, so it quitted \"${guild.name}\"`);
+            logger.warn(`The bot is not designed to work on more than one guild, so it quitted \"${guild.name}\"`);
         };
 
     } catch (error) {

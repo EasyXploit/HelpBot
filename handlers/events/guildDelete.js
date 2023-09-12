@@ -15,7 +15,7 @@ export default async (guild, locale) => {
         if (cachedGuilds.size === 0) {
 
             //Notifica que se debe volver a iniciar al bot
-            logger.debug('The bot must be joined to a guild in order to work, so the program will finish and needs to be started again');
+            logger.warn('The bot must be joined to a guild in order to work, so the program will finish and needs to be started again');
 
             //Aborta el proceso de manera limpia
             process.exit(0);

@@ -67,7 +67,7 @@ process.on('unhandledRejection', error => {
 });
 
 //Muestra el logo de arranque en la consola
-await splashLogo(locale.lifecycle.splashLogo);
+await splashLogo(locale.lib.loaders.splashLogo);
 
 //Indica que el bot se está iniciando
 logger.info(`${locale.index.startupMsg} ...`);

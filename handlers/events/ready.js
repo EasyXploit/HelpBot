@@ -77,7 +77,7 @@ export default async (event, locale) => {
         } else {
 
             //Carga la config. en memoria y arranca el sistema
-            await loadSystem(client.locale.lifecycle.loadSystem);
+            await loadSystem(client.locale.lib.loaders.system);
         };
 
     } catch (error) {

@@ -73,7 +73,7 @@ await splashLogo(locale.lifecycle.splashLogo);
 logger.info(`${locale.index.startupMsg} ...`);
 
 //Ejecuta el cargador de la base de datos
-await loadDatabase();
+await loadDatabase(localConfig);
 
 //Carga globalmente el wrapper para interactuar con la API de Discord
 global.discord = require('discord.js');

@@ -4,5 +4,13 @@
         "enabled": false,
         "sentryDSN": "",
         "tracesSampleRate": 1.0
+    },
+    "database": {
+        "target": "",
+        "port": "",
+        "name": "",
+        "authSource": "",
+        "username": "",
+        "password": ""
     }
 }

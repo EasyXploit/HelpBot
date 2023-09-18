@@ -1314,6 +1314,18 @@
                 "membersCount": "{{memberCount}} members"
             }
         },
+        "menus": {
+            "baseGuildSelection": {
+                "promptBaseGuildSelectionHeader1": "The bot cannot be in more than one guild at a time, so you must select one from the list",
+                "promptBaseGuildSelectionHeader2": "Once you select a new base guild, the bot will leave the rest of the guilds",
+                "selectANewBaseGuild": "Select the new base guild",
+                "alreadyConfiguredGuild": "Already configured",
+                "isSureToReplaceBaseGuild": "Are you sure you want to change the base guild? Specific settings will be lost",
+                "affirmativeAnswer": "y",
+                "negativeAnswer": "n",
+                "leavingGuild": "Leaving the guild {{guild}}"
+            }
+        },
         "moderation": {
             "manageWarn": {
                 "timeoutFunction": {

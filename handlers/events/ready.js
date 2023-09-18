@@ -19,13 +19,13 @@ export default async (event, locale) => {
         });
 
         //Carga el ID de la guild base
-        const baseGuildId = await client.functions.db.getConfig('system.baseGuildId');
+        let baseGuildId = await client.functions.db.getConfig('system.baseGuildId');
 
         //Carga el ID de la guild de servicio
         const serviceGuildId = await client.functions.db.getConfig('system.serviceGuildId');
 
         //Almacena el número de guilds elegibles (descontando las de servicio)
-        const elegibleGuilds = await cachedGuilds.filter(guild => guild.id !== serviceGuildId);
+        let elegibleGuilds = await cachedGuilds.filter(guild => guild.id !== serviceGuildId);
 
         //Almacena el recuento de guilds elegibles
         let elegibleGuildsCount = elegibleGuilds.size;
@@ -60,25 +60,33 @@ export default async (event, locale) => {
             //Notifica que el bot está esperando a que sea unido a una guild
             console.log(`\n⏳ ${await client.functions.utils.parseLocale(locale.waitingNewGuildHeader, { botUsername: client.user.username })} ...`);
             console.log(`❔ ${await client.functions.utils.parseLocale(locale.waitingNewGuildHelp, { waitingNewGuildHelpURL: waitingNewGuildHelpURL })}\n`);
+            
+            //Finaliza enviando un mensaje de depuración a la consola
             return logger.debug('Waiting for the bot to be joined to a guild');
         };
 
         //Si el recuento de guilds elegibles es exáctamente 1
         if (elegibleGuildsCount !== 1) {
 
-            //Notifica que el bot no puede funcionar en más de una guild
-            logger.error('This bot is not designed to run on more than one guild, so it wont start until this situation is resolved');
+            //Registra que el bot no puede funcionar en más de una guild
+            logger.warn('User interaction was requested to choose which will be the new base guild, because the bot was in several guilds');
 
-            //Aborta el proceso de manera limpia
-            return process.exit(1);
+            //Muestra el selector de guild base
+            const newElegibleGuilds = await client.functions.menus.baseGuildSelection(elegibleGuilds);
+
+            //Actualiza el listado de guilds elegibles
+            elegibleGuilds = newElegibleGuilds;
         };
-  
-        //Comprueba si la config de la guild base ya está almacenada o no
-        if (!baseGuildId || baseGuildId !== cachedGuilds.first().id) {
 
-            //Almacena la nueva configuración
-            await newBaseGuild(await cachedGuilds.filter(guild => guild.ownerId !== client.user.id).first());
+        //Si no hay guild base, o la guild base no es la primera de la lista
+        if (!baseGuildId || baseGuildId !== elegibleGuilds.first().id) {
             
+            //Notifica por consola que se ha registrado una nueva guild base
+            logger.debug(`A new base guild has been registered: ${elegibleGuilds.first().name} (${elegibleGuilds.first().id})`);
+
+            //Registra una nueva guild base
+            await newBaseGuild(elegibleGuilds.first());
+
         } else {
 
             //Carga la config. en memoria y arranca el sistema

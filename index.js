@@ -34,10 +34,10 @@ let targetLocale = process.env.LOCALE && process.env.LOCALE.length > 0 ? process
 if (!fs.existsSync(`./locales/${targetLocale}.json`)) {
 
     //Manda un aviso a la consola
-    logger.warn(`There is no locale file for the selected language (${targetLocale}), so "en-us" will be used instead`);
+    logger.warn(`There is no locale file for the selected language (${targetLocale}), so "en-US" will be used instead`);
 
     //Reemplaza el idioma objetivo por el por defecto
-    targetLocale = 'en-us';
+    targetLocale = 'en-US';
 
     //Si el idioma venía por configuración
     if (!process.env.LOCALE || process.env.LOCALE.length === 0) {
@@ -49,7 +49,7 @@ if (!fs.existsSync(`./locales/${targetLocale}.json`)) {
         fs.writeFile('./config.json', JSON.stringify(localConfig, null, 4), async err => { if (err) throw err; });
 
         //Manda un aviso a la consola
-        logger.warn('The language has been replaced by the default one (en-us) in the local configuration file');
+        logger.warn('The language has been replaced by the default one (en-US) in the local configuration file');
     };
 };
 

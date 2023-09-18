@@ -24,11 +24,11 @@ export default async (guild, locale) => {
         //Si no hay guilds
         if (elegibleGuildsCount === 0) {
 
-            //Notifica que se debe volver a iniciar al bot
-            logger.warn('The bot must be joined to a guild in order to work, so the program will finish and needs to be started again');
+            //Indica que el bot NO está listo para manejar eventos
+            global.readyStatus = false;
 
-            //Aborta el proceso de manera limpia
-            process.exit(0);
+            //Notifica que el bot está esperando a que sea unido a una guild
+            logger.warn('The bot must be joined to a guild in order to work, so the program will wait until it occurs');
         };
 
     } catch (error) {

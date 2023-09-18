@@ -1193,6 +1193,10 @@
             "messageCreate": {
                 "filteredDm": "via DM"
             },
+            "ready": {
+                "waitingNewGuildHeader": "Waiting for {{botUsername}} to be joined to a new guild",
+                "waitingNewGuildHelp": "To find out how to join the bot to a guild, visit: {{waitingNewGuildHelpURL}}"
+            },
             "voiceStateUpdate": {
                 "voiceMovesLogging": {
                     "noChannel": "None",

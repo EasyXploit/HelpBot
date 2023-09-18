@@ -24,11 +24,11 @@ export default async (guild, locale) => {
         //Comprueba cuantas guilds hay disponibles
         if (elegibleGuildsCount === 1) {
 
-            //Almacena la nueva configuración de la guild
-            await newBaseGuild(cachedGuilds.first());
-
             //Notifica por consola que el bot se ha unido a la guild
             logger.debug(`The bot has been joined to \"${guild.name}\"`);
+
+            //Almacena la nueva configuración de la guild
+            await newBaseGuild(cachedGuilds.first());
 
         } else {
 
@@ -36,7 +36,7 @@ export default async (guild, locale) => {
             await guild.leave();
 
             //Lanza una advertencia por consola
-            logger.warn(`The bot is not designed to work on more than one guild, so it quitted \"${guild.name}\"`);
+            logger.warn(`The bot is not designed to work on more than one guild, so it quitted \"${guild.name}\". If you want to use the bot on another guild, remove it from the previous one first`);
         };
 
     } catch (error) {

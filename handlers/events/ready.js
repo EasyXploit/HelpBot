@@ -1,7 +1,10 @@
 //Importa los cargadores
 import { newBaseGuild, loadSystem } from 'helpbot/loaders';
 
-//Exporta la funcion por defecto del evento
+//URL de ayuda para unir el bot a una guild
+const waitingNewGuildHelpURL = 'https://github.com/EasyXploit/HelpBot/wiki/Starting#-joining-the-bot';
+
+//Exporta la función de manejo del evento
 export default async (event, locale) => {
 
     try {
@@ -55,6 +58,8 @@ export default async (event, locale) => {
         } else if (elegibleGuildsCount === 0) { //Si la cantidad es 0
 
             //Notifica que el bot está esperando a que sea unido a una guild
+            console.log(`\n⏳ ${await client.functions.utils.parseLocale(locale.waitingNewGuildHeader, { botUsername: client.user.username })} ...`);
+            console.log(`❔ ${await client.functions.utils.parseLocale(locale.waitingNewGuildHelp, { waitingNewGuildHelpURL: waitingNewGuildHelpURL })}\n`);
             return logger.debug('Waiting for the bot to be joined to a guild');
         };
 

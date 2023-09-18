@@ -10,7 +10,7 @@ exports.run = (desiredLocaleName) => {
     const desiredLocale = JSON.parse(fs.readFileSync(`./resources/locales/${desiredLocaleName}.json`));
 
     //Si el idioma por defecto es el mismo que el deseado, devuelve este mismo
-    if (desiredLocaleName.toLowerCase() === 'en-us') return desiredLocale;
+    if (desiredLocaleName.toLowerCase() === 'en-US') return desiredLocale;
 
     //Función para fusionar objetos que difieren
     function mergeObject(object1, object2) {

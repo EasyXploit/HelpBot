@@ -13,7 +13,7 @@ export async function run(interaction, commandConfig, locale) {
                     .setDescription(`${client.customEmojis.redTick} ${locale.welcome.memberNotProvided}.`)
                 ], ephemeral: true});
 
-                // Looks for the member in the Guild
+                // Looks for the member in the guild
                 const targetWelcomeMember = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[1].value);
 
                 // Returns an error if a valid member has not been provided
@@ -42,7 +42,7 @@ export async function run(interaction, commandConfig, locale) {
                     .setDescription(`${client.customEmojis.redTick} ${locale.goodbye.memberNotProvided}.`)
                 ], ephemeral: true});
 
-                // Looks for the member in the Guild
+                // Looks for the member in the guild
                 const targetGoodybeMember = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[1].value);
 
                 // Returns an error if a valid member has not been provided

@@ -2,99 +2,99 @@ export async function run(interaction, commandConfig, locale) {
     
     try {
 
-        //Busca el miembro en la guild
+        // Looks for the member in the guild
         const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
 
-        //Si no se encuentra, devuelve un error
+        // If  not found, returns an error
         if (!member) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.unknownMember}.`)
         ], ephemeral: true});
         
-        //Almacena el perfil del miembro
+        // Stores the member's profile
         const memberProfile = await client.functions.db.getData('profile', member.id);
 
-        //Devuelve un error si el miembro no tiene perfil
+        // Returns an error if the member has no profile
         if (!memberProfile) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noXp, { member: member })}.`)
         ], ephemeral: true});
 
-        //Para comprobar si el rol puede ganar XP o no.
+        // To check if the role can win XP or not
         const notAuthorizedToEarnXp = await client.functions.utils.checkAuthorization(member, { bypassIds: await client.functions.db.getConfig('leveling.wontEarnXP') });
 
-        //Función para comparar un array
+        // Function to compare an array
         function compare(a, b) {
             if (a.requiredLevel > b.requiredLevel) return 1;
             if (a.requiredLevel < b.requiredLevel) return -1;
             return 0;
         };
 
-        //Almacena las recompensas por subir de nivel
+        // Stores the rewards for level up
         const levelingRewards = await client.functions.db.getConfig('leveling.rewards');
 
-        //Compara y ordena el array de recompensas
+        // Compares and orders the rewards array
         const sortedRewards = levelingRewards.sort(compare);
 
-        //Almacena los próximos roles recompensados
+        // Stores the next rewarded roles
         let nextRewardedRoles = {};
 
-        //Por cada recompensa
+        // For each reward
         for (let index = 0; index < sortedRewards.length; index++) {
 
-            //Si el nivel requerido es mayor o igual al siguiente nivel del miembro
+            // If the required level is greater than or equal to the next level of the member
             if (sortedRewards[index].requiredLevel >= (memberProfile.stats.level + 1)) {
 
-                //Almacena los roles de la próxima recompensa
+                // Stores the roles of the next reward
                 nextRewardedRoles.roles = sortedRewards[index].roles;
                 nextRewardedRoles.requiredLevel = sortedRewards[index].requiredLevel
 
-                //Para el bucle
+                // Stops the loop
                 break;
             };
         };
 
-        //Almacena la próxima recompensa por defecto
+        // Stores the next default reward
         let nextRewards = locale.defaultReward;
 
-        //Si se encontró una próxima recompensa
+        // If an upcoming reward was found
         if (nextRewardedRoles.roles) {
 
-            //Almacena los nombres de los roles de la recompensa
+            // Stores the names of the reward roles
             let roleNames = []; 
 
-            //Crea una promesa para que se resuelva cuando haya acabado de buscar los nombres de todos los roles
+            // Creates a promise to resolve when has finished looking for the names of all roles
             const getRewards = new Promise((resolve, reject) => {
 
-                //Para cada ID de rol, busca su nombre
+                // For each role ID, looks for its name
                 nextRewardedRoles.roles.forEach(async (value, index, array) => {
 
-                    //Busca y almacena el rol
+                    // Searches and stores the role
                     const role = await interaction.guild.roles.fetch(value);
 
-                    //Sube al array de nombres, el nombre del rol iterado
+                    // Adds to the array of names, the name of the iterated role
                     roleNames.push(role.name);
 
-                    //Se resuelve la promesa si todos los roles se han encontrado
+                    // The promise is resolved if all the roles have been found
                     if (index === array.length -1) resolve();
                 });
             });
             
-            //Invoca la promesa para obtener los nombres de los roles
+            // Invoke the promise to obtain the names of the roles
             await getRewards.then(() => {
 
-                //Sobreescribe la variable "nextRewards" con los resultados obtenidos
+                // Overwrites the variable "nextRewards" with the results obtained
                 nextRewards = `${roleNames.join(', ')} (${locale.statsEmbed.level} ${nextRewardedRoles.requiredLevel})`;
             });
         };
 
-        //Almacena el tiempo de voz aproximado
+        // Stores the approximate voice time
         const aproxVoiceTime = memberProfile.stats.aproxVoiceTime > 0 ? `\`${await client.functions.utils.msToTime(memberProfile.stats.aproxVoiceTime)}\`` : '\`00:00:00\`';
 
-        //Calcula el XP necesario por defecto para el siguiente nivel
+        // Calculates the necessary XP by default for the next level
         const neededExperience = await client.functions.leveling.getNeededExperience(memberProfile.stats.experience);
 
-        //Envía el mensaje con las estadísticas
+        // Sends the message with statistics
         await interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
             .setTitle(`🥇 ${locale.statsEmbed.title}`)
@@ -113,7 +113,7 @@ export async function run(interaction, commandConfig, locale) {
 
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

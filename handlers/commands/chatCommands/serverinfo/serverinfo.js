@@ -2,26 +2,26 @@ export async function run(interaction, commandConfig, locale) {
 
     try {
 
-        //Almacena a los miembros de la guild
+        // Stores the members of the guild
         const guildMembers = await interaction.guild.members.fetch();
 
-        //Almacena los canales de la guild
+        // Stores the guild channels
         const guildChannels = await interaction.guild.channels.fetch();
         
-        //Almacena las categorías que hay en la guild
+        // Stores the categories in the guild
         let categories = new Set();
 
-        //Por cada canal de la guild
+        // For each channel of the guild
         interaction.guild.channels.cache.filter(channel => {
 
-            //Si ya estaba en el set, omite la iteración
+            // If was already on the set, omits the iteration
             if (categories.has(channel.parent)) return;
 
-            //Añade la categoría al set
+            // Adds the category to the set
             categories.add(channel.parent);
         });
 
-        //Genera un embed con el resultado
+        // Generates an embed with the result
         let resultEmbed = new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
             .setAuthor({ name: await client.functions.utils.parseLocale(locale.embed.author, { guildName: interaction.guild.name }), iconURL: interaction.guild.iconURL({dynamic: true}) })
@@ -42,15 +42,15 @@ export async function run(interaction, commandConfig, locale) {
             .addFields({ name: `🕗 ${locale.embed.afk}`, value: await client.functions.utils.parseLocale(locale.embed.afkTime, { afkTime: interaction.guild.afkTimeout / 60 }), inline: true })
             .addFields({ name: `💬 ${locale.embed.channels}`, value: `${await client.functions.utils.parseLocale(locale.embed.totalCategories, { totalCategories: categories.size - 1 })}\n${await client.functions.utils.parseLocale(locale.embed.totalTextChannels, { totalTextChannels: guildChannels.filter(c => c.type === discord.ChannelType.GuildText).size })}\n${await client.functions.utils.parseLocale(locale.embed.totalVoiceChannels, { totalVoiceChannels: guildChannels.filter(c => c.type === discord.ChannelType.GuildVoice).size })}`, inline: true })
 
-        //Añade una descripción si el servidor la tiene
+        // Adds a description if the server has it
         if (interaction.guild.description) resultEmbed.setDescription(interaction.guild.description);
 
-        //Envía un embed con el resultado
+        // Sends an embed with the result
         await interaction.reply({ embeds: [ resultEmbed ]});
 
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

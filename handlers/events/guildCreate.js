@@ -24,7 +24,7 @@ export default async (guild, locale) => {
         // Checks how many guilds are available
         if (elegibleGuildsCount === 1) {
 
-            // Notifies by console that the bot has joined the guild
+            // Notifies through the console that the bot has joined the guild
             logger.debug(`The bot has been joined to "${guild.name}" (${guild.id})`);
 
             // Stores the new guild configuration
@@ -50,7 +50,7 @@ export default async (guild, locale) => {
             // If there is no base guild, or the base guild is not the first on the list
             if (baseGuildId !== elegibleGuilds.first().id) {
                 
-                // Notifies by console that a new base guild has been registered
+                // Notifies through the console that a new base guild has been registered
                 logger.debug(`A new base guild has been registered: ${elegibleGuilds.first().name} (${elegibleGuilds.first().id})`);
 
                 // Records a new base guild

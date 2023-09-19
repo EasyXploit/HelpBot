@@ -12,7 +12,7 @@ export default async (event, locale) => {
         // Loads the list of guilds to which the bot is joined
         const cachedGuilds = client.guilds.cache;
 
-        // Show by console a list of the guilds to which the bot is joined
+        // Show through the console a list of the guilds to which the bot is joined
         logger.debug('List of guilds the bot is attached to');
         await cachedGuilds.forEach(async guild => {
             logger.debug(`⤷ ${guild.name} (${guild.id})`);
@@ -81,7 +81,7 @@ export default async (event, locale) => {
         // If there is no base guild, or the base guild is not the first on the list
         if (!baseGuildId || baseGuildId !== elegibleGuilds.first().id) {
             
-            // Notifies by console that a new base guild has been registered
+            // Notifies through the console that a new base guild has been registered
             logger.debug(`A new base guild has been registered: ${elegibleGuilds.first().name} (${elegibleGuilds.first().id})`);
 
             // Records a new base guild

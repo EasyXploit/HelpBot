@@ -42,7 +42,7 @@ export default async (oldState, newState, locale) => {
                 embedFields.push({ name: `${await client.functions.utils.parseLocale(locale.voiceMovesLogging.actualMembers)} (${newState.channel.members.size}/${newState.channel.userLimit != 0 ? newState.channel.userLimit : '∞'})`, value: `${channelMembers.join(', ')}`});
             };
             
-            //  Formats and sends a record to the channel specified in the configuration
+            // Formats and sends a record to the channel specified in the configuration
             if (newState.member) await client.functions.managers.sendLog('voiceMoves', 'embed', new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
                 .setAuthor({ name: await client.functions.utils.parseLocale(locale.voiceMovesLogging.embedAuthor, { memberTag: newState.member.user.tag }), iconURL: newState.member.user.displayAvatarURL() })

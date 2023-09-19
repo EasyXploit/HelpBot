@@ -1,39 +1,39 @@
-//Exporta la función de manejo del evento
+// Exports the event management function
 export default async (guild, locale) => {
     
     try {
 
-        //Omite si la guild es del propio bot
+        // Omits if the guild is property of the bot
         if (guild.ownerId === client.user.id) return;
 
-        //Notifica el abandono de la guild
+        // Notifies the abandonment of the guild
         logger.debug(`The bot has been removed from \"${guild.name}\"`);
 
-        //Carga el listado de guilds a las que el bot está unido
+        // Loads the list of guilds to which the bot is linked
         const cachedGuilds = client.guilds.cache;
 
-        //Carga el ID de la guild de servicio
+        // Loads the service guild ID
         const serviceGuildId = await client.functions.db.getConfig('system.serviceGuildId');
 
-        //Almacena el número de guilds elegibles (descontando las de servicio)
+        // Stores the number of eligible guilds (excluding the service ones)
         const elegibleGuilds = await cachedGuilds.filter(guild => guild.id !== serviceGuildId);
 
-        //Almacena el recuento de guilds elegibles
+        // Stores the eligible guilds count
         let elegibleGuildsCount = elegibleGuilds.size;
         
-        //Si no hay guilds
+        // If there are no guilds
         if (elegibleGuildsCount === 0) {
 
-            //Indica que el bot NO está listo para manejar eventos
+            // Indicates that the bot is not ready to handle events
             global.readyStatus = false;
 
-            //Notifica que el bot está esperando a que sea unido a una guild
+            // Notifies that the bot is waiting to be joined to a guild
             logger.warn('The bot must be joined to a guild in order to work, so the program will wait until it occurs');
         };
 
     } catch (error) {
 
-        //Envía un mensaje de error a la consola
+        // Sends an error message to the console
         logger.error(error.stack);
     };
 };

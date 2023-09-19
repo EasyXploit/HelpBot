@@ -1,33 +1,33 @@
-//Exporta la función de manejo del evento
+// Exports the event management function
 export default async (member, locale) => {
     
     try {
 
-        //Comprueba si el bot está listo para manejar eventos
+        // Checks if the bot is ready to handle events
         if (!global.readyStatus) return;
 
-        //Aborta si no es un evento de la guild registrada
+        // Aborts if it is not an event from the base guild
         if (member.guild.id !== client.baseGuild.id) return;
 
-        //Almacena la caché de registros del usuario expulsado, si existe
+        // Stores the records cache of the kicked user, if it exists
         let loggingCache = (client.loggingCache && client.loggingCache[member.id]) ? client.loggingCache[member.id] : null;
         
-        //Busca la última expulsión en el registro de auditoría
+        // Looks for the last kick in the audit registry
         const fetchedLogs = await member.guild.fetchAuditLogs({
             limit: 1,
             type: discord.AuditLogEvent.MemberKick,
         });
 
-        //Almacena el primer resultado de la búsqueda
+        // Stores the first search result
         const kickLog = fetchedLogs.entries.first();
         
-        //Si se encontró una expulsión en el primer resultado, y han pasado menos de 5 segundos
+        // If a kick log was found in the first result, and less than 5 seconds have passed
         if (loggingCache || (kickLog && (kickLog.createdTimestamp > (Date.now() - 5000)))) {
 
-            //Si no hubo registro, o este era inconcluso
+            // If there was no record, or this was inconclusive
             if (kickLog.target.id !== member.id) {
 
-                //Envía un registro al canal de registros
+                // Sends a record to the records channel
                 await client.functions.managers.sendLog('kickedMember', 'embed', new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setAuthor({ name: await client.functions.utils.parseLocale(locale.inconclusiveLoggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL() })
@@ -39,13 +39,13 @@ export default async (member, locale) => {
                 );
             };
         
-            //Si el miembro expulsado era un bot
+            // If the kicked member was a bot
             if (member.user.bot) {
 
-                //Si la expulsión fue al propio bot, ignora
+                // If the kick went to the bot himself, ignores
                 if (member.user.id === client.user.id) return;
 
-                //Envía un registro al canal de registros
+                // Sends a record to the records channel
                 await client.functions.managers.sendLog('kickedBot', 'embed', new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
@@ -53,24 +53,24 @@ export default async (member, locale) => {
                 );
             };
 
-            //Almacena el ejecutor y la razón
+            // Stores the executor and the reason
             let executor = kickLog.executor;
             let reason = kickLog.reason;
 
-            //Si se detecta que la expulsión fue realizada por el bot
+            // If it is detected that the kick was made by the bot
             if (loggingCache && loggingCache.action === 'kick') {
 
-                //Cambia el ejecutor, por el especificado en la razón
+                // Changes the executor, by the specified in the reason
                 executor = await client.users.fetch(loggingCache.executor);
 
-                //Cambia la razón provista, para contener solo el campo de razón
+                // Changes the reason provided, to contain only the field of the reason
                 reason = loggingCache.reason;
 
-                //Borra la caché de registros del miembro
+                // Deletes the member's records cache
                 loggingCache = null;
             };
 
-            //Envía un registro al canal de registros
+            // Sends a record to the records channel
             await client.functions.managers.sendLog('kickedMember', 'embed', new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL() })
@@ -81,21 +81,21 @@ export default async (member, locale) => {
                 )
             );
 
-        } else { //Si no se encontró una expulsión
+        } else { // If a kick was not found
 
-            //Busca el último baneo en el registro de auditoría
+            // Looks for the last ban in the audit registry
             const fetchedBans = await member.guild.fetchAuditLogs({
                 limit: 1,
                 type: discord.AuditLogEvent.MemberBanAdd,
             });
 
-            //Almacena el primer resultado de la búsqueda
+            // Stores the first search result
             const banLog = fetchedBans.entries.first();
 
-            //Si no encontró un baneo en el primer resultado, o han pasado más de 5 segundos desde el último baneo
+            // If  a ban was not found in the first result, or more than 5 seconds have passed since the last ban
             if (!banLog || Date.now() > (banLog.createdTimestamp + 5000)) {
 
-                //Envía un registro al canal de bienvenidas/despedidas (por que no se trató ni de una expulsión ni de un baneo)
+                // Sends a record to the welcome/farewell channel (because it was neither a kick nor a ban)
                 await client.functions.managers.sendLog('memberLeaved', 'embed', new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
                     .setThumbnail(member.user.displayAvatarURL())
@@ -108,19 +108,19 @@ export default async (member, locale) => {
             };
         };
 
-        //Si el miembro tiene estadísticas y no se desea preservarlas
+        // If the member has statistics and don't want to preserve them
         if (await client.functions.db.getData('profile', member.id) && !await client.functions.db.getConfig('leveling.preserveStats')) {
 
-            //Borra la entrada de la base de datos
+            // Deletes the database entry
             await client.functions.db.delData('profile', member.id);
         };
 
     } catch (error) {
 
-        //Ignora si fue el propio bot el que fue expulsado
+        // Ignores if it was the bot himself who was kicked
         if (member.user.id === client.user.id) return;
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.eventError(error);
     };
 };

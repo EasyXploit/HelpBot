@@ -9,7 +9,7 @@ export default async (guild, locale) => {
         // Omits if the guild is of the bot
         if (guild.ownerId === client.user.id) return;
 
-        // List of guilds to which the bot is linked
+        // List of guilds to which the bot is joined
         const cachedGuilds = client.guilds.cache;
 
         // Loads the service guild ID

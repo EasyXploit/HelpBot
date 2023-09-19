@@ -1,6 +1,6 @@
-//Exporta la función de manejo del evento
+// Exports the event management function
 export default (warn, locale) => {
 
-    //Muestra un aviso en la consola
+    // Shows a notice in the console
     logger.warn(warn);
 };

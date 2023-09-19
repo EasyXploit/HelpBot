@@ -8,7 +8,7 @@ export default async (interaction) => {
         // Stores the interaction member
         const member = await client.functions.utils.fetch('member', interaction.user.id);
 
-        // Stores if the member can win exp
+        // Stores if the member can win XP
         let notAuthorized;
 
         // Stores the IDs that cannot gain XP

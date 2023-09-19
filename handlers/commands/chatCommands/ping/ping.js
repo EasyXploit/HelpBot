@@ -15,7 +15,7 @@ export async function run(interaction, commandConfig, locale) {
         else if (botPing > 180 && botPing <= 250) botPingEmbed.setColor('F5A623');
         else botPingEmbed.setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`);
 
-        // Measures the Websockt response time
+        // Measures the Websocket response time
         const websocketPing = Math.floor(client.ws.ping);
 
         // Generates an embed for the response time

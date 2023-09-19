@@ -2,54 +2,54 @@ export async function run(interaction, commandConfig, locale) {
 
     try {
 
-        //Si hay que finalizar una encuesta
+        // If has to finish a survey
         if (interaction.options._hoistedOptions[0]) {
 
-            //Busca la encuesta en la base de datos
+            // Looks for the survey in the database
             const pollData = await client.functions.db.getData('poll', interaction.options._hoistedOptions[0].value);
 
-            //Si la encuesta no existe, devuelve un error
+            // If the survey does not exist, returns an error
             if (!pollData) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.unknownPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
             ], ephemeral: true});
 
-            //Busca y almacena el canal de la encuesta
+            // Searches and stores the survey channel
             const pollChannel = await client.functions.utils.fetch('channel', pollData.channelId);
 
-            //Busca y almacena el mensaje de la encuesta (si se pudo encontrar el canal)
+            // Searches and stores the message of the survey (if the channel could be found)
             const pollMessage = pollChannel ? await client.functions.utils.fetch('message', pollData.messageId, pollChannel) : null;
 
-            //Si el canal o el mensaje de la encuesta ya no existen
+            // If the channel or message of the survey no longer exist
             if (!pollChannel || !pollMessage) {
 
-                //Elimina la encuesta de la base de datos
+                // Deletes the survey from the database
                 await client.functions.db.deltData('poll', interaction.options._hoistedOptions[0].value);
             
-                //Notifica del error al miembro
+                // Notifies the error to the member
                 return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                     .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.deletedPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
                 ], ephemeral: true});
             };
 
-            //Comprueba, si corresponde, que el miembro tenga permiso para finalizar cualquier encuesta
+            // Checks, if applicable, that the member has permission to finish any survey
             if (interaction.member.id !== pollData.authorId) {
 
-                //Variable para saber si está autorizado
+                // Variable to know if is authorized
                 const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canEndAny});
 
-                //Si no se permitió la ejecución, manda un mensaje de error
+                // If the execution was not allowed, sends an error message
                 if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.onlyYours}.`)
                 ], ephemeral: true});
             };
 
-            //Fuerza la expiración de la encuesta
+            // Strengthens the expiration of the survey
             pollData.expirationTimestamp = Date.now();
 
-            //Envía una confirmación al miembro
+            // Sends a confirmation to the member
             return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.endedPollEmbed.title}`)
@@ -57,115 +57,115 @@ export async function run(interaction, commandConfig, locale) {
             ], ephemeral: true});
         };
 
-        //Función para esperar mensajes del miembro
+        // Function to wait for member messages
         async function awaitMessage(msg) {
 
-            //Almacena el mensaje resultante
+            // Stores the resulting message
             let resultMessage;
 
-            //Genera un filtro de mensajes
+            // Generates a message filter
             const filter = msg => msg.author.id === interaction.member.id;
 
-            //Espera mensajes en el canal
+            // Waits messages on the channel
             await msg.channel.awaitMessages({filter: filter, max: 1, time: 60000}).then(async collected => {
 
-                //Almacena el contenido del primer resultado
+                // Stores the content of the first result
                 resultMessage = collected.first().content;
 
-                //Elimina el mensaje pasados 2 segundos
+                // Deletes the message past 2 seconds
                 setTimeout(() => collected.first().delete(), 2000);
 
-            }).catch(() => msg.delete()); //Aborta el colector si no se envían mensajes
+            }).catch(() => msg.delete()); // Aborts the collector if messages are not sent
 
-            //Devuelve el mensaje capturado
+            // Returns the captured message
             return resultMessage;
         };
 
-        //Avisa sobre le inicio del asistente
+        // Notifies the start of the assistant
         interaction.reply({ content: `${locale.startingAssistant}...`});
 
-        //Almacena el canal de la interacción
+        // Stores the interaction channel
         const interactionChannel = await client.functions.utils.fetch('channel', interaction.channelId);
 
-        //Envía el assistantEmbed del título
+        // Sends the embed of the selection of the title
         interactionChannel.send({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
             .setTitle(`📊 ${locale.titleEmbed.title}`)
             .setDescription(locale.titleEmbed.description)
         ]}).then(async assistantEmbed => {
 
-            //Espera un mensaje del miembro
+            // Waits a member message
             await awaitMessage(assistantEmbed).then(async title => {
 
-                //Aborta si no hubo mensaje
+                // Aborts if there was no message
                 if (!title) return;
 
-                //Edita el asistente para preguntar por la duración
+                // Edits the assistant to ask about the duration
                 assistantEmbed.edit({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                     .setTitle(`⏱ ${locale.durationEmbed.title}`)
                     .setDescription(locale.durationEmbed.description)
                 ]});
 
-                //Espera un mensaje del miembro
+                // Waits a member message
                 await awaitMessage(assistantEmbed).then(async duration => {
 
-                    //Aborta si no hubo mensaje
+                    // Aborts if there was no message
                     if (!duration) return;
 
-                    //Si se proporcionó duración
+                    // If duration was provided
                     if (duration !== '-') {
 
-                        //Separa la duración en parámetros
+                        // Separates the duration in parameters
                         const parameters = duration.split(' ');
 
-                        //Convierte y almacena las magnitudes en milisegundos
+                        // Converts and stores the magnitudes in milliseconds
                         duration = await client.functions.utils.magnitudesToMs(parameters);
 
-                        //Si no se puedieron obtener milisegundos
+                        // If milliseconds could not be obtained
                         if (!duration) {
 
-                            //Aborta el asistente
+                            // Aborts the assistant
                             assistantEmbed.delete();
 
-                            //Borra la primera respuesta
+                            // Deletes the first answer
                             interaction.deleteReply();
 
-                            //Devuelve un error
+                            // Returns an error
                             return interactionChannel.send({ embeds: [ new discord.EmbedBuilder()
                                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                                 .setDescription(`${client.customEmojis.redTick} ${locale.invalidDuration}.`)
                             ]}).then(msg => { setTimeout(() => msg.delete(), 5000) });
                         };
 
-                    } else duration = 0; //Si es indefinido, se establece "0" cómo duración
+                    } else duration = 0; // If it is indefinite, "0" is established as duration
 
-                    //Edita el asistente para preguntar por un campo
+                    // Edits the assistant to ask about a field
                     assistantEmbed.edit({ embeds: [ new discord.EmbedBuilder()
                         .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                         .setTitle(`:one: ${locale.firstFieldEmbed.title}`)
                         .setDescription(locale.firstFieldEmbed.description)
                     ]});
 
-                    //Almacena los campos introducidos
+                    // Stores the introduced fields
                     let options = [];
 
-                    //Almacena las opciones numeradas cómo emojis
+                    // Stores the options numbered as emojis
                     const emojiOptions = [':one:', ':two:', ':three:', ':four:', ':five:', ':six:', ':seven:', ':eight:', ':nine:', ':keycap_ten:'];
 
-                    //Itera desde el 0 hasta el 9 (tope de campos)
+                    // Iterates from 0 to 9 (max. fields)
                     for (let index = 0; index < 10; index++) {
 
-                        //Espera un mensaje del miembro
+                        // Waits a member message
                         await awaitMessage(assistantEmbed).then(async option => {
 
-                            //Aborta si no hubo mensaje
+                            // Aborts if there was no message
                             if (!option) return;
 
-                            //Almacena la opción en la lista de campos
+                            // Stores the option in the field list
                             options[index] = option;
 
-                            //Edita el asistente para preguntar por otro campo
+                            // Edits the assistant to ask about another field
                             assistantEmbed.edit({ embeds: [ new discord.EmbedBuilder()
                                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                                 .setTitle(`${emojiOptions[index + 1]} ${locale.newFieldEmbed.title}`)
@@ -175,48 +175,48 @@ export async function run(interaction, commandConfig, locale) {
 
                         
 
-                        //Si no se ha proporcionado un campo, para el bucle
+                        // If a field has not been provided, stops the loop
                         if (!options[index]) break;
 
-                        //Si no se desea proporcionar más campos
+                        // If don't want to provide more fields
                         if (options[index] === 'end' && options.length > 2) {
 
-                            //Elimina el último campo almacenado
+                            // Deletes the last stored field
                             options.splice(-1,1);
 
-                            //Para el bucle
+                            // Stops the loop
                             break;
                         };
                     };
 
-                    //Si no se proporcionaron suficientes campos, aborta
+                    // If enough fields were not provided, aborts
                     if (options.length < 2) return;
 
-                    //Almacena las opciones formateadas
+                    // Stores formatted options
                     let formattedOptions = '';
 
-                    //Por cada una de las opciones, la concatena formateada
+                    // For each of the options, concats it formatted
                     for (count = 0; count < options.length; count++) formattedOptions += `${emojiOptions[count]} ${options[count]}\n\n`;
 
-                    //Almacena el tiempo restante
+                    // Stores the remaining time
                     let remainingTime = '∞';
 
-                    //Si la duración es diferente de 0
+                    // If the duration is different from 0
                     if (duration !== 0) {
 
-                        //Calcula el formato del tiempo restante
+                        // Calculates the remaining time format
                         const remainingDays = Math.floor((duration) / (60 * 60 * 24 * 1000));
                         const remainingHours = Math.floor((duration - (remainingDays * 86400000)) / (60 * 60 * 1000));
                         const remainingMinutes = Math.floor((duration - (remainingHours * 3600000) - (remainingDays * 86400000)) / (60 * 1000));
 
-                        //Almacena la cadena de tiempo restante
+                        // Stores the remaining time string
                         remainingTime = `${remainingDays}d ${remainingHours}h ${remainingMinutes}m`
                     };
 
-                    //Almacena un nuevo ID para la encuesta
+                    // Stores a new ID for the survey
                     const pollId = await client.functions.utils.generateSid();
                     
-                    //Envía la encuesta generada al canal de invocación
+                    // Sends the survey generated to the invocation channel
                     interactionChannel.send({ embeds: [ new discord.EmbedBuilder()
                         .setColor(`${await client.functions.db.getConfig('colors.polls')}`)
                         .setAuthor({ name: locale.pollEmbed.author, iconURL: 'attachment://poll.png' })
@@ -224,16 +224,16 @@ export async function run(interaction, commandConfig, locale) {
                         .setFooter({ text: `ID: ${pollId} - ${locale.pollEmbed.duration}: ${remainingTime}` })
                     ], files: ['./assets/images/poll.png'] }).then(async pollEmbed => {
 
-                        //Borra el embed del asistente
+                        // Deletes the wizard's embed
                         assistantEmbed.delete();
 
-                        //Borra la primera respuesta
+                        // Deletes the first answer
                         interaction.deleteReply();
 
-                        //Por cada una de las opciones
+                        // For each of the options
                         for (count = 0; count < options.length; count++) {
 
-                            //Reacciona al embed con el el emoji adecuado
+                            // Reacts to the embed with the appropriate emoji
                             await pollEmbed.react([
                                 '\u0031\u20E3',
                                 '\u0032\u20E3',
@@ -248,7 +248,7 @@ export async function run(interaction, commandConfig, locale) {
                             ][count]);
                         };
 
-                        //Almacena la encuesta en la base de datos
+                        // Stores the survey in the database
                         await client.functions.db.genData('poll', {
                             pollId: pollId,
                             channelId: interactionChannel.id,
@@ -258,10 +258,10 @@ export async function run(interaction, commandConfig, locale) {
                             options: formattedOptions
                         });
 
-                        //Si la encuesta expira, almacena dicho timestamp
+                        // If the survey expires, stores this timestamp
                         if (duration !== 0) await client.functions.db.setData('poll', pollId, { expirationTimestamp: Date.now() + duration });
                         
-                        //Envía un mensaje al canal de registros
+                        // Sends a message to the records channel
                         await client.functions.managers.sendLog('pollStarted', 'embed', new discord.EmbedBuilder()
                             .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
                             .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { memberTag: interaction.member.user.tag }), iconURL: interaction.user.displayAvatarURL() })
@@ -278,7 +278,7 @@ export async function run(interaction, commandConfig, locale) {
 
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

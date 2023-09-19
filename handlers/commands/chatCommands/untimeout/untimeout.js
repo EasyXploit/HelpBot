@@ -2,79 +2,79 @@ export async function run(interaction, commandConfig, locale) {
     
     try {
 
-        //Busca al miembro proporcionado
+        // Looks for the member provided
         const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
 
-        //Almacena el ID del miembro
+        // Stores the member ID
         const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
 
-        //Almacena la razón
+        // Stores the reason
         let reason = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : null;
 
-        //Capitaliza la razón
+        // Capitalizes the reason
         if (reason) reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;
 
-        //Si no se ha proporcionado razón
+        // If a reason has not been provided
         if (!reason) {
 
-            //Almacena si el miembro puede omitir la razón
+            // Stores if the member can omit the reason
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
-            //Si no está autorizado, devuelve un mensaje de error
+            // If the member is not authorized, returns an error message
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ], ephemeral: true});
         };
 
-        //Comprueba si el miembro no estaba silenciado
+        // Checks if the member was not timeouted
         if (member && (!member.communicationDisabledUntilTimestamp || member.communicationDisabledUntilTimestamp <= Date.now())) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.notSilenced}.`)
         ], ephemeral: true});
 
-        //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
+        // It is checked if the role of the executing member is lower than that of the target member
         if (member && interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= sortedRoles[0].position) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.badHierarchy, { interactionAuthor: interaction.member })}.`)
         ], ephemeral: true});
 
-        //Almacena si el miembro puede borrar cualquier timeout
+        // Stores if the member can erase any timeout
         const canRemoveAny = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
 
-        //Almacena el aislamiento del miembro
+        // Stores the member's timeout
         const memberTimeout = await client.functions.db.getData('timeout', memberId);
 
-        //Devuelve el estado de autorización
+        // Returns the authorization status
         if (!canRemoveAny && (!memberTimeout || memberTimeout.moderatorId !== interaction.member.id)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cantRemoveAny, { interactionAuthor: interaction.member })}.`)
         ], ephemeral: true});
 
-        //Si el aislamiento estaba registrado en la base de datos
+        // If the timeout was registered in the database
         if (memberTimeout) {
 
-            //Elimina la entrada de la base de datos
+            // Deletes the database entry
             await client.functions.db.delData('timeout', memberId);
         };
 
-        //Si no hay caché de registros
+        // If there is no records cache
         if (!client.loggingCache) client.loggingCache = {};
 
-        //Crea una nueva entrada en la caché de registros
+        // Creates a new entry in the records cache
         if (member) client.loggingCache[memberId] = {
             action: 'untimeout',
             executor: interaction.member.id,
             reason: reason || locale.undefinedReason
         };
 
-        //Habilita la comunicación del miembro en el servidor
+        // Enables the member's communication on the server
         if (member) await member.disableCommunicationUntil(null, reason || locale.undefinedReason);
 
-        //Si el miembro no está en la guild
+        // If the member is not in the guild
         if (!member) {
 
-            //Envía un mensaje al canal de registros
+            // Sends a message to the records channel
             await client.functions.managers.sendLog('untimeoutedMember', 'embed', new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
                 .setAuthor(locale.loggingEmbed.author)
@@ -86,7 +86,7 @@ export async function run(interaction, commandConfig, locale) {
             );
         };
 
-        //Notifica la acción en el canal de invocación
+        // Notifies the action in the invocation channel
         await interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
             .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbed.title}`)
@@ -95,7 +95,7 @@ export async function run(interaction, commandConfig, locale) {
         
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

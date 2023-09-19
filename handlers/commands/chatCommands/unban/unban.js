@@ -2,64 +2,64 @@ export async function run(interaction, commandConfig, locale) {
     
     try {
 
-        //Busca al usuario proporcionado
+        // Looks for the user provided
         const user = await client.functions.utils.fetch('user', interaction.options._hoistedOptions[0].value);
 
-        //Devuelve un error si no se ha encontrado al usuario
+        // Returns an error if the user has not been found
         if (!user) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.userNotFound}.`)
         ], ephemeral: true});
 
-        //Almacena la razón
+        // Stores the reason
         let reason = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : null;
 
-        //Capitaliza la razón
+        // Capitalizes the reason
         if (reason) reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;
 
-        //Si no se ha proporcionado razón y el miembro no es el dueño
+        // If a reason has not been provided and the member is not the owner
         if (!reason && interaction.member.id !== interaction.guild.ownerId) {
 
-            //Almacena si el miembro puede omitir la razón
+            // Stores if the member can omit the reason
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
-            //Si no está autorizado, devuelve un mensaje de error
+            // If the member is not authorized, returns an error message
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ], ephemeral: true});
         };
 
-        //Se comprueba si el usuario ya estaba baneado
+        // Checks if the user was already banned
         const guildBans = await interaction.guild.bans.fetch();
 
-        //Almacena el estado de baneo del usuario
+        // Stores the user's ban state
         let banned = false;
 
-        //Por cada uno de los baneos de la guild
+        // For each of the bans of the guild
         for (const bans of guildBans) {
 
-            //Comprueba si el ID del usuario coincide con el del baneo
+            // Checks if the user's ID matches the ban one
             if (bans[0] === user.id) banned = true
         };
 
-        //Si el usuario no estaba baneado, devuelve un error
+        // If the user was not banned, returns an error
         if (!banned) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.notBanned}.`)
         ], ephemeral: true});
 
-        //Desbanea al miembro
+        // Unbans the member
         await interaction.guild.members.unban(user.id);
         
-        //Si el baneo estaba registrado en la base de datos
+        // If the ban was registered in the database
         if (await client.functions.db.getData('ban', user.id)) {
 
-            //Elimina la entrada de la base de datos
+            // Deletes the database entry
             await client.functions.db.delData('ban', user.id);
         };
 
-        //Envía un mensaje al canal de registros
+        // Sends a message to the records channel
         await client.functions.managers.sendLog('unbannedMember', 'embed', new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
             .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL() })
@@ -70,7 +70,7 @@ export async function run(interaction, commandConfig, locale) {
             )
         );
 
-        //Notifica la acción en el canal de invocación
+        // Notifies the action in the invocation channel
         await interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
             .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbed.title}`)
@@ -79,7 +79,7 @@ export async function run(interaction, commandConfig, locale) {
         
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

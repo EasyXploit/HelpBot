@@ -2,99 +2,99 @@ export async function run(interaction, commandConfig, locale) {
     
     try {
 
-        //Busca al miembro proporcionado
+        // Looks for the member provided
         const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
 
-        //Devuelve un error si no se ha encontrado al miembro
+        // Returns an error if the member has not been found
         if (!member) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ], ephemeral: true});
 
-        //Si el miembro era un bot
+        // If the member was a bot
         if (member.user.bot) {
 
-            //Almacena si el miembro puede silenciar bots
+            // Stores if the member can timeout bots
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.botsAllowed});
 
-            //Si no está autorizado para ello, devuelve un mensaje de error
+            // If the member is not authorized to do so, returns an error message
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
             ], ephemeral: true});
         };
         
-        //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
+        // It is checked if the role of the executing member is lower than that of the target member
         if (interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ], ephemeral: true});
 
-        //Se comprueba si el rol del bot es más bajo que el del miembro objetivo
+        // It is checked if the role of the bot is lower than that of the target member
         if (interaction.guild.members.me.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badBotHierarchy}`)
         ], ephemeral: true});
 
-        //Almacena la expiración provista
+        // Stores the expiration provided
         const expiresAfter = interaction.options._hoistedOptions[1].value;
 
-        //Si la expiración supera el umbral permitido para todos
+        // If the expiration exceeds the threshold allowed for all
         if (expiresAfter > commandConfig.maxRegularTime) {
 
-            //Almacena si el miembro puede silenciar por más tiempo
+            // Stores if the member can timeout for a longer time
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
 
-            //Si no se permitió la ejecución, manda un mensaje de error
+            // If the execution was not allowed, sends an error message
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.exceededDuration, { time: await client.functions.utils.msToTime(commandConfig.maxRegularTime) })}.`)
             ], ephemeral: true});
         };
 
-        //Almacena la razón
+        // Stores the reason
         let reason = interaction.options._hoistedOptions[2] ? interaction.options._hoistedOptions[2].value : null;
 
-        //Capitaliza la razón
+        // Capitalizes the reason
         if (reason) reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;
 
-        //Si no se ha proporcionado razón
+        // If a reason has not been provided
         if (!reason) {
 
-            //Almacena si el miembro puede omitir la razón
+            // Stores if the member can omit the reason
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
-            //Si no está autorizado, devuelve un mensaje de error
+            // If the member is not authorized, returns an error message
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ], ephemeral: true});
         };
 
-        //Guarda el aislamiento en la base de datos
+        // Keeps the timeout in the database
         await client.functions.db.genData('timeout', {
             userId: member.id,
             moderatorId: interaction.member.id,
             untilTimestamp: Date.now() + expiresAfter
         });
 
-        //Si no hay caché de registros
+        // If there is no records cache
         if (!client.loggingCache) client.loggingCache = {};
 
-        //Crea una nueva entrada en la caché de registros
+        // Creates a new entry in the records cache
         client.loggingCache[member.id] = {
             action: 'timeout',
             executor: interaction.member.id,
             reason: reason || locale.undefinedReason
         };
 
-        //Deshabilita la comunicación del miembro en el servidor
+        // Disables member communication on the server
         await member.disableCommunicationUntil((Date.now() + expiresAfter), reason || locale.undefinedReason);
 
-        //Genera una descripción para el embed de notificación
+        // Generates a description for the notification embed
         const notificationEmbedDescription = reason ? await client.functions.utils.parseLocale(locale.notificationEmbed.withReason, { memberTag: member.user.tag, reason: reason }) : await client.functions.utils.parseLocale(locale.notificationEmbed.withoutReason, { memberTag: member.user.tag })
 
-        //Notifica la acción en el canal de invocación
+        // Notifies the action in the invocation channel
         await interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
             .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
@@ -102,7 +102,7 @@ export async function run(interaction, commandConfig, locale) {
         
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

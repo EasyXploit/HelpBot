@@ -2,45 +2,45 @@ export async function run(interaction, commandConfig, locale) {
 
     try {
 
-        //Busca el miembro en la guild
+        // Looks for the member in the guild
         const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
 
-        //Comprueba si se ha proporcionado un miembro válido
+        // Checks if a valid member has been provided
         if (!member) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidMember}.`)
         ], ephemeral: true});
 
-        //Comprueba, si corresponde, que el miembro tenga permiso para ver los datos de otros
+        // Checks, if applicable, that the member has permission to see the data of others
         if (interaction.member.id !== member.id) {
 
-            //Variable para saber si está autorizado
+            // Variable to know if is authorized
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSeeAny});
 
-            //Si no se permitió la ejecución, manda un mensaje de error
+            // If the execution was not allowed, sends an error message
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantSeeAny}.`)
             ], ephemeral: true});
         };
 
-        //Comprueba los status de los que dispone el miembro
+        // Checks the status available to the member
         let status = [];
         if (member.id === interaction.guild.ownerId) status.push(locale.memberType.owner);
         if (member.permissions.has('Administrator')) status.push(locale.memberType.Administrator);
         if (member.permissions.has('ManageMessages')) status.push(locale.memberType.moderator);
         if (status.length < 1) status.push(locale.memberType.regular);
 
-        //Almacena la sanción actual, si aplica
+        // Stores the current sanction, if applied
         const sanction = member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now() ? `${locale.embed.timeoutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>` : locale.embed.noSanction;
 
-        //Almacena el perfil del miembro
+        // Stores the member's profile
         const memberProfile = await client.functions.db.getData('profile', member.id);
 
-        //Almacena las advertencias del miembro
+        // Stores the member warnings
         const memberWarns = memberProfile ? memberProfile.moderationLog.warnsHistory : null;
 
-        //Envía un embed con el resultado del comando
+        // Sends an embed with the command result
         await interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(member.displayHexColor)
             .setTitle(await client.functions.utils.parseLocale(locale.embed.title, { memberDisplayName: member.displayName }))
@@ -61,7 +61,7 @@ export async function run(interaction, commandConfig, locale) {
 
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

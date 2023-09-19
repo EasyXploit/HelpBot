@@ -2,155 +2,155 @@ export async function run(interaction, commandConfig, locale) {
     
     try {
 
-        //Almacena el subcomando elegido
+        // Stores the chosen subcommand
         const subcommand = interaction.options._subcommand;
 
-        //Almacena el miembro proporcionado
+        // Stores the member provided
         const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
 
-        //Comprueba si se ha proporcionado un miembro válido
+        // Checks if a valid member has been provided
         if (!member && !await client.functions.db.getData('profile', interaction.options._hoistedOptions[0].value)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidMember}.`)
         ], ephemeral: true});
 
-        //Almacena el ID del miembro
+        // Stores the member ID
         const memberId = member ? member.id : interaction.options._hoistedOptions[1].value;
 
-        //Si el miembro era un bot
+        // If the member was a bot
         if (member && member.user.bot) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
 
-        //Almacena el valor para su modificación
+        // Stores the value for its modification
         const providedValue = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : null;
 
-        //Almacena el perfil del miembro, o lo crea
+        // Stores the member's profile, or creates it
         let memberProfile = await client.functions.db.getData('profile', memberId) || await client.functions.db.genData('profile', { userId: memberId });
 
-        //Almacena las estadísticas del miembro
+        // Stores the member statistics
         let memberStats = memberProfile.stats;
 
-        //Comprueba si se le puede restar esa cantidad al miembro
+        // Checks if that amount can be subtracted from the member
         if (subcommand === locale.appData.options.remove.name && memberStats.experience < providedValue) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidQuantity}.`)
         ], ephemeral: true});
 
-        //Comprueba si se le puede quitar el XP al miembro
+        // Checks if the XP can be removed from the member
         if (subcommand === locale.appData.options.clear.name && memberStats.experience === 0) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.hasNoXp}.`)
         ], ephemeral: true});
 
-        //Almacena si se omite la comprobación de jerarquía
+        // Stores if the hierarchy check is omitted
         const byPassed = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true });
 
-        //Si no se omitió y el rol del miembro es mayor o igual que el del ejecutor
+        // If it was not omitted and the role of the member is greater than or equal to that of the executor
         if (!byPassed && member && interaction.member.roles.highest.position <= member.roles.highest.position) {
 
-            //Devuelve un mensaje de error
+            // Returns an error message
             return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.unauthorizedModify}.`)
             ], ephemeral: true});
         };
         
-        //Se declaran variables para almacenar las cantidades de XP (antiguas y nuevas) y el nivel modificado
+        // Variables are declared to store the amounts of XP (old and new) and the modified level
         let oldValue = memberStats.experience, newValue = 0, newLevel = memberStats.level;
 
-        //Ejecuta la operación indicada en función del argumento
+        // Executes the operation indicated depending on the argument
         switch (subcommand) {
 
-            //Si hay que fijar la cantidad de XP
+            // If has to set the amount of XP
             case locale.appData.options.set.name:
 
-                //Almacena el nuevo XP
+                // Stores the new XP
                 memberStats.experience = parseInt(providedValue);
 
-                //Almacena el nuevo valor de XP
+                // Stores the new XP value
                 newValue = parseInt(providedValue);
 
-                //Para el switch
+                // Stops the switch
                 break;
 
-            //Si hay que añadir XP a la cantidad actual
+            // If has to add XP to the current amount
             case locale.appData.options.add.name:
 
-                //Almacena el nuevo XP
+                // Stores the new XP
                 memberStats.experience = parseInt(oldValue) + parseInt(providedValue);
 
-                //Almacena el nuevo valor de XP
+                // Stores the new XP value
                 newValue = parseInt(oldValue) + parseInt(providedValue);
 
-                //Para el switch
+                // Stops the switch
                 break;
 
-            //Si hay que añadir XP aleatorio a la cantidad actual
+            // If has to add random XP to the current amount
             case locale.appData.options.addrandom.name:
 
-                //Almacena el XP a añadir
+                // Stores the XP to add
                 let generatedXp = 0;
 
-                //Según el parámetro proporcinado
+                // According to the parameter provided
                 for (max = providedValue; max != 0; max--) {
 
-                    //Genera XP aleatorio y actualiza la variable del total
+                    // Generates random XP and updates the total variable
                     generatedXp += await client.functions.utils.randomIntBetween(await client.functions.db.getConfig('leveling.minimumXpReward'), await client.functions.db.getConfig('leveling.maximumXpReward'));
                 };
 
-                //Almacena el nuevo XP
+                // Stores the new XP
                 memberStats.experience = parseInt(oldValue) + parseInt(generatedXp);
 
-                //Almacena el nuevo valor de XP
+                // Stores the new XP value
                 newValue = parseInt(oldValue) + parseInt(generatedXp);
 
-                //Para el switch
+                // Stops the switch
                 break;
 
-            //Si hay que quitar XP a la cantidad actual
+            // If has to remove XP from the current amount
             case locale.appData.options.remove.name:
 
-                //Almacena el nuevo XP
+                // Stores the new XP
                 memberStats.experience = parseInt(oldValue) - parseInt(providedValue);
 
-                //Almacena el nuevo valor de XP
+                // Stores the new XP value
                 newValue = parseInt(oldValue) - parseInt(providedValue);
 
-                //Para el switch
+                // Stops the switch
                 break;
 
-            //Si hay que vaciar todo el XP
+            // If has to empty the entire XP
             case locale.appData.options.clear.name:
 
-                //Actualiza el total de XP del miembro
+                // Updates the total XP of the member
                 memberStats.experience = 0;
 
-                //Para el switch
+                // Stops the switch
                 break;
         };
 
-        //Almacena el nivel correspondiente al XP especificado
+        // Stores the level corresponding to the specified XP
         const neededExperience = await client.functions.leveling.getNeededExperience(newValue);
 
-        //Almacena el nuevo nivel del miembro
+        // Stores the new member level
         newLevel = neededExperience.nextLevel;
 
-        //Si el nivel ha sido modificado
+        // If the level has been modified
         if (newLevel !== memberStats.level) {
 
-            //Graba el nuevo nivel del miembro
+            // Records the new level of the member
             memberStats.level = newLevel;
 
-            //Asigna las recompensas del nivel al miembro (y elimina las que no le corresponde)
+            // Assigns the rewards of the level to the member (and deletes those that do not correspond)
             await client.functions.leveling.assignRewards(member, newLevel, true);
         };
 
-        //Guarda las nuevas estadísticas del miembro en la base de datos
+        // Saves the new statistics of the member in the database
         await client.functions.db.setData('profile', member.id, memberProfile);
 
-        //Envía un mensaje al canal de registros
+        // Sends a message to the records channel
         await client.functions.managers.sendLog('experienceModified', 'embed',  new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
@@ -164,7 +164,7 @@ export async function run(interaction, commandConfig, locale) {
             )
         );
 
-        //Notifica la acción en el canal de invocación
+        // Notifies the action in the invocation channel
         await interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
             .setDescription(`${client.customEmojis.greenTick} ${await client.functions.utils.parseLocale(locale.notificationEmbed, { memberTag: member.user.tag })}.`)
@@ -172,30 +172,30 @@ export async function run(interaction, commandConfig, locale) {
 
         try {
 
-            //Si se le han vaciado los puntos de EXP al miembro
+            // If XP have been emptied to the member
             if (newValue === 0) {
     
-                //Envía al miembro una notificación por mensaje privado
+                // Sends the member a notification by private message
                 await member.send({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                     .setAuthor({ name: locale.privateEmbed.reset.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
                     .setDescription(`${await client.functions.utils.parseLocale(locale.privateEmbed.reset.description, { moderatorTag: interaction.user.tag })}.`)
                 ]});
     
-            //Si se le han aumentado los puntos de EXP al miembro
+            // If XP have been increased to the member
             } else if (newValue > oldValue) {
     
-                //Envía al miembro una notificación por mensaje privado
+                // Sends the member a notification by private message
                 await member.send({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                     .setAuthor({ name: locale.privateEmbed.increased.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
                     .setDescription(`${await client.functions.utils.parseLocale(locale.privateEmbed.increased.description, { moderatorTag: interaction.user.tag, givenExp: providedValue, newXP: newValue.toString() })}.`)
                 ]});
     
-            //Si se le han reducido los puntos de EXP al miembro
+            // If the XP has been reduced to the member
             } else if (newValue < oldValue) {
     
-                //Envía al miembro una notificación por mensaje privado
+                // Sends the member a notification by private message
                 await member.send({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                     .setAuthor({ name: locale.privateEmbed.decreased.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
@@ -205,14 +205,14 @@ export async function run(interaction, commandConfig, locale) {
 
         } catch (error) {
 
-            //Maneja los errores ocurridos cuando no se puede entregar un mensaje privado
+            // Handles the errors that occur when a private message cannot be delivered
             if (error.toString().includes('Cannot send messages to this user')) logger.warn(`The bot was unable to deliver a "changed xp" message to @${member.user.username} (${member.id}) due to an API restriction`);
             logger.error(error.stack);
         };
         
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

@@ -2,46 +2,46 @@ export async function run(interaction, commandConfig, locale) {
     
     try {
 
-        //Busca al miembro proporcionado
+        // Looks for the member provided
         const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
 
-        //Devuelve un error si no se ha encontrado al miembro
+        // Returns an error if the member has not been found
         if (!member) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ], ephemeral: true});
 
-        //Devuelve un error si se ha proporcionado un bot
+        // Returns an error if a bot has been provided
         if (member.user.bot) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
         
-        //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
+        // It is checked if the role of the executing member is lower than that of the target member
         if (interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ], ephemeral: true});
         
-        //Almacena el perfil del miembro
+        // Stores the member's profile
         const memberProfile = await client.functions.db.getData('profile', member.id);
 
-        //Almacena las advertencias del miembro
+        // Stores the member warnings
         const memberWarns = memberProfile ? memberProfile.moderationLog.warnsHistory : null;
 
-        //Si el miembro tenía advertencias previas y el ejecutor no es el owner de la guild
+        // If the member had previous warnings and the executor is not the guild owner
         if (memberWarns && interaction.member.id !== interaction.guild.ownerId) {
 
-            //Almacena el último warn del miembro
+            // Stores the last warn of the member
             const latestWarn = memberWarns[memberWarns.length - 1];
 
-            //Si no ha pasado el tiempo mínimo entre advertencias
+            // If the minimum time has not passed between warnings
             if (Date.now() - latestWarn.timestamp < commandConfig.minimumTimeDifference) {
 
-                //Almacena si el miembro puede saltarse el intervalo mínimo
+                // Stores if the member can skip the minimum interval
                 const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedFrequency});
 
-                //Si no está autorizado, devuelve un mensaje de error
+                // If the member is not authorized, returns an error message
                 if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cooldown, { member: member })}.`)
@@ -49,18 +49,18 @@ export async function run(interaction, commandConfig, locale) {
             };
         };
 
-        //Comprueba si se ha aportado alguna razón
+        // Checks if any reason has been provided
         const reason = interaction.options._hoistedOptions[1].value;
 
-        //Almacena el canal de texto de la interacción
+        // Stores the interaction text channel
         const interactionChannel = await client.functions.utils.fetch('channel', interaction.channelId);
 
-        //Llama al manejador de infracciones
+        // Call the infractions handler
         await client.functions.moderation.manageWarn(member, reason, 2, interaction.user, null, interaction, interactionChannel);
 
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

@@ -2,38 +2,38 @@ export async function run(interaction, commandConfig, locale) {
     
     try {
 
-        //Mide el tiempo de respuesta del bot
+        // Measures the response time of the bot
         const botPing = new Date().getTime() - interaction.createdTimestamp;
 
-        //Genera un embed para el tiempo de respuesta
+        // Generates an embed for response time
         let botPingEmbed = new discord.EmbedBuilder()
             .setTitle(`${locale.botResponseTime}: `)
             .setDescription(`:stopwatch: | ${botPing} ms`);
 
-        //Asigna un color al embed en función del valor del ping
+        // Assigns an embed color depending on the value of the ping
         if (botPing <= 180) botPingEmbed.setColor('7ED321');
         else if (botPing > 180 && botPing <= 250) botPingEmbed.setColor('F5A623');
         else botPingEmbed.setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`);
 
-        //Mide el tiempo de respuesta del websocket
+        // Measures the Websockt response time
         const websocketPing = Math.floor(client.ws.ping);
 
-        //Genera un embed para el tiempo de respuesta
+        // Generates an embed for the response time
         let websocketPingEmbed = new discord.EmbedBuilder()
             .setTitle(`${locale.websocketResponseTime}: `)
             .setDescription(`:stopwatch: | ${websocketPing} ms`);
 
-        //Asigna un color al embed en función del valor del ping
+        // Assigns an embed color depending on the value of the ping
         if (websocketPing <= 180) websocketPingEmbed.setColor('7ED321');
         else if (websocketPing > 180 && websocketPing <= 250) websocketPingEmbed.setColor('F5A623');
         else websocketPingEmbed.setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`);
 
-        //Envía los embeds generados
+        // Sends the generated embeds
         await interaction.reply({ embeds: [ botPingEmbed, websocketPingEmbed] });
         
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

@@ -2,44 +2,44 @@ export async function run(interaction, commandConfig, locale) {
 
     try {
 
-        //Almacena todos los perfiles de los miembros
+        // Stores all profiles of the members
         const memberProfiles = await client.functions.db.getData('profile');
 
-        //Devuelve un error si no hay tabla de clasificación
+        // Returns an error if there is no classification table
         if (!memberProfiles || memberProfiles.length === 0) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noLeaderboard}.`)
         ], ephemeral: true});
 
-        //Almacena el tipo de clasifición a mostrar, si se proporciona
+        // Stores the type of classification to be displayed, if provided
         const typeOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.type.name);
         const type = typeOption ? typeOption.value : 'experience';
 
-        //Almacena las entradas de la leaderboard
+        // Stores the entries of the leaderboard
         let entries = [];
 
-        //Almacena si el orden se ha de invertir
+        // Stores if the order must be inverted
         let invertedOrder = type === 'antiquity' ? true : false;
 
-        //Pospone la respuesta del bot
+        // Postpones the bot's response
         await interaction.deferReply();
 
-        //Almacena la caché de los miembros de la guild
+        // Stores the cache of the guild members
         const guildMembers = await client.baseGuild.members.fetch();
 
-        //Por cada miembro en la base de datos de perfiles
+        // For each member in the profile database
         for (const memberProfile of memberProfiles) {
 
-            //Busca el miembro en la guild, pasándole caché a la función
+            // Looks for the member in the guild, passing cache to the function
             const member = await client.functions.utils.fetch('member', memberProfile.userId, null, guildMembers);
 
-            //Si el miembro no estaba en la guild y no se debe mostrar, lo omite
+            // If the member was not in the guild and should not be shown, omits it
             if (commandConfig.hideNotPresent && !member) continue;
 
-            //Omite si es clasificación de antigüedad y el miembro ya no está en el servidor
+            // Omits if it is ancient classification and the member is no longer on the server
             if (type === 'antiquity' && !member) continue;
                 
-            //Sube una entrada al array de entradas
+            // Uploads an entry to the array of entries
             entries.push({
                 memberId: memberProfile.userId,
                 memberTag: member ? `**${member.user.tag}**` : locale.unknownMember,
@@ -51,112 +51,112 @@ export async function run(interaction, commandConfig, locale) {
             });
         };
 
-        //Ordena las entradas de mayor a menor
+        // Sorts the entries from greatest to minor
         function compare(a, b) {
             if (a[type] < b[type]) return invertedOrder ? -1 : 1;
             if (a[type] > b[type]) return invertedOrder ? 1 : -1;
             return 0;
         };
 
-        //Compara y ordena el array de entradas
+        // Compares and orders the entries array
         entries.sort(compare);
 
-        //Almacena las páginas totales
+        // Stores the total pages
         const totalPages = Math.ceil(entries.length / 10);
 
-        //Almacena el número de página a mostrar, si se proporciona
+        // Stores the page number to be displayed, if provided
         const providedactualPageOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.page.name);
         const providedactualPage = providedactualPageOption ? providedactualPageOption.value : null;
 
-        //Almacena la página actual (si se proporciona una, se elige esa)
+        // Stores the current page (if one is provided, that is chosen)
         let actualPage = providedactualPage && providedactualPage <= totalPages ? providedactualPage : 1;
 
-        //Almacena la última interacción del comando
+        // Stores the last interaction of the command
         let latestInteraction;
 
         do {
 
-            //Almacena el primer índice del rango de páginas
+            // Stores the first pages range index
             const fromRange = 10 * actualPage - 9;
 
-            //Almacena el último índice del rango de páginas
+            // Stores the last index of the page range
             const toRange = 10 * actualPage;
 
-            //Almacena el string para la descripción
+            // Stores the string for description
             let board = '';
 
-            //Por cada indice del rango especificado
+            // For each specified range index
             for (let index = fromRange - 1; index < toRange; index++) {
 
-                //Almacena la entrada iterada
+                // Stores the iterated entry
                 const entry = entries[index];
 
-                //Si ya no quedan más entradas, aborta el bucle
+                // If there are no more entries left, aborts the loop
                 if (!entry) break;
 
-                //En función del tipo proporcionado
+                // Depending on the type provided
                 switch (type) {
 
-                    //Si se desea mostrar la tabla de experiencia
+                    // If wanted to show the experience table
                     case 'experience':
 
-                        //Genera la tabla de experiencia
+                        // Generates the experience table
                         board += `\n**#${index + 1}** • \`${entry.experience} ${locale.embed.board.experience}\` • \`${locale.embed.board.level} ${entry.lvl}\` • ${entry.memberTag}`;
                         
-                        //Para el switch
+                        // Stops the switch
                         break;
                 
-                    //Si se desea mostrar la tabla de tiempo de voz
+                    // If wanted to show the voice time
                     case 'aproxVoiceTime':
 
-                        //Genera la tabla de tiempo de voz
+                        // Generates the voice time table
                         board += `\n**#${index + 1}** • \`${await client.functions.utils.msToTime(entry.aproxVoiceTime)}\` • ${entry.memberTag}`;
                         
-                        //Para el switch
+                        // Stops the switch
                         break;
                 
-                    //Si se desea mostrar la tabla de mensajes enviados
+                    // If wanted to show the table of messages sent
                     case 'messagesCount':
 
-                        //Genera la tabla de mensajes enviados
+                        // Generates the table of messages sent
                         board += `\n**#${index + 1}** • \`${entry.messagesCount} ${locale.embed.board.messagesCount}\` • ${entry.memberTag}`;
                         
-                        //Para el switch
+                        // Stops the switch
                         break;
                 
-                    //Si se desea mostrar la tabla de antigüedad
+                    // If wanted to show the seniority table
                     case 'antiquity':
 
-                        //Genera la tabla de antigüedad
+                        // Generates the seniority table
                         board += `\n**#${index + 1}** • \`${await client.functions.utils.msToTime(Date.now() - entry.antiquity)}\` • ${entry.memberTag}`;
                         
-                        //Para el switch
+                        // Stops the switch
                         break;
                 };
             };
 
-            //Genera un embed a modo de página
+            // Generates an Embed as a page
             const newPageEmbed = new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setTitle(`:trophy: ${locale.embed.title[type]}`)
                 .setDescription(board)
                 .setFooter({ text: await client.functions.utils.parseLocale(locale.embed.footer, { actualPage: actualPage, totalPages: totalPages }), iconURL: client.baseGuild.iconURL({dynamic: true}) });
 
-            //Invoca el gestor de navegación mediante botones
+            // Invokes the button navigation manager
             const buttonNavigationResult = await client.functions.managers.buttonNavigation(interaction, 'leaderboard', actualPage, totalPages, newPageEmbed, latestInteraction, null);
 
-            //Almacena la última interacción
+            // Stores the last interaction
             latestInteraction = buttonNavigationResult.latestInteraction;
 
-            //Almacena la nueva página actual
+            // Stores the new current page
             actualPage = buttonNavigationResult.newActualPage;
 
-        //Mientras no se deba abortar por inactividad, continuará el bucle
+        // As long as it should not be aborted by inactivity, the loop will continue
         } while (actualPage !== false);
 
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

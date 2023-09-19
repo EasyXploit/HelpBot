@@ -1,76 +1,76 @@
-//Exporta la función de manejo del evento
+// Exports the event management function
 export default async (oldMember, newMember, locale) => {
     
     try {
 
-        //Comprueba si el bot está listo para manejar eventos
+        // Checks if the bot is ready to handle events
         if (!global.readyStatus) return;
 
-        //Aborta si no es un evento de la guild registrada
+        // Aborts if it is not an event from the base guild
         if (oldMember.guild.id !== client.baseGuild.id) return;
 
-        //Si el miembro ha pasado la pantalla de verificación
+        // If the member has passed the verification screen
         if (oldMember.pending && !newMember.pending) {
 
-            //Almacena el perfil del miembro, si es que existe
+            // Stores the member's profile, if it exists
             let memberProfile = await client.functions.db.getData('profile', oldMember.id);
 
-            //Si el miembro tiene entradas en la tabla de estadísticas, asigna las recompensas que le corresponda
+            // If the member has an entry in the statistics table, assigns the rewards that corresponds to it
             if (memberProfile && await client.functions.db.getConfig('leveling.preserveStats')) await client.functions.leveling.assignRewards(newMember, memberProfile.stats.level);
 
-            //Almacena el modo de manejo de nuevos miembros
+            // Stores the new members management mode
             const newMemberMode = await client.functions.db.getConfig('welcomes.newMemberMode');
 
-            //Ejecuta el manejador de nuevos miembros (si procede)
+            // Executes the new members manager (if applicable)
             if (newMemberMode === 1) await client.functions.managers.newMember(newMember);
         };
 
-        //Si el miembro ha sido silenciado o dessilenciado
+        // If the member has been timeouted or untimeouted
         if (oldMember.communicationDisabledUntilTimestamp !== newMember.communicationDisabledUntilTimestamp) {
 
-            //Almacena la expiración del aislamiento
+            // Stores the timeout expiration
             let expiration = newMember.communicationDisabledUntilTimestamp;
             
-            //Genera variables para almacenar los campos de los embeds
+            // Generates variables to store the embeds fields
             let executor = null, reason = null;
 
-            //Busca el último aislamiento en el registro de auditoría
+            // Looks for the last timeout in the audit registry
             const fetchedLogs = await newMember.guild.fetchAuditLogs({
                 limit: 1,
                 type: discord.AuditLogEvent.MemberUpdate,
             });
 
-            //Almacena el primer resultado de la búsqueda
+            // Stores the first search result
             const timeoutLog = fetchedLogs.entries.first();
             
-            //Si se encontró un aislamiento en el primer resultado, y han pasado menos de 5 segundos
+            // If a timeout was found in the first result, and less than 5 seconds have passed
             if (timeoutLog && (timeoutLog.createdTimestamp > (Date.now() - 5000)) && timeoutLog.target.id === newMember.id) {
 
-                //Actualiza los campos de ejecutor y razón
+                // Updates the executor and reason fields
                 executor = timeoutLog.executor;
                 reason = timeoutLog.reason;
             };
 
-            //Almacena la caché de registros del usuario silenciao o dessilenciado, si existe
+            // Stores the timeouted or untimeouted user's records cache, if it exists
             const loggingCache = (client.loggingCache && client.loggingCache[newMember.id]) ? client.loggingCache[newMember.id] : null;
         
-            //Si se trata de una caché de usuario silenciao o dessilenciado
+            // If it is a timeouted or untimeouted user cache
             if (loggingCache && loggingCache.action.includes('timeout')) {
 
-                //Almacena al moderador correcto
+                // Stores the correct moderator
                 if (!executor) executor = await client.users.fetch(loggingCache.executor);
 
-                //Almacena la razón formateada
+                // Stores the formatted reason
                 if (!reason) reason = loggingCache.reason;
 
-                //Borra la caché de registros del miembro
+                // Deletes the member records cache
                 delete client.loggingCache[newMember.id];
             };
 
-            //Si se ha silenciado
+            // If it has been timeouted
             if (newMember.communicationDisabledUntilTimestamp && newMember.communicationDisabledUntilTimestamp > Date.now()) {
 
-                //Envía un mensaje al canal de registros
+                // Sends a message to the records channel
                 await client.functions.managers.sendLog('timeoutedMember', 'embed', new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setAuthor({ name: await client.functions.utils.parseLocale(locale.communicationDisabled.loggingEmbed.author, { memberTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL() })
@@ -84,7 +84,7 @@ export default async (oldMember, newMember, locale) => {
 
                 try {
 
-                    //Envía una notificación al miembro
+                    // Sends a notification to the member
                     await newMember.send({ embeds: [ new discord.EmbedBuilder()
                         .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                         .setAuthor({ name: locale.communicationDisabled.privateEmbed.author, iconURL: newMember.guild.iconURL({ dynamic: true}) })
@@ -98,25 +98,25 @@ export default async (oldMember, newMember, locale) => {
 
                 } catch (error) {
         
-                    //Maneja los errores ocurridos cuando no se puede entregar un mensaje privado
+                    // Handles the errors that occur when a private message cannot be delivered
                     if (!error.toString().includes('Cannot send messages to this user')) logger.warn(`The bot was unable to deliver a "muted log" message to @${newMember.user.username} (${newMember.id}) due to an API restriction`);
                     else logger.error(error.stack);
                 };
 
-            //Si se ha dessilenciado
+            // If it has been untimeouted
             } else {
 
-                //Almacena el aislamiento del miembro 
+                // Stores the member's timeout
                 const memberTimeout = await client.functions.db.getData('timeout', newMember.id);
 
-                //Si el aislamiento estaba registrado en la base de datos
+                // If the timeout was registered in the database
                 if (memberTimeout) {
 
-                    //Elimina la entrada de la base de datos
+                    // Deletes the database entry
                     await client.functions.db.delData('timeout', newMember.id);
                 };
 
-                //Envía un mensaje al canal de registros
+                // Sends a message to the records channel
                 await client.functions.managers.sendLog('untimeoutedMember', 'embed', new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
                     .setAuthor({ name: await client.functions.utils.parseLocale(locale.communicationEnabled.loggingEmbed.author, { userTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL()})
@@ -129,7 +129,7 @@ export default async (oldMember, newMember, locale) => {
                 
                 try {
 
-                    //Envía una notificación al miembro
+                    // Sends a notification to the member
                     await newMember.send({ embeds: [ new discord.EmbedBuilder()
                         .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
                         .setAuthor({ name: locale.communicationEnabled.privateEmbed.author, iconURL: newMember.guild.iconURL({ dynamic: true}) })
@@ -142,7 +142,7 @@ export default async (oldMember, newMember, locale) => {
 
                 } catch (error) {
         
-                    //Maneja los errores ocurridos cuando no se puede entregar un mensaje privado
+                    // Handles the errors that occur when a private message cannot be delivered
                     if (!error.toString().includes('Cannot send messages to this user')) logger.warn(`The bot was unable to deliver a "unmuted log" message to @${newMember.user.username} (${newMember.id}) due to an API restriction`);
                     else logger.error(error.stack);
                 };
@@ -151,7 +151,7 @@ export default async (oldMember, newMember, locale) => {
 
     } catch (error) {
 
-        //Invoca el manejador de errores
+        // Invokes the error handler
         await client.functions.managers.eventError(error);
     };
 };

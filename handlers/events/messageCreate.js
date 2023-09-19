@@ -1,34 +1,34 @@
-//Exporta la función de manejo del evento
+// Exports the event management function
 export default async (message, locale) => {
 
-    //Comprueba si el bot está listo para manejar eventos
+    // Checks if the bot is ready to handle events
     if (!global.readyStatus) return;
 
-    //Aborta si no es un evento de la guild registrada
+    // Aborts if it is not an event from the base guild
     if (message.guild && message.guild.id !== client.baseGuild.id) return;
 
-    //Previene la ejecución si el mensaje fue enviado por un bot o por el sistema
+    // Prevents execution if the message was sent by a bot or the system
     if (message.author.bot || message.type !== discord.MessageType.Default) return;
 
-    //Crea un objeto en el cliente para los mensajes de usuarios
+    // Creates an object in the client for user messages
     if (!client.userMessages) client.userMessages = {};
 
-    //Si el miembro no tiene entrada en el objeto de mensajes de miembros, la crea
+    // If the member does not have entry into the object of member messages, it creates it
     if (!client.userMessages[message.author.id]) client.userMessages[message.author.id] = {
         history: [],
         lastValidTimestamp: 0
     };
 
-    //Crea una variable para almacenar los mensajes del miembro
+    // Creates a variable to store member's messages
     let userMessages = client.userMessages[message.author.id];
 
-    //Si el mensaje tiene contenido
+    // If the message has content
     if (message.content.length > 0) {
         
-        //Se genera un hash a partir del contenido del mensaje
+        // A hash is generated from the content of the message
         const messageHash = await client.md5(message.content);
 
-        //Añade el mensaje al historial de mensajes del miembro
+        // Adds the message to the member's messages
         userMessages.history.push({
             id: message.id,
             timestamp: message.createdTimestamp,
@@ -40,25 +40,25 @@ export default async (message, locale) => {
         });
     };
     
-    //Si el mensaje tiene adjuntos y se desean filtrar
+    // If the message has attachments and is wanted to be filtered
     if (await client.functions.db.getConfig('moderation.filters.crossPost').filterFiles && message.attachments.size > 0) {
 
-        //Se genera un array a partir de los valores de los adjuntos
+        // An array is generated from the values of the attachments
         const attachmentsArray = Array.from(message.attachments.values());
 
-        //Por cada uno de los adjuntos
+        // For each of the attachments
         for (let index = 0; index < attachmentsArray.length; index++) {
 
-            //Obtiene el fichero al que hace dirección la URL proxy
+            // Gets the file to which the URL proxy is directed
             await fetch(attachmentsArray[index].proxyURL).then(async (response) => {
 
-                //Almacena el cuerpo del fichero en formato cadena
+                // Stores the body of the file in string format
                 const attachmentBody = await response.text();
 
-                //Genera un hash a partir del cuerpo del fichero
+                // Generates a hash from the body of the file
                 const attachmentHash = await client.md5(attachmentBody);
 
-                //Añade el hash al historial de mensajes del miembro
+                // Adds the hash to the member's messages
                 userMessages.history.push({
                     id: message.id,
                     timestamp: message.createdTimestamp,
@@ -72,34 +72,34 @@ export default async (message, locale) => {
         };
     };
 
-    //Almacena el tamaño del historial de mensajes de miembros
+    // Stores the size of the member messages
     const messageHistorySize = await client.functions.db.getConfig('moderation.messageHistorySize');
 
-    //Si el historial está lleno, elimina el primer elemento del array
+    // If the history is full, eliminates the first element of the array
     if (userMessages.history.length >= messageHistorySize) userMessages.history.shift();  
 
-    //Comprueba si el contenido del mensaje está permitido
+    // Checks if the content of the message is allowed
     const isPermitted = await client.functions.moderation.checkMessage(message);
 
-    //Si se trata de un mensaje enviado en una guild y no fue filtrado
+    // If it is a message sent on a guild and was not filtered
     if (message.member && isPermitted) {
 
-        //Almacena el perfil del miembro, o lo crea
+        // Stores the member's profile, or creates it
         let memberProfile = await client.functions.db.getData('profile', message.member.id) || await client.functions.db.genData('profile', { userId: message.member.id });
 
-        //Incrementa el contador de mensajes enviados del miembro
+        // Increases the sent messages count of the member
         memberProfile.stats.messagesCount++;
         
-        //Guarda las nuevas estadísticas del miembro en la base de datos
+        // Saves the new statistics of the member in the database
         await client.functions.db.setData('profile', message.member.id, memberProfile);
 
-        //Si el último mensaje que generó EXP fue hace más del periodo establecido
+        // If the last message tha generated XP was more old than the established period
         if (await client.functions.db.getConfig('leveling.rewardMessages') && ((message.createdTimestamp - userMessages.lastValidTimestamp) > await client.functions.db.getConfig('leveling.minimumTimeBetweenMessages'))) {
 
-            //Actualiza el valor del tiempo de última ganancia de EXP
+            // Updates the last timestamp of XP gaining
             userMessages.lastValidTimestamp = message.createdTimestamp;
 
-            //Aumenta la cantidad de EXP del miembro
+            // Increases the amount of XP of the member
             await client.functions.leveling.addExperience(message.member, 'message', message.channel);
         };
     };

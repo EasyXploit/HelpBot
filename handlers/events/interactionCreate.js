@@ -1,85 +1,85 @@
-//Exporta la función de manejo del evento
+// Exports the event management function
 export default async (interaction, locale) => {
 
     try {
 
-        //Comprueba si el bot está listo para manejar eventos
+        // Checks if the bot is ready to handle events
         if (!global.readyStatus) return;
         
-        //Aborta si no es un evento de la guild registrada
+        // Aborts if it is not an event from the base guild
         if (interaction.guild && interaction.guild.id !== client.baseGuild.id) return;
 
-        //Si la interacción es un comando
+        // If the interaction is a command
         if (interaction.isCommand() || interaction.isContextMenuCommand()) {
 
-            //variable para almacenar el tipo de comando
+            // Variable to store the type of command
             let commandType;
 
-            //En función del tipo de interacción, se almacenará el tipo adecuado
+            // Depending on the type of interaction, the appropriate type will be stored
             if (interaction.isMessageContextMenuCommand()) commandType = 'messageCommands'
             else if (interaction.isUserContextMenuCommand()) commandType = 'userCommands';
             else commandType = 'chatCommands'
 
-            //Busca el comando por su nombre
+            // Looks for the command by name
             const command = client.commands[commandType].get(interaction.commandName);
-            if (!command) return; //Aborta si no lo encuentra
+            if (!command) return; // Aborts if could not find it
 
-            //Aborta si el comando está deshabilitado
+            // Aborts if the command is disabled
             if (!command.userConfig.enabled) return interaction.reply({embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.information')}`)
                 .setDescription(`${client.customEmojis.grayTick} ${await client.functions.utils.parseLocale(locale.disabledCommand, { commandName: interaction.commandName })}.`)
             ], ephemeral: true});
 
-            //Comprueba si el bot tiene los permisos de canal requeridos
+            // Checks if the bot has the required channel permissions
             const missingChannelPermissions = await client.functions.utils.missingPermissions(interaction.channel, client.baseGuild.members.me, command.config.neededBotPermissions.channel);
             if (missingChannelPermissions) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${await client.functions.utils.parseLocale(locale.missingChannelPermissions, { missingPermissions: missingChannelPermissions })}.`)
             ], ephemeral: true});
 
-            //Comprueba si el bot tiene los permisos de guild requeridos
+            // Checks if the bot has the required guild permissions
             const missingGuildPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.members.me, command.config.neededBotPermissions.guild);
             if (missingGuildPermissions) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${await client.functions.utils.parseLocale(locale.missingGuildPermissions, { missingPermissions: missingGuildPermissions })}.`)
             ], ephemeral: true});
             
-            //Ejecuta el comando
+            // Executes the command
             command.run(interaction, command.userConfig, client.locale.handlers.commands[commandType][command.fileName]);
         };
 
-        //Si la interacción era de autocompletado
+        // If the interaction was autocompleted
         if (interaction.isAutocomplete()) {
 
-            //Obtiene la información del comando
+            // Gets the command information
             const command = client.commands.chatCommands.get(interaction.commandName);
-            if (!command || !command.autocomplete) return; //Aborta si no lo encuentra
+            if (!command || !command.autocomplete) return; // Aborts if could not find it
 
-            //Ejecuta el método de autocompletado
+            // Executes the autocomplete method
             command.autocomplete(interaction, command, client.locale.handlers.commands.chatCommands[command.fileName]);
         };
 
-        //Si la interacción era un botón
+        // If the interaction was a button
         if (interaction.isButton()) {
 
             try {
 
-                //Carga el archivo correspondiente para manejar el botón
+                // Loads the corresponding file to handle the button
                 const handlerFile = import(`../buttons/${interaction.customId}.js`);
 
-                //Ejecuta el manejador de la interacción
+                // Executes the interaction handler
                 handlerFile.default(interaction);
 
             } catch (error) {
 
-                //Si no se encontró el archivo, ignora
+                // If the file was not found, ignores
                 if (error.toString().includes('Cannot find module')) return;
             };
         };
 
     } catch (error) {
 
-        //Devuelve un error en la consola
+        // Returns an error in the console
         logger.error(error.stack);
     };
 };

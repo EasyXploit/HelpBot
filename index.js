@@ -1,90 +1,90 @@
-//Importa globalmente la capacidad de requerir módulos CommonJS
+// Globally imports the ability to require CommonJS modules
 import { createRequire } from 'module';
 global.require = createRequire(import.meta.url);
 
-//Almacena el estado de disponibilidad global del bot
+// Stores the global availability status of the bot
 global.readyStatus = false;
 
-//Carga las variables de entorno desde el fichero .env (si existe)
+// Loads the environment variables from the .env file (if it exists)
 require('dotenv').config();
 
-//Importa globalmente la capacidad de acceder al sistema de archivos
+// Globally imports the ability to access the file system
 import * as fs from 'fs';
 global.fs = fs;
 
-//Si la variable de entorno "NODE_ENV" no está establecida, la establece en modo de desarrollo
+// If the "NODE_ENV" environment variable is not established, it establishes it in development mode
 if (!process.env.NODE_ENV) process.env.NODE_ENV = 'development';
 
-//Importa los cargadores
+// Imports the loaders
 import { loadLogger, loadLocales, splashLogo, loadErrorTracker, loadDatabase, loadFunctions, loadEvents, login } from 'helpbot/loaders';
 
-//Carga el manejador de logs
+// Loads the logs handler
 await loadLogger();
 
-//Almacena la configuración local desde el fichero de configuración
+// Stores the local configuration from the configuration file
 const localConfig = require('./config.json');
 
-//Carga el manejador de errores remoto, si está habilitado
+// Loads the remote error handler, if enabled
 if (localConfig.errorTracking.enabled || process.env.NODE_ENV !== 'production') loadErrorTracker(localConfig);
 
-//Caraga el idioma objetivo desde las variables de entorno, o desde la configuración local
+// Loads the target language from the environment variables, or from the local configuration
 let targetLocale = process.env.LOCALE && process.env.LOCALE.length > 0 ? process.env.LOCALE : localConfig.locale;
 
-//Si el fichero de traducciones paar ese idioma no existe
+// If the translation file for this language does not exist
 if (!fs.existsSync(`./locales/${targetLocale}.json`)) {
 
-    //Manda un aviso a la consola
+    // Sends a notice to the console
     logger.warn(`There is no locale file for the selected language (${targetLocale}), so "en-US" will be used instead`);
 
-    //Reemplaza el idioma objetivo por el por defecto
+    // Replaces the target language with the default one
     targetLocale = 'en-US';
 
-    //Si el idioma venía por configuración
+    // If the language came by configuration
     if (!process.env.LOCALE || process.env.LOCALE.length === 0) {
 
-        //Lo reemplaza por el por defecto
+        // Replaces it with the default one
         localConfig.locale = targetLocale;
 
-        //Actualiza el fichero de configuración con los cambios
+        // Updates the configuration file with the changes
         fs.writeFile('./config.json', JSON.stringify(localConfig, null, 4), async err => { if (err) throw err; });
 
-        //Manda un aviso a la consola
+        // Sends a notice to the console
         logger.warn('The language has been replaced by the default one (en-US) in the local configuration file');
     };
 };
 
-//Almacena las traducciones al idioma configurado
+// Stores the translations to the configured language
 let locale = await require(`./locales/${targetLocale}.json`);
 
-//Uniforma las traducciones si no se corresponden con las del idioma por defecto
+// Uniforms the translations if they do not correspond to those of the default language
 locale = await loadLocales(targetLocale);
 
-//Gestión de promesas rechazadas y no manejadas
+// Rejected and not managed promises management
 process.on('unhandledRejection', error => {
 
-    //Omite determinados errores que no se espera manejar
+    // Omits certain errors that are not expected to be handled
     if (error.toString().includes('Cannot send messages to this user') || error.toString().includes('Unknown Message')) return logger.warn(`The bot was unable to deliver a message to a user due to an API restriction`);;
 
-    //Envía un mensaje de error a la consola
+    // Sends an error message to the console
     logger.error(`Unhandled rejected promise: ${error.stack}`);
 });
 
-//Muestra el logo de arranque en la consola
+// Shows the starting logo on the console
 await splashLogo(locale.lib.loaders.splashLogo);
 
-//Indica que el bot se está iniciando
+// Indicates that the bot is starting
 logger.info(`${locale.index.startupMsg} ...`);
 
-//Ejecuta el cargador de la base de datos
+// Executes the database loader
 await loadDatabase(localConfig);
 
-//Carga globalmente el wrapper para interactuar con la API de Discord
+// Globally loads the wrapper to interact with the Discord's API
 global.discord = require('discord.js');
 
-//Indica el inicio de la carga del cliente en la consola
+// Indicates the start of the client load on the console
 logger.debug('Starting the client');
 
-//Carga una nueva instancia de cliente de Discord
+// Loads a new discord client instance
 global.client = new discord.Client({
     intents: [
         discord.GatewayIntentBits.Guilds,
@@ -104,26 +104,26 @@ global.client = new discord.Client({
     retryLimit: Infinity 
 });
 
-//Indica la finalización de la carga del cliente en la consola
+// Indicates the completion of client loading in the console
 logger.debug('Client started successfully');
 
-//Almacena la librería del manejador de errores remoto en el cliente 
+// Stores the remote error handling library in the client
 client.errorTracker = require('@sentry/node');
 
-//Almacena la librería para generar hashes MD5 en el cliente 
+// Stores the library to generate MD5 hashes in the client
 client.md5 = require('md5');
 
-//Almacena el la configuración local en el cliente
+// Stores the local configuration in the client
 client.localConfig = localConfig;
 
-//Almacena el idioma preferido en el cliente
+// Stores the preferred language in the client
 client.locale = locale;
 
-//Carga las funciones globales en el cliente
+// Loads the global functions in the client
 await loadFunctions();
 
-//Carga los manejadores de eventos
+// Loads the event managers
 await loadEvents();
 
-//Carga el manejador de inicio de sesión
+// Loads the login handler
 await login();

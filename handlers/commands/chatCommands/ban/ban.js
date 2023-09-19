@@ -2,130 +2,130 @@ export async function run(interaction, commandConfig, locale) {
     
     try {
         
-        //Busca al usuario proporcionado
+        // Looks for the user provided
         const user = await client.functions.utils.fetch('user', interaction.options._hoistedOptions[0].value);
 
-        //Devuelve un error si no se ha encontrado al usuario
+        // Returns an error if the user has not been found
         if (!user) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.userNotFound}`)
         ], ephemeral: true});
 
-        //Si el usuario era un bot
+        // If the user was a bot
         if (user.bot) {
 
-            //Almacena si el miembro puede banear bots
+            // Stores if the member can ban bots
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.botsAllowed});
 
-            //Si no está autorizado para ello, devuelve un mensaje de error
+            // If is not authorized to do so, returns an error message
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noBots}`)
             ], ephemeral: true});
         };
 
-        //Busca al miembro proporcionado
+        // Looks for the member provided
         const member = await client.functions.utils.fetch('member', user.id);
 
-        //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
+        // It is checked if the role of the executing member is lower than that of the target member
         if (member && ((interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) || !member.bannable)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}`)
         ], ephemeral: true});
 
-        //Se comprueba si el rol del bot es más bajo que el del miembro objetivo
+        // It is checked if the role of the bot is lower than that of the target member
         if (member && (interaction.guild.members.me.roles.highest.position <= member.roles.highest.position)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badBotHierarchy}`)
         ], ephemeral: true});
         
-        //Se comprueba si el usuario ya estaba baneado
+        // Checks if the user was already banned
         const guildBans = await interaction.guild.bans.fetch();
 
-        //Comprueba si el usuario ya estaba baneado
+        // Checks if the user was already banned
         for (const bans of guildBans) {
 
-            //Si el usuario ya estaba baneado, devuelve un error
+            // If the user was already banned, returns an error
             if (bans[0] === user.id) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.alreadyBanned}`)
             ], ephemeral: true});
         };
 
-        //Almacena la duración provista
+        // Stores the duration provided
         const durationOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.expiration.name);
         const providedDuration = durationOption ? durationOption.value : null;
 
-        //Si no se ha proporcionado una duración
+        // If a duration has not been provided
         if (!providedDuration) {
 
-            //Almacena si el miembro puede banear indefinidamente
+            // Stores if the member can ban indefinitely
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
 
-            //Si no se permitió la ejecución, manda un mensaje de error
+            // If the execution was not allowed, sends an error message
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantPermaBan}.`)
             ], ephemeral: true});
         };
 
-        //Si se ha proporcionado una duración para el baneo
+        // If a duration for the ban has been provided
         if (providedDuration) {
 
-            //Almacena si el miembro puede banear
+            // Stores if the member can ban
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedTime});
 
-            //Si no se permitió la ejecución, manda un mensaje de error
+            // If the execution was not allowed, sends an error message
             if (!authorized && providedDuration > commandConfig.maxRegularTime) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.exceededDuration, { time: await client.functions.utils.msToTime(commandConfig.maxRegularTime) })}.`)
             ], ephemeral: true});
         };
 
-        //Almacena los días de mensajes borrados
+        // Stores the days of erased messages
         const deletedDaysOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.days.name);
         const deletedDays = deletedDaysOption ? deletedDaysOption.value : null;
 
-        //Si no se ha proporcionado una duración
+        // If a duration has not been provided
         if (deletedDays) {
 
-            //Almacena si el miembro puede banear indefinidamente
+            // Stores if the member can ban indefinitely
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSoftBan});
 
-            //Si no se permitió la ejecución, manda un mensaje de error
+            // If the execution was not allowed, sends an error message
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantSoftBan}.`)
             ], ephemeral: true});
         };
         
-        //Almacena la razón
+        // Stores the reason
         const reasonOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.reason.name);
         let reason = reasonOption ? reasonOption.value : null;
 
-        //Capitaliza la razón
+        // Capitalizes the reason
         if (reason) reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;
 
-        //Si no se ha proporcionado razón y el miembro no es el dueño
+        // If a reason has not been provided and the member is not the owner
         if (!reason && interaction.member.id !== interaction.guild.ownerId) {
 
-            //Almacena si el miembro puede omitir la razón
+            // Stores if the member can omit the reason
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
-            //Si no está autorizado, devuelve un mensaje de error
+            // If the member is not authorized, returns an error message
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}`)
             ], ephemeral: true});
         };
 
-        //Almacena la expiración del baneo
+        // Stores the expiration of the ban
         const expiration = providedDuration ? Date.now() + providedDuration : null;
 
-        //Si no hay caché de registros
+        // If there is no records cache
         if (!client.loggingCache) client.loggingCache = {};
 
-        //Crea una nueva entrada en la caché de registros
+        // Creates a new entry in the records cache
         client.loggingCache[user.id] = {
             action: 'ban',
             executor: interaction.member.id,
@@ -134,10 +134,10 @@ export async function run(interaction, commandConfig, locale) {
             expiration: expiration
         };
 
-        //Si se proporcionó una duración
+        // If a duration was provided
         if (providedDuration) {
 
-            //Registra el baneo en la base de datos
+            // Records the ban in the database
             await client.functions.db.genData('ban', {
                 userId: user.id,
                 moderatorId: interaction.member.id,
@@ -145,16 +145,16 @@ export async function run(interaction, commandConfig, locale) {
             });
         };
 
-        //Almacena los parámetros para el baneo
+        // Stores the parameters for the ban
         const banParameters = { reason: reason || locale.undefinedReason };
 
-        //Si se ha proporcionado borrado de mensajes (en días), almacena el parámetro convertido a segundos
+        // If deletion of messages (in days) has been provided, stores the parameter turned to seconds
         if (deletedDays) banParameters.deleteMessageSeconds = deletedDays * 24 * 60 * 60;
 
-        //Genera una descripción para el embed de notificación
+        // Generates a description for the notification embed
         const notificationEmbedDescription = reason ? await client.functions.utils.parseLocale(locale.notificationEmbed.withReason, { userTag: user.tag, reason: reason }) : await client.functions.utils.parseLocale(locale.notificationEmbed.withoutReason, { userTag: user.tag })
 
-        //Envía una confirmación como respuesta a la interacción
+        // Sends a confirmation in response to the interaction
         await interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
             .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
@@ -162,7 +162,7 @@ export async function run(interaction, commandConfig, locale) {
 
         try {
         
-            //Envía una notificación al miembro
+            // Sends a notification to the member
             if (member) await user.send({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
@@ -177,17 +177,17 @@ export async function run(interaction, commandConfig, locale) {
 
         } catch (error) {
 
-            //Maneja los errores ocurridos cuando no se puede entregar un mensaje privado
+            // Handles the errors that occur when a private message cannot be delivered
             if (error.toString().includes('Cannot send messages to this user')) logger.warn(`The bot was unable to deliver the "ban log" message to @${user.username} (${user.id}) due to an API restriction`);
             else await client.functions.managers.interactionError(error, interaction);
         };
 
-        //Banea al usuario
+        // Bans the user
         await interaction.guild.members.ban(user, banParameters);
         
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

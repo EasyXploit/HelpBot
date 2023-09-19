@@ -2,47 +2,47 @@ export async function run(interaction, commandConfig, locale) {
     
     try {
             
-        //Busca el canal en la guild
+        // Looks for the channel in the guild
         const channel = await client.functions.utils.fetch('channel', interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : interaction.channelId);
 
-        //Devuelve un error si no se ha encontrado el canal
+        // Returns an error if the channel has not been found
         if (interaction.options._hoistedOptions[1] && !channel) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noChannel, { id: interaction.options._hoistedOptions[1].value })}.`)
         ], ephemeral: true});
 
-        //Almacena si faltan permisos en el canal objetivo
+        // Stores if permissions are missing on the target channel
         const missingPermissions = await client.functions.utils.missingPermissions(channel, client.baseGuild.members.me, ['ViewChannel', 'ReadMessageHistory']);
         if (missingPermissions) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noBotPermission, { channel: channel, missingPermissions: missingPermissions })}.`)
         ], ephemeral: true});
         
-        //Busca el mensaje en el canal
+        // Looks for the message on the channel
         const msg = await client.functions.utils.fetch('message', interaction.options._hoistedOptions[0].value, channel);
         if (!msg) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.msgNotFound, { msgId: interaction.options._hoistedOptions[0].value })}.`)
         ], ephemeral: true});
 
-        //Comprueba si el mensaje es del bot
+        // Checks if the message is from the bot
         if (msg.author.id !== client.user.id) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantEdit}.`)
         ], ephemeral: true});
 
-        //Almacena el modo del mensaje a editar
+        // Stores the message to edit
         const type = msg.embeds.length > 0 ? 'embed' : 'normal';
 
-        //Genera un nuevo modal
+        // Generates a new modal
         const messageContentModal = new discord.ModalBuilder()
             .setTitle(locale.bodyModal.title)
             .setCustomId('send-body');
 
-        //Genera la única fila del modal
+        // Generates the only modal for the row
         const bodyRow = new discord.ActionRowBuilder().addComponents(
 
-            //Añade un campo de texto a la fila
+            // Adds a text field to the row
             new discord.TextInputBuilder()
                 .setCustomId('body')
                 .setLabel(locale.bodyModal.fieldTitle)
@@ -52,37 +52,37 @@ export async function run(interaction, commandConfig, locale) {
                 .setRequired(true)
         );
 
-        //Adjunta los componentes al modal
+        // Attaches the components to the modal
         messageContentModal.addComponents([bodyRow]);
 
-        //Muestra el modal al usuario
+        // Shows the modal to the user
         await interaction.showModal(messageContentModal);
 
-        //Crea un filtro para obtener el modal esperado
+        // Creates a filter to get the expected modal
         const modalsFilter = (interaction) => interaction.customId === 'send-body';
 
-        //Espera a que se rellene el modal
+        // Waits for the modal to be filled
         const newContent = await interaction.awaitModalSubmit({ filter: modalsFilter, time: 300000 }).then(async modalInteraction => {
 
-            //Responde a la interacción con una confirmación
+            // Responds to the interaction with a confirmation
             await modalInteraction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.correctEmbed.title}`)
                 .setDescription(`${locale.correctEmbed.description}.`)
             ], ephemeral: true});
 
-            //Devuelve el campo del cuerpo
+            // Returns the field of the body
             return modalInteraction.fields.getField('body').value;
             
         }).catch(() => { null; });
 
-        //Aborta si no se proporcionó un cuerpo en el tiempo esperado
+        // Aborts if a body was not provided in the expected time
         if (!newContent) return;
 
-        //Comprueba si ha de enviar un embed o un mensaje normal
+        // Checks if has to send an embed or a normal message
         if (type === 'embed') {
 
-            //Edita el embed con el nuevo contenido
+            // Edits the embed with the new content
             msg.edit({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setDescription(newContent)
@@ -90,13 +90,13 @@ export async function run(interaction, commandConfig, locale) {
 
         } else if (type === 'normal') {
 
-            //Edita el mensaje con el nuevo contenido
+            // Edits the message with the new content
             await msg.edit({ content: newContent });
         };
 
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

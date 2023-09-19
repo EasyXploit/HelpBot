@@ -2,105 +2,105 @@ export async function run(interaction, commandConfig, locale) {
 
     try {
 
-        //Busca el miembro en cuestión
+        // Looks for the member in question
         const member = interaction.options._hoistedOptions[0] ? await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value): await client.functions.utils.fetch('member', interaction.member.id);
 
-        //Almacena el ID del miembro
+        // Stores the member ID
         const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
 
-        //Comprueba, si corresponde, que el miembro tenga permiso para ver el historial de otros
+        // Checks, if applicable, that the member has permission to see the history of others
         if (interaction.member.id !== memberId) {
 
-            //Variable para saber si está autorizado
+            // Variable to know if is authorized
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.canSeeAny});
 
-            //Si no se permitió la ejecución, manda un mensaje de error
+            // If the execution was not allowed, sends an error message
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.nonPrivileged, { interactionAuthor: interaction.member })}.`)
             ], ephemeral: true});
         };
 
-        //Comprueba si se trata de un bot
+        // Checks if it is a bot
         if (member && member.user.bot) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
 
-        //Almacena la página actual
+        // Stores the current page
         let actualPage = 1, totalPages = 1;
 
-        //Almacena el total de sanciones, en 1 día y 1 semana, y las páginas totales
+        // Stores the total sanctions, in 1 day and 1 week, and the total pages
         let onDay = 0, onWeek = 0, total = 0;
 
-        //Almacena el perfil del miembro, o lo crea
+        // Stores the member's profile, or creates it
         let memberProfile = await client.functions.db.getData('profile', memberId);
 
-        //Si el miembro no está en el servidor y no tiene perfil, devuelve un error
+        // If the member is not on the server and has no profile, returns an error
         if (!memberProfile && !member) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ], ephemeral: true});
 
-        //Crea el perfil del miembro si no lo tiene
+        // Creates the member's profile if is not already created
         if (!memberProfile) memberProfile = await client.functions.db.genData('profile', { userId: memberId });
 
-        //Almacena las advertencias del miembro
+        // Stores member warnings
         let memberWarns = memberProfile.moderationLog.warnsHistory;
 
-        //Invierte el orden de aparición de las advertencias
+        // Inverts the order of appearance of warnings
         memberWarns = memberWarns.reverse();
 
-        //Almacena el total de ellas
+        // Stores the total of them
         total = memberWarns.length;
 
-        //Almacena el total de páginas
+        // Stores the total pages
         totalPages = Math.ceil(memberWarns.length / 10);
 
-        //Por cada advertencia del miembro
+        // For each member warning
         for (const warn of memberWarns) {
 
-            //Si ocurrió en un día o menos, lo contabiliza
+            // If it occurred in a day or less, counts it
             if ((Date.now() - warn.timestamp) <= 86400000) onDay++;
 
-            //Si ocurrió en una semana o menos, lo contabiliza
+            // If it occurred in a week or less, counts it
             if ((Date.now() - warn.timestamp) <= 604800000) onWeek++;
         };
 
-        //Almacena la última interacción del comando
+        // Stores the last interaction of the command
         let latestInteraction;
         
         do {
 
-            //Almacena el primer índice del rango de páginas
+            // Stores the first pages range index
             const fromRange = 10 * actualPage - 9;
 
-            //Almacena el último índice del rango de páginas
+            // Stores the last index of the page range
             const toRange = 10 * actualPage;
 
-            //Almacena la lista de advertencias
+            // Stores the warning list
             let board = '';
 
-            //Por cada una de los índices del rango
+            // For each of the rank indexes
             if (memberWarns) for (let index = fromRange - 1; index < toRange; index++) {
 
-                //Si no hay más advertencias, para el bucle
+                // If there are no more warnings, stops the loop
                 if (!memberWarns[index]) break;
 
-                //Almacena las claves de la advertencia
+                // Stores the warning keys
                 const warn = memberWarns[index];
 
-                //Busca y almacena el moderador que aplicó la sanción
+                // Searches and stores the moderator who applied the sanction
                 const moderator = warn.executor.type === 'system' ? locale.warnSystemExecutor : await client.functions.utils.fetch('member', warn.executor.memberId) || locale.unknownModerator;
 
-                //Añade una nueva fila con los detalles de la advertencia
+                // Adds a new row with the details of the warning
                 board += `\`${warn.warnId}\` • ${moderator} • <t:${Math.round(new Date(parseInt(warn.timestamp)) / 1000)}>\n${warn.reason}\n\n`;
             };
 
-            //Almacena la sanción actual, si aplica
+            // Stores the current sanction, if applies
             const sanction = member && member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now() ? `${locale.timeoutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>` : `\`${locale.noTimeout}\``;
 
-            //Genera el embed de las infracciones
+            // Generates the infractions embed
             let newPageEmbed = new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setTitle(`⚠ ${locale.infractionsEmbed.title}`)
@@ -113,24 +113,24 @@ export async function run(interaction, commandConfig, locale) {
                 )
                 .setFooter({ text: await client.functions.utils.parseLocale(locale.infractionsEmbed.page, { actualPage: actualPage, totalPages: totalPages > 0 ? totalPages : 1 }), iconURL: client.baseGuild.iconURL({dynamic: true}) });
 
-            //Si se encontró el miembro, muestra su avatar en el embed
+            // If the member was found, shows his avatar in the embed
             if (member) newPageEmbed.setThumbnail(member.user.displayAvatarURL());
 
-            //Invoca el gestor de navegación mediante botones
+            // Invokes the button navigation manager
             const buttonNavigationResult = await client.functions.managers.buttonNavigation(interaction, 'infractions', actualPage, totalPages, newPageEmbed, latestInteraction, null);
 
-            //Almacena la última interacción
+            // Stores the last interaction
             latestInteraction = buttonNavigationResult.latestInteraction;
 
-            //Almacena la nueva página actual
+            // Stores the new current page
             actualPage = buttonNavigationResult.newActualPage;
 
-        //Mientras no se deba abortar por inactividad, continuará el bucle
+        // As long as it should not be aborted by inactivity, the loop will continue
         } while (actualPage !== false);
 
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

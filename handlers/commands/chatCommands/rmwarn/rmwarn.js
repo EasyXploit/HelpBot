@@ -2,73 +2,73 @@ export async function run(interaction, commandConfig, locale) {
     
     try {
 
-        //Busca al miembro proporcionado
+        // Looks for the member provided
         const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
 
-        //Almacena el ID del miembro
+        // Stores the member ID
         const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
 
-        //Devuelve un error si se ha proporcionado un bot
+        // Returns an error if a bot has been provided
         if (member && member.user.bot) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
         
-        //Comprueba si se ha aportado alguna advertencia
+        // Checks if any warning has been provided
         const warnIdOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.warn.name);
         const warnId = warnIdOption ? warnIdOption.value : null;
 
-        //Almacena la razón y la capitaliza, si se ha aportado
+        // Stores the reason and capitalizes it, if it has been provided
         const reasonOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.reason.name);
         const reason = reasonOption ? `${reasonOption.value.charAt(0).toUpperCase()}${reasonOption.value.slice(1)}` : null;
 
-        //Si no se ha proporcionado razón y el miembro no es el dueño
+        // If a reason has not been provided and the member is not the owner
         if (!reason && interaction.member.id !== interaction.guild.ownerId) {
 
-            //Almacena si el miembro puede omitir la razón
+            // Stores if the member can omit the reason
             const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.reasonNotNeeded});
 
-            //Si no está autorizado, devuelve un mensaje de error
+            // If the member is not authorized, returns an error message
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
             ], ephemeral: true});
         };
         
-        //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
+        // It is checked if the role of the executing member is lower than that of the target member
         if (member && interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ], ephemeral: true});
         
-        //Almacena el perfil del miembro
+        // Stores the member's profile
         let memberProfile = await client.functions.db.getData('profile', member.id);
 
-        //Comprueba si el miembro tiene warns
+        // Checks if the member has warns
         if (!memberProfile || memberProfile.moderationLog.warnsHistory.length === 0) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noWarns}`)
         ], ephemeral: true});
 
-        //Almacena las advertencias del miembro
+        // Stores the member's warnings
         let memberWarns = memberProfile.moderationLog.warnsHistory;
 
-        //Almacena si el miembro puede borrar cualquiera
+        // Stores if the member can erase anyone
         const canRemoveAny = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
 
-        //Crear variables para almacenar los embeds a enviar
+        // Creates variables to stores the embeds to send
         let successEmbed, loggingEmbed, toDMEmbed;
 
-        //Si hay que eliminar todas las infracciones
+        // If has to delete all the infractions
         if (!warnId) {
 
-            //Comprueba si el miembro puede eliminar cualquier advertencia
+            // Checks if the member can delete any warning
             if (!canRemoveAny) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantRemoveAny}.`)
             ], ephemeral: true});
 
-            //Genera un mensaje para el canal de registros
+            // Generates a message for the records channel
             loggingEmbed = new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
                 .setTitle(`📑 ${locale.loggingEmbedAll.title}`)
@@ -80,16 +80,16 @@ export async function run(interaction, commandConfig, locale) {
                     { name: locale.loggingEmbedAll.memberId, value: memberId.toString(), inline: true }
                 );
 
-            //Genera una notificación de la acción para el canal de invocación
+            // Generates a notification of the action for the invocation channel
             successEmbed = new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbedAll.title}`)
                 .setDescription(await client.functions.utils.parseLocale(locale.notificationEmbedAll.description, { member: member ? member.user.tag : `${memberId} (ID)` }));
 
-            //Si se encontró al miembro, añade su tag al registro
+            // If the member was found, adds his tag to the register
             member ? loggingEmbed.addFields({ name: locale.loggingEmbedAll.member, value: member.user.tag, inline: true }) : null;
 
-            //Genera una notificación para el miembro
+            // Generates a notification for the member
             if (member) toDMEmbed = new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
                 .setAuthor({ name: locale.privateEmbedAll.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
@@ -99,47 +99,47 @@ export async function run(interaction, commandConfig, locale) {
                     { name: locale.privateEmbedAll.reason, value: reason || locale.undefinedReason, inline: true }
                 );
 
-            //Vacía el array de advertencias
+            // Empties the array of warnings
             memberProfile.moderationLog.warnsHistory = [];
 
-            //Actualiza la base de datos con los cambios
+            // Updates the database with the changes
             await client.functions.db.setData('profile', memberId, memberProfile);
 
-        } else { //Si solo hay que eliminar una infracción
+        } else { // If only has to delete an infraction
 
-            //Almacena la advertencia, si la encuentra
+            // Stores the warning, if found
             let foundWarn = false;
 
-            //Por cada una de las advertencias del miembro
+            // For each of the warnings of the member
             for (let index = 0; index < memberWarns.length; index++) {
 
-                //Si el Id coincide con la búsqueda
+                // If the ID matches the search
                 if (memberWarns[index].warnId === warnId) {
 
-                    //Almacena la advertencia
+                    // Stores the warning
                     foundWarn = memberWarns[index];
 
-                    //Elimina la entrada de la lista
+                    // Deletes the entry of the list
                     memberWarns.splice(index, 1);
 
-                    //Para el bucle
+                    // Stops the loop
                     break;
                 };
             };
 
-            //Envía un mensaje de error si no se encuentra la advertencia
+            // Sends an error message if the warning was not found
             if (!foundWarn) return interaction.reply({ embeds: [new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.warnNotFound, { warnId: warnId })}`)
             ], ephemeral: true});
 
-            //Comprueba si puede borrar esta advertencia
+            // Checks if can erase this warning
             if ((foundWarn.executor.type === 'system' || foundWarn.executor.memberId !== interaction.member.id) && !canRemoveAny) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantRemoveAny}.`)
             ], ephemeral: true});
 
-            //Genera un mensaje para el canal de registros
+            // Generates a message for the records channel
             loggingEmbed = new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
                 .setTitle(`📑 ${locale.loggingEmbedSingle.title}`)
@@ -153,16 +153,16 @@ export async function run(interaction, commandConfig, locale) {
                     { name: locale.loggingEmbedSingle.memberId, value: memberId.toString(), inline: true }
                 );
 
-            //Genera una notificación de la acción para el canal de invocación
+            // Generates a notification of the action for the invocation channel
             successEmbed = new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.notificationEmbedSingle.title}`)
                 .setDescription(await client.functions.utils.parseLocale(locale.notificationEmbedSingle.description, { warnId: warnId, member: member ? member.user.tag : `${memberId} (ID)` }));
 
-            //Si se encontró al miembro, añade su tag al registro
+            // If the member was found, adds his tag to the record
             member ? loggingEmbed.addFields({ name: locale.loggingEmbedSingle.member, value: member.user.tag, inline: true }) : null;
 
-            //Genera una notificación para el miembro
+            // Generates a notification for the member
             if (member) toDMEmbed = new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
                 .setAuthor({ name: locale.privateEmbedSingle.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
@@ -174,104 +174,104 @@ export async function run(interaction, commandConfig, locale) {
                     { name: locale.privateEmbedSingle.reason, value: reason || locale.undefinedReason, inline: true }
                 );
 
-            //Actualiza la base de datos con los cambios
+            // Updates the database with the changes
             await client.functions.db.setData('profile', member.id, memberProfile);
         };
 
-        //Envía un registro al canal de registros
+        // Sends a record to the records channel
         await client.functions.managers.sendLog('warnRemoved', 'embed', loggingEmbed);
 
-        //Envía una notificación de la acción en el canal de invocación
+        // Sends a notification of the action on the invocation channel
         await interaction.reply({ embeds: [successEmbed] });
 
         try {
 
-            //Envía un mensaje de confirmación al miembro
+            // Sends a confirmation message to the member
             if (member) await member.send({ embeds: [toDMEmbed] });
 
         } catch (error) {
 
-            //Maneja los errores ocurridos cuando no se puede entregar un mensaje privado
+            // Handles the errors that occur when a private message cannot be delivered
             if (error.toString().includes('Cannot send messages to this user')) logger.warn(`The bot was unable to deliver a "removed warn log" message to @${member.user.username} (${member.id}) due to an API restriction`);
             else logger.error(error.stack);
         };
         
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };
 
-//Exporta la función de autocompletado
+// Exports the autocomplete function
 export async function autocomplete(interaction, command, locale) {
 
     try {
 
-        //Almacena el ID del miembro objetivo
+        // Stores the target member ID
         const memberId = interaction.options._hoistedOptions[0].value;
 
-        //Almacena el valor parcial que ha introducido el usuario
+        // Stores the partial value that the user has introduced
         const focusedValue = interaction.options.getFocused();
 
-        //Almacena el perfil del miembro
+        // Stores the member's profile
         let memberProfile = await client.functions.db.getData('profile', memberId);
 
-        //Almacena las advertencias del miembro
+        // Stores the member's warnings
         let memberWarns = memberProfile ? memberProfile.moderationLog.warnsHistory : null;
         
-        //Envía una lista vacía si el usuario no tiene warns
+        // Sends an empty list if the user does not have warns
         if (!memberWarns || memberWarns.length === 0) return await interaction.respond([]);
 
-        //Almacena si el miembro puede borrar cualquier advertencia
+        // Stores if the member can erase any warning
         const canRemoveAny = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: command.userConfig.removeAny});
 
-        //Almacena las advertencias de manera cronológica inversa
+        // Stores warnings in reverse chronological manner
         const reversedWarns = memberWarns.reverse();
 
-        //Crea un objeto para almacenar los warns mapeados y ordenados
+        // Creates an object to store the mapped and ordered warns
         const sortedWarnsObject = {};
 
-        //Por cada uno de los warns del array de warns coronológicos
+        // For each of the warns of the chronologically ordered warns array
         for (const warnData of reversedWarns) {
 
-            //Omite esta advertencia si no fue emitida por el ejecutor del comando, y no tiene permiso para eliminar todas
+            // Omits this warning if it was not issued by the executor of the command, and has no permission to delete all
             if (!canRemoveAny && (warnData.executor.type === 'system' || warnData.executor.memberId !== interaction.member.id)) continue;
 
-            //Genera una fecha a partir de la advertencia
+            // Generates a date from the warning
             const warnDate = new Date(warnData.timestamp);
     
-            //Obtiene una cadena a partir de la fecha de la advertencia
+            // Gets a string from the warning date
             const dateString = `${warnDate.getDate()}/${warnDate.getMonth() + 1}/${warnDate.getFullYear()} ${warnDate.getHours()}:${warnDate.getMinutes()}:${warnDate.getSeconds()}`;
 
-            //Obtiene el moderador de la advertencia, o una cadena genérica
+            // Gets the warning moderator, or a generic string
             const moderatorUser = warnData.executor.type === 'system' ? locale.autocomplete.systemModerator : await client.functions.utils.fetch('user', warnData.executor.memberId) || locale.autocomplete.unknownModerator;
 
-            //Genera una cadena para mostrarla cómo resultado
+            // Generates a string to show it as a result
             let warnString = `${warnData.warnId} • ${moderatorUser.tag ? moderatorUser.tag : moderatorUser} • ${dateString} • ${warnData.reason}`;
 
-            //Recorta la cadena si es necesario
+            // Cuts the string if necessary
             warnString = warnString.length > 100 ? `${warnString.slice(0, 96)} ...` : warnString;
 
-            //Si no se ha proporcionado valor a buscar, o el proporcionado encaja parcialmente, lo almacena en el objeto de warns
+            // If no value has been provided, or the provided partial fits, stores it in the warns object
             if (focusedValue.length === 0 || warnString.toLowerCase().includes(focusedValue.toLowerCase())) sortedWarnsObject[warnData.warnId] = warnString;
         };
 
-        //Genera un array mapeado a partir del objeto de warns
+        // Generates an array mapped from the object of warns
         const arrayOfWarns = Object.entries(sortedWarnsObject).map((entry) => ( { [entry[0]]: entry[1] } ));
 
-        //Mapea el array de advertencias en par nombre-valor
+        // Maps the array of warnings in a name-value manner
         let mappedList = arrayOfWarns.map(warn => ({ name: Object.values(warn)[0], value: Object.keys(warn)[0] }));
 
-        //Recorta la lista si es demasiado grande
+        // Cuts the list if it's too big
         mappedList = mappedList.slice(0, 25);
 
-        //Responde a la interacción con la lista
+        // Responds to the interaction with the list
         await interaction.respond(mappedList);
 
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

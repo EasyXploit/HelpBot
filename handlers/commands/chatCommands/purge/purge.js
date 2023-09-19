@@ -2,73 +2,73 @@ export async function run(interaction, commandConfig, locale) {
     
     try {
 
-        //Almacena el ID del canal proporcionado, o el del actual
+        // Stores the ID of the channel provided, or the current one
         const channelId = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : interaction.channelId;
         const channel = await client.functions.utils.fetch('channel', channelId);
 
-        //Comprueba si el canal existe
+        // Checks if the channel exists
         if (!channel || ![discord.ChannelType.GuildText, discord.ChannelType.GuildNews, discord.ChannelType.GuildNewsThread, discord.ChannelType.GuildPublicThread, discord.ChannelType.GuildPrivateThread].includes(channel.type)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidChannel}.`)
         ], ephemeral: true});
 
-        //Comprueba si el miembro tiene permisos para ejecutar esta acción
+        // Checks if the member has permissions to execute this action
         const missingPermissions = await client.functions.utils.missingPermissions(channel, interaction.member, ['ManageMessages', 'ReadMessageHistory'])
         if (missingPermissions) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noPermission, { channel: channel, missingPermissions: missingPermissions })}.`)
         ], ephemeral: true});
 
-        //Se obtiene la cantidad de mensajes especificada (incluyendo el de invocación)
+        // The specified number of messages is obtained (including the invocation)
         const messages = await channel.messages.fetch({limit: parseInt(interaction.options._hoistedOptions[0].value)});
 
-        //Si no se encontraron mensajes en el canal, devuelve un error
+        // If messages were not found on the channel, returns an error
         if (messages.size === 0) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noMessages, { channel: channel })}.`)
         ], ephemeral: true});
 
-        //Almacena los mensajes que serán borrados
+        // Stores the messages that will be deleted
         const msgsToDelete = new discord.Collection();
 
-        //Por cada uno de los mensajes obtenidos
+        // For each of the messages obtained
         await messages.forEach(msg => {
 
-            //Lo añade al array "msgsToDelete" si tienen una edad menor a 2 semanas 
+            // Adds it to the array if they are less than 2 weeks
             if (Date.now() - msg.createdTimestamp  < 1209600000) msgsToDelete.set(msg.id, msg);
         });
 
-        //Si ningún mensaje era lo suficientemente reciente, devuelve un error
+        // If no message was recent enough, returns an error
         if (msgsToDelete.size === 0) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.expiredMessages}.`)
         ], ephemeral: true});
 
-        //Purga los mensajes del canal seleccionado
+        // Purges the messages of the selected channel
         await channel.bulkDelete(msgsToDelete);
 
-        //Almacena la descripción del embed de confirmación
+        // Stores the confirmation embed description
         let successEmbedDescription = `${locale.successEmbed.description}: \`${msgsToDelete.size}\``;
 
-        //Almacena el mensaje de confirmación
+        // Stores the confirmation message
         let successEmbed = new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
             .setTitle(`${client.customEmojis.greenTick} ${locale.successEmbed.title}`)
             .setDescription(successEmbedDescription);
 
-        //Si se omitieron mensajes, se indica en el footer del embed
+        // If messages were omitted, it is indicated in the embed footer
         if (msgsToDelete.size < messages.size) successEmbed.setFooter({  text: `${await client.functions.utils.parseLocale(locale.successEmbed.footer, { omittedCount: messages.size - msgsToDelete.size })}.` });
 
-        //Si el canal de la purga es el mismo que el de invocación, avisa de la eliminación de la confirmación
+        // If the purge channel is the same as the invocation, warns of confirmation elimination
         if (channel.id === interaction.channelId) successEmbed.setDescription(`${successEmbedDescription}\n${await client.functions.utils.parseLocale(locale.successEmbed.willBeDeleted, { inSeconds: `<t:${Math.round(new Date(parseInt(Date.now() + 5000)) / 1000)}:R>` })}`)
 
-        //Envía un mensaje de confirmación
+        // Sends a confirmation message
         await interaction.reply({ embeds: [successEmbed] })
         
-        //Si el canal de la purga es el mismo que el de invocación, elimina la confirmación a los 5 segundos
+        // If the purge channel is the same as the invocation, deletes confirmation at 5 seconds
         if (channel.id === interaction.channelId) setTimeout(() => interaction.deleteReply(), 5000);
 
-        //Envía un registro al canal de registro
+        // Sends a record to the records channel
         await client.functions.managers.sendLog('purgedChannel', 'embed', new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
@@ -77,7 +77,7 @@ export async function run(interaction, commandConfig, locale) {
 
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

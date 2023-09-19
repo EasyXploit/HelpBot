@@ -1,30 +1,30 @@
-//Exporta la función de manejo del evento
+// Exports the event management function
 export default async (banData, locale) => {
 
     try {
 
-        //Comprueba si el bot está listo para manejar eventos
+        // Checks if the bot is ready to handle events
         if (!global.readyStatus) return;
 
-        //Aborta si no es un evento de la guild registrada
+        // Aborts if it is not an event from the base guild
         if (banData.guild.id !== client.baseGuild.id) return;
 
-        //Almacena la caché de registros del usuario baneado, si existe
+        // Stores the cache of records of the banned user, if it exists
         const loggingCache = (client.loggingCache && client.loggingCache[banData.user.id]) ? client.loggingCache[banData.user.id] : null;
 
-        //Busca el último baneo en el registro de auditoría
+        // Looks for the last ban in the audit registry
         const fetchedLogs = await banData.guild.fetchAuditLogs({
             limit: 1,
             type: discord.AuditLogEvent.MemberBanAdd,
         });
 
-        //Almacena el primer resultado de la búsqueda
+        // Stores the first search result
         const banLog = fetchedLogs.entries.first();
         
-        //Si no hubo registro, o este era inconcluso
+        // If there was no record, or this was inconclusive
         if (!loggingCache && (!banLog || banLog.target.id !== banData.user.id)) {
 
-            //Envía un mensaje al canal de registros
+            // Sends a message to the records channel
             await client.functions.managers.sendLog('bannedMember', 'embed', new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setAuthor({ name: await client.functions.utils.parseLocale(locale.inconclusiveLoggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL() })
@@ -37,42 +37,42 @@ export default async (banData, locale) => {
                 )
             );
 
-        //Si se encontró un baneo en el primer resultado
+        // If a ban was found in the first result
         } else {
 
-            //Almacena el ejecutor y la razón
+            // Stores the executor and the reason
             let executor = banLog.executor;
             let reason = banLog.reason;
 
-            //Almacena la expiración del baneo y los días de mensajes borrados
+            // Stores the expiration of the ban and the days of erased messages
             let expiration, deletedDays;
         
-            //Si se trata de una caché de baneo
+            // If it's a ban cache
             if (loggingCache && loggingCache.action.includes('ban')) {
 
-                //Si esta incluía vencimiento, lo almacena
+                // If this included expiration, it stores it
                 if (loggingCache.expiration) expiration = loggingCache.expiration;
 
-                //Si esta incluía días de mensajes borrados, los almacena
+                // If this included erased messages, stores them
                 if (loggingCache.deletedDays) deletedDays = loggingCache.deletedDays;
 
-                //Almacena al moderador correcto
+                // Stores the correct moderator
                 executor = await client.users.fetch(loggingCache.executor);
 
-                //Almacena la razón formateada
+                // Stores the formatted reason
                 reason = loggingCache.reason;
 
-                //Borra la caché de registros del miembro
+                // Deletes the member's records cache
                 delete client.loggingCache[banData.user.id];
             };
 
-            //Si el miembro baneado era un bot
+            // If the banned member was a bot
             if (banData.user.bot) {
 
-                //Si el baneo fue al propio bot, ignora
+                // If the ban went to the bot himself, ignores
                 if (banData.user.id === client.user.id) return;
 
-                //Envía un registro al canal de registros
+                // Sends a record to the records channel
                 await client.functions.managers.sendLog('bannedBot', 'embed', new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
@@ -80,7 +80,7 @@ export default async (banData, locale) => {
                 );
             };
 
-            //Envía un mensaje al canal de registros
+            // Sends a message to the records channel
             await client.functions.managers.sendLog('bannedMember', 'embed', new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL() })
@@ -96,7 +96,7 @@ export default async (banData, locale) => {
 
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.eventError(error);
     };
 };

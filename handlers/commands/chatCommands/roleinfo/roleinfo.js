@@ -2,16 +2,16 @@ export async function run(interaction, commandConfig, locale) {
 
     try {
 
-        //Busca el rol en la guild
+        // Looks for the role in the guild
         const role = await client.functions.utils.fetch('role', interaction.options._hoistedOptions[0].value);
 
-        //Si el rol no existe, devuelve un error
+        // If the role does not exist, returns an error
         if (!role) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.roleNotFound, { role: interaction.options._hoistedOptions[0].value })}.`)
         ], ephemeral: true});
 
-        //Envía un embed con la información del rol
+        // Sends an embed with the information of the role
         await interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(role.hexColor)
             .setTitle(`🔖 ${locale.resultEmbed.title}`)
@@ -31,7 +31,7 @@ export async function run(interaction, commandConfig, locale) {
 
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

@@ -2,81 +2,81 @@ export async function run(interaction, commandConfig, locale) {
     
     try {
 
-        //En función del comando especificado
+        // Depending on the specified command
         switch (interaction.options._hoistedOptions[0].value) {
             
-            case 'welcome': //Emite el evento "guildMemberAdd"
+            case 'welcome': // Emits the "guildMemberAdd" event
                 
-                //Devuelve un error si no se ha proporcionado un miembro
+                // Returns an error if a member has not been provided
                 if (!interaction.options._hoistedOptions[1]) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.welcome.memberNotProvided}.`)
                 ], ephemeral: true});
 
-                //Busca el miembro en la guild
+                // Looks for the member in the Guild
                 const targetWelcomeMember = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[1].value);
 
-                //Devuelve un error si no se ha proporcionado un miembro válido
+                // Returns an error if a valid member has not been provided
                 if (!targetWelcomeMember) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.welcome.invalidMember}.`)
                 ], ephemeral: true});
                 
-                //Emite el evento
+                // Emits the event
                 await client.emit('guildMemberAdd', targetWelcomeMember);
 
-                //Envía un mensaje de confirmación
+                // Sends a confirmation message
                 await interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                     .setDescription(`${client.customEmojis.greenTick} ${locale.welcome.done}`)
                 ], ephemeral: true});
 
-                //Para la ejecución
+                // Stops the execution
                 break;
         
-            case 'goodbye': //Emite el evento "guildMemberRemove"
+            case 'goodbye': // Emits the "guildMemberRemove" event
                 
-                //Devuelve un error si no se ha proporcionado un miembro
+                // Returns an error if a member has not been provided
                 if (!interaction.options._hoistedOptions[1]) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.goodbye.memberNotProvided}.`)
                 ], ephemeral: true});
 
-                //Busca el miembro en la guild
+                // Looks for the member in the Guild
                 const targetGoodybeMember = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[1].value);
 
-                //Devuelve un error si no se ha proporcionado un miembro válido
+                // Returns an error if a valid member has not been provided
                 if (!targetGoodybeMember) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.goodbye.invalidMember}.`)
                 ], ephemeral: true});
                 
-                //Emite el evento
+                // Emits the event
                 await client.emit('guildMemberRemove', targetGoodybeMember);
 
-                //Envía un mensaje de confirmación
+                // Sends a confirmation message
                 await interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                     .setDescription(`${client.customEmojis.greenTick} ${locale.goodbye.done}`)
                 ], ephemeral: true});
 
-                //Para la ejecución
+                // Stops the execution
                 break;
             
-            default: //En caso de que no se haya proporcionado un comando existente
+            default: // In case an existing command has not been provided
 
-                //Envía un mensaje de error
+                // Sends an error message
                 await interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.invalidCommand}.`)
                 ], ephemeral: true});
 
-                //Para la ejecución
+                // Stops the execution
                 break;
         };
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

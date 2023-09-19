@@ -2,35 +2,35 @@ export async function run(interaction, commandConfig, locale) {
     
     try {
 
-        //Almacena el ID del canal proporcionado, o el del actual
+        // Stores the ID of the channel provided, or the current one
         const destinationChannelId = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : interaction.channelId;
         const destinationChannel = await client.functions.utils.fetch('channel', destinationChannelId);
 
-        //Comprueba si el canal existe
+        // Checks if the channel exists
         if (!destinationChannel || ![discord.ChannelType.GuildText, discord.ChannelType.GuildNews, discord.ChannelType.GuildNewsThread, discord.ChannelType.GuildPublicThread, discord.ChannelType.GuildPrivateThread].includes(destinationChannel.type)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidChannel}.`)
         ], ephemeral: true});
 
-        //Comprueba si el miembro tiene permisos para ejecutar esta acción
+        // Checks if the member has permissions to execute this action
         const missingPermissions = await client.functions.utils.missingPermissions(destinationChannel, interaction.member, ['SendMessages'])
         if (missingPermissions) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noPermission, { channel: destinationChannel, missingPermissions: missingPermissions })}.`)
         ], ephemeral: true});
 
-        //Almacena el modo seleccionado
+        // Stores the selected mode
         const type = interaction.options._hoistedOptions[0].value;
 
-        //Genera un nuevo modal
+        // Generates a new modal
         const messageContentModal = new discord.ModalBuilder()
             .setTitle(locale.bodyModal.title)
             .setCustomId('edit-body');
 
-        //Genera la única fila del modal
+        // Generates the only row of the modal
         const bodyRow = new discord.ActionRowBuilder().addComponents(
 
-            //Añade un campo de texto a la fila
+            // Adds a text field to the row
             new discord.TextInputBuilder()
                 .setCustomId('body')
                 .setLabel(locale.bodyModal.fieldTitle)
@@ -40,39 +40,39 @@ export async function run(interaction, commandConfig, locale) {
                 .setRequired(true)
         );
 
-        //Adjunta los componentes al modal
+        // Attaches the components to the modal
         messageContentModal.addComponents([bodyRow]);
 
-        //Muestra el modal al usuario
+        // Shows the modal to the user
         await interaction.showModal(messageContentModal);
 
-        //Crea un filtro para obtener el modal esperado
+        // Creates a filter to get the expected modal
         const modalsFilter = (interaction) => interaction.customId === 'edit-body';
 
-        //Espera a que se rellene el modal
+        // Waits for the modal to be filled
         const body = await interaction.awaitModalSubmit({ filter: modalsFilter, time: 300000 }).then(async modalInteraction => {
 
-            //Envía un mensaje de confirmación
+            // Sends a confirmation message
             await modalInteraction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${locale.correct}`)
             ]});
 
-            //Elimina la confirmación
+            // Removes the confirmation
             setTimeout(() => modalInteraction.deleteReply(), 3000);
 
-            //Devuelve el campo del cuerpo
+            // Returns the field of the body
             return modalInteraction.fields.getField('body').value;
             
         }).catch(() => { null; });
 
-        //Aborta si no se proporcionó un cuerpo en el tiempo esperado
+        // Aborts if a body was not provided in the expected time
         if (!body) return;
 
-        //Comprueba si ha de enviar un embed o un mensaje normal
+        // Checks if has to send an embed or a normal message
         if (type === 'embed') {
 
-            //Envía un embed con el mensaje
+            // Sends an embed with the message
             await destinationChannel.send({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
                 .setDescription(body)]
@@ -80,13 +80,13 @@ export async function run(interaction, commandConfig, locale) {
 
         } else if (type === 'normal') {
 
-            //Envía el mensaje en texto plano
+            // Sends the message in flat text
             await destinationChannel.send({ content: body });
         };
 
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

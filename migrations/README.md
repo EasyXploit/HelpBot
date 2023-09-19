@@ -1,9 +1,9 @@
-# Scripts de migración
-Este directorio contiene los scripts de migración de documentos, los cuales son utilizados por 
-la dependencia "migrate-mongo" para actualizar o desactualizar los documentos existentes a nuevas
-o viejas versiones, tal y cómo se describe en: https://www.npmjs.com/package/migrate-mongo
+# Migration scripts
+This directory contains the document migration scripts, which are used by
+"migrate-mongo" dependency to update or downgrade existing documents to new ones
+or old versions, as described in: https://www.npmjs.com/package/migrate-mongo
 
-Los scripts deben contener código de la siguiente forma:
+Scripts must contain code as follows:
  
  ```js
 export default {
@@ -17,4 +17,4 @@ export default {
 };
 ```
 
-> Estos scripts no se ejecutarán al cargar la conexión con la base de datos si `process.env.NODE_ENV != "production"`, por lo que para emplearlos en otros entornos, es necesario invocarlos mediante comandos de CLI o hacerlo con instrucciones adicionales para ejecutar el método `client.functions.db.migrate`.
+> These scripts will not be executed when loading the database connection if `process.env.NODE_ENV != "production"`, so to use them in other environments, it is necessary to invoke them through CLI commands or do so with additional instructions to execute the `client.functions.db.migrate` method.

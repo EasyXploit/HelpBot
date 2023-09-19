@@ -58,7 +58,7 @@ export default async (guild, locale) => {
 
             } else {
 
-                //Carga la config. en memoria y arranca el sistema
+                //Carga la configuración en memoria y arranca el sistema
                 await loadSystem(client.locale.lib.loaders.system);
             };
         };

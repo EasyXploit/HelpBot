@@ -2,46 +2,46 @@ export async function run(interaction, commandConfig, locale) {
 
     try {
 
-        //Busca al miembro objetivo
+        // Looks for the target member
         const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
 
-        //Devuelve un error si no se ha encontrado al miembro
+        // Returns an error if the member has not been found
         if (!member) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ], ephemeral: true});
 
-        //Devuelve un error si se ha proporcionado un bot
+        // Returns an error if a bot has been provided
         if (member.user.bot) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
         ], ephemeral: true});
         
-        //Se comprueba si el rol del miembro ejecutor es más bajo que el del miembro objetivo
+        // It is checked if the role of the executing member is lower than that of the target member
         if (interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ], ephemeral: true});
         
-        //Almacena el perfil del miembro
+        // Stores the member's profile
         const memberProfile = await client.functions.db.getData('profile', member.id);
 
-        //Almacena las advertencias del miembro
+        // Stores the member warnings
         const memberWarns = memberProfile ? memberProfile.moderationLog.warnsHistory : null;
 
-        //Si el miembro tenía advertencias previas y el ejecutor no es el owner de la guild
+        // If the member had previous warnings and the executor is not the guild owner
         if (memberWarns && interaction.member.id !== interaction.guild.ownerId) {
 
-            //Almacena el último warn del miembro
+            // Stores the last warn of the member
             const latestWarn = memberWarns[memberWarns.length - 1];
 
-            //Si no ha pasado el tiempo mínimo entre advertencias
+            // If the minimum time has not passed between warnings
             if (Date.now() - latestWarn.timestamp < commandConfig.minimumTimeDifference) {
 
-                //Almacena si el miembro puede saltarse el intervalo mínimo
+                // Stores if the member can skip the minimum interval
                 const authorized = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.unlimitedFrequency});
 
-                //Si no está autorizado, devuelve un mensaje de error
+                // If the member is not authorized, returns an error message
                 if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cooldown, { member: member })}.`)
@@ -49,15 +49,15 @@ export async function run(interaction, commandConfig, locale) {
             };
         };
 
-        //Genera un nuevo modal
+        // Generates a new modal
         const reasonModal = new discord.ModalBuilder()
             .setTitle(locale.bodyModal.title)
             .setCustomId('warnReason');
 
-        //Genera la única fila del modal
+        // Generates the only row of the modal
         const bodyRow = new discord.ActionRowBuilder().addComponents(
 
-            //Añade un campo de texto a la fila
+            // Adds a text field to the row
             new discord.TextInputBuilder()
                 .setCustomId('body')
                 .setLabel(locale.bodyModal.fieldTitle)
@@ -66,32 +66,32 @@ export async function run(interaction, commandConfig, locale) {
                 .setRequired(true)
         );
 
-        //Adjunta los componentes al modal
+        // Attaches the components to the modal
         reasonModal.addComponents([bodyRow]);
 
-        //Muestra el modal al usuario
+        // Shows the modal to the user
         await interaction.showModal(reasonModal);
 
-        //Crea un filtro para obtener el modal esperado
+        // Creates a filter to get the expected modal
         const modalsFilter = (interaction) => interaction.customId === 'warnReason';
 
-        //Espera a que se rellene el modal
+        // Waits for the modal to be filled
         const reason = await interaction.awaitModalSubmit({ filter: modalsFilter, time: 300000 }).then(async modalInteraction => {
 
-            //Almacena el campo del cuerpo
+            // Stores the body field
             const obtainedReason = modalInteraction.fields.getField('body').value;
 
-            //Ejecuta el manejador de infracciones
+            // Executes the infractions handler
             await client.functions.moderation.manageWarn(member, obtainedReason, 2, interaction.user, null, modalInteraction, interaction.channel);
             
         }).catch(() => { null; });
 
-        //Aborta si no se proporcionó una razón en el tiempo esperado
+        // Aborts if a reason was not provided in the expected time
         if (!reason) return;
 
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

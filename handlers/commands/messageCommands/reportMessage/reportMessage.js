@@ -2,30 +2,30 @@ export async function run(interaction, commandConfig, locale) {
 
     try {
 
-        //Busca al miembro objetivo
+        // Looks for the target member
         const reportedMember = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].message.author.id);
 
-        //Devuelve un error si no se ha encontrado al miembro
+        // Returns an error if the member has not been found
         if (!reportedMember) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
         ], ephemeral: true});
 
-        //Devuelve un error si el meimbro ha intentado reportarse a sí mismo
+        // Returns an error if the member has tried to report himself
         if (reportedMember.id === interaction.member.id) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantReportYourself}.`)
         ], ephemeral: true});
 
-        //Genera un nuevo modal
+        // Generates a new modal
         const reasonModal = new discord.ModalBuilder()
             .setTitle(locale.bodyModal.title)
             .setCustomId('reportMessageReason');
 
-        //Genera la única fila del modal
+        // Generates the only row of the modal
         const bodyRow = new discord.ActionRowBuilder().addComponents(
 
-            //Añade un campo de texto a la fila
+            // Adds a text field to the row
             new discord.TextInputBuilder()
                 .setCustomId('body')
                 .setLabel(locale.bodyModal.fieldTitle)
@@ -34,32 +34,32 @@ export async function run(interaction, commandConfig, locale) {
                 .setRequired(true)
         );
 
-        //Adjunta los componentes al modal
+        // Attaches the components to the modal
         reasonModal.addComponents([bodyRow]);
 
-        //Muestra el modal al usuario
+        // Shows the modal to the user
         await interaction.showModal(reasonModal);
 
-        //Crea un filtro para obtener el modal esperado
+        // Creates a filter to get the expected modal
         const modalsFilter = (interaction) => interaction.customId === 'reportMessageReason';
 
-        //Espera a que se rellene el modal
+        // Waits for the modal to be filled
         const reason = await interaction.awaitModalSubmit({ filter: modalsFilter, time: 300000 }).then(async modalInteraction => {
 
-            //Obtiene el campo del cuerpo
+            // Obtains the field of the body
             const reportReason = modalInteraction.fields.getField('body').value;
 
-            //Ejecuta el manejador de reportes
+            // Executes the reports manager
             await client.functions.managers.sendReport(interaction, modalInteraction, reportReason, reportedMember);
             
         }).catch(() => { null; });
 
-        //Aborta si no se proporcionó una razón en el tiempo esperado
+        // Aborts if a reason was not provided in the expected time
         if (!reason) return;
 
     } catch (error) {
 
-        //Ejecuta el manejador de errores
+        // Executes the error handler
         await client.functions.managers.interactionError(error, interaction);
     };
 };

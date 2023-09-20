@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 //Crea un nuevo esquema para un campo de un mensaje programado
-const timedButtonBuilderSchema = new mongoose.Schema({ 
+const scheduledButtonBuilderSchema = new mongoose.Schema({ 
     label: {
         type: String,
         min: 1,
@@ -20,15 +20,15 @@ const timedButtonBuilderSchema = new mongoose.Schema({
 });
 
 //Crea un nuevo esquema para un botón de un mensaje programado
-const timedMessageRowSchema = new mongoose.Schema({ 
+const scheduledMessageRowSchema = new mongoose.Schema({ 
     buttons: {
-        type: [timedButtonBuilderSchema],
+        type: [scheduledButtonBuilderSchema],
         max: 5
     }
 });
 
 //Crea un nuevo esquema para un campo de un mensaje programado
-const timedMessageFieldSchema = new mongoose.Schema({ 
+const scheduledMessageFieldSchema = new mongoose.Schema({ 
     name: {
         type: String,
         required: true,
@@ -48,7 +48,7 @@ const timedMessageFieldSchema = new mongoose.Schema({
 });
 
 //Crea un nuevo esquema para un mensaje programado
-const timedMessageSchema = new mongoose.Schema({
+const scheduledMessageSchema = new mongoose.Schema({
     hash: {
         type: String
     },
@@ -117,7 +117,7 @@ const timedMessageSchema = new mongoose.Schema({
             max: 4096
         },
         fields: {
-            type: [timedMessageFieldSchema],
+            type: [scheduledMessageFieldSchema],
             max: 25
         },
         image: {
@@ -135,7 +135,7 @@ const timedMessageSchema = new mongoose.Schema({
         }
     },
     actionRows: {
-        type: [timedMessageRowSchema],
+        type: [scheduledMessageRowSchema],
         max: 5
     }
 });
@@ -144,11 +144,11 @@ const timedMessageSchema = new mongoose.Schema({
 const schema = new mongoose.Schema({
     docType: {
         type: String,
-        default: 'timedMessages',
+        default: 'scheduledMessages',
         immutable: true
     },
-    configuredMessages: [timedMessageSchema]
+    configuredMessages: [scheduledMessageSchema]
 });
 
 //Genera un modelo a partir del esquema y lo exporta como módulo
-export default mongoose.model('timedMessages', schema, 'configs');
+export default mongoose.model('scheduledMessages', schema, 'configs');

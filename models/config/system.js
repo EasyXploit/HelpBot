@@ -19,7 +19,7 @@ const schema = new mongoose.Schema({
         required: true
     },
     modules: {
-        timedMessages: {
+        scheduledMessages: {
             type: Boolean,
             default: false,
             required: true

@@ -39,7 +39,7 @@ export async function run(interaction, commandConfig, locale) {
         // For each of the bans of the guild
         for (const bans of guildBans) {
 
-            // Checks if the user's ID matches the ban one
+            // Checks if the user's Id matches the ban one
             if (bans[0] === user.id) banned = true
         };
 

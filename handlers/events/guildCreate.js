@@ -12,7 +12,7 @@ export default async (guild, locale) => {
         // List of guilds to which the bot is joined
         const cachedGuilds = client.guilds.cache;
 
-        // Loads the service guild ID
+        // Loads the service guild Id
         const serviceGuildId = await client.functions.db.getConfig('system.serviceGuildId');
 
         // Stores the number of eligible guilds (except the service one)
@@ -44,7 +44,7 @@ export default async (guild, locale) => {
             // Updates the list of eligible guilds
             elegibleGuilds = newElegibleGuilds;
 
-            // Loads the base guild ID
+            // Loads the base guild Id
             const baseGuildId = await client.functions.db.getConfig('system.baseGuildId');
 
             // If there is no base guild, or the base guild is not the first on the list

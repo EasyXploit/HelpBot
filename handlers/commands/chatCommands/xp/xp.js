@@ -14,7 +14,7 @@ export async function run(interaction, commandConfig, locale) {
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidMember}.`)
         ], ephemeral: true});
 
-        // Stores the member ID
+        // Stores the member Id
         const memberId = member ? member.id : interaction.options._hoistedOptions[1].value;
 
         // If the member was a bot

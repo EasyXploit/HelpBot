@@ -18,10 +18,10 @@ export default async (event, locale) => {
             logger.debug(`⤷ ${guild.name} (${guild.id})`);
         });
 
-        // Loads the base guild ID
+        // Loads the base guild Id
         let baseGuildId = await client.functions.db.getConfig('system.baseGuildId');
 
-        // Loads the service guild ID
+        // Loads the service guild Id
         const serviceGuildId = await client.functions.db.getConfig('system.serviceGuildId');
 
         // Stores the number of eligible guilds (excluding the service ones)

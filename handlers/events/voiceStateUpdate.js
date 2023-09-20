@@ -118,7 +118,7 @@ export default async (oldState, newState, locale) => {
             // If has only changed rooms
             if (client.usersVoiceStates[newState.id]) {
 
-                // Changes the current channel ID
+                // Changes the current channel Id
                 client.usersVoiceStates[newState.id].channelID = newState.channelId
 
             } else { // If it has been connected from 0

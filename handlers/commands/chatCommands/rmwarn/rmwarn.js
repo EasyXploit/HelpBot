@@ -5,7 +5,7 @@ export async function run(interaction, commandConfig, locale) {
         // Looks for the member provided
         const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
 
-        // Stores the member ID
+        // Stores the member Id
         const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
 
         // Returns an error if a bot has been provided
@@ -113,7 +113,7 @@ export async function run(interaction, commandConfig, locale) {
             // For each of the warnings of the member
             for (let index = 0; index < memberWarns.length; index++) {
 
-                // If the ID matches the search
+                // If the Id matches the search
                 if (memberWarns[index].warnId === warnId) {
 
                     // Stores the warning
@@ -208,7 +208,7 @@ export async function autocomplete(interaction, command, locale) {
 
     try {
 
-        // Stores the target member ID
+        // Stores the target member Id
         const memberId = interaction.options._hoistedOptions[0].value;
 
         // Stores the partial value that the user has introduced

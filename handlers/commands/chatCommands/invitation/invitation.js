@@ -34,7 +34,7 @@ export async function run(interaction, commandConfig, locale) {
                     // Checks on each channel if can create the invitation
                     for (index = 0; index < channels.size; index++) {
 
-                        // Gets the channel based on the ID from the list
+                        // Gets the channel based on the Id from the list
                         const channel = channels.get(channelIds[index]);
 
                         // Stores if permissions are missing on the channel

@@ -12,7 +12,7 @@ export default async (guild, locale) => {
         // Loads the list of guilds to which the bot is linked
         const cachedGuilds = client.guilds.cache;
 
-        // Loads the service guild ID
+        // Loads the service guild Id
         const serviceGuildId = await client.functions.db.getConfig('system.serviceGuildId');
 
         // Stores the number of eligible guilds (excluding the service ones)

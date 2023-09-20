@@ -5,7 +5,7 @@ export async function run(interaction, commandConfig, locale) {
         // Looks for the member provided
         const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
 
-        // Stores the member ID
+        // Stores the member Id
         const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
 
         // Stores the reason

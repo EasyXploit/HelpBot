@@ -213,7 +213,7 @@ export async function run(interaction, commandConfig, locale) {
                         remainingTime = `${remainingDays}d ${remainingHours}h ${remainingMinutes}m`
                     };
 
-                    // Stores a new ID for the survey
+                    // Stores a new Id for the survey
                     const pollId = await client.functions.utils.generateSid();
                     
                     // Sends the survey generated to the invocation channel

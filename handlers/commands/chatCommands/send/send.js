@@ -2,7 +2,7 @@ export async function run(interaction, commandConfig, locale) {
     
     try {
 
-        // Stores the ID of the channel provided, or the current one
+        // Stores the Id of the channel provided, or the current one
         const destinationChannelId = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : interaction.channelId;
         const destinationChannel = await client.functions.utils.fetch('channel', destinationChannelId);
 

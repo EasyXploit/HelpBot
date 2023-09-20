@@ -66,7 +66,7 @@ export async function run(interaction, commandConfig, locale) {
             // Creates a promise to resolve when has finished looking for the names of all roles
             const getRewards = new Promise((resolve, reject) => {
 
-                // For each role ID, looks for its name
+                // For each role Id, looks for its name
                 nextRewardedRoles.roles.forEach(async (value, index, array) => {
 
                     // Searches and stores the role

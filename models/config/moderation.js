@@ -1,13 +1,13 @@
-//Librería para interactuar con la BD
+// Library to interact with the database
 const mongoose = require('mongoose');
 
-//Almacena la configuración de locale desde el fichero de configuración
+// Stores the locale configuration from the configuration file
 const localeConfig = require('./config.json').locale;
 
-//Almacena las traducciones al idioma configurado
+// Stores the translations to the configured language
 const locale = require(`./locales/${localeConfig}.json`).models.config.automodFilters;
 
-//Crea un nuevo esquema para las reglas de automoderación
+// Creates a new scheme for the automod rules
 const automodRuleSchema = new mongoose.Schema({ 
     action: {
         type: String,
@@ -31,7 +31,7 @@ const automodRuleSchema = new mongoose.Schema({
     }
 });
 
-//Crea un nuevo esquema para la moderación
+// Creates a new scheme for the moderation
 const schema = new mongoose.Schema({
     docType: {
         type: String,
@@ -332,5 +332,5 @@ const schema = new mongoose.Schema({
     }
 });
 
-//Genera un modelo a partir del esquema y lo exporta como módulo
+// Generates a model from the scheme and exports it as a module
 export default mongoose.model('moderation', schema, 'configs');

@@ -1,7 +1,7 @@
-//Librería para interactuar con la BD
+// Library to interact with the database
 const mongoose = require('mongoose');
 
-//Crea un nuevo esquema para la presencia
+// Creates a new scheme for the presence
 const schema = new mongoose.Schema({
     docType: {
         type: String,
@@ -27,5 +27,5 @@ const schema = new mongoose.Schema({
     }
 });
 
-//Genera un modelo a partir del esquema y lo exporta como módulo
+// Generates a model from the scheme and exports it as a module
 export default mongoose.model('presence', schema, 'configs');

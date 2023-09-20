@@ -1,7 +1,7 @@
-//Librería para interactuar con la BD
+// Library to interact with the database
 const mongoose = require('mongoose');
 
-//Crea un nuevo esquema para las recompensas por subir de nivel
+// Creates a new scheme for the rewards for leveling
 const levelingRewardSchema = new mongoose.Schema({ 
     requiredLevel: {
         type: Number,
@@ -14,7 +14,7 @@ const levelingRewardSchema = new mongoose.Schema({
     }
 });
 
-//Crea un nuevo esquema para el sistema de niveles
+// Creates a new scheme for the level system
 const schema = new mongoose.Schema({
     docType: {
         type: String,
@@ -76,5 +76,5 @@ const schema = new mongoose.Schema({
     }
 });
 
-//Genera un modelo a partir del esquema y lo exporta como módulo
+// Generates a model from the scheme and exports it as a module
 export default mongoose.model('leveling', schema, 'configs');

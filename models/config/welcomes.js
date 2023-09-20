@@ -1,7 +1,7 @@
-//Librería para interactuar con la BD
+// Library to interact with the database
 const mongoose = require('mongoose');
 
-//Crea un nuevo esquema para las bienvenidas
+// Creates a new scheme for the welcomes
 const schema = new mongoose.Schema({
     docType: {
         type: String,
@@ -19,5 +19,5 @@ const schema = new mongoose.Schema({
     newMemberRoleId: String
 });
 
-//Genera un modelo a partir del esquema y lo exporta como módulo
+// Generates a model from the schema and exports it as a module
 export default mongoose.model('welcomes', schema, 'configs');

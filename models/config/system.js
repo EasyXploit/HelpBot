@@ -1,7 +1,7 @@
-//Librería para interactuar con la BD
+// Library to interact with the database
 const mongoose = require('mongoose');
 
-//Crea un nuevo esquema para la configuración general
+// Creates a new scheme for the general configuration
 const schema = new mongoose.Schema({
     docType: {
         type: String,
@@ -29,9 +29,9 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         }
-        //Hacer más módulos
+        // Make more modules
     }
 });
 
-//Genera un modelo a partir del esquema y lo exporta como módulo
+// Generates a model from the scheme and exports it as a module
 export default mongoose.model('system', schema, 'configs');

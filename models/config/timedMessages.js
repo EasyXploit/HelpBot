@@ -1,7 +1,7 @@
-//Librería para interactuar con la BD
+// Library to interact with the database
 const mongoose = require('mongoose');
 
-//Crea un nuevo esquema para un campo de un mensaje programado
+// Creates a new scheme for a scheduled message field
 const scheduledButtonBuilderSchema = new mongoose.Schema({ 
     label: {
         type: String,
@@ -19,7 +19,7 @@ const scheduledButtonBuilderSchema = new mongoose.Schema({
     }
 });
 
-//Crea un nuevo esquema para un botón de un mensaje programado
+// Creates a new scheme for a scheduled message button
 const scheduledMessageRowSchema = new mongoose.Schema({ 
     buttons: {
         type: [scheduledButtonBuilderSchema],
@@ -27,7 +27,7 @@ const scheduledMessageRowSchema = new mongoose.Schema({
     }
 });
 
-//Crea un nuevo esquema para un campo de un mensaje programado
+// Creates a new scheme for a scheduled message field
 const scheduledMessageFieldSchema = new mongoose.Schema({ 
     name: {
         type: String,
@@ -47,7 +47,7 @@ const scheduledMessageFieldSchema = new mongoose.Schema({
     }
 });
 
-//Crea un nuevo esquema para un mensaje programado
+// Creates a new scheme for a scheduled message
 const scheduledMessageSchema = new mongoose.Schema({
     hash: {
         type: String
@@ -140,7 +140,7 @@ const scheduledMessageSchema = new mongoose.Schema({
     }
 });
 
-//Crea un nuevo esquema para los mensajes programados
+// Creates a new scheme for the scheduled messages
 const schema = new mongoose.Schema({
     docType: {
         type: String,
@@ -150,5 +150,5 @@ const schema = new mongoose.Schema({
     configuredMessages: [scheduledMessageSchema]
 });
 
-//Genera un modelo a partir del esquema y lo exporta como módulo
+// Generates a model from the scheme and exports it as a module
 export default mongoose.model('scheduledMessages', schema, 'configs');

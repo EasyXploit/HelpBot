@@ -1,7 +1,7 @@
-//Librería para interactuar con la BD
+// Library to interact with the database
 const mongoose = require('mongoose');
 
-//Crea un nuevo esquema para las advertencias de un miembro
+// Creates a new scheme for a member's warnings
 const warnDataSchema = new mongoose.Schema({
     warnId: {
         type: String,
@@ -27,7 +27,7 @@ const warnDataSchema = new mongoose.Schema({
     }
 });
 
-//Crea un nuevo esquema para el perfil del miembro
+// Creates a new scheme for the member's profile
 const profileSchema = new mongoose.Schema({
     userId: {
         type: String,
@@ -74,5 +74,5 @@ const profileSchema = new mongoose.Schema({
     }
 });
 
-//Genera un modelo a partir del esquema y lo exporta como módulo
+// Generates a model from the scheme and exports it as a module
 export default mongoose.model('profile', profileSchema);

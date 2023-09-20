@@ -1,7 +1,7 @@
-//Librería para interactuar con la BD
+// Library to interact with the database
 const mongoose = require('mongoose');
 
-//Crea un nuevo esquema para el envío
+// Creates a new scheme for the delivery
 const sentSchema = new mongoose.Schema({
     hash: {
         type: String,
@@ -11,5 +11,5 @@ const sentSchema = new mongoose.Schema({
     lastSentTimestamp: Number
 });
 
-//Genera un modelo a partir del esquema y lo exporta como módulo
+// Generates a model from the scheme and exports it as a module
 export default mongoose.model('sent', sentSchema);

@@ -1,7 +1,7 @@
-//Librería para interactuar con la BD
+// Library to interact with the database
 const mongoose = require('mongoose');
 
-//Crea un nuevo esquema para la encuesta
+// Creates a new scheme for the surve
 const pollSchema = new mongoose.Schema({
     pollId: {
         type: String,
@@ -31,5 +31,5 @@ const pollSchema = new mongoose.Schema({
     expirationTimestamp: Number
 });
 
-//Genera un modelo a partir del esquema y lo exporta como módulo
+// Generates a model from the scheme and exports it as a module
 export default mongoose.model('poll', pollSchema);

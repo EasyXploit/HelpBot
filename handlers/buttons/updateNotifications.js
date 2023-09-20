@@ -11,7 +11,7 @@ export default async (interaction) => {
         // Stores if the member can win XP
         let notAuthorized;
 
-        // Stores the IDs that cannot gain XP
+        // Stores the Id's that cannot gain XP
         const wontEarnXP = await client.functions.db.getConfig('leveling.wontEarnXP')
 
         // For each of the roles they can earn XP

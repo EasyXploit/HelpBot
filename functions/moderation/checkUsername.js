@@ -24,17 +24,25 @@ exports.run = async (member) => {
             executor: client.user.id,
             reason: locale.kickReason
         };
+        
+        try {
 
-        //Alerta al miembro de que ha sido expulsado
-        await member.user.send({ embeds: [ new client.MessageEmbed()
-            .setColor(client.config.colors.secondaryError)
-            .setAuthor({ name: locale.privateEmbed.author, iconURL: member.guild.iconURL({dynamic: true}) })
-            .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.description, { member: member, guildName: member.guild.name })}.`)
-            .addFields(
-                { name: locale.privateEmbed.moderator, value: `${client.user}`, inline: true },
-                { name: locale.privateEmbed.reasonTitle, value: `${locale.privateEmbed.reasonDescription}.`, inline: true }
-            )
-        ]});
+            //Alerta al miembro de que ha sido expulsado
+            await member.user.send({ embeds: [ new client.MessageEmbed()
+                .setColor(client.config.colors.secondaryError)
+                .setAuthor({ name: locale.privateEmbed.author, iconURL: member.guild.iconURL({dynamic: true}) })
+                .setDescription(`${await client.functions.utilities.parseLocale.run(locale.privateEmbed.description, { member: member, guildName: member.guild.name })}.`)
+                .addFields(
+                    { name: locale.privateEmbed.moderator, value: `${client.user}`, inline: true },
+                    { name: locale.privateEmbed.reasonTitle, value: `${locale.privateEmbed.reasonDescription}.`, inline: true }
+                )
+            ]});
+
+        } catch (error) {
+
+            //Si no se puede enviar el mensaje, omite el error
+            if (error.toString().includes('Cannot send messages to this user')) null;
+        };
 
         //Se expulsa al miembro
         await member.kick(member.user, { reason: locale.kickReason });

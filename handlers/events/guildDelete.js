@@ -26,9 +26,18 @@ export default async (guild, locale) => {
 
             // Indicates that the bot is not ready to handle events
             global.readyStatus = false;
-
+            
             // Notifies that the bot is waiting to be joined to a guild
             logger.warn('The bot must be joined to a guild in order to work, so the program will wait until it occurs');
+
+            // Help URLs to join the bot to a guild
+            const joinNewGuildURL = `https://discord.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=8`;	
+            const waitingNewGuildHelpURL = 'https://github.com/EasyXploit/HelpBot/wiki/Starting#-joining-the-bot';
+
+            //  Shows the help URLs to join the bot to a guild
+            console.log(`\n⏳ ${await client.functions.utils.parseLocale(locale.waitingNewGuildHeader, { botUsername: client.user.username })} ...`);
+            console.log(`➕ ${await client.functions.utils.parseLocale(locale.joinNewGuildHelp, { joinNewGuildURL: joinNewGuildURL })}`);
+            console.log(`❔ ${await client.functions.utils.parseLocale(locale.waitingNewGuildHelp, { waitingNewGuildHelpURL: waitingNewGuildHelpURL })}\n`);
         };
 
     } catch (error) {

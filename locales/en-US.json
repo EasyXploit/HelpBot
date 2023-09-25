@@ -1108,6 +1108,11 @@
                     "noDeletedDays": "None"
                 }
             },
+            "guildDelete": {
+                "waitingNewGuildHeader": "Waiting for {{botUsername}} to be joined to a new guild",
+                "joinNewGuildHelp": "Use the following link to add the bot to a guild: {{joinNewGuildURL}}",
+                "waitingNewGuildHelp": "Need some help? Visit: {{waitingNewGuildHelpURL}}"
+            },
             "guildMemberAdd": {
                 "botLoggingEmbed": {
                     "title": "Logging - [BOTS]",
@@ -1195,7 +1200,8 @@
             },
             "ready": {
                 "waitingNewGuildHeader": "Waiting for {{botUsername}} to be joined to a new guild",
-                "waitingNewGuildHelp": "To find out how to join the bot to a guild, visit: {{waitingNewGuildHelpURL}}"
+                "joinNewGuildHelp": "Use the following link to add the bot to a guild: {{joinNewGuildURL}}",
+                "waitingNewGuildHelp": "Need some help? Visit: {{waitingNewGuildHelpURL}}"
             },
             "voiceStateUpdate": {
                 "voiceMovesLogging": {

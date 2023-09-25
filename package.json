@@ -9,8 +9,8 @@
     "./loaders": "./lib/loaders/index.js"
   },
   "scripts": {
-    "start": "node --no-warnings index.js",
-    "devStart": "nodemon --no-warnings index.js"
+    "start": "node index.js",
+    "devStart": "nodemon index.js"
   },
   "repository": {
     "type": "git",

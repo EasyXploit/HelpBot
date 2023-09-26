@@ -1309,7 +1309,8 @@
                 "promptMessage": "Select an option",
                 "choices": {
                     "return": "Return"
-                }
+                },
+                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
             },
             "baseGuildSelection": {
                 "promptBaseGuildSelectionHeader1": "The bot cannot be in more than one guild at a time, so you must select one from the list",
@@ -1319,19 +1320,22 @@
                 "isSureToReplaceBaseGuild": "Are you sure you want to change the base guild? Specific settings will be lost",
                 "affirmativeAnswer": "y",
                 "negativeAnswer": "n",
-                "leavingGuild": "Leaving the guild {{guild}}"
+                "leavingGuild": "Leaving the guild {{guild}}",
+                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
             },
             "configure": {
                 "promptMessage": "Select an option",
                 "choices": {
                     "return": "Return"
-                }
+                },
+                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
             },
             "update": {
                 "promptMessage": "Select an option",
                 "choices": {
                     "return": "Return"
-                }
+                },
+                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
             },
             "main": {
                 "promptMessage": "Select an option",
@@ -1345,19 +1349,22 @@
                 },
                 "actions": {
                     "shutdown": "The process will be terminated shortly. Goodbye!"
-                }
+                },
+                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
             },
             "statistics": {
                 "promptMessage": "Select an option",
                 "choices": {
                     "return": "Return"
-                }
+                },
+                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
             },
             "logs": {
                 "promptMessage": "Select an option",
                 "choices": {
                     "return": "Return"
-                }
+                },
+                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
             }
         },
         "moderation": {

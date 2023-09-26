@@ -36,6 +36,7 @@
     "migrate-mongo": "^10.0.0",
     "mongoose": "^7.4.5",
     "nanoid": "^4.0.2",
+    "simple-git": "^3.20.0",
     "winston": "^3.10.0",
     "winston-daily-rotate-file": "^4.7.1"
   },

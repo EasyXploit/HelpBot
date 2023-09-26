@@ -1305,6 +1305,12 @@
             }
         },
         "menus": {
+            "about": {
+                "promptMessage": "Select an option",
+                "choices": {
+                    "return": "Return"
+                }
+            },
             "baseGuildSelection": {
                 "promptBaseGuildSelectionHeader1": "The bot cannot be in more than one guild at a time, so you must select one from the list",
                 "promptBaseGuildSelectionHeader2": "Once you select a new base guild, the bot will leave the rest of the guilds",
@@ -1314,6 +1320,44 @@
                 "affirmativeAnswer": "y",
                 "negativeAnswer": "n",
                 "leavingGuild": "Leaving the guild {{guild}}"
+            },
+            "configure": {
+                "promptMessage": "Select an option",
+                "choices": {
+                    "return": "Return"
+                }
+            },
+            "help": {
+                "promptMessage": "Select an option",
+                "choices": {
+                    "return": "Return"
+                }
+            },
+            "main": {
+                "promptMessage": "Select an option",
+                "choices": {
+                    "configure": "Configure",
+                    "status": "Show status",
+                    "statistics": "View statistics",
+                    "help": "Get help",
+                    "about": "About",
+                    "shutdown": "Shutdown"
+                },
+                "actions": {
+                    "shutdown": "The process will be terminated shortly. Goodbye!"
+                }
+            },
+            "statistics": {
+                "promptMessage": "Select an option",
+                "choices": {
+                    "return": "Return"
+                }
+            },
+            "status": {
+                "promptMessage": "Select an option",
+                "choices": {
+                    "return": "Return"
+                }
             }
         },
         "moderation": {

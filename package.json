@@ -24,6 +24,7 @@
   "license": "MIT",
   "homepage": "https://github.com/EasyXploit/HelpBot#readme",
   "dependencies": {
+    "@inquirer/prompts": "^3.1.2",
     "@sentry/node": "^7.64.0",
     "@sentry/tracing": "^7.64.0",
     "asciiart-logo": "^0.2.7",

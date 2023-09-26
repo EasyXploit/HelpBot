@@ -62,8 +62,11 @@ locale = await loadLocales(targetLocale);
 // Rejected and not managed promises management
 process.on('unhandledRejection', error => {
 
+    // Logs when a message cannot be sent to a user due to an API restriction
+    if (error.toString().includes('Cannot send messages to this user') || error.toString().includes('Unknown Message')) return logger.warn(`The bot was unable to deliver a message to a user due to an API restriction`);
+
     // Omits certain errors that are not expected to be handled
-    if (error.toString().includes('Cannot send messages to this user') || error.toString().includes('Unknown Message')) return logger.warn(`The bot was unable to deliver a message to a user due to an API restriction`);;
+    if (error.toString().includes('Prompt was canceled')) return;
 
     // Sends an error message to the console
     logger.error(`Unhandled rejected promise: ${error.stack}`);

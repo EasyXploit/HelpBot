@@ -1327,7 +1327,7 @@
                     "return": "Return"
                 }
             },
-            "help": {
+            "update": {
                 "promptMessage": "Select an option",
                 "choices": {
                     "return": "Return"
@@ -1337,10 +1337,10 @@
                 "promptMessage": "Select an option",
                 "choices": {
                     "configure": "Configure",
-                    "status": "Show status",
+                    "update": "Check for updates",
+                    "logs": "Show logs",
                     "statistics": "View statistics",
-                    "help": "Get help",
-                    "about": "About",
+                    "about": "About the bot",
                     "shutdown": "Shutdown"
                 },
                 "actions": {
@@ -1353,7 +1353,7 @@
                     "return": "Return"
                 }
             },
-            "status": {
+            "logs": {
                 "promptMessage": "Select an option",
                 "choices": {
                     "return": "Return"

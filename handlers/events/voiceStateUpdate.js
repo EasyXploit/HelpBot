@@ -43,9 +43,9 @@ export default async (oldState, newState, locale) => {
             };
             
             // Formats and sends a record to the channel specified in the configuration
-            if (newState.member) await client.functions.managers.sendLog('voiceMoves', 'embed', new discord.EmbedBuilder()
+            if (oldState.member) await client.functions.managers.sendLog('voiceMoves', 'embed', new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
-                .setAuthor({ name: await client.functions.utils.parseLocale(locale.voiceMovesLogging.embedAuthor, { memberTag: newState.member.user.tag }), iconURL: newState.member.user.displayAvatarURL() })
+                .setAuthor({ name: await client.functions.utils.parseLocale(locale.voiceMovesLogging.embedAuthor, { memberTag: oldState.member.user.tag }), iconURL: oldState.member.user.displayAvatarURL() })
                 .setFields(embedFields)
                 .setTimestamp()
             );

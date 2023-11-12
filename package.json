@@ -25,7 +25,7 @@
     "@sentry/tracing": "^7.29.0",
     "asciiart-logo": "^0.2.7",
     "bufferutil": "^4.0.6",
-    "discord.js": "^13.17.0",
+    "discord.js": "^13.17.1",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
     "nanoid": "^4.0.0"

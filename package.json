@@ -29,7 +29,7 @@
     "@sentry/tracing": "^7.74.1",
     "asciiart-logo": "^0.2.7",
     "bufferutil": "^4.0.8",
-    "discord.js": "^14.12.1",
+    "discord.js": "^14.14.0",
     "inquirer": "^9.2.11",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",

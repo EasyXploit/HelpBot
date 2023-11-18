@@ -18,3 +18,5 @@ export default {
 ```
 
 > These scripts will not be executed when loading the database connection if `process.env.NODE_ENV != "production"`, so to use them in other environments, it is necessary to invoke them through CLI commands or do so with additional instructions to execute the `client.functions.db.migrate` method.
+
+> This script can also be used to migrate files such as `config.json`, which is not overwritten during an automatic update (so should be checked if it adapts to new versions).

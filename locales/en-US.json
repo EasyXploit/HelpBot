@@ -1349,9 +1349,25 @@
             "update": {
                 "promptMessage": "Select an option",
                 "choices": {
+                    "checkAgain": "Check again",
+                    "switchToBeta": "Switch to Beta",
+                    "switchToStable": "Switch to Stable",
                     "return": "Return"
                 },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                "errorMessage": "An unexpected error ocurred. Check the logs for more details",
+                "checkingForUpdates": "Checking if there are new updates",
+                "updatingFromTo": "Updating the bot from {{originVersion}} to {{targetVersion}}",
+                "updatedCorrectly": "The bot has been correctly updated to {{targetVersion}}",
+                "noReleaseNotes": "There are no release notes available for this version",
+                "newVersionAvailable": "Version {{targetVersion}} is available!",
+                "releaseNotes": "Release notes",
+                "releaseNotesError": "An error ocurred while obtaining the release notes",
+                "updateConfirmationPromptMessage": "Would you like to update the bot?",
+                "updateConfirmationChoices": {
+                    "yes": "Yes",
+                    "no": "No"
+                },
+                "alreadyUpdated": "The bot is already updated to the latest version"
             },
             "main": {
                 "promptMessage": "Select an option",

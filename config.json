@@ -1,5 +1,6 @@
 {
     "locale": "en-US",
+    "betaEnabled": true,
     "errorTracking": {
         "enabled": false,
         "sentryDSN": "",

@@ -1340,7 +1340,7 @@
                 },
                 "errorMessage": "An unexpected error ocurred. Check the logs for more details",
                 "checkingForUpdates": "Checking if there are new updates",
-                "updatedCorrectly": "The bot has been correctly updated to {{targetVersion}}",
+                "updatedCorrectly": "The bot has been correctly updated to {{targetVersion}}!",
                 "noReleaseNotes": "There are no release notes available for this version",
                 "newVersionAvailable": "Version {{targetVersion}} is available!",
                 "releaseNotes": "Release notes",
@@ -1352,7 +1352,11 @@
                 },
                 "alreadyUpdated": "The bot is already updated to the latest version",
                 "downloadingNewVersion": "Downloading {{targetVersion}} from {{repositoryURL}}",
-                "migrating": "Migrating the databases and the configuration files"
+                "needsRestart": "The bot must be restarted to apply the changes.\nIf you don't do it now, the process will automatically abort after 30 seconds.\nIf you are using a process manager like PM2 or Docker, the bot will automatically start again.\nOtherwise, you will have to restart it manually",
+                "restartConfirmationPrompt": {
+                    "message": "Would you like to restart now?",
+                    "restartNow": "Restart now"
+                }
             },
             "main": {
                 "promptMessage": "Select an option",

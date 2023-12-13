@@ -8,7 +8,7 @@ export default async (oldMessage, newMessage, locale) => {
     if (newMessage.guild && newMessage.guild.id !== client.baseGuild.id) return;
 
     // Prevents execution if the message was sent by a bot or the system
-    if (newMessage.author.bot || newMessage.type !== discord.MessageType.Default) return;
+    if (!newMessage.author || newMessage.author.bot || newMessage.type !== discord.MessageType.Default) return;
 
     // Aborts if the content of the message was not modified
     if(oldMessage.content === newMessage.content) return;

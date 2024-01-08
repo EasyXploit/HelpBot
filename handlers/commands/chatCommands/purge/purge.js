@@ -64,9 +64,22 @@ exports.run = async (interaction, commandConfig, locale) => {
 
         //Envía un mensaje de confirmación
         await interaction.reply({ embeds: [successEmbed] })
-        
+
         //Si el canal de la purga es el mismo que el de invocación, elimina la confirmación a los 5 segundos
-        if (channel.id === interaction.channelId) setTimeout(() => interaction.deleteReply(), 5000);
+        if (channel.id === interaction.channelId) setTimeout(async () => {
+
+            try {
+
+                // Elimina el mensaje de confirmación
+                await interaction.deleteReply();
+
+            } catch (error) {
+    
+                // Si el mensaje ya fue eliminado, no hace nada
+                if (!error.toString().includes('DiscordAPIError: Unknown Message')) throw error;
+            };
+            
+        }, 5000);
 
         //Envía un registro al canal de registro
         if (client.config.logging.purgedChannel) await client.functions.managers.logging.run('embed', new client.MessageEmbed()
@@ -76,6 +89,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         );
 
     } catch (error) {
+        
 
         //Ejecuta el manejador de errores
         await client.functions.managers.interactionError.run(error, interaction);

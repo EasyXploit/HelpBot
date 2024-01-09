@@ -18,6 +18,7 @@ pids
 dist/
 
 #Miscellaneous
+tmp/
 .tmp/
 .vscode/*
 .VSCodeCounter/*

@@ -1368,6 +1368,9 @@
                 },
                 "alreadyUpdated": "The bot is already updated to the latest version",
                 "downloadingNewVersion": "Downloading {{targetVersion}} from {{repositoryURL}}",
+                "newVersionDownloaded": "{{targetVersion}} has been downloaded correctly",
+                "installingDependencies": "Installing dependencies",
+                "dependenciesInstalled": "Dependencies have been installed correctly",
                 "needsRestart": "The bot must be restarted to apply the changes.\nIf you don't do it now, the process will automatically abort after 30 seconds.\nIf you are using a process manager like PM2 or Docker, the bot will automatically start again.\nOtherwise, you will have to restart it manually",
                 "restartConfirmationPrompt": {
                     "message": "Would you like to restart now?",

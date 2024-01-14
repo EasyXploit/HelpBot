@@ -97,7 +97,8 @@ global.client = new discord.Client({
         discord.GatewayIntentBits.GuildMembers,
         discord.GatewayIntentBits.GuildBans,
         discord.GatewayIntentBits.DirectMessages,
-        discord.GatewayIntentBits.GuildVoiceStates
+        discord.GatewayIntentBits.GuildVoiceStates,
+        discord.GatewayIntentBits.GuildPresences
     ],
     partials: [
         discord.Partials.Message, 

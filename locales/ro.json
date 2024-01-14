@@ -1377,13 +1377,47 @@
             "statistics": {
                 "promptMessage": "Select an option",
                 "choices": {
+                    "refresh": "Refresh",
                     "return": "Return"
                 },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                "errorMessage": "An unexpected error ocurred. Check the logs for more details",
+                "appInfo": {
+                    "header": "Information about the bot",
+                    "appName": "Application name",
+                    "appId": "Application ID",
+                    "connectionStatus": "Connection status",
+                    "activityType": "Activity type",
+                    "activityName": "Activity name"
+                },
+                "guildInfo": {
+                    "header": "Information about the managed guild",
+                    "guildName": "Guild name",
+                    "guildId": "Guild ID",
+                    "availability": "Availability",
+                    "guildAvailable": "Available",
+                    "guildNotAvailable": "Server outage",
+                    "totalMembers": "Total members",
+                    "onlineMembers": "Online members",
+                    "humanMembers": "Human members",
+                    "botMembers": "Bot members"
+                },
+                "databasesInfo": {
+                    "header": "Information about the databases",
+                    "storedProfiles": "Stored profiles",
+                    "totalMessages": "Total reviewed messages",
+                    "totalVoice": "Total voice time",
+                    "totalExperience": "Total gained experience",
+                    "totalWarns": "Warns count",
+                    "totalBans": "Active bans",
+                    "totalTimeouts": "Active timeouts",
+                    "totalPolls": "Active polls",
+                    "totalTimedMessages": "Timed messages"
+                }
             },
             "logs": {
                 "promptMessage": "Select an option",
                 "choices": {
+                    "refresh": "Refresh",
                     "return": "Return"
                 },
                 "errorMessage": "An unexpected error ocurred. Check the logs for more details",

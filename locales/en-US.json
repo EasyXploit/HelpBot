@@ -1321,13 +1321,6 @@
             }
         },
         "menus": {
-            "about": {
-                "promptMessage": "Select an option",
-                "choices": {
-                    "return": "Return"
-                },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
-            },
             "baseGuildSelection": {
                 "promptBaseGuildSelectionHeader1": "The bot cannot be in more than one guild at a time, so you must select one from the list",
                 "promptBaseGuildSelectionHeader2": "Once you select a new base guild, the bot will leave the rest of the guilds",
@@ -1337,6 +1330,21 @@
                 "affirmativeAnswer": "y",
                 "negativeAnswer": "n",
                 "leavingGuild": "Leaving the guild {{guild}}",
+                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+            },
+            "main": {
+                "promptMessage": "Select an option",
+                "choices": {
+                    "configure": "Configure",
+                    "update": "Check for updates",
+                    "logs": "Show logs",
+                    "information": "View bot's information",
+                    "license": "See the bot's license",
+                    "shutdown": "Shutdown"
+                },
+                "actions": {
+                    "shutdown": "The process will be terminated shortly. Goodbye!"
+                },
                 "errorMessage": "An unexpected error ocurred. Check the logs for more details"
             },
             "configure": {
@@ -1375,22 +1383,16 @@
                     "restartNow": "Restart now"
                 }
             },
-            "main": {
+            "logs": {
                 "promptMessage": "Select an option",
                 "choices": {
-                    "configure": "Configure",
-                    "update": "Check for updates",
-                    "logs": "Show logs",
-                    "statistics": "View statistics",
-                    "about": "About the bot",
-                    "shutdown": "Shutdown"
+                    "refresh": "Refresh",
+                    "return": "Return"
                 },
-                "actions": {
-                    "shutdown": "The process will be terminated shortly. Goodbye!"
-                },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                "errorMessage": "An unexpected error ocurred. Check the logs for more details",
+                "noStoredLogs": "There are no stored logs. Try again later"
             },
-            "statistics": {
+            "information": {
                 "promptMessage": "Select an option",
                 "choices": {
                     "refresh": "Refresh",
@@ -1399,6 +1401,9 @@
                 "errorMessage": "An unexpected error ocurred. Check the logs for more details",
                 "appInfo": {
                     "header": "Information about the bot",
+                    "appVersion": "Application version",
+                    "appAuthor": "Application author",
+                    "license": "License",
                     "appName": "Application name",
                     "appId": "Application ID",
                     "connectionStatus": "Connection status",
@@ -1430,14 +1435,12 @@
                     "totalTimedMessages": "Timed messages"
                 }
             },
-            "logs": {
+            "license": {
                 "promptMessage": "Select an option",
                 "choices": {
-                    "refresh": "Refresh",
                     "return": "Return"
                 },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details",
-                "noStoredLogs": "There are no stored logs. Try again later"
+                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
             }
         },
         "moderation": {

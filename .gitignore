@@ -37,3 +37,6 @@ tsconfig.tsbuildinfo
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+#Configuration files
+config.json

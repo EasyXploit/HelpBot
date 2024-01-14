@@ -1386,7 +1386,8 @@
                 "choices": {
                     "return": "Return"
                 },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                "errorMessage": "An unexpected error ocurred. Check the logs for more details",
+                "noStoredLogs": "There are no stored logs. Try again later"
             }
         },
         "moderation": {

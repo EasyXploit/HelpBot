@@ -1321,8 +1321,8 @@
                     "configure": "Configure",
                     "update": "Check for updates",
                     "logs": "Show logs",
-                    "information": "View bot's information",
-                    "license": "See the bot's license",
+                    "information": "View information",
+                    "license": "View license",
                     "shutdown": "Shutdown"
                 },
                 "actions": {

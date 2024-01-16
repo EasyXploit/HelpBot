@@ -1406,6 +1406,7 @@
                     "license": "License",
                     "appName": "Application name",
                     "appId": "Application ID",
+                    "uptime": "Uptime",
                     "connectionStatus": "Connection status",
                     "activityType": "Activity type",
                     "activityName": "Activity name"

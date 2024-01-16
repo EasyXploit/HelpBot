@@ -1385,6 +1385,7 @@
                 "appInfo": {
                     "header": "Information about the bot",
                     "appVersion": "Application version",
+                    "language": "Configured language",
                     "appAuthor": "Application author",
                     "license": "License",
                     "appName": "Application name",

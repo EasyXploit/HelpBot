@@ -1416,7 +1416,7 @@
                     "totalBans": "Active bans",
                     "totalTimeouts": "Active timeouts",
                     "totalPolls": "Active polls",
-                    "totalTimedMessages": "Timed messages"
+                    "totalScheduledMessages": "Scheduled messages"
                 }
             },
             "license": {

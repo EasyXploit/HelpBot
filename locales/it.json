@@ -1332,9 +1332,60 @@
                 "errorMessage": "An unexpected error ocurred. Check the logs for more details"
             },
             "configure": {
-                "promptMessage": "Select an option",
+                "headerMessage": "This menu allows you to configure all the functions of the bot.\nFunctions and commands of the same category are grouped in modules",
+                "promptMessage": "Select a module to configure",
                 "choices": {
+                    "mainConfiguration": "General configuration",
+                    "moderation": "Moderation",
+                    "engagement": "Engagement",
+                    "greetings": "Greetings",
+                    "utilities": "Utilities",
+                    "scheduledMessages": "Scheduled messages",
                     "return": "Return"
+                },
+                "submenus": {
+                    "mainConfiguration": {
+                        "promptMessage": "Select an option",
+                        "choices": {
+                            "return": "Return"
+                        },
+                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                    },
+                    "moderation": {
+                        "promptMessage": "Select an option",
+                        "choices": {
+                            "return": "Return"
+                        },
+                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                    },
+                    "engagement": {
+                        "promptMessage": "Select an option",
+                        "choices": {
+                            "return": "Return"
+                        },
+                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                    },
+                    "greetings": {
+                        "promptMessage": "Select an option",
+                        "choices": {
+                            "return": "Return"
+                        },
+                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                    },
+                    "utilities": {
+                        "promptMessage": "Select an option",
+                        "choices": {
+                            "return": "Return"
+                        },
+                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                    },
+                    "scheduledMessages": {
+                        "promptMessage": "Select an option",
+                        "choices": {
+                            "return": "Return"
+                        },
+                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                    }
                 },
                 "errorMessage": "An unexpected error ocurred. Check the logs for more details"
             },

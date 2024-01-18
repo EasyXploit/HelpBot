@@ -2,7 +2,7 @@
   "name": "helpbot",
   "normalizedName": "HelpBot",
   "version": "0.1.0",
-  "description": "I'm a bot designed for automated community moderation, music reproduction, leveling, and much more!",
+  "description": "A Discord bot designed for automated community moderation, leveling, chat utilities and much more!",
   "main": "index.js",
   "type": "module",
   "exports": {

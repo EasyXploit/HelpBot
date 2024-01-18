@@ -19,17 +19,31 @@ const schema = new mongoose.Schema({
         required: true
     },
     modules: {
-        scheduledMessages: {
+        moderation: {
             type: Boolean,
             default: false,
             required: true
         },
-        memberReports: {
+        engagement: {
+            type: Boolean,
+            default: false,
+            required: true
+        },
+        greetings: {
+            type: Boolean,
+            default: false,
+            required: true
+        },
+        utilities: {
+            type: Boolean,
+            default: false,
+            required: true
+        },
+        scheduledMessages: {
             type: Boolean,
             default: false,
             required: true
         }
-        // Make more modules
     }
 });
 

@@ -38,6 +38,11 @@ const schema = new mongoose.Schema({
         default: 'moderation',
         immutable: true
     },
+    allowMemberReports:  {
+        type: Boolean,
+        default: false,
+        required: true
+    },
     kickOnBadUsername: {
         type: Boolean,
         default: true,

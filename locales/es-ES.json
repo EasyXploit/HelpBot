@@ -1316,6 +1316,8 @@
                 "errorMessage": "An unexpected error ocurred. Check the logs for more details"
             },
             "main": {
+                "headerMessage": "Welcome to the {{botName}}'s command line interface!\nFrom here you can configure, monitorize and update the bot",
+                "subtitleMessage": "Need some help? Visit: {{helpURL}}",
                 "promptMessage": "Select an option",
                 "choices": {
                     "configure": "Configure",

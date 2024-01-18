@@ -1410,6 +1410,7 @@
                     "yes": "Yes",
                     "no": "No"
                 },
+                "couldNotFetchUpdate": "An error ocurred while fetching for updates",
                 "alreadyUpdated": "The bot is already updated to the latest version",
                 "downloadingNewVersion": "Downloading {{targetVersion}} from {{repositoryURL}}",
                 "newVersionDownloaded": "{{targetVersion}} has been downloaded and installed correctly",

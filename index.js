@@ -62,6 +62,9 @@ locale = await loadLocales(targetLocale);
 // Rejected and not managed promises management
 process.on('unhandledRejection', error => {
 
+    // Logs when the bot is unable to connect to the repository due to an API restriction (missing token, missing releases or unknown repository)
+    if (error.toString().includes('This repository requires a token or does not exist')) return logger.warn(`The bot was unable to connect to the repository due to an API restriction (missing token, missing releases or unknown repository)`);
+
     // Logs when a message cannot be sent to a user due to an API restriction
     if (error.toString().includes('Cannot send messages to this user') || error.toString().includes('Unknown Message')) return logger.warn(`The bot was unable to deliver a message to a user due to an API restriction`);
 

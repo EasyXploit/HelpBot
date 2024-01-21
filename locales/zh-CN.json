@@ -387,7 +387,7 @@
                         "options": {
                             "end": {
                                 "name": "end_id",
-                                "description": "Enter the ID of the survey to finish"
+                                "description": "Enter the ID of the poll to finish"
                             }
                         }
                     },

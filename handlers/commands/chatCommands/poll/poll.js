@@ -2,28 +2,28 @@ export async function run(interaction, commandConfig, locale) {
 
     try {
 
-        // If has to finish a survey
+        // If has to finish a poll
         if (interaction.options._hoistedOptions[0]) {
 
-            // Looks for the survey in the database
+            // Looks for the poll in the database
             const pollData = await client.functions.db.getData('poll', interaction.options._hoistedOptions[0].value);
 
-            // If the survey does not exist, returns an error
+            // If the poll does not exist, returns an error
             if (!pollData) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.unknownPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
             ], ephemeral: true});
 
-            // Searches and stores the survey channel
+            // Searches and stores the polls channel
             const pollChannel = await client.functions.utils.fetch('channel', pollData.channelId);
 
-            // Searches and stores the message of the survey (if the channel could be found)
+            // Searches and stores the message of the poll (if the channel could be found)
             const pollMessage = pollChannel ? await client.functions.utils.fetch('message', pollData.messageId, pollChannel) : null;
 
-            // If the channel or message of the survey no longer exist
+            // If the channel or message of the poll no longer exist
             if (!pollChannel || !pollMessage) {
 
-                // Deletes the survey from the database
+                // Deletes the poll from the database
                 await client.functions.db.deltData('poll', interaction.options._hoistedOptions[0].value);
             
                 // Notifies the error to the member
@@ -33,7 +33,7 @@ export async function run(interaction, commandConfig, locale) {
                 ], ephemeral: true});
             };
 
-            // Checks, if applicable, that the member has permission to finish any survey
+            // Checks, if applicable, that the member has permission to finish any poll
             if (interaction.member.id !== pollData.authorId) {
 
                 // Variable to know if is authorized
@@ -46,7 +46,7 @@ export async function run(interaction, commandConfig, locale) {
                 ], ephemeral: true});
             };
 
-            // Strengthens the expiration of the survey
+            // Strengthens the expiration of the poll
             pollData.expirationTimestamp = Date.now();
 
             // Sends a confirmation to the member
@@ -213,10 +213,10 @@ export async function run(interaction, commandConfig, locale) {
                         remainingTime = `${remainingDays}d ${remainingHours}h ${remainingMinutes}m`
                     };
 
-                    // Stores a new Id for the survey
+                    // Stores a new Id for the poll
                     const pollId = await client.functions.utils.generateSid();
                     
-                    // Sends the survey generated to the invocation channel
+                    // Sends the poll generated to the invocation channel
                     interactionChannel.send({ embeds: [ new discord.EmbedBuilder()
                         .setColor(`${await client.functions.db.getConfig('colors.polls')}`)
                         .setAuthor({ name: locale.pollEmbed.author, iconURL: 'attachment://poll.png' })
@@ -248,7 +248,7 @@ export async function run(interaction, commandConfig, locale) {
                             ][count]);
                         };
 
-                        // Stores the survey in the database
+                        // Stores the poll in the database
                         await client.functions.db.genData('poll', {
                             pollId: pollId,
                             channelId: interactionChannel.id,
@@ -258,7 +258,7 @@ export async function run(interaction, commandConfig, locale) {
                             options: formattedOptions
                         });
 
-                        // If the survey expires, stores this timestamp
+                        // If the poll expires, stores this timestamp
                         if (duration !== 0) await client.functions.db.setData('poll', pollId, { expirationTimestamp: Date.now() + duration });
                         
                         // Sends a message to the records channel

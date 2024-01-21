@@ -9,6 +9,12 @@ export default async (banData, locale) => {
         // Aborts if it is not an event from the base guild
         if (banData.guild.id !== client.baseGuild.id) return;
 
+        // Stores the moderation module status
+        const moderationModuleEnabled = await client.functions.db.getConfig('system.modules.moderation');
+
+        // If the moderation module is disabled, aborts
+        if (!moderationModuleEnabled) return;
+
         // Stores the cache of records of the banned user, if it exists
         const loggingCache = (client.loggingCache && client.loggingCache[banData.user.id]) ? client.loggingCache[banData.user.id] : null;
 

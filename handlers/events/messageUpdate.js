@@ -13,6 +13,9 @@ export default async (oldMessage, newMessage, locale) => {
     // Aborts if the content of the message was not modified
     if(oldMessage.content === newMessage.content) return;
 
+    // Stores the moderation module status
+    const moderationModuleEnabled = await client.functions.db.getConfig('system.modules.moderation');
+
     // Checks if the content of the message was allowed
-    await client.functions.moderation.checkMessage(newMessage);
+    if (moderationModuleEnabled) await client.functions.moderation.checkMessage(newMessage);
 };

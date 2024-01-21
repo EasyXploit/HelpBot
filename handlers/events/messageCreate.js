@@ -22,8 +22,11 @@ export default async (message, locale) => {
     // Creates a variable to store member's messages
     let userMessages = client.userMessages[message.author.id];
 
+    // Stores the moderation module status
+    const moderationModuleEnabled = await client.functions.db.getConfig('system.modules.moderation');
+
     // If the message has content
-    if (message.content.length > 0) {
+    if (moderationModuleEnabled && message.content.length > 0) {
         
         // A hash is generated from the content of the message
         const messageHash = await client.md5(message.content);
@@ -41,7 +44,7 @@ export default async (message, locale) => {
     };
     
     // If the message has attachments and is wanted to be filtered
-    if (await client.functions.db.getConfig('moderation.filters.crossPost').filterFiles && message.attachments.size > 0) {
+    if (moderationModuleEnabled && await client.functions.db.getConfig('moderation.filters.crossPost').filterFiles && message.attachments.size > 0) {
 
         // An array is generated from the values of the attachments
         const attachmentsArray = Array.from(message.attachments.values());
@@ -72,35 +75,46 @@ export default async (message, locale) => {
         };
     };
 
-    // Stores the size of the member messages
-    const messageHistorySize = await client.functions.db.getConfig('moderation.messageHistorySize');
+    // If the moderation module is enabled
+    if (moderationModuleEnabled) {
 
-    // If the history is full, eliminates the first element of the array
-    if (userMessages.history.length >= messageHistorySize) userMessages.history.shift();  
+        // Stores the size of the member messages
+        const messageHistorySize = await client.functions.db.getConfig('moderation.messageHistorySize');
 
-    // Checks if the content of the message is allowed
-    const isPermitted = await client.functions.moderation.checkMessage(message);
+        // If the history is full, eliminates the first element of the array
+        if (userMessages.history.length >= messageHistorySize) userMessages.history.shift();
+    };
+
+    // Checks if the content of the message is allowed, if the moderation module is enabled
+    const isPermitted = moderationModuleEnabled ? await client.functions.moderation.checkMessage(message) : true;
 
     // If it is a message sent on a guild and was not filtered
     if (message.member && isPermitted) {
 
-        // Stores the member's profile, or creates it
-        let memberProfile = await client.functions.db.getData('profile', message.member.id) || await client.functions.db.genData('profile', { userId: message.member.id });
+        // Stores the engagement module status
+        const engagementModuleEnabled = await client.functions.db.getConfig('system.modules.engagement');
 
-        // Increases the sent messages count of the member
-        memberProfile.stats.messagesCount++;
-        
-        // Saves the new statistics of the member in the database
-        await client.functions.db.setData('profile', message.member.id, memberProfile);
+        // If the engagement module is enabled
+        if (engagementModuleEnabled) {
 
-        // If the last message tha generated XP was more old than the established period
-        if (await client.functions.db.getConfig('leveling.rewardMessages') && ((message.createdTimestamp - userMessages.lastValidTimestamp) > await client.functions.db.getConfig('leveling.minimumTimeBetweenMessages'))) {
-
-            // Updates the last timestamp of XP gaining
-            userMessages.lastValidTimestamp = message.createdTimestamp;
-
-            // Increases the amount of XP of the member
-            await client.functions.leveling.addExperience(message.member, 'message', message.channel);
+            // Stores the member's profile, or creates it
+            let memberProfile = await client.functions.db.getData('profile', message.member.id) || await client.functions.db.genData('profile', { userId: message.member.id });
+    
+            // Increases the sent messages count of the member
+            memberProfile.stats.messagesCount++;
+            
+            // Saves the new statistics of the member in the database
+            await client.functions.db.setData('profile', message.member.id, memberProfile);
+    
+            // If the last message tha generated XP was more old than the established period
+            if (await client.functions.db.getConfig('leveling.rewardMessages') && ((message.createdTimestamp - userMessages.lastValidTimestamp) > await client.functions.db.getConfig('leveling.minimumTimeBetweenMessages'))) {
+    
+                // Updates the last timestamp of XP gaining
+                userMessages.lastValidTimestamp = message.createdTimestamp;
+    
+                // Increases the amount of XP of the member
+                await client.functions.leveling.addExperience(message.member, 'message', message.channel);
+            };
         };
     };
 };

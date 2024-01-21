@@ -34,6 +34,11 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
+        polls: {
+            type: Boolean,
+            default: false,
+            required: true
+        },
         utilities: {
             type: Boolean,
             default: false,

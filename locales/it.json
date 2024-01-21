@@ -1360,7 +1360,10 @@
                         "choices": {
                             "changeModuleStatus": {
                                 "enable": "Enable module",
-                                "disable": "Disable module"
+                                "disable": "Disable module",
+                                "wantsToExpireSanctions": "Do you want to expire now the sanctions that were scheduled to expire?",
+                                "affirmativeAnswer": "Yes",
+                                "negativeAnswer": "No"
                             },
                             "return": "Return"
                         },

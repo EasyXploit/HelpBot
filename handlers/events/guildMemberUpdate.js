@@ -32,56 +32,56 @@ export default async (oldMember, newMember, locale) => {
             if (newMemberMode === 1) await client.functions.managers.newMember(newMember);
         };
 
-        // Stores the moderation module status
-        const moderationModuleEnabled = await client.functions.db.getConfig('system.modules.moderation');
+        // If the member has been timeouted or untimeouted
+        if (oldMember.communicationDisabledUntilTimestamp !== newMember.communicationDisabledUntilTimestamp) {
 
-        // If the moderation module is enabled
-        if (moderationModuleEnabled) {
-
-            // If the member has been timeouted or untimeouted
-            if (oldMember.communicationDisabledUntilTimestamp !== newMember.communicationDisabledUntilTimestamp) {
-
-                // Stores the timeout expiration
-                let expiration = newMember.communicationDisabledUntilTimestamp;
-                
-                // Generates variables to store the embeds fields
-                let executor = null, reason = null;
-
-                // Looks for the last timeout in the audit registry
-                const fetchedLogs = await newMember.guild.fetchAuditLogs({
-                    limit: 1,
-                    type: discord.AuditLogEvent.MemberUpdate,
-                });
-
-                // Stores the first search result
-                const timeoutLog = fetchedLogs.entries.first();
-                
-                // If a timeout was found in the first result, and less than 5 seconds have passed
-                if (timeoutLog && (timeoutLog.createdTimestamp > (Date.now() - 5000)) && timeoutLog.target.id === newMember.id) {
-
-                    // Updates the executor and reason fields
-                    executor = timeoutLog.executor;
-                    reason = timeoutLog.reason;
-                };
-
-                // Stores the timeouted or untimeouted user's records cache, if it exists
-                const loggingCache = (client.loggingCache && client.loggingCache[newMember.id]) ? client.loggingCache[newMember.id] : null;
+            // Stores the timeout expiration
+            let expiration = newMember.communicationDisabledUntilTimestamp;
             
-                // If it is a timeouted or untimeouted user cache
-                if (loggingCache && loggingCache.action.includes('timeout')) {
+            // Generates variables to store the embeds fields
+            let executor = null, reason = null;
 
-                    // Stores the correct moderator
-                    if (!executor) executor = await client.users.fetch(loggingCache.executor);
+            // Looks for the last timeout in the audit registry
+            const fetchedLogs = await newMember.guild.fetchAuditLogs({
+                limit: 1,
+                type: discord.AuditLogEvent.MemberUpdate,
+            });
 
-                    // Stores the formatted reason
-                    if (!reason) reason = loggingCache.reason;
+            // Stores the first search result
+            const timeoutLog = fetchedLogs.entries.first();
+            
+            // If a timeout was found in the first result, and less than 5 seconds have passed
+            if (timeoutLog && (timeoutLog.createdTimestamp > (Date.now() - 5000)) && timeoutLog.target.id === newMember.id) {
 
-                    // Deletes the member records cache
-                    delete client.loggingCache[newMember.id];
-                };
+                // Updates the executor and reason fields
+                executor = timeoutLog.executor;
+                reason = timeoutLog.reason;
+            };
 
-                // If it has been timeouted
-                if (newMember.communicationDisabledUntilTimestamp && newMember.communicationDisabledUntilTimestamp > Date.now()) {
+            // Stores the timeouted or untimeouted user's records cache, if it exists
+            const loggingCache = (client.loggingCache && client.loggingCache[newMember.id]) ? client.loggingCache[newMember.id] : null;
+        
+            // If it is a timeouted or untimeouted user cache
+            if (loggingCache && loggingCache.action.includes('timeout')) {
+
+                // Stores the correct moderator
+                if (!executor) executor = await client.users.fetch(loggingCache.executor);
+
+                // Stores the formatted reason
+                if (!reason) reason = loggingCache.reason;
+
+                // Deletes the member records cache
+                delete client.loggingCache[newMember.id];
+            };
+
+            // Stores the moderation module status
+            const moderationModuleEnabled = await client.functions.db.getConfig('system.modules.moderation');
+
+            // If it has been timeouted
+            if (newMember.communicationDisabledUntilTimestamp && newMember.communicationDisabledUntilTimestamp > Date.now()) {
+
+                // If the moderation module is enabled
+                if (moderationModuleEnabled) {
 
                     // Sends a message to the records channel
                     await client.functions.managers.sendLog('timeoutedMember', 'embed', new discord.EmbedBuilder()
@@ -115,19 +115,23 @@ export default async (oldMember, newMember, locale) => {
                         if (!error.toString().includes('Cannot send messages to this user')) logger.warn(`The bot was unable to deliver a "muted log" message to @${newMember.user.username} (${newMember.id}) due to an API restriction`);
                         else logger.error(error.stack);
                     };
+                };
 
-                // If it has been untimeouted
-                } else {
+            // If it has been untimeouted
+            } else {
 
-                    // Stores the member's timeout
-                    const memberTimeout = await client.functions.db.getData('timeout', newMember.id);
+                // Stores the member's timeout
+                const memberTimeout = await client.functions.db.getData('timeout', newMember.id);
 
-                    // If the timeout was registered in the database
-                    if (memberTimeout) {
+                // If the timeout was registered in the database
+                if (memberTimeout) {
 
-                        // Deletes the database entry
-                        await client.functions.db.delData('timeout', newMember.id);
-                    };
+                    // Deletes the database entry
+                    await client.functions.db.delData('timeout', newMember.id);
+                };
+
+                // If the moderation module is enabled
+                if (moderationModuleEnabled) {
 
                     // Sends a message to the records channel
                     await client.functions.managers.sendLog('untimeoutedMember', 'embed', new discord.EmbedBuilder()

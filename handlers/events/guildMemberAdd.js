@@ -30,30 +30,37 @@ export default async (member, locale) => {
             };
         };
 
-        // If the new member is a bot
-        if (member.user.bot) {
+        // Stores the greetings module status
+        const greetingsModuleEnabled = await client.functions.db.getConfig('system.modules.greetings');
 
-            // Stores the role of role for new bots
-            const newBotRoleId = await client.functions.db.getConfig('welcomes.newBotRoleId');
+        // If the greetings module is enabled
+        if (greetingsModuleEnabled) {
 
-            // If there is a configured role
-            if (newBotRoleId && newBotRoleId.length > 0) {
-
-                // Checks if the bot has the required permissions
-                const missingPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.members.me, ['ManageRoles']);
-                if (missingPermissions) logger.warn(`The bot could not add the welcome role to the bot ${member.user.tag} (${member.id}) because it did not have permission to do so`);
-                else if (!member.roles.cache.has(newBotRoleId)) await member.roles.add(newBotRoleId); // Adds the welcome role for new bots (if don't have it already)
+            // If the new member is a bot
+            if (member.user.bot) {
+    
+                // Stores the role of role for new bots
+                const newBotRoleId = await client.functions.db.getConfig('welcomes.newBotRoleId');
+    
+                // If there is a configured role
+                if (newBotRoleId && newBotRoleId.length > 0) {
+    
+                    // Checks if the bot has the required permissions
+                    const missingPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.members.me, ['ManageRoles']);
+                    if (missingPermissions) logger.warn(`The bot could not add the welcome role to the bot ${member.user.tag} (${member.id}) because it did not have permission to do so`);
+                    else if (!member.roles.cache.has(newBotRoleId)) await member.roles.add(newBotRoleId); // Adds the welcome role for new bots (if don't have it already)
+                };
+    
+                // Sends a message to the records channel
+                await client.functions.managers.sendLog('botJoined', 'embed', new discord.EmbedBuilder()
+                    .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
+                    .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
+                    .setDescription(`${await client.functions.utils.parseLocale(locale.botLoggingEmbed.description, { memberTag: member.user.tag })}.`)
+                );
+    
+                // Aborts the rest of the script
+                return;
             };
-
-            // Sends a message to the records channel
-            await client.functions.managers.sendLog('botJoined', 'embed', new discord.EmbedBuilder()
-                .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
-                .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
-                .setDescription(`${await client.functions.utils.parseLocale(locale.botLoggingEmbed.description, { memberTag: member.user.tag })}.`)
-            );
-
-            // Aborts the rest of the script
-            return;
         };
         
         // Stores the new members management mode

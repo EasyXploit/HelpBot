@@ -11,6 +11,11 @@ const schema = new mongoose.Schema({
     forceNameLocale: String,
     chatCommands: {
         ban: {
+            module: {
+                type: String,
+                default: 'moderation',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true
@@ -26,6 +31,11 @@ const schema = new mongoose.Schema({
             }
         },
         dm: {
+            module: {
+                type: String,
+                default: 'utilities',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -34,6 +44,11 @@ const schema = new mongoose.Schema({
             anonymousMode: [String]
         },
         edit: {
+            module: {
+                type: String,
+                default: 'utilities',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -41,6 +56,11 @@ const schema = new mongoose.Schema({
             }
         },
         infractions: {
+            module: {
+                type: String,
+                default: 'moderation',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -49,6 +69,11 @@ const schema = new mongoose.Schema({
             canSeeAny: [String]
         },
         invitation: {
+            module: {
+                type: String,
+                default: 'utilities',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -56,6 +81,11 @@ const schema = new mongoose.Schema({
             }
         },
         kick: {
+            module: {
+                type: String,
+                default: 'moderation',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -65,6 +95,11 @@ const schema = new mongoose.Schema({
             botsAllowed: [String]
         },
         leaderboard: {
+            module: {
+                type: String,
+                default: 'engagement',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -77,6 +112,11 @@ const schema = new mongoose.Schema({
             }
         },
         timeout: {
+            module: {
+                type: String,
+                default: 'moderation',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -92,6 +132,11 @@ const schema = new mongoose.Schema({
             botsAllowed: [String]
         },
         notifications: {
+            module: {
+                type: String,
+                default: 'engagement',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -99,6 +144,11 @@ const schema = new mongoose.Schema({
             }
         },
         ping: {
+            module: {
+                type: String,
+                default: 'utilities',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -106,6 +156,11 @@ const schema = new mongoose.Schema({
             }
         },
         poll: {
+            module: {
+                type: String,
+                default: 'utilities',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -114,6 +169,11 @@ const schema = new mongoose.Schema({
             canEndAny: [String]
         },
         purge: {
+            module: {
+                type: String,
+                default: 'utilities',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -121,6 +181,11 @@ const schema = new mongoose.Schema({
             }
         },
         report: {
+            module: {
+                type: String,
+                default: 'moderation',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -128,6 +193,11 @@ const schema = new mongoose.Schema({
             }
         },
         rmwarn: {
+            module: {
+                type: String,
+                default: 'moderation',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -137,6 +207,11 @@ const schema = new mongoose.Schema({
             reasonNotNeeded: [String]
         },
         roleinfo: {
+            module: {
+                type: String,
+                default: 'utilities',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -144,6 +219,11 @@ const schema = new mongoose.Schema({
             }
         },
         run: {
+            module: {
+                type: String,
+                default: 'utilities',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -151,6 +231,11 @@ const schema = new mongoose.Schema({
             }
         },
         send: {
+            module: {
+                type: String,
+                default: 'utilities',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -158,6 +243,11 @@ const schema = new mongoose.Schema({
             }
         },
         serverinfo: {
+            module: {
+                type: String,
+                default: 'utilities',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -165,6 +255,11 @@ const schema = new mongoose.Schema({
             }
         },
         slowmode: {
+            module: {
+                type: String,
+                default: 'moderation',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -179,6 +274,11 @@ const schema = new mongoose.Schema({
             reasonNotNeeded: [String]
         },
         stats: {
+            module: {
+                type: String,
+                default: 'engagement',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -186,6 +286,11 @@ const schema = new mongoose.Schema({
             }
         },
         unban: {
+            module: {
+                type: String,
+                default: 'moderation',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -194,6 +299,11 @@ const schema = new mongoose.Schema({
             reasonNotNeeded: [String]
         },
         untimeout: {
+            module: {
+                type: String,
+                default: 'moderation',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -203,6 +313,11 @@ const schema = new mongoose.Schema({
             removeAny: [String]
         },
         userinfo: {
+            module: {
+                type: String,
+                default: 'utilities',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -211,6 +326,11 @@ const schema = new mongoose.Schema({
             canSeeAny: [String]
         },
         warn: {
+            module: {
+                type: String,
+                default: 'moderation',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -224,6 +344,11 @@ const schema = new mongoose.Schema({
             unlimitedFrequency: [String]
         },
         xp: {
+            module: {
+                type: String,
+                default: 'engagement',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -233,6 +358,11 @@ const schema = new mongoose.Schema({
     },
     messageCommands: {
         removeAndWarn: {
+            module: {
+                type: String,
+                default: 'moderation',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -246,6 +376,11 @@ const schema = new mongoose.Schema({
             unlimitedFrequency: [String]
         },
         reportMessage: {
+            module: {
+                type: String,
+                default: 'moderation',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -255,6 +390,11 @@ const schema = new mongoose.Schema({
     },
     userCommands: {
         reportMember: {
+            module: {
+                type: String,
+                default: 'moderation',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,
@@ -262,6 +402,11 @@ const schema = new mongoose.Schema({
             }
         },
         warn: {
+            module: {
+                type: String,
+                default: 'moderation',
+                immutable: true
+            },
             enabled: {
                 type: Boolean,
                 default: true,

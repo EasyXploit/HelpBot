@@ -30,6 +30,15 @@ export default async (interaction, locale) => {
                 .setDescription(`${client.customEmojis.grayTick} ${await client.functions.utils.parseLocale(locale.disabledCommand, { commandName: interaction.commandName })}.`)
             ], ephemeral: true});
 
+            // Stores the module status corresponding to the command
+            const moduleStatus = await client.functions.db.getConfig(`system.modules.${command.userConfig.module}`);
+
+            // Aborts if the module is disabled
+            if (!moduleStatus) return interaction.reply({embeds: [ new discord.EmbedBuilder()
+                .setColor(`${await client.functions.db.getConfig('colors.information')}`)
+                .setDescription(`${client.customEmojis.grayTick} ${await client.functions.utils.parseLocale(locale.disabledCommand, { commandName: interaction.commandName })}.`)
+            ], ephemeral: true});
+
             // Checks if the bot has the required channel permissions
             const missingChannelPermissions = await client.functions.utils.missingPermissions(interaction.channel, client.baseGuild.members.me, command.config.neededBotPermissions.channel);
             if (missingChannelPermissions) return interaction.reply({ embeds: [ new discord.EmbedBuilder()

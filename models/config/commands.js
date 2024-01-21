@@ -158,7 +158,7 @@ const schema = new mongoose.Schema({
         poll: {
             module: {
                 type: String,
-                default: 'utilities',
+                default: 'polls',
                 immutable: true
             },
             enabled: {

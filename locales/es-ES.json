@@ -1340,6 +1340,7 @@
                     "moderation": "Moderation",
                     "engagement": "Engagement",
                     "greetings": "Greetings",
+                    "polls": "Polls",
                     "utilities": "Utilities",
                     "scheduledMessages": "Scheduled messages",
                     "return": "Return"
@@ -1387,6 +1388,21 @@
                             "changeModuleStatus": {
                                 "enable": "Enable module",
                                 "disable": "Disable module"
+                            },
+                            "return": "Return"
+                        },
+                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                    },
+                    "polls": {
+                        "headerMessage": "This module allows you to configure the bot's polls functions",
+                        "promptMessage": "Select an option",
+                        "choices": {
+                            "changeModuleStatus": {
+                                "enable": "Enable module",
+                                "disable": "Disable module",
+                                "wantsToExpirePolls": "Do you want to expire now the polls that were scheduled to expire?",
+                                "affirmativeAnswer": "Yes",
+                                "negativeAnswer": "No"
                             },
                             "return": "Return"
                         },

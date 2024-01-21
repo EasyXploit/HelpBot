@@ -29,6 +29,11 @@ const schema = new mongoose.Schema({
             default: false,
             required: true
         },
+        greetings: {
+            type: Boolean,
+            default: false,
+            required: true
+        },
         utilities: {
             type: Boolean,
             default: false,

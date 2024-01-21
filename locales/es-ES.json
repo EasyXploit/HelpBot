@@ -1339,6 +1339,7 @@
                     "mainConfiguration": "General configuration",
                     "moderation": "Moderation",
                     "engagement": "Engagement",
+                    "greetings": "Greetings",
                     "utilities": "Utilities",
                     "scheduledMessages": "Scheduled messages",
                     "return": "Return"
@@ -1372,6 +1373,13 @@
                                 "enable": "Enable module",
                                 "disable": "Disable module"
                             },
+                            "return": "Return"
+                        },
+                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                    },
+                    "greetings": {
+                        "promptMessage": "Select an option",
+                        "choices": {
                             "return": "Return"
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"

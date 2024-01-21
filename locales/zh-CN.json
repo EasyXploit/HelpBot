@@ -1346,6 +1346,7 @@
                 },
                 "submenus": {
                     "mainConfiguration": {
+                        "headerMessage": "This menu allows you to set the bot's general configuration",
                         "promptMessage": "Select an option",
                         "choices": {
                             "return": "Return"
@@ -1353,29 +1354,49 @@
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
                     },
                     "moderation": {
+                        "headerMessage": "This module allows you to configure the bot's moderation functions",
                         "promptMessage": "Select an option",
                         "choices": {
+                            "changeModuleStatus": {
+                                "enable": "Enable module",
+                                "disable": "Disable module"
+                            },
                             "return": "Return"
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
                     },
                     "engagement": {
+                        "headerMessage": "This module allows you to configure the bot's engagement functions",
                         "promptMessage": "Select an option",
                         "choices": {
+                            "changeModuleStatus": {
+                                "enable": "Enable module",
+                                "disable": "Disable module"
+                            },
                             "return": "Return"
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
                     },
                     "utilities": {
+                        "headerMessage": "This module allows you to configure the bot's utilities",
                         "promptMessage": "Select an option",
                         "choices": {
+                            "changeModuleStatus": {
+                                "enable": "Enable module",
+                                "disable": "Disable module"
+                            },
                             "return": "Return"
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
                     },
                     "scheduledMessages": {
+                        "headerMessage": "This module allows you to schedule messages to be sent automatically",
                         "promptMessage": "Select an option",
                         "choices": {
+                            "changeModuleStatus": {
+                                "enable": "Enable module",
+                                "disable": "Disable module"
+                            },
                             "return": "Return"
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"

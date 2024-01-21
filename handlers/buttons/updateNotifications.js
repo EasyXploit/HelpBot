@@ -12,7 +12,7 @@ export default async (interaction) => {
         let notAuthorized;
 
         // Stores the Id's that cannot gain XP
-        const wontEarnXP = await client.functions.db.getConfig('leveling.wontEarnXP')
+        const wontEarnXP = await client.functions.db.getConfig('leveling.wontEarnXP');
 
         // For each of the roles they can earn XP
         for (let index = 0; index < wontEarnXP.length; index++) {

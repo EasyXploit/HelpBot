@@ -1378,8 +1378,13 @@
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
                     },
                     "greetings": {
+                        "headerMessage": "This module allows you to configure the bot's greetings functions",
                         "promptMessage": "Select an option",
                         "choices": {
+                            "changeModuleStatus": {
+                                "enable": "Enable module",
+                                "disable": "Disable module"
+                            },
                             "return": "Return"
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"

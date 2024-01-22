@@ -1131,8 +1131,9 @@
                 }
             },
             "interactionCreate": {
-                "disabledCommand": "The command `{{commandName}}` has been disabled",
-                "error": "ERROR"
+                "disabledCommand": "The `{{commandName}}` command has been disabled",
+                "missingChannelPermissions": "The bot needs the following permissions on this channel to use this command: `{{missingPermissions}}`",
+                "missingGuildPermissions": "The bot needs the following permissions on the server to use this command: `{{missingPermissions}}`"
             },
             "messageCreate": {
                 "filteredDm": "via DM"

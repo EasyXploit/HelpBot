@@ -1131,8 +1131,9 @@
                 }
             },
             "interactionCreate": {
-                "disabledCommand": "Comanda `{{commandName}}` a fost dezactivată",
-                "error": "EROARE"
+                "disabledCommand": "The `{{commandName}}` command has been disabled",
+                "missingChannelPermissions": "The bot needs the following permissions on this channel to use this command: `{{missingPermissions}}`",
+                "missingGuildPermissions": "The bot needs the following permissions on the server to use this command: `{{missingPermissions}}`"
             },
             "messageCreate": {
                 "filteredDm": "prin DM"

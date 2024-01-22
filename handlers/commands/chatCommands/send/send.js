@@ -56,10 +56,7 @@ export async function run(interaction, commandConfig, locale) {
             await modalInteraction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${locale.correct}`)
-            ]});
-
-            // Removes the confirmation
-            setTimeout(() => modalInteraction.deleteReply(), 3000);
+            ], ephemeral: true});
 
             // Returns the field of the body
             return modalInteraction.fields.getField('body').value;

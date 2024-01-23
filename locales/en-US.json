@@ -1382,7 +1382,35 @@
                                 "affirmativeAnswer": "Yes",
                                 "negativeAnswer": "No"
                             },
+                            "setCommands": "Set commands",
                             "return": "Return"
+                        },
+                        "setCommandsMenu": {
+                            "promptMessage": "Select a command type",
+                            "choices": {
+                                "chatCommands": "Chat commands",
+                                "messageCommands": "Message commands",
+                                "userCommands": "User commands",
+                                "return": "Return"
+                            },
+                            "setChatCommandsMenu": {
+                                "promptMessage": "Select a command to configure",
+                                "choices": {
+                                    "return": "Return"
+                                }
+                            },
+                            "setMessageCommandsMenu": {
+                                "promptMessage": "Select a command to configure",
+                                "choices": {
+                                    "return": "Return"
+                                }
+                            },
+                            "setUserCommandsMenu": {
+                                "promptMessage": "Select a command to configure",
+                                "choices": {
+                                    "return": "Return"
+                                }
+                            }
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
                     },
@@ -1394,7 +1422,21 @@
                                 "enable": "Enable module",
                                 "disable": "Disable module"
                             },
+                            "setCommands": "Set commands",
                             "return": "Return"
+                        },
+                        "setCommandsMenu": {
+                            "promptMessage": "Select a command type",
+                            "choices": {
+                                "chatCommands": "Chat commands",
+                                "return": "Return"
+                            },
+                            "setChatCommandsMenu": {
+                                "promptMessage": "Select a command to configure",
+                                "choices": {
+                                    "return": "Return"
+                                }
+                            }
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
                     },
@@ -1406,7 +1448,21 @@
                                 "enable": "Enable module",
                                 "disable": "Disable module"
                             },
+                            "setCommands": "Set commands",
                             "return": "Return"
+                        },
+                        "setCommandsMenu": {
+                            "promptMessage": "Select a command type",
+                            "choices": {
+                                "chatCommands": "Chat commands",
+                                "return": "Return"
+                            },
+                            "setChatCommandsMenu": {
+                                "promptMessage": "Select a command to configure",
+                                "choices": {
+                                    "return": "Return"
+                                }
+                            }
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
                     },
@@ -1421,7 +1477,21 @@
                                 "affirmativeAnswer": "Yes",
                                 "negativeAnswer": "No"
                             },
+                            "setCommands": "Set commands",
                             "return": "Return"
+                        },
+                        "setCommandsMenu": {
+                            "promptMessage": "Select a command type",
+                            "choices": {
+                                "chatCommands": "Chat commands",
+                                "return": "Return"
+                            },
+                            "setChatCommandsMenu": {
+                                "promptMessage": "Select a command to configure",
+                                "choices": {
+                                    "return": "Return"
+                                }
+                            }
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
                     },
@@ -1433,7 +1503,21 @@
                                 "enable": "Enable module",
                                 "disable": "Disable module"
                             },
+                            "setCommands": "Set commands",
                             "return": "Return"
+                        },
+                        "setCommandsMenu": {
+                            "promptMessage": "Select a command type",
+                            "choices": {
+                                "chatCommands": "Chat commands",
+                                "return": "Return"
+                            },
+                            "setChatCommandsMenu": {
+                                "promptMessage": "Select a command to configure",
+                                "choices": {
+                                    "return": "Return"
+                                }
+                            }
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
                     },
@@ -1445,7 +1529,21 @@
                                 "enable": "Enable module",
                                 "disable": "Disable module"
                             },
+                            "setCommands": "Set commands",
                             "return": "Return"
+                        },
+                        "setCommandsMenu": {
+                            "promptMessage": "Select a command type",
+                            "choices": {
+                                "chatCommands": "Chat commands",
+                                "return": "Return"
+                            },
+                            "setChatCommandsMenu": {
+                                "promptMessage": "Select a command to configure",
+                                "choices": {
+                                    "return": "Return"
+                                }
+                            }
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
                     }

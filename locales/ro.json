@@ -104,8 +104,8 @@
                         "noExpiration": "Fără dată de expirare"
                     },
                     "notificationEmbed": {
-                        "withReason": "**{{userTag}}** a fost exclus din cauza __{{reason}}__, altcineva?",
-                        "withoutReason": "**{{userTag}}** a fost interzis, altcineva?"
+                        "withReason": "**{{userTag}}** a fost exclus din cauza __{{reason}}__",
+                        "withoutReason": "**{{userTag}}** a fost interzis"
                     }
                 },
                 "dm": {
@@ -254,8 +254,8 @@
                         "reason": "Motiv"
                     },
                     "notificationEmbed": {
-                        "withReason": "**{{memberTag}}** a fost dat afară din cauza __{{reason}}__, altcineva?",
-                        "withoutReason": "**{{memberTag}}** a fost dat afară, altcineva?"
+                        "withReason": "**{{memberTag}}** a fost dat afară din cauza __{{reason}}__",
+                        "withoutReason": "**{{memberTag}}** a fost dat afară"
                     }
                 },
                 "leaderboard": {
@@ -336,8 +336,8 @@
                     "noReason": "Trebuie să oferiți un motiv",
                     "undefinedReason": "Undefined",
                     "notificationEmbed": {
-                        "withReason": "**{{memberTag}}** a fost amuțit din cauza __{{reason}}__, altcineva?",
-                        "withoutReason": "**{{memberTag}}** a fost amuțit, altcineva?"
+                        "withReason": "**{{memberTag}}** a fost amuțit din cauza __{{reason}}__",
+                        "withoutReason": "**{{memberTag}}** a fost amuțit"
                     },
                     "exceededDuration": "Puteți amuți numai maximum de `{{time}}`"
                 },
@@ -1633,12 +1633,12 @@
                 "muteFunction": {
                     "reason": "Prea multe avertismente",
                     "notificationEmbed": {
-                        "initiated": "**{{memberTag}}** a fost amuțit pentru că a acumulat __prea multe avertismente__, altcineva?",
-                        "extended": "Dezactivarea sunetului lui **{{memberTag}}** a fost extinsă deoarece a generat __mai multe avertismente__, altcineva?"
+                        "initiated": "**{{memberTag}}** a fost amuțit pentru că a acumulat __prea multe avertismente__",
+                        "extended": "Dezactivarea sunetului lui **{{memberTag}}** a fost extinsă deoarece a generat __mai multe avertismente__"
                     }
                 },
                 "kickFunction": {
-                    "notificationEmbed": "{{memberTag}} a fost dat afară pentru că a acumulat __prea multe avertismente__, altcineva?",
+                    "notificationEmbed": "{{memberTag}} a fost dat afară pentru că a acumulat __prea multe avertismente__",
                     "privateEmbed": {
                         "author": "[EXPULZAT]",
                         "description": "{{member}}, ai fost dat afară din {{guildName}}",
@@ -1648,7 +1648,7 @@
                     "reason": "Prea multe avertismente"
                 },
                 "banFunction": {
-                    "notificationEmbed": "{{memberTag}} a fost exclus pentru că a acumulat __prea multe avertismente__, altcineva?",
+                    "notificationEmbed": "{{memberTag}} a fost exclus pentru că a acumulat __prea multe avertismente__",
                     "privateEmbed": {
                         "author": "[INTERZIS]",
                         "description": "{{member}}, ai fost exclus din {{guildName}}",

@@ -104,8 +104,8 @@
                         "noExpiration": "No vence"
                     },
                     "notificationEmbed": {
-                        "withReason": "**{{userTag}}** ha sido baneado debido a __{{reason}}__, ¿alguien más?",
-                        "withoutReason": "**{{userTag}}** ha sido baneado, ¿alguien más?"
+                        "withReason": "**{{userTag}}** ha sido baneado debido a __{{reason}}__",
+                        "withoutReason": "**{{userTag}}** ha sido baneado"
                     }
                 },
                 "dm": {
@@ -254,8 +254,8 @@
                         "reason": "Razón"
                     },
                     "notificationEmbed": {
-                        "withReason": "**{{memberTag}}** ha sido expulsado debido a __{{reason}}__, ¿alguien más?",
-                        "withoutReason": "**{{memberTag}}** ha sido expulsado, ¿alguien más?"
+                        "withReason": "**{{memberTag}}** ha sido expulsado debido a __{{reason}}__",
+                        "withoutReason": "**{{memberTag}}** ha sido expulsado"
                     }
                 },
                 "leaderboard": {
@@ -337,8 +337,8 @@
                     "noReason": "Debes proporcionar una razón",
                     "undefinedReason": "Indefinida",
                     "notificationEmbed": {
-                        "withReason": "**{{memberTag}}** ha sido silenciado debido a __{{reason}}__, ¿alguien más?",
-                        "withoutReason": "**{{memberTag}}** ha sido silenciado, ¿alguien más?"
+                        "withReason": "**{{memberTag}}** ha sido silenciado debido a __{{reason}}__",
+                        "withoutReason": "**{{memberTag}}** ha sido silenciado"
                     }
                 },
                 "notifications": {
@@ -1632,12 +1632,12 @@
                 "muteFunction": {
                     "reason": "Demasiadas advertencias",
                     "notificationEmbed":  {
-                        "initiated": "**{{memberTag}}** ha sido silenciado por que acumuló __demasiadas advertencias__, ¿alguien más?",
-                        "extended": "Se ha ampliado el silenciamiento de **{{memberTag}}** por que acumuló __más advertencias__, ¿alguien más?"
+                        "initiated": "**{{memberTag}}** ha sido silenciado por que acumuló __demasiadas advertencias__",
+                        "extended": "Se ha ampliado el silenciamiento de **{{memberTag}}** por que acumuló __más advertencias__"
                     }
                 },
                 "kickFunction": {
-                    "notificationEmbed": "{{memberTag}} ha sido expulsado por que acumuló __demasiadas advertencias__, ¿alguien más?",
+                    "notificationEmbed": "{{memberTag}} ha sido expulsado por que acumuló __demasiadas advertencias__",
                     "privateEmbed": {
                         "author": "[EXPULSADO]",
                         "description": "{{member}}, has sido expulsado en {{guildName}}",
@@ -1647,7 +1647,7 @@
                     "reason": "Demasiadas advertencias"
                 },
                 "banFunction": {
-                    "notificationEmbed": "{{memberTag}} ha sido baneado por que acumuló __demasiadas advertencias__, ¿alguien más?",
+                    "notificationEmbed": "{{memberTag}} ha sido baneado por que acumuló __demasiadas advertencias__",
                     "privateEmbed": {
                         "author": "[BANEADO]",
                         "description": "{{member}}, has sido baneado en {{guildName}}",

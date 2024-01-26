@@ -104,8 +104,8 @@
                         "noExpiration": "Non scade"
                     },
                     "notificationEmbed": {
-                        "withReason": "**{{userTag}}** è stato bannato con il motivo __{{reason}}__, qualcun altro?",
-                        "withoutReason": "**{{userTag}}** è stato bannato, qualcun altro?"
+                        "withReason": "**{{userTag}}** è stato bannato con il motivo __{{reason}}__",
+                        "withoutReason": "**{{userTag}}** è stato bannato"
                     }
                 },
                 "dm": {
@@ -254,8 +254,8 @@
                         "reason": "Motivo"
                     },
                     "notificationEmbed": {
-                        "withReason": "**{{memberTag}}** è stato espulso dovuto a __{{reason}}__, qualcun altro?",
-                        "withoutReason": "**{{memberTag}}** è stato espulso, qualcun altro?"
+                        "withReason": "**{{memberTag}}** è stato espulso dovuto a __{{reason}}__",
+                        "withoutReason": "**{{memberTag}}** è stato espulso"
                     }
                 },
                 "leaderboard": {
@@ -336,8 +336,8 @@
                     "noReason": "Devi fornire un motivo",
                     "undefinedReason": "Indefinita",
                     "notificationEmbed": {
-                        "withReason": "**{{memberTag}}** è stato silenziato dovuto a __{{reason}}__, qualcun altro?",
-                        "withoutReason": "**{{memberTag}}** è stato silenziato, qualcun altro?"
+                        "withReason": "**{{memberTag}}** è stato silenziato dovuto a __{{reason}}__",
+                        "withoutReason": "**{{memberTag}}** è stato silenziato"
                     },
                     "exceededDuration": "You can only mute a maximum of `{{time}}`"
                 },
@@ -1633,12 +1633,12 @@
                 "muteFunction": {
                     "reason": "Too many warnings",
                     "notificationEmbed": {
-                        "initiated": "**{{memberTag}}** has been muted for accumulating __too many warnings__, anyone else?",
-                        "extended": "**{{memberTag}}**'s mute has been extended because it racked up __more warnings__, anyone else?"
+                        "initiated": "**{{memberTag}}** has been muted for accumulating __too many warnings__",
+                        "extended": "**{{memberTag}}**'s mute has been extended because it racked up __more warnings__"
                     }
                 },
                 "kickFunction": {
-                    "notificationEmbed": "{{memberTag}} has been kicked for accumulating __too many warnings__, anyone else?",
+                    "notificationEmbed": "{{memberTag}} has been kicked for accumulating __too many warnings__",
                     "privateEmbed": {
                         "author": "[ESPULSO]",
                         "description": "{{member}}, you have been kicked in {{guildName}}",
@@ -1648,7 +1648,7 @@
                     "reason": "Too many warnings"
                 },
                 "banFunction": {
-                    "notificationEmbed": "{{memberTag}} got banned for accumulating __too many warnings__, anyone else?",
+                    "notificationEmbed": "{{memberTag}} got banned for accumulating __too many warnings__",
                     "privateEmbed": {
                         "author": "[BANNED]",
                         "description": "{{member}}, you have been banned from {{guildName}}",

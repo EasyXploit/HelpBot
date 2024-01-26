@@ -104,8 +104,8 @@
                         "noExpiration": "Does not expire"
                     },
                     "notificationEmbed": {
-                        "withReason": "**{{userTag}}** got banned due to __{{reason}}__, anyone else?",
-                        "withoutReason": "**{{userTag}}** got banned, anyone else?"
+                        "withReason": "**{{userTag}}** got banned due to __{{reason}}__",
+                        "withoutReason": "**{{userTag}}** got banned"
                     }
                 },
                 "dm": {
@@ -254,8 +254,8 @@
                         "reason": "Reason"
                     },
                     "notificationEmbed": {
-                        "withReason": "**{{memberTag}}** has been kicked due to __{{reason}}__, anyone else?",
-                        "withoutReason": "**{{memberTag}}** has been kicked, anyone else?"
+                        "withReason": "**{{memberTag}}** has been kicked due to __{{reason}}__",
+                        "withoutReason": "**{{memberTag}}** has been kicked"
                     }
                 },
                 "leaderboard": {
@@ -336,8 +336,8 @@
                     "noReason": "You must provide a reason",
                     "undefinedReason": "Undefined",
                     "notificationEmbed": {
-                        "withReason": "**{{memberTag}}** has been muted due to __{{reason}}__, anyone else?",
-                        "withoutReason": "**{{memberTag}}** has been muted, anyone else?"
+                        "withReason": "**{{memberTag}}** has been muted due to __{{reason}}__",
+                        "withoutReason": "**{{memberTag}}** has been muted"
                     },
                     "exceededDuration": "You can only mute a maximum of `{{time}}`"
                 },
@@ -1633,12 +1633,12 @@
                 "muteFunction": {
                     "reason": "Too many warnings",
                     "notificationEmbed": {
-                        "initiated": "**{{memberTag}}** has been muted for accumulating __too many warnings__, anyone else?",
-                        "extended": "**{{memberTag}}**'s mute has been extended because it racked up __more warnings__, anyone else?"
+                        "initiated": "**{{memberTag}}** has been muted for accumulating __too many warnings__",
+                        "extended": "**{{memberTag}}**'s mute has been extended because it racked up __more warnings__"
                     }
                 },
                 "kickFunction": {
-                    "notificationEmbed": "{{memberTag}} has been kicked for accumulating __too many warnings__, anyone else?",
+                    "notificationEmbed": "{{memberTag}} has been kicked for accumulating __too many warnings__",
                     "privateEmbed": {
                         "author": "[KICKED]",
                         "description": "{{member}}, you have been kicked in {{guildName}}",
@@ -1648,7 +1648,7 @@
                     "reason": "Too many warnings"
                 },
                 "banFunction": {
-                    "notificationEmbed": "{{memberTag}} got banned for accumulating __too many warnings__, anyone else?",
+                    "notificationEmbed": "{{memberTag}} got banned for accumulating __too many warnings__",
                     "privateEmbed": {
                         "author": "[BANNED]",
                         "description": "{{member}}, you have been banned from {{guildName}}",

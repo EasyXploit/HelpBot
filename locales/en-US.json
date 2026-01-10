@@ -1198,7 +1198,7 @@
             "messageCreate": {
                 "filteredDm": "via DM"
             },
-            "ready": {
+            "clientReady": {
                 "waitingNewGuildHeader": "Waiting for {{botUsername}} to be joined to a new guild",
                 "joinNewGuildHelp": "Use the following link to add the bot to a guild: {{joinNewGuildURL}}",
                 "waitingNewGuildHelp": "Need some help? Visit: {{waitingNewGuildHelpURL}}"

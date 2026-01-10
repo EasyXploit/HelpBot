@@ -202,8 +202,8 @@
                     "nonPrivileged": "{{interactionAuthor}}, no dispones de privilegios para realizar esta operación",
                     "noBots": "No puedes obtener información de un bot",
                     "unknownModerator": "Moderador desconocido",
-                    "mutedUntil": "Silenciado hasta",
-                    "noMute": "Ninguna",
+                    "timeoutedUntil": "Silenciado hasta",
+                    "noTimeout": "Ninguna",
                     "infractionsEmbed": {
                         "title": "Infracciones",
                         "description": "Mostrando las infracciones del miembro **{{member}}**.\nSanción actual: {{sanction}}",
@@ -296,7 +296,7 @@
                         "footer": "Página {{actualPage}} de {{totalPages}}"
                     }
                 },
-                "mute": {
+                "timeout": {
                     "appData": {
                         "name": "silenciar",
                         "description": "Deshabilita las comunicaciones de un miembro en el servidor por un tiempo limitado",
@@ -802,10 +802,10 @@
                         "description": "El miembro **{{userTag}}** ha sido desbaneado"
                     }
                 },
-                "unmute": {
+                "untimeout": {
                     "appData": {
-                        "name": "dessilenciar",
-                        "description": "Dessilencia a un miembro",
+                        "name": "desilenciar",
+                        "description": "Desilencia a un miembro",
                         "options": {
                             "user": {
                                 "name": "usuario",
@@ -854,7 +854,7 @@
                         "regular": "Miembro regular"
                     },
                     "embed": {
-                        "mutedUntil": "Silenciado hasta",
+                        "timeoutedUntil": "Silenciado hasta",
                         "title": "Información sobre {{memberDisplayName}}",
                         "description": "Mostrando información acerca de **{{memberTag}}**",
                         "memberId": "ID del miembro",
@@ -1178,7 +1178,7 @@
             "messageCreate": {
                 "filteredDm": "vía MD"
             },
-            "ready": {
+            "clientReady": {
                 "waitingNewGuildHeader": "Waiting for {{botUsername}} to be joined to a new guild",
                 "joinNewGuildHelp": "Use the following link to add the bot to a guild: {{joinNewGuildURL}}",
                 "waitingNewGuildHelp": "Need some help? Visit: {{waitingNewGuildHelpURL}}"
@@ -1283,7 +1283,7 @@
                 "memberId": "ID del miembro",
                 "registerDate": "Fecha de registro",
                 "actualSanction": "Sanción actual",
-                "mutedUntil": "Silenciado hasta"
+                "timeoutedUntil": "Silenciado hasta"
             },
             "report": {
                 "reportEmbed": {
@@ -1629,7 +1629,7 @@
         },
         "moderation": {
             "manageWarn": {
-                "muteFunction": {
+                "timeoutFunction": {
                     "reason": "Demasiadas advertencias",
                     "notificationEmbed":  {
                         "initiated": "**{{memberTag}}** ha sido silenciado por que acumuló __demasiadas advertencias__",

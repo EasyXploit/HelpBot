@@ -202,8 +202,8 @@
                     "nonPrivileged": "{{interactionAuthor}}, nu aveți privilegii pentru a efectua această operațiune",
                     "noBots": "Nu puteți obține informații de la un bot",
                     "unknownModerator": "Moderator necunoscut",
-                    "mutedUntil": "Mut până la",
-                    "noMute": "Nici una",
+                    "timeoutedUntil": "Mut până la",
+                    "noTimeout": "Nici una",
                     "infractionsEmbed": {
                         "title": "Infracțiuni",
                         "description": "Se afișează infracțiunile pentru membrul **{{member}}**.\nSancțiune actuală: {{sanction}}",
@@ -296,7 +296,7 @@
                     },
                     "noLeaderboard": "Nimeni nu a câștigat încă XP"
                 },
-                "mute": {
+                "timeout": {
                     "appData": {
                         "name": "amuțește",
                         "description": "Dezactivați comunicațiile unui membru pe server pentru o perioadă limitată de timp",
@@ -781,7 +781,7 @@
                         "description": "Membrul **{{userTag}}** a fost neinterzis"
                     }
                 },
-                "unmute": {
+                "untimeout": {
                     "appData": {
                         "name": "dezamuțește",
                         "description": "Desilențiază un membru",
@@ -833,7 +833,7 @@
                         "regular": "Membru obișnuit"
                     },
                     "embed": {
-                        "mutedUntil": "Amuțit pana la",
+                        "timeoutedUntil": "Mut până la",
                         "title": "Informație despre {{memberDisplayName}}",
                         "description": "Se afișează informații despre **{{memberTag}}**",
                         "memberId": "ID-ul membrului",
@@ -1138,7 +1138,7 @@
             "messageCreate": {
                 "filteredDm": "prin DM"
             },
-            "ready": {
+            "clientReady": {
                 "waitingNewGuildHeader": "Waiting for {{botUsername}} to be joined to a new guild",
                 "joinNewGuildHelp": "Use the following link to add the bot to a guild: {{joinNewGuildURL}}",
                 "waitingNewGuildHelp": "Need some help? Visit: {{waitingNewGuildHelpURL}}"
@@ -1281,7 +1281,7 @@
                 "memberId": "ID-ul membrului",
                 "registerDate": "Data inregistrarii",
                 "actualSanction": "Sancțiune actuală",
-                "mutedUntil": "Amuțit pana la"
+                "timeoutedUntil": "Mut până la"
             },
             "buttonNavigation": {
                 "cantUseNavigation": "Nu puteți controla un meniu invocat de un alt membru"
@@ -1630,10 +1630,10 @@
         },
         "moderation": {
             "manageWarn": {
-                "muteFunction": {
+                "timeoutFunction": {
                     "reason": "Prea multe avertismente",
                     "notificationEmbed": {
-                        "initiated": "**{{memberTag}}** a fost amuțit pentru că a acumulat __prea multe avertismente__",
+                        "initiated": "**{{memberTag}}** a fost mutat pentru că a acumulat __prea multe avertismente__",
                         "extended": "Dezactivarea sunetului lui **{{memberTag}}** a fost extinsă deoarece a generat __mai multe avertismente__"
                     }
                 },

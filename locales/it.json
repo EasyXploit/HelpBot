@@ -202,8 +202,8 @@
                     "nonPrivileged": "{{interactionAuthor}}, non disponi di privilegi per realizzare quest'azione",
                     "noBots": "Non puoi ottenere informazione da un bot",
                     "unknownModerator": "Moderatore sconosciuto",
-                    "mutedUntil": "Silenziato fino",
-                    "noMute": "Nessuna",
+                    "timeoutedUntil": "Silenziato fino",
+                    "noTimeout": "Nessuna",
                     "infractionsEmbed": {
                         "title": "Infrazioni",
                         "description": "Mostrando le infrazioni del membro **{{member}}**.\nSanzione attuale: {{sanction}}",
@@ -296,7 +296,7 @@
                     },
                     "noLeaderboard": "No one has gained XP yet"
                 },
-                "mute": {
+                "timeout": {
                     "appData": {
                         "name": "silenziare",
                         "description": "Disattivare le comunicazioni di un membro nel sever per un tempo limitato",
@@ -339,7 +339,7 @@
                         "withReason": "**{{memberTag}}** è stato silenziato dovuto a __{{reason}}__",
                         "withoutReason": "**{{memberTag}}** è stato silenziato"
                     },
-                    "exceededDuration": "You can only mute a maximum of `{{time}}`"
+                    "exceededDuration": "You can only timeout a maximum of `{{time}}`"
                 },
                 "notifications": {
                     "appData": {
@@ -781,9 +781,9 @@
                         "description": "Member **{{userTag}}** has been unbanned"
                     }
                 },
-                "unmute": {
+                "untimeout": {
                     "appData": {
-                        "name": "unmute",
+                        "name": "untimeout",
                         "description": "Unsilences a member",
                         "options": {
                             "user": {
@@ -797,10 +797,10 @@
                         }
                     },
                     "noReason": "Devi fornire un motivo",
-                    "notSilenced": "This member is not muted",
-                    "badHierarchy": "{{interactionAuthor}}, you cannot un-mute someone with a role equal to or higher than yours",
-                    "badBotHierarchy": "{{interactionAuthor}}, you cannot un-mute someone with a role equal to or higher than the bot's one",
-                    "cantRemoveAny": "{{interactionAuthor}}, you can't unmute someone you haven't muted yourself",
+                    "notSilenced": "This member is not timeouted",
+                    "badHierarchy": "{{interactionAuthor}}, you cannot un-timeout someone with a role equal to or higher than yours",
+                    "badBotHierarchy": "{{interactionAuthor}}, you cannot un-timeout someone with a role equal to or higher than the bot's one",
+                    "cantRemoveAny": "{{interactionAuthor}}, you can't un-timeout someone you haven't timed out yourself",
                     "undefinedReason": "Indefinita",
                     "loggingEmbed": {
                         "author": "Un membro è stato SMUTATO",
@@ -833,7 +833,7 @@
                         "regular": "Regular member"
                     },
                     "embed": {
-                        "mutedUntil": "Muted until",
+                        "timeoutedUntil": "Timeouted until",
                         "title": "Information about {{memberDisplayName}}",
                         "description": "Displaying information about **{{memberTag}}**",
                         "memberId": "ID del Membro",
@@ -1099,7 +1099,7 @@
                     "description": "The **BOT** {{memberTag}} was added to the server"
                 },
                 "communicationEnabled": {
-                    "reason": "Was unmuted while the memebr was not in the guild"
+                    "reason": "Was untimeouted while the memebr was not in the guild"
                 }
             },
             "guildMemberRemove": {
@@ -1138,7 +1138,7 @@
             "messageCreate": {
                 "filteredDm": "via DM"
             },
-            "ready": {
+            "clientReady": {
                 "waitingNewGuildHeader": "Waiting for {{botUsername}} to be joined to a new guild",
                 "joinNewGuildHelp": "Use the following link to add the bot to a guild: {{joinNewGuildURL}}",
                 "waitingNewGuildHelp": "Need some help? Visit: {{waitingNewGuildHelpURL}}"
@@ -1146,7 +1146,7 @@
             "guildMemberUpdate": {
                 "communicationDisabled": {
                     "loggingEmbed": {
-                        "author": "{{memberTag}} has been MUTED",
+                        "author": "{{memberTag}} has been TIMEOUTED",
                         "memberId": "ID del Membro",
                         "moderator": "Moderatore",
                         "unknownModerator": "Sconosciuto",
@@ -1281,7 +1281,7 @@
                 "memberId": "ID del Membro",
                 "registerDate": "Data di registro",
                 "actualSanction": "Current sanction",
-                "mutedUntil": "Muted until"
+                "timeoutedUntil": "Timeouted until"
             },
             "buttonNavigation": {
                 "cantUseNavigation": "You cannot control a menu invoked by another member"
@@ -1630,11 +1630,11 @@
         },
         "moderation": {
             "manageWarn": {
-                "muteFunction": {
+                "timeoutFunction": {
                     "reason": "Too many warnings",
                     "notificationEmbed": {
-                        "initiated": "**{{memberTag}}** has been muted for accumulating __too many warnings__",
-                        "extended": "**{{memberTag}}**'s mute has been extended because it racked up __more warnings__"
+                        "initiated": "**{{memberTag}}** has been timeouted for accumulating __too many warnings__",
+                        "extended": "**{{memberTag}}**'s timeout has been extended because it racked up __more warnings__"
                     }
                 },
                 "kickFunction": {

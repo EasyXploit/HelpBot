@@ -1,0 +1,13 @@
+services:
+  helpbot:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: HelpBot
+    restart: unless-stopped
+    mem_limit: 512m
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./storage:/app/storage
+      - ./configs:/app/configs

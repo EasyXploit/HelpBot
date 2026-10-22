@@ -1,5 +1,5 @@
-# Bases the image on the official Node.js 20 slim image with Debian Bookworm
-FROM node:20-bookworm-slim
+# Bases the image on the official Node.js 24 slim image with Debian Bookworm
+FROM node:24-bookworm-slim
 
 # Installs the necessary dependencies for the application
 RUN apt-get update && apt-get install -y --no-install-recommends \

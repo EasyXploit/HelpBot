@@ -12,6 +12,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
+# Establece el entorno de ejecución de Node.js en producción
+ENV NODE_ENV=production
+
 # Copia los manifiestos e instala las dependencias de producción
 COPY package*.json ./
 RUN npm ci --omit=dev

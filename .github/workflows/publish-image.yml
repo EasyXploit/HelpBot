@@ -19,23 +19,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       # Emula ARM para poder construir la imagen arm64 en máquinas x86
-      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v4
 
       # Habilita la construcción para varias arquitecturas y la caché de capas
       - uses: docker/setup-buildx-action@v3
 
       # Inicia sesión en el registro con el token que GitHub genera en cada ejecución
-      - uses: docker/login-action@v3
+      - uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # Construye y publica la imagen con la etiqueta "latest" (la que usan los servidores) y con el hash del commit (para poder volver a una versión concreta)
-      - uses: docker/build-push-action@v6
+      - uses: docker/build-push-action@v7
         with:
           context: .
           platforms: linux/amd64,linux/arm64

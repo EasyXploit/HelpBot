@@ -17,8 +17,8 @@ services:
     depends_on:
       - mongodb
     labels:
-      # Allows this project's Watchtower (and only that one) to update the container
-      - com.centurylinklabs.watchtower.enable=true
+      # Allows this project's Watchtower (and only that one) to update the container, unless automatic updates are disabled in the .env file
+      - com.centurylinklabs.watchtower.enable=${AUTO_UPDATE:-true}
       - com.centurylinklabs.watchtower.scope=helpbot
     volumes:
       - ./data:/app/data

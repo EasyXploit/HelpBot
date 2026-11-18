@@ -15,6 +15,9 @@ WORKDIR /app
 # Sets the Node.js runtime environment to production
 ENV NODE_ENV=production
 
+# Indicates that the application runs inside a Docker container, where updates are delivered through the image
+ENV RUNNING_IN_DOCKER=true
+
 # Copies the manifest files and installs the dependencies
 COPY package*.json ./
 RUN npm ci --omit=dev

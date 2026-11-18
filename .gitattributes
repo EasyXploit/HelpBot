@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Fuerza saltos de línea LF en los scripts de shell para que funcionen dentro del contenedor
+*.sh text eol=lf

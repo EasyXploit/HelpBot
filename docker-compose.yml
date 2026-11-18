@@ -1,13 +1,33 @@
+# Despliega HelpBot desde su imagen publicada, junto a un Watchtower que lo actualiza automáticamente cada vez que se publica una imagen nueva
 services:
   helpbot:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
+    image: ghcr.io/easyxploit/helpbot:latest
     container_name: HelpBot
     restart: unless-stopped
     mem_limit: 1024m
     stdin_open: true
     tty: true
+    labels:
+      # Permite que el Watchtower de este proyecto (y solo ese) actualice el contenedor
+      - com.centurylinklabs.watchtower.enable=true
+      - com.centurylinklabs.watchtower.scope=helpbot
     volumes:
       - ./storage:/app/storage
       - ./configs:/app/configs
+
+  watchtower:
+    image: nickfedor/watchtower:latest
+    container_name: HelpBot-Watchtower
+    restart: unless-stopped
+    environment:
+      # Comprueba si hay una imagen nueva cada 60 segundos
+      - WATCHTOWER_POLL_INTERVAL=60
+      # Solo actualiza los contenedores etiquetados dentro del scope "helpbot"
+      - WATCHTOWER_LABEL_ENABLE=true
+      - WATCHTOWER_SCOPE=helpbot
+      # Borra las imágenes antiguas tras actualizar
+      - WATCHTOWER_CLEANUP=true
+    labels:
+      - com.centurylinklabs.watchtower.scope=helpbot
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

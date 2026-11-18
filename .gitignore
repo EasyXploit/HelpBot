@@ -40,3 +40,7 @@ tsconfig.tsbuildinfo
 
 #Configuration files
 config.json
+
+#Docker data
+data/
+database/

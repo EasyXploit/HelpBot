@@ -32,6 +32,7 @@
     "bufferutil": "^4.0.8",
     "cli-table3": "^0.6.3",
     "discord.js": "^14.28.1",
+    "dotenv": "^16.6.1",
     "inquirer": "^9.2.11",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
@@ -42,7 +43,6 @@
     "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {
-    "dotenv": "^16.3.1",
     "nodemon": "^1.0.2"
   },
   "nodemonConfig": {

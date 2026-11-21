@@ -108,7 +108,7 @@ global.client = new discord.Client({
         discord.Partials.Channel, 
         discord.Partials.Reaction
     ],
-    retryLimit: Infinity 
+    enforceNonce: true 
 });
 
 // Indicates the completion of client loading in the console

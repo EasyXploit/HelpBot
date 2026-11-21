@@ -40,6 +40,9 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
+          # Indicates the branch to the image, so that the bot links to the documentation of its version
+          build-args: |
+            HELPBOT_BRANCH=${{ github.ref_name }}
           tags: |
             ghcr.io/easyxploit/helpbot:${{ github.ref_name == 'master' && 'latest' || 'beta' }}
             ghcr.io/easyxploit/helpbot:${{ github.sha }}

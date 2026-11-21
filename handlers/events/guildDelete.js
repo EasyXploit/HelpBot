@@ -35,7 +35,7 @@ export default async (guild, locale) => {
 
             // Help URLs to join the bot to a guild
             const joinNewGuildURL = `https://discord.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=8`;	
-            const waitingNewGuildHelpURL = 'https://github.com/EasyXploit/HelpBot/wiki/Starting#-joining-the-bot';
+            const waitingNewGuildHelpURL = client.functions.utils.docsURL('getting-started.md#invite-the-bot-to-your-server');
 
             // Shows the help URLs to join the bot to a guild
             console.log(`\n⏳ ${await client.functions.utils.parseLocale(locale.waitingNewGuildHeader, { botUsername: client.user.username })} ...`);

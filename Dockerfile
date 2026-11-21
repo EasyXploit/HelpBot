@@ -28,6 +28,10 @@ COPY . .
 # Stores a copy of the default local configuration
 RUN mkdir defaults && cp config.json defaults/
 
+# Stores the branch from which the image is built, to link to the documentation of this version
+ARG HELPBOT_BRANCH=master
+ENV HELPBOT_BRANCH=$HELPBOT_BRANCH
+
 # Initializes the persistent data before starting the application
 ENTRYPOINT ["sh", "/app/docker-entrypoint.sh"]
 

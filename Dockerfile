@@ -32,4 +32,4 @@ RUN mkdir defaults && cp config.json defaults/
 ENTRYPOINT ["sh", "/app/docker-entrypoint.sh"]
 
 # Starts the application
-CMD ["tmux", "new-session", "-s", "helpbot", "npm start"]
+CMD ["node", "index.js"]

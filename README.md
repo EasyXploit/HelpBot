@@ -5,11 +5,11 @@
   </p>
   <br />
   <p>
-    <a href="https://github.com/EasyXploit/HelpBot/releases"><img src="https://img.shields.io/github/downloads/EasyXploit/HelpBot/total?color=%23FFC857&label=Downloads" alt="Downloads" /></a>
-    <a href="https://github.com/EasyXploit/HelpBot/#license"><img src="https://img.shields.io/badge/License-MIT-FFC857" alt="License" /></a>
-    <a href="https://github.com/EasyXploit/HelpBot/blob/master/package.json"><img src="https://img.shields.io/github/package-json/v/EasyXploit/HelpBot?color=FFC857&label=Version" alt="Version" /></a>
-    <img alt="Repo size" src="https://img.shields.io/github/repo-size/EasyXploit/HelpBot?color=FFC857&llabel=Repo%20size">
-</a>
+    <a href="https://github.com/EasyXploit/HelpBot/blob/master/package.json"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FEasyXploit%2FHelpBot%2Fmaster%2Fpackage.json&query=%24.version&prefix=v&color=FFC857&label=Stable" alt="Stable version" /></a>
+    <a href="https://github.com/EasyXploit/HelpBot/blob/beta/package.json"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FEasyXploit%2FHelpBot%2Fbeta%2Fpackage.json&query=%24.version&prefix=v&color=FFC857&label=Beta" alt="Beta version" /></a>
+    <a href="https://github.com/EasyXploit/HelpBot/pkgs/container/helpbot"><img src="https://img.shields.io/badge/Docker-ghcr.io-FFC857" alt="Docker image" /></a>
+    <a href="#license"><img src="https://img.shields.io/badge/License-MIT-FFC857" alt="License" /></a>
+    <img src="https://img.shields.io/github/repo-size/EasyXploit/HelpBot?color=FFC857&label=Repo%20size" alt="Repo size" />
   </p>
 </div>
 
@@ -48,3 +48,7 @@ In the [wiki](https://github.com/EasyXploit/HelpBot/wiki) of this repository, yo
 * Thanks to the [supported languages](https://github.com/EasyXploit/HelpBot/wiki/Translation#supported-languages) translators who make this repository accessible to many more people.
 * Thanks to the community of [Discord.js](https://github.com/discordjs/discord.js), who have always been there to answer all my questions about the library, and that they constantly work to cover the 100% of the API.<br />
 * Thanks to [Flaticon](https://www.flaticon.com) for providing the images contained in the [resources/images/](https://github.com/EasyXploit/HelpBot/tree/master/resources/images) directory.
+<br />
+
+## License
+This project is licensed under the [MIT license](LICENSE.md).

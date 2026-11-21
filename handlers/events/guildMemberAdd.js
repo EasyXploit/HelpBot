@@ -30,7 +30,7 @@ exports.run = async (member,locale) => {
         if (member.user.bot) {
 
             //Añade el rol de bienvenida para nuevos bots (si no lo tiene ya)
-            if (!member.roles.cache.has(client.config.main.newBotRole)) await member.roles.add(client.config.main.newBotRole);
+            if (client.config.main.newBotRole && !member.roles.cache.has(client.config.main.newBotRole)) await member.roles.add(client.config.main.newBotRole);
 
             //Envía un mensaje al canal de registro
             if (client.config.logging.botJoined) await client.functions.managers.logging.run('embed', new client.MessageEmbed()

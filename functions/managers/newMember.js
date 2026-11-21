@@ -7,7 +7,7 @@ exports.run = async (member) => {
     try {
 
         //Si hay que explicar a los miembros con un nombre de usuario prohibido
-        if (client.configkickOnBadUsername) {
+        if (client.config.moderation.kickOnBadUsername) {
 
             //Comprueba si el nombre de usuario del miembro es válido
             const usernameIsValid = await client.functions.moderation.checkUsername.run(member);
@@ -28,13 +28,13 @@ exports.run = async (member) => {
             );
 
         //Comprueba si el miembro está silenciado, y añade el campo al embed de registro (si procede)
-        if (member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now()) welcomeEmbed.addFieldw({ name: `🔇 ${locale.actualSanction}`, value: `${locale.mutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>`, inline: false });
+        if (member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now()) welcomeEmbed.addFields({ name: `🔇 ${locale.actualSanction}`, value: `${locale.mutedUntil}: <t:${Math.round(new Date(member.communicationDisabledUntilTimestamp) / 1000)}>`, inline: false });
 
         //Se notifica en el canal de registro
         if (client.config.logging.memberJoined) await client.joinsAndLeavesChannel.send({ embeds: [ welcomeEmbed ], files: ['./resources/images/in.png'] });
 
         //Añade el rol de bienvenida para nuevos miembros (si no lo tiene ya)
-        if (member.roles.cache.has(client.config.main.newMemberRole)) await member.roles.add(client.config.main.newMemberRole);
+        if (client.config.main.newMemberRole && !member.roles.cache.has(client.config.main.newMemberRole)) await member.roles.add(client.config.main.newMemberRole);
 
     } catch (error) {
 

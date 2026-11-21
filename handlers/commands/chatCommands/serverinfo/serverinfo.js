@@ -3,7 +3,7 @@ export async function run(interaction, commandConfig, locale) {
     try {
 
         // Stores the members of the guild
-        const guildMembers = await interaction.guild.members.fetch();
+        const guildMembers = interaction.guild.members.cache;
 
         // Stores the guild channels
         const guildChannels = await interaction.guild.channels.fetch();

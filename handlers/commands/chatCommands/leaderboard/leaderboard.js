@@ -25,7 +25,7 @@ export async function run(interaction, commandConfig, locale) {
         await interaction.deferReply();
 
         // Stores the cache of the guild members
-        const guildMembers = await client.baseGuild.members.fetch();
+        const guildMembers = client.baseGuild.members.cache;
 
         // For each member in the profile database
         for (const memberProfile of memberProfiles) {

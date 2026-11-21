@@ -10,7 +10,6 @@ const schema = new mongoose.Schema({
     },
     discordToken: String,
     baseGuildId: String,
-    serviceGuildId: String,
     inviteCode: String,
     botManagers: [String],
     pingMsTreshold: {

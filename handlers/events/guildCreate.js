@@ -6,23 +6,14 @@ export default async (guild, locale) => {
     
     try {
 
-        // Omits if the guild is of the bot
-        if (guild.ownerId === client.user.id) return;
-
         // List of guilds to which the bot is joined
         const cachedGuilds = client.guilds.cache;
 
-        // Loads the service guild Id
-        const serviceGuildId = await client.functions.db.getConfig('system.serviceGuildId');
-
-        // Stores the number of eligible guilds (except the service one)
-        let elegibleGuilds = await cachedGuilds.filter(guild => guild.id !== serviceGuildId);
-
-        // Stores the eligible guilds count
-        let elegibleGuildsCount = elegibleGuilds.size;
+        // Stores the guilds that can be the base guild
+        let elegibleGuilds = cachedGuilds;
 
         // Checks how many guilds are available
-        if (elegibleGuildsCount === 1) {
+        if (elegibleGuilds.size === 1) {
 
             // Notifies through the console that the bot has joined the guild
             logger.debug(`The bot has been joined to "${guild.name}" (${guild.id})`);

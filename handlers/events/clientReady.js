@@ -18,41 +18,11 @@ export default async (event, locale) => {
         // Loads the base guild Id
         let baseGuildId = await client.functions.db.getConfig('system.baseGuildId');
 
-        // Loads the service guild Id
-        const serviceGuildId = await client.functions.db.getConfig('system.serviceGuildId');
+        // Stores the guilds that can be the base guild
+        let elegibleGuilds = cachedGuilds;
 
-        // Stores the number of eligible guilds (excluding the service ones)
-        let elegibleGuilds = await cachedGuilds.filter(guild => guild.id !== serviceGuildId);
-
-        // Stores the eligible guilds count
-        let elegibleGuildsCount = elegibleGuilds.size;
-        
-        // Checks how many guilds are available
-        if (elegibleGuildsCount > 1) { // If the amount is greater than 1
-
-            // For each guild in cache
-            await elegibleGuilds.forEach(async guild => {
-
-                // If the guild is from the bot
-                if(guild.ownerId === client.user.id) {
-
-                    try {
-
-                        // Decrements the eligible guilds count
-                        elegibleGuildsCount--;
-    
-                        // Deletes the guild
-                        return await guild.delete();
-                        
-                    } catch (error) {
-
-                        // Shows an error in the console
-                        logger.error(error.stack);
-                    };
-                };
-            });
-
-        } else if (elegibleGuildsCount === 0) { // If the amount is 0
+        // If the bot is not joined to any guild
+        if (elegibleGuilds.size === 0) {
 
             // Help URLs to join the bot to a guild
             const joinNewGuildURL = `https://discord.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=8`;	
@@ -67,8 +37,8 @@ export default async (event, locale) => {
             return logger.debug('Waiting for the bot to be joined to a guild');
         };
 
-        // If the eligible guilds count is exactly 1
-        if (elegibleGuildsCount !== 1) {
+        // If the bot is joined to more than one guild
+        if (elegibleGuilds.size > 1) {
 
             // Records that the bot cannot work in more than one guild
             logger.warn('User interaction was requested to choose which will be the new base guild, because the bot was in several guilds');

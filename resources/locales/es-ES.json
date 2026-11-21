@@ -1384,7 +1384,6 @@
         },
         "loadEmojis": {
             "configLoaded": "Carga de emojis personalizados completada",
-            "maxExceeded": "No se pueden cargar más de 50 emojis",
             "error": "ERROR"
         },
         "newGuild": {

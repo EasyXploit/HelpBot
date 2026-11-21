@@ -1384,7 +1384,6 @@
         },
         "loadEmojis": {
             "configLoaded": "Încărcarea emoji-urilor personalizate a fost finalizată",
-            "maxExceeded": "Nu pot fi încărcate mai mult de 50 de emoji",
             "error": "EROARE"
         },
         "newGuild": {

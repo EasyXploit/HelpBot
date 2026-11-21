@@ -85,6 +85,23 @@ exports.run = async (locale) => {
 
             //Muestra el resultado de la carga de funciones
             console.log(` - [OK] ${locale.functionsLoaded}.`);
+            
+            try {
+
+                //Carga todos los miembros de la guild en caché (una sola vez, ya que Discord limita esta petición a 1 cada 30 segundos)
+                await client.homeGuild.members.fetch();
+
+                //Notifica la correcta carga de la caché de miembros
+                console.log(` - [OK] ${locale.membersCacheLoaded}.`);
+
+            } catch (error) {
+
+                //Notifica la resolución negativa de la carga
+                console.log(` - [ERROR] ${await client.functions.utilities.parseLocale.run(locale.membersCacheNotLoaded, { seconds: 30 })}.`);
+
+                //Reintenta la carga una vez pasado el límite de Discord
+                setTimeout(() => client.homeGuild.members.fetch().catch(() => {}), 30000);
+            };
 
             //Carga los customEmojis en el cliente
             await require('./loadEmojis.js').run(client);
@@ -96,7 +113,7 @@ exports.run = async (locale) => {
             await client.user.setPresence({
                 status: client.config.presence.status,
                 activities: [{
-                    name: client.config.presence.membersCount ? `${await client.functions.utilities.parseLocale.run(client.locale.lifecycle.loadIntervals.presence.name, { memberCount: await client.homeGuild.members.fetch().then(members => members.filter(member => !member.user.bot).size) })} | ${client.config.presence.name}` : client.config.presence.name,
+                    name: client.config.presence.membersCount ? `${await client.functions.utilities.parseLocale.run(client.locale.lifecycle.loadIntervals.presence.name, { memberCount: client.homeGuild.members.cache.filter(member => !member.user.bot).size })} | ${client.config.presence.name}` : client.config.presence.name,
                     type: client.config.presence.type
                 }]
             });

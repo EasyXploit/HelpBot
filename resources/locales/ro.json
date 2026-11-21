@@ -1374,7 +1374,9 @@
             "voiceStatesLoaded": "Încărcarea stărilor vocale s-a încheiat",
             "loadedCorrectly": "{{botUsername}} a început cu succes",
             "error": "EROARE",
-            "functionsLoaded": "Încărcarea funcțiilor globale a fost finalizată"
+            "functionsLoaded": "Încărcarea funcțiilor globale a fost finalizată",
+            "membersCacheLoaded": "Încărcarea memoriei cache a membrilor a fost finalizată",
+            "membersCacheNotLoaded": "Nu s-a putut încărca memoria cache a membrilor, se reîncearcă în {{seconds}} secunde"
         },
         "loadTimers": {
             "configLoaded": "Încărcarea temporizatoarelor s-a încheiat"

@@ -80,7 +80,7 @@ exports.run = async (client) => {
                         case 'memberCount':
 
                             //Calcula la cantidad de miembros de la guild
-                            const guildMembers = await client.homeGuild.members.fetch();
+                            const guildMembers = client.homeGuild.members.cache;
 
                             //Almacena la cantidad de miembros de la guild
                             wildcards[placeHolder] = guildMembers.size;

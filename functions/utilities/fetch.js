@@ -15,12 +15,11 @@ exports.run = async (mode, target, channel, fetchCache) => {
                 //Comprueba si el parámetro coincide con el formato de mención de miembro
                 const memberMatches = target.toString().match(new RegExp(/^<@!?(\d+)>$/));
 
-                //Almacena la caché de los miembros de la guild
-                if (!fetchCache) fetchCache = await client.homeGuild.members.fetch();
+                //Almacena la ID del miembro (en función de la variable "memberMatches")
+                const memberId = memberMatches ? memberMatches[1] : (!isNaN(target) ? target.toString() : null);
 
-                //Lo busca por ID o por mención (en función de la variable "memberMatches")
-                if (memberMatches) result = fetchCache.find(member => member.id === memberMatches[1]);
-                else if (!isNaN(target)) result = fetchCache.find(member => member.id === target);
+                //Lo busca en la caché proporcionada o, si no la hay, en la caché del cliente (o vía REST si no está en ella)
+                if (memberId) result = fetchCache ? fetchCache.get(memberId) : await client.homeGuild.members.fetch(memberId);
                 
                 //Para el switch
                 break;

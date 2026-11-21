@@ -22,7 +22,7 @@ exports.run = async (interaction, commandConfig, locale) => {
         await interaction.deferReply();
 
         //Almacena la caché de los miembros de la guild
-        const guildMembers = await client.homeGuild.members.fetch();
+        const guildMembers = client.homeGuild.members.cache;
 
         //Por cada miembro en la base de datos de stats
         for (const memberId in client.db.stats) {

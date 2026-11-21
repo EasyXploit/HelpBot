@@ -1374,7 +1374,9 @@
             "voiceStatesLoaded": "Voice states loading completed",
             "loadedCorrectly": "{{botUsername}} started successfully",
             "error": "ERROR",
-            "functionsLoaded": "Global functions loading completed"
+            "functionsLoaded": "Global functions loading completed",
+            "membersCacheLoaded": "Members cache loading completed",
+            "membersCacheNotLoaded": "Could not load the members cache, retrying in {{seconds}} seconds"
         },
         "loadTimers": {
             "configLoaded": "Timers loading completed"

@@ -1374,7 +1374,9 @@
             "voiceStatesLoaded": "Carga de estados de voz completada",
             "loadedCorrectly": "{{botUsername}} iniciado correctamente",
             "error": "ERROR",
-            "functionsLoaded": "Carga de funciones globales completada"
+            "functionsLoaded": "Carga de funciones globales completada",
+            "membersCacheLoaded": "Carga de la caché de miembros completada",
+            "membersCacheNotLoaded": "No se pudo cargar la caché de miembros, reintentando en {{seconds}} segundos"
         },
         "loadTimers": {
             "configLoaded": "Carga de temporizadores completada"

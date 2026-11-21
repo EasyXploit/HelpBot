@@ -3,7 +3,7 @@ exports.run = async (interaction, commandConfig, locale) => {
     try {
 
         //Almacena a los miembros de la guild
-        const guildMembers = await interaction.guild.members.fetch();
+        const guildMembers = interaction.guild.members.cache;
 
         //Almacena los canales de la guild
         const guildChannels = await interaction.guild.channels.fetch();

@@ -1,5 +1,8 @@
 exports.run = async (client) => {
 
+    //Carga el wrapper de Discord (para preparar los mensajes antes de enviarlos)
+    const discord = require('discord.js');
+
     //Traducciones de los timers
     const locale = client.locale.lifecycle.loadTimers;
 
@@ -231,8 +234,17 @@ exports.run = async (client) => {
         //Si se encontró el mensaje, aborta el envío
         if (msgFound) return;
 
+        // Genera un payload con el contenido del mensaje
+        const payload = discord.MessagePayload.create(channel, timerConfig.message).resolveData();
+        
+        // Genera un nonce para el mensaje, de manera que Discord pueda identificarlo y evitar duplicados
+        payload.data.nonce = discord.SnowflakeUtil.generate();
+
+        // Fuerza a Discord a verificar el nonce, para evitar que se envíen mensajes duplicados
+        payload.data.enforce_nonce = true;
+
         //Envía el mensaje al canal especificado
-        const sentMsg = await channel.send(timerConfig.message);
+        const sentMsg = await channel.send(payload);
 
         //Actualiza la BD para guardar el ID del último timer
         client.db.timers.sents[hash] = {

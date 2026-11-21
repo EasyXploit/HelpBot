@@ -24,8 +24,8 @@ await loadLogger();
 // Stores the local configuration from the configuration file
 const localConfig = require('./config.json');
 
-// Loads the remote error handler, if enabled
-if (localConfig.errorTracking.enabled || process.env.NODE_ENV !== 'production') loadErrorTracker(localConfig);
+// Loads the remote error handler, if enabled in the local configuration or if a Sentry DSN is provided through the environment variables
+if (localConfig.errorTracking.enabled || (process.env.SENTRY_DSN && process.env.SENTRY_DSN.length > 0) || process.env.NODE_ENV !== 'production') loadErrorTracker(localConfig);
 
 // Loads the target language from the environment variables, or from the local configuration
 let targetLocale = process.env.LOCALE && process.env.LOCALE.length > 0 ? process.env.LOCALE : localConfig.locale;

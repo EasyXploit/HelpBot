@@ -9,7 +9,8 @@
         "eventLoaded": "Event",
         "loggingIn": "Logare",
         "loggedIn": "¡Logare cu succes!",
-        "couldNotLogIn": "Autentificare eșuată. Verificați dacă simbolul de conectare este valid"
+        "couldNotLogIn": "Autentificare eșuată. Verificați dacă simbolul de conectare este valid",
+        "shuttingDown": "Semnal de oprire primit. Se oprește botul"
     },
     "handlers": {
         "buttons": {

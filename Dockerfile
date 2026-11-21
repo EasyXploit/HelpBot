@@ -3,7 +3,6 @@ FROM node:24-bookworm-slim
 
 # Instala las herramientas de compilación para dependencias nativas y TMUX
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    tmux \
     python3 \
     make \
     g++ \
@@ -29,4 +28,4 @@ RUN mkdir defaults && cp -r configs storage defaults/
 ENTRYPOINT ["sh", "/app/docker-entrypoint.sh"]
 
 # Inicia la aplicación
-CMD ["tmux", "new-session", "-s", "helpbot", "npm start"]
+CMD ["node", "--no-warnings", "index.js"]

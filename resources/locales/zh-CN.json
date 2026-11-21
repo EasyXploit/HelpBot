@@ -9,7 +9,8 @@
         "eventLoaded": "事件",
         "loggingIn": "登录中",
         "loggedIn": "登录成功！",
-        "couldNotLogIn": "Login failed. Check if the login token is valid"
+        "couldNotLogIn": "Login failed. Check if the login token is valid",
+        "shuttingDown": "收到停止信号. 正在关闭机器人"
     },
     "handlers": {
         "buttons": {

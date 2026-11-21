@@ -9,7 +9,8 @@
         "eventLoaded": "Evento",
         "loggingIn": "Iniciando sesión",
         "loggedIn": "¡Sesion iniciada correctamente!",
-        "couldNotLogIn": "No ha sido posible iniciar sesión. Comprueba si el token de inicio de sesión es válido"
+        "couldNotLogIn": "No ha sido posible iniciar sesión. Comprueba si el token de inicio de sesión es válido",
+        "shuttingDown": "Señal de parada recibida. Apagando el bot"
     },
     "handlers": {
         "buttons": {

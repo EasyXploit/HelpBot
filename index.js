@@ -53,6 +53,22 @@ process.on('unhandledRejection', error => {
     };
 });
 
+//Cierra el bot de forma ordenada cuando se detiene el proceso (al parar o actualizar el contenedor, o con Ctrl+C)
+for (const signal of ['SIGTERM', 'SIGINT']) process.on(signal, async () => {
+
+    //Notifica el apagado por consola
+    console.log(`\n${new Date().toLocaleString()} 》${locale.index.shuttingDown} (${signal}) ...`);
+
+    //Desconecta el cliente de Discord
+    try { await client.destroy(); } catch (error) {};
+
+    //Si se ha cargado el manejador de errores remoto, envía los errores pendientes antes de salir
+    if (client.errorTracker) await client.errorTracker.close(2000).catch(() => {});
+
+    //Finaliza el proceso sin error
+    process.exit(0);
+});
+
 //Almacena en el cliente el idioma preferido
 client.locale = locale;
 

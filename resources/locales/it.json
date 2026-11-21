@@ -9,7 +9,8 @@
         "eventLoaded": "Evento",
         "loggingIn": "Iniziando sessione",
         "loggedIn": "Sessione iniziata correttamente!",
-        "couldNotLogIn": "Login failed. Check if the login token is valid"
+        "couldNotLogIn": "Login failed. Check if the login token is valid",
+        "shuttingDown": "Segnale di arresto ricevuto. Spegnimento del bot in corso"
     },
     "handlers": {
         "buttons": {

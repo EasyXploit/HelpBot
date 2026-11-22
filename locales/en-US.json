@@ -43,6 +43,10 @@
         "ViewCreatorMonetizationAnalytics": "View Creator Monetization Analytics",
         "UseSoundboard": "Use Soundboard"
     },
+    "status": {
+        "enabled": "Enabled",
+        "disabled": "Disabled"
+    },
     "index": {
         "startupMsg": "The bot is starting. Please wait"
     },
@@ -1452,10 +1456,19 @@
                                 "affirmativeAnswer": "Yes",
                                 "negativeAnswer": "No"
                             },
+                            "changeAutomodStatus": {
+                                "enable": "Enable automatic moderation",
+                                "disable": "Disable automatic moderation"
+                            },
+                            "changeManualModerationStatus": {
+                                "enable": "Enable manual moderation",
+                                "disable": "Disable manual moderation"
+                            },
                             "setCommands": "Set commands",
                             "return": "Return"
                         },
                         "setCommandsMenu": {
+                            "headerMessage": "Select command category to configure",
                             "promptMessage": "Select a command type",
                             "choices": {
                                 "chatCommands": "Chat commands",
@@ -1464,18 +1477,21 @@
                                 "return": "Return"
                             },
                             "setChatCommandsMenu": {
+                                "headerMessage": "Manage individual moderation chat commands status",
                                 "promptMessage": "Select a command to configure",
                                 "choices": {
                                     "return": "Return"
                                 }
                             },
                             "setMessageCommandsMenu": {
+                                "headerMessage": "Manage individual moderation message commands status",
                                 "promptMessage": "Select a command to configure",
                                 "choices": {
                                     "return": "Return"
                                 }
                             },
                             "setUserCommandsMenu": {
+                                "headerMessage": "Manage individual moderation user commands status",
                                 "promptMessage": "Select a command to configure",
                                 "choices": {
                                     "return": "Return"
@@ -1492,16 +1508,26 @@
                                 "enable": "Enable module",
                                 "disable": "Disable module"
                             },
+                            "changeExperienceSystemStatus": {
+                                "enable": "Enable experience system",
+                                "disable": "Disable experience system"
+                            },
+                            "changeStatisticsCollectionStatus": {
+                                "enable": "Enable statistics collection",
+                                "disable": "Disable statistics collection"
+                            },
                             "setCommands": "Set commands",
                             "return": "Return"
                         },
                         "setCommandsMenu": {
+                            "headerMessage": "Select command category to configure",
                             "promptMessage": "Select a command type",
                             "choices": {
                                 "chatCommands": "Chat commands",
                                 "return": "Return"
                             },
                             "setChatCommandsMenu": {
+                                "headerMessage": "Manage individual engagement chat commands status",
                                 "promptMessage": "Select a command to configure",
                                 "choices": {
                                     "return": "Return"
@@ -1551,12 +1577,14 @@
                             "return": "Return"
                         },
                         "setCommandsMenu": {
+                            "headerMessage": "Select command category to configure",
                             "promptMessage": "Select a command type",
                             "choices": {
                                 "chatCommands": "Chat commands",
                                 "return": "Return"
                             },
                             "setChatCommandsMenu": {
+                                "headerMessage": "Manage individual polls chat commands status",
                                 "promptMessage": "Select a command to configure",
                                 "choices": {
                                     "return": "Return"
@@ -1577,12 +1605,14 @@
                             "return": "Return"
                         },
                         "setCommandsMenu": {
+                            "headerMessage": "Select command category to configure",
                             "promptMessage": "Select a command type",
                             "choices": {
                                 "chatCommands": "Chat commands",
                                 "return": "Return"
                             },
                             "setChatCommandsMenu": {
+                                "headerMessage": "Manage individual utilities chat commands status",
                                 "promptMessage": "Select a command to configure",
                                 "choices": {
                                     "return": "Return"
@@ -1603,13 +1633,16 @@
                             "return": "Return"
                         },
                         "setCommandsMenu": {
+                            "headerMessage": "Select command category to configure",
                             "promptMessage": "Select a command type",
                             "choices": {
                                 "chatCommands": "Chat commands",
                                 "return": "Return"
                             },
                             "setChatCommandsMenu": {
+                                "headerMessage": "Manage individual scheduled messages chat commands status",
                                 "promptMessage": "Select a command to configure",
+                                "noCommandsAvailable": "No commands are available for the scheduled messages module yet",
                                 "choices": {
                                     "return": "Return"
                                 }

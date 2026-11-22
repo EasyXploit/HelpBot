@@ -43,6 +43,10 @@
         "ViewCreatorMonetizationAnalytics": "View Creator Monetization Analytics",
         "UseSoundboard": "Use Soundboard"
     },
+    "status": {
+        "enabled": "Activado",
+        "disabled": "Desactivado"
+    },
     "index": {
         "startupMsg": "The bot is starting. Please wait"
     },
@@ -1427,73 +1431,95 @@
                         "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
                     },
                     "moderation": {
-                        "headerMessage": "This module allows you to configure the bot's moderation functions",
-                        "promptMessage": "Select an option",
+                        "headerMessage": "Este módulo te permite configurar las funciones de moderación del bot",
+                        "promptMessage": "Selecciona una opción",
                         "choices": {
                             "changeModuleStatus": {
-                                "enable": "Enable module",
-                                "disable": "Disable module",
-                                "wantsToExpireSanctions": "Do you want to expire now the sanctions that were scheduled to expire?",
-                                "affirmativeAnswer": "Yes",
+                                "enable": "Activar módulo",
+                                "disable": "Desactivar módulo",
+                                "wantsToExpireSanctions": "¿Quieres expirar ahora las sanciones que estaban programadas para expirar?",
+                                "affirmativeAnswer": "Sí",
                                 "negativeAnswer": "No"
                             },
-                            "setCommands": "Set commands",
-                            "return": "Return"
+                            "changeAutomodStatus": {
+                                "enable": "Activar moderación automática",
+                                "disable": "Desactivar moderación automática"
+                            },
+                            "changeManualModerationStatus": {
+                                "enable": "Activar moderación manual",
+                                "disable": "Desactivar moderación manual"
+                            },
+                            "setCommands": "Establecer comandos",
+                            "return": "Volver"
                         },
                         "setCommandsMenu": {
-                            "promptMessage": "Select a command type",
+                            "headerMessage": "Selecciona la categoría de comandos a configurar",
+                            "promptMessage": "Selecciona un tipo de comando",
                             "choices": {
-                                "chatCommands": "Chat commands",
-                                "messageCommands": "Message commands",
-                                "userCommands": "User commands",
-                                "return": "Return"
+                                "chatCommands": "Comandos de chat",
+                                "messageCommands": "Comandos de mensaje",
+                                "userCommands": "Comandos de usuario",
+                                "return": "Volver"
                             },
                             "setChatCommandsMenu": {
-                                "promptMessage": "Select a command to configure",
+                                "headerMessage": "Gestiona comandos de chat de moderación individuales",
+                                "promptMessage": "Selecciona un comando para configurar",
                                 "choices": {
-                                    "return": "Return"
+                                    "return": "Volver"
                                 }
                             },
                             "setMessageCommandsMenu": {
-                                "promptMessage": "Select a command to configure",
+                                "headerMessage": "Gestiona comandos de mensaje de moderación individuales",
+                                "promptMessage": "Selecciona un comando para configurar",
                                 "choices": {
-                                    "return": "Return"
+                                    "return": "Volver"
                                 }
                             },
                             "setUserCommandsMenu": {
-                                "promptMessage": "Select a command to configure",
+                                "headerMessage": "Gestiona comandos de usuario de moderación individuales",
+                                "promptMessage": "Selecciona un comando para configurar",
                                 "choices": {
-                                    "return": "Return"
+                                    "return": "Volver"
                                 }
                             }
                         },
-                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                        "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
                     },
                     "engagement": {
-                        "headerMessage": "This module allows you to configure the bot's engagement functions",
-                        "promptMessage": "Select an option",
+                        "headerMessage": "Este módulo te permite configurar las funciones de participación del bot",
+                        "promptMessage": "Selecciona una opción",
                         "choices": {
                             "changeModuleStatus": {
-                                "enable": "Enable module",
-                                "disable": "Disable module"
+                                "enable": "Activar módulo",
+                                "disable": "Desactivar módulo"
                             },
-                            "setCommands": "Set commands",
-                            "return": "Return"
+                            "changeExperienceSystemStatus": {
+                                "enable": "Activar sistema de experiencia",
+                                "disable": "Desactivar sistema de experiencia"
+                            },
+                            "changeStatisticsCollectionStatus": {
+                                "enable": "Activar recopilación de estadísticas",
+                                "disable": "Desactivar recopilación de estadísticas"
+                            },
+                            "setCommands": "Establecer comandos",
+                            "return": "Volver"
                         },
                         "setCommandsMenu": {
-                            "promptMessage": "Select a command type",
+                            "headerMessage": "Selecciona la categoría de comandos a configurar",
+                            "promptMessage": "Selecciona un tipo de comando",
                             "choices": {
-                                "chatCommands": "Chat commands",
-                                "return": "Return"
+                                "chatCommands": "Comandos de chat",
+                                "return": "Volver"
                             },
                             "setChatCommandsMenu": {
-                                "promptMessage": "Select a command to configure",
+                                "headerMessage": "Gestiona el estado de comandos de chat de participación individuales",
+                                "promptMessage": "Selecciona un comando para configurar",
                                 "choices": {
-                                    "return": "Return"
+                                    "return": "Volver"
                                 }
                             }
                         },
-                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                        "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
                     },
                     "greetings": {
                         "headerMessage": "This module allows you to configure the bot's greetings functions",
@@ -1522,85 +1548,92 @@
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
                     },
                     "polls": {
-                        "headerMessage": "This module allows you to configure the bot's polls functions",
-                        "promptMessage": "Select an option",
+                        "headerMessage": "Este módulo te permite configurar las funciones de encuestas del bot",
+                        "promptMessage": "Selecciona una opción",
                         "choices": {
                             "changeModuleStatus": {
-                                "enable": "Enable module",
-                                "disable": "Disable module",
-                                "wantsToExpirePolls": "Do you want to expire now the polls that were scheduled to expire?",
-                                "affirmativeAnswer": "Yes",
+                                "enable": "Activar módulo",
+                                "disable": "Desactivar módulo",
+                                "wantsToExpirePolls": "¿Quieres expirar ahora las encuestas que estaban programadas para expirar?",
+                                "affirmativeAnswer": "Sí",
                                 "negativeAnswer": "No"
                             },
-                            "setCommands": "Set commands",
-                            "return": "Return"
+                            "setCommands": "Configurar comandos",
+                            "return": "Volver"
                         },
                         "setCommandsMenu": {
-                            "promptMessage": "Select a command type",
+                            "headerMessage": "Selecciona la categoría de comandos a configurar",
+                            "promptMessage": "Selecciona un tipo de comando",
                             "choices": {
-                                "chatCommands": "Chat commands",
-                                "return": "Return"
+                                "chatCommands": "Comandos de chat",
+                                "return": "Volver"
                             },
                             "setChatCommandsMenu": {
-                                "promptMessage": "Select a command to configure",
+                                "headerMessage": "Gestiona comandos de chat de encuestas individuales",
+                                "promptMessage": "Selecciona un comando para configurar",
                                 "choices": {
-                                    "return": "Return"
+                                    "return": "Volver"
                                 }
                             }
                         },
-                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                        "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
                     },
                     "utilities": {
-                        "headerMessage": "This module allows you to configure the bot's utilities",
-                        "promptMessage": "Select an option",
+                        "headerMessage": "Este módulo te permite configurar las utilidades del bot",
+                        "promptMessage": "Selecciona una opción",
                         "choices": {
                             "changeModuleStatus": {
-                                "enable": "Enable module",
-                                "disable": "Disable module"
+                                "enable": "Activar módulo",
+                                "disable": "Desactivar módulo"
                             },
-                            "setCommands": "Set commands",
-                            "return": "Return"
+                            "setCommands": "Configurar comandos",
+                            "return": "Volver"
                         },
                         "setCommandsMenu": {
-                            "promptMessage": "Select a command type",
+                            "headerMessage": "Selecciona la categoría de comandos a configurar",
+                            "promptMessage": "Selecciona un tipo de comando",
                             "choices": {
-                                "chatCommands": "Chat commands",
-                                "return": "Return"
+                                "chatCommands": "Comandos de chat",
+                                "return": "Volver"
                             },
                             "setChatCommandsMenu": {
-                                "promptMessage": "Select a command to configure",
+                                "headerMessage": "Gestiona comandos de chat de utilidades individuales",
+                                "promptMessage": "Selecciona un comando para configurar",
                                 "choices": {
-                                    "return": "Return"
+                                    "return": "Volver"
                                 }
                             }
                         },
-                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                        "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
                     },
                     "scheduledMessages": {
-                        "headerMessage": "This module allows you to schedule messages to be sent automatically",
-                        "promptMessage": "Select an option",
+                        "headerMessage": "Este módulo te permite programar mensajes para que se envíen automáticamente",
+                        "promptMessage": "Selecciona una opción",
                         "choices": {
                             "changeModuleStatus": {
-                                "enable": "Enable module",
-                                "disable": "Disable module"
+                                "enable": "Activar módulo",
+                                "disable": "Desactivar módulo"
                             },
-                            "setCommands": "Set commands",
-                            "return": "Return"
+                            "setCommands": "Configurar comandos",
+                            "return": "Volver"
                         },
                         "setCommandsMenu": {
-                            "promptMessage": "Select a command type",
+                            "headerMessage": "Selecciona la categoría de comandos a configurar",
+                            "promptMessage": "Selecciona un tipo de comando",
                             "choices": {
-                                "chatCommands": "Chat commands",
-                                "return": "Return"
+                                "chatCommands": "Comandos de chat",
+                                "return": "Volver"
                             },
                             "setChatCommandsMenu": {
-                                "promptMessage": "Select a command to configure",
+                                "headerMessage": "Gestiona comandos de chat de mensajes programados individuales",
+                                "promptMessage": "Selecciona un comando para configurar",
+                                "noCommandsAvailable": "Aún no hay comandos disponibles para el módulo de mensajes programados",
                                 "choices": {
-                                    "return": "Return"
+                                    "return": "Volver"
                                 }
                             }
                         },
-                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                        "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
                     }
                 },
                 "errorMessage": "An unexpected error ocurred. Check the logs for more details"
@@ -1780,7 +1813,7 @@
                 "crossPost": {
                     "reason": "Publicaciones repetidas"
                 },
-                "swearWords": {
+                "bannedWords": {
                     "reason": "Palabras malsonantes"
                 },
                 "invites": {

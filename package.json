@@ -33,7 +33,6 @@
     "cli-table3": "^0.6.3",
     "discord.js": "^14.28.1",
     "dotenv": "^16.6.1",
-    "inquirer": "^9.2.11",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
     "migrate-mongo": "^11.0.0",

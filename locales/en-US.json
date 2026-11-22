@@ -1309,8 +1309,6 @@
                 "selectANewBaseGuild": "Select the new base guild",
                 "alreadyConfiguredGuild": "Already configured",
                 "isSureToReplaceBaseGuild": "Are you sure you want to change the base guild? Specific settings will be lost",
-                "affirmativeAnswer": "y",
-                "negativeAnswer": "n",
                 "leavingGuild": "Leaving the guild {{guild}}",
                 "errorMessage": "An unexpected error ocurred. Check the logs for more details"
             },

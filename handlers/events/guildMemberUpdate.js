@@ -12,18 +12,8 @@ export default async (oldMember, newMember, locale) => {
         // If the member has passed the verification screen
         if (oldMember.pending && !newMember.pending) {
 
-            // Stores the greetings module status
-            const greetingsModuleEnabled = await client.functions.db.getConfig('system.modules.greetings');
-
-            // If the greetings module is enabled
-            if (greetingsModuleEnabled) {
-
-                // Stores the member's profile, if it exists
-                let memberProfile = await client.functions.db.getData('profile', oldMember.id);
-    
-                // If the member has an entry in the statistics table, assigns the rewards that corresponds to it
-                if (memberProfile && await client.functions.db.getConfig('leveling.preserveStats')) await client.functions.leveling.assignRewards(newMember, memberProfile.stats.level);
-            };
+            // Restores the reward roles of the member (if it returns to the guild)
+            await client.functions.leveling.restoreRewards(newMember);
 
             // Stores the new members management mode
             const newMemberMode = await client.functions.db.getConfig('welcomes.newMemberMode');

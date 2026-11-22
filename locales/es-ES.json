@@ -1553,6 +1553,16 @@
                                 }
                             }
                         },
+                        "rewardsUpdate": {
+                            "removePrompt": "El sistema de experiencia ha dejado de estar activo. ¿Quitar los roles de recompensa a todos los miembros? (se podrán recalcular cuando vuelva a estar activo)",
+                            "recalculatePrompt": "El sistema de experiencia vuelve a estar activo. ¿Recalcular los roles de recompensa de todos los miembros según su nivel guardado?",
+                            "yes": "Sí",
+                            "no": "No",
+                            "processing": "Actualizando los roles de recompensa, esto puede tardar un rato",
+                            "removed": "Se han quitado los roles de recompensa a {{count}} miembros",
+                            "recalculated": "Se han recalculado los roles de recompensa de {{count}} miembros",
+                            "missingPermissions": "El bot no tiene permiso para gestionar roles"
+                        },
                         "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
                     },
                     "greetings": {

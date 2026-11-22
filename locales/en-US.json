@@ -1568,6 +1568,16 @@
                                 }
                             }
                         },
+                        "rewardsUpdate": {
+                            "removePrompt": "The experience system is no longer active. Remove the reward roles from all the members? (they can be recalculated when it is active again)",
+                            "recalculatePrompt": "The experience system is active again. Recalculate the reward roles of all the members, according to their saved level?",
+                            "yes": "Yes",
+                            "no": "No",
+                            "processing": "Updating the reward roles, this may take a while",
+                            "removed": "The reward roles have been removed from {{count}} members",
+                            "recalculated": "The reward roles of {{count}} members have been recalculated",
+                            "missingPermissions": "The bot does not have permission to manage roles"
+                        },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
                     },
                     "greetings": {

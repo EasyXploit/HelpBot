@@ -30,6 +30,9 @@ export default async (member, locale) => {
             };
         };
 
+        // If the member does not have to accept the rules first, restores its reward roles (if it returns to the guild)
+        if (!member.pending && !member.user.bot) await client.functions.leveling.restoreRewards(member);
+
         // Stores the greetings module status
         const greetingsModuleEnabled = await client.functions.db.getConfig('system.modules.greetings');
 

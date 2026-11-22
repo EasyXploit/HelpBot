@@ -138,12 +138,8 @@ export default async (member, locale) => {
         const pendingMembers = await client.functions.db.getConfig('welcomes.pendingMembers') || [];
         if (pendingMembers.includes(member.id)) await client.functions.db.setConfig('welcomes.pendingMembers', pendingMembers.filter(memberId => memberId !== member.id));
 
-        // If the member has statistics and don't want to preserve them
-        if (await client.functions.db.getData('profile', member.id) && !await client.functions.db.getConfig('leveling.preserveStats')) {
-
-            // Deletes the database entry
-            await client.functions.db.delData('profile', member.id);
-        };
+        // If the statistics of the members who leave are not preserved, resets them (keeping the warnings history)
+        if (!await client.functions.db.getConfig('leveling.preserveStats')) await client.functions.leveling.resetStats(member.id);
 
     } catch (error) {
 

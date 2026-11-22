@@ -58,31 +58,20 @@ exports.run = async (interaction, commandConfig, locale) => {
         if (nextRewardedRoles.roles) {
 
             //Almacena los nombres de los roles de la recompensa
-            let roleNames = []; 
+            const roleNames = [];
 
-            //Crea una promesa para que se resuelva cuando haya acabado de buscar los nombres de todos los roles
-            const getRewards = new Promise((resolve, reject) => {
+            //Por cada ID de rol de la recompensa
+            for (const roleId of nextRewardedRoles.roles) {
 
-                //Para cada ID de rol, busca su nombre
-                nextRewardedRoles.roles.forEach(async (value, index, array) => {
+                //Busca el rol (o devuelve "null" si ya no existe)
+                const role = await interaction.guild.roles.fetch(roleId).catch(() => null);
 
-                    //Busca y almacena el rol
-                    const role = await interaction.guild.roles.fetch(value);
+                //Si el rol existe, almacena su nombre
+                if (role) roleNames.push(role.name);
+            };
 
-                    //Sube al array de nombres, el nombre del rol iterado
-                    roleNames.push(role.name);
-
-                    //Se resuelve la promesa si todos los roles se han encontrado
-                    if (index === array.length -1) resolve();
-                });
-            });
-            
-            //Invoca la promesa para obtener los nombres de los roles
-            await getRewards.then(() => {
-
-                //Sobreescribe la variable "nextRewards" con los resultados obtenidos
-                nextRewards = `${roleNames.join(', ')} (${locale.statsEmbed.level} ${nextRewardedRoles.requiredLevel})`;
-            });
+            //Si se encontró algún rol, sobreescribe la variable "nextRewards" con los resultados obtenidos
+            if (roleNames.length > 0) nextRewards = `${roleNames.join(', ')} (${locale.statsEmbed.level} ${nextRewardedRoles.requiredLevel})`;
         };
 
         //Almacena el tiempo de voz aproximado

@@ -8,18 +8,11 @@ export default async (interaction) => {
         // Stores the interaction member
         const member = await client.functions.utils.fetch('member', interaction.user.id);
 
-        // Stores if the member can win XP
-        let notAuthorized;
-
         // Stores the Id's that cannot gain XP
         const wontEarnXP = await client.functions.db.getConfig('leveling.wontEarnXP');
 
-        // For each of the roles they can earn XP
-        for (let index = 0; index < wontEarnXP.length; index++) {
-
-            // Checks if the executing member has it
-            if (member.roles.cache.has(wontEarnXP[index])) notAuthorized = true; break;
-        };
+        // Stores if the member can not win XP, because it has any of those roles
+        const notAuthorized = wontEarnXP.some(roleId => member.roles.cache.has(roleId));
 
         // If is not authorized to do so, returns an error message
         if (notAuthorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()

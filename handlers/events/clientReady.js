@@ -18,8 +18,8 @@ export default async (event, locale) => {
         // Loads the base guild Id
         let baseGuildId = await client.functions.db.getConfig('system.baseGuildId');
 
-        // Stores the guilds that can be the base guild
-        let elegibleGuilds = cachedGuilds;
+        // Stores a copy of the guilds that can be the base guild (so the guilds cache is not modified)
+        let elegibleGuilds = cachedGuilds.clone();
 
         // If the bot is not joined to any guild
         if (elegibleGuilds.size === 0) {
@@ -40,14 +40,39 @@ export default async (event, locale) => {
         // If the bot is joined to more than one guild
         if (elegibleGuilds.size > 1) {
 
-            // Records that the bot cannot work in more than one guild
-            logger.warn('User interaction was requested to choose which will be the new base guild, because the bot was in several guilds');
+            // Searches the base guild among the guilds the bot is joined to
+            const baseGuild = elegibleGuilds.get(baseGuildId);
 
-            // Shows the base guild selector
-            const newElegibleGuilds = await client.functions.menus.baseGuildSelection(elegibleGuilds);
+            // If the bot is joined to its base guild
+            if (baseGuild) {
 
-            // Updated the listed of eligible guilds
-            elegibleGuilds = newElegibleGuilds;
+                // For each of the other guilds
+                for (const guild of elegibleGuilds.values()) {
+
+                    // Omits the base guild
+                    if (guild.id === baseGuild.id) continue;
+
+                    // Records that the bot will leave the guild, as it only works on its base guild (and the user may not be in that guild to kick it)
+                    logger.warn(`The bot will leave the guild "${guild.name}" (${guild.id}), as it only works on its base guild "${baseGuild.name}" (${baseGuild.id})`);
+
+                    // Leaves the guild
+                    await guild.leave().catch(error => logger.error(error.stack));
+                };
+
+                // Keeps the base guild as the only eligible guild
+                elegibleGuilds = elegibleGuilds.filter(guild => guild.id === baseGuild.id);
+
+            } else {
+
+                // Records that the bot cannot work in more than one guild
+                logger.warn('User interaction was requested to choose which will be the new base guild, because the bot was in several guilds and none of them was the base guild');
+
+                // Shows the base guild selector
+                const newElegibleGuilds = await client.functions.menus.baseGuildSelection(elegibleGuilds);
+
+                // Updated the listed of eligible guilds
+                elegibleGuilds = newElegibleGuilds;
+            };
         };
 
         // If there is no base guild, or the base guild is not the first on the list

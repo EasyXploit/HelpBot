@@ -9,8 +9,21 @@ export default async (guild, locale) => {
         // List of guilds to which the bot is joined
         const cachedGuilds = client.guilds.cache;
 
-        // Stores the guilds that can be the base guild
-        let elegibleGuilds = cachedGuilds;
+        // Loads the base guild Id
+        const currentBaseGuildId = await client.functions.db.getConfig('system.baseGuildId');
+
+        // If the bot was already joined to its base guild, leaves the new guild, as it only works on its base guild
+        if (cachedGuilds.size > 1 && guild.id !== currentBaseGuildId && cachedGuilds.has(currentBaseGuildId)) {
+
+            // Records that the bot will leave the new guild
+            logger.warn(`The bot has been joined to "${guild.name}" (${guild.id}), but it will leave it, as it only works on its base guild`);
+
+            // Leaves the new guild
+            return await guild.leave();
+        };
+
+        // Stores a copy of the guilds that can be the base guild (so the guilds cache is not modified)
+        let elegibleGuilds = cachedGuilds.clone();
 
         // Checks how many guilds are available
         if (elegibleGuilds.size === 1) {

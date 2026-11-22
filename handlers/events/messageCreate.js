@@ -25,8 +25,11 @@ export default async (message, locale) => {
     // Stores the moderation module status
     const moderationModuleEnabled = await client.functions.db.getConfig('system.modules.moderation');
 
+    // Stores whether automod is enabled (which requires the moderation module to be active)
+    const automodEnabled = moderationModuleEnabled && await client.functions.db.getConfig('moderation.automodEnabled');
+
     // If the message has content
-    if (moderationModuleEnabled && message.content.length > 0) {
+    if (automodEnabled && message.content.length > 0) {
         
         // A hash is generated from the content of the message
         const messageHash = await client.md5(message.content);
@@ -44,7 +47,7 @@ export default async (message, locale) => {
     };
     
     // If the message has attachments and is wanted to be filtered
-    if (moderationModuleEnabled && await client.functions.db.getConfig('moderation.filters.crossPost').filterFiles && message.attachments.size > 0) {
+    if (automodEnabled && await client.functions.db.getConfig('moderation.filters.crossPost').filterFiles && message.attachments.size > 0) {
 
         // An array is generated from the values of the attachments
         const attachmentsArray = Array.from(message.attachments.values());
@@ -76,7 +79,7 @@ export default async (message, locale) => {
     };
 
     // If the moderation module is enabled
-    if (moderationModuleEnabled) {
+    if (automodEnabled) {
 
         // Stores the size of the member messages
         const messageHistorySize = await client.functions.db.getConfig('moderation.messageHistorySize');
@@ -86,7 +89,7 @@ export default async (message, locale) => {
     };
 
     // Checks if the content of the message is allowed, if the moderation module is enabled
-    const isPermitted = moderationModuleEnabled ? await client.functions.moderation.checkMessage(message) : true;
+    const isPermitted = automodEnabled ? await client.functions.moderation.checkMessage(message) : true;
 
     // If it is a message sent on a guild and was not filtered
     if (message.member && isPermitted) {
@@ -100,14 +103,24 @@ export default async (message, locale) => {
             // Stores the member's profile, or creates it
             let memberProfile = await client.functions.db.getData('profile', message.member.id) || await client.functions.db.genData('profile', { userId: message.member.id });
     
-            // Increases the sent messages count of the member
-            memberProfile.stats.messagesCount++;
-            
-            // Saves the new statistics of the member in the database
-            await client.functions.db.setData('profile', message.member.id, memberProfile);
+            // Checks if the statistics collection is enabled
+            const statsEnabled = await client.functions.db.getConfig('leveling.statisticsCollectionEnabled');
+
+            // If the statistics collection is enabled
+            if (statsEnabled) {
+
+                // Increases the sent messages count of the member
+                memberProfile.stats.messagesCount++;
+                
+                // Saves the new statistics of the member in the database
+                await client.functions.db.setData('profile', message.member.id, memberProfile);
+            };
     
-            // If the last message tha generated XP was more old than the established period
-            if (await client.functions.db.getConfig('leveling.rewardMessages') && ((message.createdTimestamp - userMessages.lastValidTimestamp) > await client.functions.db.getConfig('leveling.minimumTimeBetweenMessages'))) {
+            // Checks if the experience system is enabled
+            const xpEnabled = await client.functions.db.getConfig('leveling.experienceSystemEnabled');
+
+            // If the last message tha generated XP was more old than the established period, and the experience system is enabled
+            if (xpEnabled && await client.functions.db.getConfig('leveling.rewardMessages') && ((message.createdTimestamp - userMessages.lastValidTimestamp) > await client.functions.db.getConfig('leveling.minimumTimeBetweenMessages'))) {
     
                 // Updates the last timestamp of XP gaining
                 userMessages.lastValidTimestamp = message.createdTimestamp;

@@ -30,6 +30,26 @@ export default async (interaction, locale) => {
                 .setDescription(`${client.customEmojis.grayTick} ${await client.functions.utils.parseLocale(locale.disabledCommand, { commandName: interaction.commandName })}.`)
             ], ephemeral: true});
 
+            // Stores the names of the manual moderation commands (the reports and the infractions history are not part of it)
+            const manualModerationCommands = ['ban', 'kick', 'timeout', 'untimeout', 'unban', 'warn', 'rmwarn', 'slowmode', 'removeAndWarn'];
+
+            // If it is a manual moderation command, checks if manual moderation is disabled
+            if (command.userConfig.module === 'moderation' && manualModerationCommands.includes(command.fileName)) {
+
+                // Gets the status of the manual moderation module
+                const manualModerationEnabled = await client.functions.db.getConfig('moderation.manualModerationEnabled');
+
+                // If manual moderation is disabled
+                if (!manualModerationEnabled) {
+
+                    // Returns a message indicating that the command is disabled
+                    return interaction.reply({embeds: [ new discord.EmbedBuilder()
+                        .setColor(`${await client.functions.db.getConfig('colors.information')}`)
+                        .setDescription(`${client.customEmojis.grayTick} ${await client.functions.utils.parseLocale(locale.disabledCommand, { commandName: interaction.commandName })}.`)
+                    ], ephemeral: true});
+                };
+            };
+
             // Stores the module status corresponding to the command
             const moduleStatus = await client.functions.db.getConfig(`system.modules.${command.userConfig.module}`);
 

@@ -21,6 +21,18 @@ const schema = new mongoose.Schema({
         default: 'leveling',
         immutable: true
     },
+    // Whether the experience system is enabled
+    experienceSystemEnabled: {
+        type: Boolean,
+        default: true,
+        required: true
+    },
+    // Whether the statistics collection is enabled
+    statisticsCollectionEnabled: {
+        type: Boolean,
+        default: true,
+        required: true
+    },
     rewards: [levelingRewardSchema],
     rewardMessages: {
         type: Boolean,

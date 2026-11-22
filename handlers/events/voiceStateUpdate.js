@@ -88,17 +88,31 @@ export default async (oldState, newState, locale) => {
                     // Stores the channel
                     const channel = await client.functions.utils.fetch('channel', oldState.channelId);
     
-                    // Adds XP to the member for the last time
-                    await client.functions.leveling.addExperience(member, 'voice', channel);
+                    // Checks if the experience system is enabled
+                    const xpEnabled = await client.functions.db.getConfig('leveling.experienceSystemEnabled');
+
+                    // If the experience system is enabled
+                    if (xpEnabled) {
+
+                        // Adds XP to the member for the last time
+                        await client.functions.leveling.addExperience(member, 'voice', channel);
+                    };
     
-                    // Stores the member's profile, or creates it
-                    let memberProfile = await client.functions.db.getData('profile', member.id) || await client.functions.db.genData('profile', { userId: member.id });
-    
-                    // Updates the voice time of the member
-                    memberProfile.stats.aproxVoiceTime += XPGainInterval;
-    
-                    // Saves the new statistics of the member in the database
-                    await client.functions.db.setData('profile', member.id, memberProfile);
+                    // Checks if the statistics collection is enabled
+                    const statsEnabled = await client.functions.db.getConfig('leveling.statisticsCollectionEnabled');
+
+                    // If the statistics collection is enabled
+                    if (statsEnabled) {
+
+                        // Stores the member's profile, or creates it
+                        let memberProfile = await client.functions.db.getData('profile', member.id) || await client.functions.db.genData('profile', { userId: member.id });
+        
+                        // Updates the voice time of the member
+                        memberProfile.stats.aproxVoiceTime += XPGainInterval;
+        
+                        // Saves the new statistics of the member in the database
+                        await client.functions.db.setData('profile', member.id, memberProfile);
+                    };
                 };
                 
                 // Deletes the record of the member who has left the voice channel

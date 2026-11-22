@@ -38,6 +38,18 @@ const schema = new mongoose.Schema({
         default: 'moderation',
         immutable: true
     },
+    // Whether automod is enabled
+    automodEnabled: {
+        type: Boolean,
+        default: true,
+        required: true
+    },
+    // Whether manual moderation is enabled
+    manualModerationEnabled: {
+        type: Boolean,
+        default: true,
+        required: true
+    },
     allowMemberReports:  {
         type: Boolean,
         default: false,

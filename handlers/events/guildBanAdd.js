@@ -9,23 +9,20 @@ export default async (banData, locale) => {
         // Aborts if it is not an event from the base guild
         if (banData.guild.id !== client.baseGuild.id) return;
 
-        // Stores the moderation module status
-        const moderationModuleEnabled = await client.functions.db.getConfig('system.modules.moderation');
-
-        // If the moderation module is disabled, aborts
-        if (!moderationModuleEnabled) return;
-
         // Stores the cache of records of the banned user, if it exists
         const loggingCache = (client.loggingCache && client.loggingCache[banData.user.id]) ? client.loggingCache[banData.user.id] : null;
 
-        // Looks for the last ban in the audit registry
-        const fetchedLogs = await banData.guild.fetchAuditLogs({
+        // Stores whether the bot can read the audit registry
+        const canViewAuditLog = !await client.functions.utils.missingPermissions(null, client.baseGuild.members.me, ['ViewAuditLog']);
+
+        // Looks for the last ban in the audit registry (if the bot can read it)
+        const fetchedLogs = canViewAuditLog ? await banData.guild.fetchAuditLogs({
             limit: 1,
             type: discord.AuditLogEvent.MemberBanAdd,
-        });
+        }) : null;
 
         // Stores the first search result
-        const banLog = fetchedLogs.entries.first();
+        const banLog = fetchedLogs ? fetchedLogs.entries.first() : null;
         
         // If there was no record, or this was inconclusive
         if (!loggingCache && (!banLog || banLog.target.id !== banData.user.id)) {
@@ -47,8 +44,8 @@ export default async (banData, locale) => {
         } else {
 
             // Stores the executor and the reason
-            let executor = banLog.executor;
-            let reason = banLog.reason;
+            let executor = banLog ? banLog.executor : null;
+            let reason = banLog ? banLog.reason : null;
 
             // Stores the expiration of the ban and the days of erased messages
             let expiration, deletedDays;
@@ -84,20 +81,23 @@ export default async (banData, locale) => {
                     .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
                     .setDescription(await client.functions.utils.parseLocale(locale.botLoggingEmbed.description, { userTag: banData.user.tag }))
                 );
-            };
 
-            // Sends a message to the records channel
-            await client.functions.managers.sendLog('bannedMember', 'embed', new discord.EmbedBuilder()
-                .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-                .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL() })
-                .addFields(
-                    { name: locale.loggingEmbed.memberId, value: banData.user.id, inline: true },
-                    { name: locale.loggingEmbed.moderator, value: executor ? executor.tag : locale.loggingEmbed.unknownModerator, inline: true },
-                    { name: locale.loggingEmbed.reason, value: reason ? reason : locale.loggingEmbed.undefinedReason, inline: true },
-                    { name: locale.loggingEmbed.expiration, value: expiration ? `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>` : locale.loggingEmbed.noExpiration, inline: true },
-                    { name: locale.loggingEmbed.deletedDays, value: deletedDays || locale.loggingEmbed.noDeletedDays, inline: true }
-                )
-            );
+            // If the banned user was a member
+            } else {
+
+                // Sends a message to the records channel
+                await client.functions.managers.sendLog('bannedMember', 'embed', new discord.EmbedBuilder()
+                    .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
+                    .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { userTag: banData.user.tag }), iconURL: banData.user.displayAvatarURL() })
+                    .addFields(
+                        { name: locale.loggingEmbed.memberId, value: banData.user.id, inline: true },
+                        { name: locale.loggingEmbed.moderator, value: executor ? executor.tag : locale.loggingEmbed.unknownModerator, inline: true },
+                        { name: locale.loggingEmbed.reason, value: reason ? reason : locale.loggingEmbed.undefinedReason, inline: true },
+                        { name: locale.loggingEmbed.expiration, value: expiration ? `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>` : locale.loggingEmbed.noExpiration, inline: true },
+                        { name: locale.loggingEmbed.deletedDays, value: deletedDays || locale.loggingEmbed.noDeletedDays, inline: true }
+                    )
+                );
+            };
         };
 
     } catch (error) {

@@ -8,6 +8,10 @@ const schema = new mongoose.Schema({
         default: 'logging',
         immutable: true
     },
+    defaultChannelId: {
+        type: String,
+        default: ''
+    },
     warnedMember: {
         enabled: {
             type: Boolean,

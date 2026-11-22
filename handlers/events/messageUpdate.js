@@ -16,6 +16,9 @@ export default async (oldMessage, newMessage, locale) => {
     // Stores the moderation module status
     const moderationModuleEnabled = await client.functions.db.getConfig('system.modules.moderation');
 
-    // Checks if the content of the message was allowed
-    if (moderationModuleEnabled) await client.functions.moderation.checkMessage(newMessage);
+    // Stores whether automod is enabled (which requires the moderation module to be active)
+    const automodEnabled = moderationModuleEnabled && await client.functions.db.getConfig('moderation.automodEnabled');
+
+    // Checks if the content of the message was allowed, if automod is enabled
+    if (automodEnabled) await client.functions.moderation.checkMessage(newMessage);
 };

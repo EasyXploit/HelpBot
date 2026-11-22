@@ -19,7 +19,7 @@ HelpBot is published as a ready-to-use [Docker](https://www.docker.com/) image, 
 2. In **Scopes**, check `bot`. In **Bot Permissions**, check `Administrator`.
 3. Open the **Generated URL** in your browser and choose your server.
 
-> **Important:** the bot is designed to work in **only one server**. If you add it to several, it will ask you in its [console](console.md) which one to use.
+> **Important:** the bot is designed to work in **only one server**. Once it is working in your server, it leaves any other server it is added to. If it is in several servers and none of them is yours yet, it asks you in its [console](console.md) which one to use, and leaves the rest.
 
 If the bot is not in any server when it starts, it waits and shows this same invitation link in its console.
 

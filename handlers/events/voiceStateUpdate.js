@@ -9,11 +9,8 @@ export default async (oldState, newState, locale) => {
         // Aborts if it is not an event from the base guild
         if (oldState.guild.id !== client.baseGuild.id) return;
 
-        // Stores the moderation module status
-        const moderationModuleEnabled = await client.functions.db.getConfig('system.modules.moderation');
-
-        // If the moderation module is enabled
-        if (moderationModuleEnabled) {
+        // If the voice moves record is enabled
+        if (await client.functions.db.getConfig('logging.voiceMoves.enabled')) {
 
             // Stores the excluded channels from the records of voice state changes
             const excludedChannels = await client.functions.db.getConfig('moderation.voiceMovesExcludedChannels');

@@ -1525,6 +1525,8 @@
                                 "enable": "Enable statistics collection",
                                 "disable": "Disable statistics collection"
                             },
+                            "experience": "Experience",
+                            "statistics": "Statistics",
                             "setCommands": "Set commands",
                             "return": "Return"
                         },
@@ -1552,6 +1554,73 @@
                             "removed": "The reward roles have been removed from {{count}} members",
                             "recalculated": "The reward roles of {{count}} members have been recalculated",
                             "missingPermissions": "The bot does not have permission to manage roles"
+                        },
+                        "experienceMenu": {
+                            "headerMessage": "Configure the experience system: how members earn experience, the level rewards and the level-up notifications",
+                            "choices": {
+                                "rewards": "Level rewards",
+                                "rewardMessages": "Earn XP by writing messages",
+                                "rewardVoice": "Earn XP in voice channels",
+                                "xpReward": "XP per reward (minimum - maximum)",
+                                "XPGainInterval": "Interval to earn XP in voice channels",
+                                "minimumTimeBetweenMessages": "Minimum time between messages to earn XP",
+                                "wontEarnXP": "Roles that won't earn XP",
+                                "nonXPChannels": "Channels without XP",
+                                "notifyLevelUpOnChat": "Notify in the chat when leveling up by writing",
+                                "notifyLevelUpOnVoice": "Notify privately when leveling up in voice channels"
+                            },
+                            "prompts": {
+                                "enterMinimumXp": "Enter the minimum XP per reward",
+                                "enterMaximumXp": "Enter the maximum XP per reward",
+                                "enterXPGainInterval": "Enter every how many seconds XP is earned in voice channels",
+                                "enterMinimumTimeBetweenMessages": "Enter the minimum seconds between messages to earn XP"
+                            },
+                            "lists": {
+                                "wontEarnXP": {
+                                    "headerMessage": "Members with any of these roles won't earn XP",
+                                    "add": "Add role",
+                                    "remove": "Remove role",
+                                    "selectToRemove": "Select the role to remove"
+                                },
+                                "nonXPChannels": {
+                                    "headerMessage": "No XP is earned in these channels",
+                                    "add": "Add channel",
+                                    "remove": "Remove channel",
+                                    "selectToRemove": "Select the channel to remove"
+                                }
+                            }
+                        },
+                        "statisticsMenu": {
+                            "headerMessage": "Configure the collection of the statistics of the members (messages, voice time, experience and level)",
+                            "choices": {
+                                "preserveStats": "Preserve the statistics and the level of the members who leave"
+                            },
+                            "prompts": {
+                                "deleteAbsentStatsWarning": "There are saved statistics of {{count}} members that are no longer in the server. If you delete them, they can not be recovered",
+                                "deleteAbsentStatsPrompt": "Delete them now? This action can not be undone",
+                                "absentStatsDeleted": "The statistics of {{count}} members have been deleted"
+                            }
+                        },
+                        "rewardsMenu": {
+                            "headerMessage": "Members get the roles of each reward when they reach its level",
+                            "level": "Level",
+                            "choices": {
+                                "addReward": "Add reward",
+                                "removePreviousRewards": "Remove the previous rewards when reaching a new one",
+                                "changeLevel": "Change level",
+                                "addRole": "Add role",
+                                "removeRole": "Remove role",
+                                "deleteReward": "Delete reward"
+                            },
+                            "prompts": {
+                                "enterLevel": "Enter the required level",
+                                "rewardSaved": "Reward saved successfully!",
+                                "roleAboveBot": "This role is above the highest role of the bot, so the bot will not be able to give it until you move it below",
+                                "levelInUse": "There is already a reward for that level",
+                                "selectRoleToRemove": "Select the role to remove",
+                                "deleteConfirmation": "Delete this reward? The members that already have its roles will keep them",
+                                "recalculatePrompt": "The rewards have changed. Recalculate the reward roles of all the members now, according to their saved level?"
+                            }
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
                     },
@@ -1826,6 +1895,30 @@
                     "return": "Return"
                 },
                 "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+            },
+            "shared": {
+                "promptMessage": "Select an option",
+                "return": "Return",
+                "yes": "Yes",
+                "no": "No",
+                "emptyList": "(empty)",
+                "invalidNumber": "Enter a whole number between {{minimum}} and {{maximum}}",
+                "invalidMinimum": "Enter a whole number equal to or greater than {{minimum}}",
+                "selectSearchMethod": "Select search method",
+                "searchRoleByName": "Search role by name",
+                "enterRoleIdManually": "Enter role ID manually",
+                "enterRoleNameSearch": "Enter role name to search",
+                "noRolesFound": "No roles found matching your search",
+                "selectRole": "Select a role",
+                "enterRoleId": "Enter the Discord role ID",
+                "roleNotFound": "Role not found (the roles of integrations and @everyone can not be chosen)",
+                "searchChannelByName": "Search channel by name",
+                "enterChannelIdManually": "Enter channel ID manually",
+                "enterChannelNameSearch": "Enter channel name to search",
+                "noChannelsFound": "No channels found matching your search",
+                "selectChannel": "Select a channel",
+                "enterChannelId": "Enter the channel ID",
+                "emptyValue": "The value can not be empty"
             }
         },
         "moderation": {

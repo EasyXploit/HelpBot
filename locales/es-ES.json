@@ -1510,6 +1510,8 @@
                                 "enable": "Activar recopilación de estadísticas",
                                 "disable": "Desactivar recopilación de estadísticas"
                             },
+                            "experience": "Experiencia",
+                            "statistics": "Estadísticas",
                             "setCommands": "Establecer comandos",
                             "return": "Volver"
                         },
@@ -1537,6 +1539,73 @@
                             "removed": "Se han quitado los roles de recompensa a {{count}} miembros",
                             "recalculated": "Se han recalculado los roles de recompensa de {{count}} miembros",
                             "missingPermissions": "El bot no tiene permiso para gestionar roles"
+                        },
+                        "experienceMenu": {
+                            "headerMessage": "Configura el sistema de experiencia: cómo ganan experiencia los miembros, las recompensas de nivel y los avisos de subida de nivel",
+                            "choices": {
+                                "rewards": "Recompensas de nivel",
+                                "rewardMessages": "Ganar experiencia escribiendo mensajes",
+                                "rewardVoice": "Ganar experiencia en canales de voz",
+                                "xpReward": "Experiencia por recompensa (mínimo - máximo)",
+                                "XPGainInterval": "Intervalo para ganar experiencia en canales de voz",
+                                "minimumTimeBetweenMessages": "Tiempo mínimo entre mensajes para ganar experiencia",
+                                "wontEarnXP": "Roles que no ganan experiencia",
+                                "nonXPChannels": "Canales sin experiencia",
+                                "notifyLevelUpOnChat": "Avisar en el chat al subir de nivel escribiendo",
+                                "notifyLevelUpOnVoice": "Avisar por privado al subir de nivel en canales de voz"
+                            },
+                            "prompts": {
+                                "enterMinimumXp": "Introduce la experiencia mínima por recompensa",
+                                "enterMaximumXp": "Introduce la experiencia máxima por recompensa",
+                                "enterXPGainInterval": "Introduce cada cuántos segundos se gana experiencia en los canales de voz",
+                                "enterMinimumTimeBetweenMessages": "Introduce los segundos mínimos entre mensajes para ganar experiencia"
+                            },
+                            "lists": {
+                                "wontEarnXP": {
+                                    "headerMessage": "Los miembros con alguno de estos roles no ganan experiencia",
+                                    "add": "Añadir rol",
+                                    "remove": "Quitar rol",
+                                    "selectToRemove": "Selecciona el rol a quitar"
+                                },
+                                "nonXPChannels": {
+                                    "headerMessage": "En estos canales no se gana experiencia",
+                                    "add": "Añadir canal",
+                                    "remove": "Quitar canal",
+                                    "selectToRemove": "Selecciona el canal a quitar"
+                                }
+                            }
+                        },
+                        "statisticsMenu": {
+                            "headerMessage": "Configura la recopilación de las estadísticas de los miembros (mensajes, tiempo de voz, experiencia y nivel)",
+                            "choices": {
+                                "preserveStats": "Conservar las estadísticas y el nivel de quien sale del servidor"
+                            },
+                            "prompts": {
+                                "deleteAbsentStatsWarning": "Hay estadísticas guardadas de {{count}} miembros que ya no están en el servidor. Si las borras, no se podrán recuperar",
+                                "deleteAbsentStatsPrompt": "¿Borrarlas ahora? Esta acción no se puede deshacer",
+                                "absentStatsDeleted": "Se han borrado las estadísticas de {{count}} miembros"
+                            }
+                        },
+                        "rewardsMenu": {
+                            "headerMessage": "Los miembros reciben los roles de cada recompensa al alcanzar su nivel",
+                            "level": "Nivel",
+                            "choices": {
+                                "addReward": "Añadir recompensa",
+                                "removePreviousRewards": "Quitar las recompensas anteriores al alcanzar una nueva",
+                                "changeLevel": "Cambiar nivel",
+                                "addRole": "Añadir rol",
+                                "removeRole": "Quitar rol",
+                                "deleteReward": "Eliminar recompensa"
+                            },
+                            "prompts": {
+                                "enterLevel": "Introduce el nivel necesario",
+                                "rewardSaved": "¡Recompensa guardada correctamente!",
+                                "roleAboveBot": "Este rol está por encima del rol más alto del bot, así que el bot no podrá darlo hasta que lo muevas por debajo",
+                                "levelInUse": "Ya hay una recompensa para ese nivel",
+                                "selectRoleToRemove": "Selecciona el rol a quitar",
+                                "deleteConfirmation": "¿Eliminar esta recompensa? Los miembros que ya tengan sus roles los conservarán",
+                                "recalculatePrompt": "Las recompensas han cambiado. ¿Recalcular ahora los roles de recompensa de todos los miembros según su nivel guardado?"
+                            }
                         },
                         "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
                     },
@@ -1811,6 +1880,30 @@
                     "return": "Return"
                 },
                 "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+            },
+            "shared": {
+                "promptMessage": "Selecciona una opción",
+                "return": "Volver",
+                "yes": "Sí",
+                "no": "No",
+                "emptyList": "(vacía)",
+                "invalidNumber": "Introduce un número entero entre {{minimum}} y {{maximum}}",
+                "invalidMinimum": "Introduce un número entero igual o mayor que {{minimum}}",
+                "selectSearchMethod": "Selecciona el método de búsqueda",
+                "searchRoleByName": "Buscar rol por nombre",
+                "enterRoleIdManually": "Introducir ID del rol a mano",
+                "enterRoleNameSearch": "Introduce el nombre del rol a buscar",
+                "noRolesFound": "No se encontraron roles que coincidan con la búsqueda",
+                "selectRole": "Selecciona un rol",
+                "enterRoleId": "Introduce la ID del rol de Discord",
+                "roleNotFound": "Rol no encontrado (no se pueden elegir los roles de integraciones ni @everyone)",
+                "searchChannelByName": "Buscar canal por nombre",
+                "enterChannelIdManually": "Introducir ID del canal a mano",
+                "enterChannelNameSearch": "Introduce el nombre del canal a buscar",
+                "noChannelsFound": "No se encontraron canales que coincidan con la búsqueda",
+                "selectChannel": "Selecciona un canal",
+                "enterChannelId": "Introduce la ID del canal",
+                "emptyValue": "El valor no puede estar vacío"
             }
         },
         "moderation": {

@@ -610,33 +610,6 @@
                         "isntIntegration": "No"
                     }
                 },
-                "run": {
-                    "appData": {
-                        "name": "run",
-                        "description": "Runs one of the preprogrammed scripts",
-                        "options": {
-                            "script": {
-                                "name": "script",
-                                "description": "Write the name of the script"
-                            },
-                            "parameters": {
-                                "name": "parameters",
-                                "description": "Enter the script parameters"
-                            }
-                        }
-                    },
-                    "welcome": {
-                        "memberNotProvided": "You have not provided a member",
-                        "invalidMember": "You have not provided a valid member",
-                        "done": "Done!"
-                    },
-                    "goodbye": {
-                        "memberNotProvided": "You have not provided a member",
-                        "invalidMember": "You have not provided a valid member",
-                        "done": "Done!"
-                    },
-                    "invalidCommand": "You did not specify a valid command"
-                },
                 "send": {
                     "appData": {
                         "name": "send",
@@ -1127,15 +1100,6 @@
                 "joinNewGuildHelp": "Use the following link to add the bot to a guild: {{joinNewGuildURL}}",
                 "waitingNewGuildHelp": "Need some help? Visit: {{waitingNewGuildHelpURL}}"
             },
-            "guildMemberAdd": {
-                "botLoggingEmbed": {
-                    "title": "Logging - [BOTS]",
-                    "description": "The **BOT** {{memberTag}} was added to the server"
-                },
-                "communicationEnabled": {
-                    "reason": "Was untimeouted while the member was not in the guild"
-                }
-            },
             "guildMemberRemove": {
                 "inconclusiveLoggingEmbed": {
                     "author": "{{memberTag}} has been KICKED",
@@ -1306,7 +1270,18 @@
                 "memberId": "Member ID",
                 "registerDate": "Register date",
                 "actualSanction": "Current sanction",
-                "timeoutedUntil": "Timeouted until"
+                "timeoutedUntil": "Timeouted until",
+                "botLoggingEmbed": {
+                    "title": "Logging - [BOTS]",
+                    "description": "The **BOT** {{memberTag}} was added to the server"
+                },
+                "recovered": "Recovered: the member joined while the bot was offline"
+            },
+            "sendWelcomeMessage": {
+                "defaultMessages": {
+                    "public": "Welcome to **{serverName}**, {memberMention}! We are now {memberCount} members 🎉",
+                    "private": "Hi {userName}, welcome to **{serverName}**! We hope you enjoy your stay 👋"
+                }
             },
             "sendReport": {
                 "reportEmbed": {
@@ -1588,51 +1563,83 @@
                                 "enable": "Enable module",
                                 "disable": "Disable module"
                             },
-                            "setCommands": "Set commands",
+                            "newMemberMode": "Welcome moment",
+                            "newMemberRole": "Role for new members",
+                            "newBotRole": "Role for new bots",
+                            "publicWelcome": "Public welcome",
+                            "privateWelcome": "Private welcome",
                             "return": "Return"
                         },
-                        "setCommandsMenu": {
-                            "headerMessage": "Select command category to configure",
-                            "promptMessage": "Select a command type",
-                            "choices": {
-                                "welcomingConfig": "Welcoming configuration",
-                                "chatCommands": "Chat commands",
-                                "return": "Return"
-                            },
-                            "setChatCommandsMenu": {
-                                "headerMessage": "Manage individual greetings chat commands status",
-                                "promptMessage": "Select a command to configure",
-                                "choices": {
-                                    "return": "Return"
-                                }
-                            }
+                        "modes": {
+                            "onJoin": "When joining the server",
+                            "afterScreening": "When accepting the server rules"
                         },
-                        "welcomingConfigMenu": {
-                            "headerMessage": "Configure welcomes automatic parameters (welcome message and roles)",
-                            "promptMessage": "Select welcoming setting to configure",
+                        "none": "None",
+                        "prompts": {
+                            "selectMode": "Select when new members are welcomed",
+                            "selectSearchMethod": "Select search method",
+                            "searchByName": "Search role by name",
+                            "enterId": "Enter role ID manually",
+                            "clearRole": "Clear role",
+                            "clearRoleSuccess": "Role cleared successfully!",
+                            "enterRoleNameSearch": "Enter role name to search",
+                            "noRolesFound": "No roles found matching your search",
+                            "selectRole": "Select a role",
+                            "enterRoleId": "Enter the Discord role ID",
+                            "roleNotFound": "Role not found",
+                            "roleSuccess": "Role updated successfully!",
+                            "searchChannelByName": "Search channel by name",
+                            "enterChannelIdManually": "Enter channel ID manually",
+                            "enterChannelNameSearch": "Enter channel name to search",
+                            "noChannelsFound": "No text channels found matching your search",
+                            "selectChannel": "Select a channel",
+                            "enterChannelId": "Enter the text channel ID",
+                            "emptyValue": "The value can not be empty"
+                        },
+                        "welcomeMenu": {
+                            "headers": {
+                                "public": "Configure the welcome message sent to a channel of the server",
+                                "private": "Configure the welcome message sent by private message to new members"
+                            },
+                            "customMessage": "Current message (custom)",
+                            "defaultMessage": "Current message (default)",
                             "choices": {
-                                "welcomeMessageMode": "Welcome message mode",
-                                "newBotRole": "New bot role",
-                                "newMemberRole": "New member role",
-                                "enabled": "Enabled",
-                                "disabled": "Disabled",
-                                "none": "None",
-                                "return": "Return"
+                                "enable": "Enable welcome",
+                                "disable": "Disable welcome",
+                                "channel": "Channel",
+                                "format": "Format",
+                                "editMessage": "Edit message",
+                                "restoreMessage": "Restore default message",
+                                "recovery": "When the bot was offline"
+                            },
+                            "formats": {
+                                "text": "Plain text",
+                                "embed": "Embed"
+                            },
+                            "recovery": {
+                                "none": "Do not send",
+                                "all": "Send all",
+                                "limit": "Up to",
+                                "limitOption": "Send only if they are not more than a limit",
+                                "yes": "Send",
+                                "no": "Do not send"
                             },
                             "prompts": {
-                                "selectMode": "Select welcome message mode",
-                                "modeSuccess": "Mode updated successfully!",
-                                "selectSearchMethod": "Select role search method",
-                                "searchByName": "Search role by name",
-                                "enterId": "Enter Role ID manually",
-                                "clearRole": "Clear role configuration",
-                                "clearRoleSuccess": "Role cleared successfully!",
-                                "enterRoleNameSearch": "Enter role name to search",
-                                "noRolesFound": "No roles found matching your search",
-                                "selectRole": "Select a role",
-                                "enterRoleId": "Enter the Discord Role ID",
-                                "roleNotFound": "Role not found",
-                                "roleSuccess": "Role updated successfully!"
+                                "noChannelError": "You must choose a channel before enabling the public welcome",
+                                "channelSuccess": "Channel updated successfully!",
+                                "selectFormat": "Select the format of the message",
+                                "embedMentionsWarning": "Mentions inside embeds are shown, but they do not notify the member",
+                                "wildcardsHelp": "Available wildcards",
+                                "lineBreaksHelp": "Write \\n to add a line break",
+                                "enterMessage": "Enter the message",
+                                "messageTooLong": "The message can not be longer than 2000 characters",
+                                "messageSuccess": "Message updated successfully!",
+                                "messageRestored": "Default message restored successfully!",
+                                "recoveryHelp": "When the bot starts, it welcomes the members that joined while it was offline. The roles and the record are always recovered, so choose whether this message is also sent",
+                                "selectRecovery": "Select whether the missed welcomes are sent",
+                                "limitWarning": "If many members joined while the bot was offline, it can send too many messages in a row",
+                                "enterLimit": "Enter the maximum number of welcomes to send",
+                                "invalidLimit": "Enter a number greater than 0"
                             }
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
@@ -1880,6 +1887,9 @@
                     "reasonTitle": "Reason",
                     "reasonDescription": "Your username contains a word that is banned in the community"
                 }
+            },
+            "syncTimeout": {
+                "reason": "Was untimeouted while the member was not in the guild"
             },
             "checkMessage": {
                 "filteredDm": "via DM"

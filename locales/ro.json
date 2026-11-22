@@ -565,33 +565,6 @@
                         "isntIntegration": "Nu"
                     }
                 },
-                "run": {
-                    "appData": {
-                        "name": "execută",
-                        "description": "Execută unul dintre scripturile preprogramate",
-                        "options": {
-                            "script": {
-                                "name": "script",
-                                "description": "Introduceți numele scriptului"
-                            },
-                            "parameters": {
-                                "name": "parametrii",
-                                "description": "Introduceți parametrii scriptului"
-                            }
-                        }
-                    },
-                    "welcome": {
-                        "memberNotProvided": "Nu ați furnizat niciun membru",
-                        "invalidMember": "Nu ați furnizat un membru valid",
-                        "done": "Terminat!"
-                    },
-                    "goodbye": {
-                        "memberNotProvided": "Nu ați furnizat un membru",
-                        "invalidMember": "Nu ați furnizat un membru valid",
-                        "done": "Terminat!"
-                    },
-                    "invalidCommand": "Nu ați specificat o comandă validă"
-                },
                 "send": {
                     "appData": {
                         "name": "trimite",
@@ -1103,15 +1076,6 @@
                 "joinNewGuildHelp": "Use the following link to add the bot to a guild: {{joinNewGuildURL}}",
                 "waitingNewGuildHelp": "Need some help? Visit: {{waitingNewGuildHelpURL}}"
             },
-            "guildMemberAdd": {
-                "botLoggingEmbed": {
-                    "title": "Registru - [BOTS]",
-                    "description": "Botul **BOT** {{memberTag}} a fost adăugat la server"
-                },
-                "communicationEnabled": {
-                    "reason": "A fost dezamuțit în timp ce memebrul nu era în breaslă"
-                }
-            },
             "guildMemberRemove": {
                 "botLoggingEmbed": {
                     "title": "Registru - [BOTS]",
@@ -1285,7 +1249,11 @@
                 "memberId": "ID-ul membrului",
                 "registerDate": "Data inregistrarii",
                 "actualSanction": "Sancțiune actuală",
-                "timeoutedUntil": "Mut până la"
+                "timeoutedUntil": "Mut până la",
+                "botLoggingEmbed": {
+                    "title": "Registru - [BOTS]",
+                    "description": "Botul **BOT** {{memberTag}} a fost adăugat la server"
+                }
             },
             "buttonNavigation": {
                 "cantUseNavigation": "Nu puteți controla un meniu invocat de un alt membru"
@@ -1437,21 +1405,7 @@
                                 "enable": "Enable module",
                                 "disable": "Disable module"
                             },
-                            "setCommands": "Set commands",
                             "return": "Return"
-                        },
-                        "setCommandsMenu": {
-                            "promptMessage": "Select a command type",
-                            "choices": {
-                                "chatCommands": "Chat commands",
-                                "return": "Return"
-                            },
-                            "setChatCommandsMenu": {
-                                "promptMessage": "Select a command to configure",
-                                "choices": {
-                                    "return": "Return"
-                                }
-                            }
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
                     },
@@ -1692,6 +1646,9 @@
                     "reasonTitle": "Motiv",
                     "reasonDescription": "Numele tău de utilizator conține un cuvânt care este interzis în comunitate"
                 }
+            },
+            "syncTimeout": {
+                "reason": "A fost dezamuțit în timp ce memebrul nu era în breaslă"
             },
             "checkMessage": {
                 "filteredDm": "prin DM"

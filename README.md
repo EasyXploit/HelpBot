@@ -28,7 +28,7 @@ The bot code is <ins>excessively full of comments</ins>, because it is a learnin
 ### Features
 |                              |                             |                                              |                               |
 |:---:|:---:|:---:|:---:|
-| Swear words filtering        | Excessive mentions filtering | XP & role rewards by activity (text & voice) | Preprogrammed scripts support |
+| Swear words filtering        | Excessive mentions filtering | XP & role rewards by activity (text & voice) | Public & private welcomes     |
 | Server invites filtering     | Excessive spoilers filtering | Scheduled messages                               | Message purging tool          |
 | Excessive uppercase filtering | Repetitive text filtering   | Infractions history                          | Reports system                |
 | Links filtering              | Automatic penalty dispenser | Multiple locales                             | Flood filtering               |

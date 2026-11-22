@@ -9,68 +9,27 @@ export default async (member, locale) => {
         // Aborts if it is not an event from the base guild
         if (member.guild.id !== client.baseGuild.id) return;
 
-        // Stores the member's timeout
-        const memberTimeout = await client.functions.db.getData('timeout', member.id);
+        // Stores the join as the last one handled, so it is not recovered when the bot starts again
+        if (member.joinedTimestamp > (await client.functions.db.getConfig('welcomes.lastHandledJoin') || 0)) await client.functions.db.setConfig('welcomes.lastHandledJoin', member.joinedTimestamp);
 
-        // If the member has a timeout in progress and must be withdrawn, or does not have it and must be deregistered
-        if ((member.communicationDisabledUntilTimestamp && member.communicationDisabledUntilTimestamp > Date.now() && !memberTimeout) || (!member.communicationDisabledUntilTimestamp && memberTimeout)) {
+        // Synchronizes the member's timeout
+        await client.functions.moderation.syncTimeout(member);
 
-            // Checks if the bot has the required permissions
-            const missingPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.members.me, ['ModerateMembers']);
-            if (missingPermissions) return logger.warn(`The bot could not un-timeout ${member.user.tag} (${member.id}) because it did not have permission to do so`);
+        // If the member has to accept the rules first
+        if (member.pending) {
 
-            // Enables member's communication on the server
-            await member.disableCommunicationUntil(null, locale.communicationEnabled.reason);
+            // Stores the member as pending, so its acceptance can be recovered if it happens while the bot is offline
+            const pendingMembers = await client.functions.db.getConfig('welcomes.pendingMembers') || [];
+            if (!pendingMembers.includes(member.id)) await client.functions.db.setConfig('welcomes.pendingMembers', [...pendingMembers, member.id]);
 
-            // If has a registered timeout
-            if (memberTimeout) {
+        // If the member does not have to accept the rules, restores its reward roles (if it returns to the guild)
+        } else if (!member.user.bot) await client.functions.leveling.restoreRewards(member);
 
-                // Deletes the database entry
-                await client.functions.db.delData('timeout', member.id);
-            };
-        };
-
-        // If the member does not have to accept the rules first, restores its reward roles (if it returns to the guild)
-        if (!member.pending && !member.user.bot) await client.functions.leveling.restoreRewards(member);
-
-        // Stores the greetings module status
-        const greetingsModuleEnabled = await client.functions.db.getConfig('system.modules.greetings');
-
-        // If the greetings module is enabled
-        if (greetingsModuleEnabled) {
-
-            // If the new member is a bot
-            if (member.user.bot) {
-    
-                // Stores the role of role for new bots
-                const newBotRoleId = await client.functions.db.getConfig('welcomes.newBotRoleId');
-    
-                // If there is a configured role
-                if (newBotRoleId && newBotRoleId.length > 0) {
-    
-                    // Checks if the bot has the required permissions
-                    const missingPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.members.me, ['ManageRoles']);
-                    if (missingPermissions) logger.warn(`The bot could not add the welcome role to the bot ${member.user.tag} (${member.id}) because it did not have permission to do so`);
-                    else if (!member.roles.cache.has(newBotRoleId)) await member.roles.add(newBotRoleId); // Adds the welcome role for new bots (if don't have it already)
-                };
-    
-                // Sends a message to the records channel
-                await client.functions.managers.sendLog('botJoined', 'embed', new discord.EmbedBuilder()
-                    .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
-                    .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
-                    .setDescription(`${await client.functions.utils.parseLocale(locale.botLoggingEmbed.description, { memberTag: member.user.tag })}.`)
-                );
-    
-                // Aborts the rest of the script
-                return;
-            };
-        };
-        
         // Stores the new members management mode
         const newMemberMode = await client.functions.db.getConfig('welcomes.newMemberMode');
 
-        // Executes the new members manager (if applicable)
-        if (newMemberMode === 0) await client.functions.managers.newMember(member);
+        // Executes the new members manager, unless the member must be welcomed after accepting the rules
+        if (member.user.bot || newMemberMode === 0 || !member.pending) await client.functions.managers.newMember(member);
 
     } catch (error) {
 

@@ -565,33 +565,6 @@
                         "isntIntegration": "No"
                     }
                 },
-                "run": {
-                    "appData": {
-                        "name": "run",
-                        "description": "Runs one of the preprogrammed scripts",
-                        "options": {
-                            "script": {
-                                "name": "script",
-                                "description": "Write the name of the script"
-                            },
-                            "parameters": {
-                                "name": "parameters",
-                                "description": "Enter the script parameters"
-                            }
-                        }
-                    },
-                    "welcome": {
-                        "memberNotProvided": "You have not provided a member",
-                        "invalidMember": "You have not provided a valid member",
-                        "done": "Done!"
-                    },
-                    "goodbye": {
-                        "memberNotProvided": "You have not provided a member",
-                        "invalidMember": "You have not provided a valid member",
-                        "done": "Done!"
-                    },
-                    "invalidCommand": "You did not specify a valid command"
-                },
                 "send": {
                     "appData": {
                         "name": "send",
@@ -1103,15 +1076,6 @@
                 "joinNewGuildHelp": "Use the following link to add the bot to a guild: {{joinNewGuildURL}}",
                 "waitingNewGuildHelp": "Need some help? Visit: {{waitingNewGuildHelpURL}}"
             },
-            "guildMemberAdd": {
-                "botLoggingEmbed": {
-                    "title": "Logging - [BOTS]",
-                    "description": "The **BOT** {{memberTag}} was added to the server"
-                },
-                "communicationEnabled": {
-                    "reason": "Was untimed out while the member was not in the guild"
-                }
-            },
             "guildMemberRemove": {
                 "botLoggingEmbed": {
                     "title": "Logging - [BOTS]",
@@ -1285,7 +1249,11 @@
                 "memberId": "Member ID",
                 "registerDate": "Register date",
                 "actualSanction": "Current sanction",
-                "timeoutedUntil": "Timeouted until"
+                "timeoutedUntil": "Timeouted until",
+                "botLoggingEmbed": {
+                    "title": "Logging - [BOTS]",
+                    "description": "The **BOT** {{memberTag}} was added to the server"
+                }
             },
             "buttonNavigation": {
                 "cantUseNavigation": "You cannot control a menu invoked by another member"
@@ -1437,21 +1405,7 @@
                                 "enable": "Enable module",
                                 "disable": "Disable module"
                             },
-                            "setCommands": "Set commands",
                             "return": "Return"
-                        },
-                        "setCommandsMenu": {
-                            "promptMessage": "Select a command type",
-                            "choices": {
-                                "chatCommands": "Chat commands",
-                                "return": "Return"
-                            },
-                            "setChatCommandsMenu": {
-                                "promptMessage": "Select a command to configure",
-                                "choices": {
-                                    "return": "Return"
-                                }
-                            }
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
                     },
@@ -1692,6 +1646,9 @@
                     "reasonTitle": "Reason",
                     "reasonDescription": "Your username contains a word that is banned in the community"
                 }
+            },
+            "syncTimeout": {
+                "reason": "Was untimed out while the member was not in the guild"
             },
             "checkMessage": {
                 "filteredDm": "via DM"

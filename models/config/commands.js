@@ -218,18 +218,6 @@ const schema = new mongoose.Schema({
                 required: true
             }
         },
-        run: {
-            module: {
-                type: String,
-                default: 'utilities',
-                immutable: true
-            },
-            enabled: {
-                type: Boolean,
-                default: true,
-                required: true
-            }
-        },
         send: {
             module: {
                 type: String,

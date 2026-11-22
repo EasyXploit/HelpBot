@@ -134,6 +134,10 @@ export default async (member, locale) => {
             };
         };
 
+        // If the member had not accepted the rules, removes it from the pending members
+        const pendingMembers = await client.functions.db.getConfig('welcomes.pendingMembers') || [];
+        if (pendingMembers.includes(member.id)) await client.functions.db.setConfig('welcomes.pendingMembers', pendingMembers.filter(memberId => memberId !== member.id));
+
         // If the member has statistics and don't want to preserve them
         if (await client.functions.db.getData('profile', member.id) && !await client.functions.db.getConfig('leveling.preserveStats')) {
 

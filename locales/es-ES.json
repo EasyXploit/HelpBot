@@ -590,33 +590,6 @@
                         "isntIntegration": "No"
                     }
                 },
-                "run": {
-                    "appData": {
-                        "name": "ejecutar",
-                        "description": "Ejecuta uno de los scripts preprogramados",
-                        "options": {
-                            "script": {
-                                "name": "script",
-                                "description": "Escribe el nombre del script"
-                            },
-                            "parameters": {
-                                "name": "parámetros",
-                                "description": "Introduce los parámetros del script"
-                            }
-                        }
-                    },
-                    "welcome": {
-                        "memberNotProvided": "No has proporcionado un miembro",
-                        "invalidMember": "No has proporcionado un miembro válido",
-                        "done": "¡Listo!"
-                    },
-                    "goodbye": {
-                        "memberNotProvided": "No has proporcionado un miembro",
-                        "invalidMember": "No has proporcionado un miembro válido",
-                        "done": "¡Listo!"
-                    },
-                    "invalidCommand": "No has especificado un comando válido"
-                },
                 "send": {
                     "appData": {
                         "name": "enviar",
@@ -1107,15 +1080,6 @@
                 "joinNewGuildHelp": "Use the following link to add the bot to a guild: {{joinNewGuildURL}}",
                 "waitingNewGuildHelp": "Need some help? Visit: {{waitingNewGuildHelpURL}}"
             },
-            "guildMemberAdd": {
-                "botLoggingEmbed": {
-                    "title": "Registro - [BOTS]",
-                    "description": "El **BOT** {{memberTag}} fue añadido al servidor"
-                },
-                "communicationEnabled": {
-                    "reason": "Fue dessilenciado mientras que el miembro no se encontraba en la guild"
-                }
-            },
             "guildMemberRemove": {
                 "inconclusiveLoggingEmbed": {
                     "author": "{{memberTag}} ha sido EXPULSADO",
@@ -1291,7 +1255,18 @@
                 "memberId": "ID del miembro",
                 "registerDate": "Fecha de registro",
                 "actualSanction": "Sanción actual",
-                "timeoutedUntil": "Silenciado hasta"
+                "timeoutedUntil": "Silenciado hasta",
+                "botLoggingEmbed": {
+                    "title": "Registro - [BOTS]",
+                    "description": "El **BOT** {{memberTag}} fue añadido al servidor"
+                },
+                "recovered": "Recuperada: el miembro se unió mientras el bot estaba desconectado"
+            },
+            "sendWelcomeMessage": {
+                "defaultMessages": {
+                    "public": "¡Te damos la bienvenida a **{serverName}**, {memberMention}! Ya somos {memberCount} miembros 🎉",
+                    "private": "¡Hola, {userName}! Te damos la bienvenida a **{serverName}**. Esperamos que disfrutes de tu estancia 👋"
+                }
             },
             "report": {
                 "reportEmbed": {
@@ -1573,51 +1548,83 @@
                                 "enable": "Activar módulo",
                                 "disable": "Desactivar módulo"
                             },
-                            "setCommands": "Configurar comandos",
+                            "newMemberMode": "Momento de la bienvenida",
+                            "newMemberRole": "Rol para nuevos miembros",
+                            "newBotRole": "Rol para nuevos bots",
+                            "publicWelcome": "Bienvenida pública",
+                            "privateWelcome": "Bienvenida privada",
                             "return": "Volver"
                         },
-                        "setCommandsMenu": {
-                            "headerMessage": "Selecciona la categoría de comandos a configurar",
-                            "promptMessage": "Selecciona un tipo de comando",
-                            "choices": {
-                                "welcomingConfig": "Configuración de bienvenida",
-                                "chatCommands": "Comandos de chat",
-                                "return": "Volver"
-                            },
-                            "setChatCommandsMenu": {
-                                "headerMessage": "Gestiona el estado de comandos de chat de bienvenida",
-                                "promptMessage": "Selecciona un comando para configurar",
-                                "choices": {
-                                    "return": "Volver"
-                                }
-                            }
+                        "modes": {
+                            "onJoin": "Al unirse al servidor",
+                            "afterScreening": "Al aceptar las normas del servidor"
                         },
-                        "welcomingConfigMenu": {
-                            "headerMessage": "Configura los parámetros automáticos de bienvenidas (mensaje y roles)",
-                            "promptMessage": "Selecciona un ajuste de bienvenida para configurar",
+                        "none": "Ninguno",
+                        "prompts": {
+                            "selectMode": "Selecciona cuándo se da la bienvenida a los nuevos miembros",
+                            "selectSearchMethod": "Selecciona el método de búsqueda",
+                            "searchByName": "Buscar rol por nombre",
+                            "enterId": "Introducir ID del rol a mano",
+                            "clearRole": "Quitar el rol",
+                            "clearRoleSuccess": "¡Rol quitado correctamente!",
+                            "enterRoleNameSearch": "Introduce el nombre del rol a buscar",
+                            "noRolesFound": "No se encontraron roles que coincidan con la búsqueda",
+                            "selectRole": "Selecciona un rol",
+                            "enterRoleId": "Introduce la ID del rol de Discord",
+                            "roleNotFound": "Rol no encontrado",
+                            "roleSuccess": "¡Rol actualizado correctamente!",
+                            "searchChannelByName": "Buscar canal por nombre",
+                            "enterChannelIdManually": "Introducir ID del canal a mano",
+                            "enterChannelNameSearch": "Introduce el nombre del canal a buscar",
+                            "noChannelsFound": "No se encontraron canales de texto que coincidan con la búsqueda",
+                            "selectChannel": "Selecciona un canal",
+                            "enterChannelId": "Introduce la ID del canal de texto",
+                            "emptyValue": "El valor no puede estar vacío"
+                        },
+                        "welcomeMenu": {
+                            "headers": {
+                                "public": "Configura el mensaje de bienvenida que se envía a un canal del servidor",
+                                "private": "Configura el mensaje de bienvenida que se envía por privado a los nuevos miembros"
+                            },
+                            "customMessage": "Mensaje actual (personalizado)",
+                            "defaultMessage": "Mensaje actual (por defecto)",
                             "choices": {
-                                "welcomeMessageMode": "Modo de mensaje de bienvenida",
-                                "newBotRole": "Nuevo rol de bot",
-                                "newMemberRole": "Nuevo rol de miembro",
-                                "enabled": "Activado",
-                                "disabled": "Desactivado",
-                                "none": "Ninguno",
-                                "return": "Volver"
+                                "enable": "Activar bienvenida",
+                                "disable": "Desactivar bienvenida",
+                                "channel": "Canal",
+                                "format": "Formato",
+                                "editMessage": "Editar mensaje",
+                                "restoreMessage": "Restaurar mensaje por defecto",
+                                "recovery": "Cuando el bot estaba desconectado"
+                            },
+                            "formats": {
+                                "text": "Texto normal",
+                                "embed": "Embed"
+                            },
+                            "recovery": {
+                                "none": "No enviar",
+                                "all": "Enviar todas",
+                                "limit": "Hasta",
+                                "limitOption": "Enviar solo si no superan un límite",
+                                "yes": "Enviar",
+                                "no": "No enviar"
                             },
                             "prompts": {
-                                "selectMode": "Selecciona el modo del mensaje de bienvenida",
-                                "modeSuccess": "¡Modo actualizado correctamente!",
-                                "selectSearchMethod": "Selecciona el método de búsqueda de rol",
-                                "searchByName": "Buscar rol por nombre",
-                                "enterId": "Introducir ID del rol a mano",
-                                "clearRole": "Limpiar configuración de rol",
-                                "clearRoleSuccess": "¡Configuración de rol eliminada correctamente!",
-                                "enterRoleNameSearch": "Introduce el nombre del rol a buscar",
-                                "noRolesFound": "No se encontraron roles que coincidan con la búsqueda",
-                                "selectRole": "Selecciona un rol",
-                                "enterRoleId": "Introduce la ID del rol de Discord",
-                                "roleNotFound": "Rol no encontrado",
-                                "roleSuccess": "¡Rol actualizado correctamente!"
+                                "noChannelError": "Debes elegir un canal antes de activar la bienvenida pública",
+                                "channelSuccess": "¡Canal actualizado correctamente!",
+                                "selectFormat": "Selecciona el formato del mensaje",
+                                "embedMentionsWarning": "Las menciones dentro de un embed se muestran, pero no notifican al miembro",
+                                "wildcardsHelp": "Comodines disponibles",
+                                "lineBreaksHelp": "Escribe \\n para añadir un salto de línea",
+                                "enterMessage": "Introduce el mensaje",
+                                "messageTooLong": "El mensaje no puede tener más de 2000 caracteres",
+                                "messageSuccess": "¡Mensaje actualizado correctamente!",
+                                "messageRestored": "¡Mensaje por defecto restaurado correctamente!",
+                                "recoveryHelp": "Al arrancar, el bot da la bienvenida a los miembros que se unieron mientras estaba desconectado. Los roles y el registro se recuperan siempre, así que elige si también se envía este mensaje",
+                                "selectRecovery": "Selecciona si se envían las bienvenidas perdidas",
+                                "limitWarning": "Si se unieron muchos miembros mientras el bot estaba desconectado, puede enviar demasiados mensajes seguidos",
+                                "enterLimit": "Introduce el número máximo de bienvenidas a enviar",
+                                "invalidLimit": "Introduce un número mayor que 0"
                             }
                         },
                         "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
@@ -1866,6 +1873,9 @@
                     "reasonTitle": "Razón",
                     "reasonDescription": "Tu nombre de usuario contiene una palabra prohibida en la comunidad"
                 }
+            },
+            "syncTimeout": {
+                "reason": "Fue dessilenciado mientras que el miembro no se encontraba en la guild"
             },
             "checkMessage": {
                 "filteredDm": "vía MD"

@@ -12,6 +12,10 @@ export default async (oldMember, newMember, locale) => {
         // If the member has passed the verification screen
         if (oldMember.pending && !newMember.pending) {
 
+            // Removes the member from the members that have not accepted the rules
+            const pendingMembers = await client.functions.db.getConfig('welcomes.pendingMembers') || [];
+            if (pendingMembers.includes(newMember.id)) await client.functions.db.setConfig('welcomes.pendingMembers', pendingMembers.filter(memberId => memberId !== newMember.id));
+
             // Restores the reward roles of the member (if it returns to the guild)
             await client.functions.leveling.restoreRewards(newMember);
 

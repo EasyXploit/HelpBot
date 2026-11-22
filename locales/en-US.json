@@ -1679,27 +1679,10 @@
                             "onJoin": "When joining the server",
                             "afterScreening": "When accepting the server rules"
                         },
-                        "none": "None",
                         "prompts": {
                             "selectMode": "Select when new members are welcomed",
-                            "selectSearchMethod": "Select search method",
-                            "searchByName": "Search role by name",
-                            "enterId": "Enter role ID manually",
-                            "clearRole": "Clear role",
                             "clearRoleSuccess": "Role cleared successfully!",
-                            "enterRoleNameSearch": "Enter role name to search",
-                            "noRolesFound": "No roles found matching your search",
-                            "selectRole": "Select a role",
-                            "enterRoleId": "Enter the Discord role ID",
-                            "roleNotFound": "Role not found",
-                            "roleSuccess": "Role updated successfully!",
-                            "searchChannelByName": "Search channel by name",
-                            "enterChannelIdManually": "Enter channel ID manually",
-                            "enterChannelNameSearch": "Enter channel name to search",
-                            "noChannelsFound": "No text channels found matching your search",
-                            "selectChannel": "Select a channel",
-                            "enterChannelId": "Enter the text channel ID",
-                            "emptyValue": "The value can not be empty"
+                            "roleSuccess": "Role updated successfully!"
                         },
                         "welcomeMenu": {
                             "headers": {
@@ -1743,8 +1726,7 @@
                                 "recoveryHelp": "When the bot starts, it welcomes the members that joined while it was offline. The roles and the record are always recovered, so choose whether this message is also sent",
                                 "selectRecovery": "Select whether the missed welcomes are sent",
                                 "limitWarning": "If many members joined while the bot was offline, it can send too many messages in a row",
-                                "enterLimit": "Enter the maximum number of welcomes to send",
-                                "invalidLimit": "Enter a number greater than 0"
+                                "enterLimit": "Enter the maximum number of welcomes to send"
                             }
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"
@@ -1938,6 +1920,7 @@
                 "yes": "Yes",
                 "no": "No",
                 "emptyList": "(empty)",
+                "none": "None",
                 "invalidNumber": "Enter a whole number between {{minimum}} and {{maximum}}",
                 "invalidMinimum": "Enter a whole number equal to or greater than {{minimum}}",
                 "selectSearchMethod": "Select search method",
@@ -1948,6 +1931,7 @@
                 "selectRole": "Select a role",
                 "enterRoleId": "Enter the Discord role ID",
                 "roleNotFound": "Role not found (the roles of integrations and @everyone can not be chosen)",
+                "clearRole": "Clear role",
                 "searchChannelByName": "Search channel by name",
                 "enterChannelIdManually": "Enter channel ID manually",
                 "enterChannelNameSearch": "Enter channel name to search",

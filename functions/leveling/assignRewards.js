@@ -1,4 +1,4 @@
-//Función para asignar recompensas
+//Función para asignar al miembro las recompensas que le corresponden según su nivel (y quitarle las que no)
 exports.run = async (member, memberLevel, updateSubsequents) => {
 
     //Función para comparar un array
@@ -11,60 +11,48 @@ exports.run = async (member, memberLevel, updateSubsequents) => {
     //Compara y ordena el array de recompensas
     const sortedRewards = client.config.levelingRewards.sort(compare);
 
-    //Almacena los roles de recompensa a asignar
-    let toReward = [];
+    //Almacena si se deben quitar las recompensas anteriores
+    const removePreviousRewards = client.config.leveling.removePreviousRewards;
 
-    //Por cada una de las recompensas disponibles en la config.
-    for (let index = 0; index < sortedRewards.length; index++) {
+    //Almacena las recompensas alcanzadas por el miembro
+    const reachedRewards = sortedRewards.filter(reward => reward.requiredLevel <= memberLevel);
 
-        //Almacena la recompensa iterada
-        const reward = sortedRewards[index];
+    // Almacena el nivel de la última recompensa alcanzada, o 0 si no hay ninguna
+    const lastReachedLevel = reachedRewards.length > 0 ? reachedRewards[reachedRewards.length - 1].requiredLevel : 0;
 
-        //Si la recompensa sobrepasa el nivel del miembro, para el bucle
-        if (!updateSubsequents && reward.requiredLevel > memberLevel) break;
+    //Almacena los roles que debe tener el miembro: los de todas las recompensas alcanzadas, o solo los del último nivel alcanzado si se deben quitar las anteriores
+    const rolesToHave = new Set(reachedRewards.filter(reward => !removePreviousRewards || reward.requiredLevel === lastReachedLevel).flatMap(reward => reward.roles));
 
-        //Por cada uno de los roles de dicha recompensa
-        reward.roles.forEach(async role => {
+    //Almacena los roles que no debe tener el miembro: los de las recompensas superiores a su nivel (si se deben actualizar), y los de las recompensas anteriores (si se deben quitar), salvo los que debe tener
+    const rolesToRemove = new Set(sortedRewards.filter(reward => (updateSubsequents && reward.requiredLevel > memberLevel) || (removePreviousRewards && reward.requiredLevel < lastReachedLevel)).flatMap(reward => reward.roles).filter(role => !rolesToHave.has(role)));
 
-            //Si no se deben preservar viejas recompensas
-            if ((client.config.leveling.removePreviousRewards && !(sortedRewards[index + 1] && reward.requiredLevel < memberLevel && sortedRewards[index + 1].requiredLevel > memberLevel) && index !== (sortedRewards.length - 1)) || reward.requiredLevel > memberLevel) {
+    //Por cada uno de los roles que no debe tener el miembro, se lo quita si lo tiene
+    for (const role of rolesToRemove) if (member.roles.cache.has(role)) await member.roles.remove(role).catch(error => console.error(`${new Date().toLocaleString()} 》${client.locale.functions.managers.eventError.error}:`, error.stack));
 
-                //Le elimina el rol al miembro, si lo tiene
-                if (member.roles.cache.has(role)) await member.roles.remove(role);
-            };
-        });
+    //Almacena los roles recompensados
+    const rewarded = [];
 
-        //Omite esta iteración si el nivel de la recompensa es superior al nivel del miembro 
-        if (reward.requiredLevel > memberLevel) continue;
+    //Por cada uno de los roles que debe tener el miembro
+    for (const role of rolesToHave) {
 
-        //Si el miembro puede stackear todas las recompensas, o tiene el nivel de esta, se almacena
-        if (!client.config.leveling.removePreviousRewards || reward.requiredLevel === memberLevel || (reward.requiredLevel < memberLevel && index === (sortedRewards.length - 1))) toReward = toReward.concat(reward.roles);
+        //Omite el rol si el miembro ya lo tiene
+        if (member.roles.cache.has(role)) continue;
 
-        //Si el miembro tiene cómo mínimo el nivel de la recompensa anterior, esta se almacena
-        if (client.config.leveling.removePreviousRewards && sortedRewards[index + 1] && reward.requiredLevel < memberLevel && memberLevel < sortedRewards[index + 1].requiredLevel) toReward = toReward.concat(reward.roles);
+        try {
+
+            //Le añade el rol
+            await member.roles.add(role);
+
+            //Almacena el rol recompensado
+            rewarded.push(role);
+
+        } catch (error) {
+
+            //Muestra el error en la consola (por ejemplo, si el rol ya no existe o está por encima del rol del bot) y continúa con el resto
+            console.error(`${new Date().toLocaleString()} 》${client.locale.functions.managers.eventError.error}:`, error.stack);
+        };
     };
 
-    //Si hubieron roles a asignar
-    if (toReward.length > 0) {
-
-        //Almacena los roles recompensados
-        let rewarded = [];
-
-        //Asigna cada uno de ellos
-        toReward.forEach(async role => {
-
-            //Si el miembro aún no tiene el rol
-            if (!member.roles.cache.has(role)) {
-
-                //Le añade el rol
-                member.roles.add(role);
-
-                //Almacena el rol recompensado
-                rewarded.push(role);
-            };
-        });
-
-        //Devuelve los roles recompensados
-        if (rewarded.length > 0) return toReward;
-    };
+    //Devuelve los roles recompensados, si los hay
+    if (rewarded.length > 0) return rewarded;
 };

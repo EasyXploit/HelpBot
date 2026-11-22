@@ -82,12 +82,12 @@ exports.run = async (member, mode, channel) => {
                 //Busca el rol en la guild
                 const fetchedRole = await client.functions.utilities.fetch.run('role', roleId);
 
-                //Sube al array de nombre, el nombre del rol iterado
-                roleNames.push(fetchedRole.name);
+                //Sube al array de nombre, el nombre del rol iterado, si aún existe
+                if (fetchedRole) roleNames.push(fetchedRole.name);
             };
 
-            //Añade un campo al embed de levelup con los roles recompensados
-            levelUpEmbed.addFields({ name: locale.levelUpEmbed.rewards, value: `\`${roleNames.join('`, `')}\`` });
+            //Añade un campo al embed de levelup con los roles recompensados, si se encontró alguno
+            if (roleNames.length > 0) levelUpEmbed.addFields({ name: locale.levelUpEmbed.rewards, value: `\`${roleNames.join('`, `')}\`` });
         };
 
         //Manda el mensaje de subida de nivel, si se ha configurado

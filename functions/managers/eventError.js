@@ -7,6 +7,6 @@ exports.run = async (error) => {
     //Se muestra el error en consola
     console.error(`\n${new Date().toLocaleString()} 》${locale.error}:`, error.stack);
 
-    //Envía la excepción al manejador de errores remoto
-    client.errorTracker.captureException(error);
+    //Envía la excepción al manejador de errores remoto, si está activado
+    if (client.errorTracker) client.errorTracker.captureException(error);
 };

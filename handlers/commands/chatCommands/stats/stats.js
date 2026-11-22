@@ -61,31 +61,20 @@ export async function run(interaction, commandConfig, locale) {
         if (nextRewardedRoles.roles) {
 
             // Stores the names of the reward roles
-            let roleNames = []; 
+            const roleNames = [];
 
-            // Creates a promise to resolve when has finished looking for the names of all roles
-            const getRewards = new Promise((resolve, reject) => {
+            // For each role Id of the reward
+            for (const roleId of nextRewardedRoles.roles) {
 
-                // For each role Id, looks for its name
-                nextRewardedRoles.roles.forEach(async (value, index, array) => {
+                // Searches the role (or returns "null" if it no longer exists)
+                const role = await interaction.guild.roles.fetch(roleId).catch(() => null);
 
-                    // Searches and stores the role
-                    const role = await interaction.guild.roles.fetch(value);
+                // If the role exists, stores its name
+                if (role) roleNames.push(role.name);
+            };
 
-                    // Adds to the array of names, the name of the iterated role
-                    roleNames.push(role.name);
-
-                    // The promise is resolved if all the roles have been found
-                    if (index === array.length -1) resolve();
-                });
-            });
-            
-            // Invoke the promise to obtain the names of the roles
-            await getRewards.then(() => {
-
-                // Overwrites the variable "nextRewards" with the results obtained
-                nextRewards = `${roleNames.join(', ')} (${locale.statsEmbed.level} ${nextRewardedRoles.requiredLevel})`;
-            });
+            // If any role was found, overwrites the variable "nextRewards" with the results obtained
+            if (roleNames.length > 0) nextRewards = `${roleNames.join(', ')} (${locale.statsEmbed.level} ${nextRewardedRoles.requiredLevel})`;
         };
 
         // Stores the approximate voice time

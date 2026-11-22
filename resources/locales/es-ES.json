@@ -1112,7 +1112,8 @@
                 "filteredDm": "vía MD"
             },
             "ready": {
-                "justOneGuild": "AVISO: El bot no está diseñado para funcionar en más de una guild (servidor).\nExpulse al bot del resto de guilds y reinicie al bot",
+                "justOneGuild": "AVISO: El bot no está diseñado para funcionar en más de una guild (servidor), así que solo funcionará en {{homeGuild}} y abandonará el resto: {{otherGuilds}}",
+                "chooseGuild": "AVISO: El bot está en varias guilds (servidores) y no sabe cuál usar: {{guilds}}.\nIndique la ID de la guild que quiera usar en el campo \"homeGuild\" de configs/dynamic.json y reinicie el bot",
                 "waitingGuild": "AVISO: Esperando a que el bot se una a una guild",
                 "error": "ERROR"
             },

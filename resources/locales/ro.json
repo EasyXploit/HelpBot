@@ -1112,7 +1112,8 @@
                 "filteredDm": "prin DM"
             },
             "ready": {
-                "justOneGuild": "ADVERTISMENT: Botul nu este proiectat să funcționeze în mai mult de o breaslă (server).\nExpulzați botul din toate celelalte bresle și reporniți-l",
+                "justOneGuild": "WARNING: The bot is not designed to work on more than one guild (server), so it will only work on {{homeGuild}} and will leave the rest: {{otherGuilds}}",
+                "chooseGuild": "WARNING: The bot is in several guilds (servers) and does not know which one to use: {{guilds}}.\nPlease set the ID of the guild you want to use in the \"homeGuild\" field of configs/dynamic.json and restart the bot",
                 "waitingGuild": "ADVERTISMENT: Se așteaptă ca botul să se alăture unei bresle",
                 "error": "EROARE"
             },

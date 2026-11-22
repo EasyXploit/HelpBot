@@ -1112,7 +1112,8 @@
                 "filteredDm": "via DM"
             },
             "ready": {
-                "justOneGuild": "WARNING: The bot is not designed to work on more than one guild (server).\nPlease kick the bot from all other guilds and restart the bot",
+                "justOneGuild": "WARNING: The bot is not designed to work on more than one guild (server), so it will only work on {{homeGuild}} and will leave the rest: {{otherGuilds}}",
+                "chooseGuild": "WARNING: The bot is in several guilds (servers) and does not know which one to use: {{guilds}}.\nPlease set the ID of the guild you want to use in the \"homeGuild\" field of configs/dynamic.json and restart the bot",
                 "waitingGuild": "WARNING: Waiting for the bot to join a guild",
                 "error": "ERROR"
             },

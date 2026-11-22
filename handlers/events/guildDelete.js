@@ -2,6 +2,9 @@ exports.run = async (guild,locale) => {
     
     try {
 
+        //Si el sistema aún no se ha cargado porque el bot estaba en varias guilds y ninguna era la base, vuelve a comprobar qué guild usar
+        if (!client.homeGuild) return await require('./ready.js').run(null, client.locale.handlers.events.ready);
+
         //Notifica el abandono de la guild
         console.warn(`${new Date().toLocaleString()} 》${await client.functions.utilities.parseLocale.run(locale.abandonedGuild, { botUsername: client.user.username, guildName: guild.name })}.`);
 

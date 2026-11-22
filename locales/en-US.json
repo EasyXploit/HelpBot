@@ -1521,10 +1521,6 @@
                                 "enable": "Enable experience system",
                                 "disable": "Disable experience system"
                             },
-                            "changeStatisticsCollectionStatus": {
-                                "enable": "Enable statistics collection",
-                                "disable": "Disable statistics collection"
-                            },
                             "experience": "Experience",
                             "statistics": "Statistics",
                             "setCommands": "Set commands",
@@ -1567,13 +1563,26 @@
                                 "wontEarnXP": "Roles that won't earn XP",
                                 "nonXPChannels": "Channels without XP",
                                 "notifyLevelUpOnChat": "Notify in the chat when leveling up by writing",
-                                "notifyLevelUpOnVoice": "Notify privately when leveling up in voice channels"
+                                "notifyLevelUpOnVoice": "Notify privately when leveling up in voice channels",
+                                "preserveExperience": "Preserve the experience and the level of the members who leave",
+                                "resetExperience": "Reset the experience and the level of all the members"
                             },
                             "prompts": {
                                 "enterMinimumXp": "Enter the minimum XP per reward",
                                 "enterMaximumXp": "Enter the maximum XP per reward",
                                 "enterXPGainInterval": "Enter every how many seconds XP is earned in voice channels",
                                 "enterMinimumTimeBetweenMessages": "Enter the minimum seconds between messages to earn XP"
+                            },
+                            "resetAbsent": {
+                                "warning": "There are saved experience and level of {{count}} members that are no longer in the server. If you reset them, they can not be recovered",
+                                "prompt": "Reset them now? This action can not be undone",
+                                "done": "The experience and the level of {{count}} members have been reset"
+                            },
+                            "resetAll": {
+                                "warning": "The experience and the level of all the members will be set to 0. This can not be undone",
+                                "prompt": "Reset the experience and the level of all the members?",
+                                "done": "The experience and the level of all the members have been reset",
+                                "removeRolesPrompt": "Remove also the reward roles from all the members?"
                             },
                             "lists": {
                                 "wontEarnXP": {
@@ -1591,14 +1600,30 @@
                             }
                         },
                         "statisticsMenu": {
-                            "headerMessage": "Configure the collection of the statistics of the members (messages, voice time, experience and level)",
+                            "headerMessage": "Configure the statistics of the members (sent messages and voice time)",
                             "choices": {
-                                "preserveStats": "Preserve the statistics and the level of the members who leave"
+                                "collectMessagesCount": "Count the sent messages",
+                                "collectVoiceTime": "Count the voice time",
+                                "preserveStats": "Preserve the statistics of the members who leave",
+                                "resetMessagesCount": "Reset the sent messages of all the members",
+                                "resetVoiceTime": "Reset the voice time of all the members"
                             },
-                            "prompts": {
-                                "deleteAbsentStatsWarning": "There are saved statistics of {{count}} members that are no longer in the server. If you delete them, they can not be recovered",
-                                "deleteAbsentStatsPrompt": "Delete them now? This action can not be undone",
-                                "absentStatsDeleted": "The statistics of {{count}} members have been deleted"
+                            "resetAbsent": {
+                                "warning": "There are saved statistics of {{count}} members that are no longer in the server. If you reset them, they can not be recovered",
+                                "prompt": "Reset them now? This action can not be undone",
+                                "done": "The statistics of {{count}} members have been reset"
+                            },
+                            "resetAll": {
+                                "messagesCount": {
+                                    "warning": "The sent messages of all the members will be set to 0. This can not be undone",
+                                    "prompt": "Reset the sent messages of all the members?",
+                                    "done": "The sent messages of all the members have been reset"
+                                },
+                                "aproxVoiceTime": {
+                                    "warning": "The voice time of all the members will be set to 0. This can not be undone",
+                                    "prompt": "Reset the voice time of all the members?",
+                                    "done": "The voice time of all the members has been reset"
+                                }
                             }
                         },
                         "rewardsMenu": {

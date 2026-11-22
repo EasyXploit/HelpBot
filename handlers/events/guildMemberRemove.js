@@ -138,8 +138,14 @@ export default async (member, locale) => {
         const pendingMembers = await client.functions.db.getConfig('welcomes.pendingMembers') || [];
         if (pendingMembers.includes(member.id)) await client.functions.db.setConfig('welcomes.pendingMembers', pendingMembers.filter(memberId => memberId !== member.id));
 
-        // If the statistics of the members who leave are not preserved, resets them (keeping the warnings history)
-        if (!await client.functions.db.getConfig('leveling.preserveStats')) await client.functions.leveling.resetStats(member.id);
+        // Stores the statistics to reset of the members who leave: the experience and the level, and the sent messages and the voice time, if they are not preserved
+        const statisticsToReset = [
+            ...(await client.functions.db.getConfig('leveling.preserveExperience') ? [] : ['experience', 'level']),
+            ...(await client.functions.db.getConfig('leveling.preserveStats') ? [] : ['aproxVoiceTime', 'messagesCount'])
+        ];
+
+        // Resets them, if any (keeping the warnings history)
+        if (statisticsToReset.length > 0) await client.functions.leveling.resetStats(member.id, statisticsToReset);
 
     } catch (error) {
 

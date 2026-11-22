@@ -1506,10 +1506,6 @@
                                 "enable": "Activar sistema de experiencia",
                                 "disable": "Desactivar sistema de experiencia"
                             },
-                            "changeStatisticsCollectionStatus": {
-                                "enable": "Activar recopilación de estadísticas",
-                                "disable": "Desactivar recopilación de estadísticas"
-                            },
                             "experience": "Experiencia",
                             "statistics": "Estadísticas",
                             "setCommands": "Establecer comandos",
@@ -1552,13 +1548,26 @@
                                 "wontEarnXP": "Roles que no ganan experiencia",
                                 "nonXPChannels": "Canales sin experiencia",
                                 "notifyLevelUpOnChat": "Avisar en el chat al subir de nivel escribiendo",
-                                "notifyLevelUpOnVoice": "Avisar por privado al subir de nivel en canales de voz"
+                                "notifyLevelUpOnVoice": "Avisar por privado al subir de nivel en canales de voz",
+                                "preserveExperience": "Conservar la experiencia y el nivel de quien sale del servidor",
+                                "resetExperience": "Reiniciar la experiencia y el nivel de todos los miembros"
                             },
                             "prompts": {
                                 "enterMinimumXp": "Introduce la experiencia mínima por recompensa",
                                 "enterMaximumXp": "Introduce la experiencia máxima por recompensa",
                                 "enterXPGainInterval": "Introduce cada cuántos segundos se gana experiencia en los canales de voz",
                                 "enterMinimumTimeBetweenMessages": "Introduce los segundos mínimos entre mensajes para ganar experiencia"
+                            },
+                            "resetAbsent": {
+                                "warning": "Hay experiencia y nivel guardados de {{count}} miembros que ya no están en el servidor. Si los reinicias, no se podrán recuperar",
+                                "prompt": "¿Reiniciarlos ahora? Esta acción no se puede deshacer",
+                                "done": "Se han reiniciado la experiencia y el nivel de {{count}} miembros"
+                            },
+                            "resetAll": {
+                                "warning": "La experiencia y el nivel de todos los miembros se pondrán a 0. No se puede deshacer",
+                                "prompt": "¿Reiniciar la experiencia y el nivel de todos los miembros?",
+                                "done": "Se han reiniciado la experiencia y el nivel de todos los miembros",
+                                "removeRolesPrompt": "¿Quitar también los roles de recompensa a todos los miembros?"
                             },
                             "lists": {
                                 "wontEarnXP": {
@@ -1576,14 +1585,30 @@
                             }
                         },
                         "statisticsMenu": {
-                            "headerMessage": "Configura la recopilación de las estadísticas de los miembros (mensajes, tiempo de voz, experiencia y nivel)",
+                            "headerMessage": "Configura las estadísticas de los miembros (mensajes enviados y tiempo de voz)",
                             "choices": {
-                                "preserveStats": "Conservar las estadísticas y el nivel de quien sale del servidor"
+                                "collectMessagesCount": "Contar los mensajes enviados",
+                                "collectVoiceTime": "Contar el tiempo de voz",
+                                "preserveStats": "Conservar las estadísticas de quien sale del servidor",
+                                "resetMessagesCount": "Poner a cero los mensajes enviados de todos los miembros",
+                                "resetVoiceTime": "Poner a cero el tiempo de voz de todos los miembros"
                             },
-                            "prompts": {
-                                "deleteAbsentStatsWarning": "Hay estadísticas guardadas de {{count}} miembros que ya no están en el servidor. Si las borras, no se podrán recuperar",
-                                "deleteAbsentStatsPrompt": "¿Borrarlas ahora? Esta acción no se puede deshacer",
-                                "absentStatsDeleted": "Se han borrado las estadísticas de {{count}} miembros"
+                            "resetAbsent": {
+                                "warning": "Hay estadísticas guardadas de {{count}} miembros que ya no están en el servidor. Si las pones a cero, no se podrán recuperar",
+                                "prompt": "¿Ponerlas a cero ahora? Esta acción no se puede deshacer",
+                                "done": "Se han puesto a cero las estadísticas de {{count}} miembros"
+                            },
+                            "resetAll": {
+                                "messagesCount": {
+                                    "warning": "Los mensajes enviados de todos los miembros se pondrán a 0. No se puede deshacer",
+                                    "prompt": "¿Poner a cero los mensajes enviados de todos los miembros?",
+                                    "done": "Se han puesto a cero los mensajes enviados de todos los miembros"
+                                },
+                                "aproxVoiceTime": {
+                                    "warning": "El tiempo de voz de todos los miembros se pondrá a 0. No se puede deshacer",
+                                    "prompt": "¿Poner a cero el tiempo de voz de todos los miembros?",
+                                    "done": "Se ha puesto a cero el tiempo de voz de todos los miembros"
+                                }
                             }
                         },
                         "rewardsMenu": {

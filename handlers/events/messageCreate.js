@@ -103,11 +103,8 @@ export default async (message, locale) => {
             // Stores the member's profile, or creates it
             let memberProfile = await client.functions.db.getData('profile', message.member.id) || await client.functions.db.genData('profile', { userId: message.member.id });
     
-            // Checks if the statistics collection is enabled
-            const statsEnabled = await client.functions.db.getConfig('leveling.statisticsCollectionEnabled');
-
-            // If the statistics collection is enabled
-            if (statsEnabled) {
+            // If the sent messages are counted
+            if (await client.functions.db.getConfig('leveling.collectMessagesCount')) {
 
                 // Increases the sent messages count of the member
                 memberProfile.stats.messagesCount++;

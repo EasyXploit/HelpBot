@@ -1088,6 +1088,16 @@
                     "unknownDeletedDays": "Necunoscut"
                 }
             },
+            "guildBanRemove": {
+                "loggingEmbed": {
+                    "author": "{{userTag}} a fost NEINTERZIS",
+                    "userId": "ID-ul utilizatorului",
+                    "moderator": "Moderator",
+                    "unknownModerator": "Necunoscut",
+                    "reason": "Motiv",
+                    "undefinedReason": "Nedefinit"
+                }
+            },
             "guildDelete": {
                 "waitingNewGuildHeader": "Waiting for {{botUsername}} to be joined to a new guild",
                 "joinNewGuildHelp": "Use the following link to add the bot to a guild: {{joinNewGuildURL}}",
@@ -1224,12 +1234,6 @@
                     "reason": "Sancțiunea a expirat"
                 },
                 "bans": {
-                    "loggingEmbed": {
-                        "author": "{{userTag}} a fost UN-BANNAT",
-                        "user": "Utilizator",
-                        "moderator": "Moderator",
-                        "reason": "Motiv"
-                    },
                     "reason": "Sancțiunea a expirat",
                     "error": "EROARE"
                 },

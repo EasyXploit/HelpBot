@@ -49,6 +49,16 @@ export async function run(interaction, commandConfig, locale) {
             .setDescription(`${client.customEmojis.redTick} ${locale.notBanned}.`)
         ], ephemeral: true});
 
+        // If there is no records cache
+        if (!client.loggingCache) client.loggingCache = {};
+
+        // Creates a new entry in the records cache, so the "guildBanRemove" event sends the record
+        client.loggingCache[user.id] = {
+            action: 'unban',
+            executor: interaction.member.id,
+            reason: reason || locale.undefinedReason
+        };
+
         // Unbans the member
         await interaction.guild.members.unban(user.id);
         
@@ -58,17 +68,6 @@ export async function run(interaction, commandConfig, locale) {
             // Deletes the database entry
             await client.functions.db.delData('ban', user.id);
         };
-
-        // Sends a message to the records channel
-        await client.functions.managers.sendLog('unbannedMember', 'embed', new discord.EmbedBuilder()
-            .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
-            .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { userTag: user.tag }), iconURL: user.displayAvatarURL() })
-            .addFields(
-                { name: locale.loggingEmbed.userId, value: user.id.toString(), inline: true },
-                { name: locale.loggingEmbed.moderator, value: interaction.user.tag, inline: true },
-                { name: locale.loggingEmbed.reason, value: reason || locale.undefinedReason, inline: true }
-            )
-        );
 
         // Notifies the action in the invocation channel
         await interaction.reply({ embeds: [ new discord.EmbedBuilder()

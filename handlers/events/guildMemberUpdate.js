@@ -41,21 +41,25 @@ export default async (oldMember, newMember, locale) => {
             // Generates variables to store the embeds fields
             let executor = null, reason = null;
 
-            // Looks for the last timeout in the audit registry
-            const fetchedLogs = await newMember.guild.fetchAuditLogs({
-                limit: 1,
-                type: discord.AuditLogEvent.MemberUpdate,
-            });
+            // If the bot can read the audit registry
+            if (!await client.functions.utils.missingPermissions(null, client.baseGuild.members.me, ['ViewAuditLog'])) {
 
-            // Stores the first search result
-            const timeoutLog = fetchedLogs.entries.first();
-            
-            // If a timeout was found in the first result, and less than 5 seconds have passed
-            if (timeoutLog && (timeoutLog.createdTimestamp > (Date.now() - 5000)) && timeoutLog.target.id === newMember.id) {
+                // Looks for the last member updates in the audit registry
+                const fetchedLogs = await newMember.guild.fetchAuditLogs({
+                    limit: 5,
+                    type: discord.AuditLogEvent.MemberUpdate,
+                });
 
-                // Updates the executor and reason fields
-                executor = timeoutLog.executor;
-                reason = timeoutLog.reason;
+                // Stores the last timeout change of the member, if less than 5 seconds have passed
+                const timeoutLog = fetchedLogs.entries.find(entry => entry.target && entry.target.id === newMember.id && entry.createdTimestamp > (Date.now() - 5000) && entry.changes.some(change => change.key === 'communication_disabled_until'));
+
+                // If a timeout change was found
+                if (timeoutLog) {
+
+                    // Updates the executor and reason fields
+                    executor = timeoutLog.executor;
+                    reason = timeoutLog.reason;
+                };
             };
 
             // Stores the timeouted or untimeouted user's records cache, if it exists
@@ -74,26 +78,26 @@ export default async (oldMember, newMember, locale) => {
                 delete client.loggingCache[newMember.id];
             };
 
-            // Stores the moderation module status
+            // Stores the moderation module status (to notify the member)
             const moderationModuleEnabled = await client.functions.db.getConfig('system.modules.moderation');
 
             // If it has been timeouted
             if (newMember.communicationDisabledUntilTimestamp && newMember.communicationDisabledUntilTimestamp > Date.now()) {
 
-                // If the moderation module is enabled
-                if (moderationModuleEnabled) {
+                // Sends a message to the records channel
+                await client.functions.managers.sendLog('timeoutedMember', 'embed', new discord.EmbedBuilder()
+                    .setColor(`${await client.functions.db.getConfig('colors.error')}`)
+                    .setAuthor({ name: await client.functions.utils.parseLocale(locale.communicationDisabled.loggingEmbed.author, { memberTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL() })
+                    .addFields(
+                        { name: locale.communicationDisabled.loggingEmbed.memberId, value: newMember.id, inline: true },
+                        { name: locale.communicationDisabled.loggingEmbed.moderator, value: executor ? executor.tag : locale.communicationDisabled.loggingEmbed.unknownModerator, inline: true },
+                        { name: locale.communicationDisabled.loggingEmbed.reason, value: reason || locale.communicationDisabled.loggingEmbed.undefinedReason, inline: true },
+                        { name: locale.communicationDisabled.loggingEmbed.expiration, value: `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>`, inline: true }
+                    )
+                );
 
-                    // Sends a message to the records channel
-                    await client.functions.managers.sendLog('timeoutedMember', 'embed', new discord.EmbedBuilder()
-                        .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                        .setAuthor({ name: await client.functions.utils.parseLocale(locale.communicationDisabled.loggingEmbed.author, { memberTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL() })
-                        .addFields(
-                            { name: locale.communicationDisabled.loggingEmbed.memberId, value: newMember.id, inline: true },
-                            { name: locale.communicationDisabled.loggingEmbed.moderator, value: executor ? executor.tag : locale.communicationDisabled.loggingEmbed.unknownModerator, inline: true },
-                            { name: locale.communicationDisabled.loggingEmbed.reason, value: reason || locale.communicationDisabled.loggingEmbed.undefinedReason, inline: true },
-                            { name: locale.communicationDisabled.loggingEmbed.expiration, value: `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>`, inline: true }
-                        )
-                    );
+                // If the moderation module is enabled, notifies the member
+                if (moderationModuleEnabled) {
 
                     try {
 
@@ -130,20 +134,20 @@ export default async (oldMember, newMember, locale) => {
                     await client.functions.db.delData('timeout', newMember.id);
                 };
 
-                // If the moderation module is enabled
+                // Sends a message to the records channel
+                await client.functions.managers.sendLog('untimeoutedMember', 'embed', new discord.EmbedBuilder()
+                    .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
+                    .setAuthor({ name: await client.functions.utils.parseLocale(locale.communicationEnabled.loggingEmbed.author, { userTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL()})
+                    .addFields(
+                        { name: locale.communicationEnabled.loggingEmbed.memberId, value: newMember.id.toString(), inline: true },
+                        { name: locale.communicationEnabled.loggingEmbed.moderator, value: executor ? executor.tag : locale.communicationEnabled.loggingEmbed.unknownModerator, inline: true },
+                        { name: locale.communicationEnabled.loggingEmbed.reason, value: reason || locale.communicationEnabled.loggingEmbed.undefinedReason, inline: true }
+                    )
+                );
+
+                // If the moderation module is enabled, notifies the member
                 if (moderationModuleEnabled) {
 
-                    // Sends a message to the records channel
-                    await client.functions.managers.sendLog('untimeoutedMember', 'embed', new discord.EmbedBuilder()
-                        .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
-                        .setAuthor({ name: await client.functions.utils.parseLocale(locale.communicationEnabled.loggingEmbed.author, { userTag: newMember.user.tag }), iconURL: newMember.user.displayAvatarURL()})
-                        .addFields(
-                            { name: locale.communicationEnabled.loggingEmbed.memberId, value: newMember.id.toString(), inline: true },
-                            { name: locale.communicationEnabled.loggingEmbed.moderator, value: executor ? executor.tag : locale.communicationEnabled.loggingEmbed.unknownModerator, inline: true },
-                            { name: locale.communicationEnabled.loggingEmbed.reason, value: reason || locale.communicationEnabled.loggingEmbed.undefinedReason, inline: true }
-                        )
-                    );
-                    
                     try {
 
                         // Sends a notification to the member

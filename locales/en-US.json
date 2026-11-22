@@ -1112,6 +1112,16 @@
                     "noDeletedDays": "None"
                 }
             },
+            "guildBanRemove": {
+                "loggingEmbed": {
+                    "author": "{{userTag}} has been UNBANNED",
+                    "userId": "User ID",
+                    "moderator": "Moderator",
+                    "unknownModerator": "Unknown",
+                    "reason": "Reason",
+                    "undefinedReason": "Undefined"
+                }
+            },
             "guildDelete": {
                 "waitingNewGuildHeader": "Waiting for {{botUsername}} to be joined to a new guild",
                 "joinNewGuildHelp": "Use the following link to add the bot to a guild: {{joinNewGuildURL}}",
@@ -1248,12 +1258,6 @@
                     "reason": "The sanction expired"
                 },
                 "bans": {
-                    "loggingEmbed": {
-                        "author": "{{userTag}} has been UN-BANNED",
-                        "user": "User",
-                        "moderator": "Moderator",
-                        "reason": "Reason"
-                    },
                     "reason": "The sanction expired"
                 },
                 "polls": {

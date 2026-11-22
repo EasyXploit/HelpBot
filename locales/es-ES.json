@@ -1092,6 +1092,16 @@
                     "noDeletedDays": "Ninguno"
                 }
             },
+            "guildBanRemove": {
+                "loggingEmbed": {
+                    "author": "{{userTag}} ha sido DESBANEADO",
+                    "userId": "ID de usuario",
+                    "moderator": "Moderador",
+                    "unknownModerator": "Desconocido",
+                    "reason": "Razón",
+                    "undefinedReason": "Indefinida"
+                }
+            },
             "guildDelete": {
                 "waitingNewGuildHeader": "Waiting for {{botUsername}} to be joined to a new guild",
                 "joinNewGuildHelp": "Use the following link to add the bot to a guild: {{joinNewGuildURL}}",
@@ -1228,12 +1238,6 @@
                     "reason": "Venció la amonestación"
                 },
                 "bans": {
-                    "loggingEmbed": {
-                        "author": "{{userTag}} ha sido DES-BANEADO",
-                        "user": "Usuario",
-                        "moderator": "Moderador",
-                        "reason": "Razón"
-                    },
                     "reason": "Venció la amonestación",
                     "error": "ERROR"
                 },

@@ -15,8 +15,11 @@ export default async (member, locale) => {
         // If the moderation module is enabled
         if (moderationModuleEnabled) {
 
-            // Stores the records cache of the kicked user, if it exists
-            let loggingCache = (client.loggingCache && client.loggingCache[member.id]) ? client.loggingCache[member.id] : null;
+            // Stores the records cache of the member, if it exists
+            const loggingCache = (client.loggingCache && client.loggingCache[member.id]) ? client.loggingCache[member.id] : null;
+
+            // Stores whether the member was kicked by the bot, based on the records cache
+            const kickedByTheBot = loggingCache && loggingCache.action === 'kick';
             
             // Looks for the last kick in the audit registry
             const fetchedLogs = await member.guild.fetchAuditLogs({
@@ -27,11 +30,39 @@ export default async (member, locale) => {
             // Stores the first search result
             const kickLog = fetchedLogs.entries.first();
             
-            // If a kick log was found in the first result, and less than 5 seconds have passed
-            if (loggingCache || (kickLog && (kickLog.createdTimestamp > (Date.now() - 5000)))) {
+            // If the bot kicked the member, or a kick log was found in the first result and less than 5 seconds have passed
+            if (kickedByTheBot || (kickLog && (kickLog.createdTimestamp > (Date.now() - 5000)))) {
 
-                // If there was no record, or this was inconclusive
-                if (kickLog.target.id !== member.id) {
+                // If the kicked member was a bot
+                if (member.user.bot) {
+
+                    // Sends a record to the records channel, unless the kick went to the bot himself
+                    if (member.user.id !== client.user.id) await client.functions.managers.sendLog('kickedBot', 'embed', new discord.EmbedBuilder()
+                        .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
+                        .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
+                        .setDescription(await client.functions.utils.parseLocale(locale.botLoggingEmbed.description, { memberTag: member.user.tag }))
+                    );
+
+                // If the bot kicked the member, or the kick log belongs to the member
+                } else if (kickedByTheBot || kickLog.target.id === member.id) {
+
+                    // Stores the executor and the reason, from the records cache if the bot kicked the member, or from the kick log otherwise
+                    const executor = kickedByTheBot ? await client.users.fetch(loggingCache.executor) : kickLog.executor;
+                    const reason = kickedByTheBot ? loggingCache.reason : kickLog.reason;
+
+                    // Sends a record to the records channel
+                    await client.functions.managers.sendLog('kickedMember', 'embed', new discord.EmbedBuilder()
+                        .setColor(`${await client.functions.db.getConfig('colors.error')}`)
+                        .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL() })
+                        .addFields(
+                            { name: locale.loggingEmbed.memberId, value: member.id, inline: true },
+                            { name: locale.loggingEmbed.moderator, value: executor ? executor.tag : locale.loggingEmbed.unknownModerator, inline: true },
+                            { name: locale.loggingEmbed.reason, value: reason ? reason : locale.loggingEmbed.undefinedReason, inline: true }
+                        )
+                    );
+
+                // If the kick log belongs to another member, so the kick could not be confirmed
+                } else {
 
                     // Sends a record to the records channel
                     await client.functions.managers.sendLog('kickedMember', 'embed', new discord.EmbedBuilder()
@@ -44,48 +75,9 @@ export default async (member, locale) => {
                         )
                     );
                 };
-            
-                // If the kicked member was a bot
-                if (member.user.bot) {
 
-                    // If the kick went to the bot himself, ignores
-                    if (member.user.id === client.user.id) return;
-
-                    // Sends a record to the records channel
-                    await client.functions.managers.sendLog('kickedBot', 'embed', new discord.EmbedBuilder()
-                        .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
-                        .setTitle(`📑 ${locale.botLoggingEmbed.title}`)
-                        .setDescription(await client.functions.utils.parseLocale(locale.botLoggingEmbed.description, { memberTag: member.user.tag }))
-                    );
-                };
-
-                // Stores the executor and the reason
-                let executor = kickLog.executor;
-                let reason = kickLog.reason;
-
-                // If it is detected that the kick was made by the bot
-                if (loggingCache && loggingCache.action === 'kick') {
-
-                    // Changes the executor, by the specified in the reason
-                    executor = await client.users.fetch(loggingCache.executor);
-
-                    // Changes the reason provided, to contain only the field of the reason
-                    reason = loggingCache.reason;
-
-                    // Deletes the member's records cache
-                    loggingCache = null;
-                };
-
-                // Sends a record to the records channel
-                await client.functions.managers.sendLog('kickedMember', 'embed', new discord.EmbedBuilder()
-                    .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                    .setAuthor({ name: await client.functions.utils.parseLocale(locale.loggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL() })
-                    .addFields(
-                        { name: locale.loggingEmbed.memberId, value: member.id, inline: true },
-                        { name: locale.loggingEmbed.moderator, value: executor ? executor.tag : locale.loggingEmbed.unknownModerator, inline: true },
-                        { name: locale.loggingEmbed.reason, value: reason ? reason : locale.loggingEmbed.undefinedReason, inline: true }
-                    )
-                );
+                // Deletes the member's records cache, if the bot kicked the member
+                if (kickedByTheBot) delete client.loggingCache[member.id];
 
             } else { // If a kick was not found
 

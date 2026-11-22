@@ -4,7 +4,7 @@ exports.run = async (interaction, commandConfig, locale) => {
 
         //Almacena el mimebro reportado si se proporciona cómo parámetro
         const reportedMemberOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.member.name);
-        const reportedMember = reportedMemberOption ? await client.functions.utilities.fetch.run('member', reportedMemberOption.value) : null;
+        const reportedMember = reportedMemberOption ? (await client.functions.utilities.fetch.run('member', reportedMemberOption.value) || reportedMemberOption.user) : null;
 
         //Almacena el reporte si se proporciona cómo parámetro
         const reportOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.body.name);

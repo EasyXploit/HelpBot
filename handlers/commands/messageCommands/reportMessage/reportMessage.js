@@ -2,8 +2,11 @@ exports.run = async (interaction, commandConfig, locale) => {
 
     try {
 
-        //Busca al miembro objetivo
-        const reportedMember = await client.functions.utilities.fetch.run('member', interaction.options._hoistedOptions[0].message.author.id);
+        //Almacena el autor del mensaje reportado
+        const messageAuthor = interaction.options._hoistedOptions[0].message.author;
+
+        //Busca al miembro objetivo o, si ya no está en la guild, usa su usuario para poder reportarlo igualmente
+        const reportedMember = await client.functions.utilities.fetch.run('member', messageAuthor.id) || messageAuthor;
 
         //Devuelve un error si no se ha encontrado al miembro
         if (!reportedMember) return interaction.reply({ embeds: [ new client.MessageEmbed()

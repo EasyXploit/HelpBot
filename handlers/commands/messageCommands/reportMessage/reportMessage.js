@@ -2,8 +2,11 @@ export async function run(interaction, commandConfig, locale) {
 
     try {
 
-        // Looks for the target member
-        const reportedMember = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].message.author.id);
+        // Stores the author of the reported message
+        const messageAuthor = interaction.options._hoistedOptions[0].message.author;
+
+        // Looks for the target member or, if it is no longer in the guild, uses its user to be able to report it anyway
+        const reportedMember = await client.functions.utils.fetch('member', messageAuthor.id) || messageAuthor;
 
         // Returns an error if the member has not been found
         if (!reportedMember) return interaction.reply({ embeds: [ new discord.EmbedBuilder()

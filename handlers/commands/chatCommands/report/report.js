@@ -4,7 +4,7 @@ export async function run(interaction, commandConfig, locale) {
 
         // Stores the reported member if it is provided as parameter
         const reportedMemberOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.member.name);
-        const reportedMember = reportedMemberOption ? await client.functions.utils.fetch('member', reportedMemberOption.value) : null;
+        const reportedMember = reportedMemberOption ? (await client.functions.utils.fetch('member', reportedMemberOption.value) || reportedMemberOption.user) : null;
 
         // Stores the report if it is provided as parameter
         const reportOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.body.name);

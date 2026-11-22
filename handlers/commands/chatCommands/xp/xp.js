@@ -207,7 +207,7 @@ export async function run(interaction, commandConfig, locale) {
 
             // Handles the errors that occur when a private message cannot be delivered
             if (error.toString().includes('Cannot send messages to this user')) logger.warn(`The bot was unable to deliver a "changed xp" message to @${member.user.username} (${member.id}) due to an API restriction`);
-            logger.error(error.stack);
+            else logger.error(error.stack);
         };
         
     } catch (error) {

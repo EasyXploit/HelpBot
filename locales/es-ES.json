@@ -1,54 +1,7 @@
 {
-    "permissions": {
-        "CreateInstantInvite": "Create Instant Invite",
-        "KickMembers": "Kick Members",
-        "BanMembers": "Ban Members",
-        "Administrator": "Administrator",
-        "ManageChannels": "Manage Channels",
-        "ManageGuild": "Manage Guild",
-        "AddReactions": "Add Reactions",
-        "ViewAuditLog": "View Audit Log",
-        "PrioritySpeaker": "Priority Speaker",
-        "Stream": "Stream",
-        "ViewChannel": "View Channel",
-        "SendMessages": "Send Messages",
-        "SendTTSMessages": "Send TTS Messages",
-        "ManageMessages": "Manage Messages",
-        "EmbedLinks": "Embed Links",
-        "AttachFiles": "Attach Files",
-        "ReadMessageHistory": "Read Message History",
-        "MentionEveryone": "Mention Everyone",
-        "UseExternalEmojis": "Use External Emojis",
-        "ViewGuildInsights": "View Guild Insights",
-        "Connect": "Connect",
-        "MuteMembers": "Mute Members",
-        "DeafenMembers": "Deafen Members",
-        "MoveMembers": "Move Members",
-        "UseVAD": "Use Voice Activity",
-        "ChangeNickname": "Change Nickname",
-        "ManageNicknames": "Manage Nicknames",
-        "ManageRoles": "Manage Roles",
-        "ManageWebhooks": "Manage Webhooks",
-        "ManageGuildExpressions": "Manage Guild Expressions",
-        "UseApplicationCommands": "Use Application Commands",
-        "RequestToSpeak": "Request To Speak",
-        "ManageEvents": "Manage Events",
-        "ManageThreads": "Manage Threads",
-        "CreatePublicThreads": "Create Public Threads",
-        "CreatePrivateThreads": "Create Private Threads",
-        "UseExternalStickers": "Use External Stickers",
-        "SendMessagesInThreads": "Send Messages In Threads",
-        "UseEmbeddedActivities": "Use Embedded Activities",
-        "ModerateMembers": "Moderate Members",
-        "ViewCreatorMonetizationAnalytics": "View Creator Monetization Analytics",
-        "UseSoundboard": "Use Soundboard"
-    },
     "status": {
         "enabled": "Activado",
         "disabled": "Desactivado"
-    },
-    "index": {
-        "startupMsg": "The bot is starting. Please wait"
     },
     "handlers": {
         "buttons": {
@@ -133,8 +86,7 @@
                                 "name": "tipo",
                                 "description": "Especifica el tipo de mensaje",
                                 "choices": {
-                                    "embed": "Incrustado",
-                                    "normal": "Normal"
+                                    "embed": "Incrustado"
                                 }
                             }
                         }
@@ -186,10 +138,6 @@
                         "title": "Edición de mensaje formateado",
                         "fieldTitle": "Cuerpo del mensaje",
                         "fieldPlaceholder": "Escribe un nuevo cuerpo para el mensaje"
-                    },
-                    "correctEmbed": {
-                        "title": "Operación completada",
-                        "description": "El mensaje ha sido modificado correctamente"
                     }
                 },
                 "infractions": {
@@ -213,7 +161,6 @@
                         "description": "Mostrando las infracciones del miembro **{{member}}**.\nSanción actual: {{sanction}}",
                         "last24h": "Últimas 24h",
                         "last7d": "Últimos 7 días",
-                        "total": "Total",
                         "list": "Listado de infracciones",
                         "noList": "Ninguna",
                         "page": "Página {{actualPage}} de {{totalPages}}"
@@ -579,15 +526,11 @@
                         "roleMembers": "Miembros con el rol",
                         "mentionable": "Mencionable",
                         "isMentionable": "Si",
-                        "isntMntionable": "No",
                         "hoisted": "Se muestra",
-                        "isHoisted": "Visible",
                         "isntHoisted": "Oculto",
-                        "color": "Color",
                         "creationDate": "Fecha de creación",
                         "integration": "Integración",
-                        "isIntegration": "Si",
-                        "isntIntegration": "No"
+                        "isIntegration": "Si"
                     }
                 },
                 "send": {
@@ -599,8 +542,7 @@
                                 "name": "tipo",
                                 "description": "Especifica el tipo de mensaje",
                                 "choices": {
-                                    "embed": "Incrustado",
-                                    "normal": "Normal"
+                                    "embed": "Incrustado"
                                 }
                             },
                             "channel": {
@@ -629,18 +571,6 @@
                         "Tier2": "Nivel 2",
                         "Tier3": "Nivel 3"
                     },
-                    "explicitContentFilter": {
-                        "0": "Disabled",
-                        "1": "Members without roles",
-                        "2": "All members"
-                    },
-                    "guildVerificationLevel": {
-                        "0": "Disabled",
-                        "1": "Low",
-                        "2": "Medium",
-                        "3": "High",
-                        "4": "Very high"
-                    },
                     "embed": {
                         "author": "Información sobre {{guildName}}",
                         "name": "Nombre",
@@ -648,21 +578,16 @@
                         "region": "Región",
                         "creationDate": "Fecha de creación",
                         "owner": "Propietario",
-                        "explicitContentFilter": "Explicit content filter",
                         "tier": "Nivel de mejora",
                         "boostsCount": "{{boostsCount}} mejoras",
                         "verification": "Nivel de verificación",
                         "invitations": "Invitaciones",
                         "totalInvites": "{{totalInvites}} invitaciones en total",
-                        "roles": "Roles",
                         "totalRoles": "{{totalRoles}} roles en total",
                         "stickersAndEmojis": "Stickers y Emojis",
-                        "totalEmojis": "{{totalEmojis}} emojis",
-                        "totalStickers": "{{totalStickers}} stickers",
                         "members": "Miembros",
                         "totalMembers": "{{totalMembers}} miembros",
                         "totalHumans": "{{totalHumans}} humanos",
-                        "totalBots": "{{totalBots}} bots",
                         "bans": "Baneos",
                         "bannedUsers": "{{bannedUsers}} usuarios baneados",
                         "afk": "Tiempo para AFK",
@@ -838,9 +763,7 @@
                         "registerDate": "Fecha de registro",
                         "joinDate": "Unido al servidor",
                         "status": "Estatus",
-                        "nitroBooster": "Nitro Booster",
                         "isBooster": "Desde {{time}}",
-                        "isntBooster": "No",
                         "highestRole": "Rol más alto",
                         "infractions": "Infracciones",
                         "verification": "Verificación",
@@ -1075,11 +998,6 @@
                     "undefinedReason": "Indefinida"
                 }
             },
-            "guildDelete": {
-                "waitingNewGuildHeader": "Waiting for {{botUsername}} to be joined to a new guild",
-                "joinNewGuildHelp": "Use the following link to add the bot to a guild: {{joinNewGuildURL}}",
-                "waitingNewGuildHelp": "Need some help? Visit: {{waitingNewGuildHelpURL}}"
-            },
             "guildMemberRemove": {
                 "inconclusiveLoggingEmbed": {
                     "author": "{{memberTag}} ha sido EXPULSADO",
@@ -1148,18 +1066,8 @@
                     }
                 }
             },
-            "interactionCreate": {
-                "disabledCommand": "The `{{commandName}}` command has been disabled",
-                "missingChannelPermissions": "The bot needs the following permissions on this channel to use this command: `{{missingPermissions}}`",
-                "missingGuildPermissions": "The bot needs the following permissions on the server to use this command: `{{missingPermissions}}`"
-            },
             "messageCreate": {
                 "filteredDm": "vía MD"
-            },
-            "clientReady": {
-                "waitingNewGuildHeader": "Waiting for {{botUsername}} to be joined to a new guild",
-                "joinNewGuildHelp": "Use the following link to add the bot to a guild: {{joinNewGuildURL}}",
-                "waitingNewGuildHelp": "Need some help? Visit: {{waitingNewGuildHelpURL}}"
             },
             "voiceStateUpdate": {
                 "voiceMovesLogging": {
@@ -1288,47 +1196,7 @@
             }
         },
         "menus": {
-            "baseGuildSelection": {
-                "promptBaseGuildSelectionHeader1": "The bot cannot be in more than one guild at a time, so you must select one from the list",
-                "promptBaseGuildSelectionHeader2": "Once you select a new base guild, the bot will leave the rest of the guilds",
-                "selectANewBaseGuild": "Select the new base guild",
-                "alreadyConfiguredGuild": "Already configured",
-                "isSureToReplaceBaseGuild": "Are you sure you want to change the base guild? Specific settings will be lost",
-                "affirmativeAnswer": "y",
-                "negativeAnswer": "n",
-                "leavingGuild": "Leaving the guild {{guild}}",
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
-            },
-            "main": {
-                "headerMessage": "Welcome to the {{botName}}'s command line interface!\nFrom here you can configure, monitorize and update the bot",
-                "subtitleMessage": "Need some help? Visit: {{helpURL}}",
-                "promptMessage": "Select an option",
-                "choices": {
-                    "configure": "Configure",
-                    "update": "Check for updates",
-                    "logs": "Show logs",
-                    "information": "View information",
-                    "license": "View license",
-                    "shutdown": "Shutdown"
-                },
-                "actions": {
-                    "shutdown": "The process will be terminated shortly. Goodbye!"
-                },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
-            },
             "configure": {
-                "headerMessage": "This menu allows you to configure all the functions of the bot.\nFunctions and commands of the same category are grouped in modules",
-                "promptMessage": "Select a module to configure",
-                "choices": {
-                    "mainConfiguration": "General configuration",
-                    "moderation": "Moderation",
-                    "engagement": "Engagement",
-                    "greetings": "Greetings",
-                    "polls": "Polls",
-                    "utilities": "Utilities",
-                    "scheduledMessages": "Scheduled messages",
-                    "return": "Return"
-                },
                 "submenus": {
                     "mainConfiguration": {
                         "headerMessage": "Este menú te permite establecer la configuración general del bot",
@@ -1447,8 +1315,7 @@
                                 "enable": "Activar módulo",
                                 "disable": "Desactivar módulo",
                                 "wantsToExpireSanctions": "¿Quieres expirar ahora las sanciones que estaban programadas para expirar?",
-                                "affirmativeAnswer": "Sí",
-                                "negativeAnswer": "No"
+                                "affirmativeAnswer": "Sí"
                             },
                             "changeAutomodStatus": {
                                 "enable": "Activar moderación automática",
@@ -1530,7 +1397,6 @@
                             "removePrompt": "El sistema de experiencia ha dejado de estar activo. ¿Quitar los roles de recompensa a todos los miembros? (se podrán recalcular cuando vuelva a estar activo)",
                             "recalculatePrompt": "El sistema de experiencia vuelve a estar activo. ¿Recalcular los roles de recompensa de todos los miembros según su nivel guardado?",
                             "yes": "Sí",
-                            "no": "No",
                             "processing": "Actualizando los roles de recompensa, esto puede tardar un rato",
                             "removed": "Se han quitado los roles de recompensa a {{count}} miembros",
                             "recalculated": "Se han recalculado los roles de recompensa de {{count}} miembros",
@@ -1692,8 +1558,7 @@
                                 "recovery": "Cuando el bot estaba desconectado"
                             },
                             "formats": {
-                                "text": "Texto normal",
-                                "embed": "Embed"
+                                "text": "Texto normal"
                             },
                             "recovery": {
                                 "none": "No enviar",
@@ -1731,8 +1596,7 @@
                                 "enable": "Activar módulo",
                                 "disable": "Desactivar módulo",
                                 "wantsToExpirePolls": "¿Quieres expirar ahora las encuestas que estaban programadas para expirar?",
-                                "affirmativeAnswer": "Sí",
-                                "negativeAnswer": "No"
+                                "affirmativeAnswer": "Sí"
                             },
                             "setCommands": "Configurar comandos",
                             "return": "Volver"
@@ -1811,106 +1675,12 @@
                         },
                         "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
                     }
-                },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
-            },
-            "update": {
-                "promptMessage": "Select an option",
-                "choices": {
-                    "checkAgain": "Check again",
-                    "switchToBeta": "Switch to Beta",
-                    "switchToStable": "Switch to Stable",
-                    "return": "Return"
-                },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details",
-                "checkingForUpdates": "Checking if there are new updates",
-                "updatedCorrectly": "The bot has been correctly updated to {{targetVersion}}!",
-                "noReleaseNotes": "There are no release notes available for this version",
-                "newVersionAvailable": "Version {{targetVersion}} is available!",
-                "releaseNotes": "Release notes",
-                "releaseNotesError": "An error ocurred while obtaining the release notes",
-                "updateConfirmationPromptMessage": "Would you like to update the bot?",
-                "updateConfirmationChoices": {
-                    "yes": "Yes",
-                    "no": "No"
-                },
-                "couldNotFetchUpdate": "An error ocurred while fetching for updates",
-                "alreadyUpdated": "The bot is already updated to the latest version",
-                "downloadingNewVersion": "Downloading {{targetVersion}} from {{repositoryURL}}",
-                "newVersionDownloaded": "{{targetVersion}} has been downloaded and installed correctly",
-                "needsRestart": "The bot must be restarted to apply the changes.\nIf you don't do it now, the process will automatically abort after 30 seconds.\nIf you are using a process manager like PM2 or Docker, the bot will automatically start again.\nOtherwise, you will have to restart it manually",
-                "restartConfirmationPrompt": {
-                    "message": "Would you like to restart now?",
-                    "restartNow": "Restart now"
                 }
-            },
-            "logs": {
-                "promptMessage": "Select an option",
-                "choices": {
-                    "refresh": "Refresh",
-                    "return": "Return"
-                },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details",
-                "noStoredLogs": "There are no stored logs. Try again later"
-            },
-            "information": {
-                "promptMessage": "Select an option",
-                "choices": {
-                    "refresh": "Refresh",
-                    "return": "Return"
-                },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details",
-                "appInfo": {
-                    "header": "Information about the bot",
-                    "appVersion": "Application version",
-                    "appAuthor": "Application author",
-                    "repoUrl": "Repository URL",
-                    "license": "License",
-                    "appName": "Application name",
-                    "appId": "Application ID",
-                    "language": "Configured language",
-                    "uptime": "Uptime",
-                    "connectionStatus": "Connection status",
-                    "activityType": "Activity type",
-                    "activityName": "Activity name"
-                },
-                "guildInfo": {
-                    "header": "Information about the managed guild",
-                    "guildName": "Guild name",
-                    "guildId": "Guild ID",
-                    "availability": "Availability",
-                    "guildAvailable": "Available",
-                    "guildNotAvailable": "Server outage",
-                    "totalMembers": "Total members",
-                    "onlineMembers": "Online members",
-                    "humanMembers": "Human members",
-                    "botMembers": "Bot members"
-                },
-                "databasesInfo": {
-                    "header": "Information about the databases",
-                    "storedProfiles": "Stored profiles",
-                    "totalMessages": "Total reviewed messages",
-                    "totalVoice": "Total voice time",
-                    "totalExperience": "Total gained experience",
-                    "totalWarns": "Warns count",
-                    "totalBans": "Active bans",
-                    "totalTimeouts": "Active timeouts",
-                    "totalPolls": "Active polls",
-                    "totalScheduledMessages": "Scheduled messages"
-                }
-            },
-            "license": {
-                "promptMessage": "Select an option",
-                "choices": {
-                    "return": "Return"
-                },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
             },
             "shared": {
                 "promptMessage": "Selecciona una opción",
                 "return": "Volver",
                 "yes": "Sí",
-                "no": "No",
                 "emptyList": "(vacía)",
                 "invalidNumber": "Introduce un número entero entre {{minimum}} y {{maximum}}",
                 "invalidMinimum": "Introduce un número entero igual o mayor que {{minimum}}",

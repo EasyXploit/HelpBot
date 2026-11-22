@@ -1548,16 +1548,47 @@
                             "return": "Return"
                         },
                         "setCommandsMenu": {
+                            "headerMessage": "Select command category to configure",
                             "promptMessage": "Select a command type",
                             "choices": {
+                                "welcomingConfig": "Welcoming configuration",
                                 "chatCommands": "Chat commands",
                                 "return": "Return"
                             },
                             "setChatCommandsMenu": {
+                                "headerMessage": "Manage individual greetings chat commands status",
                                 "promptMessage": "Select a command to configure",
                                 "choices": {
                                     "return": "Return"
                                 }
+                            }
+                        },
+                        "welcomingConfigMenu": {
+                            "headerMessage": "Configure welcomes automatic parameters (welcome message and roles)",
+                            "promptMessage": "Select welcoming setting to configure",
+                            "choices": {
+                                "welcomeMessageMode": "Welcome message mode",
+                                "newBotRole": "New bot role",
+                                "newMemberRole": "New member role",
+                                "enabled": "Enabled",
+                                "disabled": "Disabled",
+                                "none": "None",
+                                "return": "Return"
+                            },
+                            "prompts": {
+                                "selectMode": "Select welcome message mode",
+                                "modeSuccess": "Mode updated successfully!",
+                                "selectSearchMethod": "Select role search method",
+                                "searchByName": "Search role by name",
+                                "enterId": "Enter Role ID manually",
+                                "clearRole": "Clear role configuration",
+                                "clearRoleSuccess": "Role cleared successfully!",
+                                "enterRoleNameSearch": "Enter role name to search",
+                                "noRolesFound": "No roles found matching your search",
+                                "selectRole": "Select a role",
+                                "enterRoleId": "Enter the Discord Role ID",
+                                "roleNotFound": "Role not found",
+                                "roleSuccess": "Role updated successfully!"
                             }
                         },
                         "errorMessage": "An unexpected error ocurred. Check the logs for more details"

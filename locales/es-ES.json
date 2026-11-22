@@ -1522,30 +1522,61 @@
                         "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
                     },
                     "greetings": {
-                        "headerMessage": "This module allows you to configure the bot's greetings functions",
-                        "promptMessage": "Select an option",
+                        "headerMessage": "Este módulo te permite configurar las funciones de bienvenida del bot",
+                        "promptMessage": "Selecciona una opción",
                         "choices": {
                             "changeModuleStatus": {
-                                "enable": "Enable module",
-                                "disable": "Disable module"
+                                "enable": "Activar módulo",
+                                "disable": "Desactivar módulo"
                             },
-                            "setCommands": "Set commands",
-                            "return": "Return"
+                            "setCommands": "Configurar comandos",
+                            "return": "Volver"
                         },
                         "setCommandsMenu": {
-                            "promptMessage": "Select a command type",
+                            "headerMessage": "Selecciona la categoría de comandos a configurar",
+                            "promptMessage": "Selecciona un tipo de comando",
                             "choices": {
-                                "chatCommands": "Chat commands",
-                                "return": "Return"
+                                "welcomingConfig": "Configuración de bienvenida",
+                                "chatCommands": "Comandos de chat",
+                                "return": "Volver"
                             },
                             "setChatCommandsMenu": {
-                                "promptMessage": "Select a command to configure",
+                                "headerMessage": "Gestiona el estado de comandos de chat de bienvenida",
+                                "promptMessage": "Selecciona un comando para configurar",
                                 "choices": {
-                                    "return": "Return"
+                                    "return": "Volver"
                                 }
                             }
                         },
-                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                        "welcomingConfigMenu": {
+                            "headerMessage": "Configura los parámetros automáticos de bienvenidas (mensaje y roles)",
+                            "promptMessage": "Selecciona un ajuste de bienvenida para configurar",
+                            "choices": {
+                                "welcomeMessageMode": "Modo de mensaje de bienvenida",
+                                "newBotRole": "Nuevo rol de bot",
+                                "newMemberRole": "Nuevo rol de miembro",
+                                "enabled": "Activado",
+                                "disabled": "Desactivado",
+                                "none": "Ninguno",
+                                "return": "Volver"
+                            },
+                            "prompts": {
+                                "selectMode": "Selecciona el modo del mensaje de bienvenida",
+                                "modeSuccess": "¡Modo actualizado correctamente!",
+                                "selectSearchMethod": "Selecciona el método de búsqueda de rol",
+                                "searchByName": "Buscar rol por nombre",
+                                "enterId": "Introducir ID del rol a mano",
+                                "clearRole": "Limpiar configuración de rol",
+                                "clearRoleSuccess": "¡Configuración de rol eliminada correctamente!",
+                                "enterRoleNameSearch": "Introduce el nombre del rol a buscar",
+                                "noRolesFound": "No se encontraron roles que coincidan con la búsqueda",
+                                "selectRole": "Selecciona un rol",
+                                "enterRoleId": "Introduce la ID del rol de Discord",
+                                "roleNotFound": "Rol no encontrado",
+                                "roleSuccess": "¡Rol actualizado correctamente!"
+                            }
+                        },
+                        "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
                     },
                     "polls": {
                         "headerMessage": "Este módulo te permite configurar las funciones de encuestas del bot",

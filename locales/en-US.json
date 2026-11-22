@@ -1324,10 +1324,12 @@
                     "logs": "Show logs",
                     "information": "View information",
                     "license": "View license",
-                    "shutdown": "Shutdown"
+                    "shutdown": "Shutdown",
+                    "restart": "Restart"
                 },
                 "actions": {
-                    "shutdown": "The process will be terminated shortly. Goodbye!"
+                    "shutdown": "The process will be terminated shortly. Goodbye!",
+                    "restart": "The bot will restart shortly. See you soon!"
                 },
                 "errorMessage": "An unexpected error ocurred. Check the logs for more details"
             },

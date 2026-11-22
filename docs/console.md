@@ -18,7 +18,7 @@ Move with the arrow keys and press `Enter` to choose an option. The main menu of
 | 📄 **Show logs** | Shows the bot logs. |
 | ❓ **View information** | Shows information about the bot, your server and the database. |
 | ⚖️ **View license** | Shows the bot license. |
-| 🛑 **Shutdown** | Stops the bot. In Docker, it starts again automatically. |
+| 🔄 **Restart** | Restarts the bot (the container stops it and starts it again). |
 
 ## Configure the bot
 From **Configure** you can manage the bot modules, grouped in these sections:

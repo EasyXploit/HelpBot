@@ -4,7 +4,7 @@ This documentation covers the version of HelpBot in this branch. If you are look
 
 | Guide | What you will find |
 |---|---|
-| [Getting started](getting-started.md) | How to create the bot account, deploy the bot with Docker and start it for the first time. |
+| [Getting started](getting-started.md) | How to create the bot account, deploy the bot with Docker (or run it without Docker) and start it for the first time. |
 | [Console and configuration](console.md) | How to open the bot's console and use its menus to configure it. |
 
 💡 If you have any questions, you can ask in the [official Discord server](https://discord.gg/g2PNKhT8Zr).

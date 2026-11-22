@@ -88,6 +88,27 @@ Besides `DISCORD_TOKEN`, `DB_NAME`, `DB_USERNAME`, `DB_PASSWORD` and the optiona
 
 To use the development version, replace `latest` with `beta` at the end of the command.
 
+## Run without Docker
+Docker is the recommended way, but you can also run the bot directly with [Node.js](https://nodejs.org/) 24 (the version used by the image), with a MongoDB server that it can reach.
+
+1. **Download the code** of the version you want (the `master` branch for the stable version, or `beta` for the development version) and open its folder in a terminal.
+2. **Install its dependencies** with `npm ci --omit=dev`.
+3. **Create a `.env` file** in that folder with the same settings as with [only the bot image](#option-2-only-the-bot-image), and add `NODE_ENV=production`. If MongoDB runs on the same machine, here you can use `localhost` as `DB_TARGET`.
+4. **Start the bot** with `npm start`. Its [console](console.md) is the terminal where it runs.
+
+### Keep it running
+The bot does not start again by itself when it stops, and it stops after installing an update from **Check for updates** (an option only available outside Docker), so the new version can be loaded. Inside Docker, the container starts it again; outside Docker, something else must do it.
+
+As the bot's console needs an interactive terminal, the simplest way is to run it in a TMUX session, with a loop that starts it again whenever it stops:
+
+```
+tmux new-session -s helpbot 'while true; do npm start; echo "The bot has stopped. Starting it again in 5 seconds (press Ctrl+C to cancel)"; sleep 5; done'
+```
+
+- To leave the console without stopping the bot, press `Ctrl+B`, release both keys, and then press `D`. To open it again, run `tmux attach -t helpbot`.
+- **Shutdown** stops the bot, and then the loop starts it again. To stop it for good, choose **Shutdown** and press `Ctrl+C` during the 5-second wait.
+- Process managers like PM2 or systemd can also start the bot again, but they do not provide an interactive terminal, so you could not use its menus.
+
 ## First start
 Open the bot's [console](console.md) to follow its first start:
 1. If the bot is not in any server yet, it shows the invitation link and waits until you [add it to your server](#invite-the-bot-to-your-server).

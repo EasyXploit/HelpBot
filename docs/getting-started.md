@@ -24,9 +24,12 @@ HelpBot is published as a ready-to-use [Docker](https://www.docker.com/) image, 
 If the bot is not in any server when it starts, it waits and shows this same invitation link in its console.
 
 ## Deploy with Docker
-The bot image is published in the GitHub Container Registry as [`ghcr.io/easyxploit/helpbot`](https://github.com/EasyXploit/HelpBot/pkgs/container/helpbot), with two tags:
+The bot image is published in the GitHub Container Registry as [`ghcr.io/easyxploit/helpbot`](https://github.com/EasyXploit/HelpBot/pkgs/container/helpbot), with these tags:
 - `latest`: the stable version.
 - `beta`: the development version.
+- The number of a specific version (for example, `0.1.0` or `1.0.0-beta.1`), to keep using it or to go back to it.
+
+A new image is published with every release of the bot.
 
 Use the one that matches the branch of this documentation, as they work differently.
 
@@ -48,7 +51,7 @@ You can deploy it in two ways:
    | `DB_PASSWORD` | Yes | A password of your choice for that user. |
    | `DB_NAME` | Yes | The database name. It is already set to `helpbot`. |
    | `LOCALE` | No | The bot language: `en-US` (default), `es-ES`, `it`, `ro` or `zh-CN`. Leave it empty to choose it from the bot menu, as setting it here locks it there. |
-   | `HELPBOT_TAG` | No | The bot image tag: leave it empty for `latest` (the stable version), or use `beta`. |
+   | `HELPBOT_TAG` | No | The bot image tag: leave it empty for `latest` (the stable version), or use `beta` or the number of a specific version. |
    | `MONGO_IMAGE` | No | The MongoDB image (`mongo:7` by default). Use `mongo:4.4` if your processor does not support AVX instructions, which MongoDB 5 and later require. |
    | `AUTO_UPDATE` | No | `false` to disable automatic updates (enabled by default). |
    | `SENTRY_DSN` | No | The DSN of your [Sentry](https://sentry.io) project, if you want to send the bot errors to it. |

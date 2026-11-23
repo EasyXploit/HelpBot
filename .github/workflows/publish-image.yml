@@ -1,16 +1,16 @@
-# Builds the Docker image and publishes it to GitHub Container Registry on every push to master or beta (or manually from the Actions tab)
+# Builds the Docker image and publishes it to GitHub Container Registry when a release is published (or manually from the Actions tab, choosing the tag of a release)
 name: Publish Docker image
 
 on:
-  push:
-    branches: [master, beta]
+  release:
+    types: [published]
   workflow_dispatch:
 
 permissions:
   contents: read
   packages: write
 
-# If several pushes arrive in a row on the same branch, only the latest one is built
+# If the same release is published several times in a row, only the latest one is built
 concurrency:
   group: publish-image-${{ github.ref_name }}
   cancel-in-progress: true
@@ -20,6 +20,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+
+      # Reads the version from package.json, checks that it matches the tag of the release, and chooses the channel: the pre-releases (versions with a hyphen, like 1.0.0-beta.1) go to beta, and the rest to the stable one
+      - name: Read the version
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if [ "$VERSION" != "${GITHUB_REF_NAME#v}" ]; then
+            echo "::error::The version of package.json ($VERSION) does not match the tag \"$GITHUB_REF_NAME\". Publish a release with the tag v$VERSION, or run this workflow from the tag of a release"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if [[ "$VERSION" == *-* ]]; then
+            echo "channel=beta" >> "$GITHUB_OUTPUT"
+            echo "branch=beta" >> "$GITHUB_OUTPUT"
+          else
+            echo "channel=latest" >> "$GITHUB_OUTPUT"
+            echo "branch=master" >> "$GITHUB_OUTPUT"
+          fi
 
       # Emulates ARM so that the arm64 image can be built on x86 machines
       - uses: docker/setup-qemu-action@v4
@@ -34,7 +52,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Builds and publishes the image with the branch tag ("latest" for master, "beta" for beta) and with the commit hash (to be able to go back to a specific version)
+      # Builds and publishes the image with the channel tag ("latest" or "beta"), the version tag (to be able to use a specific version) and the commit hash
       - uses: docker/build-push-action@v7
         with:
           context: .
@@ -42,11 +60,13 @@ jobs:
           push: true
           # Indicates the branch to the image, so that the bot links to the documentation of its version
           build-args: |
-            HELPBOT_BRANCH=${{ github.ref_name }}
+            HELPBOT_BRANCH=${{ steps.version.outputs.branch }}
           tags: |
-            ghcr.io/easyxploit/helpbot:${{ github.ref_name == 'master' && 'latest' || 'beta' }}
+            ghcr.io/easyxploit/helpbot:${{ steps.version.outputs.channel }}
+            ghcr.io/easyxploit/helpbot:${{ steps.version.outputs.version }}
             ghcr.io/easyxploit/helpbot:${{ github.sha }}
           labels: |
             org.opencontainers.image.source=https://github.com/EasyXploit/HelpBot
-          cache-from: type=gha,scope=${{ github.ref_name }}
-          cache-to: type=gha,mode=max,scope=${{ github.ref_name }}
+            org.opencontainers.image.version=${{ steps.version.outputs.version }}
+          cache-from: type=gha,scope=${{ steps.version.outputs.branch }}
+          cache-to: type=gha,mode=max,scope=${{ steps.version.outputs.branch }}

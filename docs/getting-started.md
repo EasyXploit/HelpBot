@@ -47,7 +47,7 @@ You can deploy it in two ways:
    | `DB_USERNAME` | Yes | A username of your choice for the database. It is created the first time the database starts. |
    | `DB_PASSWORD` | Yes | A password of your choice for that user. |
    | `DB_NAME` | Yes | The database name. It is already set to `helpbot`. |
-   | `LOCALE` | No | The bot language: `en-US` (default), `es-ES`, `it`, `ro` or `zh-CN`. |
+   | `LOCALE` | No | The bot language: `en-US` (default), `es-ES`, `it`, `ro` or `zh-CN`. Leave it empty to choose it from the bot menu, as setting it here locks it there. |
    | `HELPBOT_TAG` | No | The bot image tag: leave it empty for `latest` (the stable version), or use `beta`. |
    | `MONGO_IMAGE` | No | The MongoDB image (`mongo:7` by default). Use `mongo:4.4` if your processor does not support AVX instructions, which MongoDB 5 and later require. |
    | `AUTO_UPDATE` | No | `false` to disable automatic updates (enabled by default). |

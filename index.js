@@ -18,6 +18,9 @@ if (!process.env.NODE_ENV) process.env.NODE_ENV = 'development';
 // Imports the loaders
 import { loadLogger, loadLocales, splashLogo, loadErrorTracker, loadDatabase, loadFunctions, loadEvents, login } from 'helpbot/loaders';
 
+// Imports the function to shut down the bot gracefully
+import shutdown from './lib/utils/shutdown.js';
+
 // Loads the logs handler
 await loadLogger();
 
@@ -81,17 +84,8 @@ for (const signal of ['SIGTERM', 'SIGINT']) process.on(signal, async () => {
     // Logs the shutdown
     logger.info(`A stop signal (${signal}) was received, so the bot will be shut down`);
 
-    // Disconnects the Discord client, if it was loaded
-    try { if (global.client) await client.destroy(); } catch (error) {};
-
-    // Closes the database connection
-    try { await require('mongoose').connection.close(); } catch (error) {};
-
-    // Sends any pending errors to the remote error handler
-    try { await require('@sentry/node').close(2000); } catch (error) {};
-
-    // Exits the process without error
-    process.exit(0);
+    // Shuts down the bot gracefully
+    await shutdown();
 });
 
 // Shows the starting logo on the console

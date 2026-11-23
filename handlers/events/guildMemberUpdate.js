@@ -62,11 +62,11 @@ export default async (oldMember, newMember, locale) => {
             // If it is a timeouted or untimeouted user cache
             if (loggingCache && loggingCache.action.includes('timeout')) {
 
-                // Stores the correct moderator
-                if (!executor) executor = await client.users.fetch(loggingCache.executor);
+                // Stores the correct moderator (the member who used the command, as the audit log shows the bot)
+                executor = await client.users.fetch(loggingCache.executor);
 
                 // Stores the formatted reason
-                if (!reason) reason = loggingCache.reason;
+                reason = loggingCache.reason;
 
                 // Deletes the member records cache
                 delete client.loggingCache[newMember.id];
@@ -77,6 +77,22 @@ export default async (oldMember, newMember, locale) => {
 
             // If it has been timeouted
             if (newMember.communicationDisabledUntilTimestamp && newMember.communicationDisabledUntilTimestamp > Date.now()) {
+
+                // Stores the member's timeout registered in the database (the timeouts made by the bot are registered before applying them)
+                const memberTimeout = await client.functions.db.getData('timeout', newMember.id);
+
+                // If the timeout is registered, updates its expiration (in case it was changed)
+                if (memberTimeout) {
+                    if (memberTimeout.untilTimestamp !== expiration) await client.functions.db.setData('timeout', newMember.id, { untilTimestamp: expiration });
+
+                // If it was made outside the bot (for example, from Discord), registers it, so it is not removed if the member leaves and returns, and its expiration is recorded
+                } else {
+                    await client.functions.db.genData('timeout', {
+                        userId: newMember.id,
+                        moderatorId: executor ? executor.id : client.user.id,
+                        untilTimestamp: expiration
+                    });
+                };
 
                 // Sends a message to the records channel
                 await client.functions.managers.sendLog('timeoutedMember', 'embed', new discord.EmbedBuilder()

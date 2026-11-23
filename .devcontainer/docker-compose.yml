@@ -1,0 +1,44 @@
+# Services of the development container: the bot (where Visual Studio Code works) and its MongoDB database
+services:
+  helpbot:
+    # Uses the development image of Node.js 24 (the same version as the bot image), which includes Git
+    image: mcr.microsoft.com/devcontainers/javascript-node:24-bookworm
+
+    # Keeps the container running, as the bot is started from Visual Studio Code
+    command: sleep infinity
+
+    # Loads the development variables (Discord token of the test bot, database credentials, etc.)
+    env_file: .env
+
+    # Connects to the database of this container, whatever the .env file says
+    environment:
+      - DB_TARGET=mongodb
+      - DB_PORT=27017
+      - DB_AUTH_SOURCE=admin
+
+    volumes:
+      # Mounts the repository
+      - ..:/workspaces/HelpBot:cached
+      # Keeps the dependencies in a Docker volume, as installing them in a folder shared with Windows is very slow
+      - node_modules:/workspaces/HelpBot/node_modules
+
+    depends_on:
+      - mongodb
+
+  mongodb:
+    # Uses MongoDB 7, as the bot image
+    image: mongo:7
+    restart: unless-stopped
+
+    # Creates the administrator user on the first start, with the credentials of the .env file
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DB_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
+
+    # Keeps the development data in a Docker volume, separated from any other database
+    volumes:
+      - database:/data/db
+
+volumes:
+  node_modules:
+  database:

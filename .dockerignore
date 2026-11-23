@@ -2,6 +2,7 @@ node_modules
 .git
 .github
 .vscode
+.devcontainer
 docker-compose.yml
 .env
 .env.example

@@ -1,0 +1,19 @@
+// Development container for Visual Studio Code: runs the bot inside Docker, with its own MongoDB database, on any computer that opens the repository
+// Before opening it for the first time on a computer, copy .env.example as .env (in this folder) and fill it in
+{
+    "name": "HelpBot",
+
+    // Uses the services of docker-compose.yml, and opens the bot service
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "helpbot",
+    "workspaceFolder": "/workspaces/HelpBot",
+
+    // Stops the database when the window is closed
+    "shutdownAction": "stopCompose",
+
+    // Installs the dependencies when the container is created (the folder of the dependencies is a Docker volume, owned by the container user)
+    "postCreateCommand": "sudo chown node node_modules && npm ci",
+
+    // Uses the user of the image instead of root
+    "remoteUser": "node"
+}

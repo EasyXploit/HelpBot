@@ -50,6 +50,12 @@ export default async (interaction, locale) => {
                 };
             };
 
+            // If it is the command to modify the experience and the experience system is disabled, returns a message indicating that the command is disabled
+            if (commandType === 'chatCommands' && command.fileName === 'xp' && !await client.functions.db.getConfig('leveling.experienceSystemEnabled')) return interaction.reply({embeds: [ new discord.EmbedBuilder()
+                .setColor(`${await client.functions.db.getConfig('colors.information')}`)
+                .setDescription(`${client.customEmojis.grayTick} ${await client.functions.utils.parseLocale(locale.disabledCommand, { commandName: interaction.commandName })}.`)
+            ], ephemeral: true});
+
             // Stores the module status corresponding to the command
             const moduleStatus = await client.functions.db.getConfig(`system.modules.${command.userConfig.module}`);
 

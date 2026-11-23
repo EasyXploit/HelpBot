@@ -11,9 +11,24 @@ export async function run(interaction, commandConfig, locale) {
             .setDescription(`${client.customEmojis.redTick} ${locale.noLeaderboard}.`)
         ], ephemeral: true});
 
-        // Stores the type of classification to be displayed, if provided
+        // Stores the rankings that are available: the experience one, only if the experience system is enabled, and the ones of the statistics, only if they are collected
+        const leveling = await client.functions.db.getConfig('leveling');
+        const availableTypes = [
+            ...(leveling.experienceSystemEnabled ? ['experience'] : []),
+            ...(leveling.collectMessagesCount ? ['messagesCount'] : []),
+            ...(leveling.collectVoiceTime ? ['aproxVoiceTime'] : []),
+            'antiquity'
+        ];
+
+        // Stores the type of classification to be displayed, if provided (or the first available one)
         const typeOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.type.name);
-        const type = typeOption ? typeOption.value : 'experience';
+        const type = typeOption ? typeOption.value : availableTypes[0];
+
+        // Returns an error if the chosen ranking is not available
+        if (!availableTypes.includes(type)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
+            .setColor(`${await client.functions.db.getConfig('colors.error')}`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.unavailableType}.`)
+        ], ephemeral: true});
 
         // Stores the entries of the leaderboard
         let entries = [];
@@ -46,7 +61,7 @@ export async function run(interaction, commandConfig, locale) {
                 experience: memberProfile.stats.experience,
                 aproxVoiceTime: memberProfile.stats.aproxVoiceTime,
                 messagesCount: memberProfile.stats.messagesCount,
-                antiquity: member.joinedTimestamp,
+                antiquity: member ? member.joinedTimestamp : null,
                 lvl: memberProfile.stats.level
             });
         };

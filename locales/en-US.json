@@ -303,6 +303,7 @@
                         }
                     },
                     "noLeaderboard": "No one has gained XP yet",
+                    "unavailableType": "This ranking is not available, as its statistic is not being collected",
                     "unknownMember": "Unknown",
                     "embed": {
                         "title": {

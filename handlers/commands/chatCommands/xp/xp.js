@@ -15,7 +15,7 @@ export async function run(interaction, commandConfig, locale) {
         ], ephemeral: true});
 
         // Stores the member Id
-        const memberId = member ? member.id : interaction.options._hoistedOptions[1].value;
+        const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
 
         // If the member was a bot
         if (member && member.user.bot) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
@@ -94,7 +94,7 @@ export async function run(interaction, commandConfig, locale) {
                 let generatedXp = 0;
 
                 // According to the parameter provided
-                for (max = providedValue; max != 0; max--) {
+                for (let remaining = providedValue; remaining > 0; remaining--) {
 
                     // Generates random XP and updates the total variable
                     generatedXp += await client.functions.utils.randomIntBetween(await client.functions.db.getConfig('leveling.minimumXpReward'), await client.functions.db.getConfig('leveling.maximumXpReward'));
@@ -143,18 +143,18 @@ export async function run(interaction, commandConfig, locale) {
             // Records the new level of the member
             memberStats.level = newLevel;
 
-            // Assigns the rewards of the level to the member (and deletes those that do not correspond)
-            await client.functions.leveling.assignRewards(member, newLevel, true);
+            // Assigns the rewards of the level to the member (and deletes those that do not correspond), if it is in the guild
+            if (member) await client.functions.leveling.assignRewards(member, newLevel, true);
         };
 
         // Saves the new statistics of the member in the database
-        await client.functions.db.setData('profile', member.id, memberProfile);
+        await client.functions.db.setData('profile', memberId, memberProfile);
 
         // Sends a message to the records channel
         await client.functions.managers.sendLog('experienceModified', 'embed',  new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.logging')}`)
             .setTitle(`📑 ${locale.loggingEmbed.title}`)
-            .setDescription(`${await client.functions.utils.parseLocale(locale.loggingEmbed.description, { memberTag: member.user.tag })}.`)
+            .setDescription(`${await client.functions.utils.parseLocale(locale.loggingEmbed.description, { memberTag: member ? member.user.tag : memberId })}.`)
             .addFields(
                 { name: locale.loggingEmbed.date, value: `<t:${Math.round(new Date() / 1000)}>`, inline: true },
                 { name: locale.loggingEmbed.moderator, value: interaction.user.tag, inline: true },
@@ -167,8 +167,11 @@ export async function run(interaction, commandConfig, locale) {
         // Notifies the action in the invocation channel
         await interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
-            .setDescription(`${client.customEmojis.greenTick} ${await client.functions.utils.parseLocale(locale.notificationEmbed, { memberTag: member.user.tag })}.`)
+            .setDescription(`${client.customEmojis.greenTick} ${await client.functions.utils.parseLocale(locale.notificationEmbed, { memberTag: member ? member.user.tag : memberId })}.`)
         ], ephemeral: true});
+
+        // Aborts if the member is no longer in the guild, as it can not be notified
+        if (!member) return;
 
         try {
 

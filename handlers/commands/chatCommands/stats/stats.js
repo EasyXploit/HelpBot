@@ -83,21 +83,29 @@ export async function run(interaction, commandConfig, locale) {
         // Calculates the necessary XP by default for the next level
         const neededExperience = await client.functions.leveling.getNeededExperience(memberProfile.stats.experience);
 
+        // Stores which statistics are active (the experience ones, only if the experience system is enabled, and the rest, only if they are collected)
+        const leveling = await client.functions.db.getConfig('leveling');
+
+        // Stores the fields of the statistics that are active
+        const fields = [
+            ...(leveling.experienceSystemEnabled ? [
+                { name: locale.statsEmbed.actualLevel, value: `\`${memberProfile.stats.level}\``, inline: true },
+                { name: locale.statsEmbed.experience, value: `\`${memberProfile.stats.experience}\``, inline: true },
+                { name: locale.statsEmbed.xpToNextLevel, value: notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noXpToNextLevel}\`` : `\`${neededExperience.experience}\``, inline: true }
+            ] : []),
+            ...(leveling.collectMessagesCount ? [{ name: locale.statsEmbed.messagesCount, value: `\`${memberProfile.stats.messagesCount}\``, inline: true }] : []),
+            ...(leveling.collectVoiceTime ? [{ name: locale.statsEmbed.voiceTime, value: `\`${aproxVoiceTime}\``, inline: true }] : []),
+            { name: locale.statsEmbed.antiquity, value: `\`${await client.functions.utils.msToTime(Date.now() - member.joinedTimestamp)}\``, inline: true },
+            ...(leveling.experienceSystemEnabled ? [{ name: locale.statsEmbed.nextRewards, value: notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noNextRewards}\`` : `\`${nextRewards}\``, inline: true }] : [])
+        ];
+
         // Sends the message with statistics
         await interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
             .setTitle(`🥇 ${locale.statsEmbed.title}`)
             .setDescription(await client.functions.utils.parseLocale(locale.statsEmbed.description, { memberTag: member.user.tag }))
             .setThumbnail(member.user.displayAvatarURL())
-            .addFields(
-                { name: locale.statsEmbed.actualLevel, value: `\`${memberProfile.stats.level}\``, inline: true },
-                { name: locale.statsEmbed.experience, value: `\`${memberProfile.stats.experience}\``, inline: true },
-                { name: locale.statsEmbed.xpToNextLevel, value: notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noXpToNextLevel}\`` : `\`${neededExperience.experience}\``, inline: true },
-                { name: locale.statsEmbed.messagesCount, value: `\`${memberProfile.stats.messagesCount}\``, inline: true },
-                { name: locale.statsEmbed.voiceTime, value: `\`${aproxVoiceTime}\``, inline: true },
-                { name: locale.statsEmbed.antiquity, value: `\`${await client.functions.utils.msToTime(Date.now() - member.joinedTimestamp)}\``, inline: true },
-                { name: locale.statsEmbed.nextRewards, value: notAuthorizedToEarnXp ? `\`${locale.statsEmbed.noNextRewards}\`` : `\`${nextRewards}\``, inline: true }
-            )
+            .addFields(fields)
         ]});
 
     } catch (error) {

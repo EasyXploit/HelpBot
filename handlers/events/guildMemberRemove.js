@@ -19,26 +19,30 @@ export default async (member, locale) => {
         // Stores whether the bot can read the audit registry
         const canViewAuditLog = !await client.functions.utils.missingPermissions(null, client.baseGuild.members.me, ['ViewAuditLog']);
 
-        // Stores the last kick of the audit registry, if it happened less than 5 seconds ago
+        // Stores the kick of the member from the audit registry, if it happened less than 10 seconds ago
         let kickLog = null;
 
         // If the bot did not kick the member, and can read the audit registry
         if (!kickedByTheBot && canViewAuditLog) {
 
-            // Looks for the last kick in the audit registry
-            const fetchedLogs = await member.guild.fetchAuditLogs({
-                limit: 1,
-                type: discord.AuditLogEvent.MemberKick,
-            });
+            // Looks for the kick of the member among the last kicks of the audit registry (trying again after a moment if it is not found, as the entry can take a little to appear)
+            for (let attempt = 0; attempt < 2 && !kickLog; attempt++) {
 
-            // Stores the first search result
-            const lastKickLog = fetchedLogs.entries.first();
+                // Waits a moment before trying again
+                if (attempt > 0) await new Promise(resolve => setTimeout(resolve, 1500));
 
-            // Stores the kick if less than 5 seconds have passed
-            if (lastKickLog && lastKickLog.createdTimestamp > (Date.now() - 5000)) kickLog = lastKickLog;
+                // Looks for the last kicks in the audit registry
+                const fetchedLogs = await member.guild.fetchAuditLogs({
+                    limit: 5,
+                    type: discord.AuditLogEvent.MemberKick,
+                });
+
+                // Stores the kick of the member, if there is a recent one
+                kickLog = fetchedLogs.entries.find(entry => entry.target && entry.target.id === member.id && entry.createdTimestamp > (Date.now() - 10000)) || null;
+            };
         };
 
-        // If the bot kicked the member, or a kick log was found in the first result
+        // If the bot kicked the member, or a kick of the member was found
         if (kickedByTheBot || kickLog) {
 
             // If the kicked member was a bot
@@ -51,8 +55,8 @@ export default async (member, locale) => {
                     .setDescription(await client.functions.utils.parseLocale(locale.botLoggingEmbed.description, { memberTag: member.user.tag }))
                 );
 
-            // If the bot kicked the member, or the kick log belongs to the member
-            } else if (kickedByTheBot || kickLog.target.id === member.id) {
+            // If it was a member
+            } else {
 
                 // Stores the executor and the reason, from the records cache if the bot kicked the member, or from the kick log otherwise
                 const executor = kickedByTheBot ? await client.users.fetch(loggingCache.executor) : kickLog.executor;
@@ -66,20 +70,6 @@ export default async (member, locale) => {
                         { name: locale.loggingEmbed.memberId, value: member.id, inline: true },
                         { name: locale.loggingEmbed.moderator, value: executor ? executor.tag : locale.loggingEmbed.unknownModerator, inline: true },
                         { name: locale.loggingEmbed.reason, value: reason ? reason : locale.loggingEmbed.undefinedReason, inline: true }
-                    )
-                );
-
-            // If the kick log belongs to another member, so the kick could not be confirmed
-            } else {
-
-                // Sends a record to the records channel
-                await client.functions.managers.sendLog('kickedMember', 'embed', new discord.EmbedBuilder()
-                    .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                    .setAuthor({ name: await client.functions.utils.parseLocale(locale.inconclusiveLoggingEmbed.author, { memberTag: member.user.tag }), iconURL: member.user.displayAvatarURL() })
-                    .addFields(
-                        { name: locale.inconclusiveLoggingEmbed.memberId, value: member.id, inline: true },
-                        { name: locale.inconclusiveLoggingEmbed.moderator, value: locale.inconclusiveLoggingEmbed.unknownModerator, inline: true },
-                        { name: locale.inconclusiveLoggingEmbed.reason, value: locale.inconclusiveLoggingEmbed.unknownReason, inline: true }
                     )
                 );
             };

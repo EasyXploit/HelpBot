@@ -1102,14 +1102,6 @@
                 "waitingNewGuildHelp": "Need some help? Visit: {{waitingNewGuildHelpURL}}"
             },
             "guildMemberRemove": {
-                "inconclusiveLoggingEmbed": {
-                    "author": "{{memberTag}} has been KICKED",
-                    "memberId": "Member ID",
-                    "moderator": "Moderator",
-                    "unknownModerator": "Unknown",
-                    "reason": "Reason",
-                    "unknownReason": "Unknown"
-                },
                 "botLoggingEmbed": {
                     "title": "Logging - [BOTS]",
                     "description": "The **BOT** {{memberTag}} was kicked from the server"

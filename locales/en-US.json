@@ -1816,7 +1816,6 @@
                 "noReleaseNotes": "There are no release notes available for this version",
                 "newVersionAvailable": "Version {{targetVersion}} is available!",
                 "releaseNotes": "Release notes",
-                "releaseNotesError": "An error ocurred while obtaining the release notes",
                 "updateConfirmationPromptMessage": "Would you like to update the bot?",
                 "updateConfirmationChoices": {
                     "yes": "Yes",

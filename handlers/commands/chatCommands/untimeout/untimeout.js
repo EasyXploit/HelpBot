@@ -34,9 +34,15 @@ export async function run(interaction, commandConfig, locale) {
         ], ephemeral: true});
 
         // It is checked if the role of the executing member is lower than that of the target member
-        if (member && interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= sortedRoles[0].position) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
+        if (member && interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.badHierarchy, { interactionAuthor: interaction.member })}.`)
+        ], ephemeral: true});
+
+        // It is checked if the role of the bot is lower than that of the target member
+        if (member && interaction.guild.members.me.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
+            .setColor(`${await client.functions.db.getConfig('colors.error')}`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.badBotHierarchy, { interactionAuthor: interaction.member })}.`)
         ], ephemeral: true});
 
         // Stores if the member can erase any timeout
@@ -77,9 +83,9 @@ export async function run(interaction, commandConfig, locale) {
             // Sends a message to the records channel
             await client.functions.managers.sendLog('untimeoutedMember', 'embed', new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
-                .setAuthor(locale.loggingEmbed.author)
+                .setAuthor({ name: locale.loggingEmbed.author })
                 .addFields(
-                    { name: locale.loggingEmbed.memberId, value: member.id.toString(), inline: true },
+                    { name: locale.loggingEmbed.memberId, value: memberId.toString(), inline: true },
                     { name: locale.loggingEmbed.moderator, value: interaction.user.tag, inline: true },
                     { name: locale.loggingEmbed.reason, value: reason || locale.undefinedReason, inline: true }
                 )

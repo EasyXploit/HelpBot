@@ -10,10 +10,8 @@ services:
     tty: true
     env_file: .env
     environment:
-      # Connects to the MongoDB service of this project
-      - DB_TARGET=mongodb
-      - DB_PORT=27017
-      - DB_AUTH_SOURCE=admin
+      # Fills the empty database settings of data/config.json with the MongoDB service of this project and a random password (the ones set in the .env file take precedence)
+      - GENERATE_DATABASE_CONFIG=true
     depends_on:
       - mongodb
     labels:
@@ -29,14 +27,42 @@ services:
     image: ${MONGO_IMAGE:-mongo:7}
     container_name: HelpBot-MongoDB
     restart: unless-stopped
+    # Before creating the database on its first start, waits for the user and password of its administrator: the ones from the .env file, or the ones of data/config.json (where the bot stores the generated ones)
+    entrypoint:
+      - sh
+      - -c
+      - |
+        if [ -n "$$(ls -A /data/db 2>/dev/null)" ]; then exec docker-entrypoint.sh mongod; fi
+        read_setting() {
+          code="var p = '/helpbot-data/config.json'; var t = typeof require === 'function' ? require('fs').readFileSync(p, 'utf8') : cat(p); print((JSON.parse(t).database || {})['$$1'] || '')"
+          mongosh --nodb --quiet --eval "$$code" 2>/dev/null || mongo --nodb --quiet --eval "$$code" 2>/dev/null
+        }
+        USERNAME="$$DB_USERNAME"; PASSWORD="$$DB_PASSWORD"; WAITED=0
+        while [ -z "$$USERNAME" ] || [ -z "$$PASSWORD" ]; do
+          [ -z "$$DB_USERNAME" ] && USERNAME="$$(read_setting username)"
+          [ -z "$$DB_PASSWORD" ] && PASSWORD="$$(read_setting password)"
+          if [ -n "$$USERNAME" ] && [ -n "$$PASSWORD" ]; then break; fi
+          WAITED=$$((WAITED + 1))
+          if [ "$$WAITED" -ge 120 ]; then echo "The database user and password were not found in the .env file nor in data/config.json"; exit 1; fi
+          sleep 1
+        done
+        export MONGO_INITDB_ROOT_USERNAME="$$USERNAME" MONGO_INITDB_ROOT_PASSWORD="$$PASSWORD"
+        exec docker-entrypoint.sh mongod
     environment:
-      # Creates the administrator user on the first start, with the credentials from the .env file
-      - MONGO_INITDB_ROOT_USERNAME=${DB_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
+      - DB_USERNAME=${DB_USERNAME:-}
+      - DB_PASSWORD=${DB_PASSWORD:-}
+    # Checks that the database is ready (with mongosh, or with the mongo shell of the older images)
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.adminCommand(\"ping\")' || mongo --quiet --eval 'db.adminCommand(\"ping\")'"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
     labels:
       - com.centurylinklabs.watchtower.scope=helpbot
     volumes:
       - ./database:/data/db
+      - ./data:/helpbot-data:ro
 
   watchtower:
     image: nickfedor/watchtower:latest

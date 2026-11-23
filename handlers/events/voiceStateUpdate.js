@@ -119,9 +119,6 @@ export default async (oldState, newState, locale) => {
                 // Stores the member
                 const member = newState.member;
     
-                // The minutes count ends if the member is left alone or with only bots in the room
-                if (newState.channel.members.filter(member => !member.user.bot).size === 1 && client.usersVoiceStates[newState.id]) return endVoiceTime();
-    
                 // If it is a bot, the AFK channel, a forbidden channel or a prohibited role
                 if (member.user.bot || (newState.guild.afkChannelId && newState.channelId === newState.guild.afkChannelId)) {
     

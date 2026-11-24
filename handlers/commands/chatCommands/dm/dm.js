@@ -73,7 +73,12 @@ export async function run(interaction, commandConfig, locale) {
             // Returns the resulting interaction
             return modalInteraction;
             
-        }).catch(() => { null; });
+        }).catch(error => {
+
+            // Returns nothing if the modal was not submitted in time, or throws the error so the error handler logs it
+            if (error.code === 'InteractionCollectorError') return null;
+            throw error;
+        });
 
         // Obtains the field of the body
         const messageBody = bodyMessageModalInteraction.fields.getField('body').value;

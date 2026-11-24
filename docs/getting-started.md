@@ -38,7 +38,7 @@ You can deploy it in two ways:
 - **[Option 2: only the bot image](#option-2-only-the-bot-image):** if you already have a MongoDB database.
 
 ### Option 1: Docker Compose (recommended)
-1. **Create a folder** for the bot (for example, `helpbot`).
+1. **Create a folder** for the bot (for example, `helpbot`), and inside it, three empty folders: `data`, `logs` and `database`. Docker Compose creates them by itself when they are missing, but some graphical Docker managers do not, and fail with a "Bind mount failed" error.
 2. **Download these two files** into that folder (open each one and click the **Download raw file** button):
    - [`docker-compose.yml`](../docker/docker-compose.yml)
    - [`.env.example`](../docker/.env.example)
@@ -49,8 +49,6 @@ You can deploy it in two ways:
    | `DISCORD_TOKEN` | No | The token you copied when [creating the bot account](#create-the-bot-account). If you leave it empty, the bot asks for it in its [console](console.md) on the first start, and stores it in the database. If it is set here, it takes precedence, and it can not be changed from the bot. |
    | `DB_NAME`, `DB_USERNAME`, `DB_PASSWORD` | No | Leave them empty to let the bot take care of the database: on the first start, it stores in `data/config.json` the name and user `helpbot` and a random password, and the database creates its user with them. To choose them yourself, fill them in before the first start (here, or in `data/config.json`). The database only creates its user on the first start, so changing them afterwards also requires changing the user inside MongoDB. |
    | `DB_TARGET`, `DB_PORT`, `DB_AUTH_SOURCE` | No | Only to use a MongoDB of your own instead of the one of this project: its address, its port and the database where its user is defined (usually `admin`). In that case, also fill in `DB_NAME`, `DB_USERNAME` and `DB_PASSWORD` with its details. |
-
-   The database settings can also be set in the `database` section of `data/config.json`, but the ones set in `.env` take precedence.
    | `LOCALE` | No | The bot language: `en-US` (default), `es-ES`, `it`, `ro` or `zh-CN`. Leave it empty to choose it from the bot menu, as setting it here locks it there. |
    | `HELPBOT_TAG` | No | The bot image tag: leave it empty for `latest` (the stable version), or use `beta` or the number of a specific version. |
    | `MONGO_IMAGE` | No | The MongoDB image (`mongo:7` by default). Use `mongo:4.4` if your processor does not support AVX instructions, which MongoDB 5 and later require. |
@@ -58,9 +56,11 @@ You can deploy it in two ways:
    | `SENTRY_DSN` | No | The DSN of your [Sentry](https://sentry.io) project, if you want to send the bot errors to it. |
    | `SENTRY_TRACES_SAMPLE_RATE` | No | The share of performance traces sent to Sentry, from `0` to `1` (`1` by default). |
 
+   The database settings can also be set in the `database` section of `data/config.json`, but the ones set in `.env` take precedence.
+
 4. **Start it** by running `docker compose up -d` inside the folder. If you use a graphical Docker manager, create a project (or stack) from this `docker-compose.yml` file instead.
 
-The first start takes a little longer, as Docker downloads the images and MongoDB prepares the database. Once it is running, the folder will also contain:
+The first start takes a little longer, as Docker downloads the images and MongoDB prepares the database. Once it is running, these folders contain:
 - `data/`: the local configuration file (`config.json`).
 - `logs/`: the bot logs.
 - `database/`: the MongoDB data.

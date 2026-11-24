@@ -1,7 +1,7 @@
 {
   "name": "helpbot",
   "normalizedName": "HelpBot",
-  "version": "9.0.0-beta.2",
+  "version": "9.0.0-beta.3",
   "description": "A Discord bot designed for automated community moderation, leveling, chat utilities and much more!",
   "main": "index.js",
   "type": "module",

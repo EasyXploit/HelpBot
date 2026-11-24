@@ -44,4 +44,7 @@ config.json
 
 #Docker data
 data/
+!.devcontainer/data/
+.devcontainer/data/*
+!.devcontainer/data/.gitkeep
 database/

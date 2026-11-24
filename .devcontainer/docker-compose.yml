@@ -7,14 +7,12 @@ services:
     # Keeps the container running, as the bot is started from Visual Studio Code
     command: sleep infinity
 
-    # Loads the development variables (Discord token of the test bot, database credentials, etc.)
+    # Loads the development variables (Discord token of the test bot, and optionally the database settings)
     env_file: .env
 
-    # Connects to the database of this container, whatever the .env file says
+    # Uses its own local configuration file, which is not uploaded to Git (it is created as a copy of config.json, and its empty database settings are filled with the database of this container)
     environment:
-      - DB_TARGET=mongodb
-      - DB_PORT=27017
-      - DB_AUTH_SOURCE=admin
+      - CONFIG_FILE=/workspaces/HelpBot/.devcontainer/data/config.json
 
     volumes:
       # Mounts the repository
@@ -30,14 +28,36 @@ services:
     image: mongo:7
     restart: unless-stopped
 
-    # Creates the administrator user on the first start, with the credentials of the .env file
+    # Before creating the database on its first start, waits for the user and password of its administrator: the ones from the .env file, or the ones of the development configuration file (as in the Docker Compose project of the root folder)
+    entrypoint:
+      - sh
+      - -c
+      - |
+        if [ -n "$$(ls -A /data/db 2>/dev/null)" ]; then exec docker-entrypoint.sh mongod; fi
+        read_setting() {
+          code="var p = '/helpbot-data/config.json'; var t = typeof require === 'function' ? require('fs').readFileSync(p, 'utf8') : cat(p); print((JSON.parse(t).database || {})['$$1'] || '')"
+          mongosh --nodb --quiet --eval "$$code" 2>/dev/null || mongo --nodb --quiet --eval "$$code" 2>/dev/null
+        }
+        USERNAME="$$DB_USERNAME"; PASSWORD="$$DB_PASSWORD"; WAITED=0
+        while [ -z "$$USERNAME" ] || [ -z "$$PASSWORD" ]; do
+          [ -z "$$DB_USERNAME" ] && USERNAME="$$(read_setting username)"
+          [ -z "$$DB_PASSWORD" ] && PASSWORD="$$(read_setting password)"
+          if [ -n "$$USERNAME" ] && [ -n "$$PASSWORD" ]; then break; fi
+          WAITED=$$((WAITED + 1))
+          if [ "$$WAITED" -ge 120 ]; then echo "The database user and password were not found in the .env file nor in data/config.json"; exit 1; fi
+          sleep 1
+        done
+        export MONGO_INITDB_ROOT_USERNAME="$$USERNAME" MONGO_INITDB_ROOT_PASSWORD="$$PASSWORD"
+        exec docker-entrypoint.sh mongod
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${DB_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
+      - DB_USERNAME=${DB_USERNAME:-}
+      - DB_PASSWORD=${DB_PASSWORD:-}
 
-    # Keeps the development data in a Docker volume, separated from any other database
     volumes:
+      # Keeps the development data in a Docker volume, separated from any other database
       - database:/data/db
+      # Reads the development configuration file
+      - ./data:/helpbot-data:ro
 
 volumes:
   node_modules:

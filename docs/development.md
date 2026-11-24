@@ -9,7 +9,7 @@ The repository includes a development container for [Visual Studio Code](https:/
 
 ## Set up a computer
 This is done once on each computer:
-1. **Copy `.devcontainer/.env.example` as `.devcontainer/.env`** and fill it in: the token of the development bot, and a username and password of your choice for the development database (it is created the first time the container starts). This file is not uploaded to Git.
+1. **Copy `.devcontainer/.env.example` as `.devcontainer/.env`** and fill in the token of the development bot. The rest of the settings are optional. This file is not uploaded to Git.
 2. **Open the repository folder** in Visual Studio Code and choose **Reopen in Container** when it is offered (or run **Dev Containers: Reopen in Container** from the command palette).
 
 The first time takes a little longer, as Docker downloads the images and installs the dependencies.
@@ -21,5 +21,10 @@ From the **Run and Debug** view, start one of these configurations:
 
 The bot console, with its menus, opens in the integrated terminal.
 
+## Development configuration
+Inside the container, the bot uses its own local configuration file, `.devcontainer/data/config.json`, instead of the `config.json` of the repository, so testing does not change it. It is created as a copy of `config.json` the first time, and it is not uploaded to Git.
+
 ## Development database
-The database of the container is kept in a Docker volume, separated from any other database, so it survives when the container is rebuilt. To start from scratch, remove the volume whose name ends in `_database` from Docker Desktop (with the container stopped).
+The bot takes care of the database of the container: on the first start, it stores in `.devcontainer/data/config.json` the name and user `helpbot` and a random password, and the database creates its user with them. To choose them yourself, or to use a MongoDB of your own, fill them in `.devcontainer/.env` (or in that file) before the first start. The ones of `.devcontainer/.env` take precedence.
+
+The database is kept in a Docker volume, separated from any other database, so it survives when the container is rebuilt. To start from scratch, stop the container and remove the volume whose name ends in `_database` from Docker Desktop, along with `.devcontainer/data/config.json` (as the database only creates its user on its first start).

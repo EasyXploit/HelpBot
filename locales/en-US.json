@@ -749,7 +749,6 @@
                         }
                     },
                     "unknownMember": "Member not found. You must mention a member or enter its ID",
-                    "noXp": "{{member}} has no experience points",
                     "defaultReward": "None",
                     "statsEmbed": {
                         "title": "Statistics",

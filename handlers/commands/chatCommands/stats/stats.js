@@ -11,14 +11,8 @@ export async function run(interaction, commandConfig, locale) {
             .setDescription(`${client.customEmojis.redTick} ${locale.unknownMember}.`)
         ], flags: discord.MessageFlags.Ephemeral});
         
-        // Stores the member's profile
-        const memberProfile = await client.functions.db.getData('profile', member.id);
-
-        // Returns an error if the member has no profile
-        if (!memberProfile) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
-            .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noXp, { member: member })}.`)
-        ], flags: discord.MessageFlags.Ephemeral});
+        // Stores the member's profile, or one with empty statistics if the member does not have one yet (until they send messages or join a voice channel)
+        const memberProfile = await client.functions.db.getData('profile', member.id) || { stats: { experience: 0, level: 0, aproxVoiceTime: 0, messagesCount: 0 } };
 
         // To check if the role can win XP or not
         const notAuthorizedToEarnXp = await client.functions.utils.checkAuthorization(member, { bypassIds: await client.functions.db.getConfig('leveling.wontEarnXP') });

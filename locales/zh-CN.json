@@ -749,7 +749,6 @@
                         }
                     },
                     "unknownMember": "未找到该成员。你必须提及一位成员或输入其 ID",
-                    "noXp": "{{member}} 没有经验值",
                     "defaultReward": "无",
                     "statsEmbed": {
                         "title": "统计",

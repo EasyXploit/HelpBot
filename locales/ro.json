@@ -749,7 +749,6 @@
                         }
                     },
                     "unknownMember": "Membru nu a fost găsit. Trebuie să menționezi un membru sau să-i scrii IDul",
-                    "noXp": "{{member}} nu are puncte EXP",
                     "defaultReward": "Nici una",
                     "statsEmbed": {
                         "title": "Statistici",

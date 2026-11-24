@@ -1,0 +1,48 @@
+# Updates POEditor with the translations of the repository when they change on the beta branch (or manually from the Actions tab)
+name: Sync translations with POEditor
+
+on:
+  push:
+    branches: [beta]
+    paths: ['locales/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# If several pushes arrive in a row, only the latest one is synced
+concurrency:
+  group: poeditor-sync
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      # Calls the webhooks of POEditor (stored as secrets): first the English one, that syncs the terms (adding the new ones and deleting the ones that no longer exist), and then the rest of languages, that import their translations
+      - name: Call the POEditor webhooks
+        env:
+          WEBHOOK_EN: ${{ secrets.POEDITOR_WEBHOOK_EN }}
+          WEBHOOK_ES: ${{ secrets.POEDITOR_WEBHOOK_ES }}
+          WEBHOOK_IT: ${{ secrets.POEDITOR_WEBHOOK_IT }}
+          WEBHOOK_RO: ${{ secrets.POEDITOR_WEBHOOK_RO }}
+          WEBHOOK_ZH: ${{ secrets.POEDITOR_WEBHOOK_ZH }}
+        run: |
+          call() {
+            if [ -z "$2" ]; then
+              echo "::warning::The secret POEDITOR_WEBHOOK_$1 is not set, so the $1 language has not been synced"
+              return 0
+            fi
+            echo "Syncing the $1 language..."
+            curl --fail --silent --show-error --retry 3 --output /dev/null "$2" || { echo "::error::The webhook of the $1 language has failed"; return 1; }
+          }
+          FAILED=0
+          call EN "$WEBHOOK_EN" || exit 1
+
+          # Gives POEditor time to create the new terms before importing their translations
+          sleep 30
+          call ES "$WEBHOOK_ES" || FAILED=1
+          call IT "$WEBHOOK_IT" || FAILED=1
+          call RO "$WEBHOOK_RO" || FAILED=1
+          call ZH "$WEBHOOK_ZH" || FAILED=1
+          exit $FAILED

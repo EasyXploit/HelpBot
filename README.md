@@ -15,8 +15,8 @@
 </div>
 
 ## About
-[**HelpBot**](https://github.com/EasyXploit/HelpBot) is a [Discord](https://discord.com/) self-hosted bot built with [Node.js](https://nodejs.org) and distributed as a [Docker](https://www.docker.com/) image, whose main functions are automated community moderation, leveling, chat utilities and much more!<br /><br />
-This project was born out of curiosity, as a way to give form to the knowledge about [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) that I acquired during a Professional Formation course that I was doing, but that over time has made me discover that I am passionate about programming.<br /><br />
+[**HelpBot**](https://github.com/EasyXploit/HelpBot) is a self-hosted [Discord](https://discord.com/) bot built with [Node.js](https://nodejs.org) and distributed as a [Docker](https://www.docker.com/) image, whose main functions are automated community moderation, leveling, chat utilities and much more!<br /><br />
+This project was born out of curiosity, as a way to give form to the knowledge about [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) that I acquired during a Vocational Training course that I was doing, but that over time has made me discover that I am passionate about programming.<br /><br />
 Given that initially it was a project with quite unstable knowledge bases, the code has undergone several refactorings until reaching this point, from which I have decided that I'm going to make it [open source](https://opensource.com/) under an [MIT license](https://en.wikipedia.org/wiki/MIT_License), and continue with its development and work on other related projects.<br /><br />
 Due to this, the bot has **NOT** been designed from the beginning to work in more than one Discord community ([guild](https://discord.com/developers/docs/resources/guild)) at the same time, so each instance of the bot serves a single guild, and stores its configuration and data in its own [MongoDB](https://www.mongodb.com/) database.<br /><br />
 
@@ -31,15 +31,22 @@ The bot code is <ins>excessively full of comments</ins>, because it is a learnin
 | Swear words filtering        | Excessive mentions filtering | XP & role rewards by activity (text & voice) | Public & private welcomes     |
 | Server invites filtering     | Excessive spoilers filtering | Scheduled messages                               | Message purging tool          |
 | Excessive uppercase filtering | Repetitive text filtering   | Infractions history                          | Reports system                |
-| Links filtering              | Automatic penalty dispenser | Multiple locales                             | Flood filtering               |
+| Links filtering              | Automatic penalty dispenser | Available in multiple languages                     | Flood filtering               |
 | Excessive emojis filtering   | Manual moderation commands  | Role, user and server info. showing          | Polls maker                   |
 | Server events logging        | Configuration from the console | Recovery of the joins while offline       | Docker image with auto-updates |
 <br />
 
 ## Usage
-In the [docs](docs/) folder of this repository, you have the documentation for this version of the bot, with a start guide that explains how to create an account for the bot, how to deploy it with Docker and how to configure it from its console.<br /><br />
 You only need a machine with [Docker](https://www.docker.com/), as the bot is published as a ready-to-use image in the GitHub Container Registry.<br /><br />
+In the [docs](docs/) folder of this repository, you have the documentation for this version of the bot: how to create an account for the bot, how to deploy it with Docker, how to configure it from its console, how to change its language and how to work on its code.<br /><br />
 [GO TO THE START GUIDE](docs/getting-started.md)<br />
+<br />
+
+## Contributing
+Any help is welcome! These are the ways you can contribute:
+* 🌍 **Translations:** help translate the bot into your language, or fix the translations that are wrong, from [POEditor](https://poeditor.com/join/project/emirhxA4pG). See the [translation guide](docs/translation.md).
+* 🐛 **Bugs and ideas:** report the bugs you find, or suggest new features, by [opening an issue](https://github.com/EasyXploit/HelpBot/issues/new/choose).
+* 🧑‍💻 **Code:** the [development guide](docs/development.md) explains how to run and debug the bot with its development container. The pull requests must target the `beta` branch, where the next version is developed.
 <br />
 
 ## Support
@@ -49,7 +56,7 @@ You only need a machine with [Docker](https://www.docker.com/), as the bot is pu
 ## Acknowledgments
 * Thanks to my programming teacher María José Lozano, for teaching me the basics of JavaScript and how to think like a programmer. Without her lessons, I probably would not have started this project.
 * Thanks to the [supported languages](docs/translation.md#supported-languages) translators who make this repository accessible to many more people.
-* Thanks to the community of [Discord.js](https://github.com/discordjs/discord.js), who have always been there to answer all my questions about the library, and that they constantly work to cover the 100% of the API.<br />
+* Thanks to the community of [Discord.js](https://github.com/discordjs/discord.js), who have always been there to answer all my questions about the library, and who constantly work to cover 100% of the API.<br />
 * Thanks to [Flaticon](https://www.flaticon.com) for providing the images contained in the [assets/images/](assets/images/) directory.
 <br />
 

@@ -12,6 +12,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Sets the working directory for the application
 WORKDIR /app
 
+# Uses UTF-8, so the emojis of the console are shown (TMUX replaces them with "_" otherwise)
+ENV LANG=C.UTF-8
+
 # Sets the Node.js runtime environment to production
 ENV NODE_ENV=production
 
@@ -24,6 +27,9 @@ RUN npm ci --omit=dev
 
 # Copies the project code
 COPY . .
+
+# Installs the "console" command, to open the console of the bot
+RUN install -m 755 docker/console.sh /usr/local/bin/console
 
 # Stores a copy of the default local configuration
 RUN mkdir defaults && cp config.json defaults/

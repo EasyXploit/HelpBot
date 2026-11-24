@@ -9,7 +9,7 @@ The repository includes a development container for [Visual Studio Code](https:/
 
 ## Set up a computer
 This is done once on each computer:
-1. **Copy `.devcontainer/.env.example` as `.devcontainer/.env`** and fill in the token of the development bot. The rest of the settings are optional. This file is not uploaded to Git.
+1. **Copy `.devcontainer/.env.example` as `.devcontainer/.env`** and fill it in if you want: all its settings are optional. If you leave the token of the development bot empty, the bot asks for it in its console the first time it runs on that computer. This file is not uploaded to Git.
 2. **Open the repository folder** in Visual Studio Code and choose **Reopen in Container** when it is offered (or run **Dev Containers: Reopen in Container** from the command palette).
 
 The first time takes a little longer, as Docker downloads the images and installs the dependencies.

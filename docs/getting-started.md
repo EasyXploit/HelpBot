@@ -46,7 +46,7 @@ You can deploy it in two ways:
 
    | Setting | Required | What to put |
    |---|---|---|
-   | `DISCORD_TOKEN` | Yes | The token you copied when [creating the bot account](#create-the-bot-account). |
+   | `DISCORD_TOKEN` | No | The token you copied when [creating the bot account](#create-the-bot-account). If you leave it empty, the bot asks for it in its [console](console.md) on the first start, and stores it in the database. If it is set here, it takes precedence, and it can not be changed from the bot. |
    | `DB_NAME`, `DB_USERNAME`, `DB_PASSWORD` | No | Leave them empty to let the bot take care of the database: on the first start, it stores in `data/config.json` the name and user `helpbot` and a random password, and the database creates its user with them. To choose them yourself, fill them in before the first start (here, or in `data/config.json`). The database only creates its user on the first start, so changing them afterwards also requires changing the user inside MongoDB. |
    | `DB_TARGET`, `DB_PORT`, `DB_AUTH_SOURCE` | No | Only to use a MongoDB of your own instead of the one of this project: its address, its port and the database where its user is defined (usually `admin`). In that case, also fill in `DB_NAME`, `DB_USERNAME` and `DB_PASSWORD` with its details. |
 
@@ -115,9 +115,10 @@ tmux new-session -s helpbot 'while true; do npm start; echo "The bot has stopped
 
 ## First start
 Open the bot's [console](console.md) to follow its first start:
-1. If the bot is not in any server yet, it shows the invitation link and waits until you [add it to your server](#invite-the-bot-to-your-server).
-2. If it is in several servers, it asks you which one to use.
-3. When it is ready, it shows its **main menu**, from where you can [configure it](console.md#configure-the-bot).
+1. If no token was provided, it asks for it.
+2. If the bot is not in any server yet, it shows the invitation link and waits until you [add it to your server](#invite-the-bot-to-your-server).
+3. If it is in several servers, it asks you which one to use.
+4. When it is ready, it shows its **main menu**, from where you can [configure it](console.md#configure-the-bot).
 
 ## Updates
 - **With Docker Compose**, Watchtower checks for a new version every minute and updates the bot automatically. To disable it, set `AUTO_UPDATE=false` in the `.env` file and run `docker compose up -d` again.

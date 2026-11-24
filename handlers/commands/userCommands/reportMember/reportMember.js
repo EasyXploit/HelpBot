@@ -46,6 +46,9 @@ export async function run(interaction, commandConfig, locale) {
         // Waits for the modal to be filled
         const reason = await interaction.awaitModalSubmit({ filter: modalsFilter, time: 300000 }).then(async modalInteraction => {
 
+            // Acknowledges the modal at once, as sending the report can take longer than Discord allows to respond
+            await modalInteraction.deferReply({ flags: discord.MessageFlags.Ephemeral });
+
             // Obtains the field of the body
             const reportReason = modalInteraction.fields.getField('body').value;
 

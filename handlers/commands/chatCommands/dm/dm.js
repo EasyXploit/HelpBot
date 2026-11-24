@@ -80,6 +80,12 @@ export async function run(interaction, commandConfig, locale) {
             throw error;
         });
 
+        // Aborts if the modal was not submitted in the expected time
+        if (!bodyMessageModalInteraction) return;
+
+        // Acknowledges the modal at once, as sending the message and its record can take longer than Discord allows to respond
+        await bodyMessageModalInteraction.deferReply({ flags: discord.MessageFlags.Ephemeral });
+
         // Obtains the field of the body
         const messageBody = bodyMessageModalInteraction.fields.getField('body').value;
 
@@ -149,10 +155,10 @@ export async function run(interaction, commandConfig, locale) {
             );
 
             // Sends a confirmation message
-            await bodyMessageModalInteraction.reply({ embeds: [ new discord.EmbedBuilder()
+            await bodyMessageModalInteraction.editReply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${locale.notificationEmbed}`)
-            ], flags: discord.MessageFlags.Ephemeral});
+            ]});
 
         } catch (error) {
 
@@ -163,11 +169,14 @@ export async function run(interaction, commandConfig, locale) {
                 logger.warn(`The bot was unable to deliver a custom DM message to @${member.user.username} (${member.id}) due to an API restriction`);
     
                 // Shows an error to the user who tried to send the message
-                return await bodyMessageModalInteraction.reply({ embeds: [ new discord.EmbedBuilder()
+                return await bodyMessageModalInteraction.editReply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                     .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cantReceiveDms, { botUser: client.user })}.`)
-                ], flags: discord.MessageFlags.Ephemeral});
+                ]});
             };
+
+            // Throws the rest of errors, so the error handler logs them
+            throw error;
         };
         
     } catch (error) {

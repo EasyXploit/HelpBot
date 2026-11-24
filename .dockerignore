@@ -2,6 +2,6 @@ node_modules
 .git
 .github
 .vscode
-docker-compose.yml
+docker/docker-compose.yml
 .env
 *.md

@@ -25,7 +25,7 @@ COPY . .
 RUN mkdir defaults && cp -r configs storage defaults/
 
 # Inicializa los volúmenes con los archivos por defecto que falten antes de iniciar la aplicación
-ENTRYPOINT ["sh", "/app/docker-entrypoint.sh"]
+ENTRYPOINT ["sh", "/app/docker/entrypoint.sh"]
 
 # Inicia la aplicación
 CMD ["node", "--no-warnings", "index.js"]

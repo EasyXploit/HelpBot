@@ -7,5 +7,6 @@ This documentation covers the version of HelpBot in this branch. If you are look
 | [Getting started](getting-started.md) | How to create the bot account, deploy the bot with Docker (or run it without Docker) and start it for the first time. |
 | [Console and configuration](console.md) | How to open the bot's console and use its menus to configure it. |
 | [Development](development.md) | How to run and debug the bot from Visual Studio Code with its development container. |
+| [Translation](translation.md) | The languages of the bot, how to change it, and how to help with the translations. |
 
 💡 If you have any questions, you can ask in the [official Discord server](https://discord.gg/g2PNKhT8Zr).

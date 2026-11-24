@@ -70,7 +70,7 @@
                         "options": {
                             "user": {
                                 "name": "user",
-                                "description": "Select a user or write it's ID"
+                                "description": "Select a user or write its ID"
                             },
                             "reason": {
                                 "name": "reason",
@@ -102,7 +102,7 @@
                             }
                         }
                     },
-                    "userNotFound": "User not found. You must mention a member or write it's ID.\nIf the user is not on the server, you must specify it's ID",
+                    "userNotFound": "User not found. You must mention a member or write its ID.\nIf the user is not on the server, you must specify its ID",
                     "noBots": "You cannot ban a bot",
                     "badHierarchy": "You cannot ban a member with a role equal to or higher than yours",
                     "badBotHierarchy": "You cannot ban a member with a role equal to or higher than the bot's one",
@@ -117,7 +117,7 @@
                         "description": "{{user}}, you have been banned from {{guildName}}",
                         "moderator": "Moderator",
                         "reason": "Reason",
-                        "deletedDays": "Days of messages deleted ",
+                        "deletedDays": "Days of messages deleted",
                         "noDeletedDays": "None",
                         "expiration": "Expiration",
                         "noExpiration": "Does not expire"
@@ -134,7 +134,7 @@
                         "options": {
                             "user": {
                                 "name": "user",
-                                "description": "Select a user or write it's ID"
+                                "description": "Select a user or write its ID"
                             },
                             "mode": {
                                 "name": "mode",
@@ -154,7 +154,7 @@
                             }
                         }
                     },
-                    "unknownMember": "Member not found. You must mention a member or enter it's ID",
+                    "unknownMember": "Member not found. You must mention a member or enter its ID",
                     "noBots": "You cannot start a conversation with a bot",
                     "normalFrom": "Message from {{authorTag}}",
                     "embedFrom": "Message from",
@@ -204,8 +204,8 @@
                         "fieldPlaceholder": "Write a new body for the message"
                     },
                     "correctEmbed": {
-                        "title": "Operación completada",
-                        "description": "El mensaje ha sido modificado correctamente"
+                        "title": "Operation completed",
+                        "description": "The message has been edited successfully"
                     }
                 },
                 "infractions": {
@@ -215,7 +215,7 @@
                         "options": {
                             "user": {
                                 "name": "user",
-                                "description": "Select a user or write it's ID"
+                                "description": "Select a user or write its ID"
                             }
                         }
                     },
@@ -240,7 +240,7 @@
                 "invitation": {
                     "appData": {
                         "name": "invitation",
-                        "description": "Generates or retrieves a permanent invite link in the rules channel, or in the first text channel that allows it"
+                        "description": "Gets a permanent invite link in the rules channel, or in the first text channel that allows it"
                     },
                     "inviteReason": "{{botTag}} routine",
                     "noTargetChannel": "There are no channels for which the bot has permission to create invites",
@@ -256,7 +256,7 @@
                         "options": {
                             "user": {
                                 "name": "user",
-                                "description": "Select a user or write it's ID"
+                                "description": "Select a user or write its ID"
                             },
                             "reason": {
                                 "name": "reason",
@@ -264,7 +264,7 @@
                             }
                         }
                     },
-                    "memberNotFound": "Member not found. You must mention a member or enter it's ID",
+                    "memberNotFound": "Member not found. You must mention a member or enter its ID",
                     "noBots": "You cannot kick a bot",
                     "badHierarchy": "You cannot kick a member with a role equal to or higher than yours",
                     "badBotHierarchy": "You cannot kick a member with a role equal to or higher than the bot's one",
@@ -293,7 +293,7 @@
                                     "experience": "Experience points",
                                     "aproxVoiceTime": "Voice time",
                                     "messagesCount": "Sent messages",
-                                    "antiquity": "Anitiquity"
+                                    "antiquity": "Antiquity"
                                 }
                             },
                             "page": {
@@ -327,7 +327,7 @@
                         "options": {
                             "user": {
                                 "name": "user",
-                                "description": "Select a user or write it's ID"
+                                "description": "Select a user or write its ID"
                             },
                             "expiration": {
                                 "name": "expiration",
@@ -353,7 +353,7 @@
                             }
                         }
                     },
-                    "memberNotFound": "Member not found. You must mention a member or enter it's ID",
+                    "memberNotFound": "Member not found. You must mention a member or enter its ID",
                     "noBots": "You cannot ban a bot",
                     "badHierarchy": "You cannot timeout a member with a role equal to or higher than yours",
                     "badBotHierarchy": "You cannot timeout a member with a role equal to or higher than the bot's one",
@@ -513,7 +513,7 @@
                         "options": {
                             "user": {
                                 "name": "user",
-                                "description": "Select a user o write it's ID"
+                                "description": "Select a user or write its ID"
                             },
                             "warn": {
                                 "name": "warn",
@@ -525,7 +525,7 @@
                             }
                         }
                     },
-                    "memberNotFound": "Member not found. You must mention a member or enter it's ID",
+                    "memberNotFound": "Member not found. You must mention a member or enter its ID",
                     "noBots": "Bots cannot be warned",
                     "noReason": "You must provide a reason",
                     "badHierarchy": "You cannot remove a warning from a member with a role equal to or higher than yours",
@@ -595,7 +595,7 @@
                     "resultEmbed": {
                         "title": "Role information",
                         "description": "Displaying information about the role {{role}}",
-                        "roleName": "Role mame",
+                        "roleName": "Role name",
                         "roleId": "Role ID",
                         "roleMembers": "Role members",
                         "mentionable": "Mentionable",
@@ -603,7 +603,7 @@
                         "isntMntionable": "No",
                         "hoisted": "Displayed",
                         "isHoisted": "Visible",
-                        "isntHoisted": "Hoisted",
+                        "isntHoisted": "Hidden",
                         "color": "Color",
                         "creationDate": "Creation date",
                         "integration": "Integration",
@@ -614,7 +614,7 @@
                 "send": {
                     "appData": {
                         "name": "send",
-                        "description": "The bot will send a message to the current or the specified text channel, with or without embedded formatting",
+                        "description": "Sends a message to the current or the chosen text channel, with or without embedded formatting",
                         "options": {
                             "type": {
                                 "name": "type",
@@ -744,11 +744,11 @@
                         "options": {
                             "user": {
                                 "name": "user",
-                                "description": "Select a user or enter it's ID"
+                                "description": "Select a user or enter its ID"
                             }
                         }
                     },
-                    "unknownMember": "Member not found. You must mention a member or enter it's ID",
+                    "unknownMember": "Member not found. You must mention a member or enter its ID",
                     "noXp": "{{member}} has no experience points",
                     "defaultReward": "None",
                     "statsEmbed": {
@@ -773,7 +773,7 @@
                         "options": {
                             "user": {
                                 "name": "user",
-                                "description": "Select a user or write it's ID"
+                                "description": "Select a user or write its ID"
                             },
                             "reason": {
                                 "name": "reason",
@@ -781,7 +781,7 @@
                             }
                         }
                     },
-                    "userNotFound": "User not found. You must mention a member or write it's ID.\nIf the user is not on the server, you must specify it's ID",
+                    "userNotFound": "User not found. You must mention a member or write its ID.\nIf the user is not on the server, you must specify its ID",
                     "noReason": "You must provide a reason",
                     "notBanned": "This user has not been banned",
                     "undefinedReason": "Undefined",
@@ -807,7 +807,7 @@
                         "options": {
                             "user": {
                                 "name": "user",
-                                "description": "Select a user or write it's ID"
+                                "description": "Select a user or write its ID"
                             },
                             "reason": {
                                 "name": "reason",
@@ -839,7 +839,7 @@
                         "options": {
                             "user": {
                                 "name": "user",
-                                "description": "Select a user or enter it's ID"
+                                "description": "Select a user or enter its ID"
                             }
                         }
                     },
@@ -878,7 +878,7 @@
                         "options": {
                             "user": {
                                 "name": "user",
-                                "description": "Select a user or write it's ID"
+                                "description": "Select a user or write its ID"
                             },
                             "reason": {
                                 "name": "reason",
@@ -886,7 +886,7 @@
                             }
                         }
                     },
-                    "memberNotFound": "Member not found. You must mention a member or enter it's ID",
+                    "memberNotFound": "Member not found. You must mention a member or enter its ID",
                     "noBots": "You cannot warn a bot",
                     "badHierarchy": "You cannot warn a member with a role equal to or higher than yours",
                     "cooldown": "You have to wait before you can put a new warning on {{member}}"
@@ -902,7 +902,7 @@
                                 "options": {
                                     "user": {
                                         "name": "user",
-                                        "description": "Select a user or enter it's ID"
+                                        "description": "Select a user or enter its ID"
                                     },
                                     "quantity": {
                                         "name": "quantity",
@@ -916,7 +916,7 @@
                                 "options": {
                                     "user": {
                                         "name": "user",
-                                        "description": "Select a user or enter it's ID"
+                                        "description": "Select a user or enter its ID"
                                     },
                                     "quantity": {
                                         "name": "quantity",
@@ -930,7 +930,7 @@
                                 "options": {
                                     "user": {
                                         "name": "user",
-                                        "description": "Select a user or enter it's ID"
+                                        "description": "Select a user or enter its ID"
                                     },
                                     "times": {
                                         "name": "times",
@@ -944,7 +944,7 @@
                                 "options": {
                                     "user": {
                                         "name": "user",
-                                        "description": "Select a user or enter it's ID"
+                                        "description": "Select a user or enter its ID"
                                     },
                                     "quantity": {
                                         "name": "quantity",
@@ -958,7 +958,7 @@
                                 "options": {
                                     "user": {
                                         "name": "user",
-                                        "description": "Select a user or enter it's ID"
+                                        "description": "Select a user or enter its ID"
                                     }
                                 }
                             }
@@ -1178,9 +1178,9 @@
                 "voiceMovesLogging": {
                     "noChannel": "None",
                     "oldChannel": "Last channel",
-                    "newChannel": "New members",
+                    "newChannel": "New channel",
                     "actualMembers": "Members of the new channel",
-                    "embedAuthor": "{{memberTag}} has changed his voice channel"
+                    "embedAuthor": "{{memberTag}} has changed their voice channel"
                 }
             }
         }
@@ -1236,7 +1236,7 @@
             "login": {
                 "provideTokenHeader": "You have to provide the account token that the bot will use to log into Discord",
                 "provideTokenHelp": "To find out how to obtain a token, visit: {{tokenHelpURL}}",
-                "tokenPrompt": "Introduce a login token",
+                "tokenPrompt": "Enter a login token",
                 "invalidEnteredToken": "Invalid token",
                 "invalidProvidedToken": "The provided token was rejected by Discord, probably due to a typo or API failure"
             },
@@ -1304,10 +1304,10 @@
                 "alreadyConfiguredGuild": "Already configured",
                 "isSureToReplaceBaseGuild": "Are you sure you want to change the base guild? Specific settings will be lost",
                 "leavingGuild": "Leaving the guild {{guild}}",
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                "errorMessage": "An unexpected error occurred. Check the logs for more details"
             },
             "main": {
-                "headerMessage": "Welcome to the {{botName}}'s command line interface!\nFrom here you can configure, monitorize and update the bot",
+                "headerMessage": "Welcome to the {{botName}}'s command line interface!\nFrom here you can configure, monitor and update the bot",
                 "subtitleMessage": "Need some help? Visit: {{helpURL}}",
                 "promptMessage": "Select an option",
                 "choices": {
@@ -1323,7 +1323,7 @@
                     "shutdown": "The process will be terminated shortly. Goodbye!",
                     "restart": "The bot will restart shortly. See you soon!"
                 },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                "errorMessage": "An unexpected error occurred. Check the logs for more details"
             },
             "configure": {
                 "headerMessage": "This menu allows you to configure all the functions of the bot.\nFunctions and commands of the same category are grouped in modules",
@@ -1443,7 +1443,7 @@
                             "voiceMoves": "Voice moves",
                             "memberReports": "Member reports"
                         },
-                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                        "errorMessage": "An unexpected error occurred. Check the logs for more details"
                     },
                     "moderation": {
                         "headerMessage": "This module allows you to configure the bot's moderation functions",
@@ -1498,7 +1498,7 @@
                                 }
                             }
                         },
-                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                        "errorMessage": "An unexpected error occurred. Check the logs for more details"
                     },
                     "engagement": {
                         "headerMessage": "This module allows you to configure the bot's engagement functions",
@@ -1638,7 +1638,7 @@
                                 "recalculatePrompt": "The rewards have changed. Recalculate the reward roles of all the members now, according to their saved level?"
                             }
                         },
-                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                        "errorMessage": "An unexpected error occurred. Check the logs for more details"
                     },
                     "greetings": {
                         "headerMessage": "This module allows you to configure the bot's greetings functions",
@@ -1709,7 +1709,7 @@
                                 "enterLimit": "Enter the maximum number of welcomes to send"
                             }
                         },
-                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                        "errorMessage": "An unexpected error occurred. Check the logs for more details"
                     },
                     "polls": {
                         "headerMessage": "This module allows you to configure the bot's polls functions",
@@ -1740,7 +1740,7 @@
                                 }
                             }
                         },
-                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                        "errorMessage": "An unexpected error occurred. Check the logs for more details"
                     },
                     "utilities": {
                         "headerMessage": "This module allows you to configure the bot's utilities",
@@ -1768,7 +1768,7 @@
                                 }
                             }
                         },
-                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                        "errorMessage": "An unexpected error occurred. Check the logs for more details"
                     },
                     "scheduledMessages": {
                         "headerMessage": "This module allows you to schedule messages to be sent automatically",
@@ -1797,10 +1797,10 @@
                                 }
                             }
                         },
-                        "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                        "errorMessage": "An unexpected error occurred. Check the logs for more details"
                     }
                 },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                "errorMessage": "An unexpected error occurred. Check the logs for more details"
             },
             "update": {
                 "promptMessage": "Select an option",
@@ -1810,7 +1810,7 @@
                     "switchToStable": "Switch to Stable",
                     "return": "Return"
                 },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details",
+                "errorMessage": "An unexpected error occurred. Check the logs for more details",
                 "checkingForUpdates": "Checking if there are new updates",
                 "updatedCorrectly": "The bot has been correctly updated to {{targetVersion}}!",
                 "noReleaseNotes": "There are no release notes available for this version",
@@ -1821,7 +1821,7 @@
                     "yes": "Yes",
                     "no": "No"
                 },
-                "couldNotFetchUpdate": "An error ocurred while fetching for updates",
+                "couldNotFetchUpdate": "An error occurred while fetching for updates",
                 "alreadyUpdated": "The bot is already updated to the latest version",
                 "downloadingNewVersion": "Downloading {{targetVersion}} from {{repositoryURL}}",
                 "newVersionDownloaded": "{{targetVersion}} has been downloaded and installed correctly",
@@ -1837,7 +1837,7 @@
                     "refresh": "Refresh",
                     "return": "Return"
                 },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details",
+                "errorMessage": "An unexpected error occurred. Check the logs for more details",
                 "noStoredLogs": "There are no stored logs. Try again later"
             },
             "information": {
@@ -1846,7 +1846,7 @@
                     "refresh": "Refresh",
                     "return": "Return"
                 },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details",
+                "errorMessage": "An unexpected error occurred. Check the logs for more details",
                 "appInfo": {
                     "header": "Information about the bot",
                     "appVersion": "Application version",
@@ -1891,7 +1891,7 @@
                 "choices": {
                     "return": "Return"
                 },
-                "errorMessage": "An unexpected error ocurred. Check the logs for more details"
+                "errorMessage": "An unexpected error occurred. Check the logs for more details"
             },
             "shared": {
                 "promptMessage": "Select an option",

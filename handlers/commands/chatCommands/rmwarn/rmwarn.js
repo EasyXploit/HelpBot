@@ -12,7 +12,7 @@ export async function run(interaction, commandConfig, locale) {
         if (member && member.user.bot) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
         
         // Checks if any warning has been provided
         const warnIdOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.warn.name);
@@ -32,14 +32,14 @@ export async function run(interaction, commandConfig, locale) {
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
         };
         
         // It is checked if the role of the executing member is lower than that of the target member
         if (member && interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
         
         // Stores the member's profile
         let memberProfile = await client.functions.db.getData('profile', member.id);
@@ -48,7 +48,7 @@ export async function run(interaction, commandConfig, locale) {
         if (!memberProfile || memberProfile.moderationLog.warnsHistory.length === 0) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noWarns}`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the member's warnings
         let memberWarns = memberProfile.moderationLog.warnsHistory;
@@ -66,7 +66,7 @@ export async function run(interaction, commandConfig, locale) {
             if (!canRemoveAny) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantRemoveAny}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
             // Generates a message for the records channel
             loggingEmbed = new discord.EmbedBuilder()
@@ -131,13 +131,13 @@ export async function run(interaction, commandConfig, locale) {
             if (!foundWarn) return interaction.reply({ embeds: [new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.warnNotFound, { warnId: warnId })}`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
             // Checks if can erase this warning
             if ((foundWarn.executor.type === 'system' || foundWarn.executor.memberId !== interaction.member.id) && !canRemoveAny) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantRemoveAny}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
             // Generates a message for the records channel
             loggingEmbed = new discord.EmbedBuilder()

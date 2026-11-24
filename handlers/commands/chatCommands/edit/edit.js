@@ -9,27 +9,27 @@ export async function run(interaction, commandConfig, locale) {
         if (interaction.options._hoistedOptions[1] && !channel) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noChannel, { id: interaction.options._hoistedOptions[1].value })}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores if permissions are missing on the target channel
         const missingPermissions = await client.functions.utils.missingPermissions(channel, client.baseGuild.members.me, ['ViewChannel', 'ReadMessageHistory']);
         if (missingPermissions) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noBotPermission, { channel: channel, missingPermissions: missingPermissions })}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
         
         // Looks for the message on the channel
         const msg = await client.functions.utils.fetch('message', interaction.options._hoistedOptions[0].value, channel);
         if (!msg) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.msgNotFound, { msgId: interaction.options._hoistedOptions[0].value })}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Checks if the message is from the bot
         if (msg.author.id !== client.user.id) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantEdit}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the message to edit
         const type = msg.embeds.length > 0 ? 'embed' : 'normal';
@@ -69,7 +69,7 @@ export async function run(interaction, commandConfig, locale) {
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.correctEmbed.title}`)
                 .setDescription(`${locale.correctEmbed.description}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
             // Returns the field of the body
             return modalInteraction.fields.getField('body').value;

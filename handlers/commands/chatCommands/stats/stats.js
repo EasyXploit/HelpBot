@@ -9,7 +9,7 @@ export async function run(interaction, commandConfig, locale) {
         if (!member) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.unknownMember}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
         
         // Stores the member's profile
         const memberProfile = await client.functions.db.getData('profile', member.id);
@@ -18,7 +18,7 @@ export async function run(interaction, commandConfig, locale) {
         if (!memberProfile) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noXp, { member: member })}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // To check if the role can win XP or not
         const notAuthorizedToEarnXp = await client.functions.utils.checkAuthorization(member, { bypassIds: await client.functions.db.getConfig('leveling.wontEarnXP') });

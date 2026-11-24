@@ -12,7 +12,7 @@ export async function run(interaction, commandConfig, locale) {
             if (!pollData) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.unknownPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
             // Searches and stores the polls channel
             const pollChannel = await client.functions.utils.fetch('channel', pollData.channelId);
@@ -30,7 +30,7 @@ export async function run(interaction, commandConfig, locale) {
                 return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                     .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.deletedPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
-                ], ephemeral: true});
+                ], flags: discord.MessageFlags.Ephemeral});
             };
 
             // Checks, if applicable, that the member has permission to finish any poll
@@ -43,7 +43,7 @@ export async function run(interaction, commandConfig, locale) {
                 if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.onlyYours}.`)
-                ], ephemeral: true});
+                ], flags: discord.MessageFlags.Ephemeral});
             };
 
             // Strengthens the expiration of the poll
@@ -54,7 +54,7 @@ export async function run(interaction, commandConfig, locale) {
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.endedPollEmbed.title}`)
                 .setDescription(`${await client.functions.utils.parseLocale(locale.endedPollEmbed.description, { poll: `[${pollData.title}](${pollMessage.url})`, pollChannel: pollChannel })}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
         };
 
         // Function to wait for member messages

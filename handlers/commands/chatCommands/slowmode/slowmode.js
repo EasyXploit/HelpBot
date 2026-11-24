@@ -15,7 +15,7 @@ export async function run(interaction, commandConfig, locale) {
             if (!interactionChannel.rateLimitPerUser) return await interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.notEnabled}`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
             // Disables the slow mode
             await interactionChannel.setRateLimitPerUser(0);
@@ -36,7 +36,7 @@ export async function run(interaction, commandConfig, locale) {
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.disabledNotificationEmbed.title}`)
                 .setDescription(locale.disabledNotificationEmbed.description)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
         } else { // If slow mode must be activated
 
@@ -47,7 +47,7 @@ export async function run(interaction, commandConfig, locale) {
             if (!canUseUnlimitedTime && argument > commandConfig.maxRegularSeconds) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.privateEmbedSingle.description, { max: commandConfig.maxRegularSeconds })}`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
             // Stores the reason
             let reason = interaction.options._hoistedOptions[2] ? interaction.options._hoistedOptions[2].value : null;
@@ -65,7 +65,7 @@ export async function run(interaction, commandConfig, locale) {
                 if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${locale.noReason}`)
-                ], ephemeral: true});
+                ], flags: discord.MessageFlags.Ephemeral});
             };
 
             // Activates the slow mode on the channel
@@ -89,7 +89,7 @@ export async function run(interaction, commandConfig, locale) {
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setTitle(`${client.customEmojis.greenTick} ${locale.enabledNotificationEmbed.title}`)
                 .setDescription(await client.functions.utils.parseLocale(locale.enabledNotificationEmbed.description, { seconds: argument }))
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
         };
         
     } catch (error) {

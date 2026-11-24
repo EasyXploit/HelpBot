@@ -28,7 +28,7 @@ export default async (interaction, locale) => {
             if (!command.userConfig.enabled) return interaction.reply({embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.information')}`)
                 .setDescription(`${client.customEmojis.grayTick} ${await client.functions.utils.parseLocale(locale.disabledCommand, { commandName: interaction.commandName })}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
             // Stores the names of the manual moderation commands (the reports and the infractions history are not part of it)
             const manualModerationCommands = ['ban', 'kick', 'timeout', 'untimeout', 'unban', 'warn', 'rmwarn', 'slowmode', 'removeAndWarn'];
@@ -46,7 +46,7 @@ export default async (interaction, locale) => {
                     return interaction.reply({embeds: [ new discord.EmbedBuilder()
                         .setColor(`${await client.functions.db.getConfig('colors.information')}`)
                         .setDescription(`${client.customEmojis.grayTick} ${await client.functions.utils.parseLocale(locale.disabledCommand, { commandName: interaction.commandName })}.`)
-                    ], ephemeral: true});
+                    ], flags: discord.MessageFlags.Ephemeral});
                 };
             };
 
@@ -54,7 +54,7 @@ export default async (interaction, locale) => {
             if (commandType === 'chatCommands' && command.fileName === 'xp' && !await client.functions.db.getConfig('leveling.experienceSystemEnabled')) return interaction.reply({embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.information')}`)
                 .setDescription(`${client.customEmojis.grayTick} ${await client.functions.utils.parseLocale(locale.disabledCommand, { commandName: interaction.commandName })}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
             // Stores the module status corresponding to the command
             const moduleStatus = await client.functions.db.getConfig(`system.modules.${command.userConfig.module}`);
@@ -63,21 +63,21 @@ export default async (interaction, locale) => {
             if (!moduleStatus) return interaction.reply({embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.information')}`)
                 .setDescription(`${client.customEmojis.grayTick} ${await client.functions.utils.parseLocale(locale.disabledCommand, { commandName: interaction.commandName })}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
             // Checks if the bot has the required channel permissions
             const missingChannelPermissions = await client.functions.utils.missingPermissions(interaction.channel, client.baseGuild.members.me, command.config.neededBotPermissions.channel);
             if (missingChannelPermissions) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${await client.functions.utils.parseLocale(locale.missingChannelPermissions, { missingPermissions: missingChannelPermissions })}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
             // Checks if the bot has the required guild permissions
             const missingGuildPermissions = await client.functions.utils.missingPermissions(null, client.baseGuild.members.me, command.config.neededBotPermissions.guild);
             if (missingGuildPermissions) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${await client.functions.utils.parseLocale(locale.missingGuildPermissions, { missingPermissions: missingGuildPermissions })}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
             
             // Executes the command
             command.run(interaction, command.userConfig, client.locale.handlers.commands[commandType][command.fileName]);

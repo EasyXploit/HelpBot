@@ -12,7 +12,7 @@ export async function run(interaction, commandConfig, locale) {
         if (!member && !await client.functions.db.getData('profile', interaction.options._hoistedOptions[0].value)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidMember}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the member Id
         const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
@@ -21,7 +21,7 @@ export async function run(interaction, commandConfig, locale) {
         if (member && member.user.bot) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the value for its modification
         const providedValue = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : null;
@@ -36,13 +36,13 @@ export async function run(interaction, commandConfig, locale) {
         if (subcommand === locale.appData.options.remove.name && memberStats.experience < providedValue) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidQuantity}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Checks if the XP can be removed from the member
         if (subcommand === locale.appData.options.clear.name && memberStats.experience === 0) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.hasNoXp}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores if the hierarchy check is omitted
         const byPassed = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true });
@@ -54,7 +54,7 @@ export async function run(interaction, commandConfig, locale) {
             return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.unauthorizedModify}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
         };
         
         // Variables are declared to store the amounts of XP (old and new) and the modified level
@@ -168,7 +168,7 @@ export async function run(interaction, commandConfig, locale) {
         await interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
             .setDescription(`${client.customEmojis.greenTick} ${await client.functions.utils.parseLocale(locale.notificationEmbed, { memberTag: member ? member.user.tag : memberId })}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Aborts if the member is no longer in the guild, as it can not be notified
         if (!member) return;

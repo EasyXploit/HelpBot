@@ -10,14 +10,14 @@ export async function run(interaction, commandConfig, locale) {
         if (!channel || ![discord.ChannelType.GuildText, discord.ChannelType.GuildNews, discord.ChannelType.GuildNewsThread, discord.ChannelType.GuildPublicThread, discord.ChannelType.GuildPrivateThread].includes(channel.type)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidChannel}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Checks if the member has permissions to execute this action
         const missingPermissions = await client.functions.utils.missingPermissions(channel, interaction.member, ['ManageMessages', 'ReadMessageHistory'])
         if (missingPermissions) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noPermission, { channel: channel, missingPermissions: missingPermissions })}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // The specified number of messages is obtained (including the invocation)
         const messages = await channel.messages.fetch({limit: parseInt(interaction.options._hoistedOptions[0].value)});
@@ -26,7 +26,7 @@ export async function run(interaction, commandConfig, locale) {
         if (messages.size === 0) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noMessages, { channel: channel })}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the messages that will be deleted
         const msgsToDelete = new discord.Collection();
@@ -42,7 +42,7 @@ export async function run(interaction, commandConfig, locale) {
         if (msgsToDelete.size === 0) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.expiredMessages}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Purges the messages of the selected channel
         await channel.bulkDelete(msgsToDelete);

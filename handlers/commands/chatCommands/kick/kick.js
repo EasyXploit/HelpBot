@@ -9,7 +9,7 @@ export async function run(interaction, commandConfig, locale) {
         if (!member) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // If the member was a bot
         if (member.user.bot) {
@@ -21,20 +21,20 @@ export async function run(interaction, commandConfig, locale) {
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
         };
         
         // It is checked if the role of the executing member is lower than that of the target member
         if ((interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) || !member.bannable) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // It is checked if the role of the bot is lower than that of the target member
         if (interaction.guild.members.me.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badBotHierarchy}`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the reason
         let reason = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : null;
@@ -52,7 +52,7 @@ export async function run(interaction, commandConfig, locale) {
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
         };
 
         // If there is no records cache

@@ -9,13 +9,13 @@ export async function run(interaction, commandConfig, locale) {
         if (!reportedMember) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Returns an error if the member has tried to report himself
         if (reportedMember.id === interaction.member.id) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantReportYourself}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Generates a new modal
         const reasonModal = new discord.ModalBuilder()

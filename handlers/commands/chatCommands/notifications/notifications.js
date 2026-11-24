@@ -9,7 +9,7 @@ export async function run(interaction, commandConfig, locale) {
         if (notAuthorizedToEarnXp) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
             .setDescription(`${client.customEmojis.orangeTick} ${locale.cantGainXp}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the selected modality
         const modality = interaction.options._hoistedOptions[0].value;
@@ -30,7 +30,7 @@ export async function run(interaction, commandConfig, locale) {
             if (memberSettings[modality]) return interaction.reply({embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.alreadyEnabled}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
             // Activates the adjustment
             memberSettings[modality] = true;
@@ -42,7 +42,7 @@ export async function run(interaction, commandConfig, locale) {
             if (!memberSettings[modality]) return interaction.reply({embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.alreadyDisabled}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
             // Disables the adjustment
             memberSettings[modality] = false;
@@ -55,7 +55,7 @@ export async function run(interaction, commandConfig, locale) {
         interaction.reply({embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.correct')}`)
             .setDescription(`${client.customEmojis.greenTick} ${locale[`${modality}${status.charAt(0).toUpperCase()}${status.slice(1)}`]}.`)
-        ], ephemeral: true})
+        ], flags: discord.MessageFlags.Ephemeral})
         
     } catch (error) {
 

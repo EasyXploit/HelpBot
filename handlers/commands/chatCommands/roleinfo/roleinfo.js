@@ -9,7 +9,7 @@ export async function run(interaction, commandConfig, locale) {
         if (!role) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.roleNotFound, { role: interaction.options._hoistedOptions[0].value })}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Sends an embed with the information of the role
         await interaction.reply({ embeds: [ new discord.EmbedBuilder()

@@ -24,26 +24,26 @@ export async function run(interaction, commandConfig, locale) {
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
         };
 
         // Checks if the member was not timeouted
         if (member && (!member.communicationDisabledUntilTimestamp || member.communicationDisabledUntilTimestamp <= Date.now())) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.notSilenced}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // It is checked if the role of the executing member is lower than that of the target member
         if (member && interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.badHierarchy, { interactionAuthor: interaction.member })}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // It is checked if the role of the bot is lower than that of the target member
         if (member && interaction.guild.members.me.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.badBotHierarchy, { interactionAuthor: interaction.member })}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores if the member can erase any timeout
         const canRemoveAny = await client.functions.utils.checkAuthorization(interaction.member, { guildOwner: true, botManagers: true, bypassIds: commandConfig.removeAny});
@@ -55,7 +55,7 @@ export async function run(interaction, commandConfig, locale) {
         if (!canRemoveAny && (!memberTimeout || memberTimeout.moderatorId !== interaction.member.id)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cantRemoveAny, { interactionAuthor: interaction.member })}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // If the timeout was registered in the database
         if (memberTimeout) {

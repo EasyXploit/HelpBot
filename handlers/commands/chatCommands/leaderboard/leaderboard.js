@@ -9,7 +9,7 @@ export async function run(interaction, commandConfig, locale) {
         if (!memberProfiles || memberProfiles.length === 0) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noLeaderboard}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the rankings that are available: the experience one, only if the experience system is enabled, and the ones of the statistics, only if they are collected
         const leveling = await client.functions.db.getConfig('leveling');
@@ -28,7 +28,7 @@ export async function run(interaction, commandConfig, locale) {
         if (!availableTypes.includes(type)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.unavailableType}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the entries of the leaderboard
         let entries = [];

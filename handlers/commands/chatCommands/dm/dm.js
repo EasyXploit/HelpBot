@@ -9,13 +9,13 @@ export async function run(interaction, commandConfig, locale) {
         if (!member) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.unknownMember}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
         
         // Returns an error if the member is a bot
         if (member.user.bot) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the selected mode and type
         const mode = interaction.options._hoistedOptions[1].value;
@@ -31,7 +31,7 @@ export async function run(interaction, commandConfig, locale) {
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.unauthorized, { interactionAuthor: interaction.user })}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
         };
 
         // Stores an authorship string (in case it was necessary)
@@ -147,7 +147,7 @@ export async function run(interaction, commandConfig, locale) {
             await bodyMessageModalInteraction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${locale.notificationEmbed}`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
         } catch (error) {
 
@@ -161,7 +161,7 @@ export async function run(interaction, commandConfig, locale) {
                 return await bodyMessageModalInteraction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                     .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cantReceiveDms, { botUser: client.user })}.`)
-                ], ephemeral: true});
+                ], flags: discord.MessageFlags.Ephemeral});
             };
         };
         

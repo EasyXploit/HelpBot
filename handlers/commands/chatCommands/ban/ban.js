@@ -9,7 +9,7 @@ export async function run(interaction, commandConfig, locale) {
         if (!user) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.userNotFound}`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // If the user was a bot
         if (user.bot) {
@@ -21,7 +21,7 @@ export async function run(interaction, commandConfig, locale) {
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noBots}`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
         };
 
         // Looks for the member provided
@@ -31,13 +31,13 @@ export async function run(interaction, commandConfig, locale) {
         if (member && ((interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) || !member.bannable)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // It is checked if the role of the bot is lower than that of the target member
         if (member && (interaction.guild.members.me.roles.highest.position <= member.roles.highest.position)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badBotHierarchy}`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
         
         // Checks if the user was already banned
         const guildBans = await interaction.guild.bans.fetch();
@@ -49,7 +49,7 @@ export async function run(interaction, commandConfig, locale) {
             if (bans[0] === user.id) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.alreadyBanned}`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
         };
 
         // Stores the duration provided
@@ -66,7 +66,7 @@ export async function run(interaction, commandConfig, locale) {
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantPermaBan}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
         };
 
         // If a duration for the ban has been provided
@@ -79,7 +79,7 @@ export async function run(interaction, commandConfig, locale) {
             if (!authorized && providedDuration > commandConfig.maxRegularTime) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.exceededDuration, { time: await client.functions.utils.msToTime(commandConfig.maxRegularTime) })}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
         };
 
         // Stores the days of erased messages
@@ -96,7 +96,7 @@ export async function run(interaction, commandConfig, locale) {
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.cantSoftBan}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
         };
         
         // Stores the reason
@@ -116,7 +116,7 @@ export async function run(interaction, commandConfig, locale) {
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
         };
 
         // Stores the expiration of the ban

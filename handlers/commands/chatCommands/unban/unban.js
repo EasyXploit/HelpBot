@@ -9,7 +9,7 @@ export async function run(interaction, commandConfig, locale) {
         if (!user) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.userNotFound}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the reason
         let reason = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : null;
@@ -27,7 +27,7 @@ export async function run(interaction, commandConfig, locale) {
             if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                 .setDescription(`${client.customEmojis.redTick} ${locale.noReason}.`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
         };
 
         // Checks if the user was already banned
@@ -47,7 +47,7 @@ export async function run(interaction, commandConfig, locale) {
         if (!banned) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.notBanned}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // If there is no records cache
         if (!client.loggingCache) client.loggingCache = {};

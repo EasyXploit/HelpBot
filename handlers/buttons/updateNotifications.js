@@ -18,7 +18,7 @@ export default async (interaction) => {
         if (notAuthorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.warning')}`)
             .setDescription(`${client.customEmojis.orangeTick} ${locale.cantGainXp}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the action to be performed by the button style
         const buttonAction = interaction.message.components[0].components[0].style === discord.ButtonStyle.Secondary ? false : true;

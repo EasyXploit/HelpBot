@@ -7,7 +7,7 @@ export async function run(interaction, commandConfig, locale) {
         if (missingPermissions) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantDeleteMessages}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Looks for the target member
         const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].message.author.id);
@@ -16,19 +16,19 @@ export async function run(interaction, commandConfig, locale) {
         if (!member) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.memberNotFound}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Returns an error if a bot has been provided
         if (member.user.bot) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.noBots}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
         
         // It is checked if the role of the executing member is lower than that of the target member
         if (interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
         
         // Stores the member's profile
         const memberProfile = await client.functions.db.getData('profile', member.id);
@@ -52,7 +52,7 @@ export async function run(interaction, commandConfig, locale) {
                 if (!authorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.error')}`)
                     .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.cooldown, { member: member })}.`)
-                ], ephemeral: true});
+                ], flags: discord.MessageFlags.Ephemeral});
             };
         };
 
@@ -89,7 +89,7 @@ export async function run(interaction, commandConfig, locale) {
             await modalInteraction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${locale.correct}`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
             // Returns the field of the body
             return modalInteraction.fields.getField('body').value;

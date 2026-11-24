@@ -10,14 +10,14 @@ export async function run(interaction, commandConfig, locale) {
         if (!destinationChannel || ![discord.ChannelType.GuildText, discord.ChannelType.GuildNews, discord.ChannelType.GuildNewsThread, discord.ChannelType.GuildPublicThread, discord.ChannelType.GuildPrivateThread].includes(destinationChannel.type)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidChannel}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Checks if the member has permissions to execute this action
         const missingPermissions = await client.functions.utils.missingPermissions(destinationChannel, interaction.member, ['SendMessages'])
         if (missingPermissions) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noPermission, { channel: destinationChannel, missingPermissions: missingPermissions })}.`)
-        ], ephemeral: true});
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the selected mode
         const type = interaction.options._hoistedOptions[0].value;
@@ -56,7 +56,7 @@ export async function run(interaction, commandConfig, locale) {
             await modalInteraction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryCorrect')}`)
                 .setDescription(`${client.customEmojis.greenTick} ${locale.correct}`)
-            ], ephemeral: true});
+            ], flags: discord.MessageFlags.Ephemeral});
 
             // Returns the field of the body
             return modalInteraction.fields.getField('body').value;

@@ -28,7 +28,6 @@
     "@sentry/node": "^7.120.4",
     "@sentry/tracing": "^7.120.4",
     "asciiart-logo": "^0.2.7",
-    "auto-git-update": "^1.1.1",
     "bufferutil": "^4.2.0",
     "cli-table3": "^0.6.5",
     "discord.js": "^14.28.1",
@@ -38,6 +37,7 @@
     "migrate-mongo": "^11.0.0",
     "mongoose": "^7.8.14",
     "nanoid": "^5.1.16",
+    "tar": "^7.5.23",
     "winston": "^3.19.0",
     "winston-daily-rotate-file": "^4.7.1"
   },
@@ -49,6 +49,9 @@
       "config.json"
     ],
     "stdin": false
+  },
+  "overrides": {
+    "minimatch": "^11.0.9"
   },
   "allowScripts": {
     "bufferutil": true

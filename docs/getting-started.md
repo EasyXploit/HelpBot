@@ -27,7 +27,7 @@ If the bot is not in any server when it starts, it waits and shows this same inv
 The bot image is published in the GitHub Container Registry as [`ghcr.io/easyxploit/helpbot`](https://github.com/EasyXploit/HelpBot/pkgs/container/helpbot), with these tags:
 - `latest`: the stable version.
 - `beta`: the development version.
-- The number of a specific version (for example, `0.1.0` or `1.0.0-beta.1`), to keep using it or to go back to it.
+- The number of a specific version (for example, `8.5.6` or `9.0.0-beta.1`), to keep using it or to go back to it.
 
 A new image is published with every release of the bot.
 

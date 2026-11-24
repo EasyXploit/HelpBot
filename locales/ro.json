@@ -129,7 +129,7 @@
                 },
                 "dm": {
                     "appData": {
-                        "name": "dm",
+                        "name": "mp",
                         "description": "Botul va trimite un mesaj privat membrului",
                         "options": {
                             "user": {
@@ -508,7 +508,7 @@
                 },
                 "rmwarn": {
                     "appData": {
-                        "name": "rmwarn",
+                        "name": "elimina_avertisment",
                         "description": "Pentru a elimina unul (sau toate) avertismentele unui membru",
                         "options": {
                             "user": {
@@ -696,7 +696,7 @@
                 },
                 "slowmode": {
                     "appData": {
-                        "name": "slowmode",
+                        "name": "mod_lent",
                         "description": "Activează modul lent pe un canal de text",
                         "options": {
                             "seconds": {

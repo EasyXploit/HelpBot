@@ -487,15 +487,15 @@
                 },
                 "report": {
                     "appData": {
-                        "name": "report",
+                        "name": "segnala",
                         "description": "Segnala qualcosa al team di moderazione",
                         "options": {
                             "body": {
-                                "name": "report",
+                                "name": "segnalazione",
                                 "description": "Cosa vuoi segnalare?"
                             },
                             "member": {
-                                "name": "member",
+                                "name": "membro",
                                 "description": "Chi vuoi segnalare?"
                             }
                         }
@@ -582,11 +582,11 @@
                 },
                 "roleinfo": {
                     "appData": {
-                        "name": "roleinfo",
+                        "name": "inforuolo",
                         "description": "Mostra informazioni su un ruolo",
                         "options": {
                             "role": {
-                                "name": "role",
+                                "name": "ruolo",
                                 "description": "Seleziona uno dei ruoli"
                             }
                         }
@@ -613,7 +613,7 @@
                 },
                 "send": {
                     "appData": {
-                        "name": "send",
+                        "name": "invia",
                         "description": "Invia un messaggio nel canale di testo attuale o in quello scelto, con o senza formato incorporato",
                         "options": {
                             "type": {
@@ -641,7 +641,7 @@
                 },
                 "serverinfo": {
                     "appData": {
-                        "name": "serverinfo",
+                        "name": "infoserver",
                         "description": "Mostra informazioni sul server"
                     },
                     "guildTiers": {
@@ -696,11 +696,11 @@
                 },
                 "slowmode": {
                     "appData": {
-                        "name": "slowmode",
+                        "name": "modalità_lenta",
                         "description": "Attiva il modo lento in un canale di testo",
                         "options": {
                             "seconds": {
-                                "name": "seconds",
+                                "name": "secondi",
                                 "description": "Scrivi un valore tra 0 e 21600 (0 per disattivarla)"
                             },
                             "reason": {
@@ -739,7 +739,7 @@
                 },
                 "stats": {
                     "appData": {
-                        "name": "stats",
+                        "name": "statistiche",
                         "description": "Mostra le statistiche dei punti esperienza tue o di un altro membro",
                         "options": {
                             "user": {
@@ -767,7 +767,7 @@
                 },
                 "unban": {
                     "appData": {
-                        "name": "unban",
+                        "name": "sbanna",
                         "description": "Revoca il ban di un membro",
                         "options": {
                             "user": {
@@ -801,7 +801,7 @@
                 },
                 "untimeout": {
                     "appData": {
-                        "name": "untimeout",
+                        "name": "rimuovi_silenzio",
                         "description": "Toglie il silenziamento a un membro",
                         "options": {
                             "user": {
@@ -833,7 +833,7 @@
                 },
                 "userinfo": {
                     "appData": {
-                        "name": "userinfo",
+                        "name": "infoutente",
                         "description": "Mostra informazioni su di te o su un altro membro",
                         "options": {
                             "user": {
@@ -872,7 +872,7 @@
                 },
                 "warn": {
                     "appData": {
-                        "name": "warn",
+                        "name": "avverti",
                         "description": "Aggiungi una avvertenza ad un membro",
                         "options": {
                             "user": {
@@ -892,11 +892,11 @@
                 },
                 "xp": {
                     "appData": {
-                        "name": "xp",
+                        "name": "exp",
                         "description": "Modifica la quantità di punti esperienza di un membro",
                         "options": {
                             "set": {
-                                "name": "set",
+                                "name": "imposta",
                                 "description": "Imposta la quantità di punti esperienza al valore scelto",
                                 "options": {
                                     "user": {
@@ -910,7 +910,7 @@
                                 }
                             },
                             "add": {
-                                "name": "add",
+                                "name": "aggiungi",
                                 "description": "Aggiunge alla quantità attuale di punti esperienza",
                                 "options": {
                                     "user": {
@@ -924,7 +924,7 @@
                                 }
                             },
                             "addrandom": {
-                                "name": "addrandom",
+                                "name": "aggiungi_casuale",
                                 "description": "Genera X volte i punti esperienza che si ottengono scrivendo messaggi",
                                 "options": {
                                     "user": {
@@ -932,7 +932,7 @@
                                         "description": "Seleziona un utente o scrivi il suo ID"
                                     },
                                     "times": {
-                                        "name": "times",
+                                        "name": "volte",
                                         "description": "Inserisci il numero di volte in cui verranno generati i punti esperienza"
                                     }
                                 }
@@ -997,7 +997,7 @@
             "messageCommands": {
                 "reportMessage": {
                     "appData": {
-                        "name": "Report message"
+                        "name": "Segnala messaggio"
                     },
                     "memberNotFound": "Il membro non è più nel server",
                     "cantReportYourself": "Non puoi segnalare te stesso",
@@ -1027,7 +1027,7 @@
             "userCommands": {
                 "reportMember": {
                     "appData": {
-                        "name": "Report member"
+                        "name": "Segnala membro"
                     },
                     "memberNotFound": "Il membro non è più nel server",
                     "cantReportYourself": "Non puoi segnalare te stesso",
@@ -1039,7 +1039,7 @@
                 },
                 "warn": {
                     "appData": {
-                        "name": "Warn"
+                        "name": "Avverti"
                     },
                     "cantDeleteMessages": "Non hai permessi per eliminare messaggi in questo canale",
                     "memberNotFound": "Il membro non è più nel server",

@@ -16,8 +16,8 @@ The first time takes a little longer, as Docker downloads the images and install
 
 ## Run the bot
 From the **Run and Debug** view, start one of these configurations:
-- **Desarrollo**: restarts the bot when a file is saved.
-- **Producción**: runs the bot as in production.
+- **Development**: restarts the bot when a file is saved.
+- **Production**: runs the bot as in production.
 
 The bot console, with its menus, opens in the integrated terminal.
 

@@ -1,7 +1,7 @@
 <div align="center">
   <br />
   <p>
-    <a href="https://github.com/EasyXploit/HelpBot"><img src="assets/branding/banner.png" width="546" alt="banner" /></a>
+    <a href="https://github.com/EasyXploit/HelpBot"><img src="assets/branding/banner.png" width="640" alt="HelpBot banner" /></a>
   </p>
   <br />
   <p>
@@ -33,6 +33,7 @@ The bot code is <ins>excessively full of comments</ins>, because it is a learnin
 | Excessive uppercase filtering | Repetitive text filtering   | Infractions history                          | Reports system                |
 | Links filtering              | Automatic penalty dispenser | Multiple locales                             | Flood filtering               |
 | Excessive emojis filtering   | Manual moderation commands  | Role, user and server info. showing          | Polls maker                   |
+| Server events logging        | Configuration from the console | Recovery of the joins while offline       | Docker image with auto-updates |
 <br />
 
 ## Usage

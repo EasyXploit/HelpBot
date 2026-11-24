@@ -1,7 +1,54 @@
 {
+    "permissions": {
+        "CreateInstantInvite": "Crear invitación",
+        "KickMembers": "Expulsar miembros",
+        "BanMembers": "Banear miembros",
+        "Administrator": "Administrador",
+        "ManageChannels": "Gestionar canales",
+        "ManageGuild": "Gestionar servidor",
+        "AddReactions": "Añadir reacciones",
+        "ViewAuditLog": "Ver registro de auditoría",
+        "PrioritySpeaker": "Prioridad de palabra",
+        "Stream": "Vídeo",
+        "ViewChannel": "Ver canales",
+        "SendMessages": "Enviar mensajes",
+        "SendTTSMessages": "Enviar mensajes de texto a voz",
+        "ManageMessages": "Gestionar mensajes",
+        "EmbedLinks": "Insertar enlaces",
+        "AttachFiles": "Adjuntar archivos",
+        "ReadMessageHistory": "Leer el historial de mensajes",
+        "MentionEveryone": "Mencionar @everyone, @here y todos los roles",
+        "UseExternalEmojis": "Usar emojis externos",
+        "ViewGuildInsights": "Ver información del servidor",
+        "Connect": "Conectar",
+        "MuteMembers": "Silenciar miembros",
+        "DeafenMembers": "Ensordecer miembros",
+        "MoveMembers": "Mover miembros",
+        "UseVAD": "Usar actividad de voz",
+        "ChangeNickname": "Cambiar apodo",
+        "ManageNicknames": "Gestionar apodos",
+        "ManageRoles": "Gestionar roles",
+        "ManageWebhooks": "Gestionar webhooks",
+        "ManageGuildExpressions": "Gestionar expresiones",
+        "UseApplicationCommands": "Usar comandos de aplicación",
+        "RequestToSpeak": "Solicitar hablar",
+        "ManageEvents": "Gestionar eventos",
+        "ManageThreads": "Gestionar hilos",
+        "CreatePublicThreads": "Crear hilos públicos",
+        "CreatePrivateThreads": "Crear hilos privados",
+        "UseExternalStickers": "Usar stickers externos",
+        "SendMessagesInThreads": "Enviar mensajes en hilos",
+        "UseEmbeddedActivities": "Usar actividades",
+        "ModerateMembers": "Aislar temporalmente a miembros",
+        "ViewCreatorMonetizationAnalytics": "Ver análisis de monetización de creador",
+        "UseSoundboard": "Usar la caja de sonidos"
+    },
     "status": {
         "enabled": "Activado",
         "disabled": "Desactivado"
+    },
+    "index": {
+        "startupMsg": "El bot se está iniciando. Espera, por favor"
     },
     "handlers": {
         "buttons": {
@@ -33,9 +80,25 @@
                                 "name": "días_a_borrar",
                                 "description": "Escribe una cantidad entre 1 y 7"
                             },
-                            "duration": {
-                                "name": "duración",
-                                "description": "Escriba una duración con el formato: días\"D\" | minutos\"M\" | horas\"H\" | segundos\"S\""
+                            "expiration": {
+                                "name": "expiración",
+                                "description": "Selecciona cuándo expirará el baneo",
+                                "choices": {
+                                    "fiveMinutes": "5 minutos",
+                                    "fifteenMinutes": "15 minutos",
+                                    "thirtyMinutes": "30 minutos",
+                                    "oneHour": "1 hora",
+                                    "sixHours": "6 horas",
+                                    "twelveHours": "12 horas",
+                                    "oneDay": "1 día",
+                                    "threeDays": "3 días",
+                                    "oneWeek": "1 semana",
+                                    "oneMonth": "1 mes",
+                                    "threeMonths": "3 meses",
+                                    "sixMonths": "6 meses",
+                                    "nineMonths": "9 meses",
+                                    "oneYear": "1 año"
+                                }
                             }
                         }
                     },
@@ -45,7 +108,6 @@
                     "badBotHierarchy": "No puedes banear a un miembro con un rol igual o superior al del bot",
                     "alreadyBanned": "Este usuario ya ha sido baneado",
                     "cantPermaBan": "No tienes permiso para banear permanentemente",
-                    "wrongMagnitudes": "Tienes que escribir una duración con el formato: días\"S\" | minutos\"M\" | horas\"H\" | días\"D\"",
                     "exceededDuration": "Solo puedes banear un máximo de `{{time}}`",
                     "noReason": "Debes proporcionar una razón",
                     "cantSoftBan": "No tienes permiso para borrar mensajes al banear",
@@ -86,7 +148,8 @@
                                 "name": "tipo",
                                 "description": "Especifica el tipo de mensaje",
                                 "choices": {
-                                    "embed": "Incrustado"
+                                    "embed": "Incrustado",
+                                    "normal": "Normal"
                                 }
                             }
                         }
@@ -132,12 +195,17 @@
                         }
                     },
                     "noChannel": "El canal con ID `{{id}}` no existe",
+                    "noBotPermission": "El bot necesita los siguientes permisos en {{channel}} para poder editar el mensaje: {{missingPermissions}}",
                     "msgNotFound": "El mensaje con ID `{{msgId}}` no existe",
                     "cantEdit": "No puedo editar un mensaje que no he enviado",
                     "bodyModal": {
                         "title": "Edición de mensaje formateado",
                         "fieldTitle": "Cuerpo del mensaje",
                         "fieldPlaceholder": "Escribe un nuevo cuerpo para el mensaje"
+                    },
+                    "correctEmbed": {
+                        "title": "Operación completada",
+                        "description": "El mensaje ha sido modificado correctamente"
                     }
                 },
                 "infractions": {
@@ -153,6 +221,8 @@
                     },
                     "nonPrivileged": "{{interactionAuthor}}, no dispones de privilegios para realizar esta operación",
                     "noBots": "No puedes obtener información de un bot",
+                    "memberNotFound": "No se han encontrado datos de este miembro",
+                    "warnSystemExecutor": "Moderación integrada",
                     "unknownModerator": "Moderador desconocido",
                     "timeoutedUntil": "Silenciado hasta",
                     "noTimeout": "Ninguna",
@@ -161,6 +231,7 @@
                         "description": "Mostrando las infracciones del miembro **{{member}}**.\nSanción actual: {{sanction}}",
                         "last24h": "Últimas 24h",
                         "last7d": "Últimos 7 días",
+                        "total": "Total",
                         "list": "Listado de infracciones",
                         "noList": "Ninguna",
                         "page": "Página {{actualPage}} de {{totalPages}}"
@@ -169,12 +240,13 @@
                 "invitation": {
                     "appData": {
                         "name": "invitacion",
-                        "description": "Genera o recupera un enlace de invitación permanente en el canal de reglas, o en el primer canal de texto que lo permita"
+                        "description": "Obtiene una invitación permanente en el canal de reglas o en el primer canal de texto que lo permita"
                     },
                     "inviteReason": "Rutina de {{botTag}}",
-                    "embed": {
+                    "noTargetChannel": "No hay ningún canal en el que el bot tenga permiso para crear invitaciones",
+                    "resultEmbed": {
                         "author": "Invitación permanente",
-                        "footer": "Este enlace nunca caduca y tiene usos ilimitados"
+                        "footer": "Este enlace no caduca nunca y tiene usos ilimitados"
                     }
                 },
                 "kick": {
@@ -231,6 +303,7 @@
                         }
                     },
                     "noLeaderboard": "Nadie ha ganado EXP todavía",
+                    "unavailableType": "Esta clasificación no está disponible, ya que no se está recopilando su estadística",
                     "unknownMember": "Desconocido",
                     "embed": {
                         "title": {
@@ -338,7 +411,7 @@
                         "options": {
                             "end": {
                                 "name": "finalizar_id",
-                                "description": "Introduce el ID de la encuesta a finalizar"
+                                "description": "Introduce el ID de la encuesta que quieres finalizar"
                             }
                         }
                     },
@@ -383,7 +456,7 @@
                 "purge": {
                     "appData": {
                         "name": "purgar",
-                        "description": "Elimina una cierta cantidad de mensajes en un canal (siempre que tenga menos de 14 días de antigüedad)",
+                        "description": "Elimina una cantidad de mensajes de un canal (siempre que tengan menos de 14 días de antigüedad)",
                         "options": {
                             "quantity": {
                                 "name": "cantidad",
@@ -398,7 +471,7 @@
                     "quantityNotProvided": "Debes proporcionar la cantidad de mensajes a eliminar",
                     "wrongQuantity": "Debes proporcionar una cantidad numérica igual o superior a 1, e inferior a 100",
                     "invalidChannel": "El canal de texto proporcionado no es válido",
-                    "noPermission": "No tienes permiso para administrar mensajes en {{channel}}",
+                    "noPermission": "Necesitas los siguientes permisos en {{channel}} para poder purgarlo: {{missingPermissions}}",
                     "noMessages": "No se pudo encontrar ningún mensaje en {{channel}}",
                     "expiredMessages": "Solo se pueden borar mensajes con una antigüedad inferior a `14 días`",
                     "successEmbed": {
@@ -503,6 +576,7 @@
                         "description": "Se ha retirado la advertencia con ID `{{warnId}}` al miembro **{{member}}**"
                     },
                     "autocomplete": {
+                        "systemModerator": "Sistema",
                         "unknownModerator": "Desconocido"
                     }
                 },
@@ -526,23 +600,28 @@
                         "roleMembers": "Miembros con el rol",
                         "mentionable": "Mencionable",
                         "isMentionable": "Si",
+                        "isntMntionable": "No",
                         "hoisted": "Se muestra",
+                        "isHoisted": "Visible",
                         "isntHoisted": "Oculto",
+                        "color": "Color",
                         "creationDate": "Fecha de creación",
                         "integration": "Integración",
-                        "isIntegration": "Si"
+                        "isIntegration": "Si",
+                        "isntIntegration": "No"
                     }
                 },
                 "send": {
                     "appData": {
                         "name": "enviar",
-                        "description": "El bot enviará un mensaje al canal de texto actual o el especificado, con o sin formato incrustado",
+                        "description": "Envía un mensaje al canal de texto actual o al elegido, con o sin formato incrustado",
                         "options": {
                             "type": {
                                 "name": "tipo",
                                 "description": "Especifica el tipo de mensaje",
                                 "choices": {
-                                    "embed": "Incrustado"
+                                    "embed": "Incrustado",
+                                    "normal": "Normal"
                                 }
                             },
                             "channel": {
@@ -552,7 +631,7 @@
                         }
                     },
                     "invalidChannel": "El canal proporcionado no es válido",
-                    "noPermission": "No tienes permiso para enviar mensajes en {{channel}}",
+                    "noPermission": "Necesitas los siguientes permisos en {{channel}} para poder enviar mensajes: {{missingPermissions}}",
                     "bodyModal": {
                         "title": "Envío de mensaje formateado",
                         "fieldTitle": "Cuerpo del mensaje",
@@ -571,6 +650,18 @@
                         "Tier2": "Nivel 2",
                         "Tier3": "Nivel 3"
                     },
+                    "explicitContentFilter": {
+                        "0": "Desactivado",
+                        "1": "Miembros sin roles",
+                        "2": "Todos los miembros"
+                    },
+                    "guildVerificationLevel": {
+                        "0": "Desactivado",
+                        "1": "Bajo",
+                        "2": "Medio",
+                        "3": "Alto",
+                        "4": "Muy alto"
+                    },
                     "embed": {
                         "author": "Información sobre {{guildName}}",
                         "name": "Nombre",
@@ -578,16 +669,21 @@
                         "region": "Región",
                         "creationDate": "Fecha de creación",
                         "owner": "Propietario",
+                        "explicitContentFilter": "Filtro de contenido explícito",
                         "tier": "Nivel de mejora",
                         "boostsCount": "{{boostsCount}} mejoras",
                         "verification": "Nivel de verificación",
                         "invitations": "Invitaciones",
                         "totalInvites": "{{totalInvites}} invitaciones en total",
+                        "roles": "Roles",
                         "totalRoles": "{{totalRoles}} roles en total",
                         "stickersAndEmojis": "Stickers y Emojis",
+                        "totalEmojis": "{{totalEmojis}} emojis",
+                        "totalStickers": "{{totalStickers}} stickers",
                         "members": "Miembros",
                         "totalMembers": "{{totalMembers}} miembros",
                         "totalHumans": "{{totalHumans}} humanos",
+                        "totalBots": "{{totalBots}} bots",
                         "bans": "Baneos",
                         "bannedUsers": "{{bannedUsers}} usuarios baneados",
                         "afk": "Tiempo para AFK",
@@ -763,7 +859,9 @@
                         "registerDate": "Fecha de registro",
                         "joinDate": "Unido al servidor",
                         "status": "Estatus",
+                        "nitroBooster": "Nitro Booster",
                         "isBooster": "Desde {{time}}",
+                        "isntBooster": "No",
                         "highestRole": "Rol más alto",
                         "infractions": "Infracciones",
                         "verification": "Verificación",
@@ -998,15 +1096,12 @@
                     "undefinedReason": "Indefinida"
                 }
             },
+            "guildDelete": {
+                "waitingNewGuildHeader": "Esperando a que {{botUsername}} se una a un nuevo servidor",
+                "joinNewGuildHelp": "Usa el siguiente enlace para añadir el bot a un servidor: {{joinNewGuildURL}}",
+                "waitingNewGuildHelp": "¿Necesitas ayuda? Visita: {{waitingNewGuildHelpURL}}"
+            },
             "guildMemberRemove": {
-                "inconclusiveLoggingEmbed": {
-                    "author": "{{memberTag}} ha sido EXPULSADO",
-                    "memberId": "ID del miembro",
-                    "moderator": "Moderador",
-                    "unknownModerator": "Desconocido",
-                    "reason": "Razón",
-                    "unknownReason": "Desconocida"
-                },
                 "botLoggingEmbed": {
                     "title": "Registro - [BOTS]",
                     "description": "El **BOT** {{memberTag}} fue expulsado del servidor"
@@ -1066,8 +1161,18 @@
                     }
                 }
             },
+            "interactionCreate": {
+                "disabledCommand": "El comando `{{commandName}}` ha sido desactivado",
+                "missingChannelPermissions": "El bot necesita los siguientes permisos en este canal para usar este comando: `{{missingPermissions}}`",
+                "missingGuildPermissions": "El bot necesita los siguientes permisos en el servidor para usar este comando: `{{missingPermissions}}`"
+            },
             "messageCreate": {
                 "filteredDm": "vía MD"
+            },
+            "clientReady": {
+                "waitingNewGuildHeader": "Esperando a que {{botUsername}} se una a un nuevo servidor",
+                "joinNewGuildHelp": "Usa el siguiente enlace para añadir el bot a un servidor: {{joinNewGuildURL}}",
+                "waitingNewGuildHelp": "¿Necesitas ayuda? Visita: {{waitingNewGuildHelpURL}}"
             },
             "voiceStateUpdate": {
                 "voiceMovesLogging": {
@@ -1110,8 +1215,7 @@
                     "reason": "Venció la amonestación"
                 },
                 "bans": {
-                    "reason": "Venció la amonestación",
-                    "error": "ERROR"
+                    "reason": "Venció la amonestación"
                 },
                 "polls": {
                     "votesPercentage": "{{votesCount}} votos, el {{percentage}}%",
@@ -1130,10 +1234,11 @@
                 }
             },
             "login": {
-                "tokenNotProvided": "No se ha proporcionado un token de inicio de sesión de Discord.\nPuedes obtener crear una aplicacion y obtener un token desde https://discord.com/developers/applications.",
-                "loggingIn": "Iniciando sesión",
-                "loggedIn": "¡Sesion iniciada correctamente!",
-                "couldNotLogIn": "No ha sido posible iniciar sesión. Comprueba si el token de inicio de sesión es válido"
+                "provideTokenHeader": "Debes proporcionar el token de la cuenta que usará el bot para iniciar sesión en Discord",
+                "provideTokenHelp": "Para saber cómo obtener un token, visita: {{tokenHelpURL}}",
+                "tokenPrompt": "Introduce un token de inicio de sesión",
+                "invalidEnteredToken": "Token no válido",
+                "invalidProvidedToken": "Discord ha rechazado el token proporcionado, probablemente por una errata o un fallo de la API"
             },
             "system": {
                 "loadedCorrectly": "{{botUsername}} iniciado correctamente"
@@ -1151,11 +1256,6 @@
                     "title": "¡Vaya! Algo fue mal",
                     "description": "Lo hemos reportado al equipo de desarrollo"
                 }
-            },
-            "logging": {
-                "cannotSend": "ERROR: No se pueden enviar mensajes al canal de registro.\n{{botUsername}} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos",
-                "cannotAccess": "ERROR: No se puede tener acceso al canal de registro.\n Se ha borrado de la configuración y se ha descargado de la memoria",
-                "error": "ERROR: Error durante la ejecución del logging"
             },
             "newMember": {
                 "author": "Nuevo miembro",
@@ -1176,7 +1276,7 @@
                     "private": "¡Hola, {userName}! Te damos la bienvenida a **{serverName}**. Esperamos que disfrutes de tu estancia 👋"
                 }
             },
-            "report": {
+            "sendReport": {
                 "reportEmbed": {
                     "author": "{{memberTag}} ha reportado lo siguiente",
                     "reportReason": "Motivo del reporte",
@@ -1188,21 +1288,63 @@
                     "attachedFiles": "Archivos adjuntos [{{currentChunk}}/{{totalChunks}}]",
                     "fileName": "Archivo {{fileNumber}} [{{fileType}}]"
                 },
-                "cannotSend": "ERROR: No se pueden enviar mensajes al canal de reportes.\n{{botUsername}} debe disponer de los siguientes permisos en el canal: Enviar mensajes, Enviar enlaces, Adjuntar archivos",
                 "correct": "El reporte ha sido enviado",
-                "temporaryError": "Está característica no se encuentra disponible en estos momentos.\nPor favor, inténtalo de nuevo más tarde",
-                "cannotAccess": "ERROR: No se puede tener acceso al canal de reportes.\n Se ha borrado de la configuración y se ha descargado de la memoria",
-                "error": "ERROR: Error durante la ejecución del manejador de reportes"
+                "temporaryError": "Esta función no está disponible en este momento.\nVuelve a intentarlo más tarde",
+                "featureDisabled": "Esta función no está disponible en este momento.\nVuelve a intentarlo más tarde"
+            },
+            "updatePresence": {
+                "membersCount": "{{memberCount}} miembros"
             }
         },
         "menus": {
+            "baseGuildSelection": {
+                "promptBaseGuildSelectionHeader1": "El bot no puede estar en más de un servidor a la vez, así que debes seleccionar uno de la lista",
+                "promptBaseGuildSelectionHeader2": "Cuando selecciones un nuevo servidor base, el bot abandonará el resto de servidores",
+                "selectANewBaseGuild": "Selecciona el nuevo servidor base",
+                "alreadyConfiguredGuild": "Ya configurado",
+                "isSureToReplaceBaseGuild": "¿Seguro que quieres cambiar el servidor base? Se perderá la configuración específica",
+                "leavingGuild": "Abandonando el servidor {{guild}}",
+                "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
+            },
+            "main": {
+                "headerMessage": "¡Bienvenido a la interfaz de línea de comandos de {{botName}}!\nDesde aquí puedes configurar, supervisar y actualizar el bot",
+                "subtitleMessage": "¿Necesitas ayuda? Visita: {{helpURL}}",
+                "promptMessage": "Selecciona una opción",
+                "choices": {
+                    "configure": "Configurar",
+                    "update": "Buscar actualizaciones",
+                    "logs": "Ver registros",
+                    "information": "Ver información",
+                    "license": "Ver licencia",
+                    "shutdown": "Apagar",
+                    "restart": "Reiniciar"
+                },
+                "actions": {
+                    "shutdown": "El proceso terminará en breve. ¡Adiós!",
+                    "restart": "El bot se reiniciará en breve. ¡Hasta pronto!"
+                },
+                "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
+            },
             "configure": {
+                "headerMessage": "Este menú te permite configurar todas las funciones del bot.\nLas funciones y comandos de la misma categoría se agrupan en módulos",
+                "promptMessage": "Selecciona un módulo para configurar",
+                "choices": {
+                    "mainConfiguration": "Configuración general",
+                    "moderation": "Moderación",
+                    "engagement": "Participación",
+                    "greetings": "Bienvenidas",
+                    "polls": "Encuestas",
+                    "utilities": "Utilidades",
+                    "scheduledMessages": "Mensajes programados",
+                    "return": "Volver"
+                },
                 "submenus": {
                     "mainConfiguration": {
                         "headerMessage": "Este menú te permite establecer la configuración general del bot",
                         "promptMessage": "Selecciona una opción",
                         "choices": {
                             "language": "Idioma",
+                            "commandNamesLanguage": "Idioma de los nombres de los comandos",
                             "pingMsTreshold": "Límite de ping",
                             "botManagers": "Administradores del bot",
                             "records": "Registros (Records)",
@@ -1215,6 +1357,11 @@
                             "selectLanguageHeader": "Configura el idioma de la interfaz del bot",
                             "selectLanguage": "Selecciona un idioma",
                             "languageSuccess": "Idioma cambiado correctamente. Por favor, reinicia el bot para aplicar los cambios por completo si es necesario",
+                            "commandNamesLanguageHeader": "Los nombres de los comandos pueden mostrarse en un idioma distinto al del bot, mientras que sus descripciones siempre se muestran en el idioma del bot",
+                            "selectCommandNamesLanguage": "Selecciona el idioma de los nombres de los comandos",
+                            "sameAsBotLanguage": "El mismo que el del bot",
+                            "updatingCommands": "Actualizando los comandos en Discord",
+                            "commandNamesLanguageSuccess": "¡Idioma de los nombres de los comandos actualizado correctamente!",
                             "languageSetByEnvironment": "El idioma lo fija la variable de entorno LOCALE ({{locale}}), así que solo se puede cambiar ahí",
                             "pingThresholdHeader": "Configura el límite en milisegundos para alertas de respuesta de comandos",
                             "botManagersHeader": "Configura los miembros y roles autorizados para administrar el bot",
@@ -1222,23 +1369,15 @@
                             "presenceHeader": "Configura el estado, texto de actividad, tipo de actividad y cantidad de miembros",
                             "ignoredCommandsHeader": "Configura los comandos que son ignorados por el sistema del bot",
                             "colorPaletteHeader": "Configura la paleta de colores Hex para mensajes del sistema y registros",
-                            "enterPingThreshold": "Introduce el nuevo límite de ping en milisegundos (deja vacío para volver)",
+                            "currentPingThreshold": "Umbral de ping actual: {{threshold}} ms",
+                            "enterNewPingThreshold": "Introduce el nuevo umbral de ping en milisegundos",
                             "pingSuccess": "Límite de ping actualizado correctamente a {{threshold}} ms",
                             "managersAction": "Selecciona una acción",
                             "addManager": "Añadir administrador",
                             "removeManager": "Eliminar administrador",
-                            "searchMethod": "Selecciona el método de búsqueda",
-                            "searchByName": "Buscar miembro por nombre",
-                            "searchRoleByName": "Buscar rol por nombre",
-                            "enterId": "Introducir ID de usuario o rol a mano",
-                            "enterIdPrompt": "Introduce la ID de Discord del usuario o rol",
-                            "searchNamePrompt": "Introduce el nombre de usuario o apodo a buscar",
-                            "searchRolePrompt": "Introduce el nombre del rol a buscar",
-                            "selectMemberPrompt": "Selecciona un miembro",
-                            "selectRolePrompt": "Selecciona un rol",
-                            "noMembersFound": "No se encontraron miembros que coincidan con la búsqueda",
-                            "noRolesFound": "No se encontraron roles que coincidan con la búsqueda",
-                            "noUsersOrRolesFound": "No se encontraron miembros ni roles que coincidan con la búsqueda",
+                            "selectManagerType": "Selecciona el tipo de gestor",
+                            "memberManager": "Miembro",
+                            "roleManager": "Rol",
                             "currentBotManagersTitle": "Administradores del bot actuales",
                             "managerAdded": "¡Administrador añadido correctamente!",
                             "alreadyManager": "¡Este usuario o rol ya es un administrador!",
@@ -1253,12 +1392,6 @@
                             "channelSuccess": "¡Canal de registro actualizado correctamente!",
                             "statusSuccess": "¡Estado de registro actualizado correctamente!",
                             "noChannelConfiguredError": "Debes configurar un canal de destino o un canal por defecto antes de activar el registro",
-                            "searchChannelPrompt": "Introduce el nombre del canal a buscar",
-                            "selectChannelPrompt": "Selecciona un canal",
-                            "enterChannelIdPrompt": "Introduce la ID del canal de texto",
-                            "searchChannelByName": "Buscar canal por nombre",
-                            "enterChannelId": "Introducir ID del canal a mano",
-                            "noChannelsFound": "No se encontraron canales de texto que coincidan con la búsqueda",
                             "defaultChannel": "Canal por defecto",
                             "noChannel": "Ninguno",
                             "byDefault": "por defecto",
@@ -1267,6 +1400,11 @@
                             "defaultChannelCleared": "¡Canal por defecto quitado correctamente!",
                             "useDefaultChannel": "Usar el canal por defecto",
                             "useDefaultChannelSuccess": "¡El registro ahora usa el canal por defecto!",
+                            "excludedChannels": "Canales excluidos",
+                            "excludedChannelsHeader": "Los movimientos hacia, desde o entre estos canales de voz no se registran, y estos canales se ocultan en los registros",
+                            "addExcludedChannel": "Añadir canal",
+                            "removeExcludedChannel": "Quitar canal",
+                            "selectExcludedChannelToRemove": "Selecciona el canal a quitar",
                             "presenceAction": "Selecciona un parámetro de presencia para configurar",
                             "changePresenceText": "Cambiar texto de actividad",
                             "toggleMembersCount": "Alternar cantidad de miembros en el estado",
@@ -1315,7 +1453,8 @@
                                 "enable": "Activar módulo",
                                 "disable": "Desactivar módulo",
                                 "wantsToExpireSanctions": "¿Quieres expirar ahora las sanciones que estaban programadas para expirar?",
-                                "affirmativeAnswer": "Sí"
+                                "affirmativeAnswer": "Sí",
+                                "negativeAnswer": "No"
                             },
                             "changeAutomodStatus": {
                                 "enable": "Activar moderación automática",
@@ -1397,6 +1536,7 @@
                             "removePrompt": "El sistema de experiencia ha dejado de estar activo. ¿Quitar los roles de recompensa a todos los miembros? (se podrán recalcular cuando vuelva a estar activo)",
                             "recalculatePrompt": "El sistema de experiencia vuelve a estar activo. ¿Recalcular los roles de recompensa de todos los miembros según su nivel guardado?",
                             "yes": "Sí",
+                            "no": "No",
                             "processing": "Actualizando los roles de recompensa, esto puede tardar un rato",
                             "removed": "Se han quitado los roles de recompensa a {{count}} miembros",
                             "recalculated": "Se han recalculado los roles de recompensa de {{count}} miembros",
@@ -1519,27 +1659,10 @@
                             "onJoin": "Al unirse al servidor",
                             "afterScreening": "Al aceptar las normas del servidor"
                         },
-                        "none": "Ninguno",
                         "prompts": {
                             "selectMode": "Selecciona cuándo se da la bienvenida a los nuevos miembros",
-                            "selectSearchMethod": "Selecciona el método de búsqueda",
-                            "searchByName": "Buscar rol por nombre",
-                            "enterId": "Introducir ID del rol a mano",
-                            "clearRole": "Quitar el rol",
                             "clearRoleSuccess": "¡Rol quitado correctamente!",
-                            "enterRoleNameSearch": "Introduce el nombre del rol a buscar",
-                            "noRolesFound": "No se encontraron roles que coincidan con la búsqueda",
-                            "selectRole": "Selecciona un rol",
-                            "enterRoleId": "Introduce la ID del rol de Discord",
-                            "roleNotFound": "Rol no encontrado",
-                            "roleSuccess": "¡Rol actualizado correctamente!",
-                            "searchChannelByName": "Buscar canal por nombre",
-                            "enterChannelIdManually": "Introducir ID del canal a mano",
-                            "enterChannelNameSearch": "Introduce el nombre del canal a buscar",
-                            "noChannelsFound": "No se encontraron canales de texto que coincidan con la búsqueda",
-                            "selectChannel": "Selecciona un canal",
-                            "enterChannelId": "Introduce la ID del canal de texto",
-                            "emptyValue": "El valor no puede estar vacío"
+                            "roleSuccess": "¡Rol actualizado correctamente!"
                         },
                         "welcomeMenu": {
                             "headers": {
@@ -1558,7 +1681,8 @@
                                 "recovery": "Cuando el bot estaba desconectado"
                             },
                             "formats": {
-                                "text": "Texto normal"
+                                "text": "Texto normal",
+                                "embed": "Incrustado"
                             },
                             "recovery": {
                                 "none": "No enviar",
@@ -1582,8 +1706,7 @@
                                 "recoveryHelp": "Al arrancar, el bot da la bienvenida a los miembros que se unieron mientras estaba desconectado. Los roles y el registro se recuperan siempre, así que elige si también se envía este mensaje",
                                 "selectRecovery": "Selecciona si se envían las bienvenidas perdidas",
                                 "limitWarning": "Si se unieron muchos miembros mientras el bot estaba desconectado, puede enviar demasiados mensajes seguidos",
-                                "enterLimit": "Introduce el número máximo de bienvenidas a enviar",
-                                "invalidLimit": "Introduce un número mayor que 0"
+                                "enterLimit": "Introduce el número máximo de bienvenidas a enviar"
                             }
                         },
                         "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
@@ -1596,7 +1719,8 @@
                                 "enable": "Activar módulo",
                                 "disable": "Desactivar módulo",
                                 "wantsToExpirePolls": "¿Quieres expirar ahora las encuestas que estaban programadas para expirar?",
-                                "affirmativeAnswer": "Sí"
+                                "affirmativeAnswer": "Sí",
+                                "negativeAnswer": "No"
                             },
                             "setCommands": "Configurar comandos",
                             "return": "Volver"
@@ -1675,13 +1799,107 @@
                         },
                         "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
                     }
+                },
+                "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
+            },
+            "update": {
+                "promptMessage": "Selecciona una opción",
+                "choices": {
+                    "checkAgain": "Volver a comprobar",
+                    "switchToBeta": "Cambiar a beta",
+                    "switchToStable": "Cambiar a estable",
+                    "return": "Volver"
+                },
+                "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles",
+                "checkingForUpdates": "Comprobando si hay actualizaciones nuevas",
+                "updatedCorrectly": "¡El bot se ha actualizado correctamente a {{targetVersion}}!",
+                "noReleaseNotes": "No hay notas de la versión disponibles para esta versión",
+                "newVersionAvailable": "¡La versión {{targetVersion}} está disponible!",
+                "releaseNotes": "Notas de la versión",
+                "updateConfirmationPromptMessage": "¿Quieres actualizar el bot?",
+                "updateConfirmationChoices": {
+                    "yes": "Sí",
+                    "no": "No"
+                },
+                "couldNotFetchUpdate": "Ha ocurrido un error al buscar actualizaciones",
+                "alreadyUpdated": "El bot ya está actualizado a la última versión",
+                "downloadingNewVersion": "Descargando {{targetVersion}} desde {{repositoryURL}}",
+                "newVersionDownloaded": "{{targetVersion}} se ha descargado e instalado correctamente",
+                "needsRestart": "Hay que reiniciar el bot para aplicar los cambios.\nSi no lo haces ahora, el proceso se detendrá automáticamente en 30 segundos.\nSi usas un gestor de procesos como PM2 o Docker, el bot se volverá a iniciar automáticamente.\nSi no, tendrás que reiniciarlo a mano",
+                "restartConfirmationPrompt": {
+                    "message": "¿Quieres reiniciar ahora?",
+                    "restartNow": "Reiniciar ahora"
                 }
+            },
+            "logs": {
+                "promptMessage": "Selecciona una opción",
+                "choices": {
+                    "refresh": "Actualizar",
+                    "return": "Volver"
+                },
+                "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles",
+                "noStoredLogs": "No hay registros guardados. Vuelve a intentarlo más tarde"
+            },
+            "information": {
+                "promptMessage": "Selecciona una opción",
+                "choices": {
+                    "refresh": "Actualizar",
+                    "return": "Volver"
+                },
+                "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles",
+                "appInfo": {
+                    "header": "Información del bot",
+                    "appVersion": "Versión de la aplicación",
+                    "appAuthor": "Autor de la aplicación",
+                    "repoUrl": "URL del repositorio",
+                    "license": "Licencia",
+                    "appName": "Nombre de la aplicación",
+                    "appId": "ID de la aplicación",
+                    "language": "Idioma configurado",
+                    "uptime": "Tiempo en línea",
+                    "connectionStatus": "Estado de la conexión",
+                    "activityType": "Tipo de actividad",
+                    "activityName": "Nombre de la actividad"
+                },
+                "guildInfo": {
+                    "header": "Información del servidor gestionado",
+                    "guildName": "Nombre del servidor",
+                    "guildId": "ID del servidor",
+                    "availability": "Disponibilidad",
+                    "guildAvailable": "Disponible",
+                    "guildNotAvailable": "Servidor caído",
+                    "totalMembers": "Miembros totales",
+                    "onlineMembers": "Miembros en línea",
+                    "humanMembers": "Miembros humanos",
+                    "botMembers": "Miembros bot"
+                },
+                "databasesInfo": {
+                    "header": "Información de las bases de datos",
+                    "storedProfiles": "Perfiles guardados",
+                    "totalMessages": "Mensajes revisados en total",
+                    "totalVoice": "Tiempo de voz total",
+                    "totalExperience": "Experiencia ganada en total",
+                    "totalWarns": "Número de advertencias",
+                    "totalBans": "Baneos activos",
+                    "totalTimeouts": "Silencios activos",
+                    "totalPolls": "Encuestas activas",
+                    "totalScheduledMessages": "Mensajes programados"
+                }
+            },
+            "license": {
+                "promptMessage": "Selecciona una opción",
+                "choices": {
+                    "return": "Volver"
+                },
+                "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
             },
             "shared": {
                 "promptMessage": "Selecciona una opción",
                 "return": "Volver",
                 "yes": "Sí",
+                "no": "No",
                 "emptyList": "(vacía)",
+                "none": "Ninguno",
                 "invalidNumber": "Introduce un número entero entre {{minimum}} y {{maximum}}",
                 "invalidMinimum": "Introduce un número entero igual o mayor que {{minimum}}",
                 "selectSearchMethod": "Selecciona el método de búsqueda",
@@ -1692,12 +1910,20 @@
                 "selectRole": "Selecciona un rol",
                 "enterRoleId": "Introduce la ID del rol de Discord",
                 "roleNotFound": "Rol no encontrado (no se pueden elegir los roles de integraciones ni @everyone)",
+                "clearRole": "Quitar el rol",
                 "searchChannelByName": "Buscar canal por nombre",
                 "enterChannelIdManually": "Introducir ID del canal a mano",
                 "enterChannelNameSearch": "Introduce el nombre del canal a buscar",
                 "noChannelsFound": "No se encontraron canales que coincidan con la búsqueda",
                 "selectChannel": "Selecciona un canal",
                 "enterChannelId": "Introduce la ID del canal",
+                "searchMemberByName": "Buscar miembro por nombre",
+                "enterMemberIdManually": "Introducir el ID del miembro a mano",
+                "enterMemberNameSearch": "Introduce el nombre de usuario o el apodo a buscar",
+                "noMembersFound": "No se encontraron miembros que coincidan con la búsqueda",
+                "selectMember": "Selecciona un miembro",
+                "enterMemberId": "Introduce el ID de Discord del miembro",
+                "memberNotFound": "No se ha encontrado el miembro",
                 "emptyValue": "El valor no puede estar vacío"
             }
         },
@@ -1749,8 +1975,7 @@
                         "channel": "Canal",
                         "infractions": "Infracciones"
                     }
-                },
-                "error": "ERROR"
+                }
             },
             "checkUsername": {
                 "kickReason": "El nombre de usuario contenía una palabra prohibida",
@@ -1769,7 +1994,7 @@
                 "filteredDm": "vía MD"
             }
         },
-        "utilities": {
+        "utils": {
             "msToTime": {
                 "years": "año/s",
                 "months": "mes/es",

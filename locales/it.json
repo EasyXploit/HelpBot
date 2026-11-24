@@ -1,4 +1,55 @@
 {
+    "permissions": {
+        "CreateInstantInvite": "Crea invito",
+        "KickMembers": "Espelli membri",
+        "BanMembers": "Banna membri",
+        "Administrator": "Amministratore",
+        "ManageChannels": "Gestisci canali",
+        "ManageGuild": "Gestisci server",
+        "AddReactions": "Aggiungi reazioni",
+        "ViewAuditLog": "Visualizza registro attività",
+        "PrioritySpeaker": "Priorità voce",
+        "Stream": "Video",
+        "ViewChannel": "Visualizza canali",
+        "SendMessages": "Invia messaggi",
+        "SendTTSMessages": "Invia messaggi di sintesi vocale",
+        "ManageMessages": "Gestisci messaggi",
+        "EmbedLinks": "Incorpora link",
+        "AttachFiles": "Allega file",
+        "ReadMessageHistory": "Leggi la cronologia dei messaggi",
+        "MentionEveryone": "Menziona @everyone, @here e tutti i ruoli",
+        "UseExternalEmojis": "Usa emoji esterne",
+        "ViewGuildInsights": "Visualizza statistiche del server",
+        "Connect": "Connetti",
+        "MuteMembers": "Silenzia membri",
+        "DeafenMembers": "Disattiva l'audio dei membri",
+        "MoveMembers": "Sposta membri",
+        "UseVAD": "Usa attività vocale",
+        "ChangeNickname": "Cambia nickname",
+        "ManageNicknames": "Gestisci nickname",
+        "ManageRoles": "Gestisci ruoli",
+        "ManageWebhooks": "Gestisci webhook",
+        "ManageGuildExpressions": "Gestisci espressioni",
+        "UseApplicationCommands": "Usa comandi dell'applicazione",
+        "RequestToSpeak": "Richiesta di parola",
+        "ManageEvents": "Gestisci eventi",
+        "ManageThreads": "Gestisci thread",
+        "CreatePublicThreads": "Crea thread pubblici",
+        "CreatePrivateThreads": "Crea thread privati",
+        "UseExternalStickers": "Usa adesivi esterni",
+        "SendMessagesInThreads": "Invia messaggi nei thread",
+        "UseEmbeddedActivities": "Usa attività",
+        "ModerateMembers": "Metti in timeout i membri",
+        "ViewCreatorMonetizationAnalytics": "Visualizza analisi della monetizzazione dei creator",
+        "UseSoundboard": "Usa soundboard"
+    },
+    "status": {
+        "enabled": "Attivato",
+        "disabled": "Disattivato"
+    },
+    "index": {
+        "startupMsg": "Il bot si sta avviando. Attendi, per favore"
+    },
     "handlers": {
         "buttons": {
             "updateNotifications": {
@@ -29,18 +80,34 @@
                                 "name": "giorni_a_cancellare",
                                 "description": "Definire un valore tra 1 e 7"
                             },
-                            "duration": {
-                                "name": "durazione",
-                                "description": "Definire una durazione con il formato seguente: giorni\"D\" | minuti\"M\" | ore\"H\" | secondi\"S\""
+                            "expiration": {
+                                "name": "scadenza",
+                                "description": "Seleziona quando scadrà il ban",
+                                "choices": {
+                                    "fiveMinutes": "5 minuti",
+                                    "fifteenMinutes": "15 minuti",
+                                    "thirtyMinutes": "30 minuti",
+                                    "oneHour": "1 ora",
+                                    "sixHours": "6 ore",
+                                    "twelveHours": "12 ore",
+                                    "oneDay": "1 giorno",
+                                    "threeDays": "3 giorni",
+                                    "oneWeek": "1 settimana",
+                                    "oneMonth": "1 mese",
+                                    "threeMonths": "3 mesi",
+                                    "sixMonths": "6 mesi",
+                                    "nineMonths": "9 mesi",
+                                    "oneYear": "1 anno"
+                                }
                             }
                         }
                     },
                     "userNotFound": "Utente non trovato. Devi menzionare un membro o scrivere il suo ID.\nSe l'utente non si trova sul server devi specificare il suo ID",
                     "noBots": "Non puoi bannare un bot",
                     "badHierarchy": "Non puoi bannare un membro con un ruolo equivalente o superiore al tuo",
+                    "badBotHierarchy": "Non puoi bannare un membro con un ruolo uguale o superiore a quello del bot",
                     "alreadyBanned": "Questo utente è gia stato bannato",
                     "cantPermaBan": "Non hai permessi per bannare permanentemente",
-                    "wrongMagnitudes": "Definire una durazione con il formato seguente: giorni\"D\" | minuti\"M\" | ore\"H\" | secondi\"S\"",
                     "exceededDuration": "Puoi bannare solamente un massimo di `{{time}}`",
                     "noReason": "Devi fornire un motivo",
                     "cantSoftBan": "Non hai permessi per cancellare messaggi durante il ban",
@@ -128,6 +195,7 @@
                         }
                     },
                     "noChannel": "Il canale con ID `{{id}}` non esiste",
+                    "noBotPermission": "Il bot ha bisogno dei seguenti permessi in {{channel}} per poter modificare il messaggio: {{missingPermissions}}",
                     "msgNotFound": "Il messaggio con ID `{{msgId}}` non esiste",
                     "cantEdit": "Non posso modificare un messaggio che non ho inviato",
                     "bodyModal": {
@@ -142,7 +210,7 @@
                 },
                 "infractions": {
                     "appData": {
-                        "name": "Infrazioni",
+                        "name": "infrazioni",
                         "description": "Mostra una lista di infrazioni di un membro e i suoi rispettivi ID",
                         "options": {
                             "user": {
@@ -153,6 +221,8 @@
                     },
                     "nonPrivileged": "{{interactionAuthor}}, non disponi di privilegi per realizzare quest'azione",
                     "noBots": "Non puoi ottenere informazione da un bot",
+                    "memberNotFound": "Non sono stati trovati dati di questo membro",
+                    "warnSystemExecutor": "Moderazione integrata",
                     "unknownModerator": "Moderatore sconosciuto",
                     "timeoutedUntil": "Silenziato fino",
                     "noTimeout": "Nessuna",
@@ -170,12 +240,13 @@
                 "invitation": {
                     "appData": {
                         "name": "invitazione",
-                        "description": "Genera o recupera un link d'invito permanente nel canale di regole o nel primo canale di testo che lo consente"
+                        "description": "Ottiene un invito permanente nel canale delle regole o nel primo canale di testo che lo consente"
                     },
                     "inviteReason": "Routine di {{botTag}}",
-                    "embed": {
-                        "author": "Invitazione permanente",
-                        "footer": "Questo link non scade mai ed ha usi illimitati"
+                    "noTargetChannel": "Non ci sono canali in cui il bot abbia il permesso di creare inviti",
+                    "resultEmbed": {
+                        "author": "Invito permanente",
+                        "footer": "Questo link non scade mai e ha utilizzi illimitati"
                     }
                 },
                 "kick": {
@@ -196,6 +267,7 @@
                     "memberNotFound": "Membro non trovato. Devi menzionare un membro o scrivere il suo ID",
                     "noBots": "Non puoi espellere un bot",
                     "badHierarchy": "Non puoi espellere un membro con un ruolo equivalente o superiore al tuo",
+                    "badBotHierarchy": "Non puoi espellere un membro con un ruolo uguale o superiore a quello del bot",
                     "noReason": "Devi fornire un motivo",
                     "undefinedReason": "Indefinita",
                     "privateEmbed": {
@@ -211,29 +283,41 @@
                 },
                 "leaderboard": {
                     "appData": {
-                        "name": "Classificazione",
+                        "name": "classifica",
                         "description": "Mostra la classifica di EXP della comunità",
                         "options": {
-                            "page": {
-                                "name": "pagina",
-                                "description": "Introdurre il nº della pagina a consultare"
-                            },
                             "type": {
                                 "name": "tipo",
                                 "description": "Seleziona il tipo di classificazione a mostrare",
                                 "choices": {
+                                    "experience": "Punti esperienza",
+                                    "aproxVoiceTime": "Tempo in vocale",
                                     "messagesCount": "Messaggi eliminati",
                                     "antiquity": "Antichità"
                                 }
+                            },
+                            "page": {
+                                "name": "pagina",
+                                "description": "Introdurre il nº della pagina a consultare"
                             }
                         }
                     },
+                    "noLeaderboard": "Nessuno ha ancora guadagnato EXP",
+                    "unavailableType": "Questa classifica non è disponibile, perché la sua statistica non viene raccolta",
                     "unknownMember": "Sconosciuto",
                     "embed": {
-                        "footer": "Pagina {{actualPage}} de {{totalPages}}",
                         "title": {
+                            "experience": "Classifica dei punti esperienza",
+                            "aproxVoiceTime": "Classifica del tempo in vocale",
+                            "messagesCount": "Classifica dei messaggi inviati",
                             "antiquity": "Classificazione d'antichità"
-                        }
+                        },
+                        "board": {
+                            "experience": "exp",
+                            "messagesCount": "messaggi",
+                            "level": "liv"
+                        },
+                        "footer": "Pagina {{actualPage}} de {{totalPages}}"
                     }
                 },
                 "timeout": {
@@ -245,26 +329,35 @@
                                 "name": "utente",
                                 "description": "Seleziona un utente o scrivi il suo ID"
                             },
-                            "reason": {
-                                "name": "motivo",
-                                "description": "Fornisci un motivo per l'azione"
-                            },
                             "expiration": {
                                 "name": "Scadenza",
+                                "description": "Seleziona quando scadrà la sanzione",
                                 "choices": {
+                                    "sixtySeconds": "60 secondi",
                                     "fiveMinutes": "5 minuti",
                                     "fifteenMinutes": "15 minuti",
                                     "thirtyMinutes": "30 minuti",
                                     "oneHour": "1 ora",
                                     "sixHours": "6 ore",
-                                    "twelveHours": "12 ore"
+                                    "twelveHours": "12 ore",
+                                    "oneDay": "1 giorno",
+                                    "threeDays": "3 giorni",
+                                    "oneWeek": "1 settimana",
+                                    "oneMonth": "1 mese",
+                                    "threeMonths": "3 mesi"
                                 }
+                            },
+                            "reason": {
+                                "name": "motivo",
+                                "description": "Fornisci un motivo per l'azione"
                             }
                         }
                     },
                     "memberNotFound": "Membro non trovato. Devi menzionare un membro o scrivere il suo ID",
                     "noBots": "Non puoi silenziare un bot",
                     "badHierarchy": "Non puoi silenziare un membro con un ruolo equivalente o superiore al tuo",
+                    "badBotHierarchy": "Non puoi silenziare un membro con un ruolo uguale o superiore a quello del bot",
+                    "exceededDuration": "Puoi silenziare solo per un massimo di `{{time}}`",
                     "noReason": "Devi fornire un motivo",
                     "undefinedReason": "Indefinita",
                     "notificationEmbed": {
@@ -274,7 +367,7 @@
                 },
                 "notifications": {
                     "appData": {
-                        "name": "Notificazioni",
+                        "name": "notifiche",
                         "description": "Configura le notificazioni di aumento di livello per EXP del bot",
                         "options": {
                             "modality": {
@@ -318,7 +411,7 @@
                         "options": {
                             "end": {
                                 "name": "end_id",
-                                "description": "Introdurre l'ID del sondaggio a terminare"
+                                "description": "Inserisci l'ID del sondaggio da terminare"
                             }
                         }
                     },
@@ -329,18 +422,24 @@
                         "title": "Operazione completata",
                         "description": "Il sondaggio \"__{{poll}}__\" finirà prossimamente nel canale {{pollChannel}}"
                     },
+                    "startingAssistant": "Avvio della procedura guidata interattiva",
                     "titleEmbed": {
                         "title": "Titolo",
                         "description": "Fornisci un titolo per il sondaggio"
                     },
                     "durationEmbed": {
-                        "title": "Durazione"
+                        "title": "Durazione",
+                        "description": "Indica una durata. Per esempio: `1d 2h 3m 4s`.\nScrivi `-` per non impostare una fine"
                     },
+                    "invalidDuration": "Devi indicare un'unità di misura del tempo. Per esempio: `5d 10h 2m`",
                     "firstFieldEmbed": {
-                        "title": "Campi"
+                        "title": "Campi",
+                        "description": "Indica una nuova opzione (massimo 10)"
                     },
                     "newFieldEmbed": {
-                        "title": "Campi"
+                        "title": "Campi",
+                        "description": "Indica una nuova opzione ({{remaining}} rimanenti)",
+                        "endAssistant": "Scrivi `end` per terminare la procedura guidata"
                     },
                     "pollEmbed": {
                         "author": "Sondaggio disponibile",
@@ -357,9 +456,11 @@
                 "purge": {
                     "appData": {
                         "name": "depurare",
+                        "description": "Elimina un certo numero di messaggi in un canale (purché abbiano meno di 14 giorni)",
                         "options": {
                             "quantity": {
-                                "name": "quantità"
+                                "name": "quantità",
+                                "description": "Inserisci il numero di messaggi da eliminare (1-99)"
                             },
                             "channel": {
                                 "name": "canale",
@@ -368,13 +469,41 @@
                         }
                     },
                     "quantityNotProvided": "Devi fornire una quantità di messaggi da eliminare",
-                    "noPermission": "Non hai permessi per amministrare messaggi in {{channel}}",
+                    "wrongQuantity": "Devi indicare una quantità numerica maggiore o uguale a 1 e minore di 100",
+                    "invalidChannel": "Il canale di testo indicato non è valido",
+                    "noPermission": "Hai bisogno dei seguenti permessi in {{channel}} per poterlo ripulire: {{missingPermissions}}",
+                    "noMessages": "Non è stato trovato nessun messaggio in {{channel}}",
+                    "expiredMessages": "Si possono eliminare solo i messaggi con meno di `14 giorni`",
                     "successEmbed": {
                         "title": "Operazione completata",
-                        "description": "Messaggi eliminati"
+                        "description": "Messaggi eliminati",
+                        "willBeDeleted": "Questo messaggio verrà eliminato {{inSeconds}}",
+                        "footer": "Sono stati saltati {{omittedCount}} messaggi"
                     },
                     "loggingEmbed": {
+                        "title": "Registro - [ELIMINAZIONE DI MESSAGGI]",
                         "description": "{{authorTag}} ha eliminato {{deletedCount}} messaggi del canale {{channel}}"
+                    }
+                },
+                "report": {
+                    "appData": {
+                        "name": "report",
+                        "description": "Segnala qualcosa al team di moderazione",
+                        "options": {
+                            "body": {
+                                "name": "report",
+                                "description": "Cosa vuoi segnalare?"
+                            },
+                            "member": {
+                                "name": "member",
+                                "description": "Chi vuoi segnalare?"
+                            }
+                        }
+                    },
+                    "bodyModal": {
+                        "title": "Segnala qualcosa",
+                        "fieldTitle": "Motivo della segnalazione",
+                        "fieldPlaceholder": "Qual è la tua segnalazione?"
                     }
                 },
                 "rmwarn": {
@@ -386,20 +515,26 @@
                                 "name": "utente",
                                 "description": "Seleziona un utente o scrivi il suo ID"
                             },
-                            "reason": {
-                                "name": "motivo"
-                            },
                             "warn": {
                                 "name": "avvertenza",
                                 "description": "Cerca l'avvertenza da eliminare"
+                            },
+                            "reason": {
+                                "name": "motivo",
+                                "description": "Fornisci un motivo per l'azione"
                             }
                         }
                     },
+                    "memberNotFound": "Membro non trovato. Devi menzionare un membro o scrivere il suo ID",
+                    "noBots": "I bot non possono essere ammoniti",
                     "noReason": "Devi fornire un motivo",
+                    "badHierarchy": "Non puoi rimuovere un'avvertenza a un membro con un ruolo uguale o superiore al tuo",
+                    "noWarns": "Questo membro non ha avvertenze",
                     "cantRemoveAny": "Non puoi eliminare avvertenze che non hai realizzato",
                     "undefinedReason": "Indefinita",
                     "loggingEmbedAll": {
                         "title": "Registro - [INFRAZIONI]",
+                        "description": "Sono state rimosse tutte le avvertenze di un membro",
                         "date": "Data",
                         "moderator": "Moderatore",
                         "reason": "Motivo",
@@ -407,14 +542,19 @@
                         "member": "Membro"
                     },
                     "privateEmbedAll": {
+                        "author": "[AVVERTENZE RIMOSSE]",
+                        "description": "{{member}}, tutte le tue avvertenze sono state rimosse",
                         "moderator": "Moderatore",
                         "reason": "Motivo"
                     },
                     "notificationEmbedAll": {
-                        "title": "Operazione completata"
+                        "title": "Operazione completata",
+                        "description": "Tutte le avvertenze del membro **{{member}}** sono state rimosse"
                     },
+                    "warnNotFound": "L'avvertenza con ID **{{warnId}}** non esiste",
                     "loggingEmbedSingle": {
                         "title": "Registro - [INFRAZIONI]",
+                        "description": "È stata rimossa un'avvertenza di un membro",
                         "date": "Data",
                         "moderator": "Moderatore",
                         "warnId": "ID di Avvertenza",
@@ -424,61 +564,132 @@
                         "member": "Membro"
                     },
                     "privateEmbedSingle": {
+                        "author": "[AVVERTENZA RIMOSSA]",
+                        "description": "{{member}}, la tua avvertenza con ID `{{warnId}}` è stata rimossa",
                         "moderator": "Moderatore",
                         "warnId": "ID di Avvertenza",
                         "warn": "Avvertenza",
                         "reason": "Motivo"
                     },
                     "notificationEmbedSingle": {
-                        "title": "Operazione completata"
+                        "title": "Operazione completata",
+                        "description": "È stata rimossa l'avvertenza con ID `{{warnId}}` al membro **{{member}}**"
                     },
                     "autocomplete": {
+                        "systemModerator": "Sistema",
                         "unknownModerator": "Sconosciuto"
                     }
                 },
                 "roleinfo": {
                     "appData": {
                         "name": "roleinfo",
+                        "description": "Mostra informazioni su un ruolo",
                         "options": {
                             "role": {
-                                "name": "role"
+                                "name": "role",
+                                "description": "Seleziona uno dei ruoli"
                             }
                         }
                     },
                     "roleNotFound": "Il ruolo **{{role}}** non esiste",
                     "resultEmbed": {
-                        "creationDate": "Data di creazione"
+                        "title": "Informazioni sul ruolo",
+                        "description": "Informazioni sul ruolo {{role}}",
+                        "roleName": "Nome del ruolo",
+                        "roleId": "ID del ruolo",
+                        "roleMembers": "Membri del ruolo",
+                        "mentionable": "Menzionabile",
+                        "isMentionable": "Sì",
+                        "isntMntionable": "No",
+                        "hoisted": "Mostrato separatamente",
+                        "isHoisted": "Visibile",
+                        "isntHoisted": "Nascosto",
+                        "color": "Colore",
+                        "creationDate": "Data di creazione",
+                        "integration": "Integrazione",
+                        "isIntegration": "Sì",
+                        "isntIntegration": "No"
                     }
                 },
                 "send": {
                     "appData": {
                         "name": "send",
+                        "description": "Invia un messaggio nel canale di testo attuale o in quello scelto, con o senza formato incorporato",
                         "options": {
                             "type": {
                                 "name": "tipo",
-                                "description": "Specifica il tipo di messaggio"
+                                "description": "Specifica il tipo di messaggio",
+                                "choices": {
+                                    "embed": "Incorporato",
+                                    "normal": "Normale"
+                                }
                             },
                             "channel": {
-                                "name": "canale"
+                                "name": "canale",
+                                "description": "Seleziona il canale in cui verrà inviato il messaggio"
                             }
                         }
                     },
                     "invalidChannel": "Il canale proporzionato non è valido",
-                    "noPermission": "Non hai permessi per inviare messaggi in {{channel}}",
+                    "noPermission": "Hai bisogno dei seguenti permessi in {{channel}} per poter inviare messaggi: {{missingPermissions}}",
                     "bodyModal": {
-                        "fieldTitle": "Corpo del messaggio"
-                    }
+                        "title": "Invia messaggio con formato",
+                        "fieldTitle": "Corpo del messaggio",
+                        "fieldPlaceholder": "Scrivi un corpo per il messaggio"
+                    },
+                    "correct": "Fatto!"
                 },
                 "serverinfo": {
                     "appData": {
-                        "name": "serverinfo"
+                        "name": "serverinfo",
+                        "description": "Mostra informazioni sul server"
+                    },
+                    "guildTiers": {
+                        "None": "Livello 0",
+                        "Tier1": "Livello 1",
+                        "Tier2": "Livello 2",
+                        "Tier3": "Livello 3"
+                    },
+                    "explicitContentFilter": {
+                        "0": "Disattivato",
+                        "1": "Membri senza ruoli",
+                        "2": "Tutti i membri"
+                    },
+                    "guildVerificationLevel": {
+                        "0": "Disattivato",
+                        "1": "Basso",
+                        "2": "Medio",
+                        "3": "Alto",
+                        "4": "Molto alto"
                     },
                     "embed": {
+                        "author": "Informazioni su {{guildName}}",
+                        "name": "Nome",
+                        "id": "ID del server",
+                        "region": "Regione",
                         "creationDate": "Data di creazione",
+                        "owner": "Proprietario",
+                        "explicitContentFilter": "Filtro dei contenuti espliciti",
+                        "tier": "Livello di potenziamento",
+                        "boostsCount": "{{boostsCount}} potenziamenti",
+                        "verification": "Livello di verifica",
+                        "invitations": "Inviti",
+                        "totalInvites": "{{totalInvites}} inviti in totale",
+                        "roles": "Ruoli",
+                        "totalRoles": "{{totalRoles}} ruoli in totale",
+                        "stickersAndEmojis": "Adesivi ed emoji",
+                        "totalEmojis": "{{totalEmojis}} emoji",
+                        "totalStickers": "{{totalStickers}} adesivi",
                         "members": "Membri",
                         "totalMembers": "{{totalMembers}} membri",
+                        "totalHumans": "{{totalHumans}} umani",
+                        "totalBots": "{{totalBots}} bot",
+                        "bans": "Ban",
+                        "bannedUsers": "{{bannedUsers}} utenti bannati",
+                        "afk": "Tempo prima dell'AFK",
                         "afkTime": "{{afkTime}} minuti",
                         "channels": "Canali",
+                        "totalCategories": "{{totalCategories}} categorie",
                         "totalTextChannels": "{{totalTextChannels}} canali di testo",
                         "totalVoiceChannels": "{{totalVoiceChannels}} canali di voce"
                     }
@@ -489,62 +700,94 @@
                         "description": "Attiva il modo lento in un canale di testo",
                         "options": {
                             "seconds": {
-                                "name": "seconds"
+                                "name": "seconds",
+                                "description": "Scrivi un valore tra 0 e 21600 (0 per disattivarla)"
                             },
                             "reason": {
-                                "name": "motivo"
+                                "name": "motivo",
+                                "description": "Fornisci un motivo per l'azione"
                             }
                         }
                     },
+                    "notEnabled": "La modalità lenta non è attiva",
                     "disabledLoggingEmbed": {
+                        "title": "Registro - [MODALITÀ LENTA]",
+                        "description": "La modalità lenta è stata disattivata",
                         "moderator": "Moderatore",
                         "channel": "Canale"
                     },
                     "disabledNotificationEmbed": {
-                        "title": "Operazione completata"
+                        "title": "Operazione completata",
+                        "description": "La modalità lenta è stata disattivata"
                     },
+                    "maximumConfiguredLengthError": "Puoi attivare la modalità lenta solo per un massimo di `{{max}}s`",
                     "noReason": "Devi fornire un motivo",
                     "undefinedReason": "Indefinita",
                     "enabledLoggingEmbed": {
+                        "title": "Registro - [MODALITÀ LENTA]",
+                        "description": "La modalità lenta è stata attivata",
                         "moderator": "Moderatore",
+                        "delay": "Ritardo",
+                        "delayed": "{{seconds}} secondi",
                         "channel": "Canale",
                         "reason": "Motivo"
                     },
                     "enabledNotificationEmbed": {
-                        "title": "Operazione completata"
+                        "title": "Operazione completata",
+                        "description": "La modalità lenta è stata attivata con un ritardo di `{{seconds}}s`"
                     }
                 },
                 "stats": {
                     "appData": {
                         "name": "stats",
+                        "description": "Mostra le statistiche dei punti esperienza tue o di un altro membro",
                         "options": {
                             "user": {
-                                "name": "utente"
+                                "name": "utente",
+                                "description": "Seleziona un utente o scrivi il suo ID"
                             }
                         }
                     },
+                    "unknownMember": "Membro non trovato. Devi menzionare un membro o scrivere il suo ID",
+                    "noXp": "{{member}} non ha punti esperienza",
                     "defaultReward": "Nessuna",
                     "statsEmbed": {
+                        "title": "Statistiche",
+                        "description": "Statistiche di **{{memberTag}}**",
+                        "actualLevel": "Livello attuale",
                         "experience": "EXP totale",
-                        "antiquity": "Antichità"
+                        "xpToNextLevel": "EXP per il livello successivo",
+                        "noXpToNextLevel": "Non può salire di livello",
+                        "messagesCount": "Messaggi",
+                        "voiceTime": "Tempo in vocale",
+                        "antiquity": "Antichità",
+                        "nextRewards": "Prossime ricompense",
+                        "level": "liv",
+                        "noNextRewards": "Non può ottenere ricompense"
                     }
                 },
                 "unban": {
                     "appData": {
                         "name": "unban",
+                        "description": "Revoca il ban di un membro",
                         "options": {
                             "user": {
                                 "name": "utente",
                                 "description": "Seleziona un utente o scrivi il suo ID"
                             },
                             "reason": {
-                                "name": "motivo"
+                                "name": "motivo",
+                                "description": "Fornisci un motivo per l'azione"
                             }
                         }
                     },
+                    "userNotFound": "Utente non trovato. Devi menzionare un membro o scrivere il suo ID.\nSe l'utente non è nel server, devi indicare il suo ID",
                     "noReason": "Devi fornire un motivo",
+                    "notBanned": "Questo utente non è stato bannato",
                     "undefinedReason": "Indefinita",
                     "loggingEmbed": {
+                        "author": "{{userTag}} è stato SBANNATO",
+                        "userId": "ID utente",
                         "moderator": "Moderatore",
                         "reason": "Motivo",
                         "deletedDays": "Giorni di messaggi eliminati",
@@ -553,24 +796,30 @@
                         "noExpiration": "Non scade"
                     },
                     "notificationEmbed": {
-                        "title": "Operazione completata"
+                        "title": "Operazione completata",
+                        "description": "Il ban del membro **{{userTag}}** è stato revocato"
                     }
                 },
                 "untimeout": {
                     "appData": {
                         "name": "untimeout",
+                        "description": "Toglie il silenziamento a un membro",
                         "options": {
                             "user": {
                                 "name": "utente",
                                 "description": "Seleziona un utente o scrivi il suo ID"
                             },
                             "reason": {
-                                "name": "motivo"
+                                "name": "motivo",
+                                "description": "Fornisci un motivo per l'azione"
                             }
                         }
                     },
                     "noReason": "Devi fornire un motivo",
-                    "cantRemoveAny": "{{interactionAuthor}}, you can't un-timeout someone you haven't timed out yourself",
+                    "notSilenced": "Questo membro non è silenziato",
+                    "badHierarchy": "{{interactionAuthor}}, non puoi togliere il silenziamento a qualcuno con un ruolo uguale o superiore al tuo",
+                    "badBotHierarchy": "{{interactionAuthor}}, non puoi togliere il silenziamento a qualcuno con un ruolo uguale o superiore a quello del bot",
+                    "cantRemoveAny": "{{interactionAuthor}}, non puoi togliere il silenziamento a qualcuno che non hai silenziato tu",
                     "undefinedReason": "Indefinita",
                     "loggingEmbed": {
                         "author": "Un membro è stato SMUTATO",
@@ -586,19 +835,39 @@
                 "userinfo": {
                     "appData": {
                         "name": "userinfo",
+                        "description": "Mostra informazioni su di te o su un altro membro",
                         "options": {
                             "user": {
-                                "name": "utente"
+                                "name": "utente",
+                                "description": "Seleziona un utente o scrivi il suo ID"
                             }
                         }
                     },
+                    "invalidMember": "Non hai indicato un membro valido",
+                    "cantSeeAny": "Non hai i privilegi per vedere le informazioni di altri membri",
                     "memberType": {
-                        "moderator": "Moderatore"
+                        "owner": "Proprietario",
+                        "administrator": "Amministratore",
+                        "moderator": "Moderatore",
+                        "regular": "Membro normale"
                     },
                     "embed": {
+                        "timeoutedUntil": "Silenziato fino a",
+                        "title": "Informazioni su {{memberDisplayName}}",
+                        "description": "Informazioni su **{{memberTag}}**",
                         "memberId": "ID del Membro",
                         "registerDate": "Data di registro",
+                        "joinDate": "Entrato nel server",
+                        "status": "Stato",
+                        "nitroBooster": "Nitro Booster",
+                        "isBooster": "Dal {{time}}",
+                        "isntBooster": "No",
+                        "highestRole": "Ruolo più alto",
                         "infractions": "Infrazioni",
+                        "verification": "Verifica",
+                        "isVerified": "Verificato",
+                        "isntVerified": "Verifica in sospeso",
+                        "actualSanction": "Sanzione attuale",
                         "noSanction": "Nessuna"
                     }
                 },
@@ -612,65 +881,80 @@
                                 "description": "Seleziona un utente o scrivi il suo ID"
                             },
                             "reason": {
-                                "name": "motivo"
+                                "name": "motivo",
+                                "description": "Fornisci un motivo per l'avvertenza"
                             }
                         }
-                    }
+                    },
+                    "memberNotFound": "Membro non trovato. Devi menzionare un membro o scrivere il suo ID",
+                    "noBots": "Non puoi ammonire un bot",
+                    "badHierarchy": "Non puoi ammonire un membro con un ruolo uguale o superiore al tuo",
+                    "cooldown": "Devi aspettare prima di poter dare una nuova avvertenza a {{member}}"
                 },
                 "xp": {
                     "appData": {
                         "name": "xp",
+                        "description": "Modifica la quantità di punti esperienza di un membro",
                         "options": {
                             "set": {
                                 "name": "set",
+                                "description": "Imposta la quantità di punti esperienza al valore scelto",
                                 "options": {
                                     "user": {
                                         "name": "utente",
                                         "description": "Seleziona un utente o scrivi il suo ID"
                                     },
                                     "quantity": {
-                                        "name": "quantità"
+                                        "name": "quantità",
+                                        "description": "Inserisci una quantità di punti esperienza"
                                     }
                                 }
                             },
                             "add": {
                                 "name": "add",
+                                "description": "Aggiunge alla quantità attuale di punti esperienza",
                                 "options": {
                                     "user": {
                                         "name": "utente",
                                         "description": "Seleziona un utente o scrivi il suo ID"
                                     },
                                     "quantity": {
-                                        "name": "quantità"
+                                        "name": "quantità",
+                                        "description": "Inserisci una quantità di punti esperienza"
                                     }
                                 }
                             },
                             "addrandom": {
                                 "name": "addrandom",
+                                "description": "Genera X volte i punti esperienza che si ottengono scrivendo messaggi",
                                 "options": {
                                     "user": {
                                         "name": "utente",
                                         "description": "Seleziona un utente o scrivi il suo ID"
                                     },
                                     "times": {
-                                        "name": "times"
+                                        "name": "times",
+                                        "description": "Inserisci il numero di volte in cui verranno generati i punti esperienza"
                                     }
                                 }
                             },
                             "remove": {
                                 "name": "eliminare",
+                                "description": "Sottrae dalla quantità attuale di punti esperienza",
                                 "options": {
                                     "user": {
                                         "name": "utente",
                                         "description": "Seleziona un utente o scrivi il suo ID"
                                     },
                                     "quantity": {
-                                        "name": "quantità"
+                                        "name": "quantità",
+                                        "description": "Inserisci una quantità di punti esperienza"
                                     }
                                 }
                             },
                             "clear": {
                                 "name": "svuotare",
+                                "description": "Azzera la quantità di punti esperienza",
                                 "options": {
                                     "user": {
                                         "name": "utente",
@@ -680,75 +964,117 @@
                             }
                         }
                     },
+                    "invalidMember": "Non hai indicato un membro valido",
+                    "noBots": "I bot non possono guadagnare punti esperienza",
                     "invalidQuantity": "Devi fornire una quantità valida",
+                    "hasNoXp": "Questo membro non ha punti esperienza",
+                    "unauthorizedModify": "Non puoi modificare i punti esperienza di un membro con un ruolo uguale o superiore al tuo",
                     "loggingEmbed": {
+                        "title": "Registro - [SISTEMA EXP]",
+                        "description": "La quantità di punti esperienza di **{{memberTag}}** è cambiata",
                         "date": "Data",
                         "moderator": "Moderatore",
-                        "memberId": "ID del Membro"
+                        "memberId": "ID del Membro",
+                        "oldValue": "Valore precedente",
+                        "newValue": "Nuovo valore"
                     },
                     "privateEmbed": {
                         "reset": {
+                            "author": "I tuoi punti esperienza sono stati AZZERATI",
                             "description": "**{{moderatorTag}}** ha eliminato tutti i tuoi punti di EXP.\nOra hai `0` punti di EXP"
                         },
                         "increased": {
+                            "author": "Hai RICEVUTO punti esperienza",
                             "description": "**{{moderatorTag}}** ti ha dato `{{givenExp}}` punti di EXP.\nOra hai `{{newXP}}` punti di EXP"
                         },
                         "decreased": {
+                            "author": "Hai PERSO punti esperienza",
                             "description": "**{{moderatorTag}}** ti ha scontato `{{removedXP}}` punti di EXP.\nOra hai `{{newXP}}` punti di EXP"
                         }
-                    }
-                },
-                "report": {
-                    "appData": {
-                        "name": "report",
-                        "options": {
-                            "body": {
-                                "name": "report"
-                            },
-                            "member": {
-                                "name": "member"
-                            }
-                        }
-                    }
+                    },
+                    "notificationEmbed": "La quantità di punti esperienza di **{{memberTag}}** è cambiata"
                 }
             },
             "messageCommands": {
+                "reportMessage": {
+                    "appData": {
+                        "name": "Report message"
+                    },
+                    "memberNotFound": "Il membro non è più nel server",
+                    "cantReportYourself": "Non puoi segnalare te stesso",
+                    "bodyModal": {
+                        "title": "Segnala il messaggio di un membro",
+                        "fieldTitle": "Motivo della segnalazione",
+                        "fieldPlaceholder": "Qual è la tua segnalazione?"
+                    }
+                },
                 "removeAndWarn": {
                     "appData": {
                         "name": "Eliminare e avvertire"
                     },
                     "cantDeleteMessages": "Non hai permessi per eliminare messaggi in questo canale",
+                    "memberNotFound": "Il membro non è più nel server",
+                    "noBots": "Non puoi ammonire un bot",
+                    "badHierarchy": "Non puoi ammonire un membro con un ruolo uguale o superiore al tuo",
+                    "cooldown": "Devi aspettare prima di poter dare una nuova avvertenza a {{member}}",
                     "bodyModal": {
-                        "fieldTitle": "Motivo di avvertenza"
-                    }
-                },
-                "reportMessage": {
-                    "appData": {
-                        "name": "Report message"
-                    }
+                        "title": "Ammonisci ed elimina un messaggio",
+                        "fieldTitle": "Motivo di avvertenza",
+                        "fieldPlaceholder": "Scrivi un motivo per l'avvertenza"
+                    },
+                    "correct": "Il membro è stato ammonito"
                 }
             },
             "userCommands": {
+                "reportMember": {
+                    "appData": {
+                        "name": "Report member"
+                    },
+                    "memberNotFound": "Il membro non è più nel server",
+                    "cantReportYourself": "Non puoi segnalare te stesso",
+                    "bodyModal": {
+                        "title": "Segnala un membro",
+                        "fieldTitle": "Motivo della segnalazione",
+                        "fieldPlaceholder": "Qual è la tua segnalazione?"
+                    }
+                },
                 "warn": {
                     "appData": {
                         "name": "Warn"
                     },
                     "cantDeleteMessages": "Non hai permessi per eliminare messaggi in questo canale",
+                    "memberNotFound": "Il membro non è più nel server",
+                    "noBots": "Non puoi ammonire un bot",
+                    "badHierarchy": "Non puoi ammonire un membro con un ruolo uguale o superiore al tuo",
+                    "cooldown": "Devi aspettare prima di poter dare una nuova avvertenza a {{member}}",
                     "bodyModal": {
                         "title": "Avvisare un membro",
-                        "fieldTitle": "Motivo di avvertenza"
-                    }
-                },
-                "reportMember": {
-                    "appData": {
-                        "name": "Report member"
+                        "fieldTitle": "Motivo di avvertenza",
+                        "fieldPlaceholder": "Scrivi un motivo per l'avvertenza"
                     }
                 }
             }
         },
         "events": {
             "guildBanAdd": {
+                "inconclusiveLoggingEmbed": {
+                    "author": "{{userTag}} è stato BANNATO",
+                    "memberId": "ID del Membro",
+                    "moderator": "Moderatore",
+                    "unknownModerator": "Sconosciuto",
+                    "reason": "Motivo",
+                    "unknownReason": "Sconosciuto",
+                    "expiration": "Scadenza",
+                    "unknownExpiration": "Sconosciuto",
+                    "deletedDays": "Giorni di messaggi eliminati",
+                    "unknownDeletedDays": "Sconosciuti"
+                },
+                "botLoggingEmbed": {
+                    "title": "Registro - [BOT]",
+                    "description": "Il **BOT** {{userTag}} è stato bannato dal server"
+                },
                 "loggingEmbed": {
+                    "author": "{{userTag}} è stato BANNATO",
                     "memberId": "ID del Membro",
                     "moderator": "Moderatore",
                     "unknownModerator": "Sconosciuto",
@@ -758,28 +1084,30 @@
                     "noExpiration": "Non scade",
                     "deletedDays": "Giorni di messaggi eliminati",
                     "noDeletedDays": "Nessuno"
-                },
-                "inconclusiveLoggingEmbed": {
-                    "memberId": "ID del Membro",
-                    "moderator": "Moderatore",
-                    "unknownModerator": "Sconosciuto",
-                    "reason": "Motivo",
-                    "expiration": "Scadenza",
-                    "unknownExpiration": "Sconosciuto",
-                    "deletedDays": "Giorni di messaggi eliminati",
-                    "unknownDeletedDays": "Sconosciuti"
                 }
             },
             "guildBanRemove": {
                 "loggingEmbed": {
+                    "author": "{{userTag}} è stato SBANNATO",
+                    "userId": "ID utente",
                     "moderator": "Moderatore",
                     "unknownModerator": "Sconosciuto",
                     "reason": "Motivo",
                     "undefinedReason": "Indefinita"
                 }
             },
+            "guildDelete": {
+                "waitingNewGuildHeader": "In attesa che {{botUsername}} venga aggiunto a un nuovo server",
+                "joinNewGuildHelp": "Usa il seguente link per aggiungere il bot a un server: {{joinNewGuildURL}}",
+                "waitingNewGuildHelp": "Hai bisogno di aiuto? Visita: {{waitingNewGuildHelpURL}}"
+            },
             "guildMemberRemove": {
+                "botLoggingEmbed": {
+                    "title": "Registro - [BOT]",
+                    "description": "Il **BOT** {{memberTag}} è stato espulso dal server"
+                },
                 "loggingEmbed": {
+                    "author": "{{memberTag}} è stato ESPULSO",
                     "memberId": "ID del Membro",
                     "moderator": "Moderatore",
                     "unknownModerator": "Sconosciuto",
@@ -787,19 +1115,16 @@
                     "undefinedReason": "Indefinita"
                 },
                 "goodbyeEmbed": {
+                    "author": "Un membro se n'è andato",
+                    "description": "{{memberTag}} ha lasciato il server",
                     "memberId": "ID del Membro",
                     "antiquity": "Antichità"
-                },
-                "inconclusiveLoggingEmbed": {
-                    "memberId": "ID del Membro",
-                    "moderator": "Moderatore",
-                    "unknownModerator": "Sconosciuto",
-                    "reason": "Motivo"
                 }
             },
             "guildMemberUpdate": {
                 "communicationDisabled": {
                     "loggingEmbed": {
+                        "author": "{{memberTag}} è stato SILENZIATO",
                         "memberId": "ID del Membro",
                         "moderator": "Moderatore",
                         "unknownModerator": "Sconosciuto",
@@ -836,6 +1161,19 @@
                     }
                 }
             },
+            "interactionCreate": {
+                "disabledCommand": "Il comando `{{commandName}}` è stato disattivato",
+                "missingChannelPermissions": "Il bot ha bisogno dei seguenti permessi in questo canale per usare questo comando: `{{missingPermissions}}`",
+                "missingGuildPermissions": "Il bot ha bisogno dei seguenti permessi nel server per usare questo comando: `{{missingPermissions}}`"
+            },
+            "messageCreate": {
+                "filteredDm": "tramite messaggio privato"
+            },
+            "clientReady": {
+                "waitingNewGuildHeader": "In attesa che {{botUsername}} venga aggiunto a un nuovo server",
+                "joinNewGuildHelp": "Usa il seguente link per aggiungere il bot a un server: {{joinNewGuildURL}}",
+                "waitingNewGuildHelp": "Hai bisogno di aiuto? Visita: {{waitingNewGuildHelpURL}}"
+            },
             "voiceStateUpdate": {
                 "voiceMovesLogging": {
                     "noChannel": "Nessuno",
@@ -851,7 +1189,9 @@
         "leveling": {
             "addExperience": {
                 "levelUpEmbed": {
+                    "author": "Sei salito di livello!",
                     "description": "Congratulazioni {{member}}, sei salito di livello **{{memberLevel}}**",
+                    "rewards": "Ricompense ottenute",
                     "disablePrivateNotification": "Disattivare notificazioni"
                 }
             }
@@ -871,23 +1211,34 @@
                         "description": "{{member}}, è stato smutato in {{guildName}}",
                         "moderator": "Moderatore",
                         "reason": "Motivo"
-                    }
+                    },
+                    "reason": "La sanzione è scaduta"
                 },
                 "bans": {
-                    "error": "ERROR"
+                    "reason": "La sanzione è scaduta"
                 },
                 "polls": {
+                    "votesPercentage": "{{votesCount}} voti, il {{percentage}}%",
                     "finishedEmbed": {
-                        "author": "Sondaggio finito"
+                        "author": "Sondaggio finito",
+                        "results": "Risultati"
                     },
                     "loggingEmbed": {
                         "title": "Registro - [SONDAGGI]",
                         "description": "Il sondaggio \"__{{poll}}__\" ha finalizzato nel canale {{channel}}"
                     },
                     "progressEmbed": {
-                        "author": "Sondaggio disponibile"
+                        "author": "Sondaggio disponibile",
+                        "remaining": "Rimanente: {{remainingDays}}g {{remainingHours}}h {{remainingMinutes}}m"
                     }
                 }
+            },
+            "login": {
+                "provideTokenHeader": "Devi fornire il token dell'account che il bot userà per accedere a Discord",
+                "provideTokenHelp": "Per sapere come ottenere un token, visita: {{tokenHelpURL}}",
+                "tokenPrompt": "Inserisci un token di accesso",
+                "invalidEnteredToken": "Token non valido",
+                "invalidProvidedToken": "Discord ha rifiutato il token fornito, probabilmente per un errore di battitura o un guasto dell'API"
             },
             "system": {
                 "loadedCorrectly": "{{botUsername}} started successfully"
@@ -897,63 +1248,726 @@
             }
         },
         "managers": {
+            "buttonNavigation": {
+                "cantUseNavigation": "Non puoi controllare un menu aperto da un altro membro"
+            },
             "interactionError": {
                 "notificationEmbed": {
-                    "description": "We have reported it to those responsible for the bot"
+                    "title": "Ops! Qualcosa è andato storto",
+                    "description": "Lo abbiamo segnalato al team di sviluppo"
                 }
-            },
-            "logging": {
-                "cannotSend": "ERROR: Cannot send messages to the logging channel.\n{{botUsername}} must have the following permissions on the channel: Send Messages, Send Links, Attach Files",
-                "cannotAccess": "ERROR: Cannot access the logging channel.\n The channel has been cleared from the configuration and unloaded from memory",
-                "error": "ERROR: Error while executing the logging"
             },
             "newMember": {
                 "author": "Nuovo membro",
+                "description": "{{memberTag}} è entrato nel server",
                 "memberId": "ID del Membro",
-                "registerDate": "Data di registro"
+                "registerDate": "Data di registro",
+                "actualSanction": "Sanzione attuale",
+                "timeoutedUntil": "Silenziato fino a",
+                "botLoggingEmbed": {
+                    "title": "Registro - [BOT]",
+                    "description": "Il **BOT** {{memberTag}} è stato aggiunto al server"
+                },
+                "recovered": "Recuperato: il membro è entrato mentre il bot era offline"
             },
-            "report": {
+            "sendWelcomeMessage": {
+                "defaultMessages": {
+                    "public": "Benvenuto su **{serverName}**, {memberMention}! Ora siamo {memberCount} membri 🎉",
+                    "private": "Ciao {userName}, benvenuto su **{serverName}**! Speriamo che ti trovi bene 👋"
+                }
+            },
+            "sendReport": {
                 "reportEmbed": {
-                    "author": "{{memberTag}} has reported the following",
-                    "reportReason": "Report reason",
-                    "reportChannel": "Report channel",
-                    "reportedMember": "Reported member",
-                    "reportedMessage": "Reported message",
-                    "isInsertion": "Insertion",
-                    "reportedMessageId": "Message ID",
-                    "attachedFiles": "Attached files [{{currentChunk}}/{{totalChunks}}]",
+                    "author": "{{memberTag}} ha segnalato quanto segue",
+                    "reportReason": "Motivo della segnalazione",
+                    "reportChannel": "Canale della segnalazione",
+                    "reportedMember": "Membro segnalato",
+                    "reportedMessage": "Messaggio segnalato",
+                    "isInsertion": "Inserimento",
+                    "reportedMessageId": "ID del messaggio",
+                    "attachedFiles": "File allegati [{{currentChunk}}/{{totalChunks}}]",
                     "fileName": "File {{fileNumber}} [{{fileType}}]"
                 },
-                "cannotSend": "ERROR: Cannot send messages to the reports channel.\n{{botUsername}} must have the following permissions on the channel: Send Messages, Send Links, Attach Files",
-                "correct": "The report has been sent",
-                "temporaryError": "This feature is not available at this time.\nPlease try again later",
-                "cannotAccess": "ERROR: Cannot access the reports channel.\n The channel has been cleared from the configuration and unloaded from memory",
-                "error": "ERROR: Error while executing the report manager"
+                "correct": "La segnalazione è stata inviata",
+                "temporaryError": "Questa funzione non è disponibile al momento.\nRiprova più tardi",
+                "featureDisabled": "Questa funzione non è disponibile al momento.\nRiprova più tardi"
+            },
+            "updatePresence": {
+                "membersCount": "{{memberCount}} membri"
+            }
+        },
+        "menus": {
+            "baseGuildSelection": {
+                "promptBaseGuildSelectionHeader1": "Il bot non può stare in più di un server alla volta, quindi devi selezionarne uno dall'elenco",
+                "promptBaseGuildSelectionHeader2": "Quando selezioni un nuovo server base, il bot lascerà gli altri server",
+                "selectANewBaseGuild": "Seleziona il nuovo server base",
+                "alreadyConfiguredGuild": "Già configurato",
+                "isSureToReplaceBaseGuild": "Sei sicuro di voler cambiare il server base? Le impostazioni specifiche andranno perse",
+                "leavingGuild": "Uscita dal server {{guild}}",
+                "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
+            },
+            "main": {
+                "headerMessage": "Benvenuto nell'interfaccia a riga di comando di {{botName}}!\nDa qui puoi configurare, monitorare e aggiornare il bot",
+                "subtitleMessage": "Hai bisogno di aiuto? Visita: {{helpURL}}",
+                "promptMessage": "Seleziona un'opzione",
+                "choices": {
+                    "configure": "Configura",
+                    "update": "Cerca aggiornamenti",
+                    "logs": "Mostra i log",
+                    "information": "Visualizza informazioni",
+                    "license": "Visualizza licenza",
+                    "shutdown": "Spegni",
+                    "restart": "Riavvia"
+                },
+                "actions": {
+                    "shutdown": "Il processo verrà terminato a breve. Arrivederci!",
+                    "restart": "Il bot si riavvierà a breve. A presto!"
+                },
+                "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
+            },
+            "configure": {
+                "headerMessage": "Questo menu ti permette di configurare tutte le funzioni del bot.\nLe funzioni e i comandi della stessa categoria sono raggruppati in moduli",
+                "promptMessage": "Seleziona un modulo da configurare",
+                "choices": {
+                    "mainConfiguration": "Configurazione generale",
+                    "moderation": "Moderazione",
+                    "engagement": "Coinvolgimento",
+                    "greetings": "Benvenuti",
+                    "polls": "Sondaggi",
+                    "utilities": "Utilità",
+                    "scheduledMessages": "Messaggi programmati",
+                    "return": "Indietro"
+                },
+                "submenus": {
+                    "mainConfiguration": {
+                        "headerMessage": "Questo menu ti permette di impostare la configurazione generale del bot",
+                        "promptMessage": "Seleziona un'opzione",
+                        "choices": {
+                            "language": "Lingua",
+                            "commandNamesLanguage": "Lingua dei nomi dei comandi",
+                            "pingMsTreshold": "Soglia del ping",
+                            "botManagers": "Gestori del bot",
+                            "records": "Registri",
+                            "presence": "Presenza",
+                            "ignoredCommands": "Comandi ignorati",
+                            "colorPalette": "Tavolozza dei colori",
+                            "return": "Indietro"
+                        },
+                        "prompts": {
+                            "selectLanguageHeader": "Configura la lingua dell'interfaccia del bot",
+                            "selectLanguage": "Seleziona una lingua",
+                            "languageSuccess": "Lingua cambiata correttamente. Riavvia il bot per applicarla completamente, se necessario",
+                            "commandNamesLanguageHeader": "I nomi dei comandi possono essere mostrati in una lingua diversa da quella del bot, mentre le loro descrizioni sono sempre mostrate nella lingua del bot",
+                            "selectCommandNamesLanguage": "Seleziona la lingua dei nomi dei comandi",
+                            "sameAsBotLanguage": "La stessa del bot",
+                            "updatingCommands": "Aggiornamento dei comandi su Discord",
+                            "commandNamesLanguageSuccess": "Lingua dei nomi dei comandi aggiornata correttamente!",
+                            "languageSetByEnvironment": "La lingua è impostata dalla variabile d'ambiente LOCALE ({{locale}}), quindi si può cambiare solo lì",
+                            "pingThresholdHeader": "Configura il limite in millisecondi per gli avvisi sul tempo di risposta dei comandi",
+                            "botManagersHeader": "Configura i membri e i ruoli autorizzati a gestire il bot",
+                            "recordsHeader": "Configura i canali di testo in cui vengono inviati i registri degli eventi del server",
+                            "presenceHeader": "Configura lo stato, il testo dell'attività, il tipo di attività e la visualizzazione del numero di membri",
+                            "ignoredCommandsHeader": "Configura i comandi che vengono ignorati dal sistema del bot",
+                            "colorPaletteHeader": "Configura la tavolozza dei colori esadecimali per i messaggi di sistema e i registri",
+                            "currentPingThreshold": "Soglia del ping attuale: {{threshold}} ms",
+                            "enterNewPingThreshold": "Inserisci la nuova soglia del ping in millisecondi",
+                            "pingSuccess": "Soglia del ping aggiornata correttamente a {{threshold}} ms",
+                            "managersAction": "Seleziona un'azione",
+                            "addManager": "Aggiungi gestore del bot",
+                            "removeManager": "Rimuovi gestore del bot",
+                            "selectManagerType": "Seleziona il tipo di gestore",
+                            "memberManager": "Membro",
+                            "roleManager": "Ruolo",
+                            "currentBotManagersTitle": "Gestori attuali del bot",
+                            "managerAdded": "Gestore aggiunto correttamente!",
+                            "alreadyManager": "Questo utente o ruolo è già un gestore!",
+                            "selectManagerToRemove": "Seleziona un gestore da rimuovere",
+                            "noManagersConfigured": "Al momento non ci sono gestori del bot configurati",
+                            "managerRemoved": "Gestore rimosso correttamente!",
+                            "selectRecord": "Seleziona un evento di registro da configurare",
+                            "recordAction": "Seleziona un'azione per questo registro",
+                            "enableRecord": "Attiva il registro",
+                            "disableRecord": "Disattiva il registro",
+                            "changeChannel": "Cambia il canale di destinazione",
+                            "channelSuccess": "Canale del registro aggiornato correttamente!",
+                            "statusSuccess": "Stato del registro aggiornato correttamente!",
+                            "noChannelConfiguredError": "Devi configurare un canale di destinazione o un canale predefinito prima di attivare i registri",
+                            "defaultChannel": "Canale predefinito",
+                            "noChannel": "Nessuno",
+                            "byDefault": "predefinito",
+                            "defaultChannelHeader": "I registri che non hanno un proprio canale vengono inviati al canale predefinito",
+                            "clearDefaultChannel": "Rimuovi il canale predefinito",
+                            "defaultChannelCleared": "Canale predefinito rimosso correttamente!",
+                            "useDefaultChannel": "Usa il canale predefinito",
+                            "useDefaultChannelSuccess": "Il registro ora usa il canale predefinito!",
+                            "excludedChannels": "Canali esclusi",
+                            "excludedChannelsHeader": "Gli spostamenti verso, da o tra questi canali vocali non vengono registrati, e questi canali vengono nascosti nei registri",
+                            "addExcludedChannel": "Aggiungi canale",
+                            "removeExcludedChannel": "Rimuovi canale",
+                            "selectExcludedChannelToRemove": "Seleziona il canale da rimuovere",
+                            "presenceAction": "Seleziona un parametro della presenza da configurare",
+                            "changePresenceText": "Cambia il testo dell'attività",
+                            "toggleMembersCount": "Attiva o disattiva il numero di membri nello stato",
+                            "changePresenceStatus": "Cambia lo stato",
+                            "changePresenceType": "Cambia il tipo di attività",
+                            "enterPresenceText": "Inserisci il testo dell'attività (lascia vuoto per disattivarlo)",
+                            "presenceSuccess": "Configurazione della presenza aggiornata correttamente!",
+                            "ignoredCommandsAction": "Seleziona un tipo di comando",
+                            "toggleIgnoredPrompt": "Seleziona un comando per attivarne o disattivarne l'esclusione",
+                            "ignoredSuccess": "Stato di esclusione del comando cambiato correttamente!",
+                            "selectColor": "Seleziona un colore della tavolozza da cambiare",
+                            "selectPredefinedColor": "Seleziona un colore della tavolozza o scegline uno personalizzato",
+                            "customHexOption": "HEX personalizzato",
+                            "enterHex": "Inserisci il codice del colore HEX personalizzato (6 caratteri, es. FEB526)",
+                            "colorSuccess": "Colore aggiornato correttamente!"
+                        },
+                        "records": {
+                            "warnedMember": "Membro ammonito",
+                            "warnRemoved": "Avvertenza rimossa",
+                            "timeoutedMember": "Membro silenziato",
+                            "untimeoutedMember": "Membro non più silenziato",
+                            "kickedMember": "Membro espulso",
+                            "kickedBot": "Bot espulso",
+                            "bannedMember": "Membro bannato",
+                            "bannedBot": "Bot bannato",
+                            "unbannedMember": "Membro sbannato",
+                            "sentDM": "Messaggio privato inviato",
+                            "pollStarted": "Sondaggio avviato",
+                            "pollEnded": "Sondaggio terminato",
+                            "purgedChannel": "Canale ripulito",
+                            "slowmodeChanged": "Modalità lenta cambiata",
+                            "experienceModified": "Esperienza modificata",
+                            "memberJoined": "Membro entrato",
+                            "botJoined": "Bot entrato",
+                            "memberLeaved": "Membro uscito",
+                            "voiceMoves": "Spostamenti vocali",
+                            "memberReports": "Segnalazioni dei membri"
+                        },
+                        "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
+                    },
+                    "moderation": {
+                        "headerMessage": "Questo modulo ti permette di configurare le funzioni di moderazione del bot",
+                        "promptMessage": "Seleziona un'opzione",
+                        "choices": {
+                            "changeModuleStatus": {
+                                "enable": "Attiva il modulo",
+                                "disable": "Disattiva il modulo",
+                                "wantsToExpireSanctions": "Vuoi far scadere ora le sanzioni che dovevano scadere?",
+                                "affirmativeAnswer": "Sì",
+                                "negativeAnswer": "No"
+                            },
+                            "changeAutomodStatus": {
+                                "enable": "Attiva la moderazione automatica",
+                                "disable": "Disattiva la moderazione automatica"
+                            },
+                            "changeManualModerationStatus": {
+                                "enable": "Attiva la moderazione manuale",
+                                "disable": "Disattiva la moderazione manuale"
+                            },
+                            "setCommands": "Configura i comandi",
+                            "return": "Indietro"
+                        },
+                        "setCommandsMenu": {
+                            "headerMessage": "Seleziona la categoria di comandi da configurare",
+                            "promptMessage": "Seleziona un tipo di comando",
+                            "choices": {
+                                "chatCommands": "Comandi di chat",
+                                "messageCommands": "Comandi dei messaggi",
+                                "userCommands": "Comandi degli utenti",
+                                "return": "Indietro"
+                            },
+                            "setChatCommandsMenu": {
+                                "headerMessage": "Gestisci lo stato dei singoli comandi di chat di moderazione",
+                                "promptMessage": "Seleziona un comando da configurare",
+                                "choices": {
+                                    "return": "Indietro"
+                                }
+                            },
+                            "setMessageCommandsMenu": {
+                                "headerMessage": "Gestisci lo stato dei singoli comandi dei messaggi di moderazione",
+                                "promptMessage": "Seleziona un comando da configurare",
+                                "choices": {
+                                    "return": "Indietro"
+                                }
+                            },
+                            "setUserCommandsMenu": {
+                                "headerMessage": "Gestisci lo stato dei singoli comandi degli utenti di moderazione",
+                                "promptMessage": "Seleziona un comando da configurare",
+                                "choices": {
+                                    "return": "Indietro"
+                                }
+                            }
+                        },
+                        "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
+                    },
+                    "engagement": {
+                        "headerMessage": "Questo modulo ti permette di configurare le funzioni di coinvolgimento del bot",
+                        "promptMessage": "Seleziona un'opzione",
+                        "choices": {
+                            "changeModuleStatus": {
+                                "enable": "Attiva il modulo",
+                                "disable": "Disattiva il modulo"
+                            },
+                            "changeExperienceSystemStatus": {
+                                "enable": "Attiva il sistema di esperienza",
+                                "disable": "Disattiva il sistema di esperienza"
+                            },
+                            "experience": "Esperienza",
+                            "statistics": "Statistiche",
+                            "setCommands": "Configura i comandi",
+                            "return": "Indietro"
+                        },
+                        "setCommandsMenu": {
+                            "headerMessage": "Seleziona la categoria di comandi da configurare",
+                            "promptMessage": "Seleziona un tipo di comando",
+                            "choices": {
+                                "chatCommands": "Comandi di chat",
+                                "return": "Indietro"
+                            },
+                            "setChatCommandsMenu": {
+                                "headerMessage": "Gestisci lo stato dei singoli comandi di chat di coinvolgimento",
+                                "promptMessage": "Seleziona un comando da configurare",
+                                "choices": {
+                                    "return": "Indietro"
+                                }
+                            }
+                        },
+                        "rewardsUpdate": {
+                            "removePrompt": "Il sistema di esperienza non è più attivo. Vuoi rimuovere i ruoli di ricompensa da tutti i membri? (si potranno ricalcolare quando sarà di nuovo attivo)",
+                            "recalculatePrompt": "Il sistema di esperienza è di nuovo attivo. Vuoi ricalcolare i ruoli di ricompensa di tutti i membri in base al loro livello salvato?",
+                            "yes": "Sì",
+                            "no": "No",
+                            "processing": "Aggiornamento dei ruoli di ricompensa in corso, potrebbe volerci un po'",
+                            "removed": "I ruoli di ricompensa sono stati rimossi da {{count}} membri",
+                            "recalculated": "I ruoli di ricompensa di {{count}} membri sono stati ricalcolati",
+                            "missingPermissions": "Il bot non ha il permesso di gestire i ruoli"
+                        },
+                        "experienceMenu": {
+                            "headerMessage": "Configura il sistema di esperienza: come i membri guadagnano esperienza, le ricompense di livello e le notifiche di aumento di livello",
+                            "choices": {
+                                "rewards": "Ricompense di livello",
+                                "rewardMessages": "Guadagna EXP scrivendo messaggi",
+                                "rewardVoice": "Guadagna EXP nei canali vocali",
+                                "xpReward": "EXP per ricompensa (minimo - massimo)",
+                                "XPGainInterval": "Intervallo per guadagnare EXP nei canali vocali",
+                                "minimumTimeBetweenMessages": "Tempo minimo tra messaggi per guadagnare EXP",
+                                "wontEarnXP": "Ruoli che non guadagneranno EXP",
+                                "nonXPChannels": "Canali senza EXP",
+                                "notifyLevelUpOnChat": "Notifica nella chat quando si sale di livello scrivendo",
+                                "notifyLevelUpOnVoice": "Notifica in privato quando si sale di livello nei canali vocali",
+                                "preserveExperience": "Conserva l'esperienza e il livello dei membri che se ne vanno",
+                                "resetExperience": "Azzera l'esperienza e il livello di tutti i membri"
+                            },
+                            "prompts": {
+                                "enterMinimumXp": "Inserisci l'EXP minima per ricompensa",
+                                "enterMaximumXp": "Inserisci l'EXP massima per ricompensa",
+                                "enterXPGainInterval": "Inserisci ogni quanti secondi si guadagna EXP nei canali vocali",
+                                "enterMinimumTimeBetweenMessages": "Inserisci i secondi minimi tra un messaggio e l'altro per guadagnare EXP"
+                            },
+                            "resetAbsent": {
+                                "warning": "Ci sono l'esperienza e il livello salvati di {{count}} membri che non sono più nel server. Se li azzeri, non si potranno recuperare",
+                                "prompt": "Vuoi azzerarli ora? Questa azione non può essere annullata",
+                                "done": "L'esperienza e il livello di {{count}} membri sono stati azzerati"
+                            },
+                            "resetAll": {
+                                "warning": "L'esperienza e il livello di tutti i membri verranno impostati a 0. Questa azione non può essere annullata",
+                                "prompt": "Vuoi azzerare l'esperienza e il livello di tutti i membri?",
+                                "done": "L'esperienza e il livello di tutti i membri sono stati azzerati",
+                                "removeRolesPrompt": "Vuoi rimuovere anche i ruoli di ricompensa da tutti i membri?"
+                            },
+                            "lists": {
+                                "wontEarnXP": {
+                                    "headerMessage": "I membri con uno di questi ruoli non guadagneranno EXP",
+                                    "add": "Aggiungi ruolo",
+                                    "remove": "Rimuovi ruolo",
+                                    "selectToRemove": "Seleziona il ruolo da rimuovere"
+                                },
+                                "nonXPChannels": {
+                                    "headerMessage": "In questi canali non si guadagna EXP",
+                                    "add": "Aggiungi canale",
+                                    "remove": "Rimuovi canale",
+                                    "selectToRemove": "Seleziona il canale da rimuovere"
+                                }
+                            }
+                        },
+                        "statisticsMenu": {
+                            "headerMessage": "Configura le statistiche dei membri (messaggi inviati e tempo in vocale)",
+                            "choices": {
+                                "collectMessagesCount": "Conta i messaggi inviati",
+                                "collectVoiceTime": "Conta il tempo in vocale",
+                                "preserveStats": "Conserva le statistiche dei membri che se ne vanno",
+                                "resetMessagesCount": "Azzera i messaggi inviati di tutti i membri",
+                                "resetVoiceTime": "Azzera il tempo in vocale di tutti i membri"
+                            },
+                            "resetAbsent": {
+                                "warning": "Ci sono statistiche salvate di {{count}} membri che non sono più nel server. Se le azzeri, non si potranno recuperare",
+                                "prompt": "Vuoi azzerarle ora? Questa azione non può essere annullata",
+                                "done": "Le statistiche di {{count}} membri sono state azzerate"
+                            },
+                            "resetAll": {
+                                "messagesCount": {
+                                    "warning": "I messaggi inviati di tutti i membri verranno impostati a 0. Questa azione non può essere annullata",
+                                    "prompt": "Vuoi azzerare i messaggi inviati di tutti i membri?",
+                                    "done": "I messaggi inviati di tutti i membri sono stati azzerati"
+                                },
+                                "aproxVoiceTime": {
+                                    "warning": "Il tempo in vocale di tutti i membri verrà impostato a 0. Questa azione non può essere annullata",
+                                    "prompt": "Vuoi azzerare il tempo in vocale di tutti i membri?",
+                                    "done": "Il tempo in vocale di tutti i membri è stato azzerato"
+                                }
+                            }
+                        },
+                        "rewardsMenu": {
+                            "headerMessage": "I membri ottengono i ruoli di ogni ricompensa quando raggiungono il suo livello",
+                            "level": "Livello",
+                            "choices": {
+                                "addReward": "Aggiungi ricompensa",
+                                "removePreviousRewards": "Rimuovi le ricompense precedenti quando se ne ottiene una nuova",
+                                "changeLevel": "Cambia livello",
+                                "addRole": "Aggiungi ruolo",
+                                "removeRole": "Rimuovi ruolo",
+                                "deleteReward": "Elimina ricompensa"
+                            },
+                            "prompts": {
+                                "enterLevel": "Inserisci il livello richiesto",
+                                "rewardSaved": "Ricompensa salvata correttamente!",
+                                "roleAboveBot": "Questo ruolo è sopra il ruolo più alto del bot, quindi il bot non potrà assegnarlo finché non lo sposterai più in basso",
+                                "levelInUse": "Esiste già una ricompensa per quel livello",
+                                "selectRoleToRemove": "Seleziona il ruolo da rimuovere",
+                                "deleteConfirmation": "Vuoi eliminare questa ricompensa? I membri che hanno già i suoi ruoli li conserveranno",
+                                "recalculatePrompt": "Le ricompense sono cambiate. Vuoi ricalcolare ora i ruoli di ricompensa di tutti i membri in base al loro livello salvato?"
+                            }
+                        },
+                        "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
+                    },
+                    "greetings": {
+                        "headerMessage": "Questo modulo ti permette di configurare le funzioni di benvenuto del bot",
+                        "promptMessage": "Seleziona un'opzione",
+                        "choices": {
+                            "changeModuleStatus": {
+                                "enable": "Attiva il modulo",
+                                "disable": "Disattiva il modulo"
+                            },
+                            "newMemberMode": "Momento del benvenuto",
+                            "newMemberRole": "Ruolo per i nuovi membri",
+                            "newBotRole": "Ruolo per i nuovi bot",
+                            "publicWelcome": "Benvenuto pubblico",
+                            "privateWelcome": "Benvenuto privato",
+                            "return": "Indietro"
+                        },
+                        "modes": {
+                            "onJoin": "All'ingresso nel server",
+                            "afterScreening": "All'accettazione delle regole del server"
+                        },
+                        "prompts": {
+                            "selectMode": "Seleziona quando dare il benvenuto ai nuovi membri",
+                            "clearRoleSuccess": "Ruolo rimosso correttamente!",
+                            "roleSuccess": "Ruolo aggiornato correttamente!"
+                        },
+                        "welcomeMenu": {
+                            "headers": {
+                                "public": "Configura il messaggio di benvenuto inviato in un canale del server",
+                                "private": "Configura il messaggio di benvenuto inviato in privato ai nuovi membri"
+                            },
+                            "customMessage": "Messaggio attuale (personalizzato)",
+                            "defaultMessage": "Messaggio attuale (predefinito)",
+                            "choices": {
+                                "enable": "Attiva il benvenuto",
+                                "disable": "Disattiva il benvenuto",
+                                "channel": "Canale",
+                                "format": "Formato",
+                                "editMessage": "Modifica il messaggio",
+                                "restoreMessage": "Ripristina il messaggio predefinito",
+                                "recovery": "Quando il bot era offline"
+                            },
+                            "formats": {
+                                "text": "Testo semplice",
+                                "embed": "Incorporato"
+                            },
+                            "recovery": {
+                                "none": "Non inviare",
+                                "all": "Invia tutti",
+                                "limit": "Fino a",
+                                "limitOption": "Invia solo se non superano un limite",
+                                "yes": "Invia",
+                                "no": "Non inviare"
+                            },
+                            "prompts": {
+                                "noChannelError": "Devi scegliere un canale prima di attivare il benvenuto pubblico",
+                                "channelSuccess": "Canale aggiornato correttamente!",
+                                "selectFormat": "Seleziona il formato del messaggio",
+                                "embedMentionsWarning": "Le menzioni all'interno degli embed vengono mostrate, ma non notificano il membro",
+                                "wildcardsHelp": "Segnaposto disponibili",
+                                "lineBreaksHelp": "Scrivi \\n per andare a capo",
+                                "enterMessage": "Inserisci il messaggio",
+                                "messageTooLong": "Il messaggio non può superare i 2000 caratteri",
+                                "messageSuccess": "Messaggio aggiornato correttamente!",
+                                "messageRestored": "Messaggio predefinito ripristinato correttamente!",
+                                "recoveryHelp": "Quando il bot si avvia, dà il benvenuto ai membri entrati mentre era offline. I ruoli e il registro vengono sempre recuperati, quindi scegli se inviare anche questo messaggio",
+                                "selectRecovery": "Seleziona se inviare i benvenuti mancati",
+                                "limitWarning": "Se sono entrati molti membri mentre il bot era offline, potrebbe inviare troppi messaggi di seguito",
+                                "enterLimit": "Inserisci il numero massimo di benvenuti da inviare"
+                            }
+                        },
+                        "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
+                    },
+                    "polls": {
+                        "headerMessage": "Questo modulo ti permette di configurare le funzioni dei sondaggi del bot",
+                        "promptMessage": "Seleziona un'opzione",
+                        "choices": {
+                            "changeModuleStatus": {
+                                "enable": "Attiva il modulo",
+                                "disable": "Disattiva il modulo",
+                                "wantsToExpirePolls": "Vuoi far scadere ora i sondaggi che dovevano scadere?",
+                                "affirmativeAnswer": "Sì",
+                                "negativeAnswer": "No"
+                            },
+                            "setCommands": "Configura i comandi",
+                            "return": "Indietro"
+                        },
+                        "setCommandsMenu": {
+                            "headerMessage": "Seleziona la categoria di comandi da configurare",
+                            "promptMessage": "Seleziona un tipo di comando",
+                            "choices": {
+                                "chatCommands": "Comandi di chat",
+                                "return": "Indietro"
+                            },
+                            "setChatCommandsMenu": {
+                                "headerMessage": "Gestisci lo stato dei singoli comandi di chat dei sondaggi",
+                                "promptMessage": "Seleziona un comando da configurare",
+                                "choices": {
+                                    "return": "Indietro"
+                                }
+                            }
+                        },
+                        "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
+                    },
+                    "utilities": {
+                        "headerMessage": "Questo modulo ti permette di configurare le utilità del bot",
+                        "promptMessage": "Seleziona un'opzione",
+                        "choices": {
+                            "changeModuleStatus": {
+                                "enable": "Attiva il modulo",
+                                "disable": "Disattiva il modulo"
+                            },
+                            "setCommands": "Configura i comandi",
+                            "return": "Indietro"
+                        },
+                        "setCommandsMenu": {
+                            "headerMessage": "Seleziona la categoria di comandi da configurare",
+                            "promptMessage": "Seleziona un tipo di comando",
+                            "choices": {
+                                "chatCommands": "Comandi di chat",
+                                "return": "Indietro"
+                            },
+                            "setChatCommandsMenu": {
+                                "headerMessage": "Gestisci lo stato dei singoli comandi di chat delle utilità",
+                                "promptMessage": "Seleziona un comando da configurare",
+                                "choices": {
+                                    "return": "Indietro"
+                                }
+                            }
+                        },
+                        "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
+                    },
+                    "scheduledMessages": {
+                        "headerMessage": "Questo modulo ti permette di programmare messaggi da inviare automaticamente",
+                        "promptMessage": "Seleziona un'opzione",
+                        "choices": {
+                            "changeModuleStatus": {
+                                "enable": "Attiva il modulo",
+                                "disable": "Disattiva il modulo"
+                            },
+                            "setCommands": "Configura i comandi",
+                            "return": "Indietro"
+                        },
+                        "setCommandsMenu": {
+                            "headerMessage": "Seleziona la categoria di comandi da configurare",
+                            "promptMessage": "Seleziona un tipo di comando",
+                            "choices": {
+                                "chatCommands": "Comandi di chat",
+                                "return": "Indietro"
+                            },
+                            "setChatCommandsMenu": {
+                                "headerMessage": "Gestisci lo stato dei singoli comandi di chat dei messaggi programmati",
+                                "promptMessage": "Seleziona un comando da configurare",
+                                "noCommandsAvailable": "Non ci sono ancora comandi disponibili per il modulo dei messaggi programmati",
+                                "choices": {
+                                    "return": "Indietro"
+                                }
+                            }
+                        },
+                        "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
+                    }
+                },
+                "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
+            },
+            "update": {
+                "promptMessage": "Seleziona un'opzione",
+                "choices": {
+                    "checkAgain": "Controlla di nuovo",
+                    "switchToBeta": "Passa alla beta",
+                    "switchToStable": "Passa alla stabile",
+                    "return": "Indietro"
+                },
+                "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli",
+                "checkingForUpdates": "Controllo della presenza di nuovi aggiornamenti",
+                "updatedCorrectly": "Il bot è stato aggiornato correttamente a {{targetVersion}}!",
+                "noReleaseNotes": "Non ci sono note di rilascio disponibili per questa versione",
+                "newVersionAvailable": "È disponibile la versione {{targetVersion}}!",
+                "releaseNotes": "Note di rilascio",
+                "updateConfirmationPromptMessage": "Vuoi aggiornare il bot?",
+                "updateConfirmationChoices": {
+                    "yes": "Sì",
+                    "no": "No"
+                },
+                "couldNotFetchUpdate": "Si è verificato un errore durante la ricerca degli aggiornamenti",
+                "alreadyUpdated": "Il bot è già aggiornato all'ultima versione",
+                "downloadingNewVersion": "Download di {{targetVersion}} da {{repositoryURL}}",
+                "newVersionDownloaded": "{{targetVersion}} è stata scaricata e installata correttamente",
+                "needsRestart": "Il bot deve essere riavviato per applicare le modifiche.\nSe non lo fai ora, il processo si interromperà automaticamente dopo 30 secondi.\nSe usi un gestore di processi come PM2 o Docker, il bot si riavvierà automaticamente.\nAltrimenti, dovrai riavviarlo manualmente",
+                "restartConfirmationPrompt": {
+                    "message": "Vuoi riavviare ora?",
+                    "restartNow": "Riavvia ora"
+                }
+            },
+            "logs": {
+                "promptMessage": "Seleziona un'opzione",
+                "choices": {
+                    "refresh": "Aggiorna",
+                    "return": "Indietro"
+                },
+                "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli",
+                "noStoredLogs": "Non ci sono log salvati. Riprova più tardi"
+            },
+            "information": {
+                "promptMessage": "Seleziona un'opzione",
+                "choices": {
+                    "refresh": "Aggiorna",
+                    "return": "Indietro"
+                },
+                "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli",
+                "appInfo": {
+                    "header": "Informazioni sul bot",
+                    "appVersion": "Versione dell'applicazione",
+                    "appAuthor": "Autore dell'applicazione",
+                    "repoUrl": "URL del repository",
+                    "license": "Licenza",
+                    "appName": "Nome dell'applicazione",
+                    "appId": "ID dell'applicazione",
+                    "language": "Lingua configurata",
+                    "uptime": "Tempo di attività",
+                    "connectionStatus": "Stato della connessione",
+                    "activityType": "Tipo di attività",
+                    "activityName": "Nome dell'attività"
+                },
+                "guildInfo": {
+                    "header": "Informazioni sul server gestito",
+                    "guildName": "Nome del server",
+                    "guildId": "ID del server",
+                    "availability": "Disponibilità",
+                    "guildAvailable": "Disponibile",
+                    "guildNotAvailable": "Server non disponibile",
+                    "totalMembers": "Membri totali",
+                    "onlineMembers": "Membri online",
+                    "humanMembers": "Membri umani",
+                    "botMembers": "Membri bot"
+                },
+                "databasesInfo": {
+                    "header": "Informazioni sui database",
+                    "storedProfiles": "Profili salvati",
+                    "totalMessages": "Messaggi esaminati in totale",
+                    "totalVoice": "Tempo in vocale totale",
+                    "totalExperience": "Esperienza guadagnata in totale",
+                    "totalWarns": "Numero di avvertenze",
+                    "totalBans": "Ban attivi",
+                    "totalTimeouts": "Silenziamenti attivi",
+                    "totalPolls": "Sondaggi attivi",
+                    "totalScheduledMessages": "Messaggi programmati"
+                }
+            },
+            "license": {
+                "promptMessage": "Seleziona un'opzione",
+                "choices": {
+                    "return": "Indietro"
+                },
+                "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
+            },
+            "shared": {
+                "promptMessage": "Seleziona un'opzione",
+                "return": "Indietro",
+                "yes": "Sì",
+                "no": "No",
+                "emptyList": "(vuoto)",
+                "none": "Nessuno",
+                "invalidNumber": "Inserisci un numero intero tra {{minimum}} e {{maximum}}",
+                "invalidMinimum": "Inserisci un numero intero maggiore o uguale a {{minimum}}",
+                "selectSearchMethod": "Seleziona il metodo di ricerca",
+                "searchRoleByName": "Cerca ruolo per nome",
+                "enterRoleIdManually": "Inserisci l'ID del ruolo manualmente",
+                "enterRoleNameSearch": "Inserisci il nome del ruolo da cercare",
+                "noRolesFound": "Nessun ruolo corrisponde alla tua ricerca",
+                "selectRole": "Seleziona un ruolo",
+                "enterRoleId": "Inserisci l'ID del ruolo di Discord",
+                "roleNotFound": "Ruolo non trovato (non si possono scegliere i ruoli delle integrazioni né @everyone)",
+                "clearRole": "Rimuovi il ruolo",
+                "searchChannelByName": "Cerca canale per nome",
+                "enterChannelIdManually": "Inserisci l'ID del canale manualmente",
+                "enterChannelNameSearch": "Inserisci il nome del canale da cercare",
+                "noChannelsFound": "Nessun canale corrisponde alla tua ricerca",
+                "selectChannel": "Seleziona un canale",
+                "enterChannelId": "Inserisci l'ID del canale",
+                "searchMemberByName": "Cerca membro per nome",
+                "enterMemberIdManually": "Inserisci l'ID del membro manualmente",
+                "enterMemberNameSearch": "Inserisci il nome utente o il nickname da cercare",
+                "noMembersFound": "Nessun membro corrisponde alla tua ricerca",
+                "selectMember": "Seleziona un membro",
+                "enterMemberId": "Inserisci l'ID di Discord del membro",
+                "memberNotFound": "Membro non trovato",
+                "emptyValue": "Il valore non può essere vuoto"
             }
         },
         "moderation": {
             "manageWarn": {
-                "kickFunction": {
-                    "privateEmbed": {
-                        "author": "[ESPULSO]",
-                        "moderator": "Moderatore",
-                        "reason": "Motivo"
+                "timeoutFunction": {
+                    "reason": "Troppe avvertenze",
+                    "notificationEmbed": {
+                        "initiated": "**{{memberTag}}** è stato silenziato per aver accumulato __troppe avvertenze__",
+                        "extended": "Il silenziamento di **{{memberTag}}** è stato prolungato perché ha accumulato __altre avvertenze__"
                     }
                 },
-                "banFunction": {
+                "kickFunction": {
+                    "notificationEmbed": "{{memberTag}} è stato espulso per aver accumulato __troppe avvertenze__",
                     "privateEmbed": {
+                        "author": "[ESPULSO]",
+                        "description": "{{member}}, sei stato espulso da {{guildName}}",
+                        "moderator": "Moderatore",
+                        "reason": "Motivo"
+                    },
+                    "reason": "Troppe avvertenze"
+                },
+                "banFunction": {
+                    "notificationEmbed": "{{memberTag}} è stato bannato per aver accumulato __troppe avvertenze__",
+                    "privateEmbed": {
+                        "author": "[BANNATO]",
+                        "description": "{{member}}, sei stato bannato da {{guildName}}",
                         "moderator": "Moderatore",
                         "reason": "Motivo",
                         "expiration": "Scadenza",
                         "noExpiration": "Non scade"
-                    }
+                    },
+                    "reason": "Troppe avvertenze"
                 },
                 "warn": {
                     "privateEmbed": {
+                        "author": "[AMMONITO]",
+                        "description": "{{member}}, sei stato ammonito in {{guildName}}",
                         "moderator": "Moderatore",
                         "reason": "Motivo"
                     },
+                    "notificationEmbed": "Il membro **{{memberTag}}** è stato ammonito per __{{warnReason}}__",
                     "loggingEmbed": {
+                        "author": "{{memberTag}} è stato AMMONITO",
                         "memberId": "ID del Membro",
                         "moderator": "Moderatore",
                         "reason": "Motivo",
@@ -961,25 +1975,66 @@
                         "channel": "Canale",
                         "infractions": "Infrazioni"
                     }
-                },
-                "error": "ERROR"
+                }
             },
             "checkUsername": {
+                "kickReason": "Il nome utente conteneva una parola vietata",
                 "privateEmbed": {
                     "author": "[ESPULSO]",
+                    "description": "{{member}}, sei stato espulso da {{guildName}}",
                     "moderator": "Moderatore",
-                    "reasonTitle": "Motivo"
+                    "reasonTitle": "Motivo",
+                    "reasonDescription": "Il tuo nome utente contiene una parola vietata nella community"
                 }
             },
             "syncTimeout": {
-                "reason": "Was untimeouted while the memebr was not in the guild"
+                "reason": "Il silenziamento è stato tolto mentre il membro non era nel server"
+            },
+            "checkMessage": {
+                "filteredDm": "tramite messaggio privato"
             }
         },
-        "utilities": {
+        "utils": {
             "msToTime": {
-                "years": "year/s",
-                "months": "month/s",
-                "days": "day/s"
+                "years": "anno/i",
+                "months": "mese/i",
+                "days": "giorno/i"
+            }
+        }
+    },
+    "models": {
+        "config": {
+            "automodFilters": {
+                "flood": {
+                    "reason": "Flood nel canale"
+                },
+                "crossPost": {
+                    "reason": "Messaggi ripetuti"
+                },
+                "bannedWords": {
+                    "reason": "Parola vietata"
+                },
+                "invites": {
+                    "reason": "Invito non consentito"
+                },
+                "uppercase": {
+                    "reason": "Troppe lettere maiuscole"
+                },
+                "links": {
+                    "reason": "Link non consentito"
+                },
+                "massEmojis": {
+                    "reason": "Troppe emoji"
+                },
+                "massMentions": {
+                    "reason": "Troppe menzioni"
+                },
+                "massSpoilers": {
+                    "reason": "Troppi spoiler"
+                },
+                "repeatedText": {
+                    "reason": "Testo ripetitivo"
+                }
             }
         }
     }

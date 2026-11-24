@@ -1,4 +1,55 @@
 {
+    "permissions": {
+        "CreateInstantInvite": "创建邀请",
+        "KickMembers": "踢出成员",
+        "BanMembers": "封禁成员",
+        "Administrator": "管理员",
+        "ManageChannels": "管理频道",
+        "ManageGuild": "管理服务器",
+        "AddReactions": "添加反应",
+        "ViewAuditLog": "查看审核日志",
+        "PrioritySpeaker": "优先发言",
+        "Stream": "视频",
+        "ViewChannel": "查看频道",
+        "SendMessages": "发送消息",
+        "SendTTSMessages": "发送文字转语音消息",
+        "ManageMessages": "管理消息",
+        "EmbedLinks": "嵌入链接",
+        "AttachFiles": "附加文件",
+        "ReadMessageHistory": "阅读消息历史",
+        "MentionEveryone": "提及 @everyone、@here 和所有身份组",
+        "UseExternalEmojis": "使用外部表情符号",
+        "ViewGuildInsights": "查看服务器分析",
+        "Connect": "连接",
+        "MuteMembers": "将成员静音",
+        "DeafenMembers": "将成员拒听",
+        "MoveMembers": "移动成员",
+        "UseVAD": "使用语音活动",
+        "ChangeNickname": "更改昵称",
+        "ManageNicknames": "管理昵称",
+        "ManageRoles": "管理身份组",
+        "ManageWebhooks": "管理 Webhook",
+        "ManageGuildExpressions": "管理表情",
+        "UseApplicationCommands": "使用应用命令",
+        "RequestToSpeak": "请求发言",
+        "ManageEvents": "管理活动",
+        "ManageThreads": "管理子区",
+        "CreatePublicThreads": "创建公开子区",
+        "CreatePrivateThreads": "创建私密子区",
+        "UseExternalStickers": "使用外部贴纸",
+        "SendMessagesInThreads": "在子区中发送消息",
+        "UseEmbeddedActivities": "使用活动",
+        "ModerateMembers": "禁言成员",
+        "ViewCreatorMonetizationAnalytics": "查看创作者收益分析",
+        "UseSoundboard": "使用音效板"
+    },
+    "status": {
+        "enabled": "已启用",
+        "disabled": "已禁用"
+    },
+    "index": {
+        "startupMsg": "机器人正在启动，请稍候"
+    },
     "handlers": {
         "buttons": {
             "updateNotifications": {
@@ -26,446 +77,1964 @@
                                 "description": "提供此行为的理由"
                             },
                             "days": {
-                                "name": "days_to_delete",
+                                "name": "days to delete",
                                 "description": "写出1到7之间的数量"
                             },
-                            "duration": {
-                                "name": "持续时间",
-                                "description": "输入持续时间，格式为：天 \"D\" - 分钟 \"M\" - 小时 \"H\" - 秒 \"S\""
+                            "expiration": {
+                                "name": "expiration",
+                                "description": "选择封禁的到期时间",
+                                "choices": {
+                                    "fiveMinutes": "5 分钟",
+                                    "fifteenMinutes": "15 分钟",
+                                    "thirtyMinutes": "30 分钟",
+                                    "oneHour": "1 小时",
+                                    "sixHours": "6 小时",
+                                    "twelveHours": "12 小时",
+                                    "oneDay": "1 天",
+                                    "threeDays": "3 天",
+                                    "oneWeek": "1 周",
+                                    "oneMonth": "1 个月",
+                                    "threeMonths": "3 个月",
+                                    "sixMonths": "6 个月",
+                                    "nineMonths": "9 个月",
+                                    "oneYear": "1 年"
+                                }
                             }
                         }
                     },
                     "userNotFound": "未找到用户。你必须提到一个成员或写出它的ID。\n如果该用户不在服务器上，你必须指定它的ID",
                     "noBots": "你无法禁止机器人",
                     "badHierarchy": "你无法禁止一个权力等于或高于你的成员",
+                    "badBotHierarchy": "你无法封禁身份组等于或高于机器人的成员",
                     "alreadyBanned": "该用户已被禁止",
                     "cantPermaBan": "你不具备永久禁止权限",
-                    "wrongMagnitudes": "你必须写一个持续时间，格式为：天 \"D\"|分钟 \"M\"|小时 \"H\"|秒 \"S\"",
                     "exceededDuration": "你最多只能禁止`{{time}}`",
                     "noReason": "你必须提供一个理由",
+                    "cantSoftBan": "你没有在封禁时删除消息的权限",
+                    "undefinedReason": "未指定",
                     "privateEmbed": {
-                        "deletedDays": "Days of messages deleted"
+                        "author": "[已封禁]",
+                        "description": "{{user}}，你已被 {{guildName}} 封禁",
+                        "moderator": "版主",
+                        "reason": "原因",
+                        "deletedDays": "删除的消息天数",
+                        "noDeletedDays": "无",
+                        "expiration": "到期时间",
+                        "noExpiration": "永不过期"
+                    },
+                    "notificationEmbed": {
+                        "withReason": "**{{userTag}}** 因 __{{reason}}__ 被封禁",
+                        "withoutReason": "**{{userTag}}** 被封禁了"
                     }
                 },
                 "dm": {
                     "appData": {
                         "name": "dm",
+                        "description": "机器人将向该成员发送一条消息",
                         "options": {
                             "user": {
-                                "name": "user"
+                                "name": "user",
+                                "description": "选择一位用户或输入其 ID"
                             },
                             "mode": {
-                                "name": "mode"
+                                "name": "mode",
+                                "description": "指定发送方式",
+                                "choices": {
+                                    "author": "作者",
+                                    "anonymous": "匿名"
+                                }
                             },
                             "type": {
-                                "name": "type"
+                                "name": "type",
+                                "description": "指定消息类型",
+                                "choices": {
+                                    "embed": "嵌入",
+                                    "normal": "普通"
+                                }
                             }
                         }
-                    }
+                    },
+                    "unknownMember": "未找到该成员。你必须提及一位成员或输入其 ID",
+                    "noBots": "你无法与机器人开始对话",
+                    "normalFrom": "来自 {{authorTag}} 的消息",
+                    "embedFrom": "消息来自",
+                    "unauthorized": "{{interactionAuthor}}，你没有执行此操作的权限",
+                    "bodyModal": {
+                        "title": "发送带格式的消息",
+                        "fieldTitle": "消息正文",
+                        "fieldPlaceholder": "为消息写一段正文"
+                    },
+                    "loggingEmbed": {
+                        "title": "日志 - [私信]",
+                        "description": "{{authorTag}} 通过 {{botUser}} 向 {{memberTag}} 发送了一条私信",
+                        "date": "日期",
+                        "mode": "方式",
+                        "type": "类型",
+                        "content": "内容"
+                    },
+                    "notificationEmbed": "消息已发送！",
+                    "cantReceiveDms": "该成员不接受来自 {{botUser}} 的私信"
                 },
                 "edit": {
                     "appData": {
                         "name": "edit",
+                        "description": "编辑机器人之前发送的消息",
                         "options": {
                             "channel": {
-                                "name": "channel"
+                                "name": "channel",
+                                "description": "选择要编辑的消息所在的频道"
                             },
                             "id": {
-                                "name": "id"
+                                "name": "id",
+                                "description": "输入要编辑的消息的 ID"
                             },
                             "content": {
-                                "name": "content"
+                                "name": "content",
+                                "description": "写下消息的新内容"
                             }
                         }
+                    },
+                    "noChannel": "ID 为 `{{id}}` 的频道不存在",
+                    "noBotPermission": "机器人需要在 {{channel}} 中拥有以下权限才能编辑该消息：{{missingPermissions}}",
+                    "msgNotFound": "ID 为 `{{msgId}}` 的消息不存在",
+                    "cantEdit": "我无法编辑不是我发送的消息",
+                    "bodyModal": {
+                        "title": "编辑带格式的消息",
+                        "fieldTitle": "消息正文",
+                        "fieldPlaceholder": "为消息写一段新的正文"
+                    },
+                    "correctEmbed": {
+                        "title": "操作已完成",
+                        "description": "消息已成功修改"
                     }
                 },
                 "infractions": {
                     "appData": {
                         "name": "infractions",
+                        "description": "显示成员的违规列表及其对应的 ID",
                         "options": {
                             "user": {
-                                "name": "user"
+                                "name": "user",
+                                "description": "选择一位用户或输入其 ID"
                             }
                         }
                     },
-                    "timeoutedUntil": "Muted until"
+                    "nonPrivileged": "{{interactionAuthor}}，你没有执行此操作的权限",
+                    "noBots": "你无法获取机器人的信息",
+                    "memberNotFound": "未找到该成员的数据",
+                    "warnSystemExecutor": "内置审核",
+                    "unknownModerator": "未知的版主",
+                    "timeoutedUntil": "禁言至",
+                    "noTimeout": "无",
+                    "infractionsEmbed": {
+                        "title": "违规记录",
+                        "description": "正在显示成员 **{{member}}** 的违规记录。\n当前处罚：{{sanction}}",
+                        "last24h": "最近 24 小时",
+                        "last7d": "最近 7 天",
+                        "total": "总计",
+                        "list": "违规列表",
+                        "noList": "无",
+                        "page": "第 {{actualPage}} 页，共 {{totalPages}} 页"
+                    }
                 },
                 "invitation": {
                     "appData": {
-                        "name": "invitation"
+                        "name": "invitation",
+                        "description": "在规则频道或第一个允许的文字频道中获取一个永久邀请链接"
                     },
-                    "embed": {
-                        "author": "Permanent invite",
-                        "footer": "This link never expires and has unlimited uses"
+                    "inviteReason": "{{botTag}} 例行任务",
+                    "noTargetChannel": "没有任何频道允许机器人创建邀请",
+                    "resultEmbed": {
+                        "author": "永久邀请",
+                        "footer": "此链接永不过期，且可无限次使用"
                     }
                 },
                 "kick": {
                     "appData": {
                         "name": "kick",
+                        "description": "踢出一位成员",
                         "options": {
                             "user": {
-                                "name": "user"
+                                "name": "user",
+                                "description": "选择一位用户或输入其 ID"
                             },
                             "reason": {
-                                "name": "reason"
+                                "name": "reason",
+                                "description": "提供此操作的原因"
                             }
                         }
+                    },
+                    "memberNotFound": "未找到该成员。你必须提及一位成员或输入其 ID",
+                    "noBots": "你无法踢出机器人",
+                    "badHierarchy": "你无法踢出身份组等于或高于你的成员",
+                    "badBotHierarchy": "你无法踢出身份组等于或高于机器人的成员",
+                    "noReason": "你必须提供一个原因",
+                    "undefinedReason": "未指定",
+                    "privateEmbed": {
+                        "author": "[已踢出]",
+                        "description": "{{member}}，你已被踢出 {{guildName}}",
+                        "moderator": "版主",
+                        "reason": "原因"
+                    },
+                    "notificationEmbed": {
+                        "withReason": "**{{memberTag}}** 因 __{{reason}}__ 被踢出",
+                        "withoutReason": "**{{memberTag}}** 被踢出了"
                     }
                 },
                 "leaderboard": {
                     "appData": {
                         "name": "leaderboard",
+                        "description": "显示社区的经验值排行榜",
                         "options": {
-                            "page": {
-                                "name": "page"
-                            },
                             "type": {
-                                "name": "type"
+                                "name": "type",
+                                "description": "选择要显示的排行类型",
+                                "choices": {
+                                    "experience": "经验值",
+                                    "aproxVoiceTime": "语音时长",
+                                    "messagesCount": "已发送消息",
+                                    "antiquity": "加入时长"
+                                }
+                            },
+                            "page": {
+                                "name": "page",
+                                "description": "输入要查看的页码"
                             }
                         }
+                    },
+                    "noLeaderboard": "还没有人获得经验值",
+                    "unavailableType": "此排行不可用，因为其统计数据未被收集",
+                    "unknownMember": "未知",
+                    "embed": {
+                        "title": {
+                            "experience": "经验值排行",
+                            "aproxVoiceTime": "语音时长排行",
+                            "messagesCount": "已发送消息排行",
+                            "antiquity": "加入时长排行"
+                        },
+                        "board": {
+                            "experience": "经验",
+                            "messagesCount": "条消息",
+                            "level": "级"
+                        },
+                        "footer": "第 {{actualPage}} 页，共 {{totalPages}} 页"
                     }
                 },
                 "timeout": {
                     "appData": {
                         "name": "timeout",
+                        "description": "在一段时间内禁止成员在服务器上交流",
                         "options": {
                             "user": {
-                                "name": "user"
-                            },
-                            "reason": {
-                                "name": "reason"
+                                "name": "user",
+                                "description": "选择一位用户或输入其 ID"
                             },
                             "expiration": {
-                                "name": "expiration"
+                                "name": "expiration",
+                                "description": "选择处罚的到期时间",
+                                "choices": {
+                                    "sixtySeconds": "60 秒",
+                                    "fiveMinutes": "5 分钟",
+                                    "fifteenMinutes": "15 分钟",
+                                    "thirtyMinutes": "30 分钟",
+                                    "oneHour": "1 小时",
+                                    "sixHours": "6 小时",
+                                    "twelveHours": "12 小时",
+                                    "oneDay": "1 天",
+                                    "threeDays": "3 天",
+                                    "oneWeek": "1 周",
+                                    "oneMonth": "1 个月",
+                                    "threeMonths": "3 个月"
+                                }
+                            },
+                            "reason": {
+                                "name": "reason",
+                                "description": "提供此操作的原因"
                             }
                         }
+                    },
+                    "memberNotFound": "未找到该成员。你必须提及一位成员或输入其 ID",
+                    "noBots": "你无法禁言机器人",
+                    "badHierarchy": "你无法禁言身份组等于或高于你的成员",
+                    "badBotHierarchy": "你无法禁言身份组等于或高于机器人的成员",
+                    "exceededDuration": "你最多只能禁言 `{{time}}`",
+                    "noReason": "你必须提供一个原因",
+                    "undefinedReason": "未指定",
+                    "notificationEmbed": {
+                        "withReason": "**{{memberTag}}** 因 __{{reason}}__ 被禁言",
+                        "withoutReason": "**{{memberTag}}** 被禁言了"
                     }
                 },
                 "notifications": {
                     "appData": {
                         "name": "notifications",
+                        "description": "调整机器人的经验值升级通知",
                         "options": {
                             "modality": {
-                                "name": "modality"
+                                "name": "modality",
+                                "description": "选择要修改的通知类型",
+                                "choices": {
+                                    "public": "通过消息升级",
+                                    "private": "通过语音时长升级"
+                                }
                             },
                             "status": {
-                                "name": "status"
+                                "name": "status",
+                                "description": "选择这些通知的启用状态",
+                                "choices": {
+                                    "enabled": "已启用",
+                                    "disabled": "已禁用"
+                                }
                             }
                         }
-                    }
+                    },
+                    "cantGainXp": "你无法获得经验值，因此不会收到通知",
+                    "alreadyEnabled": "此通知已处于启用状态",
+                    "alreadyDisabled": "此通知已处于禁用状态",
+                    "publicEnabled": "你现在将收到文字消息的升级通知",
+                    "publicDisabled": "你将不再收到文字消息的升级通知",
+                    "privateEnabled": "你现在将收到语音时长的升级通知",
+                    "privateDisabled": "你将不再收到语音时长的升级通知"
                 },
                 "ping": {
                     "appData": {
-                        "name": "ping"
-                    }
+                        "name": "ping",
+                        "description": "提供有关机器人状态的信息"
+                    },
+                    "botResponseTime": "机器人响应时间",
+                    "websocketResponseTime": "Websocket 响应时间"
                 },
                 "poll": {
                     "appData": {
                         "name": "poll",
+                        "description": "启动交互式向导来创建投票，或结束正在进行的投票",
                         "options": {
                             "end": {
-                                "name": "end_id"
+                                "name": "end id",
+                                "description": "输入要结束的投票的 ID"
                             }
                         }
+                    },
+                    "unknownPoll": "ID 为 {{id}} 的投票不存在",
+                    "deletedPoll": "ID 为 {{id}} 的投票已不存在，因此已从数据库中删除",
+                    "onlyYours": "你只能结束自己的投票",
+                    "endedPollEmbed": {
+                        "title": "操作已完成",
+                        "description": "投票“__{{poll}}__”将很快在频道 {{pollChannel}} 中结束"
+                    },
+                    "startingAssistant": "正在启动交互式向导",
+                    "titleEmbed": {
+                        "title": "标题",
+                        "description": "为投票提供一个标题"
+                    },
+                    "durationEmbed": {
+                        "title": "持续时间",
+                        "description": "提供一个持续时间。例如：`1d 2h 3m 4s`。\n输入 `-` 表示不设结束时间"
+                    },
+                    "invalidDuration": "你必须提供时间单位。例如：`5d 10h 2m`",
+                    "firstFieldEmbed": {
+                        "title": "选项",
+                        "description": "提供一个新选项（最多 10 个）"
+                    },
+                    "newFieldEmbed": {
+                        "title": "选项",
+                        "description": "提供一个新选项（还剩 {{remaining}} 个）",
+                        "endAssistant": "输入 `end` 结束向导"
+                    },
+                    "pollEmbed": {
+                        "author": "投票进行中",
+                        "duration": "持续时间"
+                    },
+                    "loggingEmbed": {
+                        "author": "{{memberTag}} 发起了一项投票",
+                        "title": "标题",
+                        "channel": "频道",
+                        "expiration": "到期时间",
+                        "noExpiration": "永不过期"
                     }
                 },
                 "purge": {
                     "appData": {
                         "name": "purge",
+                        "description": "删除频道中一定数量的消息（仅限 14 天以内的消息）",
                         "options": {
                             "quantity": {
-                                "name": "quantity"
+                                "name": "quantity",
+                                "description": "输入要删除的消息数量（1-99）"
                             },
                             "channel": {
-                                "name": "channel"
+                                "name": "channel",
+                                "description": "选择要清理的频道"
                             }
                         }
                     },
-                    "noPermission": "You do not have permission to manage messages on {{channel}}"
-                },
-                "rmwarn": {
-                    "appData": {
-                        "name": "rmwarn",
-                        "options": {
-                            "user": {
-                                "name": "user"
-                            },
-                            "reason": {
-                                "name": "reason"
-                            },
-                            "warn": {
-                                "name": "warn"
-                            }
-                        }
-                    }
-                },
-                "roleinfo": {
-                    "appData": {
-                        "name": "roleinfo",
-                        "options": {
-                            "role": {
-                                "name": "role"
-                            }
-                        }
-                    }
-                },
-                "send": {
-                    "appData": {
-                        "name": "send",
-                        "options": {
-                            "type": {
-                                "name": "type"
-                            },
-                            "channel": {
-                                "name": "channel"
-                            }
-                        }
+                    "quantityNotProvided": "你必须提供要删除的消息数量",
+                    "wrongQuantity": "你必须提供一个大于或等于 1 且小于 100 的数字",
+                    "invalidChannel": "提供的文字频道无效",
+                    "noPermission": "你需要在 {{channel}} 中拥有以下权限才能清理它：{{missingPermissions}}",
+                    "noMessages": "在 {{channel}} 中未找到任何消息",
+                    "expiredMessages": "只能删除 `14 天` 以内的消息",
+                    "successEmbed": {
+                        "title": "操作已完成",
+                        "description": "消息已删除",
+                        "willBeDeleted": "此消息将于 {{inSeconds}} 删除",
+                        "footer": "已跳过 {{omittedCount}} 条消息"
                     },
-                    "noPermission": "You don't have permission to send messages on {{channel}}"
-                },
-                "serverinfo": {
-                    "appData": {
-                        "name": "serverinfo"
-                    }
-                },
-                "slowmode": {
-                    "appData": {
-                        "name": "slowmode",
-                        "options": {
-                            "seconds": {
-                                "name": "seconds"
-                            },
-                            "reason": {
-                                "name": "reason"
-                            }
-                        }
-                    }
-                },
-                "stats": {
-                    "appData": {
-                        "name": "stats",
-                        "options": {
-                            "user": {
-                                "name": "user"
-                            }
-                        }
-                    }
-                },
-                "unban": {
-                    "appData": {
-                        "name": "unban",
-                        "options": {
-                            "user": {
-                                "name": "user"
-                            },
-                            "reason": {
-                                "name": "reason"
-                            }
-                        }
-                    }
-                },
-                "untimeout": {
-                    "appData": {
-                        "name": "untimeout",
-                        "options": {
-                            "user": {
-                                "name": "user"
-                            },
-                            "reason": {
-                                "name": "reason"
-                            }
-                        }
-                    },
-                    "cantRemoveAny": "{{interactionAuthor}}, you can't un-timeout someone you haven't timeouted yourself"
-                },
-                "userinfo": {
-                    "appData": {
-                        "name": "userinfo",
-                        "options": {
-                            "user": {
-                                "name": "user"
-                            }
-                        }
-                    }
-                },
-                "warn": {
-                    "appData": {
-                        "name": "warn",
-                        "options": {
-                            "user": {
-                                "name": "user"
-                            },
-                            "reason": {
-                                "name": "reason"
-                            }
-                        }
-                    }
-                },
-                "xp": {
-                    "appData": {
-                        "name": "xp",
-                        "options": {
-                            "set": {
-                                "name": "set",
-                                "options": {
-                                    "user": {
-                                        "name": "user"
-                                    },
-                                    "quantity": {
-                                        "name": "quantity"
-                                    }
-                                }
-                            },
-                            "add": {
-                                "name": "add",
-                                "options": {
-                                    "user": {
-                                        "name": "user"
-                                    },
-                                    "quantity": {
-                                        "name": "quantity"
-                                    }
-                                }
-                            },
-                            "addrandom": {
-                                "name": "addrandom",
-                                "options": {
-                                    "user": {
-                                        "name": "user"
-                                    },
-                                    "times": {
-                                        "name": "times"
-                                    }
-                                }
-                            },
-                            "remove": {
-                                "name": "remove",
-                                "options": {
-                                    "user": {
-                                        "name": "user"
-                                    },
-                                    "quantity": {
-                                        "name": "quantity"
-                                    }
-                                }
-                            },
-                            "clear": {
-                                "name": "clear",
-                                "options": {
-                                    "user": {
-                                        "name": "user"
-                                    }
-                                }
-                            }
-                        }
+                    "loggingEmbed": {
+                        "title": "日志 - [清理消息]",
+                        "description": "{{authorTag}} 从频道 {{channel}} 中删除了 {{deletedCount}} 条消息"
                     }
                 },
                 "report": {
                     "appData": {
                         "name": "report",
+                        "description": "向管理团队举报某事",
                         "options": {
                             "body": {
-                                "name": "report"
+                                "name": "report",
+                                "description": "你想举报什么？"
                             },
                             "member": {
-                                "name": "member"
+                                "name": "member",
+                                "description": "你想举报谁？"
                             }
                         }
+                    },
+                    "bodyModal": {
+                        "title": "举报某事",
+                        "fieldTitle": "举报原因",
+                        "fieldPlaceholder": "你要举报什么？"
                     }
+                },
+                "rmwarn": {
+                    "appData": {
+                        "name": "rmwarn",
+                        "description": "移除成员的一条（或全部）警告",
+                        "options": {
+                            "user": {
+                                "name": "user",
+                                "description": "选择一位用户或输入其 ID"
+                            },
+                            "warn": {
+                                "name": "warn",
+                                "description": "搜索要移除的警告"
+                            },
+                            "reason": {
+                                "name": "reason",
+                                "description": "提供此操作的原因"
+                            }
+                        }
+                    },
+                    "memberNotFound": "未找到该成员。你必须提及一位成员或输入其 ID",
+                    "noBots": "无法警告机器人",
+                    "noReason": "你必须提供一个原因",
+                    "badHierarchy": "你无法移除身份组等于或高于你的成员的警告",
+                    "noWarns": "该成员没有警告",
+                    "cantRemoveAny": "你无法移除不是你发出的警告",
+                    "undefinedReason": "未指定",
+                    "loggingEmbedAll": {
+                        "title": "日志 - [违规]",
+                        "description": "已移除一位成员的所有警告",
+                        "date": "日期",
+                        "moderator": "版主",
+                        "reason": "原因",
+                        "memberId": "成员 ID",
+                        "member": "成员"
+                    },
+                    "privateEmbedAll": {
+                        "author": "[警告已移除]",
+                        "description": "{{member}}，你的所有警告已被移除",
+                        "moderator": "版主",
+                        "reason": "原因"
+                    },
+                    "notificationEmbedAll": {
+                        "title": "操作已完成",
+                        "description": "成员 **{{member}}** 的所有警告已被移除"
+                    },
+                    "warnNotFound": "ID 为 **{{warnId}}** 的警告不存在",
+                    "loggingEmbedSingle": {
+                        "title": "日志 - [违规]",
+                        "description": "已移除一位成员的一条警告",
+                        "date": "日期",
+                        "moderator": "版主",
+                        "warnId": "警告 ID",
+                        "warn": "警告",
+                        "reason": "原因",
+                        "memberId": "成员 ID",
+                        "member": "成员"
+                    },
+                    "privateEmbedSingle": {
+                        "author": "[警告已移除]",
+                        "description": "{{member}}，你 ID 为 `{{warnId}}` 的警告已被移除",
+                        "moderator": "版主",
+                        "warnId": "警告 ID",
+                        "warn": "警告",
+                        "reason": "原因"
+                    },
+                    "notificationEmbedSingle": {
+                        "title": "操作已完成",
+                        "description": "已移除成员 **{{member}}** ID 为 `{{warnId}}` 的警告"
+                    },
+                    "autocomplete": {
+                        "systemModerator": "系统",
+                        "unknownModerator": "未知"
+                    }
+                },
+                "roleinfo": {
+                    "appData": {
+                        "name": "roleinfo",
+                        "description": "显示身份组的信息",
+                        "options": {
+                            "role": {
+                                "name": "role",
+                                "description": "选择一个身份组"
+                            }
+                        }
+                    },
+                    "roleNotFound": "身份组 **{{role}}** 不存在",
+                    "resultEmbed": {
+                        "title": "身份组信息",
+                        "description": "正在显示身份组 {{role}} 的信息",
+                        "roleName": "身份组名称",
+                        "roleId": "身份组 ID",
+                        "roleMembers": "身份组成员",
+                        "mentionable": "可提及",
+                        "isMentionable": "是",
+                        "isntMntionable": "否",
+                        "hoisted": "单独显示",
+                        "isHoisted": "可见",
+                        "isntHoisted": "隐藏",
+                        "color": "颜色",
+                        "creationDate": "创建日期",
+                        "integration": "集成",
+                        "isIntegration": "是",
+                        "isntIntegration": "否"
+                    }
+                },
+                "send": {
+                    "appData": {
+                        "name": "send",
+                        "description": "机器人将在当前或所选的文字频道中发送一条消息，可带或不带嵌入格式",
+                        "options": {
+                            "type": {
+                                "name": "type",
+                                "description": "指定消息类型",
+                                "choices": {
+                                    "embed": "嵌入",
+                                    "normal": "普通"
+                                }
+                            },
+                            "channel": {
+                                "name": "channel",
+                                "description": "选择要发送消息的频道"
+                            }
+                        }
+                    },
+                    "invalidChannel": "提供的频道无效",
+                    "noPermission": "你需要在 {{channel}} 中拥有以下权限才能发送消息：{{missingPermissions}}",
+                    "bodyModal": {
+                        "title": "发送带格式的消息",
+                        "fieldTitle": "消息正文",
+                        "fieldPlaceholder": "为消息写一段正文"
+                    },
+                    "correct": "完成！"
+                },
+                "serverinfo": {
+                    "appData": {
+                        "name": "serverinfo",
+                        "description": "显示服务器的信息"
+                    },
+                    "guildTiers": {
+                        "None": "0 级",
+                        "Tier1": "1 级",
+                        "Tier2": "2 级",
+                        "Tier3": "3 级"
+                    },
+                    "explicitContentFilter": {
+                        "0": "已禁用",
+                        "1": "没有身份组的成员",
+                        "2": "所有成员"
+                    },
+                    "guildVerificationLevel": {
+                        "0": "已禁用",
+                        "1": "低",
+                        "2": "中",
+                        "3": "高",
+                        "4": "非常高"
+                    },
+                    "embed": {
+                        "author": "{{guildName}} 的信息",
+                        "name": "名称",
+                        "id": "服务器 ID",
+                        "region": "地区",
+                        "creationDate": "创建日期",
+                        "owner": "所有者",
+                        "explicitContentFilter": "露骨内容过滤",
+                        "tier": "加成等级",
+                        "boostsCount": "{{boostsCount}} 次加成",
+                        "verification": "验证等级",
+                        "invitations": "邀请",
+                        "totalInvites": "共 {{totalInvites}} 个邀请",
+                        "roles": "身份组",
+                        "totalRoles": "共 {{totalRoles}} 个身份组",
+                        "stickersAndEmojis": "贴纸和表情符号",
+                        "totalEmojis": "{{totalEmojis}} 个表情符号",
+                        "totalStickers": "{{totalStickers}} 个贴纸",
+                        "members": "成员",
+                        "totalMembers": "{{totalMembers}} 位成员",
+                        "totalHumans": "{{totalHumans}} 位真人",
+                        "totalBots": "{{totalBots}} 个机器人",
+                        "bans": "封禁",
+                        "bannedUsers": "{{bannedUsers}} 位被封禁的用户",
+                        "afk": "挂机超时",
+                        "afkTime": "{{afkTime}} 分钟",
+                        "channels": "频道",
+                        "totalCategories": "{{totalCategories}} 个分类",
+                        "totalTextChannels": "{{totalTextChannels}} 个文字频道",
+                        "totalVoiceChannels": "{{totalVoiceChannels}} 个语音频道"
+                    }
+                },
+                "slowmode": {
+                    "appData": {
+                        "name": "slowmode",
+                        "description": "在文字频道中启用慢速模式",
+                        "options": {
+                            "seconds": {
+                                "name": "seconds",
+                                "description": "输入 0 到 21600 之间的数值（0 表示关闭）"
+                            },
+                            "reason": {
+                                "name": "reason",
+                                "description": "提供此操作的原因"
+                            }
+                        }
+                    },
+                    "notEnabled": "慢速模式未启用",
+                    "disabledLoggingEmbed": {
+                        "title": "日志 - [慢速模式]",
+                        "description": "慢速模式已关闭",
+                        "moderator": "版主",
+                        "channel": "频道"
+                    },
+                    "disabledNotificationEmbed": {
+                        "title": "操作已完成",
+                        "description": "慢速模式已关闭"
+                    },
+                    "maximumConfiguredLengthError": "慢速模式最多只能设置为 `{{max}}s`",
+                    "noReason": "你必须提供一个原因",
+                    "undefinedReason": "未指定",
+                    "enabledLoggingEmbed": {
+                        "title": "日志 - [慢速模式]",
+                        "description": "慢速模式已启用",
+                        "moderator": "版主",
+                        "delay": "间隔",
+                        "delayed": "{{seconds}} 秒",
+                        "channel": "频道",
+                        "reason": "原因"
+                    },
+                    "enabledNotificationEmbed": {
+                        "title": "操作已完成",
+                        "description": "慢速模式已启用，间隔为 `{{seconds}}s`"
+                    }
+                },
+                "stats": {
+                    "appData": {
+                        "name": "stats",
+                        "description": "显示你或其他成员的经验值统计",
+                        "options": {
+                            "user": {
+                                "name": "user",
+                                "description": "选择一位用户或输入其 ID"
+                            }
+                        }
+                    },
+                    "unknownMember": "未找到该成员。你必须提及一位成员或输入其 ID",
+                    "noXp": "{{member}} 没有经验值",
+                    "defaultReward": "无",
+                    "statsEmbed": {
+                        "title": "统计",
+                        "description": "正在显示 **{{memberTag}}** 的统计",
+                        "actualLevel": "当前等级",
+                        "experience": "总经验值",
+                        "xpToNextLevel": "距下一级所需经验值",
+                        "noXpToNextLevel": "无法升级",
+                        "messagesCount": "消息",
+                        "voiceTime": "语音时长",
+                        "antiquity": "加入时长",
+                        "nextRewards": "下一批奖励",
+                        "level": "级",
+                        "noNextRewards": "无法获得奖励"
+                    }
+                },
+                "unban": {
+                    "appData": {
+                        "name": "unban",
+                        "description": "解除成员的封禁",
+                        "options": {
+                            "user": {
+                                "name": "user",
+                                "description": "选择一位用户或输入其 ID"
+                            },
+                            "reason": {
+                                "name": "reason",
+                                "description": "提供此操作的原因"
+                            }
+                        }
+                    },
+                    "userNotFound": "未找到该用户。你必须提及一位成员或输入其 ID。\n如果该用户不在服务器中，你必须指定其 ID",
+                    "noReason": "你必须提供一个原因",
+                    "notBanned": "该用户未被封禁",
+                    "undefinedReason": "未指定",
+                    "loggingEmbed": {
+                        "author": "{{userTag}} 已被解除封禁",
+                        "userId": "用户 ID",
+                        "moderator": "版主",
+                        "reason": "原因",
+                        "deletedDays": "删除的消息天数",
+                        "noDeletedDays": "无",
+                        "expiration": "到期时间",
+                        "noExpiration": "永不过期"
+                    },
+                    "notificationEmbed": {
+                        "title": "操作已完成",
+                        "description": "成员 **{{userTag}}** 已被解除封禁"
+                    }
+                },
+                "untimeout": {
+                    "appData": {
+                        "name": "untimeout",
+                        "description": "解除成员的禁言",
+                        "options": {
+                            "user": {
+                                "name": "user",
+                                "description": "选择一位用户或输入其 ID"
+                            },
+                            "reason": {
+                                "name": "reason",
+                                "description": "提供此操作的原因"
+                            }
+                        }
+                    },
+                    "noReason": "你必须提供一个原因",
+                    "notSilenced": "该成员未被禁言",
+                    "badHierarchy": "{{interactionAuthor}}，你无法解除身份组等于或高于你的成员的禁言",
+                    "badBotHierarchy": "{{interactionAuthor}}，你无法解除身份组等于或高于机器人的成员的禁言",
+                    "cantRemoveAny": "{{interactionAuthor}}，你无法解除不是由你禁言的成员的禁言",
+                    "undefinedReason": "未指定",
+                    "loggingEmbed": {
+                        "author": "一位成员已被解除禁言",
+                        "memberId": "成员 ID",
+                        "moderator": "版主",
+                        "reason": "原因"
+                    },
+                    "notificationEmbed": {
+                        "title": "操作已完成",
+                        "description": "成员 **{{member}}** 已被解除禁言"
+                    }
+                },
+                "userinfo": {
+                    "appData": {
+                        "name": "userinfo",
+                        "description": "显示你或任何其他成员的信息",
+                        "options": {
+                            "user": {
+                                "name": "user",
+                                "description": "选择一位用户或输入其 ID"
+                            }
+                        }
+                    },
+                    "invalidMember": "你没有提供有效的成员",
+                    "cantSeeAny": "你没有查看其他成员信息的权限",
+                    "memberType": {
+                        "owner": "所有者",
+                        "administrator": "管理员",
+                        "moderator": "版主",
+                        "regular": "普通成员"
+                    },
+                    "embed": {
+                        "timeoutedUntil": "禁言至",
+                        "title": "{{memberDisplayName}} 的信息",
+                        "description": "正在显示 **{{memberTag}}** 的信息",
+                        "memberId": "成员 ID",
+                        "registerDate": "注册日期",
+                        "joinDate": "加入服务器",
+                        "status": "状态",
+                        "nitroBooster": "Nitro 加成者",
+                        "isBooster": "自 {{time}} 起",
+                        "isntBooster": "否",
+                        "highestRole": "最高身份组",
+                        "infractions": "违规记录",
+                        "verification": "验证",
+                        "isVerified": "已验证",
+                        "isntVerified": "待验证",
+                        "actualSanction": "当前处罚",
+                        "noSanction": "无"
+                    }
+                },
+                "warn": {
+                    "appData": {
+                        "name": "warn",
+                        "description": "给成员添加一条警告",
+                        "options": {
+                            "user": {
+                                "name": "user",
+                                "description": "选择一位用户或输入其 ID"
+                            },
+                            "reason": {
+                                "name": "reason",
+                                "description": "提供警告的原因"
+                            }
+                        }
+                    },
+                    "memberNotFound": "未找到该成员。你必须提及一位成员或输入其 ID",
+                    "noBots": "你无法警告机器人",
+                    "badHierarchy": "你无法警告身份组等于或高于你的成员",
+                    "cooldown": "你必须等待一段时间才能再次警告 {{member}}"
+                },
+                "xp": {
+                    "appData": {
+                        "name": "xp",
+                        "description": "修改成员的经验值",
+                        "options": {
+                            "set": {
+                                "name": "set",
+                                "description": "将经验值设置为所选数值",
+                                "options": {
+                                    "user": {
+                                        "name": "user",
+                                        "description": "选择一位用户或输入其 ID"
+                                    },
+                                    "quantity": {
+                                        "name": "quantity",
+                                        "description": "输入经验值数量"
+                                    }
+                                }
+                            },
+                            "add": {
+                                "name": "add",
+                                "description": "在当前经验值的基础上增加",
+                                "options": {
+                                    "user": {
+                                        "name": "user",
+                                        "description": "选择一位用户或输入其 ID"
+                                    },
+                                    "quantity": {
+                                        "name": "quantity",
+                                        "description": "输入经验值数量"
+                                    }
+                                }
+                            },
+                            "addrandom": {
+                                "name": "addrandom",
+                                "description": "生成 X 次发送消息所获得的经验值",
+                                "options": {
+                                    "user": {
+                                        "name": "user",
+                                        "description": "选择一位用户或输入其 ID"
+                                    },
+                                    "times": {
+                                        "name": "times",
+                                        "description": "输入生成经验值的次数"
+                                    }
+                                }
+                            },
+                            "remove": {
+                                "name": "remove",
+                                "description": "从当前经验值中扣除",
+                                "options": {
+                                    "user": {
+                                        "name": "user",
+                                        "description": "选择一位用户或输入其 ID"
+                                    },
+                                    "quantity": {
+                                        "name": "quantity",
+                                        "description": "输入经验值数量"
+                                    }
+                                }
+                            },
+                            "clear": {
+                                "name": "clear",
+                                "description": "将经验值重置为 0",
+                                "options": {
+                                    "user": {
+                                        "name": "user",
+                                        "description": "选择一位用户或输入其 ID"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "invalidMember": "你没有提供有效的成员",
+                    "noBots": "机器人无法获得经验值",
+                    "invalidQuantity": "你必须提供有效的数量",
+                    "hasNoXp": "该成员没有经验值",
+                    "unauthorizedModify": "你无法修改身份组等于或高于你的成员的经验值",
+                    "loggingEmbed": {
+                        "title": "日志 - [经验值系统]",
+                        "description": "**{{memberTag}}** 的经验值已更改",
+                        "date": "日期",
+                        "moderator": "版主",
+                        "memberId": "成员 ID",
+                        "oldValue": "旧值",
+                        "newValue": "新值"
+                    },
+                    "privateEmbed": {
+                        "reset": {
+                            "author": "你的经验值已被重置",
+                            "description": "**{{moderatorTag}}** 移除了你的所有经验值。\n你现在有 `0` 经验值"
+                        },
+                        "increased": {
+                            "author": "你获得了经验值",
+                            "description": "**{{moderatorTag}}** 给了你 `{{givenExp}}` 经验值。\n你现在有 `{{newXP}}` 经验值"
+                        },
+                        "decreased": {
+                            "author": "你失去了经验值",
+                            "description": "**{{moderatorTag}}** 移除了你 `{{removedXP}}` 经验值。\n你现在有 `{{newXP}}` 经验值"
+                        }
+                    },
+                    "notificationEmbed": "**{{memberTag}}** 的经验值已更改"
                 }
             },
             "messageCommands": {
-                "removeAndWarn": {
-                    "appData": {
-                        "name": "Remove and warn"
-                    }
-                },
                 "reportMessage": {
                     "appData": {
                         "name": "Report message"
+                    },
+                    "memberNotFound": "该成员已不在服务器中",
+                    "cantReportYourself": "你不能举报自己",
+                    "bodyModal": {
+                        "title": "举报成员的消息",
+                        "fieldTitle": "举报原因",
+                        "fieldPlaceholder": "你要举报什么？"
                     }
+                },
+                "removeAndWarn": {
+                    "appData": {
+                        "name": "Remove and warn"
+                    },
+                    "cantDeleteMessages": "你没有在此频道中删除消息的权限",
+                    "memberNotFound": "该成员已不在服务器中",
+                    "noBots": "你无法警告机器人",
+                    "badHierarchy": "你无法警告身份组等于或高于你的成员",
+                    "cooldown": "你必须等待一段时间才能再次警告 {{member}}",
+                    "bodyModal": {
+                        "title": "警告并删除一条消息",
+                        "fieldTitle": "警告原因",
+                        "fieldPlaceholder": "写下警告的原因"
+                    },
+                    "correct": "该成员已被警告"
                 }
             },
             "userCommands": {
-                "warn": {
-                    "appData": {
-                        "name": "Warn"
-                    }
-                },
                 "reportMember": {
                     "appData": {
                         "name": "Report member"
+                    },
+                    "memberNotFound": "该成员已不在服务器中",
+                    "cantReportYourself": "你不能举报自己",
+                    "bodyModal": {
+                        "title": "举报成员",
+                        "fieldTitle": "举报原因",
+                        "fieldPlaceholder": "你要举报什么？"
+                    }
+                },
+                "warn": {
+                    "appData": {
+                        "name": "Warn"
+                    },
+                    "cantDeleteMessages": "你没有在此频道中删除消息的权限",
+                    "memberNotFound": "该成员已不在服务器中",
+                    "noBots": "你无法警告机器人",
+                    "badHierarchy": "你无法警告身份组等于或高于你的成员",
+                    "cooldown": "你必须等待一段时间才能再次警告 {{member}}",
+                    "bodyModal": {
+                        "title": "警告成员",
+                        "fieldTitle": "警告原因",
+                        "fieldPlaceholder": "写下警告的原因"
                     }
                 }
             }
         },
         "events": {
+            "guildBanAdd": {
+                "inconclusiveLoggingEmbed": {
+                    "author": "{{userTag}} 已被封禁",
+                    "memberId": "成员 ID",
+                    "moderator": "版主",
+                    "unknownModerator": "未知",
+                    "reason": "原因",
+                    "unknownReason": "未知",
+                    "expiration": "到期时间",
+                    "unknownExpiration": "未知",
+                    "deletedDays": "删除的消息天数",
+                    "unknownDeletedDays": "未知"
+                },
+                "botLoggingEmbed": {
+                    "title": "日志 - [机器人]",
+                    "description": "**机器人** {{userTag}} 已被服务器封禁"
+                },
+                "loggingEmbed": {
+                    "author": "{{userTag}} 已被封禁",
+                    "memberId": "成员 ID",
+                    "moderator": "版主",
+                    "unknownModerator": "未知",
+                    "reason": "原因",
+                    "undefinedReason": "未指定",
+                    "expiration": "到期时间",
+                    "noExpiration": "永不过期",
+                    "deletedDays": "删除的消息天数",
+                    "noDeletedDays": "无"
+                }
+            },
+            "guildBanRemove": {
+                "loggingEmbed": {
+                    "author": "{{userTag}} 已被解除封禁",
+                    "userId": "用户 ID",
+                    "moderator": "版主",
+                    "unknownModerator": "未知",
+                    "reason": "原因",
+                    "undefinedReason": "未指定"
+                }
+            },
+            "guildDelete": {
+                "waitingNewGuildHeader": "正在等待 {{botUsername}} 加入新的服务器",
+                "joinNewGuildHelp": "使用以下链接将机器人添加到服务器：{{joinNewGuildURL}}",
+                "waitingNewGuildHelp": "需要帮助？请访问：{{waitingNewGuildHelpURL}}"
+            },
+            "guildMemberRemove": {
+                "botLoggingEmbed": {
+                    "title": "日志 - [机器人]",
+                    "description": "**机器人** {{memberTag}} 已被踢出服务器"
+                },
+                "loggingEmbed": {
+                    "author": "{{memberTag}} 已被踢出",
+                    "memberId": "成员 ID",
+                    "moderator": "版主",
+                    "unknownModerator": "未知",
+                    "reason": "原因",
+                    "undefinedReason": "未指定"
+                },
+                "goodbyeEmbed": {
+                    "author": "一位成员离开了",
+                    "description": "{{memberTag}} 离开了服务器",
+                    "memberId": "成员 ID",
+                    "antiquity": "加入时长"
+                }
+            },
             "guildMemberUpdate": {
                 "communicationDisabled": {
+                    "loggingEmbed": {
+                        "author": "{{memberTag}} 已被禁言",
+                        "memberId": "成员 ID",
+                        "moderator": "版主",
+                        "unknownModerator": "未知",
+                        "reason": "原因",
+                        "undefinedReason": "未指定",
+                        "expiration": "到期时间"
+                    },
                     "privateEmbed": {
-                        "description": "{{member}}, you have been timed out on {{guildName}}"
+                        "author": "[已禁言]",
+                        "description": "{{member}}，你已在 {{guildName}} 被禁言",
+                        "moderator": "版主",
+                        "unknownModerator": "未知",
+                        "reason": "原因",
+                        "undefinedReason": "未指定",
+                        "expiration": "到期时间"
                     }
+                },
+                "communicationEnabled": {
+                    "loggingEmbed": {
+                        "author": "{{userTag}} 已被解除禁言",
+                        "memberId": "成员 ID",
+                        "moderator": "版主",
+                        "unknownModerator": "未知",
+                        "reason": "原因",
+                        "undefinedReason": "未指定"
+                    },
+                    "privateEmbed": {
+                        "author": "[已解除禁言]",
+                        "description": "{{member}}，你在 {{guildName}} 的禁言已被解除",
+                        "moderator": "版主",
+                        "unknownModerator": "未知",
+                        "reason": "原因",
+                        "undefinedReason": "未指定"
+                    }
+                }
+            },
+            "interactionCreate": {
+                "disabledCommand": "命令 `{{commandName}}` 已被禁用",
+                "missingChannelPermissions": "机器人需要在此频道中拥有以下权限才能使用此命令：`{{missingPermissions}}`",
+                "missingGuildPermissions": "机器人需要在服务器中拥有以下权限才能使用此命令：`{{missingPermissions}}`"
+            },
+            "messageCreate": {
+                "filteredDm": "通过私信"
+            },
+            "clientReady": {
+                "waitingNewGuildHeader": "正在等待 {{botUsername}} 加入新的服务器",
+                "joinNewGuildHelp": "使用以下链接将机器人添加到服务器：{{joinNewGuildURL}}",
+                "waitingNewGuildHelp": "需要帮助？请访问：{{waitingNewGuildHelpURL}}"
+            },
+            "voiceStateUpdate": {
+                "voiceMovesLogging": {
+                    "noChannel": "无",
+                    "oldChannel": "上一个频道",
+                    "newChannel": "新频道",
+                    "actualMembers": "新频道的成员",
+                    "embedAuthor": "{{memberTag}} 更换了语音频道"
                 }
             }
         }
     },
     "lib": {
+        "leveling": {
+            "addExperience": {
+                "levelUpEmbed": {
+                    "author": "你升级了！",
+                    "description": "恭喜 {{member}}，你已达到 **{{memberLevel}}** 级",
+                    "rewards": "获得的奖励",
+                    "disablePrivateNotification": "关闭通知"
+                }
+            }
+        },
         "loaders": {
             "intervals": {
+                "timeouts": {
+                    "loggingEmbed": {
+                        "author": "{{userTag}} 已被解除禁言",
+                        "authorNoMember": "一位成员已被解除禁言",
+                        "memberId": "成员 ID",
+                        "moderator": "版主",
+                        "reason": "原因"
+                    },
+                    "privateEmbed": {
+                        "author": "[已解除禁言]",
+                        "description": "{{member}}，你在 {{guildName}} 的禁言已被解除",
+                        "moderator": "版主",
+                        "reason": "原因"
+                    },
+                    "reason": "处罚已到期"
+                },
                 "bans": {
-                    "error": "ERROR"
+                    "reason": "处罚已到期"
+                },
+                "polls": {
+                    "votesPercentage": "{{votesCount}} 票，占 {{percentage}}%",
+                    "finishedEmbed": {
+                        "author": "投票已结束",
+                        "results": "结果"
+                    },
+                    "loggingEmbed": {
+                        "title": "日志 - [投票]",
+                        "description": "投票“__{{poll}}__”已在频道 {{channel}} 中结束"
+                    },
+                    "progressEmbed": {
+                        "author": "投票进行中",
+                        "remaining": "剩余：{{remainingDays}} 天 {{remainingHours}} 小时 {{remainingMinutes}} 分钟"
+                    }
                 }
             },
+            "login": {
+                "provideTokenHeader": "你需要提供机器人登录 Discord 时使用的账号令牌",
+                "provideTokenHelp": "要了解如何获取令牌，请访问：{{tokenHelpURL}}",
+                "tokenPrompt": "输入登录令牌",
+                "invalidEnteredToken": "令牌无效",
+                "invalidProvidedToken": "提供的令牌被 Discord 拒绝，可能是由于输入错误或 API 故障"
+            },
             "system": {
-                "loadedCorrectly": "{{botUsername}} started successfully"
+                "loadedCorrectly": "{{botUsername}} 已成功启动！"
             },
             "splashLogo": {
-                "description": "I'm a bot designed for automated community moderation, leveling, chat utilities, and much more!"
+                "description": "一个为自动化社区管理、等级系统、聊天工具等功能而设计的 Discord 机器人！"
             }
         },
         "managers": {
+            "buttonNavigation": {
+                "cantUseNavigation": "你无法操作其他成员打开的菜单"
+            },
             "interactionError": {
                 "notificationEmbed": {
-                    "description": "We have reported it to those responsible for the bot"
+                    "title": "哎呀！出了点问题",
+                    "description": "我们已将此问题报告给开发团队"
                 }
             },
-            "logging": {
-                "cannotSend": "ERROR: Cannot send messages to the logging channel.\n{{botUsername}} must have the following permissions on the channel: Send Messages, Send Links, Attach Files",
-                "cannotAccess": "ERROR: Cannot access the logging channel.\n The channel has been cleared from the configuration and unloaded from memory",
-                "error": "ERROR: Error while executing the logging"
-            },
-            "report": {
-                "reportEmbed": {
-                    "author": "{{memberTag}} has reported the following",
-                    "reportReason": "Report reason",
-                    "reportChannel": "Report channel",
-                    "reportedMember": "Reported member",
-                    "reportedMessage": "Reported message",
-                    "isInsertion": "Insertion",
-                    "reportedMessageId": "Message ID",
-                    "attachedFiles": "Attached files [{{currentChunk}}/{{totalChunks}}]",
-                    "fileName": "File {{fileNumber}} [{{fileType}}]"
+            "newMember": {
+                "author": "新成员",
+                "description": "{{memberTag}} 加入了服务器",
+                "memberId": "成员 ID",
+                "registerDate": "注册日期",
+                "actualSanction": "当前处罚",
+                "timeoutedUntil": "禁言至",
+                "botLoggingEmbed": {
+                    "title": "日志 - [机器人]",
+                    "description": "**机器人** {{memberTag}} 已被添加到服务器"
                 },
-                "cannotSend": "ERROR: Cannot send messages to the reports channel.\n{{botUsername}} must have the following permissions on the channel: Send Messages, Send Links, Attach Files",
-                "correct": "The report has been sent",
-                "temporaryError": "This feature is not available at this time.\nPlease try again later",
-                "cannotAccess": "ERROR: Cannot access the reports channel.\n The channel has been cleared from the configuration and unloaded from memory",
-                "error": "ERROR: Error while executing the report manager"
+                "recovered": "已补录：该成员在机器人离线时加入"
+            },
+            "sendWelcomeMessage": {
+                "defaultMessages": {
+                    "public": "欢迎来到 **{serverName}**，{memberMention}！我们现在有 {memberCount} 位成员了 🎉",
+                    "private": "你好 {userName}，欢迎来到 **{serverName}**！希望你在这里玩得开心 👋"
+                }
+            },
+            "sendReport": {
+                "reportEmbed": {
+                    "author": "{{memberTag}} 举报了以下内容",
+                    "reportReason": "举报原因",
+                    "reportChannel": "举报频道",
+                    "reportedMember": "被举报的成员",
+                    "reportedMessage": "被举报的消息",
+                    "isInsertion": "插入",
+                    "reportedMessageId": "消息 ID",
+                    "attachedFiles": "附件 [{{currentChunk}}/{{totalChunks}}]",
+                    "fileName": "文件 {{fileNumber}} [{{fileType}}]"
+                },
+                "correct": "举报已发送",
+                "temporaryError": "此功能目前不可用。\n请稍后再试",
+                "featureDisabled": "此功能目前不可用。\n请稍后再试"
+            },
+            "updatePresence": {
+                "membersCount": "{{memberCount}} 位成员"
+            }
+        },
+        "menus": {
+            "baseGuildSelection": {
+                "promptBaseGuildSelectionHeader1": "机器人不能同时加入多个服务器，因此你必须从列表中选择一个",
+                "promptBaseGuildSelectionHeader2": "选择新的主服务器后，机器人将退出其余服务器",
+                "selectANewBaseGuild": "选择新的主服务器",
+                "alreadyConfiguredGuild": "已配置",
+                "isSureToReplaceBaseGuild": "确定要更改主服务器吗？特定的设置将会丢失",
+                "leavingGuild": "正在退出服务器 {{guild}}",
+                "errorMessage": "发生意外错误。请查看日志了解详情"
+            },
+            "main": {
+                "headerMessage": "欢迎使用 {{botName}} 的命令行界面！\n你可以在这里配置、监控和更新机器人",
+                "subtitleMessage": "需要帮助？请访问：{{helpURL}}",
+                "promptMessage": "选择一个选项",
+                "choices": {
+                    "configure": "配置",
+                    "update": "检查更新",
+                    "logs": "查看日志",
+                    "information": "查看信息",
+                    "license": "查看许可证",
+                    "shutdown": "关闭",
+                    "restart": "重启"
+                },
+                "actions": {
+                    "shutdown": "进程即将终止。再见！",
+                    "restart": "机器人即将重启。回头见！"
+                },
+                "errorMessage": "发生意外错误。请查看日志了解详情"
+            },
+            "configure": {
+                "headerMessage": "此菜单可让你配置机器人的所有功能。\n同一类别的功能和命令被分组为模块",
+                "promptMessage": "选择要配置的模块",
+                "choices": {
+                    "mainConfiguration": "常规配置",
+                    "moderation": "审核",
+                    "engagement": "社区互动",
+                    "greetings": "欢迎",
+                    "polls": "投票",
+                    "utilities": "实用工具",
+                    "scheduledMessages": "定时消息",
+                    "return": "返回"
+                },
+                "submenus": {
+                    "mainConfiguration": {
+                        "headerMessage": "此菜单可让你设置机器人的常规配置",
+                        "promptMessage": "选择一个选项",
+                        "choices": {
+                            "language": "语言",
+                            "commandNamesLanguage": "命令名称的语言",
+                            "pingMsTreshold": "延迟阈值",
+                            "botManagers": "机器人管理者",
+                            "records": "记录",
+                            "presence": "在线状态",
+                            "ignoredCommands": "忽略的命令",
+                            "colorPalette": "调色板",
+                            "return": "返回"
+                        },
+                        "prompts": {
+                            "selectLanguageHeader": "配置机器人界面的语言",
+                            "selectLanguage": "选择一种语言",
+                            "languageSuccess": "语言已成功更改。如有需要，请重启机器人以完全生效",
+                            "commandNamesLanguageHeader": "命令名称可以使用与机器人不同的语言显示，而命令描述始终使用机器人的语言",
+                            "selectCommandNamesLanguage": "选择命令名称的语言",
+                            "sameAsBotLanguage": "与机器人语言相同",
+                            "updatingCommands": "正在更新 Discord 中的命令",
+                            "commandNamesLanguageSuccess": "命令名称的语言已成功更新！",
+                            "languageSetByEnvironment": "语言由 LOCALE 环境变量（{{locale}}）设置，因此只能在那里更改",
+                            "pingThresholdHeader": "配置命令响应警报的毫秒限制",
+                            "botManagersHeader": "配置被授权管理机器人的成员和身份组",
+                            "recordsHeader": "配置发送服务器事件日志的文字频道",
+                            "presenceHeader": "配置状态、活动文本、活动类型以及成员数量的显示",
+                            "ignoredCommandsHeader": "配置被机器人系统忽略的命令",
+                            "colorPaletteHeader": "配置系统消息和日志使用的十六进制调色板",
+                            "currentPingThreshold": "当前延迟阈值：{{threshold}} ms",
+                            "enterNewPingThreshold": "输入新的延迟阈值（毫秒）",
+                            "pingSuccess": "延迟阈值已成功更新为 {{threshold}} ms",
+                            "managersAction": "选择一个操作",
+                            "addManager": "添加机器人管理者",
+                            "removeManager": "移除机器人管理者",
+                            "selectManagerType": "选择管理者类型",
+                            "memberManager": "成员",
+                            "roleManager": "身份组",
+                            "currentBotManagersTitle": "当前的机器人管理者",
+                            "managerAdded": "管理者已成功添加！",
+                            "alreadyManager": "该用户或身份组已经是管理者！",
+                            "selectManagerToRemove": "选择要移除的管理者",
+                            "noManagersConfigured": "目前没有配置任何机器人管理者",
+                            "managerRemoved": "管理者已成功移除！",
+                            "selectRecord": "选择要配置的记录事件",
+                            "recordAction": "为此记录选择一个操作",
+                            "enableRecord": "启用记录",
+                            "disableRecord": "禁用记录",
+                            "changeChannel": "更改目标频道",
+                            "channelSuccess": "记录频道已成功更新！",
+                            "statusSuccess": "记录状态已成功更新！",
+                            "noChannelConfiguredError": "启用记录前，你必须配置目标频道或默认频道",
+                            "defaultChannel": "默认频道",
+                            "noChannel": "无",
+                            "byDefault": "默认",
+                            "defaultChannelHeader": "没有单独频道的记录会发送到默认频道",
+                            "clearDefaultChannel": "清除默认频道",
+                            "defaultChannelCleared": "默认频道已成功清除！",
+                            "useDefaultChannel": "使用默认频道",
+                            "useDefaultChannelSuccess": "该记录现在使用默认频道！",
+                            "excludedChannels": "排除的频道",
+                            "excludedChannelsHeader": "进入、离开这些语音频道或在它们之间移动不会被记录，且这些频道会在记录中隐藏",
+                            "addExcludedChannel": "添加频道",
+                            "removeExcludedChannel": "移除频道",
+                            "selectExcludedChannelToRemove": "选择要移除的频道",
+                            "presenceAction": "选择要配置的在线状态参数",
+                            "changePresenceText": "更改活动文本",
+                            "toggleMembersCount": "切换状态中的成员数量显示",
+                            "changePresenceStatus": "更改状态",
+                            "changePresenceType": "更改活动类型",
+                            "enterPresenceText": "输入活动文本（留空则禁用）",
+                            "presenceSuccess": "在线状态配置已成功更新！",
+                            "ignoredCommandsAction": "选择命令类型",
+                            "toggleIgnoredPrompt": "选择一个命令以切换其忽略状态",
+                            "ignoredSuccess": "命令的忽略状态已成功切换！",
+                            "selectColor": "选择要更改的调色板颜色",
+                            "selectPredefinedColor": "从调色板中选择一种颜色，或选择自定义颜色",
+                            "customHexOption": "自定义 HEX",
+                            "enterHex": "输入自定义的 HEX 颜色代码（6 个字符，例如 FEB526）",
+                            "colorSuccess": "颜色已成功更新！"
+                        },
+                        "records": {
+                            "warnedMember": "成员被警告",
+                            "warnRemoved": "警告被移除",
+                            "timeoutedMember": "成员被禁言",
+                            "untimeoutedMember": "成员被解除禁言",
+                            "kickedMember": "成员被踢出",
+                            "kickedBot": "机器人被踢出",
+                            "bannedMember": "成员被封禁",
+                            "bannedBot": "机器人被封禁",
+                            "unbannedMember": "成员被解除封禁",
+                            "sentDM": "私信已发送",
+                            "pollStarted": "投票开始",
+                            "pollEnded": "投票结束",
+                            "purgedChannel": "频道被清理",
+                            "slowmodeChanged": "慢速模式变更",
+                            "experienceModified": "经验值被修改",
+                            "memberJoined": "成员加入",
+                            "botJoined": "机器人加入",
+                            "memberLeaved": "成员离开",
+                            "voiceMoves": "语音频道移动",
+                            "memberReports": "成员举报"
+                        },
+                        "errorMessage": "发生意外错误。请查看日志了解详情"
+                    },
+                    "moderation": {
+                        "headerMessage": "此模块可让你配置机器人的审核功能",
+                        "promptMessage": "选择一个选项",
+                        "choices": {
+                            "changeModuleStatus": {
+                                "enable": "启用模块",
+                                "disable": "禁用模块",
+                                "wantsToExpireSanctions": "是否要让原定到期的处罚现在立即到期？",
+                                "affirmativeAnswer": "是",
+                                "negativeAnswer": "否"
+                            },
+                            "changeAutomodStatus": {
+                                "enable": "启用自动审核",
+                                "disable": "禁用自动审核"
+                            },
+                            "changeManualModerationStatus": {
+                                "enable": "启用手动审核",
+                                "disable": "禁用手动审核"
+                            },
+                            "setCommands": "设置命令",
+                            "return": "返回"
+                        },
+                        "setCommandsMenu": {
+                            "headerMessage": "选择要配置的命令类别",
+                            "promptMessage": "选择命令类型",
+                            "choices": {
+                                "chatCommands": "聊天命令",
+                                "messageCommands": "消息命令",
+                                "userCommands": "用户命令",
+                                "return": "返回"
+                            },
+                            "setChatCommandsMenu": {
+                                "headerMessage": "管理各个审核聊天命令的状态",
+                                "promptMessage": "选择要配置的命令",
+                                "choices": {
+                                    "return": "返回"
+                                }
+                            },
+                            "setMessageCommandsMenu": {
+                                "headerMessage": "管理各个审核消息命令的状态",
+                                "promptMessage": "选择要配置的命令",
+                                "choices": {
+                                    "return": "返回"
+                                }
+                            },
+                            "setUserCommandsMenu": {
+                                "headerMessage": "管理各个审核用户命令的状态",
+                                "promptMessage": "选择要配置的命令",
+                                "choices": {
+                                    "return": "返回"
+                                }
+                            }
+                        },
+                        "errorMessage": "发生意外错误。请查看日志了解详情"
+                    },
+                    "engagement": {
+                        "headerMessage": "此模块可让你配置机器人的社区互动功能",
+                        "promptMessage": "选择一个选项",
+                        "choices": {
+                            "changeModuleStatus": {
+                                "enable": "启用模块",
+                                "disable": "禁用模块"
+                            },
+                            "changeExperienceSystemStatus": {
+                                "enable": "启用经验值系统",
+                                "disable": "禁用经验值系统"
+                            },
+                            "experience": "经验值",
+                            "statistics": "统计",
+                            "setCommands": "设置命令",
+                            "return": "返回"
+                        },
+                        "setCommandsMenu": {
+                            "headerMessage": "选择要配置的命令类别",
+                            "promptMessage": "选择命令类型",
+                            "choices": {
+                                "chatCommands": "聊天命令",
+                                "return": "返回"
+                            },
+                            "setChatCommandsMenu": {
+                                "headerMessage": "管理各个社区互动聊天命令的状态",
+                                "promptMessage": "选择要配置的命令",
+                                "choices": {
+                                    "return": "返回"
+                                }
+                            }
+                        },
+                        "rewardsUpdate": {
+                            "removePrompt": "经验值系统已不再启用。是否移除所有成员的奖励身份组？（重新启用后可以重新计算）",
+                            "recalculatePrompt": "经验值系统已重新启用。是否根据保存的等级重新计算所有成员的奖励身份组？",
+                            "yes": "是",
+                            "no": "否",
+                            "processing": "正在更新奖励身份组，这可能需要一些时间",
+                            "removed": "已移除 {{count}} 位成员的奖励身份组",
+                            "recalculated": "已重新计算 {{count}} 位成员的奖励身份组",
+                            "missingPermissions": "机器人没有管理身份组的权限"
+                        },
+                        "experienceMenu": {
+                            "headerMessage": "配置经验值系统：成员获取经验值的方式、等级奖励以及升级通知",
+                            "choices": {
+                                "rewards": "等级奖励",
+                                "rewardMessages": "通过发送消息获得经验值",
+                                "rewardVoice": "在语音频道中获得经验值",
+                                "xpReward": "每次奖励的经验值（最小 - 最大）",
+                                "XPGainInterval": "在语音频道中获得经验值的间隔",
+                                "minimumTimeBetweenMessages": "获得经验值所需的消息最短间隔",
+                                "wontEarnXP": "不会获得经验值的身份组",
+                                "nonXPChannels": "不获得经验值的频道",
+                                "notifyLevelUpOnChat": "通过发送消息升级时在聊天中通知",
+                                "notifyLevelUpOnVoice": "在语音频道中升级时私信通知",
+                                "preserveExperience": "保留离开成员的经验值和等级",
+                                "resetExperience": "重置所有成员的经验值和等级"
+                            },
+                            "prompts": {
+                                "enterMinimumXp": "输入每次奖励的最小经验值",
+                                "enterMaximumXp": "输入每次奖励的最大经验值",
+                                "enterXPGainInterval": "输入在语音频道中每隔多少秒获得一次经验值",
+                                "enterMinimumTimeBetweenMessages": "输入获得经验值所需的消息最短间隔秒数"
+                            },
+                            "resetAbsent": {
+                                "warning": "有 {{count}} 位已不在服务器中的成员保存了经验值和等级。如果重置，将无法恢复",
+                                "prompt": "现在重置吗？此操作无法撤销",
+                                "done": "已重置 {{count}} 位成员的经验值和等级"
+                            },
+                            "resetAll": {
+                                "warning": "所有成员的经验值和等级将被设为 0。此操作无法撤销",
+                                "prompt": "重置所有成员的经验值和等级吗？",
+                                "done": "所有成员的经验值和等级已被重置",
+                                "removeRolesPrompt": "同时移除所有成员的奖励身份组吗？"
+                            },
+                            "lists": {
+                                "wontEarnXP": {
+                                    "headerMessage": "拥有以下任一身份组的成员不会获得经验值",
+                                    "add": "添加身份组",
+                                    "remove": "移除身份组",
+                                    "selectToRemove": "选择要移除的身份组"
+                                },
+                                "nonXPChannels": {
+                                    "headerMessage": "在这些频道中不会获得经验值",
+                                    "add": "添加频道",
+                                    "remove": "移除频道",
+                                    "selectToRemove": "选择要移除的频道"
+                                }
+                            }
+                        },
+                        "statisticsMenu": {
+                            "headerMessage": "配置成员的统计数据（已发送消息和语音时长）",
+                            "choices": {
+                                "collectMessagesCount": "统计已发送消息",
+                                "collectVoiceTime": "统计语音时长",
+                                "preserveStats": "保留离开成员的统计数据",
+                                "resetMessagesCount": "重置所有成员的已发送消息数",
+                                "resetVoiceTime": "重置所有成员的语音时长"
+                            },
+                            "resetAbsent": {
+                                "warning": "有 {{count}} 位已不在服务器中的成员保存了统计数据。如果重置，将无法恢复",
+                                "prompt": "现在重置吗？此操作无法撤销",
+                                "done": "已重置 {{count}} 位成员的统计数据"
+                            },
+                            "resetAll": {
+                                "messagesCount": {
+                                    "warning": "所有成员的已发送消息数将被设为 0。此操作无法撤销",
+                                    "prompt": "重置所有成员的已发送消息数吗？",
+                                    "done": "所有成员的已发送消息数已被重置"
+                                },
+                                "aproxVoiceTime": {
+                                    "warning": "所有成员的语音时长将被设为 0。此操作无法撤销",
+                                    "prompt": "重置所有成员的语音时长吗？",
+                                    "done": "所有成员的语音时长已被重置"
+                                }
+                            }
+                        },
+                        "rewardsMenu": {
+                            "headerMessage": "成员达到对应等级时会获得每项奖励的身份组",
+                            "level": "等级",
+                            "choices": {
+                                "addReward": "添加奖励",
+                                "removePreviousRewards": "获得新奖励时移除之前的奖励",
+                                "changeLevel": "更改等级",
+                                "addRole": "添加身份组",
+                                "removeRole": "移除身份组",
+                                "deleteReward": "删除奖励"
+                            },
+                            "prompts": {
+                                "enterLevel": "输入所需等级",
+                                "rewardSaved": "奖励已成功保存！",
+                                "roleAboveBot": "此身份组高于机器人的最高身份组，因此在你将其移到下方之前，机器人无法授予它",
+                                "levelInUse": "该等级已有奖励",
+                                "selectRoleToRemove": "选择要移除的身份组",
+                                "deleteConfirmation": "删除此奖励吗？已经拥有其身份组的成员会保留它们",
+                                "recalculatePrompt": "奖励已更改。现在根据保存的等级重新计算所有成员的奖励身份组吗？"
+                            }
+                        },
+                        "errorMessage": "发生意外错误。请查看日志了解详情"
+                    },
+                    "greetings": {
+                        "headerMessage": "此模块可让你配置机器人的欢迎功能",
+                        "promptMessage": "选择一个选项",
+                        "choices": {
+                            "changeModuleStatus": {
+                                "enable": "启用模块",
+                                "disable": "禁用模块"
+                            },
+                            "newMemberMode": "欢迎时机",
+                            "newMemberRole": "新成员身份组",
+                            "newBotRole": "新机器人身份组",
+                            "publicWelcome": "公开欢迎",
+                            "privateWelcome": "私信欢迎",
+                            "return": "返回"
+                        },
+                        "modes": {
+                            "onJoin": "加入服务器时",
+                            "afterScreening": "接受服务器规则时"
+                        },
+                        "prompts": {
+                            "selectMode": "选择何时欢迎新成员",
+                            "clearRoleSuccess": "身份组已成功清除！",
+                            "roleSuccess": "身份组已成功更新！"
+                        },
+                        "welcomeMenu": {
+                            "headers": {
+                                "public": "配置发送到服务器频道的欢迎消息",
+                                "private": "配置通过私信发送给新成员的欢迎消息"
+                            },
+                            "customMessage": "当前消息（自定义）",
+                            "defaultMessage": "当前消息（默认）",
+                            "choices": {
+                                "enable": "启用欢迎",
+                                "disable": "禁用欢迎",
+                                "channel": "频道",
+                                "format": "格式",
+                                "editMessage": "编辑消息",
+                                "restoreMessage": "恢复默认消息",
+                                "recovery": "机器人离线期间"
+                            },
+                            "formats": {
+                                "text": "纯文本",
+                                "embed": "嵌入"
+                            },
+                            "recovery": {
+                                "none": "不发送",
+                                "all": "全部发送",
+                                "limit": "最多",
+                                "limitOption": "仅在未超过上限时发送",
+                                "yes": "发送",
+                                "no": "不发送"
+                            },
+                            "prompts": {
+                                "noChannelError": "启用公开欢迎前，你必须选择一个频道",
+                                "channelSuccess": "频道已成功更新！",
+                                "selectFormat": "选择消息的格式",
+                                "embedMentionsWarning": "嵌入内容中的提及会显示，但不会通知该成员",
+                                "wildcardsHelp": "可用的占位符",
+                                "lineBreaksHelp": "输入 \\n 来换行",
+                                "enterMessage": "输入消息",
+                                "messageTooLong": "消息不能超过 2000 个字符",
+                                "messageSuccess": "消息已成功更新！",
+                                "messageRestored": "默认消息已成功恢复！",
+                                "recoveryHelp": "机器人启动时，会欢迎在其离线期间加入的成员。身份组和记录总会被补上，因此请选择是否也发送此消息",
+                                "selectRecovery": "选择是否发送错过的欢迎消息",
+                                "limitWarning": "如果机器人离线期间有很多成员加入，它可能会连续发送过多消息",
+                                "enterLimit": "输入要发送的欢迎消息的最大数量"
+                            }
+                        },
+                        "errorMessage": "发生意外错误。请查看日志了解详情"
+                    },
+                    "polls": {
+                        "headerMessage": "此模块可让你配置机器人的投票功能",
+                        "promptMessage": "选择一个选项",
+                        "choices": {
+                            "changeModuleStatus": {
+                                "enable": "启用模块",
+                                "disable": "禁用模块",
+                                "wantsToExpirePolls": "是否要让原定到期的投票现在立即到期？",
+                                "affirmativeAnswer": "是",
+                                "negativeAnswer": "否"
+                            },
+                            "setCommands": "设置命令",
+                            "return": "返回"
+                        },
+                        "setCommandsMenu": {
+                            "headerMessage": "选择要配置的命令类别",
+                            "promptMessage": "选择命令类型",
+                            "choices": {
+                                "chatCommands": "聊天命令",
+                                "return": "返回"
+                            },
+                            "setChatCommandsMenu": {
+                                "headerMessage": "管理各个投票聊天命令的状态",
+                                "promptMessage": "选择要配置的命令",
+                                "choices": {
+                                    "return": "返回"
+                                }
+                            }
+                        },
+                        "errorMessage": "发生意外错误。请查看日志了解详情"
+                    },
+                    "utilities": {
+                        "headerMessage": "此模块可让你配置机器人的实用工具",
+                        "promptMessage": "选择一个选项",
+                        "choices": {
+                            "changeModuleStatus": {
+                                "enable": "启用模块",
+                                "disable": "禁用模块"
+                            },
+                            "setCommands": "设置命令",
+                            "return": "返回"
+                        },
+                        "setCommandsMenu": {
+                            "headerMessage": "选择要配置的命令类别",
+                            "promptMessage": "选择命令类型",
+                            "choices": {
+                                "chatCommands": "聊天命令",
+                                "return": "返回"
+                            },
+                            "setChatCommandsMenu": {
+                                "headerMessage": "管理各个实用工具聊天命令的状态",
+                                "promptMessage": "选择要配置的命令",
+                                "choices": {
+                                    "return": "返回"
+                                }
+                            }
+                        },
+                        "errorMessage": "发生意外错误。请查看日志了解详情"
+                    },
+                    "scheduledMessages": {
+                        "headerMessage": "此模块可让你设置自动发送的定时消息",
+                        "promptMessage": "选择一个选项",
+                        "choices": {
+                            "changeModuleStatus": {
+                                "enable": "启用模块",
+                                "disable": "禁用模块"
+                            },
+                            "setCommands": "设置命令",
+                            "return": "返回"
+                        },
+                        "setCommandsMenu": {
+                            "headerMessage": "选择要配置的命令类别",
+                            "promptMessage": "选择命令类型",
+                            "choices": {
+                                "chatCommands": "聊天命令",
+                                "return": "返回"
+                            },
+                            "setChatCommandsMenu": {
+                                "headerMessage": "管理各个定时消息聊天命令的状态",
+                                "promptMessage": "选择要配置的命令",
+                                "noCommandsAvailable": "定时消息模块暂无可用的命令",
+                                "choices": {
+                                    "return": "返回"
+                                }
+                            }
+                        },
+                        "errorMessage": "发生意外错误。请查看日志了解详情"
+                    }
+                },
+                "errorMessage": "发生意外错误。请查看日志了解详情"
+            },
+            "update": {
+                "promptMessage": "选择一个选项",
+                "choices": {
+                    "checkAgain": "重新检查",
+                    "switchToBeta": "切换到测试版",
+                    "switchToStable": "切换到稳定版",
+                    "return": "返回"
+                },
+                "errorMessage": "发生意外错误。请查看日志了解详情",
+                "checkingForUpdates": "正在检查是否有新的更新",
+                "updatedCorrectly": "机器人已成功更新到 {{targetVersion}}！",
+                "noReleaseNotes": "此版本没有可用的更新说明",
+                "newVersionAvailable": "版本 {{targetVersion}} 现已可用！",
+                "releaseNotes": "更新说明",
+                "updateConfirmationPromptMessage": "要更新机器人吗？",
+                "updateConfirmationChoices": {
+                    "yes": "是",
+                    "no": "否"
+                },
+                "couldNotFetchUpdate": "检查更新时出错",
+                "alreadyUpdated": "机器人已是最新版本",
+                "downloadingNewVersion": "正在从 {{repositoryURL}} 下载 {{targetVersion}}",
+                "newVersionDownloaded": "{{targetVersion}} 已成功下载并安装",
+                "needsRestart": "需要重启机器人以应用更改。\n如果你现在不重启，进程将在 30 秒后自动终止。\n如果你使用 PM2 或 Docker 等进程管理器，机器人会自动重新启动。\n否则，你需要手动重启它",
+                "restartConfirmationPrompt": {
+                    "message": "现在重启吗？",
+                    "restartNow": "立即重启"
+                }
+            },
+            "logs": {
+                "promptMessage": "选择一个选项",
+                "choices": {
+                    "refresh": "刷新",
+                    "return": "返回"
+                },
+                "errorMessage": "发生意外错误。请查看日志了解详情",
+                "noStoredLogs": "没有已保存的日志。请稍后再试"
+            },
+            "information": {
+                "promptMessage": "选择一个选项",
+                "choices": {
+                    "refresh": "刷新",
+                    "return": "返回"
+                },
+                "errorMessage": "发生意外错误。请查看日志了解详情",
+                "appInfo": {
+                    "header": "机器人信息",
+                    "appVersion": "应用版本",
+                    "appAuthor": "应用作者",
+                    "repoUrl": "仓库 URL",
+                    "license": "许可证",
+                    "appName": "应用名称",
+                    "appId": "应用 ID",
+                    "language": "已配置的语言",
+                    "uptime": "运行时间",
+                    "connectionStatus": "连接状态",
+                    "activityType": "活动类型",
+                    "activityName": "活动名称"
+                },
+                "guildInfo": {
+                    "header": "所管理服务器的信息",
+                    "guildName": "服务器名称",
+                    "guildId": "服务器 ID",
+                    "availability": "可用性",
+                    "guildAvailable": "可用",
+                    "guildNotAvailable": "服务器中断",
+                    "totalMembers": "成员总数",
+                    "onlineMembers": "在线成员",
+                    "humanMembers": "真人成员",
+                    "botMembers": "机器人成员"
+                },
+                "databasesInfo": {
+                    "header": "数据库信息",
+                    "storedProfiles": "已保存的资料",
+                    "totalMessages": "已审查的消息总数",
+                    "totalVoice": "语音总时长",
+                    "totalExperience": "获得的经验值总数",
+                    "totalWarns": "警告数量",
+                    "totalBans": "生效中的封禁",
+                    "totalTimeouts": "生效中的禁言",
+                    "totalPolls": "进行中的投票",
+                    "totalScheduledMessages": "定时消息"
+                }
+            },
+            "license": {
+                "promptMessage": "选择一个选项",
+                "choices": {
+                    "return": "返回"
+                },
+                "errorMessage": "发生意外错误。请查看日志了解详情"
+            },
+            "shared": {
+                "promptMessage": "选择一个选项",
+                "return": "返回",
+                "yes": "是",
+                "no": "否",
+                "emptyList": "（空）",
+                "none": "无",
+                "invalidNumber": "输入 {{minimum}} 到 {{maximum}} 之间的整数",
+                "invalidMinimum": "输入大于或等于 {{minimum}} 的整数",
+                "selectSearchMethod": "选择搜索方式",
+                "searchRoleByName": "按名称搜索身份组",
+                "enterRoleIdManually": "手动输入身份组 ID",
+                "enterRoleNameSearch": "输入要搜索的身份组名称",
+                "noRolesFound": "未找到与搜索匹配的身份组",
+                "selectRole": "选择一个身份组",
+                "enterRoleId": "输入 Discord 身份组 ID",
+                "roleNotFound": "未找到身份组（无法选择集成的身份组和 @everyone）",
+                "clearRole": "清除身份组",
+                "searchChannelByName": "按名称搜索频道",
+                "enterChannelIdManually": "手动输入频道 ID",
+                "enterChannelNameSearch": "输入要搜索的频道名称",
+                "noChannelsFound": "未找到与搜索匹配的频道",
+                "selectChannel": "选择一个频道",
+                "enterChannelId": "输入频道 ID",
+                "searchMemberByName": "按名称搜索成员",
+                "enterMemberIdManually": "手动输入成员 ID",
+                "enterMemberNameSearch": "输入要搜索的用户名或昵称",
+                "noMembersFound": "未找到与搜索匹配的成员",
+                "selectMember": "选择一位成员",
+                "enterMemberId": "输入 Discord 成员 ID",
+                "memberNotFound": "未找到该成员",
+                "emptyValue": "值不能为空"
             }
         },
         "moderation": {
             "manageWarn": {
-                "error": "ERROR"
+                "timeoutFunction": {
+                    "reason": "警告过多",
+                    "notificationEmbed": {
+                        "initiated": "**{{memberTag}}** 因累积了__过多警告__而被禁言",
+                        "extended": "**{{memberTag}}** 因累积了__更多警告__，禁言时间已被延长"
+                    }
+                },
+                "kickFunction": {
+                    "notificationEmbed": "{{memberTag}} 因累积了__过多警告__而被踢出",
+                    "privateEmbed": {
+                        "author": "[已踢出]",
+                        "description": "{{member}}，你已被踢出 {{guildName}}",
+                        "moderator": "版主",
+                        "reason": "原因"
+                    },
+                    "reason": "警告过多"
+                },
+                "banFunction": {
+                    "notificationEmbed": "{{memberTag}} 因累积了__过多警告__而被封禁",
+                    "privateEmbed": {
+                        "author": "[已封禁]",
+                        "description": "{{member}}，你已被 {{guildName}} 封禁",
+                        "moderator": "版主",
+                        "reason": "原因",
+                        "expiration": "到期时间",
+                        "noExpiration": "永不过期"
+                    },
+                    "reason": "警告过多"
+                },
+                "warn": {
+                    "privateEmbed": {
+                        "author": "[已警告]",
+                        "description": "{{member}}，你在 {{guildName}} 收到了一条警告",
+                        "moderator": "版主",
+                        "reason": "原因"
+                    },
+                    "notificationEmbed": "成员 **{{memberTag}}** 因 __{{warnReason}}__ 被警告",
+                    "loggingEmbed": {
+                        "author": "{{memberTag}} 已被警告",
+                        "memberId": "成员 ID",
+                        "moderator": "版主",
+                        "reason": "原因",
+                        "warnId": "警告 ID",
+                        "channel": "频道",
+                        "infractions": "违规记录"
+                    }
+                }
+            },
+            "checkUsername": {
+                "kickReason": "用户名包含被禁止的词语",
+                "privateEmbed": {
+                    "author": "[已踢出]",
+                    "description": "{{member}}，你已被踢出 {{guildName}}",
+                    "moderator": "版主",
+                    "reasonTitle": "原因",
+                    "reasonDescription": "你的用户名包含社区禁止使用的词语"
+                }
             },
             "syncTimeout": {
-                "reason": "Was untimed out while the member was not in the guild"
+                "reason": "该成员不在服务器期间被解除了禁言"
+            },
+            "checkMessage": {
+                "filteredDm": "通过私信"
             }
         },
-        "utilities": {
+        "utils": {
             "msToTime": {
-                "years": "year/s",
-                "months": "month/s",
-                "days": "day/s"
+                "years": "年",
+                "months": "个月",
+                "days": "天"
+            }
+        }
+    },
+    "models": {
+        "config": {
+            "automodFilters": {
+                "flood": {
+                    "reason": "刷屏"
+                },
+                "crossPost": {
+                    "reason": "重复发帖"
+                },
+                "bannedWords": {
+                    "reason": "违禁词"
+                },
+                "invites": {
+                    "reason": "不允许的邀请"
+                },
+                "uppercase": {
+                    "reason": "大写字母过多"
+                },
+                "links": {
+                    "reason": "不允许的链接"
+                },
+                "massEmojis": {
+                    "reason": "表情符号过多"
+                },
+                "massMentions": {
+                    "reason": "提及过多"
+                },
+                "massSpoilers": {
+                    "reason": "剧透过多"
+                },
+                "repeatedText": {
+                    "reason": "重复文本"
+                }
             }
         }
     }

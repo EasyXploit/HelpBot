@@ -2,9 +2,10 @@
 // It is run by docker-entrypoint.sh before starting the bot (only in Docker Compose), and it does not fill the settings that are set in the environment variables, as they take precedence
 import fs from 'fs';
 import crypto from 'crypto';
+import configFile from './lib/utils/configFile.js';
 
-// Stores the path of the local configuration file, and reads it
-const configPath = '/app/data/config.json';
+// Stores the path of the local configuration file (in Docker, config.json is a link to data/config.json), and reads it
+const configPath = configFile();
 const localConfig = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
 if (!localConfig.database) localConfig.database = {};
 
@@ -36,5 +37,5 @@ for (const [key, { variable, value }] of Object.entries(settings)) {
 // If any setting was filled, saves the local configuration
 if (filled) {
     fs.writeFileSync(configPath, JSON.stringify(localConfig, null, 4));
-    console.log('Filled the empty database settings of data/config.json');
+    console.log(`Filled the empty database settings of ${configPath}`);
 };

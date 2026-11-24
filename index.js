@@ -21,11 +21,14 @@ import { loadLogger, loadLocales, splashLogo, loadErrorTracker, loadDatabase, lo
 // Imports the function to shut down the bot gracefully
 import shutdown from './lib/utils/shutdown.js';
 
+// Imports the function to obtain the path of the local configuration file
+import configFile from './lib/utils/configFile.js';
+
 // Loads the logs handler
 await loadLogger();
 
 // Stores the local configuration from the configuration file
-const localConfig = require('./config.json');
+const localConfig = require(configFile());
 
 // Loads the remote error handler, if enabled in the local configuration or if a Sentry DSN is provided through the environment variables
 if (localConfig.errorTracking.enabled || (process.env.SENTRY_DSN && process.env.SENTRY_DSN.length > 0) || process.env.NODE_ENV !== 'production') loadErrorTracker(localConfig);
@@ -49,7 +52,7 @@ if (!fs.existsSync(`./locales/${targetLocale}.json`)) {
         localConfig.locale = targetLocale;
 
         // Updates the configuration file with the changes
-        fs.writeFile('./config.json', JSON.stringify(localConfig, null, 4), async err => { if (err) throw err; });
+        fs.writeFile(configFile(), JSON.stringify(localConfig, null, 4), async err => { if (err) throw err; });
 
         // Sends a notice to the console
         logger.warn('The language has been replaced by the default one (en-US) in the local configuration file');

@@ -1,8 +1,11 @@
 // Library to interact with the database
 const mongoose = require('mongoose');
 
+// Imports the function to obtain the path of the local configuration file
+import configFile from '../../lib/utils/configFile.js';
+
 // Stores the locale configuration from the configuration file
-const localeConfig = require('./config.json').locale;
+const localeConfig = require(configFile()).locale;
 
 // Stores the translations to the configured language
 const locale = require(`./locales/${localeConfig}.json`).models.config.automodFilters;

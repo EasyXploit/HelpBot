@@ -40,8 +40,8 @@ You can deploy it in two ways:
 ### Option 1: Docker Compose (recommended)
 1. **Create a folder** for the bot (for example, `helpbot`).
 2. **Download these two files** into that folder (open each one and click the **Download raw file** button):
-   - [`docker-compose.yml`](../docker-compose.yml)
-   - [`.env.example`](../.env.example)
+   - [`docker-compose.yml`](../docker/docker-compose.yml)
+   - [`.env.example`](../docker/.env.example)
 3. **Rename `.env.example` to `.env`** and fill it in:
 
    | Setting | Required | What to put |

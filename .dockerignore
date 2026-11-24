@@ -3,9 +3,9 @@ node_modules
 .github
 .vscode
 .devcontainer
-docker-compose.yml
+docker/docker-compose.yml
 .env
-.env.example
+docker/.env.example
 *.md
 data
 logs

@@ -1,8 +1,8 @@
 // Fills the empty database settings of the local configuration with the MongoDB service of the Docker Compose project, and a random password, so they do not have to be set by hand
-// It is run by docker-entrypoint.sh before starting the bot (only in Docker Compose), and it does not fill the settings that are set in the environment variables, as they take precedence
+// It is run by docker/entrypoint.sh before starting the bot (only in Docker Compose), and it does not fill the settings that are set in the environment variables, as they take precedence
 import fs from 'fs';
 import crypto from 'crypto';
-import configFile from './lib/utils/configFile.js';
+import configFile from '../lib/utils/configFile.js';
 
 // Stores the path of the local configuration file (in Docker, config.json is a link to data/config.json), and reads it
 const configPath = configFile();

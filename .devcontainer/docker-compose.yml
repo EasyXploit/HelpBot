@@ -28,7 +28,7 @@ services:
     image: mongo:7
     restart: unless-stopped
 
-    # Before creating the database on its first start, waits for the user and password of its administrator: the ones from the .env file, or the ones of the development configuration file (as in the Docker Compose project of the root folder)
+    # Before creating the database on its first start, waits for the user and password of its administrator: the ones from the .env file, or the ones of the development configuration file (as in the Docker Compose project of the docker folder)
     entrypoint:
       - sh
       - -c

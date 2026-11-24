@@ -14,7 +14,7 @@ ln -sf /app/data/config.json /app/config.json
 
 # In Docker Compose, fills the empty database settings of the local configuration with the MongoDB service of the project (and a random password)
 if [ "$GENERATE_DATABASE_CONFIG" = "true" ]; then
-    node /app/docker-database.js
+    node /app/docker/generate-database-config.js
 fi
 
 # Disables the exit on error from here on, as the wait below is interrupted by the stop signals on purpose

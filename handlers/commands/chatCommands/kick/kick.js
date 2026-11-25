@@ -25,7 +25,7 @@ export async function run(interaction, commandConfig, locale) {
         };
         
         // It is checked if the role of the executing member is lower than that of the target member
-        if ((interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) || !member.bannable) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
+        if ((interaction.member.id !== interaction.guild.ownerId && interaction.member.roles.highest.position <= member.roles.highest.position) || !member.kickable) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.badHierarchy}.`)
         ], flags: discord.MessageFlags.Ephemeral});

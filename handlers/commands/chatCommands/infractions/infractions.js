@@ -3,10 +3,10 @@ export async function run(interaction, commandConfig, locale) {
     try {
 
         // Looks for the member in question
-        const member = interaction.options._hoistedOptions[0] ? await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value): await client.functions.utils.fetch('member', interaction.member.id);
+        const member = interaction.options.get(locale.appData.options.user.name) ? await client.functions.utils.fetch('member', interaction.options.get(locale.appData.options.user.name).value): await client.functions.utils.fetch('member', interaction.member.id);
 
         // Stores the member Id
-        const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
+        const memberId = member ? member.id : interaction.options.get(locale.appData.options.user.name).value;
 
         // Checks, if applicable, that the member has permission to see the history of others
         if (interaction.member.id !== memberId) {

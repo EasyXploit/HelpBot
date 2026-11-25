@@ -3,11 +3,11 @@ export async function run(interaction, commandConfig, locale) {
     try {
 
         // Stores the reported member if it is provided as parameter
-        const reportedMemberOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.member.name);
+        const reportedMemberOption = interaction.options.get(locale.appData.options.member.name);
         const reportedMember = reportedMemberOption ? (await client.functions.utils.fetch('member', reportedMemberOption.value) || reportedMemberOption.user) : null;
 
         // Stores the report if it is provided as parameter
-        const reportOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.body.name);
+        const reportOption = interaction.options.get(locale.appData.options.body.name);
 
         // Executes the report handler if the report has been provided as a parameter
         if (reportOption) return await client.functions.managers.sendReport(interaction, null, reportOption.value, reportedMember);

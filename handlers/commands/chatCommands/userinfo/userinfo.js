@@ -3,7 +3,7 @@ export async function run(interaction, commandConfig, locale) {
     try {
 
         // Looks for the member in the guild
-        const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0] ? interaction.options._hoistedOptions[0].value : interaction.member.id);
+        const member = await client.functions.utils.fetch('member', interaction.options.get(locale.appData.options.user.name)?.value ?? interaction.member.id);
 
         // Checks if a valid member has been provided
         if (!member) return interaction.reply({ embeds: [ new discord.EmbedBuilder()

@@ -3,12 +3,12 @@ export async function run(interaction, commandConfig, locale) {
     try {
 
         // Looks for the role in the guild
-        const role = await client.functions.utils.fetch('role', interaction.options._hoistedOptions[0].value);
+        const role = await client.functions.utils.fetch('role', interaction.options.get(locale.appData.options.role.name).value);
 
         // If the role does not exist, returns an error
         if (!role) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.roleNotFound, { role: interaction.options._hoistedOptions[0].value })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.roleNotFound, { role: interaction.options.get(locale.appData.options.role.name).value })}.`)
         ], flags: discord.MessageFlags.Ephemeral});
 
         // Sends an embed with the information of the role

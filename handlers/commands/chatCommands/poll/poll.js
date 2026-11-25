@@ -3,15 +3,15 @@ export async function run(interaction, commandConfig, locale) {
     try {
 
         // If has to finish a poll
-        if (interaction.options._hoistedOptions[0]) {
+        if (interaction.options.get(locale.appData.options.end.name)) {
 
             // Looks for the poll in the database
-            const pollData = await client.functions.db.getData('poll', interaction.options._hoistedOptions[0].value);
+            const pollData = await client.functions.db.getData('poll', interaction.options.get(locale.appData.options.end.name).value);
 
             // If the poll does not exist, returns an error
             if (!pollData) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.unknownPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.unknownPoll, { id: interaction.options.get(locale.appData.options.end.name).value })}.`)
             ], flags: discord.MessageFlags.Ephemeral});
 
             // Searches and stores the polls channel
@@ -24,12 +24,12 @@ export async function run(interaction, commandConfig, locale) {
             if (!pollChannel || !pollMessage) {
 
                 // Deletes the poll from the database
-                await client.functions.db.delData('poll', interaction.options._hoistedOptions[0].value);
+                await client.functions.db.delData('poll', interaction.options.get(locale.appData.options.end.name).value);
             
                 // Notifies the error to the member
                 return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                     .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.deletedPoll, { id: interaction.options._hoistedOptions[0].value })}.`)
+                    .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.deletedPoll, { id: interaction.options.get(locale.appData.options.end.name).value })}.`)
                 ], flags: discord.MessageFlags.Ephemeral});
             };
 

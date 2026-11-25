@@ -5,17 +5,21 @@ export async function run(interaction, commandConfig, locale) {
         // Stores the chosen subcommand
         const subcommand = interaction.options._subcommand;
 
+        // Stores the options of the subcommand: the user, and the quantity (if it has one)
+        const userOption = interaction.options._hoistedOptions.find(option => option.type === discord.ApplicationCommandOptionType.User);
+        const valueOption = interaction.options._hoistedOptions.find(option => option.type === discord.ApplicationCommandOptionType.Integer);
+
         // Stores the member provided
-        const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utils.fetch('member', userOption.value);
 
         // Checks if a valid member has been provided
-        if (!member && !await client.functions.db.getData('profile', interaction.options._hoistedOptions[0].value)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
+        if (!member && !await client.functions.db.getData('profile', userOption.value)) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.invalidMember}.`)
         ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the member Id
-        const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
+        const memberId = member ? member.id : userOption.value;
 
         // If the member was a bot
         if (member && member.user.bot) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
@@ -24,7 +28,7 @@ export async function run(interaction, commandConfig, locale) {
         ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the value for its modification
-        const providedValue = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : null;
+        const providedValue = valueOption ? valueOption.value : null;
 
         // Stores the member's profile, or creates it
         let memberProfile = await client.functions.db.getData('profile', memberId) || await client.functions.db.genData('profile', { userId: memberId });

@@ -3,13 +3,13 @@ export async function run(interaction, commandConfig, locale) {
     try {
 
         // Looks for the member provided
-        const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utils.fetch('member', interaction.options.get(locale.appData.options.user.name).value);
 
         // Stores the member Id
-        const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
+        const memberId = member ? member.id : interaction.options.get(locale.appData.options.user.name).value;
 
         // Stores the reason
-        let reason = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : null;
+        let reason = interaction.options.get(locale.appData.options.reason.name)?.value ?? null;
 
         // Capitalizes the reason
         if (reason) reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;

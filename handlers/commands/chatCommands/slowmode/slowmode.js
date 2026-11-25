@@ -6,7 +6,7 @@ export async function run(interaction, commandConfig, locale) {
         const interactionChannel = await client.functions.utils.fetch('channel', interaction.channelId);
 
         // Stores the seconds provided
-        const argument = interaction.options._hoistedOptions[0].value;
+        const argument = interaction.options.get(locale.appData.options.seconds.name).value;
 
         // If slow mode must be deactivated
         if (argument === 0) {
@@ -50,7 +50,7 @@ export async function run(interaction, commandConfig, locale) {
             ], flags: discord.MessageFlags.Ephemeral});
 
             // Stores the reason
-            let reason = interaction.options._hoistedOptions[2] ? interaction.options._hoistedOptions[2].value : null;
+            let reason = interaction.options.get(locale.appData.options.reason.name)?.value ?? null;
 
             // Capitalizes the reason
             if (reason) reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;

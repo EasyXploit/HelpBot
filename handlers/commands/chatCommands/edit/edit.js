@@ -3,12 +3,12 @@ export async function run(interaction, commandConfig, locale) {
     try {
             
         // Looks for the channel in the guild
-        const channel = await client.functions.utils.fetch('channel', interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : interaction.channelId);
+        const channel = await client.functions.utils.fetch('channel', interaction.options.get(locale.appData.options.channel.name)?.value ?? interaction.channelId);
 
         // Returns an error if the channel has not been found
-        if (interaction.options._hoistedOptions[1] && !channel) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
+        if (interaction.options.get(locale.appData.options.channel.name) && !channel) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noChannel, { id: interaction.options._hoistedOptions[1].value })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.noChannel, { id: interaction.options.get(locale.appData.options.channel.name).value })}.`)
         ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores if permissions are missing on the target channel
@@ -19,10 +19,10 @@ export async function run(interaction, commandConfig, locale) {
         ], flags: discord.MessageFlags.Ephemeral});
         
         // Looks for the message on the channel
-        const msg = await client.functions.utils.fetch('message', interaction.options._hoistedOptions[0].value, channel);
+        const msg = await client.functions.utils.fetch('message', interaction.options.get(locale.appData.options.id.name).value, channel);
         if (!msg) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.msgNotFound, { msgId: interaction.options._hoistedOptions[0].value })}.`)
+            .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.msgNotFound, { msgId: interaction.options.get(locale.appData.options.id.name).value })}.`)
         ], flags: discord.MessageFlags.Ephemeral});
 
         // Checks if the message is from the bot

@@ -3,10 +3,10 @@ export async function run(interaction, commandConfig, locale) {
     try {
 
         // Looks for the member provided
-        const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utils.fetch('member', interaction.options.get(locale.appData.options.user.name).value);
 
         // Stores the member Id
-        const memberId = member ? member.id : interaction.options._hoistedOptions[0].value;
+        const memberId = member ? member.id : interaction.options.get(locale.appData.options.user.name).value;
 
         // Returns an error if a bot has been provided
         if (member && member.user.bot) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
@@ -15,11 +15,11 @@ export async function run(interaction, commandConfig, locale) {
         ], flags: discord.MessageFlags.Ephemeral});
         
         // Checks if any warning has been provided
-        const warnIdOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.warn.name);
+        const warnIdOption = interaction.options.get(locale.appData.options.warn.name);
         const warnId = warnIdOption ? warnIdOption.value : null;
 
         // Stores the reason and capitalizes it, if it has been provided
-        const reasonOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.reason.name);
+        const reasonOption = interaction.options.get(locale.appData.options.reason.name);
         const reason = reasonOption ? `${reasonOption.value.charAt(0).toUpperCase()}${reasonOption.value.slice(1)}` : null;
 
         // If a reason has not been provided and the member is not the owner
@@ -209,7 +209,10 @@ export async function autocomplete(interaction, command, locale) {
     try {
 
         // Stores the target member Id
-        const memberId = interaction.options._hoistedOptions[0].value;
+        const memberId = interaction.options.get(locale.appData.options.user.name)?.value;
+
+        // If the user has not been provided yet, does not suggest anything
+        if (!memberId) return await interaction.respond([]);
 
         // Stores the partial value that the user has introduced
         const focusedValue = interaction.options.getFocused();

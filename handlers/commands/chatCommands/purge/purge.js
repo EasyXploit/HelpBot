@@ -3,7 +3,7 @@ export async function run(interaction, commandConfig, locale) {
     try {
 
         // Stores the Id of the channel provided, or the current one
-        const channelId = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : interaction.channelId;
+        const channelId = interaction.options.get(locale.appData.options.channel.name)?.value ?? interaction.channelId;
         const channel = await client.functions.utils.fetch('channel', channelId);
 
         // Checks if the channel exists
@@ -20,7 +20,7 @@ export async function run(interaction, commandConfig, locale) {
         ], flags: discord.MessageFlags.Ephemeral});
 
         // The specified number of messages is obtained (including the invocation)
-        const messages = await channel.messages.fetch({limit: parseInt(interaction.options._hoistedOptions[0].value)});
+        const messages = await channel.messages.fetch({limit: parseInt(interaction.options.get(locale.appData.options.quantity.name).value)});
 
         // If messages were not found on the channel, returns an error
         if (messages.size === 0) return interaction.reply({ embeds: [ new discord.EmbedBuilder()

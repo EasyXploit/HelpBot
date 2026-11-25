@@ -12,10 +12,10 @@ export async function run(interaction, commandConfig, locale) {
         ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the selected modality
-        const modality = interaction.options._hoistedOptions[0].value;
+        const modality = interaction.options.get(locale.appData.options.modality.name).value;
 
         // Stores the selected state
-        const status = interaction.options._hoistedOptions[1].value;
+        const status = interaction.options.get(locale.appData.options.status.name).value;
 
         // Stores the member's profile, or creates it
         let memberProfile = await client.functions.db.getData('profile', interaction.member.id) || await client.functions.db.genData('profile', { userId: interaction.member.id });

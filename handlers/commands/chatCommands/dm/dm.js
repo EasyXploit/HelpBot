@@ -3,7 +3,7 @@ export async function run(interaction, commandConfig, locale) {
     try {
         
         // Searches and stores the member
-        const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utils.fetch('member', interaction.options.get(locale.appData.options.user.name).value);
 
         // Returns an error if the member was not found
         if (!member) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
@@ -18,8 +18,8 @@ export async function run(interaction, commandConfig, locale) {
         ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the selected mode and type
-        const mode = interaction.options._hoistedOptions[1].value;
-        const type = interaction.options._hoistedOptions[2].value;
+        const mode = interaction.options.get(locale.appData.options.mode.name).value;
+        const type = interaction.options.get(locale.appData.options.type.name).value;
 
         // If anonymous mode has been selected
         if (mode === 'anonymous') {

@@ -3,7 +3,7 @@ export async function run(interaction, commandConfig, locale) {
     try {
         
         // Looks for the user provided
-        const user = await client.functions.utils.fetch('user', interaction.options._hoistedOptions[0].value);
+        const user = await client.functions.utils.fetch('user', interaction.options.get(locale.appData.options.user.name).value);
 
         // Returns an error if the user has not been found
         if (!user) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
@@ -53,7 +53,7 @@ export async function run(interaction, commandConfig, locale) {
         };
 
         // Stores the duration provided
-        const durationOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.expiration.name);
+        const durationOption = interaction.options.get(locale.appData.options.expiration.name);
         const providedDuration = durationOption ? durationOption.value : null;
 
         // If a duration has not been provided
@@ -83,7 +83,7 @@ export async function run(interaction, commandConfig, locale) {
         };
 
         // Stores the days of erased messages
-        const deletedDaysOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.days.name);
+        const deletedDaysOption = interaction.options.get(locale.appData.options.days.name);
         const deletedDays = deletedDaysOption ? deletedDaysOption.value : null;
 
         // If a duration has not been provided
@@ -100,7 +100,7 @@ export async function run(interaction, commandConfig, locale) {
         };
         
         // Stores the reason
-        const reasonOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.reason.name);
+        const reasonOption = interaction.options.get(locale.appData.options.reason.name);
         let reason = reasonOption ? reasonOption.value : null;
 
         // Capitalizes the reason

@@ -3,7 +3,7 @@ export async function run(interaction, commandConfig, locale) {
     try {
 
         // Looks for the user provided
-        const user = await client.functions.utils.fetch('user', interaction.options._hoistedOptions[0].value);
+        const user = await client.functions.utils.fetch('user', interaction.options.get(locale.appData.options.user.name).value);
 
         // Returns an error if the user has not been found
         if (!user) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
@@ -12,7 +12,7 @@ export async function run(interaction, commandConfig, locale) {
         ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the reason
-        let reason = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : null;
+        let reason = interaction.options.get(locale.appData.options.reason.name)?.value ?? null;
 
         // Capitalizes the reason
         if (reason) reason = `${reason.charAt(0).toUpperCase()}${reason.slice(1)}`;

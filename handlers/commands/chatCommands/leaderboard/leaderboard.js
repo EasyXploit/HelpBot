@@ -21,7 +21,7 @@ export async function run(interaction, commandConfig, locale) {
         ];
 
         // Stores the type of classification to be displayed, if provided (or the first available one)
-        const typeOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.type.name);
+        const typeOption = interaction.options.get(locale.appData.options.type.name);
         const type = typeOption ? typeOption.value : availableTypes[0];
 
         // Returns an error if the chosen ranking is not available
@@ -80,7 +80,7 @@ export async function run(interaction, commandConfig, locale) {
         const totalPages = Math.ceil(entries.length / 10);
 
         // Stores the page number to be displayed, if provided
-        const providedactualPageOption = interaction.options._hoistedOptions.find(prop => prop.name === locale.appData.options.page.name);
+        const providedactualPageOption = interaction.options.get(locale.appData.options.page.name);
         const providedactualPage = providedactualPageOption ? providedactualPageOption.value : null;
 
         // Stores the current page (if one is provided, that is chosen)

@@ -3,7 +3,7 @@ export async function run(interaction, commandConfig, locale) {
     try {
 
         // Stores the Id of the channel provided, or the current one
-        const destinationChannelId = interaction.options._hoistedOptions[1] ? interaction.options._hoistedOptions[1].value : interaction.channelId;
+        const destinationChannelId = interaction.options.get(locale.appData.options.channel.name)?.value ?? interaction.channelId;
         const destinationChannel = await client.functions.utils.fetch('channel', destinationChannelId);
 
         // Checks if the channel exists
@@ -20,7 +20,7 @@ export async function run(interaction, commandConfig, locale) {
         ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the selected mode
-        const type = interaction.options._hoistedOptions[0].value;
+        const type = interaction.options.get(locale.appData.options.type.name).value;
 
         // Generates a new modal
         const messageContentModal = new discord.ModalBuilder()

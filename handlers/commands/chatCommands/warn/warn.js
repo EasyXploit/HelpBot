@@ -3,7 +3,7 @@ export async function run(interaction, commandConfig, locale) {
     try {
 
         // Looks for the member provided
-        const member = await client.functions.utils.fetch('member', interaction.options._hoistedOptions[0].value);
+        const member = await client.functions.utils.fetch('member', interaction.options.get(locale.appData.options.user.name).value);
 
         // Returns an error if the member has not been found
         if (!member) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
@@ -50,7 +50,7 @@ export async function run(interaction, commandConfig, locale) {
         };
 
         // Checks if any reason has been provided
-        const reason = interaction.options._hoistedOptions[1].value;
+        const reason = interaction.options.get(locale.appData.options.reason.name).value;
 
         // Stores the interaction text channel
         const interactionChannel = await client.functions.utils.fetch('channel', interaction.channelId);

@@ -1,3 +1,6 @@
+// Imports the function to stop the intervals
+import { stopAllIntervals } from '../../lib/loaders/intervals.js';
+
 // Exports the event management function
 export default async (guild, locale) => {
     
@@ -15,8 +18,11 @@ export default async (guild, locale) => {
             // Indicates that the bot is not ready to handle events
             global.readyStatus = false;
 
+            // Stops the intervals, as there is no guild to work with
+            stopAllIntervals();
+
             // If there is a current prompt, it is canceled
-            if (currentPrompt) currentPrompt.cancel();
+            if (global.currentPrompt && global.currentPrompt.cancel) global.currentPrompt.cancel();
             
             // Notifies that the bot is waiting to be joined to a guild
             logger.warn('The bot must be joined to a guild in order to work, so the program will wait until it occurs');

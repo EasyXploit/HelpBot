@@ -32,7 +32,7 @@ export async function run(interaction, commandConfig, locale) {
                     const channelIds = channels.map(channel => channel.id);
 
                     // Checks on each channel if can create the invitation
-                    for (index = 0; index < channels.size; index++) {
+                    for (let index = 0; index < channels.size; index++) {
 
                         // Gets the channel based on the Id from the list
                         const channel = channels.get(channelIds[index]);
@@ -72,23 +72,25 @@ export async function run(interaction, commandConfig, locale) {
         // If there is no invitation recorded in the database
         if (!inviteCode) {
 
-            // Stores all guild invitations
-            await client.baseGuild.invites.fetch().then(invites => {
+            // If the bot can see the invitations of the server
+            if (!await client.functions.utils.missingPermissions(null, client.baseGuild.members.me, ['ManageGuild'])) {
 
-                // For each of the invitations
-                invites.forEach(async invite => {
+                // Stores all guild invitations
+                const invites = await client.baseGuild.invites.fetch();
 
-                    // If it's from bot
-                    if (invite.inviter === client.user) {
+                // Looks for a permanent invitation created by the bot
+                const botInvite = invites.find(invite => invite.inviter && invite.inviter.id === client.user.id && invite.maxAge === 0);
 
-                        // Stores the invitation code
-                        inviteCode = invite.code;
+                // If it was found
+                if (botInvite) {
 
-                        // Records the invitation in the database, if it was created
-                        await client.functions.db.setConfig('system.inviteCode', inviteCode);
-                    };
-                });
-            });
+                    // Stores the invitation code
+                    inviteCode = botInvite.code;
+
+                    // Records the invitation in the database
+                    await client.functions.db.setConfig('system.inviteCode', inviteCode);
+                };
+            };
 
             // Creates the invitation if it does not exist
             if (!inviteCode) inviteCode = await createInvite();
@@ -96,10 +98,10 @@ export async function run(interaction, commandConfig, locale) {
         } else {
 
             // Looks for the existing invitation
-            const existingInvite = await client.baseGuild.invites.resolve(inviteCode);
+            const existingInvite = await client.fetchInvite(inviteCode).catch(() => null);
 
-            // Creates the invitation if there is no longer
-            if (!existingInvite) inviteCode = await createInvite();
+            // Creates the invitation if there is no longer, or if it is not from the base guild
+            if (!existingInvite || !existingInvite.guild || existingInvite.guild.id !== client.baseGuild.id) inviteCode = await createInvite();
         };
 
         // Abort the rest of the command if an invitation could not be generated

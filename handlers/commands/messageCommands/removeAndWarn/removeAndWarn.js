@@ -3,7 +3,7 @@ export async function run(interaction, commandConfig, locale) {
     try {
 
         // If the executor has no permissions to erase messages, sends an error
-        const missingPermissions = await client.functions.utils.missingPermissions(channel, interaction.member, ['ManageMessages'])
+        const missingPermissions = await client.functions.utils.missingPermissions(interaction.channel, interaction.member, ['ManageMessages'])
         if (missingPermissions) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
             .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
             .setDescription(`${client.customEmojis.redTick} ${locale.cantDeleteMessages}.`)

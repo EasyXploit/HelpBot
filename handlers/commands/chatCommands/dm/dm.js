@@ -43,7 +43,7 @@ export async function run(interaction, commandConfig, locale) {
         // Generates a new modal
         const messageContentModal = new discord.ModalBuilder()
             .setTitle(locale.bodyModal.title)
-            .setCustomId('dm-body');
+            .setCustomId(`dmBody:${interaction.id}`);
 
         // Generates the only modal row
         const bodyRow = new discord.ActionRowBuilder().addComponents(
@@ -65,7 +65,7 @@ export async function run(interaction, commandConfig, locale) {
         await interaction.showModal(messageContentModal);
 
         // Creates a filter to get the expected modal
-        const modalsFilter = (interaction) => interaction.customId === 'dm-body';
+        const modalsFilter = (modalInteraction) => modalInteraction.customId === `dmBody:${interaction.id}`;
 
         // Waits for the modal to be filled
         const bodyMessageModalInteraction = await interaction.awaitModalSubmit({ filter: modalsFilter, time: 300000 }).then(async modalInteraction => {

@@ -15,7 +15,7 @@ export async function run(interaction, commandConfig, locale) {
         // Generates a new modal
         const reasonModal = new discord.ModalBuilder()
             .setTitle(locale.bodyModal.title)
-            .setCustomId('reportReason');
+            .setCustomId(`reportReason:${interaction.id}`);
 
         // Generates the only modal row
         const bodyRow = new discord.ActionRowBuilder().addComponents(
@@ -36,7 +36,7 @@ export async function run(interaction, commandConfig, locale) {
         await interaction.showModal(reasonModal);
 
         // Creates a filter to get the expected modal
-        const modalsFilter = (interaction) => interaction.customId === 'reportReason';
+        const modalsFilter = (modalInteraction) => modalInteraction.customId === `reportReason:${interaction.id}`;
 
         // Waits for the modal to be filled
         const reason = await interaction.awaitModalSubmit({ filter: modalsFilter, time: 300000 }).then(async modalInteraction => {

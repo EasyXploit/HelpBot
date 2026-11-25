@@ -93,7 +93,25 @@
                 },
                 "replySent": "Răspunsul a fost trimis către {{count}} persoane care au raportat",
                 "replyNotDelivered": "{{count}} persoane nu l-au putut primi, deoarece nu acceptă mesaje private",
-                "invalidTemplate": "Acest șablon nu mai există"
+                "invalidTemplate": "Acest șablon nu mai există",
+                "askInfoModal": {
+                    "title": "Cereți informații celor care au raportat",
+                    "fieldTitle": "Întrebare",
+                    "fieldPlaceholder": "Scrieți întrebarea pe care o vor primi cei care au raportat"
+                },
+                "infoRequested": "Întrebarea a fost trimisă către {{count}} persoane care au raportat"
+            },
+            "reportInfo": {
+                "notNeeded": "Acest raport a fost deja închis, așa că nu mai sunt necesare informații",
+                "alreadyAnswered": "Ați răspuns deja la această întrebare",
+                "answerModal": {
+                    "title": "Răspuns pentru echipa de moderare",
+                    "fieldTitle": "Răspuns",
+                    "fieldPlaceholder": "Scrieți informațiile cerute de echipa de moderare"
+                },
+                "answerSent": "Vă mulțumim! Răspunsul dvs. a fost trimis echipei de moderare",
+                "newInfoTitle": "Informații noi pentru raportul {{reportId}}",
+                "answeredBy": "Răspuns de {{userTag}}"
             }
         },
         "commands": {
@@ -2155,6 +2173,9 @@
                     "kick": "Dat afară de {{moderator}}",
                     "ban": "Interzis de {{moderator}}"
                 },
+                "additionalInfo": "Informații suplimentare",
+                "infoQuestion": "{{moderator}} a întrebat",
+                "waitingAnswers": "Se așteaptă răspunsuri",
                 "status": "Stare",
                 "statuses": {
                     "pending": "În așteptare",
@@ -2171,7 +2192,8 @@
                     "deleteMessage": "Șterge mesajul",
                     "kick": "Dă afară",
                     "ban": "Interzice",
-                    "history": "Istoric"
+                    "history": "Istoric",
+                    "askInfo": "Cere informații"
                 },
                 "timeoutPlaceholder": "Izolează pentru...",
                 "replyPlaceholder": "Răspunde celor care au raportat...",
@@ -2194,7 +2216,9 @@
                     "timeout": "Izolare de {{duration}}",
                     "kick": "Dare afară",
                     "ban": "Interdicție"
-                }
+                },
+                "infoRequestTitle": "Echipa de moderare are nevoie de mai multe informații",
+                "answerButton": "Răspunde"
             },
             "history": {
                 "title": "Istoricul rapoartelor",

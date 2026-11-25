@@ -93,7 +93,25 @@
                 },
                 "replySent": "La risposta è stata inviata a {{count}} segnalatori",
                 "replyNotDelivered": "{{count}} segnalatori non hanno potuto riceverla, perché non accettano messaggi privati",
-                "invalidTemplate": "Questo modello non esiste più"
+                "invalidTemplate": "Questo modello non esiste più",
+                "askInfoModal": {
+                    "title": "Chiedi informazioni ai segnalatori",
+                    "fieldTitle": "Domanda",
+                    "fieldPlaceholder": "Scrivi la domanda che riceveranno i segnalatori"
+                },
+                "infoRequested": "La domanda è stata inviata a {{count}} segnalatori"
+            },
+            "reportInfo": {
+                "notNeeded": "Questa segnalazione è già stata chiusa, quindi non servono altre informazioni",
+                "alreadyAnswered": "Hai già risposto a questa domanda",
+                "answerModal": {
+                    "title": "Risposta al team di moderazione",
+                    "fieldTitle": "Risposta",
+                    "fieldPlaceholder": "Scrivi le informazioni richieste dal team di moderazione"
+                },
+                "answerSent": "Grazie! La tua risposta è stata inviata al team di moderazione",
+                "newInfoTitle": "Nuove informazioni per la segnalazione {{reportId}}",
+                "answeredBy": "Risposta di {{userTag}}"
             }
         },
         "commands": {
@@ -2155,6 +2173,9 @@
                     "kick": "Espulso da {{moderator}}",
                     "ban": "Bannato da {{moderator}}"
                 },
+                "additionalInfo": "Informazioni aggiuntive",
+                "infoQuestion": "{{moderator}} ha chiesto",
+                "waitingAnswers": "In attesa di risposte",
                 "status": "Stato",
                 "statuses": {
                     "pending": "In attesa",
@@ -2171,7 +2192,8 @@
                     "deleteMessage": "Elimina messaggio",
                     "kick": "Espelli",
                     "ban": "Banna",
-                    "history": "Cronologia"
+                    "history": "Cronologia",
+                    "askInfo": "Chiedi informazioni"
                 },
                 "timeoutPlaceholder": "Silenzia per...",
                 "replyPlaceholder": "Rispondi a chi ha segnalato...",
@@ -2194,7 +2216,9 @@
                     "timeout": "Silenziamento di {{duration}}",
                     "kick": "Espulsione",
                     "ban": "Ban"
-                }
+                },
+                "infoRequestTitle": "Il team di moderazione ha bisogno di più informazioni",
+                "answerButton": "Rispondi"
             },
             "history": {
                 "title": "Cronologia delle segnalazioni",

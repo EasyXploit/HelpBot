@@ -93,7 +93,25 @@
                 },
                 "replySent": "The reply has been sent to {{count}} reporters",
                 "replyNotDelivered": "{{count}} reporters could not receive it, as they do not accept private messages",
-                "invalidTemplate": "This template no longer exists"
+                "invalidTemplate": "This template no longer exists",
+                "askInfoModal": {
+                    "title": "Ask the reporters for information",
+                    "fieldTitle": "Question",
+                    "fieldPlaceholder": "Write the question that the reporters will receive"
+                },
+                "infoRequested": "The question has been sent to {{count}} reporters"
+            },
+            "reportInfo": {
+                "notNeeded": "This report has already been closed, so no more information is needed",
+                "alreadyAnswered": "You have already answered this question",
+                "answerModal": {
+                    "title": "Answer to the moderation team",
+                    "fieldTitle": "Answer",
+                    "fieldPlaceholder": "Write the information requested by the moderation team"
+                },
+                "answerSent": "Thank you! Your answer has been sent to the moderation team",
+                "newInfoTitle": "New information for the report {{reportId}}",
+                "answeredBy": "Answered by {{userTag}}"
             }
         },
         "commands": {
@@ -2155,6 +2173,9 @@
                     "kick": "Kicked by {{moderator}}",
                     "ban": "Banned by {{moderator}}"
                 },
+                "additionalInfo": "Additional information",
+                "infoQuestion": "{{moderator}} asked",
+                "waitingAnswers": "Waiting for answers",
                 "status": "Status",
                 "statuses": {
                     "pending": "Pending",
@@ -2171,7 +2192,8 @@
                     "deleteMessage": "Delete message",
                     "kick": "Kick",
                     "ban": "Ban",
-                    "history": "History"
+                    "history": "History",
+                    "askInfo": "Ask for information"
                 },
                 "timeoutPlaceholder": "Time out for...",
                 "replyPlaceholder": "Reply to the reporters...",
@@ -2194,7 +2216,9 @@
                     "timeout": "Timeout of {{duration}}",
                     "kick": "Kick",
                     "ban": "Ban"
-                }
+                },
+                "infoRequestTitle": "The moderation team needs more information",
+                "answerButton": "Answer"
             },
             "history": {
                 "title": "Reports history",

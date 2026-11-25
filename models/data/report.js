@@ -71,6 +71,18 @@ const reportSchema = new mongoose.Schema({
         duration: Number,
         timestamp: Number
     }],
+    // Requests of more information sent to the reporters, and their answers
+    infoRequests: [{
+        requestId: String,
+        moderatorId: String,
+        question: String,
+        timestamp: Number,
+        answers: [{
+            reporterId: String,
+            text: String,
+            timestamp: Number
+        }]
+    }],
     // Replies sent to the reporters
     replies: [{
         moderatorId: String,

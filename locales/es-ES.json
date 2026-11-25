@@ -93,7 +93,25 @@
                 },
                 "replySent": "La respuesta se ha enviado a {{count}} denunciantes",
                 "replyNotDelivered": "{{count}} denunciantes no la han podido recibir, porque no aceptan mensajes privados",
-                "invalidTemplate": "Esta plantilla ya no existe"
+                "invalidTemplate": "Esta plantilla ya no existe",
+                "askInfoModal": {
+                    "title": "Pedir información a los denunciantes",
+                    "fieldTitle": "Pregunta",
+                    "fieldPlaceholder": "Escribe la pregunta que recibirán los denunciantes"
+                },
+                "infoRequested": "La pregunta se ha enviado a {{count}} denunciantes"
+            },
+            "reportInfo": {
+                "notNeeded": "Este reporte ya se ha cerrado, así que no hace falta más información",
+                "alreadyAnswered": "Ya has respondido a esta pregunta",
+                "answerModal": {
+                    "title": "Respuesta al equipo de moderación",
+                    "fieldTitle": "Respuesta",
+                    "fieldPlaceholder": "Escribe la información que te pide el equipo de moderación"
+                },
+                "answerSent": "¡Gracias! Tu respuesta se ha enviado al equipo de moderación",
+                "newInfoTitle": "Nueva información para el reporte {{reportId}}",
+                "answeredBy": "Respondido por {{userTag}}"
             }
         },
         "commands": {
@@ -2155,6 +2173,9 @@
                     "kick": "Expulsado por {{moderator}}",
                     "ban": "Baneado por {{moderator}}"
                 },
+                "additionalInfo": "Información adicional",
+                "infoQuestion": "{{moderator}} preguntó",
+                "waitingAnswers": "Esperando respuestas",
                 "status": "Estado",
                 "statuses": {
                     "pending": "Pendiente",
@@ -2171,7 +2192,8 @@
                     "deleteMessage": "Borrar mensaje",
                     "kick": "Expulsar",
                     "ban": "Banear",
-                    "history": "Historial"
+                    "history": "Historial",
+                    "askInfo": "Pedir información"
                 },
                 "timeoutPlaceholder": "Silenciar durante...",
                 "replyPlaceholder": "Responder a los denunciantes...",
@@ -2194,7 +2216,9 @@
                     "timeout": "Silencio de {{duration}}",
                     "kick": "Expulsión",
                     "ban": "Baneo"
-                }
+                },
+                "infoRequestTitle": "El equipo de moderación necesita más información",
+                "answerButton": "Responder"
             },
             "history": {
                 "title": "Historial de reportes",

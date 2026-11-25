@@ -36,7 +36,7 @@ export default async (interaction) => {
 
         // Stores the statuses in which each action can be performed
         const openStatuses = ['pending', 'assigned'];
-        const allowedStatuses = { assign: ['pending'], unassign: ['assigned'], resolve: openStatuses, dismiss: openStatuses, warn: openStatuses, deleteMessage: openStatuses, timeout: openStatuses, kick: openStatuses, ban: openStatuses, reply: [...openStatuses, 'resolved', 'dismissed'], history: [...openStatuses, 'resolved', 'dismissed'] };
+        const allowedStatuses = { assign: ['pending'], unassign: ['assigned'], resolve: openStatuses, dismiss: openStatuses, warn: openStatuses, deleteMessage: openStatuses, timeout: openStatuses, kick: openStatuses, ban: openStatuses, reply: [...openStatuses, 'resolved', 'dismissed'], history: [...openStatuses, 'resolved', 'dismissed'], askInfo: openStatuses };
 
         // If the action does not exist, aborts
         if (!allowedStatuses[action]) return;
@@ -75,6 +75,65 @@ export default async (interaction) => {
                 )
                 .setFooter({ text: await client.functions.utils.parseLocale(historyLocale.commandHint, { command: `/${client.locale.handlers.commands.chatCommands.reports.appData.name}` }) })
             ], flags: discord.MessageFlags.Ephemeral });
+        };
+
+        // If more information has to be requested to the reporters
+        if (action === 'askInfo') {
+
+            // Shows a modal to write the question
+            await interaction.showModal(new discord.ModalBuilder()
+                .setTitle(locale.askInfoModal.title)
+                .setCustomId(`reportAskInfo:${interaction.id}`)
+                .addComponents(new discord.ActionRowBuilder().addComponents(
+                    new discord.TextInputBuilder()
+                        .setCustomId('question')
+                        .setLabel(locale.askInfoModal.fieldTitle)
+                        .setPlaceholder(locale.askInfoModal.fieldPlaceholder)
+                        .setStyle(discord.TextInputStyle.Paragraph)
+                        .setMaxLength(1000)
+                        .setRequired(true)
+                )));
+
+            // Waits for the modal to be submitted (5 minutes at most), and aborts if it was not
+            const modalInteraction = await interaction.awaitModalSubmit({ filter: modalSubmit => modalSubmit.customId === `reportAskInfo:${interaction.id}`, time: 300000 }).catch(error => {
+                if (error.code === 'InteractionCollectorError') return null;
+                throw error;
+            });
+            if (!modalInteraction) return;
+
+            // Responds privately while the question is sent
+            await modalInteraction.deferReply({ flags: discord.MessageFlags.Ephemeral });
+
+            // Looks for the report again, in case it was closed while the question was being written
+            report = await client.functions.db.getData('report', reportId);
+            if (!report || !openStatuses.includes(report.status)) return await modalInteraction.editReply({ ...await generateMessage('information', client.customEmojis.grayTick, locale.outdated), flags: undefined });
+
+            // Stores the question, and generates an Id for the request
+            const question = modalInteraction.fields.getTextInputValue('question').trim();
+            const requestId = await client.functions.utils.generateSid();
+
+            // Sends the question to the reporters, with a button to answer it
+            const notifyLocale = client.locale.lib.reports.notifyReporters;
+            const result = await client.functions.reports.notifyReporters(report, {
+                title: notifyLocale.infoRequestTitle,
+                description: question,
+                components: [ new discord.ActionRowBuilder().addComponents(
+                    new discord.ButtonBuilder()
+                        .setCustomId(`reportInfo:${report.reportId}:${requestId}`)
+                        .setLabel(notifyLocale.answerButton)
+                        .setEmoji('💬')
+                        .setStyle(discord.ButtonStyle.Primary)
+                )]
+            });
+
+            // Records the request, saves the report and updates its message
+            report.infoRequests.push({ requestId: requestId, moderatorId: interaction.user.id, question: question, timestamp: Date.now(), answers: [] });
+            await report.save();
+            await client.functions.reports.updateCard(report);
+
+            // Responds with the result
+            const resultText = `${await client.functions.utils.parseLocale(locale.infoRequested, { count: result.delivered })}${result.notDelivered > 0 ? `. ${await client.functions.utils.parseLocale(locale.replyNotDelivered, { count: result.notDelivered })}` : ''}`;
+            return await modalInteraction.editReply({ ...await generateMessage(result.delivered > 0 ? 'secondaryCorrect' : 'warning', result.delivered > 0 ? client.customEmojis.greenTick : client.customEmojis.orangeTick, resultText), flags: undefined });
         };
 
         // If a reply has to be sent to the reporters

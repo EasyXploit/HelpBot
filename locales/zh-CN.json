@@ -93,7 +93,25 @@
                 },
                 "replySent": "回复已发送给 {{count}} 位举报人",
                 "replyNotDelivered": "{{count}} 位举报人无法收到，因为他们不接受私信",
-                "invalidTemplate": "该模板已不存在"
+                "invalidTemplate": "该模板已不存在",
+                "askInfoModal": {
+                    "title": "向举报人请求信息",
+                    "fieldTitle": "问题",
+                    "fieldPlaceholder": "编写举报人将收到的问题"
+                },
+                "infoRequested": "问题已发送给 {{count}} 位举报人"
+            },
+            "reportInfo": {
+                "notNeeded": "该举报已经关闭，因此不再需要更多信息",
+                "alreadyAnswered": "你已经回答过这个问题",
+                "answerModal": {
+                    "title": "回复管理团队",
+                    "fieldTitle": "回答",
+                    "fieldPlaceholder": "请填写管理团队需要的信息"
+                },
+                "answerSent": "谢谢！你的回答已发送给管理团队",
+                "newInfoTitle": "举报 {{reportId}} 的新信息",
+                "answeredBy": "由 {{userTag}} 回答"
             }
         },
         "commands": {
@@ -2155,6 +2173,9 @@
                     "kick": "已由 {{moderator}} 踢出",
                     "ban": "已由 {{moderator}} 封禁"
                 },
+                "additionalInfo": "补充信息",
+                "infoQuestion": "{{moderator}} 提问",
+                "waitingAnswers": "等待回答",
                 "status": "状态",
                 "statuses": {
                     "pending": "待处理",
@@ -2171,7 +2192,8 @@
                     "deleteMessage": "删除消息",
                     "kick": "踢出",
                     "ban": "封禁",
-                    "history": "历史记录"
+                    "history": "历史记录",
+                    "askInfo": "请求更多信息"
                 },
                 "timeoutPlaceholder": "禁言时长...",
                 "replyPlaceholder": "回复举报人...",
@@ -2194,7 +2216,9 @@
                     "timeout": "禁言 {{duration}}",
                     "kick": "踢出",
                     "ban": "封禁"
-                }
+                },
+                "infoRequestTitle": "管理团队需要更多信息",
+                "answerButton": "回答"
             },
             "history": {
                 "title": "举报历史",

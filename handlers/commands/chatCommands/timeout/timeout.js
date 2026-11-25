@@ -71,8 +71,9 @@ export async function run(interaction, commandConfig, locale) {
             ], flags: discord.MessageFlags.Ephemeral});
         };
 
-        // Keeps the timeout in the database
-        await client.functions.db.genData('timeout', {
+        // Keeps the timeout in the database (updating the previous one, if the member had one)
+        if (await client.functions.db.getData('timeout', member.id)) await client.functions.db.setData('timeout', member.id, { moderatorId: interaction.member.id, untilTimestamp: Date.now() + expiresAfter });
+        else await client.functions.db.genData('timeout', {
             userId: member.id,
             moderatorId: interaction.member.id,
             untilTimestamp: Date.now() + expiresAfter

@@ -24,7 +24,7 @@ export async function run(interaction, commandConfig, locale) {
             if (!pollChannel || !pollMessage) {
 
                 // Deletes the poll from the database
-                await client.functions.db.deltData('poll', interaction.options._hoistedOptions[0].value);
+                await client.functions.db.delData('poll', interaction.options._hoistedOptions[0].value);
             
                 // Notifies the error to the member
                 return interaction.reply({ embeds: [ new discord.EmbedBuilder()
@@ -46,8 +46,8 @@ export async function run(interaction, commandConfig, locale) {
                 ], flags: discord.MessageFlags.Ephemeral});
             };
 
-            // Strengthens the expiration of the poll
-            pollData.expirationTimestamp = Date.now();
+            // Forces the expiration of the poll, so the polls interval ends it
+            await client.functions.db.setData('poll', pollData.pollId, { expirationTimestamp: Date.now() });
 
             // Sends a confirmation to the member
             return interaction.reply({ embeds: [ new discord.EmbedBuilder()

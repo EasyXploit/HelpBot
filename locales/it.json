@@ -85,7 +85,15 @@
                     "timeout": "Il membro è stato silenziato",
                     "kick": "Il membro è stato espulso",
                     "ban": "L'utente è stato bannato"
-                }
+                },
+                "replyModal": {
+                    "title": "Rispondi a chi ha segnalato",
+                    "fieldTitle": "Messaggio",
+                    "fieldPlaceholder": "Scrivi il messaggio che riceveranno i segnalatori"
+                },
+                "replySent": "La risposta è stata inviata a {{count}} segnalatori",
+                "replyNotDelivered": "{{count}} segnalatori non hanno potuto riceverla, perché non accettano messaggi privati",
+                "invalidTemplate": "Questo modello non esiste più"
             }
         },
         "commands": {
@@ -1558,7 +1566,9 @@
                                 "limit": "Limite di segnalazioni",
                                 "sameMemberCooldown": "Attesa per segnalare lo stesso membro",
                                 "quickActions": "Sanzioni dalle segnalazioni",
-                                "timeoutDurations": "Durate del silenziamento"
+                                "timeoutDurations": "Durate del silenziamento",
+                                "notifyReporters": "Avvisa i segnalatori quando la loro segnalazione viene chiusa",
+                                "replyTemplates": "Modelli di risposta"
                             },
                             "prompts": {
                                 "noChannelError": "Devi configurare il canale delle segnalazioni prima di attivarle",
@@ -1589,7 +1599,13 @@
                                 "addDuration": "Aggiungi durata",
                                 "removeDuration": "Rimuovi durata",
                                 "enterDuration": "Inserisci la durata in minuti (al massimo 40319, 28 giorni meno un minuto)",
-                                "selectDurationToRemove": "Seleziona la durata da rimuovere"
+                                "selectDurationToRemove": "Seleziona la durata da rimuovere",
+                                "replyTemplatesHeader": "Configura i modelli delle risposte che si possono inviare ai segnalatori",
+                                "addTemplate": "Aggiungi modello",
+                                "removeTemplate": "Rimuovi modello",
+                                "enterTemplate": "Inserisci il testo del modello",
+                                "templateTooLong": "Il modello non può avere più di 1500 caratteri",
+                                "selectTemplateToRemove": "Seleziona il modello da rimuovere"
                             }
                         },
                         "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
@@ -2142,7 +2158,28 @@
                     "kick": "Espelli",
                     "ban": "Banna"
                 },
-                "timeoutPlaceholder": "Silenzia per..."
+                "timeoutPlaceholder": "Silenzia per...",
+                "replyPlaceholder": "Rispondi a chi ha segnalato...",
+                "customReply": "Scrivi un messaggio personalizzato",
+                "repliesSent": "Risposte a chi ha segnalato",
+                "replyText": "Risposta inviata da {{moderator}}"
+            },
+            "notifyReporters": {
+                "yourReport": "La tua segnalazione",
+                "aboutMember": "Su {{member}}",
+                "aboutMessage": "Su [questo messaggio]({{url}})",
+                "replyTitle": "Risposta alla tua segnalazione",
+                "reviewedTitle": "La tua segnalazione è stata esaminata",
+                "resolvedDescription": "Grazie per la tua segnalazione! Il team di moderazione l'ha esaminata e ha preso le misure opportune.",
+                "dismissedDescription": "Grazie per la tua segnalazione! Il team di moderazione l'ha esaminata, ma non ha trovato motivi per prendere misure.",
+                "measuresTaken": "Misure prese",
+                "sanctionNames": {
+                    "warn": "Avvertimento",
+                    "deleteMessage": "Eliminazione del messaggio",
+                    "timeout": "Silenziamento di {{duration}}",
+                    "kick": "Espulsione",
+                    "ban": "Ban"
+                }
             }
         },
         "utils": {
@@ -2186,6 +2223,10 @@
                 "repeatedText": {
                     "reason": "Testo ripetitivo"
                 }
+            },
+            "reportReplyTemplates": {
+                "measuresTaken": "Grazie per la tua segnalazione! L'abbiamo esaminata e abbiamo preso le misure opportune.",
+                "noInfraction": "Grazie per la tua segnalazione! Dopo averla esaminata, non abbiamo trovato alcuna violazione delle regole."
             }
         }
     }

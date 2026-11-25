@@ -36,7 +36,7 @@ export default async (interaction) => {
 
         // Stores the statuses in which each action can be performed
         const openStatuses = ['pending', 'assigned'];
-        const allowedStatuses = { assign: ['pending'], unassign: ['assigned'], resolve: openStatuses, dismiss: openStatuses, warn: openStatuses, deleteMessage: openStatuses, timeout: openStatuses, kick: openStatuses, ban: openStatuses };
+        const allowedStatuses = { assign: ['pending'], unassign: ['assigned'], resolve: openStatuses, dismiss: openStatuses, warn: openStatuses, deleteMessage: openStatuses, timeout: openStatuses, kick: openStatuses, ban: openStatuses, reply: [...openStatuses, 'resolved', 'dismissed'] };
 
         // If the action does not exist, aborts
         if (!allowedStatuses[action]) return;
@@ -45,6 +45,63 @@ export default async (interaction) => {
         if (!allowedStatuses[action].includes(report.status)) {
             await interaction.update(await client.functions.reports.renderReport(report));
             return await interaction.followUp(await generateMessage('information', client.customEmojis.grayTick, locale.outdated));
+        };
+
+        // If a reply has to be sent to the reporters
+        if (action === 'reply') {
+
+            // Stores the interaction to respond to, and the text of the reply
+            let replyInteraction = interaction, replyText;
+
+            // If a custom message has to be written
+            if (interaction.values[0] === 'custom') {
+
+                // Shows a modal to write it
+                await interaction.showModal(new discord.ModalBuilder()
+                    .setTitle(locale.replyModal.title)
+                    .setCustomId(`reportReply:${interaction.id}`)
+                    .addComponents(new discord.ActionRowBuilder().addComponents(
+                        new discord.TextInputBuilder()
+                            .setCustomId('text')
+                            .setLabel(locale.replyModal.fieldTitle)
+                            .setPlaceholder(locale.replyModal.fieldPlaceholder)
+                            .setStyle(discord.TextInputStyle.Paragraph)
+                            .setMaxLength(1500)
+                            .setRequired(true)
+                    )));
+
+                // Waits for the modal to be submitted (5 minutes at most), and aborts if it was not
+                replyInteraction = await interaction.awaitModalSubmit({ filter: modalSubmit => modalSubmit.customId === `reportReply:${interaction.id}`, time: 300000 }).catch(error => {
+                    if (error.code === 'InteractionCollectorError') return null;
+                    throw error;
+                });
+                if (!replyInteraction) return;
+
+                // Stores the text of the reply
+                replyText = replyInteraction.fields.getTextInputValue('text').trim();
+
+            } else {
+
+                // Stores the text of the selected template, and warns if it no longer exists
+                replyText = (await client.functions.db.getConfig('moderation.reports.replyTemplates') || [])[parseInt(interaction.values[0].split(':')[1])];
+                if (!replyText) return await respondError(locale.invalidTemplate);
+            };
+
+            // Responds privately while the reply is sent
+            await replyInteraction.deferReply({ flags: discord.MessageFlags.Ephemeral });
+
+            // Sends the reply to the reporters
+            const result = await client.functions.reports.notifyReporters(report, { title: client.locale.lib.reports.notifyReporters.replyTitle, description: replyText });
+
+            // Looks for the report again (in case it changed while the reply was written), records the reply, saves it and updates its message
+            report = await client.functions.db.getData('report', reportId);
+            report.replies.push({ moderatorId: interaction.user.id, text: replyText, timestamp: Date.now() });
+            await report.save();
+            await client.functions.reports.updateCard(report);
+
+            // Responds with the result
+            const resultText = `${await client.functions.utils.parseLocale(locale.replySent, { count: result.delivered })}${result.notDelivered > 0 ? `. ${await client.functions.utils.parseLocale(locale.replyNotDelivered, { count: result.notDelivered })}` : ''}`;
+            return await replyInteraction.editReply({ ...await generateMessage(result.delivered > 0 ? 'secondaryCorrect' : 'warning', result.delivered > 0 ? client.customEmojis.greenTick : client.customEmojis.orangeTick, resultText), flags: undefined });
         };
 
         // If the action is a sanction
@@ -216,6 +273,24 @@ export default async (interaction) => {
 
         // Updates the message of the report
         await interaction.update(await client.functions.reports.renderReport(report));
+
+        // If the report has been closed and the reporters have to be notified
+        if (['resolve', 'dismiss'].includes(action) && await client.functions.db.getConfig('moderation.reports.notifyReporters')) {
+
+            // Stores the translations of the notifications
+            const notifyLocale = client.locale.lib.reports.notifyReporters;
+
+            // Generates the list of the sanctions applied, if any
+            const sanctions = [];
+            for (const sanction of report.actions) sanctions.push(await client.functions.utils.parseLocale(notifyLocale.sanctionNames[sanction.type], { duration: sanction.duration ? client.functions.utils.formatDuration(sanction.duration) : '' }));
+
+            // Notifies the reporters
+            await client.functions.reports.notifyReporters(report, {
+                title: notifyLocale.reviewedTitle,
+                description: action === 'resolve' ? notifyLocale.resolvedDescription : notifyLocale.dismissedDescription,
+                fields: sanctions.length > 0 ? [{ name: notifyLocale.measuresTaken, value: client.functions.utils.truncate([...new Set(sanctions)].map(sanction => `• ${sanction}`).join('\n'), 1024), inline: false }] : []
+            });
+        };
 
     } catch (error) {
 

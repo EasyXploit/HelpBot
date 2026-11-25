@@ -85,7 +85,15 @@
                     "timeout": "El miembro ha sido silenciado",
                     "kick": "El miembro ha sido expulsado",
                     "ban": "El usuario ha sido baneado"
-                }
+                },
+                "replyModal": {
+                    "title": "Responder a los denunciantes",
+                    "fieldTitle": "Mensaje",
+                    "fieldPlaceholder": "Escribe el mensaje que recibirán los denunciantes"
+                },
+                "replySent": "La respuesta se ha enviado a {{count}} denunciantes",
+                "replyNotDelivered": "{{count}} denunciantes no la han podido recibir, porque no aceptan mensajes privados",
+                "invalidTemplate": "Esta plantilla ya no existe"
             }
         },
         "commands": {
@@ -1558,7 +1566,9 @@
                                 "limit": "Límite de reportes",
                                 "sameMemberCooldown": "Espera para reportar al mismo miembro",
                                 "quickActions": "Sanciones desde los reportes",
-                                "timeoutDurations": "Duraciones de silencio"
+                                "timeoutDurations": "Duraciones de silencio",
+                                "notifyReporters": "Avisar a los denunciantes al cerrar su reporte",
+                                "replyTemplates": "Plantillas de respuesta"
                             },
                             "prompts": {
                                 "noChannelError": "Debes configurar el canal de reportes antes de activarlos",
@@ -1589,7 +1599,13 @@
                                 "addDuration": "Añadir duración",
                                 "removeDuration": "Quitar duración",
                                 "enterDuration": "Introduce la duración en minutos (40319 como máximo, 28 días menos un minuto)",
-                                "selectDurationToRemove": "Selecciona la duración a quitar"
+                                "selectDurationToRemove": "Selecciona la duración a quitar",
+                                "replyTemplatesHeader": "Configura las plantillas de las respuestas que se pueden enviar a los denunciantes",
+                                "addTemplate": "Añadir plantilla",
+                                "removeTemplate": "Quitar plantilla",
+                                "enterTemplate": "Introduce el texto de la plantilla",
+                                "templateTooLong": "La plantilla no puede tener más de 1500 caracteres",
+                                "selectTemplateToRemove": "Selecciona la plantilla a quitar"
                             }
                         },
                         "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
@@ -2142,7 +2158,28 @@
                     "kick": "Expulsar",
                     "ban": "Banear"
                 },
-                "timeoutPlaceholder": "Silenciar durante..."
+                "timeoutPlaceholder": "Silenciar durante...",
+                "replyPlaceholder": "Responder a los denunciantes...",
+                "customReply": "Escribir un mensaje personalizado",
+                "repliesSent": "Respuestas a los denunciantes",
+                "replyText": "Respuesta enviada por {{moderator}}"
+            },
+            "notifyReporters": {
+                "yourReport": "Tu reporte",
+                "aboutMember": "Sobre {{member}}",
+                "aboutMessage": "Sobre [este mensaje]({{url}})",
+                "replyTitle": "Respuesta a tu reporte",
+                "reviewedTitle": "Tu reporte ha sido revisado",
+                "resolvedDescription": "¡Gracias por tu reporte! El equipo de moderación lo ha revisado y ha tomado las medidas oportunas.",
+                "dismissedDescription": "¡Gracias por tu reporte! El equipo de moderación lo ha revisado, pero no ha encontrado motivos para tomar medidas.",
+                "measuresTaken": "Medidas tomadas",
+                "sanctionNames": {
+                    "warn": "Advertencia",
+                    "deleteMessage": "Borrado del mensaje",
+                    "timeout": "Silencio de {{duration}}",
+                    "kick": "Expulsión",
+                    "ban": "Baneo"
+                }
             }
         },
         "utils": {
@@ -2186,6 +2223,10 @@
                 "repeatedText": {
                     "reason": "Texto repetitivo"
                 }
+            },
+            "reportReplyTemplates": {
+                "measuresTaken": "¡Gracias por tu reporte! Lo hemos revisado y hemos tomado las medidas oportunas.",
+                "noInfraction": "¡Gracias por tu reporte! Tras revisarlo, no hemos encontrado ninguna infracción de las normas."
             }
         }
     }

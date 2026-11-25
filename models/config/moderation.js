@@ -10,6 +10,9 @@ const localeConfig = require(configFile()).locale;
 // Stores the translations to the configured language
 const locale = require(`./locales/${localeConfig}.json`).models.config.automodFilters;
 
+// Stores the default templates of the replies to the reporters, in the configured language
+const replyTemplates = Object.values(require(`./locales/${localeConfig}.json`).models.config.reportReplyTemplates);
+
 // Creates a new scheme for the automod rules
 const automodRuleSchema = new mongoose.Schema({ 
     action: {
@@ -82,6 +85,17 @@ const schema = new mongoose.Schema({
         timeoutDurations: {
             type: [Number],
             default: [300000, 3600000, 86400000, 604800000]
+        },
+        // Whether the reporters are notified when their report is resolved or dismissed
+        notifyReporters: {
+            type: Boolean,
+            default: true,
+            required: true
+        },
+        // Templates of the replies that can be sent to the reporters
+        replyTemplates: {
+            type: [String],
+            default: replyTemplates
         },
         // Limits to avoid the abuse of the reports
         limits: {

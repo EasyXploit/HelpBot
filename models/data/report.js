@@ -71,6 +71,12 @@ const reportSchema = new mongoose.Schema({
         duration: Number,
         timestamp: Number
     }],
+    // Replies sent to the reporters
+    replies: [{
+        moderatorId: String,
+        text: String,
+        timestamp: Number
+    }],
     // Member who resolved or dismissed the report, and when
     closedById: String,
     closedTimestamp: Number,

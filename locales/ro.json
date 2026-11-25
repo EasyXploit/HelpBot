@@ -85,7 +85,15 @@
                     "timeout": "Membrul a fost izolat",
                     "kick": "Membrul a fost dat afară",
                     "ban": "Utilizatorul a fost interzis"
-                }
+                },
+                "replyModal": {
+                    "title": "Răspunde celor care au raportat",
+                    "fieldTitle": "Mesaj",
+                    "fieldPlaceholder": "Scrieți mesajul pe care îl vor primi cei care au raportat"
+                },
+                "replySent": "Răspunsul a fost trimis către {{count}} persoane care au raportat",
+                "replyNotDelivered": "{{count}} persoane nu l-au putut primi, deoarece nu acceptă mesaje private",
+                "invalidTemplate": "Acest șablon nu mai există"
             }
         },
         "commands": {
@@ -1558,7 +1566,9 @@
                                 "limit": "Limita de rapoarte",
                                 "sameMemberCooldown": "Așteptare pentru a raporta același membru",
                                 "quickActions": "Sancțiuni din rapoarte",
-                                "timeoutDurations": "Duratele izolării"
+                                "timeoutDurations": "Duratele izolării",
+                                "notifyReporters": "Anunțați persoanele care au raportat când raportul lor este închis",
+                                "replyTemplates": "Șabloane de răspuns"
                             },
                             "prompts": {
                                 "noChannelError": "Trebuie să configurați canalul rapoartelor înainte de a le activa",
@@ -1589,7 +1599,13 @@
                                 "addDuration": "Adăugați o durată",
                                 "removeDuration": "Eliminați o durată",
                                 "enterDuration": "Introduceți durata în minute (maximum 40319, 28 de zile minus un minut)",
-                                "selectDurationToRemove": "Selectați durata de eliminat"
+                                "selectDurationToRemove": "Selectați durata de eliminat",
+                                "replyTemplatesHeader": "Configurați șabloanele răspunsurilor care pot fi trimise persoanelor care au raportat",
+                                "addTemplate": "Adăugați un șablon",
+                                "removeTemplate": "Eliminați un șablon",
+                                "enterTemplate": "Introduceți textul șablonului",
+                                "templateTooLong": "Șablonul nu poate avea mai mult de 1500 de caractere",
+                                "selectTemplateToRemove": "Selectați șablonul de eliminat"
                             }
                         },
                         "errorMessage": "A apărut o eroare neașteptată. Verifică jurnalele pentru mai multe detalii"
@@ -2142,7 +2158,28 @@
                     "kick": "Dă afară",
                     "ban": "Interzice"
                 },
-                "timeoutPlaceholder": "Izolează pentru..."
+                "timeoutPlaceholder": "Izolează pentru...",
+                "replyPlaceholder": "Răspunde celor care au raportat...",
+                "customReply": "Scrie un mesaj personalizat",
+                "repliesSent": "Răspunsuri către cei care au raportat",
+                "replyText": "Răspuns trimis de {{moderator}}"
+            },
+            "notifyReporters": {
+                "yourReport": "Raportul dvs.",
+                "aboutMember": "Despre {{member}}",
+                "aboutMessage": "Despre [acest mesaj]({{url}})",
+                "replyTitle": "Răspuns la raportul dvs.",
+                "reviewedTitle": "Raportul dvs. a fost analizat",
+                "resolvedDescription": "Vă mulțumim pentru raport! Echipa de moderare l-a analizat și a luat măsurile corespunzătoare.",
+                "dismissedDescription": "Vă mulțumim pentru raport! Echipa de moderare l-a analizat, dar nu a găsit motive pentru a lua măsuri.",
+                "measuresTaken": "Măsuri luate",
+                "sanctionNames": {
+                    "warn": "Avertisment",
+                    "deleteMessage": "Ștergerea mesajului",
+                    "timeout": "Izolare de {{duration}}",
+                    "kick": "Dare afară",
+                    "ban": "Interdicție"
+                }
             }
         },
         "utils": {
@@ -2186,6 +2223,10 @@
                 "repeatedText": {
                     "reason": "Text repetitiv"
                 }
+            },
+            "reportReplyTemplates": {
+                "measuresTaken": "Vă mulțumim pentru raport! L-am analizat și am luat măsurile corespunzătoare.",
+                "noInfraction": "Vă mulțumim pentru raport! După ce l-am analizat, nu am găsit nicio încălcare a regulilor."
             }
         }
     }

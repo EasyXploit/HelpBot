@@ -85,7 +85,15 @@
                     "timeout": "The member has been timed out",
                     "kick": "The member has been kicked",
                     "ban": "The user has been banned"
-                }
+                },
+                "replyModal": {
+                    "title": "Reply to the reporters",
+                    "fieldTitle": "Message",
+                    "fieldPlaceholder": "Write the message that the reporters will receive"
+                },
+                "replySent": "The reply has been sent to {{count}} reporters",
+                "replyNotDelivered": "{{count}} reporters could not receive it, as they do not accept private messages",
+                "invalidTemplate": "This template no longer exists"
             }
         },
         "commands": {
@@ -1558,7 +1566,9 @@
                                 "limit": "Reports limit",
                                 "sameMemberCooldown": "Cooldown to report the same member",
                                 "quickActions": "Sanctions from the reports",
-                                "timeoutDurations": "Timeout durations"
+                                "timeoutDurations": "Timeout durations",
+                                "notifyReporters": "Notify the reporters when their report is closed",
+                                "replyTemplates": "Reply templates"
                             },
                             "prompts": {
                                 "noChannelError": "You must configure the reports channel before enabling them",
@@ -1589,7 +1599,13 @@
                                 "addDuration": "Add duration",
                                 "removeDuration": "Remove duration",
                                 "enterDuration": "Enter the duration in minutes (40319 at most, 28 days minus a minute)",
-                                "selectDurationToRemove": "Select the duration to remove"
+                                "selectDurationToRemove": "Select the duration to remove",
+                                "replyTemplatesHeader": "Configure the templates of the replies that can be sent to the reporters",
+                                "addTemplate": "Add template",
+                                "removeTemplate": "Remove template",
+                                "enterTemplate": "Enter the text of the template",
+                                "templateTooLong": "The template can not have more than 1500 characters",
+                                "selectTemplateToRemove": "Select the template to remove"
                             }
                         },
                         "errorMessage": "An unexpected error occurred. Check the logs for more details"
@@ -2142,7 +2158,28 @@
                     "kick": "Kick",
                     "ban": "Ban"
                 },
-                "timeoutPlaceholder": "Time out for..."
+                "timeoutPlaceholder": "Time out for...",
+                "replyPlaceholder": "Reply to the reporters...",
+                "customReply": "Write a custom message",
+                "repliesSent": "Replies to the reporters",
+                "replyText": "Reply sent by {{moderator}}"
+            },
+            "notifyReporters": {
+                "yourReport": "Your report",
+                "aboutMember": "About {{member}}",
+                "aboutMessage": "About [this message]({{url}})",
+                "replyTitle": "Reply to your report",
+                "reviewedTitle": "Your report has been reviewed",
+                "resolvedDescription": "Thank you for your report! The moderation team has reviewed it and taken the appropriate measures.",
+                "dismissedDescription": "Thank you for your report! The moderation team has reviewed it, but has not found any reason to take measures.",
+                "measuresTaken": "Measures taken",
+                "sanctionNames": {
+                    "warn": "Warning",
+                    "deleteMessage": "Deletion of the message",
+                    "timeout": "Timeout of {{duration}}",
+                    "kick": "Kick",
+                    "ban": "Ban"
+                }
             }
         },
         "utils": {
@@ -2186,6 +2223,10 @@
                 "repeatedText": {
                     "reason": "Repetitive text"
                 }
+            },
+            "reportReplyTemplates": {
+                "measuresTaken": "Thank you for your report! We have reviewed it and taken the appropriate measures.",
+                "noInfraction": "Thank you for your report! After reviewing it, we have not found any infraction of the rules."
             }
         }
     }

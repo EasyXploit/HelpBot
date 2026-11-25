@@ -85,7 +85,15 @@
                     "timeout": "该成员已被禁言",
                     "kick": "该成员已被踢出",
                     "ban": "该用户已被封禁"
-                }
+                },
+                "replyModal": {
+                    "title": "回复举报人",
+                    "fieldTitle": "消息",
+                    "fieldPlaceholder": "编写举报人将收到的消息"
+                },
+                "replySent": "回复已发送给 {{count}} 位举报人",
+                "replyNotDelivered": "{{count}} 位举报人无法收到，因为他们不接受私信",
+                "invalidTemplate": "该模板已不存在"
             }
         },
         "commands": {
@@ -1558,7 +1566,9 @@
                                 "limit": "举报次数限制",
                                 "sameMemberCooldown": "再次举报同一成员的等待时间",
                                 "quickActions": "举报中的处罚",
-                                "timeoutDurations": "禁言时长"
+                                "timeoutDurations": "禁言时长",
+                                "notifyReporters": "举报关闭时通知举报人",
+                                "replyTemplates": "回复模板"
                             },
                             "prompts": {
                                 "noChannelError": "启用举报之前，必须先配置举报频道",
@@ -1589,7 +1599,13 @@
                                 "addDuration": "添加时长",
                                 "removeDuration": "移除时长",
                                 "enterDuration": "请输入时长（分钟，最多 40319，即 28 天减 1 分钟）",
-                                "selectDurationToRemove": "选择要移除的时长"
+                                "selectDurationToRemove": "选择要移除的时长",
+                                "replyTemplatesHeader": "配置可以发送给举报人的回复模板",
+                                "addTemplate": "添加模板",
+                                "removeTemplate": "移除模板",
+                                "enterTemplate": "请输入模板内容",
+                                "templateTooLong": "模板不能超过 1500 个字符",
+                                "selectTemplateToRemove": "选择要移除的模板"
                             }
                         },
                         "errorMessage": "发生意外错误。请查看日志了解详情"
@@ -2142,7 +2158,28 @@
                     "kick": "踢出",
                     "ban": "封禁"
                 },
-                "timeoutPlaceholder": "禁言时长..."
+                "timeoutPlaceholder": "禁言时长...",
+                "replyPlaceholder": "回复举报人...",
+                "customReply": "编写自定义消息",
+                "repliesSent": "给举报人的回复",
+                "replyText": "由 {{moderator}} 发送的回复"
+            },
+            "notifyReporters": {
+                "yourReport": "你的举报",
+                "aboutMember": "关于 {{member}}",
+                "aboutMessage": "关于[这条消息]({{url}})",
+                "replyTitle": "对你的举报的回复",
+                "reviewedTitle": "你的举报已被审核",
+                "resolvedDescription": "感谢你的举报！管理团队已经审核并采取了相应的措施。",
+                "dismissedDescription": "感谢你的举报！管理团队已经审核，但没有发现需要采取措施的理由。",
+                "measuresTaken": "已采取的措施",
+                "sanctionNames": {
+                    "warn": "警告",
+                    "deleteMessage": "删除消息",
+                    "timeout": "禁言 {{duration}}",
+                    "kick": "踢出",
+                    "ban": "封禁"
+                }
             }
         },
         "utils": {
@@ -2186,6 +2223,10 @@
                 "repeatedText": {
                     "reason": "重复文本"
                 }
+            },
+            "reportReplyTemplates": {
+                "measuresTaken": "感谢你的举报！我们已经审核并采取了相应的措施。",
+                "noInfraction": "感谢你的举报！经过审核，我们没有发现任何违反规则的行为。"
             }
         }
     }

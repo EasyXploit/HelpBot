@@ -343,8 +343,8 @@
                                     "oneDay": "1 zi",
                                     "threeDays": "3 zile",
                                     "oneWeek": "1 săptămână",
-                                    "oneMonth": "1 lună",
-                                    "threeMonths": "3 luni"
+                                    "twoWeeks": "2 săptămâni",
+                                    "fourWeeks": "4 săptămâni"
                                 }
                             },
                             "reason": {

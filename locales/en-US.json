@@ -343,8 +343,8 @@
                                     "oneDay": "1 day",
                                     "threeDays": "3 days",
                                     "oneWeek": "1 week",
-                                    "oneMonth": "1 month",
-                                    "threeMonths": "3 months"
+                                    "twoWeeks": "2 weeks",
+                                    "fourWeeks": "4 weeks"
                                 }
                             },
                             "reason": {

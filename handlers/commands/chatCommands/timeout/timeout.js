@@ -170,12 +170,13 @@ export let config = {
                         value: 604800016
                     },
                     {
-                        choiceName: 'oneMonth',
-                        value: 2629800000
+                        choiceName: 'twoWeeks',
+                        value: 1209600000
                     },
                     {
-                        choiceName: 'threeMonths',
-                        value: 7889400000
+                        // 28 days minus a minute, as Discord does not allow timeouts longer than 28 days from the moment it receives them
+                        choiceName: 'fourWeeks',
+                        value: 2419140000
                     }
                 ]
             },

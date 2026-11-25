@@ -343,8 +343,8 @@
                                     "oneDay": "1 天",
                                     "threeDays": "3 天",
                                     "oneWeek": "1 周",
-                                    "oneMonth": "1 个月",
-                                    "threeMonths": "3 个月"
+                                    "twoWeeks": "2 周",
+                                    "fourWeeks": "4 周"
                                 }
                             },
                             "reason": {

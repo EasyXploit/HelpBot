@@ -247,7 +247,8 @@ export let config = {
                     {
                         optionName: 'quantity',
                         type: discord.ApplicationCommandOptionType.Integer,
-                        required: true
+                        required: true,
+                        minValue: 0
                     }
                 ]
             },
@@ -263,7 +264,8 @@ export let config = {
                     {
                         optionName: 'quantity',
                         type: discord.ApplicationCommandOptionType.Integer,
-                        required: true
+                        required: true,
+                        minValue: 1
                     }
                 ]
             },
@@ -279,7 +281,9 @@ export let config = {
                     {
                         optionName: 'times',
                         type: discord.ApplicationCommandOptionType.Integer,
-                        required: true
+                        required: true,
+                        minValue: 1,
+                        maxValue: 1000
                     }
                 ]
             },
@@ -295,7 +299,8 @@ export let config = {
                     {
                         optionName: 'quantity',
                         type: discord.ApplicationCommandOptionType.Integer,
-                        required: true
+                        required: true,
+                        minValue: 1
                     }
                 ]
             },

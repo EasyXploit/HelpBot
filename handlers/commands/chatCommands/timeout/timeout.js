@@ -167,7 +167,7 @@ export let config = {
                     },
                     {
                         choiceName: 'oneWeek',
-                        value: 604800016
+                        value: 604800000
                     },
                     {
                         choiceName: 'twoWeeks',

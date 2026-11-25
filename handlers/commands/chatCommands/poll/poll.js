@@ -165,6 +165,9 @@ export async function run(interaction, commandConfig, locale) {
                             // Stores the option in the field list
                             options[index] = option;
 
+                            // If the maximum of fields has been reached, does not ask for another one
+                            if (index === emojiOptions.length - 1) return;
+
                             // Edits the assistant to ask about another field
                             assistantEmbed.edit({ embeds: [ new discord.EmbedBuilder()
                                 .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
@@ -196,7 +199,7 @@ export async function run(interaction, commandConfig, locale) {
                     let formattedOptions = '';
 
                     // For each of the options, concats it formatted
-                    for (count = 0; count < options.length; count++) formattedOptions += `${emojiOptions[count]} ${options[count]}\n\n`;
+                    for (let count = 0; count < options.length; count++) formattedOptions += `${emojiOptions[count]} ${options[count]}\n\n`;
 
                     // Stores the remaining time
                     let remainingTime = '∞';
@@ -231,7 +234,7 @@ export async function run(interaction, commandConfig, locale) {
                         interaction.deleteReply();
 
                         // For each of the options
-                        for (count = 0; count < options.length; count++) {
+                        for (let count = 0; count < options.length; count++) {
 
                             // Reacts to the embed with the appropriate emoji
                             await pollEmbed.react([

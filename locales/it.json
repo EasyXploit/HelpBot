@@ -65,7 +65,27 @@
                 "notAuthorized": "Non hai il permesso di gestire le segnalazioni",
                 "notFound": "Questa segnalazione non esiste più",
                 "outdated": "Un altro membro ha già aggiornato questa segnalazione",
-                "notAssignee": "Solo il membro a cui è assegnata la segnalazione può rimuovere l'assegnazione"
+                "notAssignee": "Solo il membro a cui è assegnata la segnalazione può rimuovere l'assegnazione",
+                "actionDisabled": "Questa sanzione è disattivata",
+                "missingPermissions": "Hai bisogno dei seguenti permessi per applicare questa sanzione: {{permissions}}",
+                "botMissingPermissions": "Il bot ha bisogno dei seguenti permessi per applicare questa sanzione: {{permissions}}",
+                "messageNotFound": "Il messaggio segnalato non esiste più",
+                "memberNotFound": "Il membro segnalato non è più nel server",
+                "noBots": "Non è possibile avvertire i bot",
+                "badHierarchy": "Non puoi sanzionare un membro il cui ruolo più alto è uguale o superiore al tuo",
+                "badBotHierarchy": "Il bot non può sanzionare un membro il cui ruolo più alto è uguale o superiore al suo",
+                "invalidDuration": "Questa durata non è più disponibile",
+                "sanctionFailed": "Non è stato possibile applicare la sanzione. Controlla i registri per maggiori dettagli",
+                "reasonModal": {
+                    "title": "Motivo della sanzione",
+                    "fieldTitle": "Motivo",
+                    "fieldPlaceholder": "Descrivi il motivo della sanzione"
+                },
+                "sanctionApplied": {
+                    "timeout": "Il membro è stato silenziato",
+                    "kick": "Il membro è stato espulso",
+                    "ban": "L'utente è stato bannato"
+                }
             }
         },
         "commands": {
@@ -1536,7 +1556,9 @@
                                 "handlers": "Gestori delle segnalazioni",
                                 "mentionRoles": "Ruoli da menzionare",
                                 "limit": "Limite di segnalazioni",
-                                "sameMemberCooldown": "Attesa per segnalare lo stesso membro"
+                                "sameMemberCooldown": "Attesa per segnalare lo stesso membro",
+                                "quickActions": "Sanzioni dalle segnalazioni",
+                                "timeoutDurations": "Durate del silenziamento"
                             },
                             "prompts": {
                                 "noChannelError": "Devi configurare il canale delle segnalazioni prima di attivarle",
@@ -1553,7 +1575,21 @@
                                 "handlersHeader": "Configura i membri e i ruoli che possono gestire le segnalazioni (il proprietario del server e i gestori del bot possono sempre farlo)",
                                 "addMember": "Aggiungi membro",
                                 "removeHandler": "Rimuovi gestore",
-                                "selectHandlerToRemove": "Seleziona il gestore da rimuovere"
+                                "selectHandlerToRemove": "Seleziona il gestore da rimuovere",
+                                "quickActionsHeader": "Scegli le sanzioni che si possono applicare dalle segnalazioni",
+                                "selectQuickAction": "Seleziona una sanzione per attivarla o disattivarla",
+                                "quickActionNames": {
+                                    "warn": "Avvertire",
+                                    "deleteMessage": "Eliminare il messaggio",
+                                    "timeout": "Silenziare",
+                                    "kick": "Espellere",
+                                    "ban": "Bannare"
+                                },
+                                "timeoutDurationsHeader": "Configura le durate dei silenziamenti che si possono applicare dalle segnalazioni",
+                                "addDuration": "Aggiungi durata",
+                                "removeDuration": "Rimuovi durata",
+                                "enterDuration": "Inserisci la durata in minuti (al massimo 40319, 28 giorni meno un minuto)",
+                                "selectDurationToRemove": "Seleziona la durata da rimuovere"
                             }
                         },
                         "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
@@ -2081,6 +2117,14 @@
                 "fileName": "File {{fileNumber}} [{{fileType}}]",
                 "reports": "Segnalazioni ({{count}})",
                 "moreReports": "E altre {{count}}",
+                "actionsTaken": "Sanzioni applicate",
+                "actionTexts": {
+                    "warn": "Avvertito da {{moderator}}",
+                    "deleteMessage": "Messaggio eliminato da {{moderator}}",
+                    "timeout": "Silenziato per {{duration}} da {{moderator}}",
+                    "kick": "Espulso da {{moderator}}",
+                    "ban": "Bannato da {{moderator}}"
+                },
                 "status": "Stato",
                 "statuses": {
                     "pending": "In attesa",
@@ -2092,8 +2136,13 @@
                     "assign": "Assegnala a me",
                     "unassign": "Rimuovi assegnazione",
                     "resolve": "Risolvi",
-                    "dismiss": "Archivia"
-                }
+                    "dismiss": "Archivia",
+                    "warn": "Avverti",
+                    "deleteMessage": "Elimina messaggio",
+                    "kick": "Espelli",
+                    "ban": "Banna"
+                },
+                "timeoutPlaceholder": "Silenzia per..."
             }
         },
         "utils": {

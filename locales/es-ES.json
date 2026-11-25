@@ -65,7 +65,27 @@
                 "notAuthorized": "No tienes permiso para gestionar los reportes",
                 "notFound": "Este reporte ya no existe",
                 "outdated": "Otro miembro ya ha actualizado este reporte",
-                "notAssignee": "Solo el miembro al que está asignado el reporte puede desasignarlo"
+                "notAssignee": "Solo el miembro al que está asignado el reporte puede desasignarlo",
+                "actionDisabled": "Esta sanción está desactivada",
+                "missingPermissions": "Necesitas los siguientes permisos para aplicar esta sanción: {{permissions}}",
+                "botMissingPermissions": "El bot necesita los siguientes permisos para aplicar esta sanción: {{permissions}}",
+                "messageNotFound": "El mensaje reportado ya no existe",
+                "memberNotFound": "El miembro reportado ya no está en el servidor",
+                "noBots": "No se puede advertir a los bots",
+                "badHierarchy": "No puedes sancionar a un miembro cuyo rol más alto es igual o superior al tuyo",
+                "badBotHierarchy": "El bot no puede sancionar a un miembro cuyo rol más alto es igual o superior al suyo",
+                "invalidDuration": "Esta duración ya no está disponible",
+                "sanctionFailed": "No se ha podido aplicar la sanción. Revisa los registros para más detalles",
+                "reasonModal": {
+                    "title": "Motivo de la sanción",
+                    "fieldTitle": "Motivo",
+                    "fieldPlaceholder": "Describe el motivo de la sanción"
+                },
+                "sanctionApplied": {
+                    "timeout": "El miembro ha sido silenciado",
+                    "kick": "El miembro ha sido expulsado",
+                    "ban": "El usuario ha sido baneado"
+                }
             }
         },
         "commands": {
@@ -1536,7 +1556,9 @@
                                 "handlers": "Gestores de reportes",
                                 "mentionRoles": "Roles a mencionar",
                                 "limit": "Límite de reportes",
-                                "sameMemberCooldown": "Espera para reportar al mismo miembro"
+                                "sameMemberCooldown": "Espera para reportar al mismo miembro",
+                                "quickActions": "Sanciones desde los reportes",
+                                "timeoutDurations": "Duraciones de silencio"
                             },
                             "prompts": {
                                 "noChannelError": "Debes configurar el canal de reportes antes de activarlos",
@@ -1553,7 +1575,21 @@
                                 "handlersHeader": "Configura los miembros y roles que pueden gestionar los reportes (el dueño del servidor y los gestores del bot siempre pueden hacerlo)",
                                 "addMember": "Añadir miembro",
                                 "removeHandler": "Quitar gestor",
-                                "selectHandlerToRemove": "Selecciona el gestor a quitar"
+                                "selectHandlerToRemove": "Selecciona el gestor a quitar",
+                                "quickActionsHeader": "Elige las sanciones que se pueden aplicar desde los reportes",
+                                "selectQuickAction": "Selecciona una sanción para activarla o desactivarla",
+                                "quickActionNames": {
+                                    "warn": "Advertir",
+                                    "deleteMessage": "Borrar el mensaje",
+                                    "timeout": "Silenciar",
+                                    "kick": "Expulsar",
+                                    "ban": "Banear"
+                                },
+                                "timeoutDurationsHeader": "Configura las duraciones de silencio que se pueden aplicar desde los reportes",
+                                "addDuration": "Añadir duración",
+                                "removeDuration": "Quitar duración",
+                                "enterDuration": "Introduce la duración en minutos (40319 como máximo, 28 días menos un minuto)",
+                                "selectDurationToRemove": "Selecciona la duración a quitar"
                             }
                         },
                         "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
@@ -2081,6 +2117,14 @@
                 "fileName": "Archivo {{fileNumber}} [{{fileType}}]",
                 "reports": "Reportes ({{count}})",
                 "moreReports": "Y {{count}} más",
+                "actionsTaken": "Sanciones aplicadas",
+                "actionTexts": {
+                    "warn": "Advertido por {{moderator}}",
+                    "deleteMessage": "Mensaje borrado por {{moderator}}",
+                    "timeout": "Silenciado {{duration}} por {{moderator}}",
+                    "kick": "Expulsado por {{moderator}}",
+                    "ban": "Baneado por {{moderator}}"
+                },
                 "status": "Estado",
                 "statuses": {
                     "pending": "Pendiente",
@@ -2092,8 +2136,13 @@
                     "assign": "Asignármelo",
                     "unassign": "Desasignar",
                     "resolve": "Resolver",
-                    "dismiss": "Descartar"
-                }
+                    "dismiss": "Descartar",
+                    "warn": "Advertir",
+                    "deleteMessage": "Borrar mensaje",
+                    "kick": "Expulsar",
+                    "ban": "Banear"
+                },
+                "timeoutPlaceholder": "Silenciar durante..."
             }
         },
         "utils": {

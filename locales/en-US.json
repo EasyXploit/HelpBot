@@ -65,7 +65,27 @@
                 "notAuthorized": "You are not allowed to handle the reports",
                 "notFound": "This report no longer exists",
                 "outdated": "This report has already been updated by another member",
-                "notAssignee": "Only the member to whom the report is assigned can unassign it"
+                "notAssignee": "Only the member to whom the report is assigned can unassign it",
+                "actionDisabled": "This sanction is disabled",
+                "missingPermissions": "You need the following permissions to apply this sanction: {{permissions}}",
+                "botMissingPermissions": "The bot needs the following permissions to apply this sanction: {{permissions}}",
+                "messageNotFound": "The reported message no longer exists",
+                "memberNotFound": "The reported member is no longer in the server",
+                "noBots": "Bots can not be warned",
+                "badHierarchy": "You can not sanction a member whose highest role is equal or higher than yours",
+                "badBotHierarchy": "The bot can not sanction a member whose highest role is equal or higher than its own",
+                "invalidDuration": "This duration is no longer available",
+                "sanctionFailed": "The sanction could not be applied. Check the logs for more details",
+                "reasonModal": {
+                    "title": "Reason of the sanction",
+                    "fieldTitle": "Reason",
+                    "fieldPlaceholder": "Describe the reason of the sanction"
+                },
+                "sanctionApplied": {
+                    "timeout": "The member has been timed out",
+                    "kick": "The member has been kicked",
+                    "ban": "The user has been banned"
+                }
             }
         },
         "commands": {
@@ -1536,7 +1556,9 @@
                                 "handlers": "Report handlers",
                                 "mentionRoles": "Roles to mention",
                                 "limit": "Reports limit",
-                                "sameMemberCooldown": "Cooldown to report the same member"
+                                "sameMemberCooldown": "Cooldown to report the same member",
+                                "quickActions": "Sanctions from the reports",
+                                "timeoutDurations": "Timeout durations"
                             },
                             "prompts": {
                                 "noChannelError": "You must configure the reports channel before enabling them",
@@ -1553,7 +1575,21 @@
                                 "handlersHeader": "Configure the members and roles that can handle the reports (the owner of the server and the bot managers can always do it)",
                                 "addMember": "Add member",
                                 "removeHandler": "Remove handler",
-                                "selectHandlerToRemove": "Select the handler to remove"
+                                "selectHandlerToRemove": "Select the handler to remove",
+                                "quickActionsHeader": "Choose the sanctions that can be applied from the reports",
+                                "selectQuickAction": "Select a sanction to enable or disable it",
+                                "quickActionNames": {
+                                    "warn": "Warn",
+                                    "deleteMessage": "Delete the message",
+                                    "timeout": "Time out",
+                                    "kick": "Kick",
+                                    "ban": "Ban"
+                                },
+                                "timeoutDurationsHeader": "Configure the durations of the timeouts that can be applied from the reports",
+                                "addDuration": "Add duration",
+                                "removeDuration": "Remove duration",
+                                "enterDuration": "Enter the duration in minutes (40319 at most, 28 days minus a minute)",
+                                "selectDurationToRemove": "Select the duration to remove"
                             }
                         },
                         "errorMessage": "An unexpected error occurred. Check the logs for more details"
@@ -2081,6 +2117,14 @@
                 "fileName": "File {{fileNumber}} [{{fileType}}]",
                 "reports": "Reports ({{count}})",
                 "moreReports": "And {{count}} more",
+                "actionsTaken": "Sanctions applied",
+                "actionTexts": {
+                    "warn": "Warned by {{moderator}}",
+                    "deleteMessage": "Message deleted by {{moderator}}",
+                    "timeout": "Timed out for {{duration}} by {{moderator}}",
+                    "kick": "Kicked by {{moderator}}",
+                    "ban": "Banned by {{moderator}}"
+                },
                 "status": "Status",
                 "statuses": {
                     "pending": "Pending",
@@ -2092,8 +2136,13 @@
                     "assign": "Assign to me",
                     "unassign": "Unassign",
                     "resolve": "Resolve",
-                    "dismiss": "Dismiss"
-                }
+                    "dismiss": "Dismiss",
+                    "warn": "Warn",
+                    "deleteMessage": "Delete message",
+                    "kick": "Kick",
+                    "ban": "Ban"
+                },
+                "timeoutPlaceholder": "Time out for..."
             }
         },
         "utils": {

@@ -59,6 +59,18 @@ const reportSchema = new mongoose.Schema({
     reports: [reportEntrySchema],
     // Member who is handling the report
     assigneeId: String,
+    // Sanctions applied from the report
+    actions: [{
+        type: {
+            type: String,
+            enum: ['warn', 'deleteMessage', 'timeout', 'kick', 'ban'],
+            required: true
+        },
+        moderatorId: String,
+        reason: String,
+        duration: Number,
+        timestamp: Number
+    }],
     // Member who resolved or dismissed the report, and when
     closedById: String,
     closedTimestamp: Number,

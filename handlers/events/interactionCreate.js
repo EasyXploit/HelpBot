@@ -94,8 +94,8 @@ export default async (interaction, locale) => {
             command.autocomplete(interaction, command, client.locale.handlers.commands.chatCommands[command.fileName]);
         };
 
-        // If the interaction was a button
-        if (interaction.isButton()) {
+        // If the interaction was a button or a select menu (both are handled by the files of the "buttons" folder)
+        if (interaction.isButton() || interaction.isStringSelectMenu()) {
 
             // Stores the name of the handler, which is the part of the custom ID before the first ":" (the rest can be used as parameters)
             const handlerName = interaction.customId.split(':')[0];

@@ -65,7 +65,27 @@
                 "notAuthorized": "Nu aveți permisiunea de a gestiona rapoartele",
                 "notFound": "Acest raport nu mai există",
                 "outdated": "Un alt membru a actualizat deja acest raport",
-                "notAssignee": "Doar membrul căruia îi este atribuit raportul îl poate dezatribui"
+                "notAssignee": "Doar membrul căruia îi este atribuit raportul îl poate dezatribui",
+                "actionDisabled": "Această sancțiune este dezactivată",
+                "missingPermissions": "Aveți nevoie de următoarele permisiuni pentru a aplica această sancțiune: {{permissions}}",
+                "botMissingPermissions": "Botul are nevoie de următoarele permisiuni pentru a aplica această sancțiune: {{permissions}}",
+                "messageNotFound": "Mesajul raportat nu mai există",
+                "memberNotFound": "Membrul raportat nu mai este pe server",
+                "noBots": "Boții nu pot fi avertizați",
+                "badHierarchy": "Nu puteți sancționa un membru al cărui cel mai înalt rol este egal sau superior celui al dvs.",
+                "badBotHierarchy": "Botul nu poate sancționa un membru al cărui cel mai înalt rol este egal sau superior celui al său",
+                "invalidDuration": "Această durată nu mai este disponibilă",
+                "sanctionFailed": "Sancțiunea nu a putut fi aplicată. Verificați jurnalele pentru mai multe detalii",
+                "reasonModal": {
+                    "title": "Motivul sancțiunii",
+                    "fieldTitle": "Motiv",
+                    "fieldPlaceholder": "Descrieți motivul sancțiunii"
+                },
+                "sanctionApplied": {
+                    "timeout": "Membrul a fost izolat",
+                    "kick": "Membrul a fost dat afară",
+                    "ban": "Utilizatorul a fost interzis"
+                }
             }
         },
         "commands": {
@@ -1536,7 +1556,9 @@
                                 "handlers": "Gestionarii rapoartelor",
                                 "mentionRoles": "Roluri de menționat",
                                 "limit": "Limita de rapoarte",
-                                "sameMemberCooldown": "Așteptare pentru a raporta același membru"
+                                "sameMemberCooldown": "Așteptare pentru a raporta același membru",
+                                "quickActions": "Sancțiuni din rapoarte",
+                                "timeoutDurations": "Duratele izolării"
                             },
                             "prompts": {
                                 "noChannelError": "Trebuie să configurați canalul rapoartelor înainte de a le activa",
@@ -1553,7 +1575,21 @@
                                 "handlersHeader": "Configurați membrii și rolurile care pot gestiona rapoartele (proprietarul serverului și gestionarii botului o pot face întotdeauna)",
                                 "addMember": "Adăugați un membru",
                                 "removeHandler": "Eliminați un gestionar",
-                                "selectHandlerToRemove": "Selectați gestionarul de eliminat"
+                                "selectHandlerToRemove": "Selectați gestionarul de eliminat",
+                                "quickActionsHeader": "Alegeți sancțiunile care pot fi aplicate din rapoarte",
+                                "selectQuickAction": "Selectați o sancțiune pentru a o activa sau dezactiva",
+                                "quickActionNames": {
+                                    "warn": "Avertizare",
+                                    "deleteMessage": "Ștergerea mesajului",
+                                    "timeout": "Izolare",
+                                    "kick": "Dare afară",
+                                    "ban": "Interzicere"
+                                },
+                                "timeoutDurationsHeader": "Configurați duratele izolărilor care pot fi aplicate din rapoarte",
+                                "addDuration": "Adăugați o durată",
+                                "removeDuration": "Eliminați o durată",
+                                "enterDuration": "Introduceți durata în minute (maximum 40319, 28 de zile minus un minut)",
+                                "selectDurationToRemove": "Selectați durata de eliminat"
                             }
                         },
                         "errorMessage": "A apărut o eroare neașteptată. Verifică jurnalele pentru mai multe detalii"
@@ -2081,6 +2117,14 @@
                 "fileName": "Fișierul {{fileNumber}} [{{fileType}}]",
                 "reports": "Rapoarte ({{count}})",
                 "moreReports": "Și încă {{count}}",
+                "actionsTaken": "Sancțiuni aplicate",
+                "actionTexts": {
+                    "warn": "Avertizat de {{moderator}}",
+                    "deleteMessage": "Mesaj șters de {{moderator}}",
+                    "timeout": "Izolat {{duration}} de {{moderator}}",
+                    "kick": "Dat afară de {{moderator}}",
+                    "ban": "Interzis de {{moderator}}"
+                },
                 "status": "Stare",
                 "statuses": {
                     "pending": "În așteptare",
@@ -2092,8 +2136,13 @@
                     "assign": "Atribuie-mi",
                     "unassign": "Dezatribuie",
                     "resolve": "Rezolvă",
-                    "dismiss": "Respinge"
-                }
+                    "dismiss": "Respinge",
+                    "warn": "Avertizează",
+                    "deleteMessage": "Șterge mesajul",
+                    "kick": "Dă afară",
+                    "ban": "Interzice"
+                },
+                "timeoutPlaceholder": "Izolează pentru..."
             }
         },
         "utils": {

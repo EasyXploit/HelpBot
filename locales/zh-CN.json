@@ -65,7 +65,27 @@
                 "notAuthorized": "你没有处理举报的权限",
                 "notFound": "该举报已不存在",
                 "outdated": "其他成员已经更新了该举报",
-                "notAssignee": "只有被分配该举报的成员才能取消分配"
+                "notAssignee": "只有被分配该举报的成员才能取消分配",
+                "actionDisabled": "此处罚已被禁用",
+                "missingPermissions": "你需要以下权限才能执行此处罚：{{permissions}}",
+                "botMissingPermissions": "机器人需要以下权限才能执行此处罚：{{permissions}}",
+                "messageNotFound": "被举报的消息已不存在",
+                "memberNotFound": "被举报的成员已不在服务器中",
+                "noBots": "无法警告机器人",
+                "badHierarchy": "你无法处罚最高身份组等于或高于你的成员",
+                "badBotHierarchy": "机器人无法处罚最高身份组等于或高于它的成员",
+                "invalidDuration": "此时长已不可用",
+                "sanctionFailed": "无法执行处罚。请查看日志了解详情",
+                "reasonModal": {
+                    "title": "处罚原因",
+                    "fieldTitle": "原因",
+                    "fieldPlaceholder": "请描述处罚的原因"
+                },
+                "sanctionApplied": {
+                    "timeout": "该成员已被禁言",
+                    "kick": "该成员已被踢出",
+                    "ban": "该用户已被封禁"
+                }
             }
         },
         "commands": {
@@ -1536,7 +1556,9 @@
                                 "handlers": "举报处理人",
                                 "mentionRoles": "要提及的身份组",
                                 "limit": "举报次数限制",
-                                "sameMemberCooldown": "再次举报同一成员的等待时间"
+                                "sameMemberCooldown": "再次举报同一成员的等待时间",
+                                "quickActions": "举报中的处罚",
+                                "timeoutDurations": "禁言时长"
                             },
                             "prompts": {
                                 "noChannelError": "启用举报之前，必须先配置举报频道",
@@ -1553,7 +1575,21 @@
                                 "handlersHeader": "配置可以处理举报的成员和身份组（服务器所有者和机器人管理员始终可以处理）",
                                 "addMember": "添加成员",
                                 "removeHandler": "移除处理人",
-                                "selectHandlerToRemove": "选择要移除的处理人"
+                                "selectHandlerToRemove": "选择要移除的处理人",
+                                "quickActionsHeader": "选择可以从举报中执行的处罚",
+                                "selectQuickAction": "选择一项处罚以启用或禁用",
+                                "quickActionNames": {
+                                    "warn": "警告",
+                                    "deleteMessage": "删除消息",
+                                    "timeout": "禁言",
+                                    "kick": "踢出",
+                                    "ban": "封禁"
+                                },
+                                "timeoutDurationsHeader": "配置可以从举报中执行的禁言时长",
+                                "addDuration": "添加时长",
+                                "removeDuration": "移除时长",
+                                "enterDuration": "请输入时长（分钟，最多 40319，即 28 天减 1 分钟）",
+                                "selectDurationToRemove": "选择要移除的时长"
                             }
                         },
                         "errorMessage": "发生意外错误。请查看日志了解详情"
@@ -2081,6 +2117,14 @@
                 "fileName": "文件 {{fileNumber}} [{{fileType}}]",
                 "reports": "举报 ({{count}})",
                 "moreReports": "还有 {{count}} 条",
+                "actionsTaken": "已采取的处罚",
+                "actionTexts": {
+                    "warn": "已由 {{moderator}} 警告",
+                    "deleteMessage": "消息已由 {{moderator}} 删除",
+                    "timeout": "已由 {{moderator}} 禁言 {{duration}}",
+                    "kick": "已由 {{moderator}} 踢出",
+                    "ban": "已由 {{moderator}} 封禁"
+                },
                 "status": "状态",
                 "statuses": {
                     "pending": "待处理",
@@ -2092,8 +2136,13 @@
                     "assign": "分配给我",
                     "unassign": "取消分配",
                     "resolve": "处理完成",
-                    "dismiss": "驳回"
-                }
+                    "dismiss": "驳回",
+                    "warn": "警告",
+                    "deleteMessage": "删除消息",
+                    "kick": "踢出",
+                    "ban": "封禁"
+                },
+                "timeoutPlaceholder": "禁言时长..."
             }
         },
         "utils": {

@@ -70,6 +70,19 @@ const schema = new mongoose.Schema({
         mentionRoles: [String],
         // Members and roles that can handle the reports (apart from the owner of the guild and the bot managers)
         handlers: [String],
+        // Sanctions that can be applied from the reports
+        quickActions: {
+            type: [{
+                type: String,
+                enum: ['warn', 'deleteMessage', 'timeout', 'kick', 'ban']
+            }],
+            default: ['warn', 'deleteMessage', 'timeout', 'kick', 'ban']
+        },
+        // Durations of the timeouts that can be applied from the reports, in milliseconds
+        timeoutDurations: {
+            type: [Number],
+            default: [300000, 3600000, 86400000, 604800000]
+        },
         // Limits to avoid the abuse of the reports
         limits: {
             // Maximum amount of reports that a member can make in the time window (0 to disable the limit)

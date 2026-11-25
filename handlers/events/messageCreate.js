@@ -55,14 +55,15 @@ export default async (message, locale) => {
         // For each of the attachments
         for (let index = 0; index < attachmentsArray.length; index++) {
 
-            // Gets the file to which the URL proxy is directed
-            await fetch(attachmentsArray[index].proxyURL).then(async (response) => {
+            // Stores the attachment
+            const attachment = attachmentsArray[index];
 
-                // Stores the body of the file in string format
-                const attachmentBody = await response.text();
+            try {
 
-                // Generates a hash from the body of the file
-                const attachmentHash = await client.md5(attachmentBody);
+                // Generates a hash from the content of the file, or from its name, size and type if it is too big to be downloaded (more than 25 MB)
+                const attachmentHash = attachment.size > 25 * 1024 * 1024
+                    ? await client.md5(`${attachment.name}:${attachment.size}:${attachment.contentType}`)
+                    : await client.md5(Buffer.from(await (await fetch(attachment.proxyURL)).arrayBuffer()));
 
                 // Adds the hash to the member's messages
                 userMessages.history.push({
@@ -71,10 +72,15 @@ export default async (message, locale) => {
                     editedTimestamp: message.editedTimestamp,
                     channelId: message.channel.id,
                     channelType: message.channel.type,
-                    content: attachmentsArray[index].proxyURL,
+                    content: attachment.proxyURL,
                     hash: attachmentHash
                 });
-            });
+
+            } catch (error) {
+
+                // Warns about the error, and continues with the next attachment
+                logger.warn(`The attachment ${attachment.id} of the message ${message.id} could not be checked: ${error.message}`);
+            };
         };
     };
 
@@ -84,8 +90,8 @@ export default async (message, locale) => {
         // Stores the size of the member messages
         const messageHistorySize = await client.functions.db.getConfig('moderation.messageHistorySize');
 
-        // If the history is full, eliminates the first element of the array
-        if (userMessages.history.length >= messageHistorySize) userMessages.history.shift();
+        // While the history exceeds its size (a message can add several entries, one per attachment), eliminates its first element
+        while (userMessages.history.length > messageHistorySize) userMessages.history.shift();
     };
 
     // Checks if the content of the message is allowed, if the moderation module is enabled

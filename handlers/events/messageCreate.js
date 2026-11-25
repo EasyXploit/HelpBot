@@ -8,7 +8,7 @@ export default async (message, locale) => {
     if (message.guild && message.guild.id !== client.baseGuild.id) return;
 
     // Prevents execution if the message was sent by a bot or the system
-    if (message.author.bot || message.type !== discord.MessageType.Default) return;
+    if (message.author.bot || ![discord.MessageType.Default, discord.MessageType.Reply].includes(message.type)) return;
 
     // Creates an object in the client for user messages
     if (!client.userMessages) client.userMessages = {};

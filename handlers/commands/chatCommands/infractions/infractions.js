@@ -79,7 +79,7 @@ export async function run(interaction, commandConfig, locale) {
             const toRange = 10 * actualPage;
 
             // Stores the warning list
-            let board = '';
+            let boardEntries = [];
 
             // For each of the rank indexes
             if (memberWarns) for (let index = fromRange - 1; index < toRange; index++) {
@@ -93,8 +93,15 @@ export async function run(interaction, commandConfig, locale) {
                 // Searches and stores the moderator who applied the sanction
                 const moderator = warn.executor.type === 'system' ? locale.warnSystemExecutor : await client.functions.utils.fetch('member', warn.executor.memberId) || locale.unknownModerator;
 
-                // Adds a new row with the details of the warning
-                board += `\`${warn.warnId}\` • ${moderator} • <t:${Math.round(new Date(parseInt(warn.timestamp)) / 1000)}>\n${warn.reason}\n\n`;
+                // Adds a new row with the details of the warning (shortening the reason, so the embed does not exceed the limits of Discord)
+                boardEntries.push(`\`${warn.warnId}\` • ${moderator} • <t:${Math.round(new Date(parseInt(warn.timestamp)) / 1000)}>\n${client.functions.utils.truncate(warn.reason, 400)}`);
+            };
+
+            // Splits the rows into fields of up to 1024 characters, as it is the limit of Discord for the value of a field
+            let boardFields = [];
+            for (const entry of boardEntries) {
+                if (boardFields.length > 0 && `${boardFields[boardFields.length - 1]}\n\n${entry}`.length <= 1024) boardFields[boardFields.length - 1] += `\n\n${entry}`;
+                else boardFields.push(entry);
             };
 
             // Stores the current sanction, if applies
@@ -109,7 +116,8 @@ export async function run(interaction, commandConfig, locale) {
                     { name: locale.infractionsEmbed.last24h, value: onDay.toString(), inline: true },
                     { name: locale.infractionsEmbed.last7d, value: onWeek.toString(), inline: true },
                     { name: locale.infractionsEmbed.total, value: total.toString(), inline: true },
-                    { name: locale.infractionsEmbed.list, value: total > 0 ? board : locale.infractionsEmbed.noList, inline: false }
+                    { name: locale.infractionsEmbed.list, value: boardFields.length > 0 ? boardFields[0] : locale.infractionsEmbed.noList, inline: false },
+                    ...boardFields.slice(1).map(boardField => ({ name: '\u200b', value: boardField, inline: false }))
                 )
                 .setFooter({ text: await client.functions.utils.parseLocale(locale.infractionsEmbed.page, { actualPage: actualPage, totalPages: totalPages > 0 ? totalPages : 1 }), iconURL: client.baseGuild.iconURL({dynamic: true}) });
 

@@ -38,11 +38,17 @@ export default async (oldState, newState, locale) => {
                 // If there is a new channel for the member and this is not ignored
                 if (newState.channelId && !excludedChannels.includes(newState.channelId)) {
     
-                    // Generates and stores an array with the tags of the members of that channel
-                    const channelMembers = Array.from(newState.channel.members, member => newState.channel.members.get(member[0]));
+                    // Generates and stores a list with the mentions of the members of that channel (without exceeding the limit of 1024 characters of Discord for the value of a field)
+                    let channelMembers = '';
+                    for (const [index, channelMember] of [...newState.channel.members.values()].entries()) {
+                        const remaining = newState.channel.members.size - index;
+                        const separator = channelMembers.length > 0 ? ', ' : '';
+                        if (`${channelMembers}${separator}${channelMember}`.length > 1024 - ` (+${remaining})`.length) { channelMembers += ` (+${remaining})`; break; };
+                        channelMembers += `${separator}${channelMember}`;
+                    };
     
                     // Adds a block of code with the tags of the channel members to the records embed
-                    embedFields.push({ name: `${await client.functions.utils.parseLocale(locale.voiceMovesLogging.actualMembers)} (${newState.channel.members.size}/${newState.channel.userLimit != 0 ? newState.channel.userLimit : '∞'})`, value: `${channelMembers.join(', ')}`});
+                    embedFields.push({ name: `${await client.functions.utils.parseLocale(locale.voiceMovesLogging.actualMembers)} (${newState.channel.members.size}/${newState.channel.userLimit != 0 ? newState.channel.userLimit : '∞'})`, value: channelMembers});
                 };
                 
                 // Formats and sends a record to the channel specified in the configuration

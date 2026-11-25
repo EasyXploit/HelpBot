@@ -1275,22 +1275,6 @@
                     "private": "Hi {userName}, welcome to **{serverName}**! We hope you enjoy your stay 👋"
                 }
             },
-            "sendReport": {
-                "reportEmbed": {
-                    "author": "{{memberTag}} has reported the following",
-                    "reportReason": "Report reason",
-                    "reportChannel": "Report channel",
-                    "reportedMember": "Reported member",
-                    "reportedMessage": "Reported message",
-                    "isInsertion": "Insertion",
-                    "reportedMessageId": "Message ID",
-                    "attachedFiles": "Attached files [{{currentChunk}}/{{totalChunks}}]",
-                    "fileName": "File {{fileNumber}} [{{fileType}}]"
-                },
-                "correct": "The report has been sent",
-                "temporaryError": "This feature is not available at this time.\nPlease try again later",
-                "featureDisabled": "This feature is not available at this time.\nPlease try again later"
-            },
             "updatePresence": {
                 "membersCount": "{{memberCount}} members"
             }
@@ -2047,6 +2031,40 @@
             },
             "checkMessage": {
                 "filteredDm": "via DM"
+            }
+        },
+        "reports": {
+            "sendReport": {
+                "correct": "The report has been sent",
+                "alreadyReported": "You have already reported this message",
+                "temporaryError": "This feature is not available at this time.\nPlease try again later",
+                "featureDisabled": "This feature is not available at this time.\nPlease try again later"
+            },
+            "renderReport": {
+                "title": "Report",
+                "reportedMember": "Reported member",
+                "accountCreated": "Account created",
+                "joinedServer": "Joined the server",
+                "unknown": "Unknown",
+                "previousWarnings": "Warnings",
+                "voiceChannel": "Voice channel",
+                "notInVoice": "Not connected",
+                "reportedMessage": "Reported message",
+                "isInsertion": "Insertion",
+                "fullMessageAttached": "The full message is attached",
+                "messageLink": "Message",
+                "goToMessage": "Go to the message",
+                "attachedFiles": "Attached files [{{currentChunk}}/{{totalChunks}}]",
+                "fileName": "File {{fileNumber}} [{{fileType}}]",
+                "reports": "Reports ({{count}})",
+                "moreReports": "And {{count}} more",
+                "status": "Status",
+                "statuses": {
+                    "pending": "Pending",
+                    "assigned": "Assigned to {{member}}",
+                    "resolved": "Resolved by {{member}}",
+                    "dismissed": "Dismissed by {{member}}"
+                }
             }
         },
         "utils": {

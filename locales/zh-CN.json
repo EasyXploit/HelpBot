@@ -1275,22 +1275,6 @@
                     "private": "你好 {userName}，欢迎来到 **{serverName}**！希望你在这里玩得开心 👋"
                 }
             },
-            "sendReport": {
-                "reportEmbed": {
-                    "author": "{{memberTag}} 举报了以下内容",
-                    "reportReason": "举报原因",
-                    "reportChannel": "举报频道",
-                    "reportedMember": "被举报的成员",
-                    "reportedMessage": "被举报的消息",
-                    "isInsertion": "插入",
-                    "reportedMessageId": "消息 ID",
-                    "attachedFiles": "附件 [{{currentChunk}}/{{totalChunks}}]",
-                    "fileName": "文件 {{fileNumber}} [{{fileType}}]"
-                },
-                "correct": "举报已发送",
-                "temporaryError": "此功能目前不可用。\n请稍后再试",
-                "featureDisabled": "此功能目前不可用。\n请稍后再试"
-            },
             "updatePresence": {
                 "membersCount": "{{memberCount}} 位成员"
             }
@@ -2047,6 +2031,40 @@
             },
             "checkMessage": {
                 "filteredDm": "通过私信"
+            }
+        },
+        "reports": {
+            "sendReport": {
+                "correct": "举报已发送",
+                "alreadyReported": "你已经举报过这条消息",
+                "temporaryError": "此功能目前不可用。\n请稍后再试",
+                "featureDisabled": "此功能目前不可用。\n请稍后再试"
+            },
+            "renderReport": {
+                "title": "举报",
+                "reportedMember": "被举报的成员",
+                "accountCreated": "账号创建于",
+                "joinedServer": "加入服务器于",
+                "unknown": "未知",
+                "previousWarnings": "警告次数",
+                "voiceChannel": "语音频道",
+                "notInVoice": "未连接",
+                "reportedMessage": "被举报的消息",
+                "isInsertion": "插入",
+                "fullMessageAttached": "完整消息见附件",
+                "messageLink": "消息",
+                "goToMessage": "跳转到消息",
+                "attachedFiles": "附件 [{{currentChunk}}/{{totalChunks}}]",
+                "fileName": "文件 {{fileNumber}} [{{fileType}}]",
+                "reports": "举报 ({{count}})",
+                "moreReports": "还有 {{count}} 条",
+                "status": "状态",
+                "statuses": {
+                    "pending": "待处理",
+                    "assigned": "已分配给 {{member}}",
+                    "resolved": "已由 {{member}} 处理",
+                    "dismissed": "已由 {{member}} 驳回"
+                }
             }
         },
         "utils": {

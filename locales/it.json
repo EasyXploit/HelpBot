@@ -1275,22 +1275,6 @@
                     "private": "Ciao {userName}, benvenuto su **{serverName}**! Speriamo che ti trovi bene 👋"
                 }
             },
-            "sendReport": {
-                "reportEmbed": {
-                    "author": "{{memberTag}} ha segnalato quanto segue",
-                    "reportReason": "Motivo della segnalazione",
-                    "reportChannel": "Canale della segnalazione",
-                    "reportedMember": "Membro segnalato",
-                    "reportedMessage": "Messaggio segnalato",
-                    "isInsertion": "Inserimento",
-                    "reportedMessageId": "ID del messaggio",
-                    "attachedFiles": "File allegati [{{currentChunk}}/{{totalChunks}}]",
-                    "fileName": "File {{fileNumber}} [{{fileType}}]"
-                },
-                "correct": "La segnalazione è stata inviata",
-                "temporaryError": "Questa funzione non è disponibile al momento.\nRiprova più tardi",
-                "featureDisabled": "Questa funzione non è disponibile al momento.\nRiprova più tardi"
-            },
             "updatePresence": {
                 "membersCount": "{{memberCount}} membri"
             }
@@ -2047,6 +2031,40 @@
             },
             "checkMessage": {
                 "filteredDm": "tramite messaggio privato"
+            }
+        },
+        "reports": {
+            "sendReport": {
+                "correct": "La segnalazione è stata inviata",
+                "alreadyReported": "Hai già segnalato questo messaggio",
+                "temporaryError": "Questa funzione non è disponibile al momento.\nRiprova più tardi",
+                "featureDisabled": "Questa funzione non è disponibile al momento.\nRiprova più tardi"
+            },
+            "renderReport": {
+                "title": "Segnalazione",
+                "reportedMember": "Membro segnalato",
+                "accountCreated": "Account creato",
+                "joinedServer": "Entrato nel server",
+                "unknown": "Sconosciuto",
+                "previousWarnings": "Avvertimenti",
+                "voiceChannel": "Canale vocale",
+                "notInVoice": "Non connesso",
+                "reportedMessage": "Messaggio segnalato",
+                "isInsertion": "Inserimento",
+                "fullMessageAttached": "Il messaggio completo è allegato",
+                "messageLink": "Messaggio",
+                "goToMessage": "Vai al messaggio",
+                "attachedFiles": "File allegati [{{currentChunk}}/{{totalChunks}}]",
+                "fileName": "File {{fileNumber}} [{{fileType}}]",
+                "reports": "Segnalazioni ({{count}})",
+                "moreReports": "E altre {{count}}",
+                "status": "Stato",
+                "statuses": {
+                    "pending": "In attesa",
+                    "assigned": "Assegnata a {{member}}",
+                    "resolved": "Risolta da {{member}}",
+                    "dismissed": "Archiviata da {{member}}"
+                }
             }
         },
         "utils": {

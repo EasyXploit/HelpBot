@@ -53,7 +53,7 @@ export async function run(interaction, commandConfig, locale) {
             const reportReason = modalInteraction.fields.getField('body').value;
 
             // Executes the reports manager
-            await client.functions.managers.sendReport(interaction, modalInteraction, reportReason, reportedMember);
+            await client.functions.reports.sendReport(interaction, modalInteraction, reportReason, reportedMember);
             
         }).catch(error => {
 

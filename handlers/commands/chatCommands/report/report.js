@@ -10,7 +10,7 @@ export async function run(interaction, commandConfig, locale) {
         const reportOption = interaction.options.get(locale.appData.options.body.name);
 
         // Executes the report handler if the report has been provided as a parameter
-        if (reportOption) return await client.functions.managers.sendReport(interaction, null, reportOption.value, reportedMember);
+        if (reportOption) return await client.functions.reports.sendReport(interaction, null, reportOption.value, reportedMember);
 
         // Generates a new modal
         const reasonModal = new discord.ModalBuilder()
@@ -48,7 +48,7 @@ export async function run(interaction, commandConfig, locale) {
             const reportReason = modalInteraction.fields.getField('body').value;
 
             // Executes the reports manager
-            await client.functions.managers.sendReport(interaction, modalInteraction, reportReason, reportedMember);
+            await client.functions.reports.sendReport(interaction, modalInteraction, reportReason, reportedMember);
             
         }).catch(error => {
 

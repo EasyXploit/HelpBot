@@ -1275,22 +1275,6 @@
                     "private": "¡Hola, {userName}! Te damos la bienvenida a **{serverName}**. Esperamos que disfrutes de tu estancia 👋"
                 }
             },
-            "sendReport": {
-                "reportEmbed": {
-                    "author": "{{memberTag}} ha reportado lo siguiente",
-                    "reportReason": "Motivo del reporte",
-                    "reportChannel": "Canal del reporte",
-                    "reportedMember": "Miembro reportado",
-                    "reportedMessage": "Mensaje reportado",
-                    "isInsertion": "Inserción",
-                    "reportedMessageId": "ID del mensaje",
-                    "attachedFiles": "Archivos adjuntos [{{currentChunk}}/{{totalChunks}}]",
-                    "fileName": "Archivo {{fileNumber}} [{{fileType}}]"
-                },
-                "correct": "El reporte ha sido enviado",
-                "temporaryError": "Esta función no está disponible en este momento.\nVuelve a intentarlo más tarde",
-                "featureDisabled": "Esta función no está disponible en este momento.\nVuelve a intentarlo más tarde"
-            },
             "updatePresence": {
                 "membersCount": "{{memberCount}} miembros"
             }
@@ -2047,6 +2031,40 @@
             },
             "checkMessage": {
                 "filteredDm": "vía MD"
+            }
+        },
+        "reports": {
+            "sendReport": {
+                "correct": "El reporte ha sido enviado",
+                "alreadyReported": "Ya has reportado este mensaje",
+                "temporaryError": "Esta función no está disponible en este momento.\nVuelve a intentarlo más tarde",
+                "featureDisabled": "Esta función no está disponible en este momento.\nVuelve a intentarlo más tarde"
+            },
+            "renderReport": {
+                "title": "Reporte",
+                "reportedMember": "Miembro reportado",
+                "accountCreated": "Cuenta creada",
+                "joinedServer": "Entró al servidor",
+                "unknown": "Desconocido",
+                "previousWarnings": "Advertencias",
+                "voiceChannel": "Canal de voz",
+                "notInVoice": "No conectado",
+                "reportedMessage": "Mensaje reportado",
+                "isInsertion": "Inserción",
+                "fullMessageAttached": "El mensaje completo va adjunto",
+                "messageLink": "Mensaje",
+                "goToMessage": "Ir al mensaje",
+                "attachedFiles": "Archivos adjuntos [{{currentChunk}}/{{totalChunks}}]",
+                "fileName": "Archivo {{fileNumber}} [{{fileType}}]",
+                "reports": "Reportes ({{count}})",
+                "moreReports": "Y {{count}} más",
+                "status": "Estado",
+                "statuses": {
+                    "pending": "Pendiente",
+                    "assigned": "Asignado a {{member}}",
+                    "resolved": "Resuelto por {{member}}",
+                    "dismissed": "Descartado por {{member}}"
+                }
             }
         },
         "utils": {

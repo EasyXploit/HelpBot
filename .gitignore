@@ -42,8 +42,8 @@ tsconfig.tsbuildinfo
 #Configuration files
 config.json
 
-#Docker data
-data/
+#Docker data (only the folder in the root of the project)
+/data/
 !.devcontainer/data/
 .devcontainer/data/*
 !.devcontainer/data/.gitkeep

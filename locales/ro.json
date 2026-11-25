@@ -1275,22 +1275,6 @@
                     "private": "Salut {userName}, bun venit pe **{serverName}**! Sperăm să te simți bine aici 👋"
                 }
             },
-            "sendReport": {
-                "reportEmbed": {
-                    "author": "{{memberTag}} a raportat următoarele",
-                    "reportReason": "Motivul raportului",
-                    "reportChannel": "Canalul raportului",
-                    "reportedMember": "Membru raportat",
-                    "reportedMessage": "Mesaj raportat",
-                    "isInsertion": "Inserare",
-                    "reportedMessageId": "ID-ul mesajului",
-                    "attachedFiles": "Fișiere atașate [{{currentChunk}}/{{totalChunks}}]",
-                    "fileName": "Fișierul {{fileNumber}} [{{fileType}}]"
-                },
-                "correct": "Raportul a fost trimis",
-                "temporaryError": "Această funcție nu este disponibilă momentan.\nÎncearcă din nou mai târziu",
-                "featureDisabled": "Această funcție nu este disponibilă momentan.\nÎncearcă din nou mai târziu"
-            },
             "updatePresence": {
                 "membersCount": "{{memberCount}} membri"
             }
@@ -2047,6 +2031,40 @@
             },
             "checkMessage": {
                 "filteredDm": "prin DM"
+            }
+        },
+        "reports": {
+            "sendReport": {
+                "correct": "Raportul a fost trimis",
+                "alreadyReported": "Ați raportat deja acest mesaj",
+                "temporaryError": "Această funcție nu este disponibilă momentan.\nÎncearcă din nou mai târziu",
+                "featureDisabled": "Această funcție nu este disponibilă momentan.\nÎncearcă din nou mai târziu"
+            },
+            "renderReport": {
+                "title": "Raport",
+                "reportedMember": "Membru raportat",
+                "accountCreated": "Cont creat",
+                "joinedServer": "S-a alăturat serverului",
+                "unknown": "Necunoscut",
+                "previousWarnings": "Avertismente",
+                "voiceChannel": "Canal vocal",
+                "notInVoice": "Neconectat",
+                "reportedMessage": "Mesaj raportat",
+                "isInsertion": "Inserare",
+                "fullMessageAttached": "Mesajul complet este atașat",
+                "messageLink": "Mesaj",
+                "goToMessage": "Mergi la mesaj",
+                "attachedFiles": "Fișiere atașate [{{currentChunk}}/{{totalChunks}}]",
+                "fileName": "Fișierul {{fileNumber}} [{{fileType}}]",
+                "reports": "Rapoarte ({{count}})",
+                "moreReports": "Și încă {{count}}",
+                "status": "Stare",
+                "statuses": {
+                    "pending": "În așteptare",
+                    "assigned": "Atribuit lui {{member}}",
+                    "resolved": "Rezolvat de {{member}}",
+                    "dismissed": "Respins de {{member}}"
+                }
             }
         },
         "utils": {

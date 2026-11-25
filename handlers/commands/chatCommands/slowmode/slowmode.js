@@ -46,7 +46,7 @@ export async function run(interaction, commandConfig, locale) {
             // Checks if the seconds exceeded the maximum configured
             if (!canUseUnlimitedTime && argument > commandConfig.maxRegularSeconds) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
                 .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.privateEmbedSingle.description, { max: commandConfig.maxRegularSeconds })}`)
+                .setDescription(`${client.customEmojis.redTick} ${await client.functions.utils.parseLocale(locale.maximumConfiguredLengthError, { max: commandConfig.maxRegularSeconds })}.`)
             ], flags: discord.MessageFlags.Ephemeral});
 
             // Stores the reason

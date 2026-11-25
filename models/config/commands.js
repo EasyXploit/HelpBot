@@ -192,6 +192,18 @@ const schema = new mongoose.Schema({
                 required: true
             }
         },
+        reports: {
+            module: {
+                type: String,
+                default: 'moderation',
+                immutable: true
+            },
+            enabled: {
+                type: Boolean,
+                default: true,
+                required: true
+            }
+        },
         rmwarn: {
             module: {
                 type: String,

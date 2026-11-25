@@ -541,6 +541,19 @@
                         "fieldPlaceholder": "你要举报什么？"
                     }
                 },
+                "reports": {
+                    "appData": {
+                        "name": "举报记录",
+                        "description": "显示关于某个成员的所有举报及其处罚",
+                        "options": {
+                            "user": {
+                                "name": "用户",
+                                "description": "选择一个用户或输入其 ID"
+                            }
+                        }
+                    },
+                    "notAuthorized": "你没有处理举报的权限"
+                },
                 "rmwarn": {
                     "appData": {
                         "name": "移除警告",
@@ -2124,6 +2137,7 @@
                 "previousWarnings": "警告次数",
                 "voiceChannel": "语音频道",
                 "notInVoice": "未连接",
+                "previousReports": "之前的举报",
                 "reportedMessage": "被举报的消息",
                 "isInsertion": "插入",
                 "fullMessageAttached": "完整消息见附件",
@@ -2156,7 +2170,8 @@
                     "warn": "警告",
                     "deleteMessage": "删除消息",
                     "kick": "踢出",
-                    "ban": "封禁"
+                    "ban": "封禁",
+                    "history": "历史记录"
                 },
                 "timeoutPlaceholder": "禁言时长...",
                 "replyPlaceholder": "回复举报人...",
@@ -2179,6 +2194,28 @@
                     "timeout": "禁言 {{duration}}",
                     "kick": "踢出",
                     "ban": "封禁"
+                }
+            },
+            "history": {
+                "title": "举报历史",
+                "latestDescription": "关于 {{member}} 的最近举报",
+                "allDescription": "关于 {{member}} 的举报及其处罚",
+                "sanctions": "处罚",
+                "noSanctions": "无",
+                "closedBy": "由 {{member}} 关闭",
+                "page": "第 {{actualPage}} 页，共 {{totalPages}} 页",
+                "commandHint": "使用 {{command}} 查看所有举报及其处罚",
+                "noReports": "没有关于该成员的举报",
+                "total": "总计",
+                "open": "未关闭",
+                "resolved": "已处理",
+                "dismissed": "已驳回",
+                "madeByMember": "该成员发起的举报",
+                "statuses": {
+                    "pending": "待处理",
+                    "assigned": "已分配",
+                    "resolved": "已处理",
+                    "dismissed": "已驳回"
                 }
             }
         },

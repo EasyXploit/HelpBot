@@ -541,6 +541,19 @@
                         "fieldPlaceholder": "What is your report?"
                     }
                 },
+                "reports": {
+                    "appData": {
+                        "name": "reports",
+                        "description": "Shows all the reports about a member and the sanctions applied in them",
+                        "options": {
+                            "user": {
+                                "name": "user",
+                                "description": "Select a user or enter their ID"
+                            }
+                        }
+                    },
+                    "notAuthorized": "You are not allowed to handle the reports"
+                },
                 "rmwarn": {
                     "appData": {
                         "name": "rmwarn",
@@ -2124,6 +2137,7 @@
                 "previousWarnings": "Warnings",
                 "voiceChannel": "Voice channel",
                 "notInVoice": "Not connected",
+                "previousReports": "Previous reports",
                 "reportedMessage": "Reported message",
                 "isInsertion": "Insertion",
                 "fullMessageAttached": "The full message is attached",
@@ -2156,7 +2170,8 @@
                     "warn": "Warn",
                     "deleteMessage": "Delete message",
                     "kick": "Kick",
-                    "ban": "Ban"
+                    "ban": "Ban",
+                    "history": "History"
                 },
                 "timeoutPlaceholder": "Time out for...",
                 "replyPlaceholder": "Reply to the reporters...",
@@ -2179,6 +2194,28 @@
                     "timeout": "Timeout of {{duration}}",
                     "kick": "Kick",
                     "ban": "Ban"
+                }
+            },
+            "history": {
+                "title": "Reports history",
+                "latestDescription": "Latest reports about {{member}}",
+                "allDescription": "Reports about {{member}}, and the sanctions applied in them",
+                "sanctions": "Sanctions",
+                "noSanctions": "None",
+                "closedBy": "Closed by {{member}}",
+                "page": "Page {{actualPage}} of {{totalPages}}",
+                "commandHint": "Use {{command}} to see all the reports and their sanctions",
+                "noReports": "There are no reports about this member",
+                "total": "Total",
+                "open": "Open",
+                "resolved": "Resolved",
+                "dismissed": "Dismissed",
+                "madeByMember": "Reports made by the member",
+                "statuses": {
+                    "pending": "Pending",
+                    "assigned": "Assigned",
+                    "resolved": "Resolved",
+                    "dismissed": "Dismissed"
                 }
             }
         },

@@ -36,7 +36,7 @@ export default async (interaction) => {
 
         // Stores the statuses in which each action can be performed
         const openStatuses = ['pending', 'assigned'];
-        const allowedStatuses = { assign: ['pending'], unassign: ['assigned'], resolve: openStatuses, dismiss: openStatuses, warn: openStatuses, deleteMessage: openStatuses, timeout: openStatuses, kick: openStatuses, ban: openStatuses, reply: [...openStatuses, 'resolved', 'dismissed'] };
+        const allowedStatuses = { assign: ['pending'], unassign: ['assigned'], resolve: openStatuses, dismiss: openStatuses, warn: openStatuses, deleteMessage: openStatuses, timeout: openStatuses, kick: openStatuses, ban: openStatuses, reply: [...openStatuses, 'resolved', 'dismissed'], history: [...openStatuses, 'resolved', 'dismissed'] };
 
         // If the action does not exist, aborts
         if (!allowedStatuses[action]) return;
@@ -45,6 +45,36 @@ export default async (interaction) => {
         if (!allowedStatuses[action].includes(report.status)) {
             await interaction.update(await client.functions.reports.renderReport(report));
             return await interaction.followUp(await generateMessage('information', client.customEmojis.grayTick, locale.outdated));
+        };
+
+        // If the history of reports of the member has to be shown
+        if (action === 'history') {
+
+            // Stores the Id of the member and the translations of the history
+            const userId = report.target.userId;
+            const historyLocale = client.locale.lib.reports.history;
+
+            // Obtains the history of reports of the member
+            const history = await client.functions.reports.getHistory(userId);
+
+            // Generates the texts of the latest 10 reports
+            const entries = [];
+            for (const memberReport of history.reports.slice(0, 10)) entries.push(await client.functions.reports.formatHistoryEntry(memberReport));
+
+            // Responds privately with the history
+            return await interaction.reply({ embeds: [ new discord.EmbedBuilder()
+                .setColor(`${await client.functions.db.getConfig('colors.primary')}`)
+                .setTitle(`📜 ${historyLocale.title}`)
+                .setDescription(`${await client.functions.utils.parseLocale(historyLocale.latestDescription, { member: `<@${userId}>` })}\n\n${entries.length > 0 ? entries.join('\n\n') : `\`${historyLocale.noReports}\``}`)
+                .addFields(
+                    { name: historyLocale.total, value: history.counts.total.toString(), inline: true },
+                    { name: historyLocale.open, value: history.counts.open.toString(), inline: true },
+                    { name: historyLocale.resolved, value: history.counts.resolved.toString(), inline: true },
+                    { name: historyLocale.dismissed, value: history.counts.dismissed.toString(), inline: true },
+                    { name: historyLocale.madeByMember, value: history.madeByUser.toString(), inline: true }
+                )
+                .setFooter({ text: await client.functions.utils.parseLocale(historyLocale.commandHint, { command: `/${client.locale.handlers.commands.chatCommands.reports.appData.name}` }) })
+            ], flags: discord.MessageFlags.Ephemeral });
         };
 
         // If a reply has to be sent to the reporters

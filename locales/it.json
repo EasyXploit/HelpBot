@@ -541,6 +541,19 @@
                         "fieldPlaceholder": "Qual è la tua segnalazione?"
                     }
                 },
+                "reports": {
+                    "appData": {
+                        "name": "segnalazioni",
+                        "description": "Mostra tutte le segnalazioni su un membro e le sanzioni applicate",
+                        "options": {
+                            "user": {
+                                "name": "utente",
+                                "description": "Seleziona un utente o inserisci il suo ID"
+                            }
+                        }
+                    },
+                    "notAuthorized": "Non hai il permesso di gestire le segnalazioni"
+                },
                 "rmwarn": {
                     "appData": {
                         "name": "eliminare_adv",
@@ -2124,6 +2137,7 @@
                 "previousWarnings": "Avvertimenti",
                 "voiceChannel": "Canale vocale",
                 "notInVoice": "Non connesso",
+                "previousReports": "Segnalazioni precedenti",
                 "reportedMessage": "Messaggio segnalato",
                 "isInsertion": "Inserimento",
                 "fullMessageAttached": "Il messaggio completo è allegato",
@@ -2156,7 +2170,8 @@
                     "warn": "Avverti",
                     "deleteMessage": "Elimina messaggio",
                     "kick": "Espelli",
-                    "ban": "Banna"
+                    "ban": "Banna",
+                    "history": "Cronologia"
                 },
                 "timeoutPlaceholder": "Silenzia per...",
                 "replyPlaceholder": "Rispondi a chi ha segnalato...",
@@ -2179,6 +2194,28 @@
                     "timeout": "Silenziamento di {{duration}}",
                     "kick": "Espulsione",
                     "ban": "Ban"
+                }
+            },
+            "history": {
+                "title": "Cronologia delle segnalazioni",
+                "latestDescription": "Ultime segnalazioni su {{member}}",
+                "allDescription": "Segnalazioni su {{member}}, e le sanzioni applicate",
+                "sanctions": "Sanzioni",
+                "noSanctions": "Nessuna",
+                "closedBy": "Chiusa da {{member}}",
+                "page": "Pagina {{actualPage}} di {{totalPages}}",
+                "commandHint": "Usa {{command}} per vedere tutte le segnalazioni e le loro sanzioni",
+                "noReports": "Non ci sono segnalazioni su questo membro",
+                "total": "Totale",
+                "open": "Aperte",
+                "resolved": "Risolte",
+                "dismissed": "Archiviate",
+                "madeByMember": "Segnalazioni fatte dal membro",
+                "statuses": {
+                    "pending": "In attesa",
+                    "assigned": "Assegnata",
+                    "resolved": "Risolta",
+                    "dismissed": "Archiviata"
                 }
             }
         },

@@ -59,6 +59,13 @@
                     "disable": "关闭通知",
                     "enable": "重新激活通知"
                 }
+            },
+            "report": {
+                "disabled": "举报功能已禁用",
+                "notAuthorized": "你没有处理举报的权限",
+                "notFound": "该举报已不存在",
+                "outdated": "其他成员已经更新了该举报",
+                "notAssignee": "只有被分配该举报的成员才能取消分配"
             }
         },
         "commands": {
@@ -1526,6 +1533,7 @@
                                 "enable": "启用举报",
                                 "disable": "禁用举报",
                                 "channel": "举报频道",
+                                "handlers": "举报处理人",
                                 "mentionRoles": "要提及的身份组",
                                 "limit": "举报次数限制",
                                 "sameMemberCooldown": "再次举报同一成员的等待时间"
@@ -1541,7 +1549,11 @@
                                 "minutesText": "{{minutes}} 分钟",
                                 "enterMaxReports": "请输入成员可以发起的最大举报次数（0 表示不限制）",
                                 "enterTimeWindow": "请输入限制的时间范围（分钟）",
-                                "enterSameMemberCooldown": "请输入成员再次举报同一成员前需要等待的分钟数（0 表示禁用）"
+                                "enterSameMemberCooldown": "请输入成员再次举报同一成员前需要等待的分钟数（0 表示禁用）",
+                                "handlersHeader": "配置可以处理举报的成员和身份组（服务器所有者和机器人管理员始终可以处理）",
+                                "addMember": "添加成员",
+                                "removeHandler": "移除处理人",
+                                "selectHandlerToRemove": "选择要移除的处理人"
                             }
                         },
                         "errorMessage": "发生意外错误。请查看日志了解详情"
@@ -2075,6 +2087,12 @@
                     "assigned": "已分配给 {{member}}",
                     "resolved": "已由 {{member}} 处理",
                     "dismissed": "已由 {{member}} 驳回"
+                },
+                "buttons": {
+                    "assign": "分配给我",
+                    "unassign": "取消分配",
+                    "resolve": "处理完成",
+                    "dismiss": "驳回"
                 }
             }
         },

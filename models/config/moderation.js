@@ -68,6 +68,8 @@ const schema = new mongoose.Schema({
         },
         // Roles to mention when a new report is received
         mentionRoles: [String],
+        // Members and roles that can handle the reports (apart from the owner of the guild and the bot managers)
+        handlers: [String],
         // Limits to avoid the abuse of the reports
         limits: {
             // Maximum amount of reports that a member can make in the time window (0 to disable the limit)

@@ -59,6 +59,13 @@
                     "disable": "Disable notifications",
                     "enable": "Reactivate notifications"
                 }
+            },
+            "report": {
+                "disabled": "The reports are disabled",
+                "notAuthorized": "You are not allowed to handle the reports",
+                "notFound": "This report no longer exists",
+                "outdated": "This report has already been updated by another member",
+                "notAssignee": "Only the member to whom the report is assigned can unassign it"
             }
         },
         "commands": {
@@ -1526,6 +1533,7 @@
                                 "enable": "Enable reports",
                                 "disable": "Disable reports",
                                 "channel": "Reports channel",
+                                "handlers": "Report handlers",
                                 "mentionRoles": "Roles to mention",
                                 "limit": "Reports limit",
                                 "sameMemberCooldown": "Cooldown to report the same member"
@@ -1541,7 +1549,11 @@
                                 "minutesText": "{{minutes}} min",
                                 "enterMaxReports": "Enter the maximum number of reports that a member can make (0 to disable the limit)",
                                 "enterTimeWindow": "Enter the time window of the limit, in minutes",
-                                "enterSameMemberCooldown": "Enter the minutes that a member has to wait to report the same member again (0 to disable it)"
+                                "enterSameMemberCooldown": "Enter the minutes that a member has to wait to report the same member again (0 to disable it)",
+                                "handlersHeader": "Configure the members and roles that can handle the reports (the owner of the server and the bot managers can always do it)",
+                                "addMember": "Add member",
+                                "removeHandler": "Remove handler",
+                                "selectHandlerToRemove": "Select the handler to remove"
                             }
                         },
                         "errorMessage": "An unexpected error occurred. Check the logs for more details"
@@ -2075,6 +2087,12 @@
                     "assigned": "Assigned to {{member}}",
                     "resolved": "Resolved by {{member}}",
                     "dismissed": "Dismissed by {{member}}"
+                },
+                "buttons": {
+                    "assign": "Assign to me",
+                    "unassign": "Unassign",
+                    "resolve": "Resolve",
+                    "dismiss": "Dismiss"
                 }
             }
         },

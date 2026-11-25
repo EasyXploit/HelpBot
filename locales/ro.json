@@ -59,6 +59,13 @@
                     "disable": "Dezactivați notificările",
                     "enable": "Reactivați notificările"
                 }
+            },
+            "report": {
+                "disabled": "Rapoartele sunt dezactivate",
+                "notAuthorized": "Nu aveți permisiunea de a gestiona rapoartele",
+                "notFound": "Acest raport nu mai există",
+                "outdated": "Un alt membru a actualizat deja acest raport",
+                "notAssignee": "Doar membrul căruia îi este atribuit raportul îl poate dezatribui"
             }
         },
         "commands": {
@@ -1526,6 +1533,7 @@
                                 "enable": "Activați rapoartele",
                                 "disable": "Dezactivați rapoartele",
                                 "channel": "Canalul rapoartelor",
+                                "handlers": "Gestionarii rapoartelor",
                                 "mentionRoles": "Roluri de menționat",
                                 "limit": "Limita de rapoarte",
                                 "sameMemberCooldown": "Așteptare pentru a raporta același membru"
@@ -1541,7 +1549,11 @@
                                 "minutesText": "{{minutes}} min",
                                 "enterMaxReports": "Introduceți numărul maxim de rapoarte pe care le poate face un membru (0 pentru a dezactiva limita)",
                                 "enterTimeWindow": "Introduceți perioada de timp a limitei, în minute",
-                                "enterSameMemberCooldown": "Introduceți minutele pe care un membru trebuie să le aștepte pentru a raporta din nou același membru (0 pentru a o dezactiva)"
+                                "enterSameMemberCooldown": "Introduceți minutele pe care un membru trebuie să le aștepte pentru a raporta din nou același membru (0 pentru a o dezactiva)",
+                                "handlersHeader": "Configurați membrii și rolurile care pot gestiona rapoartele (proprietarul serverului și gestionarii botului o pot face întotdeauna)",
+                                "addMember": "Adăugați un membru",
+                                "removeHandler": "Eliminați un gestionar",
+                                "selectHandlerToRemove": "Selectați gestionarul de eliminat"
                             }
                         },
                         "errorMessage": "A apărut o eroare neașteptată. Verifică jurnalele pentru mai multe detalii"
@@ -2075,6 +2087,12 @@
                     "assigned": "Atribuit lui {{member}}",
                     "resolved": "Rezolvat de {{member}}",
                     "dismissed": "Respins de {{member}}"
+                },
+                "buttons": {
+                    "assign": "Atribuie-mi",
+                    "unassign": "Dezatribuie",
+                    "resolve": "Rezolvă",
+                    "dismiss": "Respinge"
                 }
             }
         },

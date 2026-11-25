@@ -59,6 +59,13 @@
                     "disable": "Desactivar notificaciones",
                     "enable": "Reactivar notificaciones"
                 }
+            },
+            "report": {
+                "disabled": "Los reportes están desactivados",
+                "notAuthorized": "No tienes permiso para gestionar los reportes",
+                "notFound": "Este reporte ya no existe",
+                "outdated": "Otro miembro ya ha actualizado este reporte",
+                "notAssignee": "Solo el miembro al que está asignado el reporte puede desasignarlo"
             }
         },
         "commands": {
@@ -1526,6 +1533,7 @@
                                 "enable": "Activar reportes",
                                 "disable": "Desactivar reportes",
                                 "channel": "Canal de reportes",
+                                "handlers": "Gestores de reportes",
                                 "mentionRoles": "Roles a mencionar",
                                 "limit": "Límite de reportes",
                                 "sameMemberCooldown": "Espera para reportar al mismo miembro"
@@ -1541,7 +1549,11 @@
                                 "minutesText": "{{minutes}} min",
                                 "enterMaxReports": "Introduce el número máximo de reportes que puede hacer un miembro (0 para desactivar el límite)",
                                 "enterTimeWindow": "Introduce el periodo de tiempo del límite, en minutos",
-                                "enterSameMemberCooldown": "Introduce los minutos que debe esperar un miembro para volver a reportar al mismo miembro (0 para desactivarlo)"
+                                "enterSameMemberCooldown": "Introduce los minutos que debe esperar un miembro para volver a reportar al mismo miembro (0 para desactivarlo)",
+                                "handlersHeader": "Configura los miembros y roles que pueden gestionar los reportes (el dueño del servidor y los gestores del bot siempre pueden hacerlo)",
+                                "addMember": "Añadir miembro",
+                                "removeHandler": "Quitar gestor",
+                                "selectHandlerToRemove": "Selecciona el gestor a quitar"
                             }
                         },
                         "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
@@ -2075,6 +2087,12 @@
                     "assigned": "Asignado a {{member}}",
                     "resolved": "Resuelto por {{member}}",
                     "dismissed": "Descartado por {{member}}"
+                },
+                "buttons": {
+                    "assign": "Asignármelo",
+                    "unassign": "Desasignar",
+                    "resolve": "Resolver",
+                    "dismiss": "Descartar"
                 }
             }
         },

@@ -59,6 +59,9 @@ const reportSchema = new mongoose.Schema({
     reports: [reportEntrySchema],
     // Member who is handling the report
     assigneeId: String,
+    // Member who resolved or dismissed the report, and when
+    closedById: String,
+    closedTimestamp: Number,
     createdTimestamp: {
         type: Number,
         required: true

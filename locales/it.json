@@ -59,6 +59,13 @@
                     "disable": "Disattivare notificazioni",
                     "enable": "Riattivare notificazioni"
                 }
+            },
+            "report": {
+                "disabled": "Le segnalazioni sono disattivate",
+                "notAuthorized": "Non hai il permesso di gestire le segnalazioni",
+                "notFound": "Questa segnalazione non esiste più",
+                "outdated": "Un altro membro ha già aggiornato questa segnalazione",
+                "notAssignee": "Solo il membro a cui è assegnata la segnalazione può rimuovere l'assegnazione"
             }
         },
         "commands": {
@@ -1526,6 +1533,7 @@
                                 "enable": "Attiva le segnalazioni",
                                 "disable": "Disattiva le segnalazioni",
                                 "channel": "Canale delle segnalazioni",
+                                "handlers": "Gestori delle segnalazioni",
                                 "mentionRoles": "Ruoli da menzionare",
                                 "limit": "Limite di segnalazioni",
                                 "sameMemberCooldown": "Attesa per segnalare lo stesso membro"
@@ -1541,7 +1549,11 @@
                                 "minutesText": "{{minutes}} min",
                                 "enterMaxReports": "Inserisci il numero massimo di segnalazioni che un membro può fare (0 per disattivare il limite)",
                                 "enterTimeWindow": "Inserisci il periodo di tempo del limite, in minuti",
-                                "enterSameMemberCooldown": "Inserisci i minuti che un membro deve attendere per segnalare di nuovo lo stesso membro (0 per disattivarlo)"
+                                "enterSameMemberCooldown": "Inserisci i minuti che un membro deve attendere per segnalare di nuovo lo stesso membro (0 per disattivarlo)",
+                                "handlersHeader": "Configura i membri e i ruoli che possono gestire le segnalazioni (il proprietario del server e i gestori del bot possono sempre farlo)",
+                                "addMember": "Aggiungi membro",
+                                "removeHandler": "Rimuovi gestore",
+                                "selectHandlerToRemove": "Seleziona il gestore da rimuovere"
                             }
                         },
                         "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
@@ -2075,6 +2087,12 @@
                     "assigned": "Assegnata a {{member}}",
                     "resolved": "Risolta da {{member}}",
                     "dismissed": "Archiviata da {{member}}"
+                },
+                "buttons": {
+                    "assign": "Assegnala a me",
+                    "unassign": "Rimuovi assegnazione",
+                    "resolve": "Risolvi",
+                    "dismiss": "Archivia"
                 }
             }
         },

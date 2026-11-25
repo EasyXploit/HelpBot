@@ -1477,8 +1477,7 @@
                             "memberJoined": "Member joined",
                             "botJoined": "Bot joined",
                             "memberLeaved": "Member left",
-                            "voiceMoves": "Voice moves",
-                            "memberReports": "Member reports"
+                            "voiceMoves": "Voice moves"
                         },
                         "errorMessage": "An unexpected error occurred. Check the logs for more details"
                     },
@@ -1501,6 +1500,7 @@
                                 "enable": "Enable manual moderation",
                                 "disable": "Disable manual moderation"
                             },
+                            "reports": "Reports",
                             "setCommands": "Set commands",
                             "return": "Return"
                         },
@@ -1533,6 +1533,24 @@
                                 "choices": {
                                     "return": "Return"
                                 }
+                            }
+                        },
+                        "reportsMenu": {
+                            "headerMessage": "Configure the reports that the members can send about other members and messages",
+                            "status": "Status",
+                            "choices": {
+                                "enable": "Enable reports",
+                                "disable": "Disable reports",
+                                "channel": "Reports channel",
+                                "mentionRoles": "Roles to mention"
+                            },
+                            "prompts": {
+                                "noChannelError": "You must configure the reports channel before enabling them",
+                                "channelSuccess": "Reports channel updated successfully!",
+                                "mentionRolesHeader": "Configure the roles that will be mentioned when a new report is received",
+                                "addRole": "Add role",
+                                "removeRole": "Remove role",
+                                "selectRoleToRemove": "Select the role to remove"
                             }
                         },
                         "errorMessage": "An unexpected error occurred. Check the logs for more details"

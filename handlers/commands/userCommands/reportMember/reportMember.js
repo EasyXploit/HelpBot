@@ -78,7 +78,7 @@ export let config = {
         guild: [],
         channel: ['UseExternalEmojis']
     },
-    defaultMemberPermissions: new discord.PermissionsBitField('Administrator'),
+    defaultMemberPermissions: null,
     dmPermission: false,
     appData: {
         type: discord.ApplicationCommandType.User

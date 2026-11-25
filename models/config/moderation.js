@@ -53,10 +53,21 @@ const schema = new mongoose.Schema({
         default: true,
         required: true
     },
-    allowMemberReports:  {
-        type: Boolean,
-        default: false,
-        required: true
+    // Settings of the reports sent by the members
+    reports: {
+        // Whether the reports are enabled
+        enabled: {
+            type: Boolean,
+            default: false,
+            required: true
+        },
+        // Channel where the reports are sent
+        channelId: {
+            type: String,
+            default: ''
+        },
+        // Roles to mention when a new report is received
+        mentionRoles: [String]
     },
     kickOnBadUsername: {
         type: Boolean,

@@ -1477,8 +1477,7 @@
                             "memberJoined": "Membru intrat",
                             "botJoined": "Bot intrat",
                             "memberLeaved": "Membru plecat",
-                            "voiceMoves": "Mutări vocale",
-                            "memberReports": "Rapoarte ale membrilor"
+                            "voiceMoves": "Mutări vocale"
                         },
                         "errorMessage": "A apărut o eroare neașteptată. Verifică jurnalele pentru mai multe detalii"
                     },
@@ -1501,6 +1500,7 @@
                                 "enable": "Activează moderarea manuală",
                                 "disable": "Dezactivează moderarea manuală"
                             },
+                            "reports": "Rapoarte",
                             "setCommands": "Configurează comenzile",
                             "return": "Înapoi"
                         },
@@ -1533,6 +1533,24 @@
                                 "choices": {
                                     "return": "Înapoi"
                                 }
+                            }
+                        },
+                        "reportsMenu": {
+                            "headerMessage": "Configurați rapoartele pe care membrii le pot trimite despre alți membri și mesaje",
+                            "status": "Stare",
+                            "choices": {
+                                "enable": "Activați rapoartele",
+                                "disable": "Dezactivați rapoartele",
+                                "channel": "Canalul rapoartelor",
+                                "mentionRoles": "Roluri de menționat"
+                            },
+                            "prompts": {
+                                "noChannelError": "Trebuie să configurați canalul rapoartelor înainte de a le activa",
+                                "channelSuccess": "Canalul rapoartelor a fost actualizat cu succes!",
+                                "mentionRolesHeader": "Configurați rolurile care vor fi menționate când se primește un raport nou",
+                                "addRole": "Adăugați un rol",
+                                "removeRole": "Eliminați un rol",
+                                "selectRoleToRemove": "Selectați rolul de eliminat"
                             }
                         },
                         "errorMessage": "A apărut o eroare neașteptată. Verifică jurnalele pentru mai multe detalii"

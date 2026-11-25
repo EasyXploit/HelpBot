@@ -1477,8 +1477,7 @@
                             "memberJoined": "Membro entrato",
                             "botJoined": "Bot entrato",
                             "memberLeaved": "Membro uscito",
-                            "voiceMoves": "Spostamenti vocali",
-                            "memberReports": "Segnalazioni dei membri"
+                            "voiceMoves": "Spostamenti vocali"
                         },
                         "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
                     },
@@ -1501,6 +1500,7 @@
                                 "enable": "Attiva la moderazione manuale",
                                 "disable": "Disattiva la moderazione manuale"
                             },
+                            "reports": "Segnalazioni",
                             "setCommands": "Configura i comandi",
                             "return": "Indietro"
                         },
@@ -1533,6 +1533,24 @@
                                 "choices": {
                                     "return": "Indietro"
                                 }
+                            }
+                        },
+                        "reportsMenu": {
+                            "headerMessage": "Configura le segnalazioni che i membri possono inviare su altri membri e messaggi",
+                            "status": "Stato",
+                            "choices": {
+                                "enable": "Attiva le segnalazioni",
+                                "disable": "Disattiva le segnalazioni",
+                                "channel": "Canale delle segnalazioni",
+                                "mentionRoles": "Ruoli da menzionare"
+                            },
+                            "prompts": {
+                                "noChannelError": "Devi configurare il canale delle segnalazioni prima di attivarle",
+                                "channelSuccess": "Canale delle segnalazioni aggiornato correttamente!",
+                                "mentionRolesHeader": "Configura i ruoli che verranno menzionati quando viene ricevuta una nuova segnalazione",
+                                "addRole": "Aggiungi ruolo",
+                                "removeRole": "Rimuovi ruolo",
+                                "selectRoleToRemove": "Seleziona il ruolo da rimuovere"
                             }
                         },
                         "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"

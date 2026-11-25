@@ -1477,8 +1477,7 @@
                             "memberJoined": "Entrada de miembro",
                             "botJoined": "Entrada de bot",
                             "memberLeaved": "Salida de miembro",
-                            "voiceMoves": "Movimientos de voz",
-                            "memberReports": "Reportes de miembros"
+                            "voiceMoves": "Movimientos de voz"
                         },
                         "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
                     },
@@ -1501,6 +1500,7 @@
                                 "enable": "Activar moderación manual",
                                 "disable": "Desactivar moderación manual"
                             },
+                            "reports": "Reportes",
                             "setCommands": "Establecer comandos",
                             "return": "Volver"
                         },
@@ -1533,6 +1533,24 @@
                                 "choices": {
                                     "return": "Volver"
                                 }
+                            }
+                        },
+                        "reportsMenu": {
+                            "headerMessage": "Configura los reportes que pueden enviar los miembros sobre otros miembros y mensajes",
+                            "status": "Estado",
+                            "choices": {
+                                "enable": "Activar reportes",
+                                "disable": "Desactivar reportes",
+                                "channel": "Canal de reportes",
+                                "mentionRoles": "Roles a mencionar"
+                            },
+                            "prompts": {
+                                "noChannelError": "Debes configurar el canal de reportes antes de activarlos",
+                                "channelSuccess": "¡Canal de reportes actualizado correctamente!",
+                                "mentionRolesHeader": "Configura los roles que se mencionarán al recibir un nuevo reporte",
+                                "addRole": "Añadir rol",
+                                "removeRole": "Quitar rol",
+                                "selectRoleToRemove": "Selecciona el rol a quitar"
                             }
                         },
                         "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"

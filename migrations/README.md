@@ -3,17 +3,15 @@ This directory contains the document migration scripts, which are used by
 "migrate-mongo" dependency to update or downgrade existing documents to new ones
 or old versions, as described in: https://www.npmjs.com/package/migrate-mongo
 
-Scripts must contain code as follows:
+Scripts must contain code as follows (with named exports, as "migrate-mongo" does not read the default export of ES modules):
  
  ```js
-export default {
-    async up(db) {
-        //await db.collection('configs').updateOne({ docType: 'system'}, { $set: { test: '' } });
-    },
- 
-    async down(db) {
-        //await db.collection('configs').updateOne({ docType: 'system'}, { $unset: { test: '' } });
-    }
+export async function up(db) {
+    //await db.collection('configs').updateOne({ docType: 'system'}, { $set: { test: '' } });
+};
+
+export async function down(db) {
+    //await db.collection('configs').updateOne({ docType: 'system'}, { $unset: { test: '' } });
 };
 ```
 

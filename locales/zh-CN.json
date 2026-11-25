@@ -1477,8 +1477,7 @@
                             "memberJoined": "成员加入",
                             "botJoined": "机器人加入",
                             "memberLeaved": "成员离开",
-                            "voiceMoves": "语音频道移动",
-                            "memberReports": "成员举报"
+                            "voiceMoves": "语音频道移动"
                         },
                         "errorMessage": "发生意外错误。请查看日志了解详情"
                     },
@@ -1501,6 +1500,7 @@
                                 "enable": "启用手动审核",
                                 "disable": "禁用手动审核"
                             },
+                            "reports": "举报",
                             "setCommands": "设置命令",
                             "return": "返回"
                         },
@@ -1533,6 +1533,24 @@
                                 "choices": {
                                     "return": "返回"
                                 }
+                            }
+                        },
+                        "reportsMenu": {
+                            "headerMessage": "配置成员可以针对其他成员和消息发送的举报",
+                            "status": "状态",
+                            "choices": {
+                                "enable": "启用举报",
+                                "disable": "禁用举报",
+                                "channel": "举报频道",
+                                "mentionRoles": "要提及的身份组"
+                            },
+                            "prompts": {
+                                "noChannelError": "启用举报之前，必须先配置举报频道",
+                                "channelSuccess": "举报频道已成功更新！",
+                                "mentionRolesHeader": "配置收到新举报时要提及的身份组",
+                                "addRole": "添加身份组",
+                                "removeRole": "移除身份组",
+                                "selectRoleToRemove": "选择要移除的身份组"
                             }
                         },
                         "errorMessage": "发生意外错误。请查看日志了解详情"

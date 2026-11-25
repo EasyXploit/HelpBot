@@ -220,17 +220,6 @@ const schema = new mongoose.Schema({
             type: String,
             default: ''
         }
-    },
-    memberReports: {
-        enabled: {
-            type: Boolean,
-            default: false,
-            required: true
-        },
-        channelId: {
-            type: String,
-            default: ''
-        }
     }
 });
 

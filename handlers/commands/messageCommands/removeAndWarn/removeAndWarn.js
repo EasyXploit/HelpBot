@@ -37,7 +37,7 @@ export async function run(interaction, commandConfig, locale) {
         const memberWarns = memberProfile ? memberProfile.moderationLog.warnsHistory : null;
 
         // If the member had previous warnings and the executor is not the guild owner
-        if (memberWarns && interaction.member.id !== interaction.guild.ownerId) {
+        if (memberWarns && memberWarns.length > 0 && interaction.member.id !== interaction.guild.ownerId) {
 
             // Stores the last warn of the member
             const latestWarn = memberWarns[memberWarns.length - 1];

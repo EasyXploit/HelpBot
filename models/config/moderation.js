@@ -67,7 +67,31 @@ const schema = new mongoose.Schema({
             default: ''
         },
         // Roles to mention when a new report is received
-        mentionRoles: [String]
+        mentionRoles: [String],
+        // Limits to avoid the abuse of the reports
+        limits: {
+            // Maximum amount of reports that a member can make in the time window (0 to disable the limit)
+            maxReports: {
+                type: Number,
+                default: 5,
+                min: 0,
+                required: true
+            },
+            // Time window of the previous limit, in milliseconds
+            timeWindow: {
+                type: Number,
+                default: 3600000,
+                min: 60000,
+                required: true
+            },
+            // Time that a member has to wait to report the same member again, in milliseconds (0 to disable it)
+            sameMemberCooldown: {
+                type: Number,
+                default: 86400000,
+                min: 0,
+                required: true
+            }
+        }
     },
     kickOnBadUsername: {
         type: Boolean,

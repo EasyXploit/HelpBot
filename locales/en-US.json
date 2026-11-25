@@ -1526,7 +1526,9 @@
                                 "enable": "Enable reports",
                                 "disable": "Disable reports",
                                 "channel": "Reports channel",
-                                "mentionRoles": "Roles to mention"
+                                "mentionRoles": "Roles to mention",
+                                "limit": "Reports limit",
+                                "sameMemberCooldown": "Cooldown to report the same member"
                             },
                             "prompts": {
                                 "noChannelError": "You must configure the reports channel before enabling them",
@@ -1534,7 +1536,12 @@
                                 "mentionRolesHeader": "Configure the roles that will be mentioned when a new report is received",
                                 "addRole": "Add role",
                                 "removeRole": "Remove role",
-                                "selectRoleToRemove": "Select the role to remove"
+                                "selectRoleToRemove": "Select the role to remove",
+                                "limitText": "{{count}} every {{minutes}} min",
+                                "minutesText": "{{minutes}} min",
+                                "enterMaxReports": "Enter the maximum number of reports that a member can make (0 to disable the limit)",
+                                "enterTimeWindow": "Enter the time window of the limit, in minutes",
+                                "enterSameMemberCooldown": "Enter the minutes that a member has to wait to report the same member again (0 to disable it)"
                             }
                         },
                         "errorMessage": "An unexpected error occurred. Check the logs for more details"
@@ -2034,11 +2041,15 @@
             }
         },
         "reports": {
+            "checkReport": {
+                "featureDisabled": "This feature is not available at this time.\nPlease try again later",
+                "alreadyReported": "You have already reported this message",
+                "limitReached": "You have reached the limit of reports. You will be able to report again {{time}}",
+                "sameMemberCooldown": "You have already reported this member recently. You will be able to report it again {{time}}"
+            },
             "sendReport": {
                 "correct": "The report has been sent",
-                "alreadyReported": "You have already reported this message",
-                "temporaryError": "This feature is not available at this time.\nPlease try again later",
-                "featureDisabled": "This feature is not available at this time.\nPlease try again later"
+                "temporaryError": "This feature is not available at this time.\nPlease try again later"
             },
             "renderReport": {
                 "title": "Report",

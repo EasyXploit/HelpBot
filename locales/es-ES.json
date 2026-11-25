@@ -1526,7 +1526,9 @@
                                 "enable": "Activar reportes",
                                 "disable": "Desactivar reportes",
                                 "channel": "Canal de reportes",
-                                "mentionRoles": "Roles a mencionar"
+                                "mentionRoles": "Roles a mencionar",
+                                "limit": "Límite de reportes",
+                                "sameMemberCooldown": "Espera para reportar al mismo miembro"
                             },
                             "prompts": {
                                 "noChannelError": "Debes configurar el canal de reportes antes de activarlos",
@@ -1534,7 +1536,12 @@
                                 "mentionRolesHeader": "Configura los roles que se mencionarán al recibir un nuevo reporte",
                                 "addRole": "Añadir rol",
                                 "removeRole": "Quitar rol",
-                                "selectRoleToRemove": "Selecciona el rol a quitar"
+                                "selectRoleToRemove": "Selecciona el rol a quitar",
+                                "limitText": "{{count}} cada {{minutes}} min",
+                                "minutesText": "{{minutes}} min",
+                                "enterMaxReports": "Introduce el número máximo de reportes que puede hacer un miembro (0 para desactivar el límite)",
+                                "enterTimeWindow": "Introduce el periodo de tiempo del límite, en minutos",
+                                "enterSameMemberCooldown": "Introduce los minutos que debe esperar un miembro para volver a reportar al mismo miembro (0 para desactivarlo)"
                             }
                         },
                         "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
@@ -2034,11 +2041,15 @@
             }
         },
         "reports": {
+            "checkReport": {
+                "featureDisabled": "Esta función no está disponible en este momento.\nVuelve a intentarlo más tarde",
+                "alreadyReported": "Ya has reportado este mensaje",
+                "limitReached": "Has alcanzado el límite de reportes. Podrás volver a reportar {{time}}",
+                "sameMemberCooldown": "Ya has reportado a este miembro hace poco. Podrás volver a reportarlo {{time}}"
+            },
             "sendReport": {
                 "correct": "El reporte ha sido enviado",
-                "alreadyReported": "Ya has reportado este mensaje",
-                "temporaryError": "Esta función no está disponible en este momento.\nVuelve a intentarlo más tarde",
-                "featureDisabled": "Esta función no está disponible en este momento.\nVuelve a intentarlo más tarde"
+                "temporaryError": "Esta función no está disponible en este momento.\nVuelve a intentarlo más tarde"
             },
             "renderReport": {
                 "title": "Reporte",

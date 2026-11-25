@@ -6,6 +6,10 @@ export async function run(interaction, commandConfig, locale) {
         const reportedMemberOption = interaction.options.get(locale.appData.options.member.name);
         const reportedMember = reportedMemberOption ? (await client.functions.utils.fetch('member', reportedMemberOption.value) || reportedMemberOption.user) : null;
 
+        // Checks if the member can make the report before asking for the reason, and responds with the reason if not
+        const blockedReply = await client.functions.reports.checkReport(interaction.member, { targetUserId: reportedMember ? reportedMember.id : null });
+        if (blockedReply) return interaction.reply(blockedReply);
+
         // Stores the report if it is provided as parameter
         const reportOption = interaction.options.get(locale.appData.options.body.name);
 

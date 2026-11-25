@@ -1526,7 +1526,9 @@
                                 "enable": "Attiva le segnalazioni",
                                 "disable": "Disattiva le segnalazioni",
                                 "channel": "Canale delle segnalazioni",
-                                "mentionRoles": "Ruoli da menzionare"
+                                "mentionRoles": "Ruoli da menzionare",
+                                "limit": "Limite di segnalazioni",
+                                "sameMemberCooldown": "Attesa per segnalare lo stesso membro"
                             },
                             "prompts": {
                                 "noChannelError": "Devi configurare il canale delle segnalazioni prima di attivarle",
@@ -1534,7 +1536,12 @@
                                 "mentionRolesHeader": "Configura i ruoli che verranno menzionati quando viene ricevuta una nuova segnalazione",
                                 "addRole": "Aggiungi ruolo",
                                 "removeRole": "Rimuovi ruolo",
-                                "selectRoleToRemove": "Seleziona il ruolo da rimuovere"
+                                "selectRoleToRemove": "Seleziona il ruolo da rimuovere",
+                                "limitText": "{{count}} ogni {{minutes}} min",
+                                "minutesText": "{{minutes}} min",
+                                "enterMaxReports": "Inserisci il numero massimo di segnalazioni che un membro può fare (0 per disattivare il limite)",
+                                "enterTimeWindow": "Inserisci il periodo di tempo del limite, in minuti",
+                                "enterSameMemberCooldown": "Inserisci i minuti che un membro deve attendere per segnalare di nuovo lo stesso membro (0 per disattivarlo)"
                             }
                         },
                         "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
@@ -2034,11 +2041,15 @@
             }
         },
         "reports": {
+            "checkReport": {
+                "featureDisabled": "Questa funzione non è disponibile al momento.\nRiprova più tardi",
+                "alreadyReported": "Hai già segnalato questo messaggio",
+                "limitReached": "Hai raggiunto il limite di segnalazioni. Potrai segnalare di nuovo {{time}}",
+                "sameMemberCooldown": "Hai già segnalato questo membro di recente. Potrai segnalarlo di nuovo {{time}}"
+            },
             "sendReport": {
                 "correct": "La segnalazione è stata inviata",
-                "alreadyReported": "Hai già segnalato questo messaggio",
-                "temporaryError": "Questa funzione non è disponibile al momento.\nRiprova più tardi",
-                "featureDisabled": "Questa funzione non è disponibile al momento.\nRiprova più tardi"
+                "temporaryError": "Questa funzione non è disponibile al momento.\nRiprova più tardi"
             },
             "renderReport": {
                 "title": "Segnalazione",

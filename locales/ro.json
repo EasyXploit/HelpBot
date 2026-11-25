@@ -1526,7 +1526,9 @@
                                 "enable": "Activați rapoartele",
                                 "disable": "Dezactivați rapoartele",
                                 "channel": "Canalul rapoartelor",
-                                "mentionRoles": "Roluri de menționat"
+                                "mentionRoles": "Roluri de menționat",
+                                "limit": "Limita de rapoarte",
+                                "sameMemberCooldown": "Așteptare pentru a raporta același membru"
                             },
                             "prompts": {
                                 "noChannelError": "Trebuie să configurați canalul rapoartelor înainte de a le activa",
@@ -1534,7 +1536,12 @@
                                 "mentionRolesHeader": "Configurați rolurile care vor fi menționate când se primește un raport nou",
                                 "addRole": "Adăugați un rol",
                                 "removeRole": "Eliminați un rol",
-                                "selectRoleToRemove": "Selectați rolul de eliminat"
+                                "selectRoleToRemove": "Selectați rolul de eliminat",
+                                "limitText": "{{count}} la fiecare {{minutes}} min",
+                                "minutesText": "{{minutes}} min",
+                                "enterMaxReports": "Introduceți numărul maxim de rapoarte pe care le poate face un membru (0 pentru a dezactiva limita)",
+                                "enterTimeWindow": "Introduceți perioada de timp a limitei, în minute",
+                                "enterSameMemberCooldown": "Introduceți minutele pe care un membru trebuie să le aștepte pentru a raporta din nou același membru (0 pentru a o dezactiva)"
                             }
                         },
                         "errorMessage": "A apărut o eroare neașteptată. Verifică jurnalele pentru mai multe detalii"
@@ -2034,11 +2041,15 @@
             }
         },
         "reports": {
+            "checkReport": {
+                "featureDisabled": "Această funcție nu este disponibilă momentan.\nÎncearcă din nou mai târziu",
+                "alreadyReported": "Ați raportat deja acest mesaj",
+                "limitReached": "Ați atins limita de rapoarte. Veți putea raporta din nou {{time}}",
+                "sameMemberCooldown": "Ați raportat deja acest membru recent. Îl veți putea raporta din nou {{time}}"
+            },
             "sendReport": {
                 "correct": "Raportul a fost trimis",
-                "alreadyReported": "Ați raportat deja acest mesaj",
-                "temporaryError": "Această funcție nu este disponibilă momentan.\nÎncearcă din nou mai târziu",
-                "featureDisabled": "Această funcție nu este disponibilă momentan.\nÎncearcă din nou mai târziu"
+                "temporaryError": "Această funcție nu este disponibilă momentan.\nÎncearcă din nou mai târziu"
             },
             "renderReport": {
                 "title": "Raport",

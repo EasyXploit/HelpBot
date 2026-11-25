@@ -1526,7 +1526,9 @@
                                 "enable": "启用举报",
                                 "disable": "禁用举报",
                                 "channel": "举报频道",
-                                "mentionRoles": "要提及的身份组"
+                                "mentionRoles": "要提及的身份组",
+                                "limit": "举报次数限制",
+                                "sameMemberCooldown": "再次举报同一成员的等待时间"
                             },
                             "prompts": {
                                 "noChannelError": "启用举报之前，必须先配置举报频道",
@@ -1534,7 +1536,12 @@
                                 "mentionRolesHeader": "配置收到新举报时要提及的身份组",
                                 "addRole": "添加身份组",
                                 "removeRole": "移除身份组",
-                                "selectRoleToRemove": "选择要移除的身份组"
+                                "selectRoleToRemove": "选择要移除的身份组",
+                                "limitText": "每 {{minutes}} 分钟 {{count}} 次",
+                                "minutesText": "{{minutes}} 分钟",
+                                "enterMaxReports": "请输入成员可以发起的最大举报次数（0 表示不限制）",
+                                "enterTimeWindow": "请输入限制的时间范围（分钟）",
+                                "enterSameMemberCooldown": "请输入成员再次举报同一成员前需要等待的分钟数（0 表示禁用）"
                             }
                         },
                         "errorMessage": "发生意外错误。请查看日志了解详情"
@@ -2034,11 +2041,15 @@
             }
         },
         "reports": {
+            "checkReport": {
+                "featureDisabled": "此功能目前不可用。\n请稍后再试",
+                "alreadyReported": "你已经举报过这条消息",
+                "limitReached": "你已达到举报次数上限。你可以在 {{time}} 再次举报",
+                "sameMemberCooldown": "你最近已经举报过该成员。你可以在 {{time}} 再次举报"
+            },
             "sendReport": {
                 "correct": "举报已发送",
-                "alreadyReported": "你已经举报过这条消息",
-                "temporaryError": "此功能目前不可用。\n请稍后再试",
-                "featureDisabled": "此功能目前不可用。\n请稍后再试"
+                "temporaryError": "此功能目前不可用。\n请稍后再试"
             },
             "renderReport": {
                 "title": "举报",

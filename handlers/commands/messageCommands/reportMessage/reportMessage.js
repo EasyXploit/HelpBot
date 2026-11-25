@@ -20,6 +20,10 @@ export async function run(interaction, commandConfig, locale) {
             .setDescription(`${client.customEmojis.redTick} ${locale.cantReportYourself}.`)
         ], flags: discord.MessageFlags.Ephemeral});
 
+        // Checks if the member can make the report before asking for the reason, and responds with the reason if not
+        const blockedReply = await client.functions.reports.checkReport(interaction.member, { targetUserId: messageAuthor.id, messageId: interaction.options._hoistedOptions[0].message.id });
+        if (blockedReply) return interaction.reply(blockedReply);
+
         // Generates a new modal
         const reasonModal = new discord.ModalBuilder()
             .setTitle(locale.bodyModal.title)

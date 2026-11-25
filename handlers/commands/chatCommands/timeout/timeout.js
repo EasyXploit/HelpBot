@@ -71,26 +71,8 @@ export async function run(interaction, commandConfig, locale) {
             ], flags: discord.MessageFlags.Ephemeral});
         };
 
-        // Keeps the timeout in the database (updating the previous one, if the member had one)
-        if (await client.functions.db.getData('timeout', member.id)) await client.functions.db.setData('timeout', member.id, { moderatorId: interaction.member.id, untilTimestamp: Date.now() + expiresAfter });
-        else await client.functions.db.genData('timeout', {
-            userId: member.id,
-            moderatorId: interaction.member.id,
-            untilTimestamp: Date.now() + expiresAfter
-        });
-
-        // If there is no records cache
-        if (!client.loggingCache) client.loggingCache = {};
-
-        // Creates a new entry in the records cache
-        client.loggingCache[member.id] = {
-            action: 'timeout',
-            executor: interaction.member.id,
-            reason: reason || locale.undefinedReason
-        };
-
-        // Disables member communication on the server
-        await member.disableCommunicationUntil((Date.now() + expiresAfter), reason || locale.undefinedReason);
+        // Isolates the member temporarily
+        await client.functions.moderation.timeoutMember(member, { moderator: interaction.user, duration: expiresAfter, reason: reason });
 
         // Generates a description for the notification embed
         const notificationEmbedDescription = reason ? await client.functions.utils.parseLocale(locale.notificationEmbed.withReason, { memberTag: member.user.tag, reason: reason }) : await client.functions.utils.parseLocale(locale.notificationEmbed.withoutReason, { memberTag: member.user.tag })

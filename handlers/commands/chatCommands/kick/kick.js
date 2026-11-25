@@ -55,16 +55,6 @@ export async function run(interaction, commandConfig, locale) {
             ], flags: discord.MessageFlags.Ephemeral});
         };
 
-        // If there is no records cache
-        if (!client.loggingCache) client.loggingCache = {};
-
-        // Creates a new entry in the records cache
-        client.loggingCache[member.id] = {
-            action: 'kick',
-            executor: interaction.member.id,
-            reason: reason || locale.undefinedReason
-        };
-
         // Generates a description for the notification embed
         const notificationEmbedDescription = reason ? await client.functions.utils.parseLocale(locale.notificationEmbed.withReason, { memberTag: member.user.tag, reason: reason }) : await client.functions.utils.parseLocale(locale.notificationEmbed.withoutReason, { memberTag: member.user.tag })
 
@@ -74,28 +64,8 @@ export async function run(interaction, commandConfig, locale) {
             .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
         ]});
 
-        try {
-        
-            // Sends a notification to the member
-            await member.send({ embeds: [ new discord.EmbedBuilder()
-                .setColor(`${await client.functions.db.getConfig('colors.secondaryError')}`)
-                .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-                .setDescription(await client.functions.utils.parseLocale(locale.privateEmbed.description, { member: member, guildName: interaction.guild.name }))
-                .addFields(
-                    { name: locale.privateEmbed.moderator, value: interaction.user.tag, inline: true },
-                    { name: locale.privateEmbed.reason, value: reason || locale.undefinedReason, inline: true }
-                )
-            ]});
-
-        } catch (error) {
-
-            // Handles the errors that occur when a private message cannot be delivered
-            if (error.toString().includes('Cannot send messages to this user')) logger.warn(`The bot was unable to deliver a "kick log" message to @${member.user.username} (${member.id}) due to an API restriction`);
-            else await client.functions.managers.interactionError(error, interaction);
-        };
-
-        // Kicks the member
-        await member.kick(reason || locale.undefinedReason);
+        // Kicks the member, notifying it
+        await client.functions.moderation.kickMember(member, { moderator: interaction.user, reason: reason });
         
     } catch (error) {
 

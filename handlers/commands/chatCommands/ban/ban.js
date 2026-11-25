@@ -115,38 +115,6 @@ export async function run(interaction, commandConfig, locale) {
             ], flags: discord.MessageFlags.Ephemeral});
         };
 
-        // Stores the expiration of the ban
-        const expiration = providedDuration ? Date.now() + providedDuration : null;
-
-        // If there is no records cache
-        if (!client.loggingCache) client.loggingCache = {};
-
-        // Creates a new entry in the records cache
-        client.loggingCache[user.id] = {
-            action: 'ban',
-            executor: interaction.member.id,
-            reason: reason || locale.undefinedReason,
-            deletedDays: deletedDays ? deletedDays.toString() : null,
-            expiration: expiration
-        };
-
-        // If a duration was provided
-        if (providedDuration) {
-
-            // Records the ban in the database
-            await client.functions.db.genData('ban', {
-                userId: user.id,
-                moderatorId: interaction.member.id,
-                untilTimestamp: Date.now() + providedDuration
-            });
-        };
-
-        // Stores the parameters for the ban
-        const banParameters = { reason: reason || locale.undefinedReason };
-
-        // If deletion of messages (in days) has been provided, stores the parameter turned to seconds
-        if (deletedDays) banParameters.deleteMessageSeconds = deletedDays * 24 * 60 * 60;
-
         // Generates a description for the notification embed
         const notificationEmbedDescription = reason ? await client.functions.utils.parseLocale(locale.notificationEmbed.withReason, { userTag: user.tag, reason: reason }) : await client.functions.utils.parseLocale(locale.notificationEmbed.withoutReason, { userTag: user.tag })
 
@@ -156,30 +124,8 @@ export async function run(interaction, commandConfig, locale) {
             .setDescription(`${client.customEmojis.orangeTick} ${notificationEmbedDescription}`)
         ]});
 
-        try {
-        
-            // Sends a notification to the member
-            if (member) await user.send({ embeds: [ new discord.EmbedBuilder()
-                .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                .setAuthor({ name: locale.privateEmbed.author, iconURL: interaction.guild.iconURL({ dynamic: true}) })
-                .setDescription(await client.functions.utils.parseLocale(locale.privateEmbed.description, { user: user, guildName: interaction.guild.name }))
-                .addFields(
-                    { name: locale.privateEmbed.moderator, value: interaction.user.tag, inline: true },
-                    { name: locale.privateEmbed.reason, value: reason || locale.undefinedReason, inline: true },
-                    { name: locale.privateEmbed.expiration, value: expiration ? `<t:${Math.round(new Date(parseInt(expiration)) / 1000)}:R>` : locale.privateEmbed.noExpiration, inline: true },
-                    { name: locale.privateEmbed.deletedDays, value: deletedDays ? deletedDays.toString() : `\`${locale.privateEmbed.noDeletedDays}\``, inline: true }
-                )
-            ]});
-
-        } catch (error) {
-
-            // Handles the errors that occur when a private message cannot be delivered
-            if (error.toString().includes('Cannot send messages to this user')) logger.warn(`The bot was unable to deliver the "ban log" message to @${user.username} (${user.id}) due to an API restriction`);
-            else await client.functions.managers.interactionError(error, interaction);
-        };
-
-        // Bans the user
-        await interaction.guild.members.ban(user, banParameters);
+        // Bans the user, notifying it
+        await client.functions.moderation.banUser(user, { moderator: interaction.user, reason: reason, duration: providedDuration, deletedDays: deletedDays });
         
     } catch (error) {
 

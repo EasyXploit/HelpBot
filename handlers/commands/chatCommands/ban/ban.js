@@ -39,18 +39,14 @@ export async function run(interaction, commandConfig, locale) {
             .setDescription(`${client.customEmojis.redTick} ${locale.badBotHierarchy}`)
         ], flags: discord.MessageFlags.Ephemeral});
         
-        // Checks if the user was already banned
-        const guildBans = await interaction.guild.bans.fetch();
+        // Checks if the user was already banned, looking only for its ban (so it works no matter how many bans the guild has)
+        const alreadyBanned = !!await interaction.guild.bans.fetch({ user: user.id, force: true }).catch(() => null);
 
-        // Checks if the user was already banned
-        for (const bans of guildBans) {
-
-            // If the user was already banned, returns an error
-            if (bans[0] === user.id) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
-                .setColor(`${await client.functions.db.getConfig('colors.error')}`)
-                .setDescription(`${client.customEmojis.redTick} ${locale.alreadyBanned}`)
-            ], flags: discord.MessageFlags.Ephemeral});
-        };
+        // If the user was already banned, returns an error
+        if (alreadyBanned) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
+            .setColor(`${await client.functions.db.getConfig('colors.error')}`)
+            .setDescription(`${client.customEmojis.redTick} ${locale.alreadyBanned}`)
+        ], flags: discord.MessageFlags.Ephemeral});
 
         // Stores the duration provided
         const durationOption = interaction.options.get(locale.appData.options.expiration.name);

@@ -30,18 +30,8 @@ export async function run(interaction, commandConfig, locale) {
             ], flags: discord.MessageFlags.Ephemeral});
         };
 
-        // Checks if the user was already banned
-        const guildBans = await interaction.guild.bans.fetch();
-
-        // Stores the user's ban state
-        let banned = false;
-
-        // For each of the bans of the guild
-        for (const bans of guildBans) {
-
-            // Checks if the user's Id matches the ban one
-            if (bans[0] === user.id) banned = true
-        };
+        // Checks if the user is banned, looking only for its ban (so it works no matter how many bans the guild has)
+        const banned = !!await interaction.guild.bans.fetch({ user: user.id, force: true }).catch(() => null);
 
         // If the user was not banned, returns an error
         if (!banned) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
@@ -60,7 +50,7 @@ export async function run(interaction, commandConfig, locale) {
         };
 
         // Unbans the member
-        await interaction.guild.members.unban(user.id);
+        await interaction.guild.members.unban(user.id, reason || locale.undefinedReason);
         
         // If the ban was registered in the database
         if (await client.functions.db.getData('ban', user.id)) {

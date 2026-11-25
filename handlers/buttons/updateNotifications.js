@@ -11,8 +11,8 @@ export default async (interaction) => {
         // Stores the Id's that cannot gain XP
         const wontEarnXP = await client.functions.db.getConfig('leveling.wontEarnXP');
 
-        // Stores if the member can not win XP, because it has any of those roles
-        const notAuthorized = wontEarnXP.some(roleId => member.roles.cache.has(roleId));
+        // Stores if the member can not win XP, because it has any of those roles (if it is no longer a member, it is not checked)
+        const notAuthorized = member ? wontEarnXP.some(roleId => member.roles.cache.has(roleId)) : false;
 
         // If is not authorized to do so, returns an error message
         if (notAuthorized) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
@@ -38,7 +38,7 @@ export default async (interaction) => {
         } else {
 
             // If not, modify the database with the changes
-            memberSetting.notifications.private = buttonAction;
+            memberProfile.notifications.private = buttonAction;
             await client.functions.db.setData('profile', interaction.user.id, memberProfile);
         };
 

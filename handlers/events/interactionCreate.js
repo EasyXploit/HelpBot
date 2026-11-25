@@ -97,19 +97,17 @@ export default async (interaction, locale) => {
         // If the interaction was a button
         if (interaction.isButton()) {
 
-            try {
+            // Stores the name of the handler, which is the part of the custom ID before the first ":" (the rest can be used as parameters)
+            const handlerName = interaction.customId.split(':')[0];
 
-                // Loads the corresponding file to handle the button
-                const handlerFile = import(`../buttons/${interaction.customId}.js`);
+            // Ignores the buttons without a handler file (for example, the ones managed by collectors)
+            if (!/^\w+$/.test(handlerName) || !fs.existsSync(`./handlers/buttons/${handlerName}.js`)) return;
 
-                // Executes the interaction handler
-                handlerFile.default(interaction);
+            // Loads the corresponding file to handle the button
+            const handlerFile = await import(`../buttons/${handlerName}.js`);
 
-            } catch (error) {
-
-                // If the file was not found, ignores
-                if (error.toString().includes('Cannot find module')) return;
-            };
+            // Executes the interaction handler
+            await handlerFile.default(interaction);
         };
 
     } catch (error) {

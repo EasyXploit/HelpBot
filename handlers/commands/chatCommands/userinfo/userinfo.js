@@ -27,7 +27,7 @@ export async function run(interaction, commandConfig, locale) {
         // Checks the status available to the member
         let status = [];
         if (member.id === interaction.guild.ownerId) status.push(locale.memberType.owner);
-        if (member.permissions.has('Administrator')) status.push(locale.memberType.Administrator);
+        if (member.permissions.has('Administrator')) status.push(locale.memberType.administrator);
         if (member.permissions.has('ManageMessages')) status.push(locale.memberType.moderator);
         if (status.length < 1) status.push(locale.memberType.regular);
 

@@ -42,7 +42,7 @@ export async function run(interaction, commandConfig, locale) {
         ], flags: discord.MessageFlags.Ephemeral});
         
         // Stores the member's profile
-        let memberProfile = await client.functions.db.getData('profile', member.id);
+        let memberProfile = await client.functions.db.getData('profile', memberId);
 
         // Checks if the member has warns
         if (!memberProfile || memberProfile.moderationLog.warnsHistory.length === 0) return interaction.reply({ embeds: [ new discord.EmbedBuilder()
@@ -175,7 +175,7 @@ export async function run(interaction, commandConfig, locale) {
                 );
 
             // Updates the database with the changes
-            await client.functions.db.setData('profile', member.id, memberProfile);
+            await client.functions.db.setData('profile', memberId, memberProfile);
         };
 
         // Sends a record to the records channel

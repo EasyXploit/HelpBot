@@ -1423,7 +1423,40 @@
                             "selectPredefinedColor": "Select a color from the palette or choose custom",
                             "customHexOption": "Custom HEX",
                             "enterHex": "Enter the custom Hex color code (6 characters, e.g. FEB526)",
-                            "colorSuccess": "Color updated successfully!"
+                            "colorSuccess": "Color updated successfully!",
+                            "invalidHex": "Enter a valid 6-character Hex color code (without #)",
+                            "presetColors": {
+                                "red": "Red",
+                                "orange": "Orange",
+                                "yellow": "Yellow",
+                                "green": "Green",
+                                "blue": "Blue",
+                                "purple": "Purple",
+                                "pink": "Pink",
+                                "white": "White",
+                                "black": "Black"
+                            },
+                            "commandTypes": {
+                                "chatCommands": "Chat commands",
+                                "messageCommands": "Message commands",
+                                "userCommands": "User commands"
+                            },
+                            "ignoredStatus": "Ignored",
+                            "activeStatus": "Active",
+                            "presenceStatuses": {
+                                "online": "Online",
+                                "idle": "Idle",
+                                "dnd": "Do not disturb",
+                                "offline": "Invisible"
+                            },
+                            "presenceTypes": {
+                                "PLAYING": "Playing",
+                                "STREAMING": "Streaming",
+                                "LISTENING": "Listening",
+                                "WATCHING": "Watching",
+                                "CUSTOM": "Custom",
+                                "COMPETING": "Competing"
+                            }
                         },
                         "records": {
                             "warnedMember": "Warned member",

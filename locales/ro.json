@@ -1423,7 +1423,40 @@
                             "selectPredefinedColor": "Selectează o culoare din paletă sau alege una personalizată",
                             "customHexOption": "HEX personalizat",
                             "enterHex": "Introdu codul culorii HEX personalizate (6 caractere, de ex. FEB526)",
-                            "colorSuccess": "Culoarea a fost actualizată cu succes!"
+                            "colorSuccess": "Culoarea a fost actualizată cu succes!",
+                            "invalidHex": "Introduceți un cod de culoare Hex valid de 6 caractere (fără #)",
+                            "presetColors": {
+                                "red": "Roșu",
+                                "orange": "Portocaliu",
+                                "yellow": "Galben",
+                                "green": "Verde",
+                                "blue": "Albastru",
+                                "purple": "Mov",
+                                "pink": "Roz",
+                                "white": "Alb",
+                                "black": "Negru"
+                            },
+                            "commandTypes": {
+                                "chatCommands": "Comenzi de chat",
+                                "messageCommands": "Comenzi pentru mesaje",
+                                "userCommands": "Comenzi pentru utilizatori"
+                            },
+                            "ignoredStatus": "Ignorată",
+                            "activeStatus": "Activă",
+                            "presenceStatuses": {
+                                "online": "Online",
+                                "idle": "Inactiv",
+                                "dnd": "Nu deranjați",
+                                "offline": "Invizibil"
+                            },
+                            "presenceTypes": {
+                                "PLAYING": "Se joacă",
+                                "STREAMING": "Transmite",
+                                "LISTENING": "Ascultă",
+                                "WATCHING": "Urmărește",
+                                "CUSTOM": "Personalizat",
+                                "COMPETING": "Concurează"
+                            }
                         },
                         "records": {
                             "warnedMember": "Membru avertizat",

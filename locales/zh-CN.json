@@ -1423,7 +1423,40 @@
                             "selectPredefinedColor": "从调色板中选择一种颜色，或选择自定义颜色",
                             "customHexOption": "自定义 HEX",
                             "enterHex": "输入自定义的 HEX 颜色代码（6 个字符，例如 FEB526）",
-                            "colorSuccess": "颜色已成功更新！"
+                            "colorSuccess": "颜色已成功更新！",
+                            "invalidHex": "请输入有效的 6 位十六进制颜色代码（不含 #）",
+                            "presetColors": {
+                                "red": "红色",
+                                "orange": "橙色",
+                                "yellow": "黄色",
+                                "green": "绿色",
+                                "blue": "蓝色",
+                                "purple": "紫色",
+                                "pink": "粉色",
+                                "white": "白色",
+                                "black": "黑色"
+                            },
+                            "commandTypes": {
+                                "chatCommands": "聊天命令",
+                                "messageCommands": "消息命令",
+                                "userCommands": "用户命令"
+                            },
+                            "ignoredStatus": "已忽略",
+                            "activeStatus": "已启用",
+                            "presenceStatuses": {
+                                "online": "在线",
+                                "idle": "闲置",
+                                "dnd": "请勿打扰",
+                                "offline": "隐身"
+                            },
+                            "presenceTypes": {
+                                "PLAYING": "正在玩",
+                                "STREAMING": "正在直播",
+                                "LISTENING": "正在听",
+                                "WATCHING": "正在看",
+                                "CUSTOM": "自定义",
+                                "COMPETING": "正在竞赛"
+                            }
                         },
                         "records": {
                             "warnedMember": "成员被警告",

@@ -1423,7 +1423,40 @@
                             "selectPredefinedColor": "Selecciona un color de la paleta o introduce uno personalizado",
                             "customHexOption": "HEX Personalizado",
                             "enterHex": "Introduce el código de color Hex personalizado (6 caracteres, ej: FEB526)",
-                            "colorSuccess": "¡Color actualizado correctamente!"
+                            "colorSuccess": "¡Color actualizado correctamente!",
+                            "invalidHex": "Introduce un código de color Hex válido de 6 caracteres (sin #)",
+                            "presetColors": {
+                                "red": "Rojo",
+                                "orange": "Naranja",
+                                "yellow": "Amarillo",
+                                "green": "Verde",
+                                "blue": "Azul",
+                                "purple": "Morado",
+                                "pink": "Rosa",
+                                "white": "Blanco",
+                                "black": "Negro"
+                            },
+                            "commandTypes": {
+                                "chatCommands": "Comandos de chat",
+                                "messageCommands": "Comandos de mensaje",
+                                "userCommands": "Comandos de usuario"
+                            },
+                            "ignoredStatus": "Ignorado",
+                            "activeStatus": "Activo",
+                            "presenceStatuses": {
+                                "online": "En línea",
+                                "idle": "Ausente",
+                                "dnd": "No molestar",
+                                "offline": "Invisible"
+                            },
+                            "presenceTypes": {
+                                "PLAYING": "Jugando",
+                                "STREAMING": "Transmitiendo",
+                                "LISTENING": "Escuchando",
+                                "WATCHING": "Viendo",
+                                "CUSTOM": "Personalizado",
+                                "COMPETING": "Compitiendo"
+                            }
                         },
                         "records": {
                             "warnedMember": "Miembro advertido",

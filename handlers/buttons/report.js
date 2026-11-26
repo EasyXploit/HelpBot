@@ -213,6 +213,14 @@ export default async (interaction) => {
             const missingBotPermissions = await client.functions.utils.missingPermissions(action === 'deleteMessage' ? relatedChannel : null, client.baseGuild.members.me, [neededPermissions[action]]);
             if (missingBotPermissions) return await respondError(await client.functions.utils.parseLocale(locale.botMissingPermissions, { permissions: missingBotPermissions.join(', ') }));
 
+            // Looks for the reported member (and the user, as only it is needed to ban)
+            const targetMember = await client.functions.utils.fetch('member', report.target.userId);
+            const targetUser = targetMember ? targetMember.user : await client.users.fetch(report.target.userId).catch(() => null);
+
+            // If it is a member, checks that the moderator is above it in the hierarchy (and the bot too, unless only a message has to be deleted, which does not depend on it), so a moderator can not sanction another one of the same or a higher rank
+            const hierarchyError = targetMember ? client.functions.moderation.checkHierarchy(interaction.member, targetMember, { checkBot: action !== 'deleteMessage' }) : null;
+            if (hierarchyError) return await respondError(locale[hierarchyError]);
+
             // If the message has to be deleted
             if (action === 'deleteMessage') {
 
@@ -229,19 +237,11 @@ export default async (interaction) => {
                 return await interaction.update(await client.functions.reports.renderReport(report));
             };
 
-            // Looks for the reported member (and the user, as only it is needed to ban)
-            const targetMember = await client.functions.utils.fetch('member', report.target.userId);
-            const targetUser = targetMember ? targetMember.user : await client.users.fetch(report.target.userId).catch(() => null);
-
             // If the member is needed and it is no longer in the guild (or the user no longer exists), warns about it
             if ((action !== 'ban' && !targetMember) || !targetUser) return await respondError(locale.memberNotFound);
 
             // If it is a bot and it has to be warned, warns that it can not be done
             if (action === 'warn' && targetUser.bot) return await respondError(locale.noBots);
-
-            // If it is a member, checks that both the moderator and the bot are above it in the hierarchy
-            const hierarchyError = targetMember ? client.functions.moderation.checkHierarchy(interaction.member, targetMember) : null;
-            if (hierarchyError) return await respondError(locale[hierarchyError]);
 
             // If the member has to be timed out, checks that the selected duration is one of the configured ones
             const duration = action === 'timeout' ? parseInt(interaction.values[0]) : null;

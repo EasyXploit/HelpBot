@@ -103,7 +103,7 @@ const schema = new mongoose.Schema({
             messages: {
                 enabled: {
                     type: Boolean,
-                    default: true,
+                    default: false,
                     required: true
                 },
                 // Amount of different members that have to report it

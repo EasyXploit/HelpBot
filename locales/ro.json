@@ -1599,7 +1599,8 @@
                                 "quickActions": "Sancțiuni din rapoarte",
                                 "timeoutDurations": "Duratele izolării",
                                 "notifyReporters": "Anunțați persoanele care au raportat când raportul lor este închis",
-                                "replyTemplates": "Șabloane de răspuns"
+                                "replyTemplates": "Șabloane de răspuns",
+                                "autoModeration": "Moderare automată"
                             },
                             "prompts": {
                                 "noChannelError": "Trebuie să configurați canalul rapoartelor înainte de a le activa",
@@ -1636,7 +1637,17 @@
                                 "removeTemplate": "Eliminați un șablon",
                                 "enterTemplate": "Introduceți textul șablonului",
                                 "templateTooLong": "Șablonul nu poate avea mai mult de 1500 de caractere",
-                                "selectTemplateToRemove": "Selectați șablonul de eliminat"
+                                "selectTemplateToRemove": "Selectați șablonul de eliminat",
+                                "autoModerationHeader": "Configurați sancțiunile care se aplică automat când mai mulți membri raportează același mesaj sau membru (proprietarul serverului, gestionarii botului, gestionarii rapoartelor și boții nu sunt niciodată sancționați)",
+                                "messagesAutoModeration": "Când este raportat un mesaj",
+                                "membersAutoModeration": "Când este raportat un membru",
+                                "threshold": "Membri care trebuie să-l raporteze",
+                                "deleteMessage": "Șterge mesajul",
+                                "timeoutDuration": "Izolează autorul timp de",
+                                "timeWindow": "Într-o perioadă de",
+                                "enterThreshold": "Introduceți numărul de membri diferiți care trebuie să-l raporteze (cel puțin 2)",
+                                "enterAutoModerationTimeWindow": "Introduceți perioada de timp în care sunt numărate rapoartele, în minute",
+                                "enterOptionalTimeoutDuration": "Introduceți durata izolării în minute (0 pentru a nu izola, maximum 40319)"
                             }
                         },
                         "errorMessage": "A apărut o eroare neașteptată. Verifică jurnalele pentru mai multe detalii"
@@ -2142,6 +2153,9 @@
                 "limitReached": "Ați atins limita de rapoarte. Veți putea raporta din nou {{time}}",
                 "sameMemberCooldown": "Ați raportat deja acest membru recent. Îl veți putea raporta din nou {{time}}"
             },
+            "autoModerate": {
+                "reason": "Moderare automată: raportat de {{count}} membri"
+            },
             "sendReport": {
                 "correct": "Raportul a fost trimis",
                 "temporaryError": "Această funcție nu este disponibilă momentan.\nÎncearcă din nou mai târziu"
@@ -2199,7 +2213,8 @@
                 "replyPlaceholder": "Răspunde celor care au raportat...",
                 "customReply": "Scrie un mesaj personalizat",
                 "repliesSent": "Răspunsuri către cei care au raportat",
-                "replyText": "Răspuns trimis de {{moderator}}"
+                "replyText": "Răspuns trimis de {{moderator}}",
+                "automatic": "automată"
             },
             "notifyReporters": {
                 "yourReport": "Raportul dvs.",

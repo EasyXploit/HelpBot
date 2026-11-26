@@ -1599,7 +1599,8 @@
                                 "quickActions": "Sanciones desde los reportes",
                                 "timeoutDurations": "Duraciones de silencio",
                                 "notifyReporters": "Avisar a los denunciantes al cerrar su reporte",
-                                "replyTemplates": "Plantillas de respuesta"
+                                "replyTemplates": "Plantillas de respuesta",
+                                "autoModeration": "Moderación automática"
                             },
                             "prompts": {
                                 "noChannelError": "Debes configurar el canal de reportes antes de activarlos",
@@ -1636,7 +1637,17 @@
                                 "removeTemplate": "Quitar plantilla",
                                 "enterTemplate": "Introduce el texto de la plantilla",
                                 "templateTooLong": "La plantilla no puede tener más de 1500 caracteres",
-                                "selectTemplateToRemove": "Selecciona la plantilla a quitar"
+                                "selectTemplateToRemove": "Selecciona la plantilla a quitar",
+                                "autoModerationHeader": "Configura las sanciones que se aplican automáticamente cuando varios miembros reportan el mismo mensaje o miembro (nunca se sanciona al dueño del servidor, a los gestores del bot, a los gestores de reportes ni a los bots)",
+                                "messagesAutoModeration": "Al reportar un mensaje",
+                                "membersAutoModeration": "Al reportar a un miembro",
+                                "threshold": "Miembros que deben reportarlo",
+                                "deleteMessage": "Borrar el mensaje",
+                                "timeoutDuration": "Silenciar a su autor durante",
+                                "timeWindow": "En un periodo de",
+                                "enterThreshold": "Introduce el número de miembros distintos que deben reportarlo (2 como mínimo)",
+                                "enterAutoModerationTimeWindow": "Introduce el periodo de tiempo en el que se cuentan los reportes, en minutos",
+                                "enterOptionalTimeoutDuration": "Introduce la duración del silencio en minutos (0 para no silenciar, 40319 como máximo)"
                             }
                         },
                         "errorMessage": "Ha ocurrido un error inesperado. Comprueba los registros para más detalles"
@@ -2142,6 +2153,9 @@
                 "limitReached": "Has alcanzado el límite de reportes. Podrás volver a reportar {{time}}",
                 "sameMemberCooldown": "Ya has reportado a este miembro hace poco. Podrás volver a reportarlo {{time}}"
             },
+            "autoModerate": {
+                "reason": "Moderación automática: reportado por {{count}} miembros"
+            },
             "sendReport": {
                 "correct": "El reporte ha sido enviado",
                 "temporaryError": "Esta función no está disponible en este momento.\nVuelve a intentarlo más tarde"
@@ -2199,7 +2213,8 @@
                 "replyPlaceholder": "Responder a los denunciantes...",
                 "customReply": "Escribir un mensaje personalizado",
                 "repliesSent": "Respuestas a los denunciantes",
-                "replyText": "Respuesta enviada por {{moderator}}"
+                "replyText": "Respuesta enviada por {{moderator}}",
+                "automatic": "automática"
             },
             "notifyReporters": {
                 "yourReport": "Tu reporte",

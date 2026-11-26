@@ -1599,7 +1599,8 @@
                                 "quickActions": "Sanctions from the reports",
                                 "timeoutDurations": "Timeout durations",
                                 "notifyReporters": "Notify the reporters when their report is closed",
-                                "replyTemplates": "Reply templates"
+                                "replyTemplates": "Reply templates",
+                                "autoModeration": "Automatic moderation"
                             },
                             "prompts": {
                                 "noChannelError": "You must configure the reports channel before enabling them",
@@ -1636,7 +1637,17 @@
                                 "removeTemplate": "Remove template",
                                 "enterTemplate": "Enter the text of the template",
                                 "templateTooLong": "The template can not have more than 1500 characters",
-                                "selectTemplateToRemove": "Select the template to remove"
+                                "selectTemplateToRemove": "Select the template to remove",
+                                "autoModerationHeader": "Configure the sanctions that are applied automatically when several members report the same message or member (the owner of the server, the bot managers, the reports handlers and the bots are never sanctioned)",
+                                "messagesAutoModeration": "When a message is reported",
+                                "membersAutoModeration": "When a member is reported",
+                                "threshold": "Members who have to report it",
+                                "deleteMessage": "Delete the message",
+                                "timeoutDuration": "Time out its author for",
+                                "timeWindow": "In a period of",
+                                "enterThreshold": "Enter the amount of different members who have to report it (2 at least)",
+                                "enterAutoModerationTimeWindow": "Enter the period of time in which the reports are counted, in minutes",
+                                "enterOptionalTimeoutDuration": "Enter the duration of the timeout in minutes (0 to not time out, 40319 at most)"
                             }
                         },
                         "errorMessage": "An unexpected error occurred. Check the logs for more details"
@@ -2142,6 +2153,9 @@
                 "limitReached": "You have reached the limit of reports. You will be able to report again {{time}}",
                 "sameMemberCooldown": "You have already reported this member recently. You will be able to report it again {{time}}"
             },
+            "autoModerate": {
+                "reason": "Automatic moderation: reported by {{count}} members"
+            },
             "sendReport": {
                 "correct": "The report has been sent",
                 "temporaryError": "This feature is not available at this time.\nPlease try again later"
@@ -2199,7 +2213,8 @@
                 "replyPlaceholder": "Reply to the reporters...",
                 "customReply": "Write a custom message",
                 "repliesSent": "Replies to the reporters",
-                "replyText": "Reply sent by {{moderator}}"
+                "replyText": "Reply sent by {{moderator}}",
+                "automatic": "automatic"
             },
             "notifyReporters": {
                 "yourReport": "Your report",

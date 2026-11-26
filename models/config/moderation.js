@@ -97,6 +97,66 @@ const schema = new mongoose.Schema({
             type: [String],
             default: replyTemplates
         },
+        // Automatic moderation when several members report the same message or member
+        autoModeration: {
+            // When the same message is reported by several members
+            messages: {
+                enabled: {
+                    type: Boolean,
+                    default: true,
+                    required: true
+                },
+                // Amount of different members that have to report it
+                threshold: {
+                    type: Number,
+                    default: 3,
+                    min: 2,
+                    required: true
+                },
+                // Whether the message is deleted
+                deleteMessage: {
+                    type: Boolean,
+                    default: true,
+                    required: true
+                },
+                // Duration of the timeout of its author, in milliseconds (0 to not time it out)
+                timeoutDuration: {
+                    type: Number,
+                    default: 0,
+                    min: 0,
+                    required: true
+                }
+            },
+            // When the same member is reported by several members
+            members: {
+                enabled: {
+                    type: Boolean,
+                    default: false,
+                    required: true
+                },
+                // Amount of different members that have to report it in the time window
+                threshold: {
+                    type: Number,
+                    default: 3,
+                    min: 2,
+                    required: true
+                },
+                // Time window in which the reports are counted, in milliseconds
+                timeWindow: {
+                    type: Number,
+                    default: 86400000,
+                    min: 60000,
+                    required: true
+                },
+                // Duration of the timeout of the member, in milliseconds
+                timeoutDuration: {
+                    type: Number,
+                    default: 3600000,
+                    min: 60000,
+                    required: true
+                }
+            }
+        },
         // Limits to avoid the abuse of the reports
         limits: {
             // Maximum amount of reports that a member can make in the time window (0 to disable the limit)

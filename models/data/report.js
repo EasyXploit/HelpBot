@@ -69,8 +69,15 @@ const reportSchema = new mongoose.Schema({
         moderatorId: String,
         reason: String,
         duration: Number,
-        timestamp: Number
+        timestamp: Number,
+        // Whether it was applied by the automatic moderation
+        automatic: Boolean
     }],
+    // Whether the automatic moderation already acted on this report
+    autoModerated: {
+        type: Boolean,
+        default: false
+    },
     // Requests of more information sent to the reporters, and their answers
     infoRequests: [{
         requestId: String,

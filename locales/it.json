@@ -1599,7 +1599,8 @@
                                 "quickActions": "Sanzioni dalle segnalazioni",
                                 "timeoutDurations": "Durate del silenziamento",
                                 "notifyReporters": "Avvisa i segnalatori quando la loro segnalazione viene chiusa",
-                                "replyTemplates": "Modelli di risposta"
+                                "replyTemplates": "Modelli di risposta",
+                                "autoModeration": "Moderazione automatica"
                             },
                             "prompts": {
                                 "noChannelError": "Devi configurare il canale delle segnalazioni prima di attivarle",
@@ -1636,7 +1637,17 @@
                                 "removeTemplate": "Rimuovi modello",
                                 "enterTemplate": "Inserisci il testo del modello",
                                 "templateTooLong": "Il modello non può avere più di 1500 caratteri",
-                                "selectTemplateToRemove": "Seleziona il modello da rimuovere"
+                                "selectTemplateToRemove": "Seleziona il modello da rimuovere",
+                                "autoModerationHeader": "Configura le sanzioni che vengono applicate automaticamente quando più membri segnalano lo stesso messaggio o membro (il proprietario del server, i gestori del bot, i gestori delle segnalazioni e i bot non vengono mai sanzionati)",
+                                "messagesAutoModeration": "Quando viene segnalato un messaggio",
+                                "membersAutoModeration": "Quando viene segnalato un membro",
+                                "threshold": "Membri che devono segnalarlo",
+                                "deleteMessage": "Elimina il messaggio",
+                                "timeoutDuration": "Silenzia il suo autore per",
+                                "timeWindow": "In un periodo di",
+                                "enterThreshold": "Inserisci il numero di membri diversi che devono segnalarlo (almeno 2)",
+                                "enterAutoModerationTimeWindow": "Inserisci il periodo di tempo in cui vengono contate le segnalazioni, in minuti",
+                                "enterOptionalTimeoutDuration": "Inserisci la durata del silenziamento in minuti (0 per non silenziare, al massimo 40319)"
                             }
                         },
                         "errorMessage": "Si è verificato un errore imprevisto. Controlla i log per maggiori dettagli"
@@ -2142,6 +2153,9 @@
                 "limitReached": "Hai raggiunto il limite di segnalazioni. Potrai segnalare di nuovo {{time}}",
                 "sameMemberCooldown": "Hai già segnalato questo membro di recente. Potrai segnalarlo di nuovo {{time}}"
             },
+            "autoModerate": {
+                "reason": "Moderazione automatica: segnalato da {{count}} membri"
+            },
             "sendReport": {
                 "correct": "La segnalazione è stata inviata",
                 "temporaryError": "Questa funzione non è disponibile al momento.\nRiprova più tardi"
@@ -2199,7 +2213,8 @@
                 "replyPlaceholder": "Rispondi a chi ha segnalato...",
                 "customReply": "Scrivi un messaggio personalizzato",
                 "repliesSent": "Risposte a chi ha segnalato",
-                "replyText": "Risposta inviata da {{moderator}}"
+                "replyText": "Risposta inviata da {{moderator}}",
+                "automatic": "automatica"
             },
             "notifyReporters": {
                 "yourReport": "La tua segnalazione",
